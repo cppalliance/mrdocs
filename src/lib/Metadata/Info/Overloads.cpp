@@ -26,6 +26,7 @@ OverloadsInfo::OverloadsInfo(SymbolID const &Parent, std::string_view Name,
     : InfoCommonBase(SymbolID::createFromString(std::format(
           "{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic))) {
   this->Parent = Parent;
+  if (isStatic) this->StorageClass = StorageClassKind::Static;
 }
 
 void

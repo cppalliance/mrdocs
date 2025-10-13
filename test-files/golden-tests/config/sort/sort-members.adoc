@@ -191,16 +191,6 @@ Constructors
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 
-Default constructor
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-link:#Z-2constructor-05[Z]();
-----
-
-[.small]#link:#Z-2constructor-05[_» more&period;&period;&period;_]#
-
 Construct from `int`
 
 
@@ -211,19 +201,15 @@ link:#Z-2constructor-06[Z](int value);
 
 [.small]#link:#Z-2constructor-06[_» more&period;&period;&period;_]#
 
-[#Z-2constructor-05]
-== link:#Z[Z]::Z
-
 Default constructor
 
-=== Synopsis
-
-Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-Z();
+link:#Z-2constructor-05[Z]();
 ----
+
+[.small]#link:#Z-2constructor-05[_» more&period;&period;&period;_]#
 
 [#Z-2constructor-06]
 == link:#Z[Z]::Z
@@ -248,6 +234,20 @@ Z(int value);
 | *value*
 | The value to construct from
 |===
+
+[#Z-2constructor-05]
+== link:#Z[Z]::Z
+
+Default constructor
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Z();
+----
 
 [#Z-2destructor]
 == link:#Z[Z]::&#126;Z

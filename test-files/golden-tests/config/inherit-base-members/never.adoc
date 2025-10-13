@@ -221,6 +221,14 @@ class base&lowbar;base;
 | Description
 | link:#base_base-base_base_inherited[`base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
 | link:#base_base-do_base_base_inherited[`do&lowbar;base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
 |===
@@ -309,6 +317,14 @@ class derived
 | Description
 | link:#derived-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
 | link:#derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
 |===
@@ -375,6 +391,14 @@ class private&lowbar;derived
 | Description
 | link:#private_derived-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
 | link:#private_derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
 |===
@@ -453,6 +477,14 @@ class protected&lowbar;derived
 | Description
 | link:#protected_derived-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
 | link:#protected_derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
 |===

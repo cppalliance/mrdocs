@@ -267,6 +267,14 @@ sortMembers(std::vector<SymbolID>& ids)
 
 void
 SortMembersFinalizer::
+sortMembers(std::vector<MemberInfo>& members)
+{
+    SymbolIDCompareFn const pred{corpus_};
+    std::ranges::sort(members, pred, &MemberInfo::id);
+}
+
+void
+SortMembersFinalizer::
 sortMembers(NamespaceTranche& T)
 {
     sortMembers(T.Namespaces);
@@ -281,37 +289,11 @@ sortMembers(NamespaceTranche& T)
     sortMembers(T.Usings);
 }
 
-void
-SortMembersFinalizer::
-sortMembers(RecordTranche& T)
-{
-    sortMembers(T.NamespaceAliases);
-    sortMembers(T.Typedefs);
-    sortMembers(T.Records);
-    sortMembers(T.Enums);
-    sortMembers(T.Functions);
-    sortMembers(T.StaticFunctions);
-    sortMembers(T.Variables);
-    sortMembers(T.StaticVariables);
-    sortMembers(T.Concepts);
-    sortMembers(T.Guides);
-    sortMembers(T.Usings);
-}
-
-void
-SortMembersFinalizer::
-sortMembers(RecordInterface& I)
-{
-    sortMembers(I.Public);
-    sortMembers(I.Protected);
-    sortMembers(I.Private);
-}
-
 namespace {
-template <class T>
+template <class T, range_of<SymbolID> R>
 constexpr
 auto
-toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
+toDerivedView(R&& ids, CorpusImpl& c)
 {
     return ids |
        std::views::transform([&c](SymbolID const& id) {
@@ -361,43 +343,20 @@ operator()(RecordInfo& I)
     // Sort members of all tranches if sorting is enabled for records
     if (corpus_.config->sortMembers)
     {
-        sortMembers(I.Interface);
+        sortMembers(I.Members);
     }
 
     // Recursively sort members of child records and overloads
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Public.Records, corpus_))
+    auto&& memberIds = allMembers(I);
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(memberIds, corpus_))
     {
         operator()(RI);
     }
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Protected.Records, corpus_))
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(memberIds, corpus_))
     {
         operator()(RI);
     }
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Private.Records, corpus_))
-    {
-        operator()(RI);
-    }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Public.Functions, corpus_))
-    {
-        operator()(RI);
-    }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Protected.Functions, corpus_))
-    {
-        operator()(RI);
-    }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Private.Functions, corpus_))
-    {
-        operator()(RI);
-    }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Public.StaticFunctions, corpus_))
-    {
-        operator()(RI);
-    }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Protected.StaticFunctions, corpus_))
-    {
-        operator()(RI);
-    }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Private.StaticFunctions, corpus_))
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(memberIds, corpus_))
     {
         operator()(RI);
     }

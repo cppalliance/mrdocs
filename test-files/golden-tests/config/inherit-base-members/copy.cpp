@@ -21,7 +21,7 @@ class base_base {
 public:
     /// This function should be indirectly inherited by derived classes.
     base_base& base_base_inherited();
-public:
+protected:
     /// This function should be indirectly inherited by derived classes.
     base_base& do_base_base_inherited();
 };
@@ -54,7 +54,7 @@ class derived
 public:
     /// This function should shadow the base class function.
     derived& derived_shadowed();
-public:
+protected:
     /// This function should shadow the base class function.
     derived& do_derived_shadowed();
 };
@@ -67,7 +67,7 @@ class protected_derived
 public:
     /// This function should shadow the base class function.
     protected_derived& derived_shadowed();
-public:
+protected:
     /// This function should shadow the base class function.
     protected_derived& do_derived_shadowed();
 };
@@ -80,7 +80,7 @@ class private_derived
 public:
     /// This function should shadow the base class function.
     private_derived& derived_shadowed();
-public:
+protected:
     /// This function should shadow the base class function.
     private_derived& do_derived_shadowed();
 };

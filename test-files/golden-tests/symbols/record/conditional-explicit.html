@@ -71,13 +71,12 @@ struct A;
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
-<span>Conditionally explicit conversion from char</span>
+<span>Implicit conversion from double</span>
 <pre>
-<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
-<a href="#A-2constructor-0b">A</a>(char value);
+<code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);
 
 </code>
-</pre><span class="small"><a href="#A-2constructor-0b"><em>» more...</em></a></span>
+</pre><span class="small"><a href="#A-2constructor-00"><em>» more...</em></a></span>
 
 <span>Explicit conversion from int</span>
 <pre>
@@ -87,12 +86,13 @@ Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 </code>
 </pre><span class="small"><a href="#A-2constructor-01"><em>» more...</em></a></span>
 
-<span>Implicit conversion from double</span>
+<span>Conditionally explicit conversion from char</span>
 <pre>
-<code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);
+<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
+<a href="#A-2constructor-0b">A</a>(char value);
 
 </code>
-</pre><span class="small"><a href="#A-2constructor-00"><em>» more...</em></a></span>
+</pre><span class="small"><a href="#A-2constructor-0b"><em>» more...</em></a></span>
 
 <span>Conditionally explicit conversion from other types</span>
 <pre>
@@ -108,9 +108,9 @@ explicit(sizeof(U) &gt; 4)
 </div>
 <div>
 <div>
-<h2 id="A-2constructor-0b"><a href="#A-2constructor-0b">A::A</a></h2>
+<h2 id="A-2constructor-00"><a href="#A-2constructor-00">A::A</a></h2>
 <div>
-<span>Conditionally explicit conversion from char</span>
+<span>Implicit conversion from double</span>
 
 </div>
 </div>
@@ -119,8 +119,7 @@ explicit(sizeof(U) &gt; 4)
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
-A(char value);
+<code class="source-code cpp">A(double value);
 
 </code>
 </pre>
@@ -182,9 +181,9 @@ A(int value);
 </div>
 <div>
 <div>
-<h2 id="A-2constructor-00"><a href="#A-2constructor-00">A::A</a></h2>
+<h2 id="A-2constructor-0b"><a href="#A-2constructor-0b">A::A</a></h2>
 <div>
-<span>Implicit conversion from double</span>
+<span>Conditionally explicit conversion from char</span>
 
 </div>
 </div>
@@ -193,7 +192,8 @@ A(int value);
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">A(double value);
+<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
+A(char value);
 
 </code>
 </pre>

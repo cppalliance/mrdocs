@@ -2296,8 +2296,8 @@ struct link:#S0-0cf-S1-S2[S2]&lt;16&gt;;
 | Name
 | link:#S0-09e4-S1-S2-02-S3[`S3`] 
 | link:#S0-09e4-S1-S2-02-S4-00[`S4`] 
-| link:#S0-09e4-S1-S2-02-S4-02[`S4&lt;17, int*&gt;`] 
 | link:#S0-09e4-S1-S2-02-S4-07[`S4&lt;17, T*&gt;`] 
+| link:#S0-09e4-S1-S2-02-S4-02[`S4&lt;17, int*&gt;`] 
 |===
 
 === Member Functions
@@ -2345,6 +2345,19 @@ struct S4;
 | 
 |===
 
+[#S0-09e4-S1-S2-02-S4-07]
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::link:#S0-0cf-S1-S2-S4[S4]&lt;17, T*&gt;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct link:#S0-0cf-S1-S2-S4[S4]&lt;17, T*&gt;;
+----
+
 [#S0-09e4-S1-S2-02-S4-02]
 == link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::link:#S0-0cf-S1-S2-S4[S4]&lt;17, int*&gt;
 
@@ -2367,19 +2380,6 @@ struct link:#S0-0cf-S1-S2-S4[S4]&lt;17, int*&gt;;
 | link:#R13[`R13`]
 | 
 |===
-
-[#S0-09e4-S1-S2-02-S4-07]
-== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::link:#S0-0cf-S1-S2-S4[S4]&lt;17, T*&gt;
-
-=== Synopsis
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct link:#S0-0cf-S1-S2-S4[S4]&lt;17, T*&gt;;
-----
 
 [#S0-09e4-S1-S2-02-f2]
 == link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::f2
@@ -3226,8 +3226,8 @@ struct S6;
 |===
 | Name
 | link:#S0-09e2-S5-0c-S6-S7-0b[`S7`] 
-| link:#S0-09e2-S5-0c-S6-S7-0d[`S7&lt;29, int*&gt;`] 
 | link:#S0-09e2-S5-0c-S6-S7-0a[`S7&lt;29, T*&gt;`] 
+| link:#S0-09e2-S5-0c-S6-S7-0d[`S7&lt;29, int*&gt;`] 
 |===
 
 === Member Functions
@@ -3263,6 +3263,19 @@ struct S7;
 | 
 |===
 
+[#S0-09e2-S5-0c-S6-S7-0a]
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;29, T*&gt;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;29, T*&gt;;
+----
+
 [#S0-09e2-S5-0c-S6-S7-0d]
 == link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;29, int*&gt;
 
@@ -3285,19 +3298,6 @@ struct link:#S0-0cf-S5-S6-S7[S7]&lt;29, int*&gt;;
 | link:#R21[`R21`]
 | 
 |===
-
-[#S0-09e2-S5-0c-S6-S7-0a]
-== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;29, T*&gt;
-
-=== Synopsis
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct link:#S0-0cf-S5-S6-S7[S7]&lt;29, T*&gt;;
-----
 
 [#S0-09e2-S5-0c-S6-f6]
 == link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::f6
@@ -4306,8 +4306,8 @@ struct link:#S0-0cf-S5-S6-S7[S7]&lt;41&gt;;
 | Name
 | link:#S0-06-S5-07-S6-S7-0a-S8[`S8`] 
 | link:#S0-06-S5-07-S6-S7-0a-S9-05[`S9`] 
-| link:#S0-06-S5-07-S6-S7-0a-S9-08[`S9&lt;42, int*&gt;`] 
 | link:#S0-06-S5-07-S6-S7-0a-S9-00[`S9&lt;42, T*&gt;`] 
+| link:#S0-06-S5-07-S6-S7-0a-S9-08[`S9&lt;42, int*&gt;`] 
 |===
 
 === Member Functions
@@ -4355,6 +4355,19 @@ struct S9;
 | 
 |===
 
+[#S0-06-S5-07-S6-S7-0a-S9-00]
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, T*&gt;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, T*&gt;;
+----
+
 [#S0-06-S5-07-S6-S7-0a-S9-08]
 == link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, int*&gt;
 
@@ -4377,19 +4390,6 @@ struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, int*&gt;;
 | link:#R26[`R26`]
 | 
 |===
-
-[#S0-06-S5-07-S6-S7-0a-S9-00]
-== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, T*&gt;
-
-=== Synopsis
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, T*&gt;;
-----
 
 [#S0-06-S5-07-S6-S7-0a-f7]
 == link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::f7
@@ -4893,8 +4893,8 @@ struct S1;
 |===
 | Name
 | link:#S0-07e-S1-S2-04[`S2`] 
-| link:#S0-07e-S1-S2-07[`S2&lt;7, int*&gt;`] 
 | link:#S0-07e-S1-S2-06[`S2&lt;7, T*&gt;`] 
+| link:#S0-07e-S1-S2-07[`S2&lt;7, int*&gt;`] 
 |===
 
 === Member Functions
@@ -4930,6 +4930,19 @@ struct S2;
 | 
 |===
 
+[#S0-07e-S1-S2-06]
+== link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;7, T*&gt;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct link:#S0-0cf-S1-S2[S2]&lt;7, T*&gt;;
+----
+
 [#S0-07e-S1-S2-07]
 == link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;7, int*&gt;
 
@@ -4952,19 +4965,6 @@ struct link:#S0-0cf-S1-S2[S2]&lt;7, int*&gt;;
 | link:#R8[`R8`]
 | 
 |===
-
-[#S0-07e-S1-S2-06]
-== link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;7, T*&gt;
-
-=== Synopsis
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct link:#S0-0cf-S1-S2[S2]&lt;7, T*&gt;;
-----
 
 [#S0-07e-S1-f1]
 == link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::f1

@@ -34,6 +34,8 @@ struct OverloadsInfo final
     /// Info about the return type of this function.
     Polymorphic<TypeInfo> ReturnType = std::nullopt;
 
+    StorageClassKind StorageClass = StorageClassKind::None;
+
     //--------------------------------------------
 
     explicit OverloadsInfo(SymbolID const& ID) noexcept

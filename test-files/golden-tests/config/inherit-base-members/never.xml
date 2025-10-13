@@ -132,7 +132,7 @@
         </returns>
       </doc>
     </function>
-    <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
+    <function name="do_base_base_inherited" access="protected" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
       <file short-path="never.cpp" source-path="never.cpp" line="26"/>
       <return>
         <type class="lvalue-reference">
@@ -178,7 +178,7 @@
         </returns>
       </doc>
     </function>
-    <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
+    <function name="do_derived_shadowed" access="protected" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
       <file short-path="never.cpp" source-path="never.cpp" line="59"/>
       <return>
         <type class="lvalue-reference">
@@ -224,7 +224,7 @@
         </returns>
       </doc>
     </function>
-    <function name="do_derived_shadowed" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
+    <function name="do_derived_shadowed" access="protected" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
       <file short-path="never.cpp" source-path="never.cpp" line="85"/>
       <return>
         <type class="lvalue-reference">
@@ -270,7 +270,7 @@
         </returns>
       </doc>
     </function>
-    <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
+    <function name="do_derived_shadowed" access="protected" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
       <file short-path="never.cpp" source-path="never.cpp" line="72"/>
       <return>
         <type class="lvalue-reference">

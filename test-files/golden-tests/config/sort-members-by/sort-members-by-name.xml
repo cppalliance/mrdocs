@@ -4,14 +4,6 @@
 <namespace id="//////////////////////////8=">
   <struct name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
     <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="1" class="def"/>
-    <function class="constructor" name="Z" id="WltomC+2IcmzMN0COGL0OWWmbZk=">
-      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="11"/>
-      <doc>
-        <brief>
-          <text>Default constructor</text>
-        </brief>
-      </doc>
-    </function>
     <function class="constructor" name="Z" id="aQWtFVa4Xa+eceLXiLW74q44JRk=">
       <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="10"/>
       <param name="value">
@@ -25,6 +17,14 @@
         <param name="value">
           <text>The value to construct from</text>
         </param>
+      </doc>
+    </function>
+    <function class="constructor" name="Z" id="WltomC+2IcmzMN0COGL0OWWmbZk=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="11"/>
+      <doc>
+        <brief>
+          <text>Default constructor</text>
+        </brief>
       </doc>
     </function>
     <function class="destructor" name="~Z" id="HMG56OCQ5OpB2E9hu4bG3/hoOho=">

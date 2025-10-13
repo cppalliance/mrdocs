@@ -8,29 +8,25 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_METADATA_FINALIZER_BASEMEMBERSFINALIZER_HPP
-#define MRDOCS_LIB_METADATA_FINALIZER_BASEMEMBERSFINALIZER_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZER_RECORDSFINALIZER_HPP
+#define MRDOCS_LIB_METADATA_FINALIZER_RECORDSFINALIZER_HPP
 
 #include "lib/Metadata/InfoSet.hpp"
 #include "lib/CorpusImpl.hpp"
 
 namespace clang::mrdocs {
 
-/** Finalizes a set of Info.
+/** Finalizes the records in corpus.
 
-    This removes any references to SymbolIDs
-    which do not exist.
-
-    References which should always be valid
-    are not checked.
+    Generates record interfaces.
 */
-class BaseMembersFinalizer
+class RecordsFinalizer
 {
     CorpusImpl& corpus_;
     std::unordered_set<SymbolID> finalized_;
 
     void
-    inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind A);
+    generateRecordInterface(RecordInfo& I);
 
     void
     finalizeRecords(std::vector<SymbolID> const& ids);
@@ -39,7 +35,7 @@ class BaseMembersFinalizer
     finalizeNamespaces(std::vector<SymbolID> const& ids);
 
 public:
-    BaseMembersFinalizer(
+    RecordsFinalizer(
         CorpusImpl& corpus)
         : corpus_(corpus)
     {}

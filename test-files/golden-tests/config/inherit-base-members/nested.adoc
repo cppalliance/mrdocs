@@ -1,0 +1,289 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#X[`X`] 
+|===
+
+[#X]
+== X
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#X-base[`base`] 
+| A base class to test inheritance and shadowing
+| link:#X-derived[`derived`] 
+| A class that derives from base and excluded&lowbar;base
+|===
+
+[#X-base]
+== link:#X[X]::base
+
+A base class to test inheritance and shadowing
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class base;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#X-base-derived_shadowed[`derived&lowbar;shadowed`] 
+| This function should be shadowed by derived classes&period;
+| link:#X-base-base_inherited[`base&lowbar;inherited`] 
+| This function should be inherited by derived classes&period;
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#X-base-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
+| This function should be shadowed by derived classes&period;
+| link:#X-base-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
+| This function should be inherited by derived classes&period;
+|===
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#X-derived[`derived`]
+| A class that derives from base and excluded&lowbar;base
+|===
+
+[#X-base-derived_shadowed]
+== link:#X[X]::link:#X-base[base]::derived&lowbar;shadowed
+
+This function should be shadowed by derived classes&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-base[base]&
+derived&lowbar;shadowed();
+----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
+
+[#X-base-base_inherited]
+== link:#X[X]::link:#X-base[base]::base&lowbar;inherited
+
+This function should be inherited by derived classes&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-base[base]&
+base&lowbar;inherited();
+----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
+
+[#X-base-do_derived_shadowed]
+== link:#X[X]::link:#X-base[base]::do&lowbar;derived&lowbar;shadowed
+
+This function should be shadowed by derived classes&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-base[base]&
+do&lowbar;derived&lowbar;shadowed();
+----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
+
+[#X-base-do_base_inherited]
+== link:#X[X]::link:#X-base[base]::do&lowbar;base&lowbar;inherited
+
+This function should be inherited by derived classes&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-base[base]&
+do&lowbar;base&lowbar;inherited();
+----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
+
+[#X-derived]
+== link:#X[X]::derived
+
+A class that derives from base and excluded&lowbar;base
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class derived
+    : public link:#X-base[base]
+----
+
+=== Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#X-base[base]`
+| A base class to test inheritance and shadowing
+|===
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#X-derived-derived_shadowed[`derived&lowbar;shadowed`] 
+| This function should shadow the base class function&period;
+| link:#X-derived-base_inherited[`base&lowbar;inherited`] 
+| This function should be inherited by derived classes&period;
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#X-derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
+| This function should shadow the base class function&period;
+| link:#X-derived-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
+| This function should be inherited by derived classes&period;
+|===
+
+[#X-derived-derived_shadowed]
+== link:#X[X]::link:#X-derived[derived]::derived&lowbar;shadowed
+
+This function should shadow the base class function&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-derived[derived]&
+derived&lowbar;shadowed();
+----
+
+=== Return Value
+
+A class that derives from base and excluded&lowbar;base
+
+[#X-derived-base_inherited]
+== link:#X[X]::link:#X-derived[derived]::base&lowbar;inherited
+
+This function should be inherited by derived classes&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-base[base]&
+base&lowbar;inherited();
+----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
+
+[#X-derived-do_derived_shadowed]
+== link:#X[X]::link:#X-derived[derived]::do&lowbar;derived&lowbar;shadowed
+
+This function should shadow the base class function&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-derived[derived]&
+do&lowbar;derived&lowbar;shadowed();
+----
+
+=== Return Value
+
+A class that derives from base and excluded&lowbar;base
+
+[#X-derived-do_base_inherited]
+== link:#X[X]::link:#X-derived[derived]::do&lowbar;base&lowbar;inherited
+
+This function should be inherited by derived classes&period;
+
+=== Synopsis
+
+Declared in `&lt;nested&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-base[base]&
+do&lowbar;base&lowbar;inherited();
+----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

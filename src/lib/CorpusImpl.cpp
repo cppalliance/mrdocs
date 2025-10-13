@@ -20,6 +20,7 @@
 #include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
 #include "lib/Metadata/Finalizers/NamespacesFinalizer.hpp"
 #include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
+#include "lib/Metadata/Finalizers/RecordsFinalizer.hpp"
 #include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Support/Chrono.hpp"
 #include "lib/Support/Report.hpp"
@@ -1022,6 +1023,13 @@ CorpusImpl::finalize()
     {
         report::debug("  - Finalizing overloads");
         OverloadsFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    // Finalizing record interfaces
+    {
+        report::debug("  - Finalizing records");
+        RecordsFinalizer finalizer(*this);
         finalizer.build();
     }
 

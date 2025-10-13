@@ -427,17 +427,6 @@ Documentation for the reference function
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
-Reference function
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#N-A-g-0a[g](link:#N-A-B[B] a);
-----
-
-[.small]#link:#N-A-g-0a[_» more&period;&period;&period;_]#
-
 Fail
 
 
@@ -449,34 +438,16 @@ link:#N-A-g-06c[g](int a);
 
 [.small]#link:#N-A-g-06c[_» more&period;&period;&period;_]#
 
-=== Parameters
-
-[cols=2]
-|===
-| Name
-| Description
-| *a*
-| Qualified param
-|===
-
-[#N-A-g-0a]
-== link:#N[N]::link:#N-A[A]::g
-
 Reference function
 
-=== Synopsis
-
-Declared in `&lt;qualified&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g(link:#N-A-B[B] a);
+link:#N-A-g-0a[g](link:#N-A-B[B] a);
 ----
 
-=== Description
-
-Documentation for the reference function
+[.small]#link:#N-A-g-0a[_» more&period;&period;&period;_]#
 
 === Parameters
 
@@ -485,7 +456,7 @@ Documentation for the reference function
 | Name
 | Description
 | *a*
-| Qualified param
+| Fundamental type parameter
 |===
 
 [#N-A-g-06c]
@@ -517,49 +488,8 @@ Function with same number of parameters but different types&period; This should 
 | Fundamental type parameter
 |===
 
-[#N-A-h-05]
-== link:#N[N]::link:#N-A[A]::h
-
-`h` overloads
-
-=== Synopses
-
-Declared in `&lt;qualified&period;cpp&gt;`
-
-Reference function
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#N-A-h-0f[h](link:#N-A-B[N::A::B] a);
-----
-
-[.small]#link:#N-A-h-0f[_» more&period;&period;&period;_]#
-
-Fail
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#N-A-h-06[h](int a);
-----
-
-[.small]#link:#N-A-h-06[_» more&period;&period;&period;_]#
-
-=== Parameters
-
-[cols=2]
-|===
-| Name
-| Description
-| *a*
-| Qualified param
-|===
-
-[#N-A-h-0f]
-== link:#N[N]::link:#N-A[A]::h
+[#N-A-g-0a]
+== link:#N[N]::link:#N-A[A]::g
 
 Reference function
 
@@ -570,7 +500,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h(link:#N-A-B[N::A::B] a);
+g(link:#N-A-B[B] a);
 ----
 
 === Description
@@ -585,6 +515,47 @@ Documentation for the reference function
 | Description
 | *a*
 | Qualified param
+|===
+
+[#N-A-h-05]
+== link:#N[N]::link:#N-A[A]::h
+
+`h` overloads
+
+=== Synopses
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+Fail
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#N-A-h-06[h](int a);
+----
+
+[.small]#link:#N-A-h-06[_» more&period;&period;&period;_]#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#N-A-h-0f[h](link:#N-A-B[N::A::B] a);
+----
+
+[.small]#link:#N-A-h-0f[_» more&period;&period;&period;_]#
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *a*
+| Fundamental type parameter
 |===
 
 [#N-A-h-06]
@@ -614,6 +585,35 @@ Function with same number of parameters but different types&period; This should 
 | Description
 | *a*
 | Fundamental type parameter
+|===
+
+[#N-A-h-0f]
+== link:#N[N]::link:#N-A[A]::h
+
+Reference function
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h(link:#N-A-B[N::A::B] a);
+----
+
+=== Description
+
+Documentation for the reference function
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *a*
+| Qualified param
 |===
 
 [#param_t]

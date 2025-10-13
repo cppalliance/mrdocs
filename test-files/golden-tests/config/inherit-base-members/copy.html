@@ -74,8 +74,7 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 <td><a href="#base-base_base_inherited"><code>base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
 <td><a href="#base-base_inherited"><code>base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
 <td><a href="#base-base_shadowed"><code>base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
-<td><a href="#base-derived_shadowed"><code>derived_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr><tr>
-<td><a href="#base-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr>
+<td><a href="#base-derived_shadowed"><code>derived_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr>
 </tbody>
 </table>
 
@@ -90,6 +89,7 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
+<td><a href="#base-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
 <td><a href="#base-do_base_inherited"><code>do_base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
 <td><a href="#base-do_base_shadowed"><code>do_base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
 <td><a href="#base-do_derived_shadowed"><code>do_derived_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr>
@@ -333,11 +333,24 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#base_base-base_base_inherited"><code>base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
-<td><a href="#base_base-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr>
+<td><a href="#base_base-base_base_inherited"><code>base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr>
 </tbody>
 </table>
 
+
+<h2>Protected Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#base_base-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr>
+</tbody>
+</table>
 
 
 <div>
@@ -453,8 +466,6 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 <td><a href="#derived-base_inherited"><code>base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
 <td><a href="#derived-base_shadowed"><code>base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
 <td><a href="#derived-derived_shadowed"><code>derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
-<td><a href="#derived-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
-<td><a href="#derived-do_derived_shadowed-0a"><code>do_derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
 <td><a href="#derived-excluded_inherited"><code>excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr>
 </tbody>
 </table>
@@ -470,9 +481,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
+<td><a href="#derived-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
 <td><a href="#derived-do_base_inherited"><code>do_base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
 <td><a href="#derived-do_base_shadowed"><code>do_base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
-<td><a href="#derived-do_derived_shadowed-0d"><code>do_derived_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr><tr>
+<td><a href="#derived-do_derived_shadowed"><code>do_derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
 <td><a href="#derived-do_excluded_inherited"><code>do_excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
 <td><a href="#derived-do_shadowed"><code>do_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr>
 </tbody>
@@ -578,6 +590,26 @@ derived_shadowed();
 </div>
 <div>
 <div>
+<h2 id="derived-excluded_inherited"><a href="#derived-excluded_inherited">derived::excluded_inherited</a></h2>
+<div>
+<span>This function should be inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">excluded_base&
+excluded_inherited();
+
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
 <h2 id="derived-do_base_base_inherited"><a href="#derived-do_base_base_inherited">derived::do_base_base_inherited</a></h2>
 <div>
 <span>This function should be indirectly inherited by derived classes.</span>
@@ -598,50 +630,6 @@ do_base_base_inherited();
 <div>
 <h3>Return Value</h3>
 <span>A second-order base class to test indirect inheritance</span>
-</div>
-</div>
-<div>
-<div>
-<h2 id="derived-do_derived_shadowed-0a"><a href="#derived-do_derived_shadowed-0a">derived::do_derived_shadowed</a></h2>
-<div>
-<span>This function should shadow the base class function.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;copy.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#derived">derived</a>&
-do_derived_shadowed();
-
-</code>
-</pre>
-</div>
-<div>
-<h3>Return Value</h3>
-<span>A class that derives from base and excluded_base</span>
-</div>
-</div>
-<div>
-<div>
-<h2 id="derived-excluded_inherited"><a href="#derived-excluded_inherited">derived::excluded_inherited</a></h2>
-<div>
-<span>This function should be inherited by derived classes.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;copy.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">excluded_base&
-excluded_inherited();
-
-</code>
-</pre>
 </div>
 </div>
 <div>
@@ -694,9 +682,9 @@ do_base_shadowed();
 </div>
 <div>
 <div>
-<h2 id="derived-do_derived_shadowed-0d"><a href="#derived-do_derived_shadowed-0d">derived::do_derived_shadowed</a></h2>
+<h2 id="derived-do_derived_shadowed"><a href="#derived-do_derived_shadowed">derived::do_derived_shadowed</a></h2>
 <div>
-<span>This function should be shadowed by derived classes.</span>
+<span>This function should shadow the base class function.</span>
 
 </div>
 </div>
@@ -705,7 +693,7 @@ do_base_shadowed();
 <div>
 Declared in <code>&lt;copy.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp"><a href="#base">base</a>&
+<code class="source-code cpp"><a href="#derived">derived</a>&
 do_derived_shadowed();
 
 </code>
@@ -713,7 +701,7 @@ do_derived_shadowed();
 </div>
 <div>
 <h3>Return Value</h3>
-<span>A base class to test inheritance and shadowing</span>
+<span>A class that derives from base and excluded_base</span>
 </div>
 </div>
 <div>
@@ -786,13 +774,107 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
+<td><a href="#private_derived-base_base_inherited"><code>base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
+<td><a href="#private_derived-base_inherited"><code>base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
+<td><a href="#private_derived-base_shadowed"><code>base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
 <td><a href="#private_derived-derived_shadowed"><code>derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
-<td><a href="#private_derived-do_derived_shadowed"><code>do_derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr>
+<td><a href="#private_derived-excluded_inherited"><code>excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr>
 </tbody>
 </table>
 
 
+<h2>Protected Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#private_derived-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
+<td><a href="#private_derived-do_base_inherited"><code>do_base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
+<td><a href="#private_derived-do_base_shadowed"><code>do_base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
+<td><a href="#private_derived-do_derived_shadowed"><code>do_derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
+<td><a href="#private_derived-do_excluded_inherited"><code>do_excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
+<td><a href="#private_derived-do_shadowed"><code>do_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr>
+</tbody>
+</table>
 
+
+</div>
+<div>
+<div>
+<h2 id="private_derived-base_base_inherited"><a href="#private_derived-base_base_inherited">private_derived::base_base_inherited</a></h2>
+<div>
+<span>This function should be indirectly inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#base_base">base_base</a>&
+base_base_inherited();
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-base_inherited"><a href="#private_derived-base_inherited">private_derived::base_inherited</a></h2>
+<div>
+<span>This function should be inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+base_inherited();
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-base_shadowed"><a href="#private_derived-base_shadowed">private_derived::base_shadowed</a></h2>
+<div>
+<span>This function should shadow the excluded_base function.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+base_shadowed();
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -820,6 +902,98 @@ derived_shadowed();
 </div>
 <div>
 <div>
+<h2 id="private_derived-excluded_inherited"><a href="#private_derived-excluded_inherited">private_derived::excluded_inherited</a></h2>
+<div>
+<span>This function should be inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">excluded_base&
+excluded_inherited();
+
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-do_base_base_inherited"><a href="#private_derived-do_base_base_inherited">private_derived::do_base_base_inherited</a></h2>
+<div>
+<span>This function should be indirectly inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#base_base">base_base</a>&
+do_base_base_inherited();
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-do_base_inherited"><a href="#private_derived-do_base_inherited">private_derived::do_base_inherited</a></h2>
+<div>
+<span>This function should be inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+do_base_inherited();
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-do_base_shadowed"><a href="#private_derived-do_base_shadowed">private_derived::do_base_shadowed</a></h2>
+<div>
+<span>This function should shadow the excluded_base function.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+do_base_shadowed();
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
+</div>
+<div>
+<div>
 <h2 id="private_derived-do_derived_shadowed"><a href="#private_derived-do_derived_shadowed">private_derived::do_derived_shadowed</a></h2>
 <div>
 <span>This function should shadow the base class function.</span>
@@ -840,6 +1014,46 @@ do_derived_shadowed();
 <div>
 <h3>Return Value</h3>
 <span>A class that uses private inheritance only</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-do_excluded_inherited"><a href="#private_derived-do_excluded_inherited">private_derived::do_excluded_inherited</a></h2>
+<div>
+<span>This function should be inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">excluded_base&
+do_excluded_inherited();
+
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="private_derived-do_shadowed"><a href="#private_derived-do_shadowed">private_derived::do_shadowed</a></h2>
+<div>
+<span>This function should be shadowed by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">excluded_base&
+do_shadowed();
+
+</code>
+</pre>
 </div>
 </div>
 <div>
@@ -887,8 +1101,11 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#protected_derived-derived_shadowed-0a"><code>derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
-<td><a href="#protected_derived-do_derived_shadowed-0e"><code>do_derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr>
+<td><a href="#protected_derived-base_base_inherited"><code>base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
+<td><a href="#protected_derived-base_inherited"><code>base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
+<td><a href="#protected_derived-base_shadowed"><code>base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
+<td><a href="#protected_derived-derived_shadowed"><code>derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
+<td><a href="#protected_derived-excluded_inherited"><code>excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr>
 </tbody>
 </table>
 
@@ -903,69 +1120,16 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#protected_derived-base_base_inherited"><code>base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
-<td><a href="#protected_derived-base_inherited"><code>base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
-<td><a href="#protected_derived-base_shadowed"><code>base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
-<td><a href="#protected_derived-derived_shadowed-0f"><code>derived_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr><tr>
 <td><a href="#protected_derived-do_base_base_inherited"><code>do_base_base_inherited</code></a> </td><td><span>This function should be indirectly inherited by derived classes.</span></td></tr><tr>
 <td><a href="#protected_derived-do_base_inherited"><code>do_base_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
 <td><a href="#protected_derived-do_base_shadowed"><code>do_base_shadowed</code></a> </td><td><span>This function should shadow the excluded_base function.</span></td></tr><tr>
-<td><a href="#protected_derived-do_derived_shadowed-06"><code>do_derived_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr><tr>
+<td><a href="#protected_derived-do_derived_shadowed"><code>do_derived_shadowed</code></a> </td><td><span>This function should shadow the base class function.</span></td></tr><tr>
 <td><a href="#protected_derived-do_excluded_inherited"><code>do_excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr><tr>
-<td><a href="#protected_derived-do_shadowed"><code>do_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr><tr>
-<td><a href="#protected_derived-excluded_inherited"><code>excluded_inherited</code></a> </td><td><span>This function should be inherited by derived classes.</span></td></tr>
+<td><a href="#protected_derived-do_shadowed"><code>do_shadowed</code></a> </td><td><span>This function should be shadowed by derived classes.</span></td></tr>
 </tbody>
 </table>
 
 
-</div>
-<div>
-<div>
-<h2 id="protected_derived-derived_shadowed-0a"><a href="#protected_derived-derived_shadowed-0a">protected_derived::derived_shadowed</a></h2>
-<div>
-<span>This function should shadow the base class function.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;copy.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
-derived_shadowed();
-
-</code>
-</pre>
-</div>
-<div>
-<h3>Return Value</h3>
-<span>A class that should inherit functions as protected.</span>
-</div>
-</div>
-<div>
-<div>
-<h2 id="protected_derived-do_derived_shadowed-0e"><a href="#protected_derived-do_derived_shadowed-0e">protected_derived::do_derived_shadowed</a></h2>
-<div>
-<span>This function should shadow the base class function.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;copy.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
-do_derived_shadowed();
-
-</code>
-</pre>
-</div>
-<div>
-<h3>Return Value</h3>
-<span>A class that should inherit functions as protected.</span>
-</div>
 </div>
 <div>
 <div>
@@ -1041,9 +1205,9 @@ base_shadowed();
 </div>
 <div>
 <div>
-<h2 id="protected_derived-derived_shadowed-0f"><a href="#protected_derived-derived_shadowed-0f">protected_derived::derived_shadowed</a></h2>
+<h2 id="protected_derived-derived_shadowed"><a href="#protected_derived-derived_shadowed">protected_derived::derived_shadowed</a></h2>
 <div>
-<span>This function should be shadowed by derived classes.</span>
+<span>This function should shadow the base class function.</span>
 
 </div>
 </div>
@@ -1052,7 +1216,7 @@ base_shadowed();
 <div>
 Declared in <code>&lt;copy.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp"><a href="#base">base</a>&
+<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
 derived_shadowed();
 
 </code>
@@ -1060,7 +1224,27 @@ derived_shadowed();
 </div>
 <div>
 <h3>Return Value</h3>
-<span>A base class to test inheritance and shadowing</span>
+<span>A class that should inherit functions as protected.</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="protected_derived-excluded_inherited"><a href="#protected_derived-excluded_inherited">protected_derived::excluded_inherited</a></h2>
+<div>
+<span>This function should be inherited by derived classes.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copy.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">excluded_base&
+excluded_inherited();
+
+</code>
+</pre>
 </div>
 </div>
 <div>
@@ -1137,9 +1321,9 @@ do_base_shadowed();
 </div>
 <div>
 <div>
-<h2 id="protected_derived-do_derived_shadowed-06"><a href="#protected_derived-do_derived_shadowed-06">protected_derived::do_derived_shadowed</a></h2>
+<h2 id="protected_derived-do_derived_shadowed"><a href="#protected_derived-do_derived_shadowed">protected_derived::do_derived_shadowed</a></h2>
 <div>
-<span>This function should be shadowed by derived classes.</span>
+<span>This function should shadow the base class function.</span>
 
 </div>
 </div>
@@ -1148,7 +1332,7 @@ do_base_shadowed();
 <div>
 Declared in <code>&lt;copy.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp"><a href="#base">base</a>&
+<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
 do_derived_shadowed();
 
 </code>
@@ -1156,7 +1340,7 @@ do_derived_shadowed();
 </div>
 <div>
 <h3>Return Value</h3>
-<span>A base class to test inheritance and shadowing</span>
+<span>A class that should inherit functions as protected.</span>
 </div>
 </div>
 <div>
@@ -1194,26 +1378,6 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">excluded_base&
 do_shadowed();
-
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="protected_derived-excluded_inherited"><a href="#protected_derived-excluded_inherited">protected_derived::excluded_inherited</a></h2>
-<div>
-<span>This function should be inherited by derived classes.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;copy.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">excluded_base&
-excluded_inherited();
 
 </code>
 </pre>

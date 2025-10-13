@@ -32,10 +32,7 @@ class SortMembersFinalizer
     sortMembers(std::vector<SymbolID>& ids);
 
     void
-    sortMembers(RecordInterface& I);
-
-    void
-    sortMembers(RecordTranche& I);
+    sortMembers(std::vector<MemberInfo>& members);
 
     void
     sortMembers(NamespaceTranche& I);

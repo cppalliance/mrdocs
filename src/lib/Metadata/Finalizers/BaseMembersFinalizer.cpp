@@ -15,70 +15,6 @@
 
 namespace clang::mrdocs {
 
-void
-BaseMembersFinalizer::
-inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind const A)
-{
-    inheritBaseMembers(I.id, I.Interface, B.Interface, A);
-}
-
-void
-BaseMembersFinalizer::
-inheritBaseMembers(
-    SymbolID const& derivedId,
-    RecordInterface& derived,
-    RecordInterface const& base,
-    AccessKind const A)
-{
-    if (A == AccessKind::Public)
-    {
-        // When a class uses public member access specifier to derive from a
-        // base, all public members of the base class are accessible as public
-        // members of the derived class and all protected members of the base
-        // class are accessible as protected members of the derived class.
-        // Private members of the base are never accessible unless friended.
-        inheritBaseMembers(derivedId, derived.Public, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
-    }
-    else if (A == AccessKind::Protected)
-    {
-        // When a class uses protected member access specifier to derive from a
-        // base, all public and protected members of the base class are
-        // accessible as protected members of the derived class (private members
-        // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Protected, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
-    }
-    else if (A == AccessKind::Private && corpus_.config->extractPrivate)
-    {
-        // When a class uses private member access specifier to derive from a
-        // base, all public and protected members of the base class are
-        // accessible as private members of the derived class (private members
-        // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Private, base.Public);
-        inheritBaseMembers(derivedId, derived.Private, base.Protected);
-    }
-}
-
-void
-BaseMembersFinalizer::
-inheritBaseMembers(
-    SymbolID const& derivedId,
-    RecordTranche& derived,
-    RecordTranche const& base)
-{
-    inheritBaseMembers(derivedId, derived.NamespaceAliases, base.NamespaceAliases);
-    inheritBaseMembers(derivedId, derived.Typedefs, base.Typedefs);
-    inheritBaseMembers(derivedId, derived.Records, base.Records);
-    inheritBaseMembers(derivedId, derived.Enums, base.Enums);
-    inheritBaseMembers(derivedId, derived.Functions, base.Functions);
-    inheritBaseMembers(derivedId, derived.StaticFunctions, base.StaticFunctions);
-    inheritBaseMembers(derivedId, derived.Variables, base.Variables);
-    inheritBaseMembers(derivedId, derived.StaticVariables, base.StaticVariables);
-    inheritBaseMembers(derivedId, derived.Concepts, base.Concepts);
-    inheritBaseMembers(derivedId, derived.Guides, base.Guides);
-}
-
 namespace {
 bool
 shouldCopy(Config const& config, Info const& M)
@@ -89,19 +25,54 @@ shouldCopy(Config const& config, Info const& M)
     }
     return config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyAll;
 }
+
+AccessKind
+effectiveAccess(AccessKind const declaredAccess, AccessKind const A)
+{
+    if (A == AccessKind::Public)
+    {
+        // When a class uses public member access specifier to derive from a
+        // base, all public members of the base class are accessible as public
+        // members of the derived class and all protected members of the base
+        // class are accessible as protected members of the derived class.
+        // Private members of the base are never accessible unless friended.
+        return declaredAccess;
+    }
+    else if (A == AccessKind::Protected)
+    {
+        // When a class uses protected member access specifier to derive from a
+        // base, all public and protected members of the base class are
+        // accessible as protected members of the derived class (private members
+        // of the base are never accessible unless friended).
+        return AccessKind::Protected;
+    }
+    else if (A == AccessKind::Private)
+    {
+        // When a class uses private member access specifier to derive from a
+        // base, all public and protected members of the base class are
+        // accessible as private members of the derived class (private members
+        // of the base are never accessible unless friended).
+        return AccessKind::Private;
+    }
+
+    return AccessKind::None;
+}
 }
 
-void
+void 
 BaseMembersFinalizer::
-inheritBaseMembers(
-    SymbolID const& derivedId,
-    std::vector<SymbolID>& derived,
-    std::vector<SymbolID> const& base)
+inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind const A)
 {
-    for (SymbolID const& otherID: base)
+    SymbolID const& derivedId = I.id;
+    std::vector<MemberInfo>& derived = I.Members;
+    std::vector<MemberInfo> const& base = B.Members;
+
+    for (auto const& other: base)
     {
+        SymbolID const& otherID = other.id;
+
         // Find the info from the base class
-        MRDOCS_CHECK_OR_CONTINUE(!contains(derived, otherID));
+        MRDOCS_CHECK_OR_CONTINUE(!std::ranges::contains(derived, otherID, &MemberInfo::id));
         Info* otherInfoPtr = corpus_.find(otherID);
         MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
         Info& otherInfo = *otherInfoPtr;
@@ -134,7 +105,7 @@ inheritBaseMembers(
                 // For other kinds of members, it's a shadow if the names
                 // are the same
                 return info.Name == otherInfo.Name;
-            });
+            }, &MemberInfo::id);
         MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
 
         // Not a shadow, so inherit the base member
@@ -148,7 +119,7 @@ inheritBaseMembers(
             // extraction mode to be regular, but that is controversial.
             if (otherInfo.Extraction != ExtractionMode::Dependency)
             {
-                derived.push_back(otherID);
+                derived.emplace_back(effectiveAccess(other.EffectiveAccess, A), other.Kind, otherID);
             }
         }
         else
@@ -163,7 +134,7 @@ inheritBaseMembers(
             otherCopy->id = SymbolID::createFromString(
                 std::format("{}-{}", toBase16Str(otherCopy->Parent),
                             toBase16Str(otherInfo.id)));
-            derived.push_back(otherCopy->id);
+            derived.emplace_back(effectiveAccess(other.EffectiveAccess, A), other.Kind, otherCopy->id);
             // Get the extraction mode from the derived class
             if (otherCopy->Extraction == ExtractionMode::Dependency)
             {
@@ -250,10 +221,22 @@ operator()(RecordInfo& I)
         operator()(*baseRecord);
         inheritBaseMembers(I, *baseRecord, baseI.Access);
     }
-    finalizeRecords(I.Interface.Public.Records);
-    finalizeRecords(I.Interface.Protected.Records);
-    finalizeRecords(I.Interface.Private.Records);
     finalized_.emplace(I.id);
+
+    auto RecordMembers =
+        I.Members | 
+        std::views::filter([this](MemberInfo const& member) {
+            return member.Kind == InfoKind::Record;
+        }) | 
+        std::ranges::views::transform(&MemberInfo::id);
+    for (SymbolID const& memberId: RecordMembers)
+    {
+        Info* infoPtr = corpus_.find(memberId);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* record = infoPtr->asRecordPtr();
+        MRDOCS_CHECK_OR_CONTINUE(record);
+        operator()(*record);
+    }
 }
 
 } // clang::mrdocs

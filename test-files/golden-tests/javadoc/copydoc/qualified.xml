@@ -144,6 +144,23 @@
           </param>
         </doc>
       </function>
+      <function name="g" id="bDQUNJ3SHpCjwF8zCqo7Jw8Cjic=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="16"/>
+        <param name="a">
+          <type name="int"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Fail</text>
+          </brief>
+          <para>
+            <text>Function with same number of parameters but different types. This should fail.</text>
+          </para>
+          <param name="a">
+            <text>Fundamental type parameter</text>
+          </param>
+        </doc>
+      </function>
       <function name="g" id="pkByPldRuMDs8h9fkQnHTrf/rxM=">
         <file short-path="qualified.cpp" source-path="qualified.cpp" line="24"/>
         <param name="a">
@@ -161,8 +178,8 @@
           </param>
         </doc>
       </function>
-      <function name="g" id="bDQUNJ3SHpCjwF8zCqo7Jw8Cjic=">
-        <file short-path="qualified.cpp" source-path="qualified.cpp" line="16"/>
+      <function name="h" id="aEsACCmKRAV5MPYavFglHXgugn0=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="45"/>
         <param name="a">
           <type name="int"/>
         </param>
@@ -192,23 +209,6 @@
           </para>
           <param name="a">
             <text>Qualified param</text>
-          </param>
-        </doc>
-      </function>
-      <function name="h" id="aEsACCmKRAV5MPYavFglHXgugn0=">
-        <file short-path="qualified.cpp" source-path="qualified.cpp" line="45"/>
-        <param name="a">
-          <type name="int"/>
-        </param>
-        <doc>
-          <brief>
-            <text>Fail</text>
-          </brief>
-          <para>
-            <text>Function with same number of parameters but different types. This should fail.</text>
-          </para>
-          <param name="a">
-            <text>Fundamental type parameter</text>
           </param>
         </doc>
       </function>

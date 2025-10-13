@@ -33,7 +33,13 @@ class OverloadsFinalizer
     foldOverloads(
         SymbolID const& contextId,
         std::vector<SymbolID>& functionIds,
+        AccessKind access,
         bool isStatic);
+
+    void
+    foldOverloads(
+        SymbolID const& contextId,
+        std::vector<MemberInfo>& members);
 
 public:
     OverloadsFinalizer(CorpusImpl& corpus)
