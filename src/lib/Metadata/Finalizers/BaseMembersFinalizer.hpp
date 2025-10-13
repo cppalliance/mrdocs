@@ -38,18 +38,22 @@ class BaseMembersFinalizer
         RecordInterface& derived,
         RecordInterface const& base,
         AccessKind A);
-
+    
+    template <std::ranges::range Range>
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         RecordTranche& derived,
-        RecordTranche const& base);
+        RecordTranche const& base,
+        Range allMembers);
 
+    template <std::ranges::range Range>
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         std::vector<SymbolID>& derived,
-        std::vector<SymbolID> const& base);
+        std::vector<SymbolID> const& base,
+        Range allMembers);
 
     void
     finalizeRecords(std::vector<SymbolID> const& ids);

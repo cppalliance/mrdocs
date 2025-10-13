@@ -335,22 +335,6 @@
         </returns>
       </doc>
     </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="copy-dependencies.cpp" source-path="copy-dependencies.cpp" line="42"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
     <function name="do_excluded_inherited" access="protected" id="oW3pQYXjjv2wrXIwIceF6Xd8nTA=">
       <file short-path="copy-dependencies.cpp" source-path="copy-dependencies.cpp" line="16"/>
       <return>
@@ -517,22 +501,6 @@
         </returns>
       </doc>
     </function>
-    <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
-      <file short-path="copy-dependencies.cpp" source-path="copy-dependencies.cpp" line="35"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
       <file short-path="copy-dependencies.cpp" source-path="copy-dependencies.cpp" line="26"/>
       <return>
@@ -575,22 +543,6 @@
       <doc>
         <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="copy-dependencies.cpp" source-path="copy-dependencies.cpp" line="42"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
         </brief>
         <returns>
           <text>A base class to test inheritance and shadowing</text>

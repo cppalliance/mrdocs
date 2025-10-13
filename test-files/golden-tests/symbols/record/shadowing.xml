@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="Base" id="ZIHuevKEF1ZlGviVwUZq1CEFBRc=">
+    <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="1" class="def"/>
+    <function name="bar" id="pQRlBH5oQiwNR869QNYMqXEi3w0=">
+      <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="3"/>
+    </function>
+    <function name="baz" id="+qF0/C5Lnfv5EgCTbQWJD3FtxYk=">
+      <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="4"/>
+    </function>
+    <function name="foo" id="pSUoXAwvwzBmhWkB1ABLnXwZdkY=">
+      <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="2"/>
+    </function>
+  </struct>
+  <struct name="Derived" id="ZRKuxRLqOi22ZbIzsfAOVW5SPzo=">
+    <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="7" class="def"/>
+    <base>
+      <type id="ZIHuevKEF1ZlGviVwUZq1CEFBRc=" name="Base"/>
+    </base>
+    <function name="foo" id="UA55xTh6TiWV0mtu0bxO7Tbf9oU=">
+      <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="8"/>
+    </function>
+    <function name="bar" access="protected" id="IO6406p3TUNgG0HetxgTH/AOGi8=">
+      <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="10"/>
+    </function>
+    <function name="baz" access="private" id="Zeyo9BlOMeaZp6DAqIMX7l35Oy4=">
+      <file short-path="shadowing.cpp" source-path="shadowing.cpp" line="12"/>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>
