@@ -686,6 +686,13 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
         if: ${{ runner.os == 'Windows' }}
 
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.10
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
       - name: Download MrDocs package
         uses: actions/download-artifact@v4
         with:

@@ -1,5 +1,4 @@
-#include <type_traits>
-#include <stdexcept>
+#include <std.hpp>
 
 /** Computes the square root of an integral value.
 

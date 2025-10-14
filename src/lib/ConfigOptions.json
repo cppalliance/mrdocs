@@ -493,7 +493,7 @@
         "brief": "Use the system C++ standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
         "type": "bool",
-        "default": false
+        "default": true
       },
       {
         "name": "stdlib-includes",
@@ -513,7 +513,7 @@
         "brief": "Use the system C standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
         "type": "bool",
-        "default": false
+        "default": true
       },
       {
         "name": "libc-includes",
