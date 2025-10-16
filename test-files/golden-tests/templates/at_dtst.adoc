@@ -1,0 +1,29 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+[#A]
+== A
+
+=== Synopsis
+
+Declared in `&lt;at&lowbar;dtst&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+using A = T::XX;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

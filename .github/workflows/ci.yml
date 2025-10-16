@@ -69,7 +69,7 @@ jobs:
             use-libcxx: {{#if (and (ieq compiler 'clang') (ge major 19)) }}true{{else}}false{{/if}}
             libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
             llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
-            llvm-hash: 3f797a8342c3dbe4a260b26f948d8776ff490431
+            llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
             llvm-build-preset-prefix: {{#if optimized-debug}}optimizeddebug{{else}}{{{lowercase build-type}}}{{/if}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
             llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}

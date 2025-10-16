@@ -60,11 +60,11 @@ Destructor
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-2destructor-07[&#126;A]()
+link:#A-2destructor-0b[&#126;A]()
 requires (sizeof(T) &lt;&equals; 4);
 ----
 
-[.small]#link:#A-2destructor-07[_» more&period;&period;&period;_]#
+[.small]#link:#A-2destructor-0b[_» more&period;&period;&period;_]#
 
 [#A-2destructor-0c]
 == link:#A[A]::&#126;A
@@ -81,7 +81,7 @@ Declared in `&lt;dtor&hyphen;overloads&period;cpp&gt;`
 requires (sizeof(T) &gt; 4);
 ----
 
-[#A-2destructor-07]
+[#A-2destructor-0b]
 == link:#A[A]::&#126;A
 
 Destructor

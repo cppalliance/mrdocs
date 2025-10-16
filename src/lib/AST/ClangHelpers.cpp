@@ -13,8 +13,10 @@
 #include <lib/AST/ClangHelpers.hpp>
 #include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <clang/Driver/Driver.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Sema/Template.h>
+#include <llvm/Option/ArgList.h>
 #include <ranges>
 
 namespace mrdocs {
@@ -451,6 +453,35 @@ bool
 isDocumented(clang::Decl const* D)
 {
     return getDocumentation(D) != nullptr;
+}
+
+bool
+isClangCL(clang::tooling::CompileCommand const& cc)
+{
+    auto const& cmdline = cc.CommandLine;
+
+    // ------------------------------------------------------
+    // Convert to InputArgList
+    // ------------------------------------------------------
+    // InputArgList is the input format for llvm functions
+    auto cmdLineCStrsView = std::views::transform(cmdline, &std::string::c_str);
+    std::vector const
+        cmdLineCStrs(cmdLineCStrsView.begin(), cmdLineCStrsView.end());
+    llvm::opt::InputArgList const
+        args(cmdLineCStrs.data(), cmdLineCStrs.data() + cmdLineCStrs.size());
+
+    // ------------------------------------------------------
+    // Get driver mode
+    // ------------------------------------------------------
+    // The driver mode distinguishes between clang/gcc and msvc
+    // command line option formats. The value is deduced from
+    // the `-drive-mode` option or from `progName`.
+    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
+    std::string const& progName = cmdline.front();
+    clang::StringRef const driver_mode = clang::driver::
+        getDriverMode(progName, cmdLineCStrs);
+
+    return clang::driver::IsClangCL(driver_mode);
 }
 
 } // mrdocs

@@ -11,7 +11,6 @@
 #ifndef MRDOCS_LIB_SINGLEFILEDB_HPP
 #define MRDOCS_LIB_SINGLEFILEDB_HPP
 
-#include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <string>
 #include <utility>
@@ -20,55 +19,39 @@
 
 namespace mrdocs {
 
-/** Compilation database for a single .cpp file.
-*/
+/** Compilation database for a single file.
+ */
 class SingleFileDB
     : public clang::tooling::CompilationDatabase
 {
-    std::vector<clang::tooling::CompileCommand> cc_;
+    clang::tooling::CompileCommand cc_;
 
 public:
-    explicit
-    SingleFileDB(
-        llvm::StringRef pathName)
-    {
-        auto fileName = files::getFileName(pathName);
-        auto parentDir = files::getParentDir(pathName);
-
-        std::vector<std::string> cmds;
-        cmds.emplace_back("clang");
-        cmds.emplace_back("-fsyntax-only");
-        cmds.emplace_back("-std=c++23");
-        cmds.emplace_back("-pedantic-errors");
-        cmds.emplace_back("-Werror");
-        cmds.emplace_back(fileName);
-        cc_.emplace_back(
-            parentDir,
-            fileName,
-            std::move(cmds),
-            parentDir);
-        cc_.back().Heuristic = "unit test";
-    }
+    explicit SingleFileDB(clang::tooling::CompileCommand cc)
+        : cc_(std::move(cc))
+    {}
 
     std::vector<clang::tooling::CompileCommand>
     getCompileCommands(
         llvm::StringRef FilePath) const override
     {
-        if (FilePath != cc_.front().Filename)
+        if (FilePath != cc_.Filename)
+        {
             return {};
-        return { cc_.front() };
+        }
+        return { cc_ };
     }
 
     std::vector<std::string>
     getAllFiles() const override
     {
-        return { cc_.front().Filename };
+        return { cc_.Filename };
     }
 
     std::vector<clang::tooling::CompileCommand>
     getAllCompileCommands() const override
     {
-        return { cc_.front() };
+        return { cc_ };
     }
 };
 
