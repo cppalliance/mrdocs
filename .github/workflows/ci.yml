@@ -687,7 +687,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.10
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.12
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
