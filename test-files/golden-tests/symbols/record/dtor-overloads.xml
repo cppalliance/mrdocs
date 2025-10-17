@@ -6,7 +6,7 @@
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file short-path="dtor-overloads.cpp" source-path="dtor-overloads.cpp" line="1" class="def"/>
-      <function class="destructor" name="~A" requires="(sizeof(T) &gt; 4)" id="xZWD5Nj90rTCyJDEhzD6gUhq3qE=">
+      <function class="destructor" name="~A" requires="(sizeof(T) &gt; 4)" id="x5T8zVxBVmg1ModTwgEAXcXWKDg=">
         <file short-path="dtor-overloads.cpp" source-path="dtor-overloads.cpp" line="4"/>
         <doc>
           <brief>
@@ -14,7 +14,7 @@
           </brief>
         </doc>
       </function>
-      <function class="destructor" name="~A" requires="(sizeof(T) &lt;= 4)" id="en1Y0aCxO+KbTjl16ffxjNYAjT8=">
+      <function class="destructor" name="~A" requires="(sizeof(T) &lt;= 4)" id="uiH+ZSS+bYC5efGHgbdzlzXaV/o=">
         <file short-path="dtor-overloads.cpp" source-path="dtor-overloads.cpp" line="5"/>
         <doc>
           <brief>

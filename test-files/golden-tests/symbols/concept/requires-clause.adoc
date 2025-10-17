@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| link:#A-08[`A`] 
-| link:#A-0b[`A`] 
+| link:#A-09[`A`] 
+| link:#A-01[`A`] 
 |===
 
 === Functions
@@ -19,10 +19,10 @@
 |===
 | Name
 | link:#f[`f`] 
-| link:#g-0f[`g`] 
+| link:#g-0f49[`g`] 
 |===
 
-[#A-08]
+[#A-09]
 == A
 
 === Synopsis
@@ -36,7 +36,7 @@ requires (sizeof(T) &equals;&equals; 2)
 struct A;
 ----
 
-[#A-0b]
+[#A-01]
 == A
 
 === Synopsis
@@ -65,7 +65,7 @@ f()
 requires (sizeof(U) &equals;&equals; 2);
 ----
 
-[#g-0f]
+[#g-0f49]
 == g
 
 === Synopses
@@ -78,10 +78,10 @@ Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 2)
 void
-link:#g-0e[g]();
+link:#g-0d[g]();
 ----
 
-[.small]#link:#g-0e[_» more&period;&period;&period;_]#
+[.small]#link:#g-0d[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -89,10 +89,10 @@ link:#g-0e[g]();
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 4)
 void
-link:#g-02[g]();
+link:#g-0f4d[g]();
 ----
 
-[.small]#link:#g-02[_» more&period;&period;&period;_]#
+[.small]#link:#g-0f4d[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -100,12 +100,12 @@ link:#g-02[g]();
 template&lt;typename U&gt;
 requires (sizeof(U) &equals;&equals; 2)
 void
-link:#g-08[g]();
+link:#g-0b[g]();
 ----
 
-[.small]#link:#g-08[_» more&period;&period;&period;_]#
+[.small]#link:#g-0b[_» more&period;&period;&period;_]#
 
-[#g-0e]
+[#g-0d]
 == g
 
 === Synopsis
@@ -120,7 +120,7 @@ void
 g();
 ----
 
-[#g-02]
+[#g-0f4d]
 == g
 
 === Synopsis
@@ -135,7 +135,7 @@ void
 g();
 ----
 
-[#g-08]
+[#g-0b]
 == g
 
 === Synopsis
