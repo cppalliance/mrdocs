@@ -103,15 +103,14 @@ body {
 
 .navbar-burger span {
   background-color: var(--navbar-font-color);
-  height: 1.5px;
+  height: 2px;
   width: 1rem;
-}
-
-.navbar-burger:not(.is-active) span {
+  transform-origin: center;
+  backface-visibility: hidden;
   transition:
-    transform ease-out 0.25s,
-    opacity 0s 0.25s,
-    margin-top ease-out 0.25s 0.25s;
+    transform 0.25s ease,
+    opacity 0.25s ease,
+    margin-top 0.25s ease;
 }
 
 .navbar-burger span + span {
@@ -119,11 +118,11 @@ body {
 }
 
 .navbar-burger.is-active span + span {
-  margin-top: -1.5px;
+  margin-top: -2px;
 }
 
 .navbar-burger.is-active span:nth-child(1) {
-  transform: rotate(45deg);
+  transform: rotate(45deg) translateY(0.5px);
 }
 
 .navbar-burger.is-active span:nth-child(2) {
@@ -131,7 +130,7 @@ body {
 }
 
 .navbar-burger.is-active span:nth-child(3) {
-  transform: rotate(-45deg);
+  transform: rotate(-45deg) translateY(-0.5px);
 }
 
 .navbar-item,
