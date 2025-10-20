@@ -2382,26 +2382,16 @@ getSFINAEControlParams(
     // template argument in a list of template arguments. It is used
     // to find the index of the controlling parameter in the list of
     // template arguments of the template declaration.
-    auto FindParam = [this](
-        llvm::ArrayRef<clang::TemplateArgument> Arguments,
-        clang::TemplateArgument const& Arg) -> std::size_t
-    {
-        if (Arg.getKind() != clang::TemplateArgument::Type)
-        {
-            return -1;
-        }
-        auto const It = std::ranges::find_if(
-            Arguments,
-            [&](clang::TemplateArgument const& Other)
-            {
-                if (Other.getKind() != clang::TemplateArgument::Type)
-                {
-                    return false;
-                }
-                return context_.hasSameType(Other.getAsType(), Arg.getAsType());
-            });
+    auto FindParam =
+        [this](
+            llvm::ArrayRef<clang::TemplateArgument> Arguments,
+            clang::TemplateArgument const& Arg) -> std::size_t {
+        auto const It = std::ranges::
+            find_if(Arguments, [&](clang::TemplateArgument const& Other) {
+            return context_.isSameTemplateArgument(Arg, Other);
+        });
         bool const found = It != Arguments.end();
-        return found ? It - Arguments.data() : static_cast<std::size_t>(-1);
+        return found ? It - Arguments.begin() : static_cast<std::size_t>(-1);
     };
 
     if(auto* ATD = dyn_cast<clang::TypeAliasTemplateDecl>(TD))
@@ -2441,9 +2431,40 @@ getSFINAEControlParams(
         // the primary template arguments
         clang::TemplateParameterList* primaryTemplParams = ATD->getTemplateParameters();
         MRDOCS_SYMBOL_TRACE(primaryTemplParams, context_);
+
+        llvm::SmallBitVector primaryControllingParams(
+            primaryTemplParams->size());
+        for (std::size_t i = 0; i < sfinaeControl->ControllingParams.size();
+             ++i)
+        {
+            if (sfinaeControl->ControllingParams[i])
+            {
+                // Find the index of the parameter that represents the SFINAE
+                // result in the underlying template arguments
+                auto resultType = tryGetTemplateArgument(
+                    sfinaeControl->Parameters,
+                    underlyingTemplateInfo->Arguments,
+                    i);
+                MRDOCS_CHECK_OR_CONTINUE(resultType);
+                MRDOCS_SYMBOL_TRACE(*resultType, context_);
+
+                // Find the index of the parameter that represents the param
+                // in the primary template arguments
+                auto ParamIdx = FindParam(
+                    ATD->getInjectedTemplateArgs(context_),
+                    *resultType);
+                if (ParamIdx == static_cast<std::size_t>(-1))
+                {
+                    continue;
+                }
+
+                primaryControllingParams.set(ParamIdx);
+            }
+        }
+
         return SFINAEControlParams(
             primaryTemplParams,
-            std::move(sfinaeControl->ControllingParams),
+            std::move(primaryControllingParams),
             ParamIdx);
     }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="C" class="constant" type="bool"/>
+    <tparam name="T" class="type"/>
+    <namespace-alias name="enable_if_t" id="G6KvcosPT2J4Mp72/Jj/t+hpu7w=">
+      <file short-path="alias.cpp" source-path="alias.cpp" line="4"/>
+      <type name="T"/>
+    </namespace-alias>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="C" class="constant" type="bool"/>
+    <namespace-alias name="if_enable_t" id="3mL2o5cGgdygMfQf6RJVMv4YrLg=">
+      <file short-path="alias.cpp" source-path="alias.cpp" line="12"/>
+      <type name="T"/>
+    </namespace-alias>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f1" requires="std::is_class_v&lt;T&gt;" id="wxSwXFUt9arsW/YBeWhVf1gINhw=">
+      <file short-path="alias.cpp" source-path="alias.cpp" line="7"/>
+      <return>
+        <type name="T"/>
+      </return>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f2" requires="std::is_class_v&lt;T&gt;" id="koj7SBKjX4SV47aOs0homZpcPWQ=">
+      <file short-path="alias.cpp" source-path="alias.cpp" line="15"/>
+      <return>
+        <type name="T"/>
+      </return>
+    </function>
+  </template>
+</namespace>
+</mrdocs>
