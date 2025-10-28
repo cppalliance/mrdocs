@@ -1,5 +1,5 @@
 // forgiven by "llvm/" prefix - includes an empty file instead
-#include <llvm/IR/ThisHeaderDoesNotExist.h>
+#include <llvm/ThisHeaderDoesNotExist.h>
 
 unknown_type
 f();
