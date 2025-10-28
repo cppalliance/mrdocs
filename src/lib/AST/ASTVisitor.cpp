@@ -1906,6 +1906,13 @@ addMember(OverloadsSymbol& I, Symbol const& Member) const
 
 void
 ASTVisitor::
+addMember(UsingSymbol& I, Symbol const& Member) const
+{
+    addMember(I.ShadowDeclarations, Member);
+}
+
+void
+ASTVisitor::
 addMember(std::vector<SymbolID>& container, Symbol const& Member) const
 {
     if (!contains(container, Member.id))
