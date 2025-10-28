@@ -174,6 +174,15 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
+inline
+auto&
+allMembers(UsingSymbol const& T)
+{
+    return T.ShadowDeclarations;
+}
+
+static_assert(SymbolParent<UsingSymbol>);
+
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_USING_HPP

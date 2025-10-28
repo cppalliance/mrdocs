@@ -760,6 +760,9 @@ private:
     addMember(OverloadsSymbol& I, Symbol const& Member) const;
 
     void
+    addMember(UsingSymbol& I, Symbol const& Member) const;
+
+    void
     addMember(std::vector<SymbolID>& container, Symbol const& Member) const;
 
     Polymorphic<Type>

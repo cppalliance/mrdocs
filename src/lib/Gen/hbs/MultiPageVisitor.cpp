@@ -68,6 +68,7 @@ operator()(T const& I)
         // ===================================
         // Traverse the symbol members
         // ===================================
+        MRDOCS_CHECK_OR_VOID(!I.isUsing());
         Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordSymbol>};
         corpus_.traverse(opts, I, *this);
     });

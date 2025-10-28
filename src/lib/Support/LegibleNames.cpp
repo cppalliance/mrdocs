@@ -291,8 +291,26 @@ public:
         MRDOCS_ASSERT(corpus_.exists(id));
 
         // Find the legible name information for this symbol
-        auto const it = map_.find(id);
-        MRDOCS_ASSERT(it != map_.end());
+        auto it = map_.find(id);
+        if (it == map_.end())
+        {
+            // Late-build a legible name for this symbol.
+            // NOTE: This may not perfectly disambiguate against siblings
+            // because the per-scope disambiguation_map_ is ephemeral,
+            // but it avoids a hard crash and produces a stable name.
+            Symbol const& I = corpus_.get(id);
+            auto const raw = getRawUnqualified(I);
+            buildLegibleMember(I, raw);
+            it = map_.find(I.id);
+            if (it == map_.end())
+            {
+                // Final, robust fallback: emit the raw SymbolID (legible-ish),
+                // and return without crashing.
+                result.append(toBase16(I.id));
+                return;
+            }
+        }
+
         auto& [unqualified, n_disambig, id_str] = it->second;
 
         // Append the unqualified name to the result
