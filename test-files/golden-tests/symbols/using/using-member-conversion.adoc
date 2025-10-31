@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X[`X`] 
 | This struct will be inherited as public
 | link:#Y[`Y`] 
@@ -48,20 +47,19 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-2conversion[`operator fun&lowbar;ptr`] 
 | Conversion operator to function pointer&period;
 |===
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#Y[`Y`]
 | This struct inherits from X
 |===
@@ -101,30 +99,28 @@ struct Y
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#X[X]`
 | This struct will be inherited as public
 |===
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-2conversion[`operator fun&lowbar;ptr`] 
 | Conversion operator to function pointer&period;
 |===
 
 === Using Declarations
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Y-2conversion[`operator void(&ast;)()`] 
 | Bring X&colon;&colon;operator fun&lowbar;ptr into Y&period;
 |===
@@ -145,10 +141,10 @@ using X::operator void(&ast;)();
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#X-2conversion[X::operator fun&lowbar;ptr]
 | Conversion operator to function pointer&period;
 |===

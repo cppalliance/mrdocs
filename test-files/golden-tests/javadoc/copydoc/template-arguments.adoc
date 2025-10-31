@@ -17,10 +17,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-B-08[`B`] 
 | Main class template for B&period;
 | link:#A-B-09[`B&lt;int&gt;`] 
@@ -96,10 +95,10 @@ using B&lowbar;t = link:#A-B-08[B&lt;T, I&gt;];
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | The type parameter&period;
 |===
@@ -151,10 +150,10 @@ using C&lowbar;t = link:#A-C-05[C&lt;T, B&gt;];
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | The type parameter&period;
 |===
@@ -178,10 +177,10 @@ struct B;
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | The type parameter&period;
 | *int*
@@ -237,10 +236,10 @@ struct C;
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | The type parameter&period;
 | *bool*

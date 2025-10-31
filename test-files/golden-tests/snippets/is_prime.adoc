@@ -26,10 +26,10 @@ Whether `n` is prime&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *n*
 | The number to test
 |===

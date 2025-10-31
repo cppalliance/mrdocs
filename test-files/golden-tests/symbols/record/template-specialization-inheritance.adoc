@@ -73,10 +73,10 @@ struct R0
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0c[S0&lt;1&gt;]`
 | 
 |===
@@ -104,10 +104,10 @@ struct R1
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09-S1[S0&lt;2&gt;::S1]`
 | 
 |===
@@ -127,10 +127,10 @@ struct R2
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-073[S0&lt;3&gt;]`
 | 
 |===
@@ -160,10 +160,10 @@ struct S0;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R0[`R0`]
 | 
 |===
@@ -215,10 +215,10 @@ struct S1;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R1[`R1`]
 | 
 |===
@@ -238,10 +238,10 @@ struct link:#S0-0c[S0]&lt;3&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R2[`R2`]
 | 
 |===

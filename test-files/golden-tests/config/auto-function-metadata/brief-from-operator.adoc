@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A helper tag
 | link:#X[`X`] 
@@ -20,10 +19,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_lshift[`operator&lt;&lt;`] 
 | Stream insertion operator
 |===
@@ -58,10 +56,9 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-operator_assign-0a[`operator&equals;`] 
 | Assignment operators
 | link:#X-operator_plus_eq[`operator&plus;&equals;`] 
@@ -131,10 +128,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy assign from
 |===
@@ -160,10 +157,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move assign from
 |===
@@ -189,10 +186,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The object to copy assign from
 |===
@@ -218,10 +215,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -242,7 +239,7 @@ struct ostream;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -273,10 +270,10 @@ Reference to the current output stream
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *os*
 | An output stream
 | *x*

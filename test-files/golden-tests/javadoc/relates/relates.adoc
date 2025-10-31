@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A brief for A&period;
 | link:#B[`B`] 
@@ -18,10 +17,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`] 
 | A brief for f&period;
 |===
@@ -42,7 +40,7 @@ struct A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

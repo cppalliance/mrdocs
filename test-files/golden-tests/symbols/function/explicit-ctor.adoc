@@ -29,10 +29,9 @@ struct Explicit;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Explicit-2constructor-04[`Explicit`]         [.small]#[constructor]#
 | Constructors
 |===
@@ -124,10 +123,10 @@ Explicit(link:#Explicit[Explicit] const& other);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy construct from
 |===
@@ -149,10 +148,10 @@ Explicit(link:#Explicit[Explicit]&& other) noexcept;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move construct from
 |===
@@ -189,10 +188,9 @@ struct ExplicitExpression;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ExplicitExpression-2constructor-07[`ExplicitExpression`]         [.small]#[constructor]#
 | Constructors
 |===
@@ -284,10 +282,10 @@ ExplicitExpression(link:#ExplicitExpression[ExplicitExpression] const& other);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy construct from
 |===
@@ -309,10 +307,10 @@ ExplicitExpression(link:#ExplicitExpression[ExplicitExpression]&& other) noexcep
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move construct from
 |===
@@ -348,10 +346,9 @@ struct ExplicitFalse;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ExplicitFalse-2constructor-07[`ExplicitFalse`]         [.small]#[constructor]#
 | Constructors
 |===
@@ -443,10 +440,10 @@ ExplicitFalse(link:#ExplicitFalse[ExplicitFalse] const& other);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy construct from
 |===
@@ -468,10 +465,10 @@ ExplicitFalse(link:#ExplicitFalse[ExplicitFalse]&& other) noexcept;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move construct from
 |===
@@ -507,10 +504,9 @@ struct ExplicitTrue;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ExplicitTrue-2constructor-01[`ExplicitTrue`]         [.small]#[constructor]#
 | Constructors
 |===
@@ -602,10 +598,10 @@ ExplicitTrue(link:#ExplicitTrue[ExplicitTrue] const& other);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy construct from
 |===
@@ -627,10 +623,10 @@ ExplicitTrue(link:#ExplicitTrue[ExplicitTrue]&& other) noexcept;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move construct from
 |===

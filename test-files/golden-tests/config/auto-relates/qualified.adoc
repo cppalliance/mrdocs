@@ -15,20 +15,18 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A class with non&hyphen;member functions
 |===
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`] 
 | A non&hyphen;member function of A
 | link:#f5[`f5`] 
@@ -48,20 +46,18 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N-B[`B`] 
 | A nested class with non&hyphen;member functions
 |===
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N-f2[`f2`] 
 | A non&hyphen;member function of A
 | link:#N-f3[`f3`] 
@@ -73,10 +69,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N-M-f4[`f4`] 
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 |===
@@ -112,7 +107,7 @@ struct B;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -161,10 +156,9 @@ f3(link:#N-B[N::B] const&);
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#O-f6[`f6`] 
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 |===
@@ -200,7 +194,7 @@ struct A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

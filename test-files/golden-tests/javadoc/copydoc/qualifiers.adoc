@@ -35,10 +35,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-begin-03[`begin`] 
 | `begin` overloads
 | link:#A-cbegin[`cbegin`] 

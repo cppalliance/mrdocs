@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`] 
 | A function that uses auto
 |===
@@ -35,10 +34,10 @@ The result&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to use&period;
 |===

@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f5[`f5`] 
 | brief *bold* it continues to the line&period;
 | link:#f6[`f6`] 

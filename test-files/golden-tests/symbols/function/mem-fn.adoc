@@ -450,10 +450,10 @@ struct T14;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#T17[`T17`]
 | 
 |===
@@ -554,10 +554,10 @@ struct T17
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#T14[T14]`
 | 
 |===
@@ -615,10 +615,10 @@ struct U;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#V[`V`]
 | 
 |===
@@ -681,10 +681,10 @@ struct V
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#U[U]`
 | 
 |===

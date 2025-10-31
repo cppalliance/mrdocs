@@ -14,10 +14,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`] 
 | f
 |===
@@ -36,10 +35,10 @@ struct T;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#f[f]`
 | f
 |===

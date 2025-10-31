@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#dest[`dest`] 
 | Destination doc function
 | link:#destOverride[`destOverride`] 
@@ -52,10 +51,10 @@ A nice integer
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *A*
 | The template parameter A&period;
 | *B*
@@ -64,10 +63,10 @@ A nice integer
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The parameter a&period;
 | *b*
@@ -120,7 +119,7 @@ Parameter b is not copied because it doesn&apos;t exist in the destination funct
 
 === Exceptions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -134,10 +133,10 @@ An integer meaning something else&period;
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *A*
 | Overwrites the template parameter A&period;
 | *C*
@@ -148,10 +147,10 @@ An integer meaning something else&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Overwrites the parameter a&period;
 | *c*
@@ -198,7 +197,7 @@ This is the documentation from the source function&period;
 
 === Exceptions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -212,10 +211,10 @@ A nice integer
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *A*
 | The template parameter A&period;
 | *B*
@@ -224,10 +223,10 @@ A nice integer
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The parameter a&period;
 | *b*

@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f0[`f0`] 
 | f0 brief
 | link:#f1[`f1`] 
@@ -81,10 +80,10 @@ g0(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | one
 | *a*
@@ -108,10 +107,10 @@ g1(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | one
 | *b*
@@ -136,10 +135,10 @@ h0();
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | one
 | *T*
@@ -164,10 +163,10 @@ h1();
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | one
 | *U*

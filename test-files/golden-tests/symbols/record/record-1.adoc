@@ -45,10 +45,9 @@ struct T;
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#T-g1[`g1`] 
 | brief&hyphen;g1
 | link:#T-g2[`g2`] 
@@ -179,10 +178,10 @@ the separator
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | any old number
 |===

@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f-0c[`f`] 
 | Test function
 |===
@@ -66,7 +65,7 @@ link:#f-02[f](
 
 === Exceptions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -83,10 +82,10 @@ link:#f-02[f](
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *A*
 | Describe A
 | *B*
@@ -95,10 +94,10 @@ link:#f-02[f](
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 | *b*
@@ -139,7 +138,7 @@ f(int a);
 
 === Exceptions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -153,20 +152,20 @@ The number corresponding to a
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *A*
 | Describe A
 |===
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -206,10 +205,10 @@ The number corresponding to a
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a again
 |===
@@ -240,7 +239,7 @@ f(
 
 === Exceptions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -254,10 +253,10 @@ The number corresponding to a and b
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *A*
 | Describe A again
 | *B*
@@ -266,10 +265,10 @@ The number corresponding to a and b
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a again
 | *b*

@@ -14,10 +14,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f-0f[`f`] 
 | Local overload
 |===
@@ -35,10 +34,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f-08[`f`] 
 | `f` overloads
 |===
@@ -163,10 +161,10 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A-f-08[A::f]
 | `f` overloads
 |===

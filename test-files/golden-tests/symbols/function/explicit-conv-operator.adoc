@@ -29,10 +29,9 @@ struct Explicit;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Explicit-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
@@ -71,10 +70,9 @@ struct ExplicitExpression;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ExplicitExpression-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
@@ -112,10 +110,9 @@ struct ExplicitFalse;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ExplicitFalse-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
@@ -153,10 +150,9 @@ struct ExplicitTrue;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ExplicitTrue-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===

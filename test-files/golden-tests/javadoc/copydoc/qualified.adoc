@@ -14,10 +14,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#param_t[`param&lowbar;t`] 
 | Helper class for distinct parameter types
 |===
@@ -55,10 +54,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N-A-f-05[`f`] 
 | Reference function
 | link:#N-A-g-06e[`g`] 
@@ -178,10 +176,10 @@ link:#N-A-f-07[f](link:#param_t[param&lowbar;t&lt;7&gt;] a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -207,10 +205,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -236,10 +234,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -265,10 +263,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -294,10 +292,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -323,10 +321,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -352,10 +350,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -381,10 +379,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -410,10 +408,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -451,10 +449,10 @@ link:#N-A-g-06c[g](int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -480,10 +478,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -509,10 +507,10 @@ Function with same number of parameters but different types&period; This should 
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Fundamental type parameter
 |===
@@ -550,10 +548,10 @@ link:#N-A-h-06[h](int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -579,10 +577,10 @@ Documentation for the reference function
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Qualified param
 |===
@@ -608,10 +606,10 @@ Function with same number of parameters but different types&period; This should 
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Fundamental type parameter
 |===

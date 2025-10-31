@@ -1,10 +1,7 @@
 {{#>markup/table cols=(select includeBrief 2 1)}}
 {{#>markup/thead}}
 {{#>markup/tr~}}
-{{#>markup/th}}Name{{/markup/th}}
-{{#if includeBrief}}
-{{#>markup/th}}Description{{/markup/th}}
-{{/if}}
+{{#>markup/th}}Name{{/markup/th}}{{#if includeBrief}}{{#>markup/th}}Description{{/markup/th}}{{/if}}
 {{/markup/tr}}
 {{/markup/thead}}
 {{#>markup/tbody}}

@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#copyFromNoParam[`copyFromNoParam`] 
 | Brief from `foo()`
 | link:#copyfromOverloads[`copyfromOverloads`] 
@@ -107,10 +106,10 @@ A boolean value&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *ch*
 | A character&period;
 |===
@@ -165,10 +164,10 @@ A boolean value&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *ch*
 | A character&period;
 |===

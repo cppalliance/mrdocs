@@ -26,10 +26,9 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-2constructor-08[`X`]         [.small]#[constructor]#
 | Constructors
 |===
@@ -123,10 +122,10 @@ X(link:#X[X] const& other);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy construct from
 |===
@@ -147,10 +146,10 @@ X(link:#X[X]&& other);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move construct from
 |===
@@ -171,10 +170,10 @@ X(int value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -195,10 +194,10 @@ X(double value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===

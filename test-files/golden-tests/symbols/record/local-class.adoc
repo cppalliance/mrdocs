@@ -35,10 +35,10 @@ struct B
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `decltype(f())`
 | 
 |===

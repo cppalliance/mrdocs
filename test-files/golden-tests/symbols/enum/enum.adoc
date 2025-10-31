@@ -6,10 +6,9 @@
 
 === Enums
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#E0[`E0`] 
 | E0 brief&period;
 | link:#E1[`E1`] 
@@ -36,10 +35,9 @@ enum E0;
 
 === Members
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | `e0` 
 | e0 brief&period;
 | `e1` 
@@ -87,10 +85,9 @@ enum class E2 : int;
 
 === Members
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | `e4` 
 | e4 brief&period;
 | `e5` 

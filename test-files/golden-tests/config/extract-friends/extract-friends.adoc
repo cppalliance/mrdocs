@@ -93,10 +93,10 @@ class A;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#std-hash-08[std::hash&lt;A&gt;]`
 | 
 |===

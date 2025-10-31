@@ -6,10 +6,9 @@
 
 === Using Declarations
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`] 
 | Using excluded function f
 |===

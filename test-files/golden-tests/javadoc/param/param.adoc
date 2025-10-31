@@ -30,10 +30,10 @@ f(int x);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | An integer `x`
 |===
@@ -55,10 +55,10 @@ g(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | An integer `x`
 | *y*
@@ -83,10 +83,10 @@ h(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | An integer `x`
 | *y*
@@ -114,10 +114,10 @@ i(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *w*
 | An integer `w`
 | *x*

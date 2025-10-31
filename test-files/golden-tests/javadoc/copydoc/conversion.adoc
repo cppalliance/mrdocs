@@ -28,10 +28,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-operator_assign-04[`operator&equals;`] 
 | Convert a string to A
 | link:#A-2conversion-02[`operator string&lowbar;type`] 
@@ -77,10 +76,10 @@ A representation of the string
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The string to convert
 |===
@@ -106,10 +105,10 @@ A representation of the string
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The string to convert
 |===
@@ -135,10 +134,10 @@ A representation of the string
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The string to convert
 |===

@@ -27,10 +27,10 @@ struct U;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#X-foo[X::foo]`
 | Friend member&hyphen;function
 | `link:#X-2destructor[X::&#126;X]`
@@ -53,10 +53,9 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-2constructor[`X`]         [.small]#[constructor]#
 | Default constructor
 | link:#X-2destructor[`&#126;X`] [.small]#[destructor]#
@@ -114,10 +113,10 @@ char&ast;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *i*
 | Description of i
 |===

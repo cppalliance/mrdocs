@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | This struct will be inherited as public
 | link:#B[`B`] 
@@ -44,20 +43,19 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f[`f`] 
 | Public member function f taking a Tag&lt;0&gt;&period;
 |===
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#U[`U`]
 | This struct inherits from A, B, C, D, E, and F in various ways,
 |===
@@ -97,20 +95,19 @@ struct B;
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#B-f[`f`] 
 | Protected member function f taking a Tag&lt;1&gt;&period;
 |===
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#U[`U`]
 | This struct inherits from A, B, C, D, E, and F in various ways,
 |===
@@ -146,10 +143,9 @@ struct C;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#C-f[`f`] 
 | Public member function f taking a Tag&lt;2&gt;&period;
 |===
@@ -185,10 +181,9 @@ struct D;
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#D-f[`f`] 
 | Protected member function f taking a Tag&lt;3&gt;&period;
 |===
@@ -224,10 +219,9 @@ struct E;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#E-f[`f`] 
 | Public member function f taking a Tag&lt;4&gt;&period;
 |===
@@ -263,10 +257,9 @@ struct F;
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#F-f[`f`] 
 | Protected member function f taking a Tag&lt;5&gt;&period;
 |===
@@ -321,10 +314,10 @@ struct U
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#A[A]`
 | This struct will be inherited as public
 | `link:#B[B]`
@@ -333,10 +326,10 @@ struct U
 
 === Protected Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#C[C]`
 | This struct will be inherited as protected
 | `link:#D[D]`
@@ -345,20 +338,18 @@ struct U
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f[`f`] 
 | Public member function f taking a Tag&lt;0&gt;&period;
 |===
 
 === Using Declarations
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#U-U-0a[`U`] 
 | Bring all the A&colon;&colon;A constructors into U&period;
 | link:#U-U-01b[`U`] 
@@ -387,10 +378,9 @@ struct U
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#U-f-07[`f`] 
 | `f` overloads
 |===
@@ -499,10 +489,10 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A-f[A::f]
 | Public member function f taking a Tag&lt;0&gt;&period;
 |===
@@ -522,10 +512,10 @@ using B::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#B-f[B::f]
 | Protected member function f taking a Tag&lt;1&gt;&period;
 |===
@@ -545,10 +535,10 @@ using C::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#C-f[C::f]
 | Public member function f taking a Tag&lt;2&gt;&period;
 |===
@@ -568,10 +558,10 @@ using D::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#D-f[D::f]
 | Protected member function f taking a Tag&lt;3&gt;&period;
 |===
@@ -591,10 +581,10 @@ using E::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#E-f[E::f]
 | Public member function f taking a Tag&lt;4&gt;&period;
 |===
@@ -614,10 +604,10 @@ using F::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#F-f[F::f]
 | Protected member function f taking a Tag&lt;5&gt;&period;
 |===

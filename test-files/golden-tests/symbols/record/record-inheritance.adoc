@@ -41,10 +41,10 @@ class C0;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#C2[`C2`]
 | 
 |===
@@ -77,10 +77,10 @@ class C2
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#C0[C0]`
 | 
 |===
@@ -100,10 +100,10 @@ class C3
 
 === Protected Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#C0[C0]`
 | 
 |===
@@ -136,10 +136,10 @@ class C5
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#C7[`C7`]
 | 
 |===
@@ -159,10 +159,10 @@ class C6
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#C7[`C7`]
 | 
 |===
@@ -183,10 +183,10 @@ class C7
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#C5[C5]`
 | 
 | `link:#C6[C6]`
@@ -207,10 +207,10 @@ struct S0;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#S2[`S2`]
 | 
 |===
@@ -229,10 +229,10 @@ struct S1;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#S3[`S3`]
 | 
 |===
@@ -252,20 +252,20 @@ struct S2
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0[S0]`
 | 
 |===
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#S4[`S4`]
 | 
 |===
@@ -285,20 +285,20 @@ struct S3
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S1[S1]`
 | 
 |===
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#S4[`S4`]
 | 
 |===
@@ -319,10 +319,10 @@ struct S4
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S2[S2]`
 | 
 | `link:#S3[S3]`
@@ -345,10 +345,10 @@ struct S5
 
 === Protected Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S1[S1]`
 | 
 |===
@@ -369,10 +369,10 @@ struct S6
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `Ts&period;&period;&period;`
 | 
 |===

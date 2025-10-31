@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | Brief for A
 |===
@@ -30,10 +29,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-compare[`compare`] 
 | Compare function
 |===
@@ -65,10 +63,10 @@ compare(link:#A[A] const& other) const noexcept;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The other object to compare against&period;
 |===

@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A class with non&hyphen;member functions
 | link:#Result[`Result`] 
@@ -20,10 +19,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#makeA[`makeA`] 
 | Function that returns A
 | link:#makeAs[`makeAs`] 
@@ -48,7 +46,7 @@ class A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -77,7 +75,7 @@ class Result;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -104,7 +102,7 @@ class SmallVector;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

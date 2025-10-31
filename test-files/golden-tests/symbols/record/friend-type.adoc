@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#T[`T`] 
 | Struct T brief
 | link:#U[`U`] 
@@ -36,10 +35,10 @@ struct T;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#Z[Z]`
 | Friend class Z brief
 |===
@@ -60,10 +59,10 @@ struct U;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#T[T]`
 | Struct T brief
 |===
@@ -84,10 +83,10 @@ struct V;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#U[U]`
 | Struct U brief
 |===

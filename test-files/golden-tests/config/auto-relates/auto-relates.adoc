@@ -6,20 +6,18 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A class with non&hyphen;member functions
 |===
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`] 
 | A non&hyphen;member function of A
 | link:#f2[`f2`] 
@@ -50,7 +48,7 @@ class A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

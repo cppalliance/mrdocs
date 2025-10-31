@@ -15,10 +15,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f-0c[`f`] 
 | 
 | link:#operator_eq-073[`operator&equals;&equals;`] 
@@ -55,10 +54,10 @@ struct A;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#operator_eq-0e[operator&equals;&equals;]`
 | Equality operator
 | `link:#operator_eq-0a[operator&equals;&equals;]`
@@ -185,7 +184,7 @@ struct B;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -330,10 +329,10 @@ operator&equals;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -363,10 +362,10 @@ operator&equals;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -396,10 +395,10 @@ operator&equals;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -429,10 +428,10 @@ operator&equals;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*

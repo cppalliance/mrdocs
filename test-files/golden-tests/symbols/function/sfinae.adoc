@@ -14,10 +14,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-09[`A`] 
 | The partial specialization of A is enabled via a template parameter
 | link:#A-07[`A&lt;T&gt;`] 
@@ -30,10 +29,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`] 
 | Enabled via return type
 | link:#f10[`f10`] 
@@ -81,7 +79,7 @@ struct C;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

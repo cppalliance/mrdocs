@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#bar[`bar`] 
 | Brief from `foo()`
 | link:#foo-02[`foo`] 
@@ -42,10 +41,10 @@ A boolean value&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | An array of integers&period;
 |===
@@ -99,10 +98,10 @@ A boolean value&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | An integer&period;
 |===
@@ -147,10 +146,10 @@ foo(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | An integer&period;
 |===
@@ -181,10 +180,10 @@ A boolean value&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | An array of integers&period;
 |===
