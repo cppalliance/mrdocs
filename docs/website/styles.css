@@ -28,6 +28,7 @@
     --function-name-color-hover: #0091ea;
     --primary-color:rgba(16, 149, 193, 1);
     --primary-color-hover:rgba(6, 125, 166, 1);
+    --body-background: #124b83;
 }
 
 @media (min-width: 576px) {
@@ -2535,10 +2536,6 @@ body > footer ul:first-of-type {
     margin-bottom: calc(var(--spacing) * .5)
 }
 
-body > footer ul:first-of-type a {
-    text-decoration:
-}
-
 @media (max-width: 767px) {
     body > footer ul:last-of-type li {
         display: list-item
@@ -2735,16 +2732,7 @@ html {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background:
-        radial-gradient(ellipse 100% 100% at var(--x1) var(--y1), rgba(89, 36, 99, 0.8), transparent 50%),
-        radial-gradient(ellipse 80% 120% at var(--x2) var(--y2), rgba(138, 214, 236, 0.5), transparent 55%),
-        radial-gradient(ellipse 150% 90% at var(--x3) var(--y3), rgba(40, 98, 114, 0.6), transparent 65%),
-        radial-gradient(ellipse 100% 100% at 80% 100%, rgba(89, 36, 99, 0.8), transparent 60%),
-        linear-gradient(135deg, #124B83, #124B83, #124B83);
-    background-blend-mode: normal;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: var(--body-background);
 }
 
 /* =========================== 
