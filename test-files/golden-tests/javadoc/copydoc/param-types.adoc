@@ -6,20 +6,18 @@
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N[`N`] 
 | Namespace to test qualified identifier parameters&period;
 |===
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | Struct to test explicit object member functions&period;
 | link:#paramType[`paramType`] 
@@ -36,10 +34,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f-0c7[`f`] 
 | `f` overloads
 | link:#g-0f[`g`] 
@@ -53,10 +50,9 @@ Namespace to test qualified identifier parameters&period;
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N-M[`M`] 
 | Namespace to test qualified identifier parameters&period;
 |===
@@ -68,10 +64,9 @@ Namespace to test qualified identifier parameters&period;
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N-M-Q[`Q`] 
 | Struct to test qualified identifier parameters&period;
 |===
@@ -92,7 +87,7 @@ struct Q;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -116,10 +111,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f[`f`] 
 | Reference member function&period;
 | link:#A-g[`g`] 
@@ -128,7 +122,7 @@ struct A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -159,10 +153,10 @@ This reference uses the `this` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -190,10 +184,10 @@ Documentation for a function with an explicit object parameter&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *self*
 | The object to operate on
 | *a*
@@ -217,7 +211,7 @@ struct paramType;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -255,7 +249,7 @@ enum testEnum;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -384,10 +378,10 @@ link:#f-081[f](link:#paramType[paramType&lt;9&gt;] a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of f
 |===
@@ -434,10 +428,10 @@ This function uses a reference with no parameters&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of f
 |===
@@ -465,10 +459,10 @@ This reference uses the `void` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of f
 |===
@@ -496,10 +490,10 @@ This reference uses the `&period;&period;&period;` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -527,10 +521,10 @@ This reference uses the `int` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -558,10 +552,10 @@ This reference uses the `auto` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -589,10 +583,10 @@ This reference uses the `decltype` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -620,10 +614,10 @@ This reference uses the `struct` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -651,10 +645,10 @@ This reference uses the `enum` keyword&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -682,10 +676,10 @@ This reference uses the qualified identifier `N&colon;&colon;M&colon;&colon;Q`&p
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -780,10 +774,10 @@ link:#g-0c[g](
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 | *b*
@@ -811,10 +805,10 @@ Documentation for a function with a struct parameter&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -840,10 +834,10 @@ Documentation for a function with a qualified identifier parameter&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -869,10 +863,10 @@ Documentation for a function with an `auto` parameter&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -898,10 +892,10 @@ Documentation for a function with an enum parameter&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -927,10 +921,10 @@ Documentation for the variadic function&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -956,10 +950,10 @@ Documentation for the non&hyphen;variadic function&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 |===
@@ -987,10 +981,10 @@ Documentation for a function with a `decltype` parameter&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | The first parameter of g
 | *b*

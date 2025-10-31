@@ -31,10 +31,10 @@
 {{! Base classes }}
 {{#if (any_of_by symbol.bases "isPublic")}}
 {{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each (filter_by symbol.bases "isPublic")}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
 | {{> doc/block/inline-brief type.name.symbol.doc.brief }}
@@ -45,10 +45,10 @@
 {{! Protected Base classes }}
 {{#if (any_of_by symbol.bases "isProtected")}}
 {{#> markup/dynamic-level-h }}Protected Base Classes{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each (filter_by symbol.bases "isProtected")}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
 | {{> doc/block/inline-brief type.name.symbol.doc.brief }}
@@ -74,10 +74,10 @@
 {{! Friends }}
 {{#if symbol.friends}}
 {{#> markup/dynamic-level-h }}Friends{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each symbol.friends }}
 {{#if symbol}}
 | {{#>markup/code}}{{> symbol/qualified-name symbol }}{{/markup/code}}
@@ -98,7 +98,7 @@
 {{! Related symbols }}
 {{#if symbol.doc.related}}
 {{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -112,10 +112,10 @@
 {{! Derived classes }}
 {{#if symbol.derived}}
 {{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each symbol.derived}}
 | {{#if url~}}
 {{#>markup/a href=url}}{{#>markup/code}}{{> type/name-info-text . }}{{/markup/code}}{{/markup/a}}
@@ -140,10 +140,10 @@
 {{#if symbol.shadows}}
 {{#> markup/dynamic-level-h }}Introduced Symbols{{/markup/dynamic-level-h~}}
 {{#if (any_of_by symbol.shadows "doc")}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each symbol.shadows}}
 | {{> symbol/qualified-name . }}
 | {{> doc/block/inline-brief doc.brief }}
@@ -162,7 +162,7 @@
 {{! Exceptions }}
 {{#if symbol.doc.exceptions}}
 {{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -190,10 +190,10 @@
 {{! Template Parameters }}
 {{#if symbol.doc.tparams}}
 {{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each symbol.doc.tparams}}
 | *{{name}}*
 | {{>doc/block .}}
@@ -204,10 +204,10 @@
 {{! Parameters }}
 {{#if symbol.doc.params}}
 {{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h~}}
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 {{#each symbol.doc.params}}
 | *{{name}}*{{#if direction}} [{{direction}}]{{/if}}
 | {{>doc/block .}}

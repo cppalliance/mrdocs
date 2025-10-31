@@ -26,10 +26,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-operator_call-08[`operator()`] 
 | Return true if ch is in the character set&period;
 |===
@@ -73,10 +72,10 @@ True if ch is in the set, otherwise false&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *ch*
 | The signed character to test&period;
 |===
@@ -107,10 +106,10 @@ True if ch is in the set, otherwise false&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *ch*
 | The signed character to test&period;
 |===
@@ -141,10 +140,10 @@ True if ch is in the set, otherwise false&period;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *ch*
 | The unsigned character to test&period;
 |===

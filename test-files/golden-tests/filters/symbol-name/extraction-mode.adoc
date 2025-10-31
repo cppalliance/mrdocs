@@ -6,10 +6,9 @@
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular_ns[`regular&lowbar;ns`] 
 | A regular namespace with different filters for members
 | link:#see_below_ns[`see&lowbar;below&lowbar;ns`] 
@@ -18,10 +17,9 @@
 
 === Namespace Aliases
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#dependency_ns_alias[`dependency&lowbar;ns&lowbar;alias`] 
 | Namespace alias to form the dependency on dependency&lowbar;ns
 | link:#implementation_defined_ns_alias[`implementation&lowbar;defined&lowbar;ns&lowbar;alias`] 
@@ -32,10 +30,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular[`regular`] 
 | A regular symbol in the global namespace
 | link:#see_below[`see&lowbar;below`] 
@@ -44,10 +41,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#get_dependency[`get&lowbar;dependency`] 
 | A function to get a dependency symbol on the global namespace
 | link:#get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
@@ -65,10 +61,9 @@ A regular namespace with different filters for members
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular_ns-regular[`regular`] 
 | A symbol that passes the filters
 | link:#regular_ns-see_below[`see&lowbar;below`] 
@@ -77,10 +72,9 @@ A regular namespace with different filters for members
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular_ns-get_dependency[`get&lowbar;dependency`] 
 | A function to get an excluded symbol
 | link:#regular_ns-get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
@@ -107,17 +101,16 @@ struct regular;
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular_ns-regular-also_regular[`also&lowbar;regular`] 
 | Child of a regular symbol extracted as regular
 |===
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -145,10 +138,9 @@ struct also&lowbar;regular;
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular_ns-regular-also_regular-regular_as_well[`regular&lowbar;as&lowbar;well`] 
 | Grandchild of a regular symbol extracted as regular
 |===
@@ -282,10 +274,9 @@ A see&hyphen;below namespace
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#see_below_ns-regular[`regular`] 
 | Regular symbol in a see&hyphen;below namespace
 | link:#see_below_ns-see_below[`see&lowbar;below`] 
@@ -294,10 +285,9 @@ A see&hyphen;below namespace
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#see_below_ns-get_dependency[`get&lowbar;dependency`] 
 | A function to get a dependency symbol in a see&hyphen;below namespace
 | link:#see_below_ns-get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
@@ -454,17 +444,16 @@ struct regular;
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular-also_regular[`also&lowbar;regular`] 
 | Child of a regular symbol&colon; should be traversed as usual
 |===
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -492,10 +481,9 @@ struct also&lowbar;regular;
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular-also_regular-regular_as_well[`regular&lowbar;as&lowbar;well`] 
 | Grandchild of a regular symbol&colon; should be traversed as usual
 |===

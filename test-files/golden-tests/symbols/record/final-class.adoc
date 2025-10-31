@@ -57,10 +57,10 @@ class A3 final
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#B1[B1]`
 | 
 | `link:#B2[B2]`
@@ -81,10 +81,10 @@ class B1;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A3[`A3`]
 | 
 |===
@@ -103,10 +103,10 @@ class B2;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A3[`A3`]
 | 
 |===

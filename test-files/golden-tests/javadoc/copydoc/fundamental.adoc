@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f-0c[`f`] 
 | `f` overloads
 | link:#g[`g`] 
@@ -51,10 +50,10 @@ link:#f-04[f](long a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Fail param
 |===
@@ -76,10 +75,10 @@ f(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Fail param
 |===
@@ -105,10 +104,10 @@ Details
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Param description
 |===
@@ -134,10 +133,10 @@ Details
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Param description
 |===
@@ -163,10 +162,10 @@ Details
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Param description
 |===

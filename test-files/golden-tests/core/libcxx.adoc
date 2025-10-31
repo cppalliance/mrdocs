@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#sqrt[`sqrt`] 
 | Computes the square root of an integral value&period;
 |===
@@ -37,7 +36,7 @@ This function calculates the square root of a given integral value using bit man
 
 === Exceptions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Thrown on
@@ -51,20 +50,20 @@ The square root of the input value&period;
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | The type of the input value&period; Must be an integral type&period;
 |===
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The integral value to compute the square root of&period;
 |===

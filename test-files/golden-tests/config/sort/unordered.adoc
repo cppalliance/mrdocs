@@ -22,10 +22,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_not_eq[`operator!&equals;`] 
 | Inequality operator
 | link:#operator_eq[`operator&equals;&equals;`] 
@@ -148,7 +147,7 @@ struct A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -174,10 +173,9 @@ struct Z;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Z-operator_3way[`operator&lt;&equals;&gt;`] 
 | Three&hyphen;way comparison operator
 | link:#Z-operator_not_eq[`operator!&equals;`] 
@@ -217,10 +215,10 @@ The relative order of the objects
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -246,10 +244,10 @@ operator!&equals;(link:#Z[Z] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -275,10 +273,10 @@ operator&equals;&equals;(link:#Z[Z] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -406,10 +404,10 @@ Z(int value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -437,10 +435,10 @@ operator!&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -470,10 +468,10 @@ operator&equals;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -501,10 +499,10 @@ operator!(link:#A[A] const& v);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *v*
 | The operand
 |===

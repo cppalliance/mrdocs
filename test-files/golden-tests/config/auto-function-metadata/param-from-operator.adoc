@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A helper tag
 | link:#X[`X`] 
@@ -20,10 +19,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_minus[`operator&hyphen;`] 
 | Subtraction operator
 | link:#operator_lshift[`operator&lt;&lt;`] 
@@ -62,17 +60,16 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-operator_plus[`operator&plus;`] 
 | Addition operator
 |===
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -103,10 +100,10 @@ Another instance of the object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | The right operand
 |===
@@ -127,7 +124,7 @@ struct ostream;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -158,10 +155,10 @@ Test class
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | The left operand
 | *y*
@@ -191,10 +188,10 @@ Reference to the current output stream
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *os*
 | An output stream
 | *x*
@@ -222,10 +219,10 @@ Test class
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x*
 | The operand
 |===

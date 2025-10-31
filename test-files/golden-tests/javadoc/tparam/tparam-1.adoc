@@ -6,10 +6,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f0[`f0`] 
 | 
 | link:#f1[`f1`] 
@@ -32,10 +31,10 @@ f0();
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | Template parameter `T`
 |===
@@ -62,10 +61,10 @@ desc
 
 === Template Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *T*
 | type
 |===

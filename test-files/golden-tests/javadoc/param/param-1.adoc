@@ -31,10 +31,10 @@ f0(int i);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *i*
 | int
 |===
@@ -54,10 +54,10 @@ f1(int i);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *i* [in]
 | int
 |===
@@ -77,10 +77,10 @@ f2(int& i);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *i* [out]
 | int
 |===
@@ -100,10 +100,10 @@ f3(int& i);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *i* [inout]
 | int
 |===
@@ -125,10 +125,10 @@ f4(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *i,j*
 | numbers
 |===

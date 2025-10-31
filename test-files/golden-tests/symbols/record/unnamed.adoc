@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#_01record-01[`Unnamed struct`] 
 | 
 | link:#_01record-0f[`Unnamed struct`] 
@@ -18,10 +17,9 @@
 
 === Variables
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#F[`F`] 
 | 
 | link:#x[`x`] 
@@ -79,10 +77,9 @@ struct Unnamed struct;
 
 === Data Members
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#_01record-0f-a[`a`] 
 | A test field&period;
 |===

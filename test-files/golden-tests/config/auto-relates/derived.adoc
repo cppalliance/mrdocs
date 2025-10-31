@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A concrete implementation for ABase
 | link:#ABase[`ABase`] 
@@ -22,10 +21,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`] 
 | A non&hyphen;member function of ABase
 | link:#f2[`f2`] 
@@ -57,17 +55,17 @@ struct A
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#ABase[ABase]`
 | A base class for non&hyphen;member functions
 |===
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -99,7 +97,7 @@ struct ABase;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -119,10 +117,10 @@ struct ABase;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A[`A`]
 | A concrete implementation for ABase
 | link:#AView[`AView`]
@@ -146,17 +144,17 @@ struct AView
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#ABase[ABase]`
 | A base class for non&hyphen;member functions
 |===
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -174,10 +172,10 @@ struct AView
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#AView2[`AView2`]
 | Another view of A
 |===
@@ -199,17 +197,17 @@ struct AView2
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#AView[AView]`
 | A view of A
 |===
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

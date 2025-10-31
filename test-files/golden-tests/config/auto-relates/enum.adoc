@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Result[`Result`] 
 | Helper result class
 | link:#SmallVector[`SmallVector`] 
@@ -18,20 +17,18 @@
 
 === Enums
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#E[`E`] 
 | An enum with non&hyphen;member functions
 |===
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#makeE[`makeE`] 
 | Function that returns A
 | link:#makeEs[`makeEs`] 
@@ -57,7 +54,7 @@ class Result;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -84,7 +81,7 @@ class SmallVector;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -108,7 +105,7 @@ enum class E : int;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

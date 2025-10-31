@@ -27,10 +27,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-2constructor-0f[`A`]         [.small]#[constructor]#
 | Constructors
 | link:#A-2conversion-0f[`operator U`] 
@@ -113,10 +112,10 @@ A(char value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -138,10 +137,10 @@ A(int value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -162,10 +161,10 @@ A(double value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -188,10 +187,10 @@ A(U value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The object to construct from
 |===

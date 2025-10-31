@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X[`X`] 
 | Test class
 |===
@@ -30,10 +29,9 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-empty[`empty`] 
 | Determines whether the range is empty&period;
 | link:#X-front[`front`] 

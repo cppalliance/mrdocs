@@ -46,10 +46,9 @@ class A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#left_shift-A-operator_lshift-00[`operator&lt;&lt;`] 
 | Left shift operators
 |===
@@ -106,10 +105,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *shift*
 | The right operand
 |===
@@ -135,10 +134,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *shift*
 | The right operand
 |===
@@ -173,10 +172,9 @@ operator&lt;&lt;(
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ostream-operator_lshift-0f[`operator&lt;&lt;`] 
 | Stream insertion operators
 |===
@@ -195,10 +193,10 @@ class B;
 
 === Friends
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#ostream-operator_lshift-0d[ostream::operator&lt;&lt;]`
 | Stream insertion operator
 |===
@@ -229,7 +227,7 @@ class OStream;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -297,10 +295,10 @@ Reference to the current output stream
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *os*
 | An output stream
 | *value*
@@ -330,10 +328,10 @@ Reference to the current output stream
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *os*
 | An output stream
 | *value*

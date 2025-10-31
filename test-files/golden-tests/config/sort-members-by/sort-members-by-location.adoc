@@ -26,10 +26,9 @@ struct Z;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Z-2constructor-00[`Z`]         [.small]#[constructor]#
 | Constructors
 | link:#Z-2destructor[`&#126;Z`] [.small]#[destructor]#
@@ -95,10 +94,10 @@ Z(int value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -215,10 +214,10 @@ operator&equals;&equals;(link:#Z[Z] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -244,10 +243,10 @@ operator!&equals;(link:#Z[Z] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -273,10 +272,10 @@ The relative order of the objects
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===

@@ -6,20 +6,18 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#R[`R`] 
 | The return type of the function
 |===
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#getR[`getR`] 
 | Test function
 |===
@@ -40,7 +38,7 @@ struct R;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description

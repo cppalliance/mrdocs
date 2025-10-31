@@ -117,10 +117,10 @@ struct R0
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0cf[S0&lt;&hyphen;1&gt;]`
 | 
 |===
@@ -157,10 +157,10 @@ struct R1
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0be[S0&lt;0&gt;]`
 | 
 |===
@@ -180,10 +180,10 @@ struct R10
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-08-S1-S2-08-S4[S0&lt;10&gt;::S1::S2&lt;11&gt;::S4&lt;&hyphen;1&gt;]`
 | 
 |===
@@ -203,10 +203,10 @@ struct R11
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0e-S1-S2-02-S4-0c[S0&lt;12&gt;::S1::S2&lt;13&gt;::S4&lt;14&gt;]`
 | 
 |===
@@ -226,10 +226,10 @@ struct R12
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09e4-S1-S2-02-S4-00[S0&lt;15&gt;::S1::S2&lt;16&gt;::S4&lt;17, void*&gt;]`
 | 
 |===
@@ -249,10 +249,10 @@ struct R13
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09e4-S1-S2-02-S4-02[S0&lt;15&gt;::S1::S2&lt;16&gt;::S4&lt;17, int*&gt;]`
 | 
 |===
@@ -272,10 +272,10 @@ struct R14
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-07a-S5[S0&lt;18&gt;::S5&lt;&hyphen;1&gt;]`
 | 
 |===
@@ -295,10 +295,10 @@ struct R15
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0a7-S5-07[S0&lt;19&gt;::S5&lt;20&gt;]`
 | 
 |===
@@ -318,10 +318,10 @@ struct R16
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0314-S5-07[S0&lt;21&gt;::S5&lt;22, void*&gt;]`
 | 
 |===
@@ -341,10 +341,10 @@ struct R17
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0314-S5-03[S0&lt;21&gt;::S5&lt;22, int*&gt;]`
 | 
 |===
@@ -364,10 +364,10 @@ struct R18
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-058-S5-09-S6[S0&lt;23&gt;::S5&lt;24&gt;::S6]`
 | 
 |===
@@ -387,10 +387,10 @@ struct R19
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0a2-S5-02-S6-S7[S0&lt;25&gt;::S5&lt;26&gt;::S6::S7&lt;&hyphen;1&gt;]`
 | 
 |===
@@ -410,10 +410,10 @@ struct R2
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0cf[S0&lt;1, void*&gt;]`
 | 
 |===
@@ -450,10 +450,10 @@ struct R20
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09e2-S5-0c-S6-S7-0b[S0&lt;27&gt;::S5&lt;28&gt;::S6::S7&lt;29, void*&gt;]`
 | 
 |===
@@ -473,10 +473,10 @@ struct R21
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09e2-S5-0c-S6-S7-0d[S0&lt;27&gt;::S5&lt;28&gt;::S6::S7&lt;29, int*&gt;]`
 | 
 |===
@@ -496,10 +496,10 @@ struct R22
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-01-S5-04-S6-S7-05[S0&lt;30&gt;::S5&lt;31&gt;::S6::S7&lt;32&gt;]`
 | 
 |===
@@ -519,10 +519,10 @@ struct R23
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09ee-S5-02-S6-S7-03-S8[S0&lt;33&gt;::S5&lt;34&gt;::S6::S7&lt;35&gt;::S8]`
 | 
 |===
@@ -542,10 +542,10 @@ struct R24
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-033-S5-0f-S6-S7-0d-S9[S0&lt;36&gt;::S5&lt;37&gt;::S6::S7&lt;38&gt;::S9&lt;&hyphen;1&gt;]`
 | 
 |===
@@ -565,10 +565,10 @@ struct R25
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-06-S5-07-S6-S7-0a-S9-05[S0&lt;39&gt;::S5&lt;40&gt;::S6::S7&lt;41&gt;::S9&lt;42, void*&gt;]`
 | 
 |===
@@ -588,10 +588,10 @@ struct R26
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-06-S5-07-S6-S7-0a-S9-08[S0&lt;39&gt;::S5&lt;40&gt;::S6::S7&lt;41&gt;::S9&lt;42, int*&gt;]`
 | 
 |===
@@ -611,10 +611,10 @@ struct R27
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0ba-S5-08-S6-S7-02-S9-0f[S0&lt;43&gt;::S5&lt;44&gt;::S6::S7&lt;45&gt;::S9&lt;46&gt;]`
 | 
 |===
@@ -634,10 +634,10 @@ struct R28
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0cf[S0&lt;0, bool&gt;]`
 | 
 |===
@@ -674,10 +674,10 @@ struct R29
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0cf[S0&lt;1, int&gt;]`
 | 
 |===
@@ -714,10 +714,10 @@ struct R3
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-020a[S0&lt;1, int*&gt;]`
 | 
 |===
@@ -737,10 +737,10 @@ struct R30
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-03c-S1[S0&lt;2, bool&gt;::S1]`
 | 
 |===
@@ -779,10 +779,10 @@ struct R31
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-092-S1-S2[S0&lt;3, bool&gt;::S1::S2&lt;I, T&gt;]`
 | 
 |===
@@ -802,10 +802,10 @@ struct R32
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0b6-S1-S2[S0&lt;4, bool&gt;::S1::S2&lt;5, bool&gt;]`
 | 
 |===
@@ -825,10 +825,10 @@ struct R33
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-023-S1-S2[S0&lt;6, bool&gt;::S1::S2&lt;7, int&gt;]`
 | 
 |===
@@ -848,10 +848,10 @@ struct R34
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-04-S1-S2-0a-S3[S0&lt;8, bool&gt;::S1::S2&lt;9, bool&gt;::S3]`
 | 
 |===
@@ -882,10 +882,10 @@ struct R35
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-05a-S1-S2-0b-S4[S0&lt;10, bool&gt;::S1::S2&lt;11, bool&gt;::S4&lt;I, T&gt;]`
 | 
 |===
@@ -905,10 +905,10 @@ struct R36
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0cd-S1-S2-05-S4[S0&lt;12, bool&gt;::S1::S2&lt;13, bool&gt;::S4&lt;14, bool&gt;]`
 | 
 |===
@@ -928,10 +928,10 @@ struct R37
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-000-S1-S2-03-S4[S0&lt;15, bool&gt;::S1::S2&lt;16, bool&gt;::S4&lt;17, int&gt;]`
 | 
 |===
@@ -954,10 +954,10 @@ struct R38
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-051-S5[S0&lt;18, bool&gt;::S5&lt;I, T&gt;]`
 | 
 |===
@@ -977,10 +977,10 @@ struct R39
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-002-S5[S0&lt;19, bool&gt;::S5&lt;20, bool&gt;]`
 | 
 |===
@@ -1000,10 +1000,10 @@ struct R4
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-09c-S1[S0&lt;2&gt;::S1]`
 | 
 |===
@@ -1023,10 +1023,10 @@ struct R40
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-003-S5[S0&lt;21, bool&gt;::S5&lt;22, int&gt;]`
 | 
 |===
@@ -1046,10 +1046,10 @@ struct R41
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0c7-S5-0f-S6[S0&lt;23, bool&gt;::S5&lt;24, bool&gt;::S6]`
 | 
 |===
@@ -1088,10 +1088,10 @@ struct R42
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0529f-S5-05c-S6-S7[S0&lt;25, bool&gt;::S5&lt;26, bool&gt;::S6::S7&lt;I, T&gt;]`
 | 
 |===
@@ -1111,10 +1111,10 @@ struct R43
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-007-S5-0d-S6-S7[S0&lt;27, bool&gt;::S5&lt;28, bool&gt;::S6::S7&lt;29, int&gt;]`
 | 
 |===
@@ -1134,10 +1134,10 @@ struct R44
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-021-S5-0b-S6-S7[S0&lt;30, bool&gt;::S5&lt;31, bool&gt;::S6::S7&lt;32, bool&gt;]`
 | 
 |===
@@ -1157,10 +1157,10 @@ struct R45
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0318-S5-0b-S6-S7-05-S8[S0&lt;33, bool&gt;::S5&lt;34, bool&gt;::S6::S7&lt;35, bool&gt;::S8]`
 | 
 |===
@@ -1191,10 +1191,10 @@ struct R46
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0d-S5-0b-S6-S7-0d-S9[S0&lt;36, bool&gt;::S5&lt;37, bool&gt;::S6::S7&lt;38, bool&gt;::S9&lt;I, T&gt;]`
 | 
 |===
@@ -1214,10 +1214,10 @@ struct R47
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0206-S5-08-S6-S7-01-S9[S0&lt;39, bool&gt;::S5&lt;40, bool&gt;::S6::S7&lt;41, bool&gt;::S9&lt;42, int&gt;]`
 | 
 |===
@@ -1237,10 +1237,10 @@ struct R48
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-05291-S5-0e-S6-S7-0f-S9[S0&lt;43, bool&gt;::S5&lt;44, bool&gt;::S6::S7&lt;45, bool&gt;::S9&lt;46, bool&gt;]`
 | 
 |===
@@ -1260,10 +1260,10 @@ struct R5
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-073-S1-S2[S0&lt;3&gt;::S1::S2&lt;&hyphen;1&gt;]`
 | 
 |===
@@ -1283,10 +1283,10 @@ struct R6
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0a1-S1-S2-0f[S0&lt;4&gt;::S1::S2&lt;5&gt;]`
 | 
 |===
@@ -1306,10 +1306,10 @@ struct R7
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-07e-S1-S2-04[S0&lt;6&gt;::S1::S2&lt;7, void*&gt;]`
 | 
 |===
@@ -1329,10 +1329,10 @@ struct R8
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-07e-S1-S2-07[S0&lt;6&gt;::S1::S2&lt;7, int*&gt;]`
 | 
 |===
@@ -1352,10 +1352,10 @@ struct R9
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#S0-0a3-S1-S2-0c-S3[S0&lt;8&gt;::S1::S2&lt;9&gt;::S3]`
 | 
 |===
@@ -1394,10 +1394,10 @@ struct S0;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R0[`R0`]
 | 
 | link:#R2[`R2`]
@@ -1790,10 +1790,10 @@ struct link:#S0-0cf[S0]&lt;0&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R1[`R1`]
 | 
 |===
@@ -1931,10 +1931,10 @@ struct S4;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R10[`R10`]
 | 
 |===
@@ -2140,10 +2140,10 @@ struct link:#S0-0cf-S1-S2-S4[S4]&lt;14&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R11[`R11`]
 | 
 |===
@@ -2337,10 +2337,10 @@ struct S4;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R12[`R12`]
 | 
 |===
@@ -2360,10 +2360,10 @@ struct link:#S0-0cf-S1-S2-S4[S4]&lt;17, int*&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R13[`R13`]
 | 
 |===
@@ -2494,10 +2494,10 @@ struct S5;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R14[`R14`]
 | 
 |===
@@ -2588,10 +2588,10 @@ struct link:#S0-0cf-S5[S5]&lt;20&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R15[`R15`]
 | 
 |===
@@ -2653,10 +2653,10 @@ struct S1;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R4[`R4`]
 | 
 |===
@@ -2750,10 +2750,10 @@ struct S5;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R16[`R16`]
 | 
 |===
@@ -2773,10 +2773,10 @@ struct link:#S0-0cf-S5[S5]&lt;22, int*&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R17[`R17`]
 | 
 |===
@@ -2908,10 +2908,10 @@ struct S6;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R18[`R18`]
 | 
 |===
@@ -3074,10 +3074,10 @@ struct S7;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R19[`R19`]
 | 
 |===
@@ -3255,10 +3255,10 @@ struct S7;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R20[`R20`]
 | 
 |===
@@ -3278,10 +3278,10 @@ struct link:#S0-0cf-S5-S6-S7[S7]&lt;29, int*&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R21[`R21`]
 | 
 |===
@@ -3413,10 +3413,10 @@ struct S2;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R5[`R5`]
 | 
 |===
@@ -3608,10 +3608,10 @@ struct link:#S0-0cf-S5-S6-S7[S7]&lt;32&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R22[`R22`]
 | 
 |===
@@ -3830,10 +3830,10 @@ struct S8;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R23[`R23`]
 | 
 |===
@@ -4095,10 +4095,10 @@ struct S9;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R24[`R24`]
 | 
 |===
@@ -4347,10 +4347,10 @@ struct S9;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R25[`R25`]
 | 
 |===
@@ -4370,10 +4370,10 @@ struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, int*&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R26[`R26`]
 | 
 |===
@@ -4532,10 +4532,10 @@ struct link:#S0-0cf-S1-S2[S2]&lt;5&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R6[`R6`]
 | 
 |===
@@ -4785,10 +4785,10 @@ struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;46&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R27[`R27`]
 | 
 |===
@@ -4922,10 +4922,10 @@ struct S2;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R7[`R7`]
 | 
 |===
@@ -4945,10 +4945,10 @@ struct link:#S0-0cf-S1-S2[S2]&lt;7, int*&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R8[`R8`]
 | 
 |===
@@ -5125,10 +5125,10 @@ struct S3;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R9[`R9`]
 | 
 |===
@@ -5217,10 +5217,10 @@ struct link:#S0-0cf[S0]&lt;1, int*&gt;;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R3[`R3`]
 | 
 |===
@@ -5358,10 +5358,10 @@ struct S4;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R35[`R35`]
 | 
 |===
@@ -5553,10 +5553,10 @@ struct S4;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R36[`R36`]
 | 
 |===
@@ -5748,10 +5748,10 @@ struct S4;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R37[`R37`]
 | 
 |===
@@ -5869,10 +5869,10 @@ struct S5;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R38[`R38`]
 | 
 |===
@@ -5949,10 +5949,10 @@ struct S5;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R39[`R39`]
 | 
 |===
@@ -6030,10 +6030,10 @@ struct S1;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R30[`R30`]
 | 
 |===
@@ -6153,10 +6153,10 @@ struct S5;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R40[`R40`]
 | 
 |===
@@ -6291,10 +6291,10 @@ struct S6;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R41[`R41`]
 | 
 |===
@@ -6485,10 +6485,10 @@ struct S7;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R42[`R42`]
 | 
 |===
@@ -6664,10 +6664,10 @@ struct S7;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R43[`R43`]
 | 
 |===
@@ -6786,10 +6786,10 @@ struct S2;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R31[`R31`]
 | 
 |===
@@ -6967,10 +6967,10 @@ struct S7;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R44[`R44`]
 | 
 |===
@@ -7197,10 +7197,10 @@ struct S8;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R45[`R45`]
 | 
 |===
@@ -7475,10 +7475,10 @@ struct S9;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R46[`R46`]
 | 
 |===
@@ -7725,10 +7725,10 @@ struct S9;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R47[`R47`]
 | 
 |===
@@ -7860,10 +7860,10 @@ struct S2;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R32[`R32`]
 | 
 |===
@@ -8099,10 +8099,10 @@ struct S9;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R48[`R48`]
 | 
 |===
@@ -8234,10 +8234,10 @@ struct S2;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R33[`R33`]
 | 
 |===
@@ -8409,10 +8409,10 @@ struct S3;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#R34[`R34`]
 | 
 |===

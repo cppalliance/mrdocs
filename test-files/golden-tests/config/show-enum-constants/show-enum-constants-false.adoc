@@ -6,10 +6,9 @@
 
 === Enums
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#Color[`Color`] 
 | A simple enum
 |===
@@ -30,10 +29,9 @@ enum class Color : int;
 
 === Members
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | `Red` 
 | The color red
 | `Green` 

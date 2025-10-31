@@ -1,4 +1,4 @@
-[{{#if cols}}cols={{cols}}{{/if}}]
+[{{#if cols}}cols={{#if (eq cols 2)}}"1,4"{{else}}{{cols}}{{/if}}{{/if}}]
 |===
 {{> @partial-block }}
 |===

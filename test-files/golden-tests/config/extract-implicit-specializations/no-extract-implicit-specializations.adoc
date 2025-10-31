@@ -28,10 +28,10 @@ struct A
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#B[B&lt;int&gt;]`
 | 
 |===
@@ -67,10 +67,10 @@ struct B;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A[`A`]
 | 
 |===

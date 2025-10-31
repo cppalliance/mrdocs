@@ -30,10 +30,10 @@ The distance between the two points
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *x0*
 | The x&hyphen;coordinate of the first point
 | *y0*

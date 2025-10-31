@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | Overload briefs from function or operator classes
 | link:#B[`B`] 
@@ -18,10 +17,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#no_way_to_infer_this_brief-04[`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief`] 
 | `no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief` overloads
 | link:#operator_plus-09[`operator&plus;`] 
@@ -46,10 +44,9 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-2constructor-0f[`A`]         [.small]#[constructor]#
 | Constructors
 | link:#A-operator_assign-04c[`operator&equals;`] 
@@ -62,7 +59,7 @@ struct A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -101,10 +98,10 @@ link:#A-2constructor-01[A](int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -139,10 +136,10 @@ A(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -184,10 +181,10 @@ link:#A-operator_assign-06[operator&equals;](int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -213,10 +210,10 @@ operator&equals;(link:#A[A] const& a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -242,10 +239,10 @@ operator&equals;(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe b
 |===
@@ -287,10 +284,10 @@ link:#A-operator_plus-0e[operator&plus;](link:#A[A] const& a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -316,10 +313,10 @@ operator&plus;(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -345,10 +342,10 @@ operator&plus;(link:#A[A] const& a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -436,10 +433,10 @@ Result
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -460,7 +457,7 @@ struct B;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -501,10 +498,10 @@ link:#no_way_to_infer_this_brief-01[no&lowbar;way&lowbar;to&lowbar;infer&lowbar;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -541,10 +538,10 @@ no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -605,10 +602,10 @@ Result
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The operand
 |===
@@ -634,10 +631,10 @@ Result
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The operand
 |===
@@ -677,10 +674,10 @@ link:#sameBrief-0e[sameBrief](
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 | *b*
@@ -704,10 +701,10 @@ sameBrief(int a);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a
 |===
@@ -731,10 +728,10 @@ sameBrief(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *a*
 | Describe a again
 | *b*

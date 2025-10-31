@@ -58,10 +58,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#boost-openmethod-policies-runtime_checks-runtime_checks[`runtime&lowbar;checks`] 
 | Documentation with ref to final&lowbar;virtual&lowbar;ptr
 |===

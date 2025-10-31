@@ -6,10 +6,9 @@
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N0[`N0`] 
 | This namespace should extracted because it&apos;s implied by `N0&colon;&colon;f0&lowbar;WL`
 | link:#N1[`N1`] 
@@ -20,10 +19,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#C[`C`] 
 | This namespace should be included because it strictly matches `C`
 |===
@@ -35,10 +33,9 @@ This namespace should extracted because it&apos;s implied by `N0&colon;&colon;f0
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N0-f0_WL[`f0&lowbar;WL`] 
 | This function should be included because it matches `N0&colon;&colon;f0&lowbar;WL`
 |===
@@ -65,10 +62,9 @@ This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N3
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N1-N3_WL[`N3&lowbar;WL`] 
 | This namespace should extracted because it&apos;s explicitly included by `N1&colon;&colon;N3&lowbar;WL`
 | link:#N1-N4[`N4`] 
@@ -82,10 +78,9 @@ This namespace should extracted because it&apos;s explicitly included by `N1&col
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N1-N3_WL-f1_WL[`f1&lowbar;WL`] 
 | This function should extracted because the namespace `N1&colon;&colon;N3&lowbar;WL` is included as a literal&period;
 |===
@@ -112,10 +107,9 @@ This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N4
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N1-N4-f1_WL[`f1&lowbar;WL`] 
 | This function should extracted because it matches `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
 |===
@@ -142,10 +136,9 @@ This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N5-N6[`N6`] 
 | This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
@@ -157,10 +150,9 @@ This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6
 
 === Namespaces
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N5-N6-M7[`M7`] 
 | This namespace should be included because it matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 | link:#N5-N6-N7[`N7`] 
@@ -174,10 +166,9 @@ This namespace should be included because it matches `N5&colon;&colon;N6&colon;&
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N5-N6-M7-f2_WL[`f2&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `M7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
@@ -204,10 +195,9 @@ This namespace should be included because it matches `N5&colon;&colon;N6&colon;&
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#N5-N6-N7-f2_WL[`f2&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `N7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
@@ -243,20 +233,18 @@ struct C;
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#C-D[`D`] 
 | This struct should be included because it&apos;s a member of `C`
 |===
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#C-f0_WL[`f0&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `C`
 |===
@@ -277,10 +265,9 @@ struct D;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#C-D-f1_WL[`f1&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `D`
 |===

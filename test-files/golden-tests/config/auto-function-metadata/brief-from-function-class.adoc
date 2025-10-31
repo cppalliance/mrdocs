@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A helper tag
 | link:#X[`X`] 
@@ -46,10 +45,9 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-2constructor-08[`X`]         [.small]#[constructor]#
 | Constructors
 | link:#X-2destructor[`&#126;X`] [.small]#[destructor]#
@@ -164,10 +162,10 @@ X(link:#X[X] const& other) = default;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to copy construct from
 |===
@@ -189,10 +187,10 @@ X(link:#X[X]&& other) = default;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *other*
 | The object to move construct from
 |===
@@ -213,10 +211,10 @@ X(int value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The value to construct from
 |===
@@ -237,10 +235,10 @@ X(link:#A[A] const& value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The object to copy construct from
 |===
@@ -261,10 +259,10 @@ X(link:#A[A]&& value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The object to move construct from
 |===

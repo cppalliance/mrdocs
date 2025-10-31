@@ -100,10 +100,10 @@ struct E
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#N-C[N::C&lt;int&gt;]`
 | 
 |===

@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A[`A`] 
 | A helper class
 | link:#Undoc[`Undoc`] 
@@ -22,10 +21,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_lshift[`operator&lt;&lt;`] 
 | Stream insertion operator
 | link:#operator_not[`operator!`] 
@@ -62,7 +60,7 @@ struct A;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -112,10 +110,9 @@ struct X;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#X-operator_assign-0a[`operator&equals;`] 
 | Assignment operators
 | link:#X-operator_plus[`operator&plus;`] 
@@ -196,10 +193,10 @@ Reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The object to copy assign from
 |===
@@ -225,10 +222,10 @@ Rvalue reference to the current object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The object to move assign from
 |===
@@ -254,10 +251,10 @@ Another instance of the object
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -357,10 +354,10 @@ operator&equals;&equals;(link:#X[X] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -386,10 +383,10 @@ operator!&equals;(link:#X[X] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -415,10 +412,10 @@ operator&lt;(link:#X[X] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -444,10 +441,10 @@ operator&lt;&equals;(link:#X[X] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -473,10 +470,10 @@ operator&gt;(link:#X[X] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -502,10 +499,10 @@ operator&gt;&equals;(link:#X[X] const& rhs) const;
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -531,10 +528,10 @@ The relative order of the objects
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *rhs*
 | The right operand
 |===
@@ -555,7 +552,7 @@ struct ostream;
 
 === Non-Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
 | Name
 | Description
@@ -586,10 +583,10 @@ Reference to the current output stream
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *os*
 | An output stream
 | *value*
@@ -617,10 +614,10 @@ operator!(link:#A[A] const& value);
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *value*
 | The operand
 |===
@@ -648,10 +645,10 @@ operator&equals;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -681,10 +678,10 @@ operator!&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -714,10 +711,10 @@ operator&lt;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -747,10 +744,10 @@ operator&lt;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -780,10 +777,10 @@ operator&gt;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -813,10 +810,10 @@ operator&gt;&equals;(
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*
@@ -846,10 +843,10 @@ The relative order of the objects
 
 === Parameters
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | *lhs*
 | The left operand
 | *rhs*

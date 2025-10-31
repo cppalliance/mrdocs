@@ -14,10 +14,9 @@
 
 === Using Declarations
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`] 
 | A using declaration that shadows a function and the record&period;
 |===
@@ -27,20 +26,18 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f-05[`f`] 
 | A record
 |===
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f-01[`f`] 
 | A function
 |===
@@ -90,10 +87,10 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A-f-05[A::f]
 | A record
 | link:#A-f-01[A::f]

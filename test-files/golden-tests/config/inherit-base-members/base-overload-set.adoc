@@ -29,10 +29,10 @@ class Base
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#ConstBase[ConstBase]`
 | 
 |===
@@ -47,10 +47,10 @@ class Base
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#C[`C`]
 | 
 |===
@@ -121,10 +121,10 @@ class C
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#Base[Base]`
 | 
 |===
@@ -159,10 +159,10 @@ class ConstBase;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#Base[`Base`]
 | 
 |===

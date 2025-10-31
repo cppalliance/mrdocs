@@ -45,10 +45,9 @@ enum class E : int;
 
 === Members
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | `e1` 
 | The constant to be introduced
 |===

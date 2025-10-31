@@ -26,10 +26,9 @@ struct T;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#T-operator_plus[`operator&plus;`] 
 | Unary plus operator
 |===

@@ -6,10 +6,9 @@
 
 === Types
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#base[`base`] 
 | 
 | link:#base_base[`base&lowbar;base`] 
@@ -37,20 +36,19 @@ class base
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#base_base[base&lowbar;base]`
 | 
 |===
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#base-2constructor[`base`]         [.small]#[constructor]#
 | Constructor should not be inherited
 | link:#base-2destructor[`&#126;base`] [.small]#[destructor]#
@@ -69,10 +67,9 @@ class base
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#base-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
 | link:#base-do_base_shadowed[`do&lowbar;base&lowbar;shadowed`] 
@@ -83,10 +80,10 @@ class base
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#derived[`derived`]
 | 
 |===
@@ -223,10 +220,9 @@ class base&lowbar;base;
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#base_base-2constructor[`base&lowbar;base`]         [.small]#[constructor]#
 | Constructor should not be inherited
 | link:#base_base-2destructor[`&#126;base&lowbar;base`] [.small]#[destructor]#
@@ -239,10 +235,10 @@ class base&lowbar;base;
 
 === Derived Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#base[`base`]
 | 
 |===
@@ -321,10 +317,10 @@ class derived
 
 === Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#base[base]`
 | 
 | `excluded&lowbar;base`
@@ -333,10 +329,9 @@ class derived
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#derived-2constructor[`derived`]         [.small]#[constructor]#
 | Constructor should not be inherited
 | link:#derived-2destructor[`&#126;derived`] [.small]#[destructor]#
@@ -359,10 +354,9 @@ class derived
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#base-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
 | link:#base-do_base_shadowed[`do&lowbar;base&lowbar;shadowed`] 
@@ -494,10 +488,9 @@ class private&lowbar;derived
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#private_derived-2constructor[`private&lowbar;derived`]         [.small]#[constructor]#
 | Constructor should not be inherited
 | link:#private_derived-2destructor[`&#126;private&lowbar;derived`] [.small]#[destructor]#
@@ -584,10 +577,10 @@ class protected&lowbar;derived
 
 === Protected Base Classes
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | `link:#base[base]`
 | 
 | `excluded&lowbar;base`
@@ -596,10 +589,9 @@ class protected&lowbar;derived
 
 === Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#protected_derived-2constructor[`protected&lowbar;derived`]         [.small]#[constructor]#
 | Constructor should not be inherited
 | link:#protected_derived-2destructor[`&#126;protected&lowbar;derived`] [.small]#[destructor]#
@@ -612,10 +604,9 @@ class protected&lowbar;derived
 
 === Protected Member Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#base_base-base_base_inherited[`base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
 | link:#base-base_inherited[`base&lowbar;inherited`] 

@@ -14,10 +14,9 @@
 
 === Using Declarations
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`] 
 | f is also available in the global namespace
 |===
@@ -27,10 +26,9 @@
 
 === Functions
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#A-f[`f`] 
 | Function being used
 |===
@@ -66,10 +64,10 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=2]
+[cols="1,4"]
 |===
-| Name
-| Description
+|Name|Description
+
 | link:#A-f[A::f]
 | Function being used
 |===
