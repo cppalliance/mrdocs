@@ -195,6 +195,11 @@ compilation-database: ../CMakeLists.txt
 output: ../docs/reference
 ----
 
+== Requirements
+
+MrDocs requires input to be well-formed {cpp} code. If the input is ill-formed, MrDocs will attempt to emit at least one diagnostic. However, constructs classified
+as "ill-formed, no diagnostic required" under the {cpp} standard may lead to undefined output.
+
 == Extracting Documentation
 
 Unlike other documentation generators, MrDocs only works with valid {cpp} code.
