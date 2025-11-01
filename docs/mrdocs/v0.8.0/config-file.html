@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>The Configuration File :: Mr.Docs</title>
+    <link rel="canonical" href="https://www.mrdocs.com/mrdocs/config-file.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+  </head>
+  <body class="article">
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><header class="header">
+  <nav class="nav navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.mrdocs.com" aria-label="Mr.Docs Home">
+        <?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #fff;
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Layer_3" data-name="Layer 3">
+    <g id="white-fill">
+      <g>
+        <path class="cls-1" d="M862.1,450.3c2.9,4.4,2.7,13.4,2.4,17.2,0,1.1-1,1.9-2.1,1.8-.3,0-.5,0-.8-.1-7.8-1.7-12.8,2.2-18.3,7.4-9.4,8.8-15.2,16.9-22.3,27.1,0,.1-.1.2-.2.3-1.1,1.7-3.8.7-3.5-1.3,1.1-10.1,4.8-28.6,17-39.2,6.5-6.2,12.5-11.5,20.6-13.7,2.5-.7,4-1.1,6.5-.6l.8,1.1h-.1Z"/>
+        <path class="cls-1" d="M863.1,491.3c2.8,26.4.8,52.3-5.2,77.9-4.4,18.5-11.5,35.9-21.4,52.3-5.8,9.5-10.3,19.9-16.5,29.1-4.4,6.4-9.4,12.4-17.1,15.4-3.4,1.3-6.6,2-10,1.3-.3,0-.6-.2-.8-.4-2.5-2-2.7-4.6-2.3-7.5,1.5-12.9,3.7-25.7,5.7-38.5,3.3-21.5,8.7-42.4,14-63.4.4-1.5,1.2-6.4,2.1-10.3.4-1.6,2.5-2.1,3.5-.7,3.9,5.6,6,11.3,6.6,17.7.8,9.1-3.9,16.5-7.6,24.3-3.5,7.4-8.5,14.4-7,23.2,0,.4.2.7.5,1,3.2,3.5,6.4,2,8.9-.7,3-3.2,5.7-6.9,8.2-10.6,3.3-5.1,6.3-10.2,8.9-15.7.8-1.6,1.5-3.3,2.2-5,1.9-4.7,3.6-9.5,5.3-14.3,1.9-5.5,2.4-12.1,2-17.9-.4-5.9-1.8-11.7-4.3-17.1-5.8-12.6-1.8-22.2,5.6-31.5,3.9-4.9,6.4-11.7,13.7-13.3.4,0,.9,0,1.3.2,1.6.8,2.7,2.3,3.6,3.7.2.3.3.6.3.9l-.2-.1Z"/>
+        <path class="cls-1" d="M468.4,489.2c1.6,1.6,7.2,3.3,7.2,5.8-.2,16.1,1,31.9-2.4,47.8-2.1,10-4.8,20-6.2,30.2-1.2,8.5-.2,18.6-5.4,26-2.4,3.4-5.6,5.9-7.6,9.5-6.3,11.3-11.5,23.5-13.3,36.3-1.6,11.4.2,23.3,11.6,29.7,9.6,5.4,19.2,10.7,28.3,16.8,5.6,3.8,11.3,7.4,17.8,8.9,19.4,4.5,36.7.2,52.1-12.7,5.2-4.4,11.3-7.9,17.2-11.4,7.3-4.3,15.6-4.8,23.9-5.5,8.1-.8,13.9-4.7,17.5-12.6,5.3-11.7,1.5-22.4-2.5-33.1-2.1-5.7-5-11.3-10-15.1-.5-.3-1.1-.5-1.6-.3-1.1.3-1.8.8-2.4,1.5-.4.5-.5,1.2-.3,1.8,3.1,12.6,6.8,25.2,1.5,37.5-4.4,1.5-7.8,1.1-11.2,1-10.2-.4-19.9,2.1-28.1,7.6-6.8,4.6-13.9,6.9-21.8,8-3.7.5-6.9.3-10.2-2-7.5-5.4-14.5-11.7-22.5-16.4-6.5-3.9-8.9-10.4-8.3-17.2.5-5.2,1.4-10.6,2.7-15.8,2.2-9.1,5.7-18,7.1-27.2,2.2-15,3.2-30.3,4.3-45.4.6-9.2-.1-18.5.7-27.7,1.8-20.3-1-39.7-8.9-58.4-4.4-10.5-11-18.7-22.9-21.6-5.6-1.4-11.5-2.2-16.9-4.2-14.3-5.2-29.3-7.9-43.9-12.1-5.8-1.7-11.5-4.1-17.3-4.9-11.1-1.6-21.5-5.9-32.4-8-7.3-1.4-14.4-3.2-21.9-3.1-6.9.1-12.8,2.2-16.8,8.1-9,13.2-18.1,26.3-26.8,39.6-3,4.6-2,10.3,1.7,13.3,1.1.8,2.7.7,3.5-.4,4.7-5.9,10.5-11,16.5-15.9,9.3-7.8,19-12.6,31.2-10.3,9.7,1.8,19.4,3.6,28.9,6.1,15.3,4,30.6,8.2,45.6,13.2,6.5,2.2,13.4,3,19.5,6.8,3.8,2.3,6.9,5.6,9.6,9.1,4,5.3,7.5,10.6,12.1,15.4l1.3,1.3h-.2ZM465.1,489c-11.7-7.2-24.1-12.6-37.3-12.6-21.4,0-42.9-3.2-64.1,4.3-11.2,4-22.3,7.7-32.7,13.4-4.2,2.3-8.4,3.8-12.3,7.6,3.2,5.3,7.4,6.5,15,4.9,7.9-2,19-4.1,29-8.8,5.6,1.2,9.3.7,13.7,2.5,1.3.7,2,1.9,2.5,3.2,2.2,5.3,6.2,8,11.7,8.9,6.7,1.1,13.6,1.3,20.1.2,13.1-2.2,20.7-9,17.6-17.2,3.8-2.1,7.3-1.9,11.1.6,6.1,3.9,12,8.1,18.6,10.9.7.3,1.4.2,2-.2,4.7-3,7.5-6.9,2.1-10.7-.7-.5-1.9-1.7-1.1-2.2.8-.2,3.2.9,3.7.6,1.3-.8,3-1.5,1.1-4.4,0,0-.2-.4-.5-.7l-.2-.3ZM347.6,672c-.6-1.4-2.4-1.6-3.3-.4-4.1,5-4.8,11.6-7.4,17.8-.7,1.6-3.1,1.5-3.6-.2-2.1-6-3.1-11.8-4.1-17.5-2.2-11.9-4.7-23.6-8.9-35-7.1-19-17.1-36.9-23.6-56.1-4-11.7-6.5-24-8.3-36.4-2.9-19.6-2.8-39.3-4.1-58.9-1.9-27.4-1.1-54.8-.8-82.2.2-19,.7-38.2,2.7-57.1,7.9-75.4,44.4-143.6,111.8-182.2,18.7-10.7,38.9-18.6,59.5-24.6,59.9-17.3,125.1-18,184.2,1.8,56.4,18.9,118.5,61,142.2,117.4,27.7,66.1,19.6,138.2,20.2,207.9.1,12.7-2.9,25.8-3.1,38.5-.3,17.2-4.7,33.7-6.2,50.6-.9,9.5-4.4,18.6-7.3,27.8-5.3,16.3-13.2,31.6-19.7,47.5-6.6,16.3-13,32.8-18.8,49.4-5.9,17.1-9.1,34.9-12.1,52.7-.6,3.8-1.5,7.5-2.3,11.2-.5,2.3,2.8,3.4,3.7,1.2,12.2-29.5,20.3-60.7,33.9-90.9.8-1.8,3.5-1.4,3.7.6.9,7.6-.1,14.3-1.4,20.9-2.2,11.9-4,23.7-3.9,35.9,0,5.7-1.5,11.5-2.4,17.2-1.8,11-2.8,22-6.2,32.8-4,12.7-10.2,24.2-16.7,35.6-8.8,15.5-20.6,29-31.9,42.4-17.2,20.5-34.6,41.2-55.1,58.6-12.3,10.4-25.5,19.5-40.8,25-16.9,6.3-36.3,6-54.1,6.4-14.7.3-29.4,0-44.1-.8-5.4-.3-10.7-.7-16.1-1.1-20.3-1.7-41.1-4.7-56.5-19.3-12.3-11.6-21.7-25.2-30.5-39.6-8.1-13.3-15.7-26.9-22.8-40.8-6-11.7-12-23.4-17.2-35.5-4.5-10.5-8.6-21.1-13-31.5-4.3-10.1-7.3-20.8-10.7-31.3-2.8-8.7-4.6-17.6-5.2-26.7-.6-8.6-1.2-17.2.5-25.8.4-1.8.8-3.6.1-5.2l-.3-.1ZM770,449.8c-.2-6.4-2-12-5.7-17.4-7.3-10.7-17.5-18.4-27.2-26.5-4.2-3.5-10.4-4.9-16-3.9-11,1.9-21.9,4.2-32.7,7-21.8,5.6-43.5,12-65.4,17.5-7.8,1.9-15.4,5.1-23.3,6.1-7.6.9-14.2,3.9-20.5,7.7-2.6,1.5-8.3,7.3-8,3.1,0-.8-1.5.6-1.6.9-4.9,7.2-4.1,19-5.9,27.3-2.3,10.5-4.8,21.2-4.4,32.1.5,13.4-.8,26.9,1.4,40.3.3,1.7.4,3.3,1.4,4.3.9.8,2.3.3,2.6-.8,3.9-19.7,1.6-40.2,9.3-58,.8-1.8,2-3.4,3.7-4.3,2-1.1,4.1-1.5,6-1.4.8,0,1.4.7,1.4,1.4-.2,3.5,2.7,5.9,5.5,4.1.5-.4,1.2-.7,1.6-1.2,8.2-10.6,16.1-21.4,29.9-25.4,2.4-.7,4.7-1.4,7.1-2.1,22.5-6.7,44.9-13.6,67.9-18.5,10.7-2.3,21.8-5.3,32.8-4.1,10.2,1.1,19.6,5.2,28.1,10.9,2.1,1.4,4.4,2.1,6.7,3,2.2,1,4.5.7,5.7-1.9l-.4-.2ZM748.3,504.7c.4-1,0-2.1-.8-2.8-8.6-6.8-18.4-12-28.6-15.8-11.9-4.5-24.6-6.1-37.1-8.3-2.9-.5-5.7-1.1-8.6-1.5-9.4-1.2-18.8-.5-28.1.8-.8.1-1.6.2-2.4.3-9.8,1.4-19.7,2.6-28.9,6.3-3.8,1.6-7.5,3.5-10.9,5.9-3,2.1-9.5,5.6-7.8,10.2.5,1.4,1.9,2.4,3.4,2.9,3,1,7,.9,10.1.7,3.5-.2,6.9-.8,10.1-2.3,5.2-2.4,10.2-5.6,15.9-6.8,1-.2,3.5.3,4.1,1.1,1.2,1.7,1.3,3.3,1.8,5.4.5,2.2.4,3.9,1.9,5.8,1.4,1.7,3.4,2.8,5.5,3.6,4.4,1.8,9.5,2.1,14.2,2.5,4.9.4,9.8.3,14.6,0,6.8-.6,12.1-5.4,14.6-11.6.4-.9,1.2-1.5,2.2-1.5,4.3-.1,8.3,0,12.5,1.3,8.8,2.6,17.8,4.1,26.4,7.4,3,1.1,6.7.7,10,.4,2.4-.2,4.8-1.1,5.9-3.8v-.2ZM714.9,704.7c.4-7.7-.8-15.3-4.9-22-7-11.6-18.2-19.6-31.4-22.9-2.9-.7-6.2-1.4-9,.9-.7.6-1,1.6-.7,2.5,1.1,3.1,3,5.8,5.3,8.1,2.5,2.4,5.4,4,8.1,6.1,12,8.8,19.1,22.3,20.2,37,.3,3.6.2,7.3,1.8,10.7.6,1.3,2.2,1.8,3.4,1,3-1.8,4.6-5.1,5.2-8.4.8-4,1.4-8,1.7-12v-.9l.3-.1ZM696.8,543.1c1.2-1.1.5-3.2-1.1-3.3-3.9-.3-7.5,0-11.4.2s-7.7.3-11.6.3c-12.1,0-24.1-1.8-36.1-2.6-1.3,0-2.6-.2-4-.2h-.9s-1.6.3-.6,1.7c.4.5.9,1,1.4,1.4,1.1.9,2.3,1.6,3.6,2.1,1.8.8,3.8,1.4,5.7,2,7.1,2,14.9,2.8,22,3.2,8.5.6,18,.9,26.2-1.3,1.9-.5,3.8-1.2,5.4-2.3.2-.1.7-.6,1.3-1.1l.1-.1ZM677.4,729.4c5.2-7.1,1-15.1-5.6-17.9-6-2.4-10.2.8-13.5,5.4-3.4,4.6-11,7.5-16.3,8.6-15,3-30.2,4.4-45.4,4.1-18.7-.3-37.2.9-55.7,3.7-10.4,1.6-21.2,1.3-31.6-.1-12-1.6-23.9-3.4-36.1-3.5-11.5-.1-23-.2-34.4,0-7.1.1-13.5-2.2-18.4-6.9-5.2-4.9-11.1-7.1-17.6-8.2-1.8-.3-3.7,0-5.4.9-.2.1-.5.2-.7.3-2.2,1.1-3.9,3.1-4.6,5.6-.7,2.7-.6,5.3.3,7.9.8,2.4,2.8,4.3,5.2,5.2,3.4,1.2,6.8,2,10.5,1.1,1.4-.3,3.3-.1,4.6.6,18.4,10,38.6,12.1,59.7,12.8,23.5-1.6,46.4,1.8,69.3.3,23.7-1.5,47.5-1.9,71.1-4.4,12.7-1.3,25.5-2.4,37.1-8.2,4.9-2.4,9.8-2.9,15-2.5,4.6.4,9.5-.9,12.3-4.8h.2ZM600.3,781.8c-.9-3.6-3.8-2.2-5.5-1.9-11,2.1-22.1,3-33.1,4.3-15.5,1.8-30.8,2.7-46.3,1.5-17.6-1.4-35.5-.5-52.5-6.5-2-.7-3.5-.5-4.6,1.3-.3,1.9,1.1,3,2,4.1,12,13.9,26.7,22.7,45.4,23.7,12.8.7,25.5.5,38.3.4,23.3,0,41.3-9.6,56.2-27l.1.1ZM522,442.3c2.3-6.5,5.7-11.8,3.7-17.9-1.8-5.6.6-12.5-4-18.2-.7-.9-2.2-.4-2.3.7-.6,6.3-.2,12.5-.2,18.7v4.5c0,4.1-.6,8,.2,12.1.3,1.3,2.1,1.4,2.5.1h.1ZM425.9,539.3c.5-.7.2-1.7-.6-2.1-1.3-.5-2.5,0-3.8.2-14.6,2.9-27.4,2.7-31.5,2.7-4.5,0-9.1-.8-13.6-.5-1.8.1-2.3,2.4-.8,3.3,13.2,7.8,43.7,5.5,50.2-3.6h.1ZM393.7,675.9c2.4-2.7,3.2-4.7,2.2-7-2.5-5.6-10.7-1.1-14.6,1.6-.4.3-.7.5-1,.7-1.5,1.2-3,2.5-4.4,3.8-6,5.7-10,12.4-11.6,20.6-1.4,7.5-.8,15.3.8,22.8v.2c1,4.3,6.9,5,9,1.1,1.9-3.6,3.2-7.3,3.4-11.7.2-4.5,1.3-9.1,3-13.6,2.9-7.4,8-12.8,13.1-18.4l.1-.1Z"/>
+        <path class="cls-1" d="M357.8,807.8h0c.2,1.8-2,2.9-3.3,1.6-7.6-7.8-13.8-16.8-18.7-26.6-8.6-17.4-12.3-36-15.7-55-2.6-14.6-2.8-29.9-8.7-43.9h0c-.9-2.3,2.4-3.8,3.5-1.6,2.3,4.3,4.5,8.5,6.7,12.7,5,9.6,7.2,20.1,10.1,30.4,2.9,10,6.3,20,9.3,30,4.7,15.6,9.5,31.2,14.1,46.8.6,1.9,1.7,3.4,2.5,5,0,.2.2.4.2.6Z"/>
+        <path class="cls-1" d="M283.3,639.7c.3,3.1.7,6.2,0,9.5-.2.9-1,1.6-2,1.5-3-.1-5.1-2.3-7.1-4.1-8.4-8-15.2-17.6-17.4-28.9-1.5-8-4.2-15.1-7.3-22.4-4-9.4-9.2-18.3-11.9-28.3-3.7-13.4-7.4-26.7-7.6-40.7-.2-13.2,0-26.4,0-39.3,0-.9.7-1.8,1.6-1.9,1.5-.2,2.1.8,2.8,1.9,4.6,8.3,8.8,16.9,14.4,24.6,4.6,6.2,1.7,12.9-.6,19.3-4.1,11.1-1.7,23.8,2.2,34.6,1.8,4.9,3.8,9.9,6.2,14.9,4.7,9.5,10.8,18.6,19,24.7,4.3,3.2,5.3,10.7,5.7,14.8.9,7.6,1.3,12.5,2.1,20.1l-.1-.3Z"/>
+        <path class="cls-1" d="M253.2,467.3c5.5,7.3,8.9,16.6,6.9,25.7-.3,1.5-.5,5.2-3.2,1-2.7-4.2-5.7-7.9-8.4-12-1.2-1.8-2.5-3.6-3.9-5.2-2-2.4-4.1-4.6-6.3-6.7-1.8-1.7-4-3.2-5.7-5.1s-4.2-5.1-3.7-7.8c.5-2.7,1.7-5.4,4.9-4.4,7.8,2.4,14.5,8,19.4,14.4v.1Z"/>
+      </g>
+    </g>
+    <g id="line">
+      <g>
+        <path class="cls-2" d="M544.31,980.75c-8.65,0-17.54-.26-27.17-.79-19.97-1.08-38.76-4.1-52.9-6.62-.04,0-.09-.02-.13-.02-20.02-3.65-38.16-13.28-53.93-28.6-20.18-19.62-40.99-41.53-63.61-66.98-2.75-3.1-5.51-6.17-8.27-9.24-10.18-11.33-20.71-23.06-30.52-35.71-13.01-16.73-25.86-35.51-31.47-59.14-2.89-12.21-4.9-24.28-6.84-35.95-.66-3.97-1.32-7.94-2.02-11.9-1.63-9.24-2.94-17.05-4.08-24.29-7.07-3.98-14.3-8.78-20.92-14.86-11.5-10.48-20.8-23.77-27.63-39.51-1.54-3.5-3.12-6.99-4.7-10.48-3.69-8.16-7.51-16.59-10.97-25.45-5.3-13.65-11.18-29.97-14.67-47.75-1.84-9.11-3.37-18.2-4.86-26.99-.71-4.18-1.42-8.35-2.15-12.53l-.02-.12c-1.97-11.37-2.76-21.51-2.42-30.98,0-.09,0-.18.01-.27.16-3.59.06-7.62-.04-11.88-.25-10.01-.53-21.36,2.25-33.68,0,0,.02-.1.02-.11,2.32-10.25,6.2-27.4,22.37-39.79,7.21-5.55,16.14-9.02,25.59-10-.13-21.95.89-44.21,4.36-65.85,5.63-35.22,17.06-69.11,33.97-100.7,11.25-21.03,13.66-24.76,18.3-30.45.82-1.01,1.47-1.8,2.75-3.62.04-.06.08-.12.12-.17,7.92-11.03,15.98-20.28,24.64-28.26,25.1-23.02,47.4-38.97,72.36-51.75,41.85-21.4,83.8-34.58,124.7-39.21,11.8-1.33,23.97-2,36.18-2,67.32,0,134.07,20.08,183.12,55.09,20.77,14.83,37.05,28.26,51.24,42.26,13.34,13.08,23.38,24.99,31.52,37.41.03.04.06.08.08.13,7.62,11.76,13.24,24.06,17.29,33.47,6.35,14.73,10.87,27.41,14.21,39.88.02.07.04.15.06.22,3.5,13.45,6.38,26.84,8.55,39.78,4.28,25.56,4.8,50.28,4.46,71.79.83-.04,1.66-.06,2.49-.06,20.06,0,37.42,11.37,47.64,31.2,7.12,13.72,8.55,27.69,9,37,0,.06,0,.12,0,.19.08,1.84.16,3.67.24,5.51.7,15.79,1.43,32.13-.74,49.73-1.88,15.17-4.16,30.33-6.37,44.98l-.24,1.6c-1.55,10.21-4.47,19.56-7.04,27.8-.57,1.82-1.14,3.63-1.68,5.45-4.83,16.31-10.55,30.64-17.51,43.81-7.93,14.92-16.14,28.03-25.12,40.15-.02.03-.04.06-.06.09-10.54,14.12-22.12,23.21-36.44,28.61-1.64.62-3.29,1.18-4.95,1.69-1.2,9.25-2.04,18.08-2.55,26.66,0,.19,0,.78,0,.78,0,1.45-.11,2.9-.32,4.34-2.35,16.1-6.11,30.37-11.48,43.63-5.13,12.64-12.15,23.03-18.33,32.21l-.12.17c-10.62,15.51-22.85,31.11-39.65,50.56-2.53,2.94-5.07,5.93-7.61,8.92-8.62,10.16-17.53,20.66-27.41,30.7-15.81,16.06-29.63,28.34-43.5,38.64-8.81,6.52-18.33,13.28-29.89,18.48-12.94,5.81-25.36,7.62-36.31,9.21,0,0-2.2.32-2.24.33-15.3,2.19-31.21,3.25-48.63,3.25Z"/>
+        <path d="M779.8,740.1v.2c-1.9,13-4.9,25.1-9.6,36.7-3.9,9.6-9.6,18.1-15.4,26.7-11.5,16.8-24.3,32.5-37.6,47.9-11.1,12.9-21.8,26.1-33.7,38.2-12.5,12.7-25.6,24.9-40,35.6-7.7,5.7-15.4,11.2-24.3,15.2-9.8,4.4-20.3,5.7-30.5,7.2-23.1,3.3-46.4,3.5-69.9,2.2-16.7-.9-33-3.3-49.3-6.2-14.8-2.7-27.6-10.1-38.4-20.6-21.6-21-42.1-42.9-62.1-65.4-12.7-14.3-25.8-28.3-37.5-43.4-11.2-14.4-21.7-29.6-26-47.7-3.6-15.2-5.8-30.7-8.5-46.1-1.9-10.8-3.7-21.5-5.3-32.3-.3-2.2-1.3-4.2-2-6.3s-.5-.9-1-1.2c-9.4-4.5-18.5-9.4-26-16.3-8.9-8.1-15.5-18.1-20.4-29.4-5.1-11.6-10.6-23-15.2-34.8-5.4-13.9-10.3-27.9-13.2-42.7-2.6-12.9-4.6-25.9-6.9-38.9-1.4-8.1-2.3-16.4-2-24.8.6-13.4-1.5-27,1.5-40.3,1.9-8.4,3.8-16.9,11.4-22.7,5.3-4.1,14.2-5.4,20.5-2.6,13.3,5.9,18.2,12.6,18.2,12.6,0,0-.2-4.6-.2-5.6-1.6-32.7-2.4-66.9,2.8-99.3,5.1-31.9,15.6-62.9,30.8-91.3s12.1-21,19.1-30.9c6.1-8.5,12.9-16.6,20.6-23.7,20.5-18.8,40.9-34.4,65.7-47.1,35.6-18.2,74.6-31.6,114.4-36.1,66.7-7.5,143.3,8.3,198.5,47.7,16.8,12,32.9,24.7,47.6,39.2,10.2,10,19.7,20.6,27.5,32.5,5.9,9.1,10.6,19,14.9,29,5,11.6,9.5,23.5,12.8,35.8,3.2,12.3,5.9,24.7,8,37.2,4.1,24.5,4.5,49.1,3.9,73.8-.3,12.1-1.3,24.2-2,36.2v3.4c0,1.5,2.1,2.4,3.3,1.3,3-3,6.2-6,8.8-8,4-2.9,7.8-6.1,12.4-7.9,13.6-5.2,24.3-.3,31.1,12.9,4.1,7.9,5.3,16.4,5.7,24.7.7,16.7,1.8,33.3-.3,50.3-1.9,15.3-4.2,30.5-6.5,45.8-1.5,9.9-4.9,19.5-7.8,29.1-3.9,13.2-8.8,26.1-15.3,38.4-6.7,12.6-14.1,24.7-22.7,36.3-6.2,8.3-13.2,14.8-23,18.5-4.5,1.7-9,2.7-13.7,3.2-2.6.2-5.1.5-7.2,3s-.3.6-.4.9c-2.7,16.1-4.8,32.8-5.7,50.2l.1-.3ZM514.3,926.7c14.7.8,29.4,1.1,44.1.8,17.8-.4,37.2,0,54.1-6.4,15.2-5.4,28.5-14.5,40.8-25,20.6-17.5,37.9-38.1,55.1-58.6,11.3-13.5,23.1-26.9,31.9-42.4,6.5-11.4,12.6-22.9,16.7-35.6,3.4-10.8,4.5-21.8,6.2-32.8.9-5.7,2.5-11.5,2.4-17.2-.1-12.2,1.6-24,3.9-35.9,1.3-6.7,2.2-13.4,1.4-20.9s-2.9-2.4-3.7-.6c-13.6,30.2-21.7,61.4-33.9,90.9s-4.2,1.2-3.7-1.2c.8-3.7,1.7-7.4,2.3-11.2,3-17.8,6.2-35.6,12.1-52.7,5.8-16.6,12.2-33.1,18.8-49.4,6.4-15.9,14.3-31.1,19.7-47.5,3-9.2,6.5-18.3,7.3-27.8,1.6-16.9,6-33.4,6.2-50.6.2-12.8,3.2-25.8,3.1-38.5-.6-69.8,7.5-141.9-20.2-207.9s-85.7-98.5-142.2-117.4c-59.1-19.8-124.3-19.1-184.2-1.8-20.7,6-40.9,13.9-59.6,24.6-67.4,38.6-103.9,106.7-111.8,182.2-2,18.9-2.5,38-2.7,57.1-.3,27.4-1.1,54.8.8,82.2,1.3,19.6,1.2,39.3,4.1,58.9,1.8,12.4,4.3,24.6,8.3,36.4,6.5,19.2,16.6,37,23.6,56.1,4.2,11.4,6.7,23.1,8.9,35,1.1,5.7,2.1,11.5,4.1,17.5s2.9,1.8,3.6.2c2.6-6.2,3.4-12.7,7.5-17.7s2.8-1,3.3.4.2,3.5-.1,5.2c-1.7,8.6-1.1,17.2-.5,25.8s2.4,18.1,5.2,26.7c3.4,10.5,6.4,21.2,10.7,31.3,4.5,10.5,8.6,21.1,13,31.5,5.2,12.1,11.2,23.8,17.2,35.5,7.1,13.9,14.7,27.5,22.8,40.8,8.7,14.3,18.2,27.9,30.5,39.6,15.4,14.6,36.3,17.6,56.5,19.3,5.4.5,10.7.8,16.1,1.1h.3ZM831.8,585c-2.5,5.5-5.5,10.6-8.9,15.7-2.4,3.7-5.1,7.3-8.2,10.6-2.5,2.7-5.7,4.2-8.9.7s-.4-.6-.5-1c-1.5-8.8,3.5-15.8,7-23.2,3.7-7.8,8.4-15.2,7.6-24.3-.5-6.4-2.6-12.1-6.6-17.7-1-1.4-3.1-1-3.5.7-.9,3.9-1.7,8.8-2.1,10.3-5.3,21-10.7,41.9-14,63.4-2,12.8-4.2,25.6-5.7,38.5-.3,2.9-.1,5.6,2.3,7.5s.5.3.8.4c3.5.7,6.7,0,10-1.3,7.7-3.1,12.7-9,17.1-15.4,6.2-9.3,10.7-19.6,16.5-29.1,10-16.4,17-33.8,21.4-52.3,6.1-25.6,8.1-51.5,5.2-77.9,0-.3-.1-.6-.3-.9-.9-1.5-2-2.9-3.6-3.7s-.9-.3-1.3-.2c-7.3,1.6-9.8,8.4-13.7,13.3-7.4,9.3-11.4,18.9-5.6,31.5,2.5,5.4,3.9,11.2,4.3,17.1s0,12.4-2,17.9-3.4,9.6-5.3,14.4c-.7,1.7-1.4,3.4-2.2,5h.2ZM254.9,579.5c-2.4-4.9-4.5-10-6.2-14.9-3.9-10.8-6.3-23.5-2.2-34.6,2.3-6.3,5.2-13.1.6-19.3-5.7-7.7-9.8-16.3-14.4-24.6-.6-1.1-1.3-2.1-2.7-1.9s-1.6,1-1.6,1.9c0,12.9-.2,26.1,0,39.3.3,14,3.9,27.3,7.6,40.7,2.7,10,8,18.9,11.9,28.3,3.1,7.3,5.8,14.5,7.3,22.4,2.2,11.3,8.9,20.9,17.4,28.9,1.9,1.8,4.1,4,7,4.1s1.8-.6,2-1.5c.7-3.3.4-6.4,0-9.5-.8-7.6-1.2-12.5-2.1-20.1-.5-4.1-1.5-11.6-5.7-14.8-8.2-6.1-14.3-15.1-19-24.7l.1.3ZM356.2,807.1c0-.2,0-.4-.2-.6-.8-1.7-1.9-3.1-2.5-5-4.5-15.7-9.4-31.2-14.1-46.8-3-10.1-6.4-20-9.3-30-3-10.3-5.1-20.8-10.1-30.4-2.2-4.2-4.4-8.3-6.7-12.7s-4.5-.7-3.5,1.6,0,0,0,0c5.9,14,6.1,29.3,8.7,43.9,3.4,19,7,37.7,15.7,55,4.9,9.9,11.1,18.8,18.7,26.6s3.5.2,3.3-1.6,0,0,0,0ZM832.6,462.8c-12.2,10.5-15.9,29.1-17,39.2-1.1,10.1,2.4,3,3.6,1.3s.2-.2.2-.3c7.1-10.2,12.9-18.3,22.3-27.1,5.6-5.2,10.5-9.1,18.3-7.4.3,0,.5,0,.8.1,1.1,0,2.1-.7,2.1-1.8.3-3.8.5-12.8-2.4-17.2s-.8-1.1-.8-1.1c-2.6-.5-4.1,0-6.5.6-8.1,2.2-14,7.5-20.5,13.7h-.1ZM243,476.1c1.4,1.7,2.7,3.4,3.9,5.2,2.7,4.1,5.7,7.9,8.4,12,2.7,4.1,2.9.5,3.2-1,1.9-9.2-1.4-18.4-6.9-25.7-4.9-6.5-11.5-12-19.4-14.4-3.2-1-4.4,1.6-4.9,4.4-.5,2.7,2,5.9,3.7,7.8s3.8,3.4,5.7,5.1c2.2,2.1,4.3,4.3,6.3,6.6h0Z"/>
+        <path d="M465.4,487.2c-4.6-4.8-8.1-10.1-12.1-15.4-2.7-3.5-5.8-6.8-9.6-9.1-6.1-3.8-13-4.6-19.5-6.8-15-5-30.3-9.2-45.6-13.2-9.5-2.5-19.2-4.3-28.9-6.1-12.2-2.3-21.9,2.5-31.2,10.3-6,5-11.8,10-16.5,16-.8,1.1-2.4,1.2-3.5.4-3.7-2.9-4.7-8.7-1.7-13.3,8.7-13.4,17.8-26.5,26.8-39.6,4-5.9,10-7.9,16.8-8.1,7.5-.1,14.6,1.6,21.9,3.1,11,2.2,21.3,6.5,32.4,8,5.8.8,11.6,3.2,17.3,4.9,14.6,4.2,29.6,6.9,43.9,12.1,5.5,2,11.3,2.8,16.9,4.2,11.9,3,18.5,11.1,22.9,21.6,7.9,18.7,10.7,38.2,8.9,58.4-.8,9.2,0,18.5-.7,27.6-1.1,15.2-2.1,30.4-4.3,45.4-1.3,9.2-4.8,18.1-7.1,27.2-1.3,5.2-2.2,10.6-2.7,15.8-.6,6.8,1.8,13.3,8.3,17.2,8,4.8,15,11,22.5,16.4,3.2,2.3,6.5,2.6,10.2,2,7.9-1.1,14.9-3.5,21.7-8,8.2-5.5,17.9-8.1,28.1-7.6,3.3.1,6.8.6,11.2-1,5.3-12.4,1.6-24.9-1.5-37.5s0-1.3.3-1.8c.6-.8,1.3-1.2,2.4-1.5s1.2,0,1.6.3c5,3.8,7.9,9.3,10,15.1,4,10.7,7.8,21.3,2.5,33.1-3.6,7.9-9.4,11.8-17.5,12.6-8.3.8-16.6,1.2-23.9,5.5-5.9,3.5-12,7-17.2,11.4-15.4,12.9-32.7,17.2-52.1,12.7-6.5-1.5-12.3-5.1-17.8-8.9-9.1-6.1-18.7-11.4-28.3-16.8-11.4-6.4-13.2-18.3-11.6-29.7,1.8-12.9,7-25.1,13.4-36.3,2-3.6,5.2-6.2,7.6-9.5,5.2-7.4,4.2-17.4,5.4-26s4.1-20.1,6.2-30.2c3.3-15.8,2.1-31.7,2.4-47.8,0-2.5-5.5-4.2-7.2-5.8l-1.3-1.3h.2ZM459.9,640.4c1.4,1.7,3.8,2.7,6.2,1.5s.3-.2.3-.3c1.9-2.9.8-7-.8-7.6-2.1-.2-4.6,2.5-5.8,5.7s0,.6,0,.8l.1-.1Z"/>
+        <path d="M620.3,461.8c-13.8,4-21.7,14.9-29.9,25.4-.4.5-1,.8-1.6,1.2-2.8,1.8-5.7-.5-5.5-4.1s-.6-1.4-1.4-1.4c-2-.1-4.1.3-6,1.4s-2.9,2.5-3.7,4.3c-7.6,17.8-5.3,38.3-9.3,58s-1.7,1.7-2.6.8-1.1-2.6-1.4-4.3c-2.3-13.4-.9-26.9-1.4-40.3-.4-10.9,2.1-21.6,4.4-32.1,1.3-6,1.3-12.2,2.5-18.1s3.4-9.3,9.6-11.7c7.8-3,15.9-7.2,24-9.1,7.8-1.9,15.5-4.1,23.3-6.1,21.9-5.5,43.5-11.8,65.4-17.5,10.8-2.8,21.7-5.1,32.7-7,5.6-1,11.7.4,16,3.9,9.7,8.1,19.9,15.8,27.2,26.5,3.7,5.4,5.4,11.1,5.7,17.4-1.2,2.6-3.4,2.9-5.7,1.9-2.2-.9-4.6-1.6-6.7-3-8.4-5.6-17.9-9.8-28-10.9s-22.1,1.9-32.8,4.1c-23,4.9-45.4,11.8-67.9,18.5-2.4.7-4.7,1.4-7.1,2.1l.2.1Z"/>
+        <path d="M470.8,748.3c-21.1-.7-41.3-2.7-59.7-12.8-1.3-.7-3.2-.9-4.6-.6-3.7.9-7.1.1-10.5-1.1s-4.4-2.7-5.2-5.2-1-5.2-.3-7.9,2.3-4.4,4.6-5.6.5-.2.7-.3c1.7-.8,3.5-1.2,5.4-.8,6.5,1.1,12.4,3.3,17.6,8.2,4.9,4.6,11.3,7,18.4,6.9,11.5-.2,23-.1,34.4,0,12.1.1,24.1,1.9,36.1,3.5,10.5,1.4,21.2,1.7,31.6.1,18.5-2.8,37-4,55.7-3.7,15.3.2,30.5-1.1,45.4-4.1,5.3-1.1,12.9-4,16.3-8.6,3.4-4.6,7.5-7.8,13.5-5.4,6.6,2.7,10.8,10.8,5.6,17.9-2.9,3.9-7.7,5.2-12.3,4.8-5.2-.4-10.1,0-15,2.5-11.6,5.8-24.4,6.8-37.1,8.2-23.7,2.5-47.4,2.9-71.1,4.4-23,1.4-45.8-1.9-69.3-.3l-.2-.1Z"/>
+        <path d="M643.4,476.4c9.3-1.3,18.8-2,28.1-.8,2.9.4,5.8,1,8.6,1.5,12.5,2.3,25.2,3.9,37.1,8.3,10.3,3.9,20.1,9,28.6,15.8s1.2,1.8.8,2.8c-1.1,2.7-3.5,3.5-5.9,3.8-3.3.3-7,.7-10-.4-8.6-3.3-17.7-4.8-26.4-7.4-4.2-1.2-8.2-1.4-12.5-1.3s-1.9.6-2.2,1.5c-2.5,6.1-7.8,11-14.6,11.6-4.9.4-9.7.4-14.6,0s-9.8-.7-14.2-2.5c-2.1-.8-4.1-1.9-5.5-3.7-1.5-1.8-1.4-3.6-1.9-5.7s-.6-3.7-1.8-5.4c-.6-.8-3.1-1.3-4.1-1.1-5.7,1.2-10.7,4.4-15.9,6.8-3.2,1.5-6.6,2.1-10.1,2.3s-7.1.3-10.1-.7-2.8-1.5-3.4-2.9c-1.7-4.6,4.8-8.1,7.8-10.2,3.4-2.4,7.1-4.3,10.9-5.9,9.2-3.7,19.2-4.9,28.9-6.3s1.6-.2,2.4-.3v.2Z"/>
+        <path d="M464,489c1.9,3,.3,3.6-1.1,4.4s-2.9-.8-3.7-.6c-.7.5.4,1.7,1.1,2.2,5.4,3.8,2.7,7.7-2,10.7s-1.3.5-2,.2c-6.6-2.8-12.5-7-18.6-10.9-3.8-2.5-7.3-2.7-11.1-.6,3.1,8.2-4.5,14.9-17.6,17.2-6.6,1.1-13.4.8-20.1-.2-5.5-.9-9.5-3.6-11.7-8.9-.5-1.2-1.2-2.5-2.5-3.2-4.4-1.8-8.2-1.2-13.7-2.5-10,4.7-21,6.8-29,8.8-7.6,1.6-11.8.4-15-4.9,3.9-3.7,8.1-5.3,12.3-7.6,10.4-5.6,21.5-9.4,32.7-13.4,21.3-7.5,42.7-4.3,64.1-4.3,13.2,0,25.6,5.5,37.3,12.6.4.3.5.7.5.7l.1.3Z"/>
+        <path d="M598.7,781.1c-14.9,17.5-32.9,26.9-56.2,27-12.8,0-25.6.3-38.3-.4-18.7-1-33.4-9.9-45.4-23.7-1-1.1-2.3-2.2-2-4.1,1.1-1.9,2.6-2,4.6-1.3,17,5.9,34.9,5.1,52.5,6.4,15.5,1.2,30.8.3,46.3-1.5,11.1-1.3,22.1-2.1,33.1-4.3,1.7-.3,4.6-1.7,5.5,1.9h-.1Z"/>
+        <path d="M713.2,704v.9c-.3,4-.9,8.1-1.7,12s-2.3,6.6-5.2,8.4c-1.2.7-2.8.3-3.4-1-1.6-3.4-1.5-7.2-1.8-10.7-1.2-14.7-8.3-28.2-20.2-37-2.8-2-5.6-3.7-8.1-6.1s-4.3-5-5.3-8.1c-.3-.9,0-1.9.7-2.5,2.8-2.3,6.1-1.6,9-.9,13.1,3.3,24.4,11.3,31.4,22.9,4,6.7,5.2,14.3,4.8,22l-.2.1Z"/>
+        <path d="M379.6,669.9c3.9-2.7,12.1-7.2,14.6-1.6,1,2.3.3,4.3-2.2,7-5.1,5.6-10.3,11.1-13.1,18.4-1.7,4.5-2.8,9.1-3,13.6-.2,4.4-1.5,8.1-3.4,11.7s-8,3.3-9-1.1,0-.2,0-.2c-1.6-7.4-2.3-15.2-.8-22.7s5.6-14.9,11.6-20.6,2.8-2.6,4.4-3.8c.3-.2.6-.5,1-.7h-.1Z"/>
+        <path d="M640.3,543.8c-2-.6-3.9-1.2-5.7-2-1.3-.5-2.6-1.2-3.6-2.1-.5-.4-1-.9-1.4-1.4-1-1.4.6-1.7.6-1.7h.9c1.3,0,2.7.2,4,.2,12.1.8,24,2.6,36.1,2.6,3.9,0,7.7,0,11.6-.3s7.5-.5,11.4-.2c1.7.1,2.3,2.2,1.1,3.3s-1.1,1-1.3,1.1c-1.7,1-3.5,1.8-5.4,2.3-8.3,2.2-17.8,1.9-26.2,1.3-7.1-.5-14.9-1.3-21.9-3.2l-.2.1Z"/>
+        <path d="M419.9,536.7c1.3-.3,2.6-.7,3.8-.2.8.3,1.1,1.3.6,2.1-6.5,9.1-37,11.4-50.2,3.6s-1-3.2.8-3.3c4.5-.3,9,.4,13.6.5,4.1,0,16.9.2,31.5-2.7h-.1Z"/>
+        <path d="M517.6,424.9c0-6.2-.4-12.4.2-18.7s1.6-1.6,2.3-.7c4.6,5.7,2.2,12.6,4,18.2,2,6.1-1.4,11.4-3.7,17.9s-2.2,1.2-2.5-.1c-.9-4-.3-8-.3-12.1v-4.5h0Z"/>
+      </g>
+    </g>
+  </g>
+  <g id="Layer_5" data-name="Layer 5">
+    <path d="M454.6,920.9l-26.5-22.9c8.3,8.9,17.1,16.7,26.5,22.9Z"/>
+    <path d="M320.3,544.2c36.4,22,76.5,10,76.5,10,32.1-6.3,51.1-25.3,51.1-25.3-19.9,5.4-40.2,7.4-61.1,5.7-38.8-1.5-55.9-9.9-63.3-16.5s-.7,7.4,3.9,5.2c18.9,5.8,29.5,4.5,40.9.5-5.6-.6-10.1-1-13.6-1.4s-6-1.3-7.8-1.6c-4.2-.8-3.2-3.4-.5-3.9,11.3-2,68.1-1.9,65.4-7.2-99.9,2.9-105.2-43.9-63.7-75.7-7.2-10.4-12.7-16.9-14.2-29.4s-36.7,19.7-36.8,17.7,38.1-33.8,37.6-36.3c-24.4-118.3,109.4-233.2,109.4-233.2-82.2,34.1-121,85.2-137.9,134.2-17.5,42.2-28.3,75.5-37.4,129l10.6,172.3,32.2,148,23,81c78.5,97.7,148.1,141.3,198.2,120.9-92.3-77.3-150.5-120.9-172.9-215.7s-3.3-7.1-4.9-10.5-5.2,14,2.6,43.9-18.3-42.9-19.7-46.9c-12.8-36.1-20.5-84.9-24.9-93.2-9.9-32.1-7.7-56.1,7.3-71.6h0Z"/>
+    <path d="M514.3,697.4c-7,9.3-17.9,16.5-37.8,18.9-13.2,2-47.9-14-55-25.3h0c-8.4-13.3-8-30.4,1-43.3l51.3-113.8c5,44.1-3.1,82.5-24.8,114.8l65.3,48.7h0Z"/>
+    <path d="M630.5,732.7l-52.2-8.8c-9.1-1.5-18.8-1.1-27.5,1.4l-16,4.5c-8.8,2.5-18.7,2.4-27.6,0l-6.6-1.9c-7.9-2.3-16.6-2.8-24.9-1.5l-48,7.4,20.3,8.4,139.2-1.9,43.2-7.5.1-.1Z"/>
+    <path d="M314.9,383.8c10-8.9,20.7-16.5,34.1-18.6,29.7-2.9,71.3,8.8,114.6,22.7-29.9-29.5-60.7-55.2-96-64l-25.8-1-21.7-12.4-11.4,65,6.2,8.3h0Z"/>
+    <path d="M479.6,856.5c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M450.5,831.6c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M433.7,815.7c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M496.2,873.5c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M513.2,891.8c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M525.7,907.6c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M535.5,920.6c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M549.4,933.7c-26.9-3.2-54.7-10.1-75.6-28.4l11.3-11.2c7.8,9.9,17.3,17.9,28.3,24.1,11.3,6.4,23.6,11.3,36,15.5h0Z"/>
+    <path d="M402.5,213.8c-13.5,12.8-25.6,26.9-35.5,42.5-9.9,15.5-18,32.1-25.8,48.9l-15.1-8.3c5.2-7.9,10.4-15.8,16-23.6,16.3-23.3,36.4-44.2,59.8-60.4l.6.8h0v.1Z"/>
+    <path d="M386.9,242.6c-10.3,14.1-20.8,28.4-28.6,43.9-7.8,15.5-12.9,32.2-18.5,48.7l-15.9-6.7c8.2-15.8,16.1-32.1,26.6-46.8,5.3-7.4,11.1-14.3,17.1-20.8s12.3-12.8,18.5-19.1l.8.7h0v.1Z"/>
+    <path d="M376.7,271.1c-10.3,14.1-20.8,28.4-28.6,43.9-7.8,15.5-12.9,32.2-18.5,48.7l-15.9-6.7c8.2-15.8,16.1-32.1,26.6-46.8,5.3-7.4,11.1-14.3,17.1-20.8s12.3-12.8,18.5-19.1l.8.7h0v.1Z"/>
+    <path d="M768.9,230.2c22.5,45.6,34,116.9,27.4,176-5.6,50.1-11.3,74.7,5.4,122.3,5.6-70.7,12.6-141.2-4.5-214.8-5-21.5-8.8-43.7-13.7-65.3-1-4.5-2.1-9.1-4.5-13s-5.5-5.2-10.1-5.2h0Z"/>
+    <path d="M719,397.7c-19,4.6-37.9,11-54.4,21.5-2.4,1.5-4.7,3.2-7,4.9l-3.3-5.7c.1,0,.5-.3.7-.4,14.3-9.1,30.7-14.4,47.1-18.2,5.5-1.3,11.2-2.2,16.8-3.1l.2,1h-.1Z"/>
+    <path d="M687.9,399.8c-19.7,7.5-38.1,18.2-53.7,32.4-1.7,1.3-3.6,3.2-6,2.9l1.3-10.2c-.9-.2-2.4,0-3.1.5-.1,0,0,0,0,0,.5-.2,1.1-.6,1.7-1,17.8-12.3,38.4-20.9,59.3-25.7l.3.9h0l.2.2Z"/>
+    <path d="M646,410.1c-19.1,8.9-36.7,20.9-51.3,36.1-1.6,1.5-3.3,3.4-5.7,3.4l.6-10.3c-.9,0-2.4.2-3.1.7-.1.1,0,0,0,0,.5-.2,1-.6,1.7-1.1,16.9-13.5,36.8-23.5,57.4-29.8l.4.9h0v.1Z"/>
+    <path d="M741.6,399.6l-22.3,6.1c-5.1,1.6-11.1,2.6-15.6,5.2-1.1.8-2.8,2.3-4.4,3.5l-3.7-5.5c2.6-1.5,5.2-3.6,8.3-4.3,4.8-1.2,9.8-1.8,14.5-2.6l22.9-3.3.2,1h0l.1-.1Z"/>
+    <path d="M327.1,630c-5,39.2-3.9,78.8-.3,118l-14.5.5c.9-39.9,4.3-80,13.8-118.7l1,.2h0Z"/>
+  </g>
+</svg>        <span class="logo-text">Mr.Docs</span>
+      </a>
+      <search class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </search>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://www.mrdocs.com">Mr.Docs</a>
+        <a class="navbar-item" href="https://cppalliance.org/">The C++ Alliance</a>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/cppalliance/mrdocs/releases">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="mrdocs" data-version="v0.8.0">
+  <aside class="nav">
+    <button class="nav-close" type="button" aria-label="Close navigation">
+      <span aria-hidden="true">Close</span>
+    </button>
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-expanded="false" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Mr.Docs</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="demos.html">Demos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="usage.html">Getting Started</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="config-file.html">The Configuration File</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="commands.html">Documenting the Code</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="generators.html">Generators</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="design-notes.html">Design Notes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="reference/index.html">Library Reference</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Mr.Docs</span>
+    <span class="version">v0.8.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Mr.Docs</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../index.html">master</a>
+        </li>
+        <li class="version">
+          <a href="../develop/index.html">develop</a>
+        </li>
+        <li class="version is-current">
+          <a href="index.html" aria-current="page">v0.8.0</a>
+        </li>
+        <li class="version">
+          <a href="../v0.0.5/index.html">v0.0.5</a>
+        </li>
+        <li class="version">
+          <a href="../v0.0.4/index.html">v0.0.4</a>
+        </li>
+        <li class="version">
+          <a href="../v0.0.3/index.html">v0.0.3</a>
+        </li>
+        <li class="version">
+          <a href="../v0.0.2/index.html">v0.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../v0.0.1/index.html">v0.0.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+  <div class="dotted"></div>
+  <div class="dotted"></div>
+<nav class="toolbar">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Mr.Docs</a></li>
+    <li><a href="config-file.html">The Configuration File</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v0.8.0</button>
+  <div class="version-menu">
+    <a class="version" href="../config-file.html">master</a>
+    <a class="version" href="../develop/config-file.html">develop</a>
+    <a class="version is-current" href="config-file.html">v0.8.0</a>
+    <a class="version" href="../v0.0.5/config-file.html">v0.0.5</a>
+    <a class="version" href="../v0.0.4/config-file.html">v0.0.4</a>
+    <a class="version" href="../v0.0.3/config-file.html">v0.0.3</a>
+    <a class="version" href="../v0.0.2/config-file.html">v0.0.2</a>
+    <a class="version" href="../v0.0.1/config-file.html">v0.0.1</a>
+  </div>
+</div>
+<div class="edit-this-page"><a href="https://github.com/cppalliance/mrdocs/edit/v0.8.0/docs/modules/ROOT/pages/config-file.adoc">Edit this Page</a></div>
+</nav>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">The Configuration File</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Mr.Docs uses a configuration file to control how the documentation is generated.
+The file is used to specify options such as the generator to use, additional compilation options, and filters.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example of a configuration file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">source-root: ../include
+multipage: false
+generator: adoc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <a href="usage.html" class="xref page">Usage</a> page provides a detailed explanation of what to combine options from the configuration file and the command line.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="#config-options-reference">Reference</a> section provides a detailed explanation of the options available.</p>
+</div>
+<div class="paragraph">
+<p>More information about the generators can be found in the <a href="generators.html" class="xref page">Generators</a> page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_yaml_schema"><a class="anchor" href="#_yaml_schema"></a>YAML Schema</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To get linting and autocompletion in the config file, a schema for the config can be specified. The schema for <code>mrdocs.yml</code> is provided <a href="_attachments/mrdocs.schema.json" class="xref attachment">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>The schema for <code>mrdocs.yml</code> is available from <a href="https://www.schemastore.org/json/" class="bare">https://www.schemastore.org/json/</a>, which is automatically detected and used by most editors.</p>
+</div>
+<div class="paragraph">
+<p>To manually set the schema in an editor, the following can be used:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In JetBrains IDEs, <code># $schema: &lt;url&gt;</code> can be used to bind a schema to a file.</p>
+</li>
+<li>
+<p>In editors with plugins based on the <a href="https://github.com/redhat-developer/yaml-language-server">YAML language server</a>, <code># yaml-language-server: $schema=&lt;url&gt;</code> can be used.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following shows an example of a file specifying an inline-schema that&#8217;s compatible with JetBrains IDEs and editors using the YAML language server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># $schema: https://mrdocs.com/docs/mrdocs/develop/_attachments/mrdocs.schema.json
+# yaml-language-server: $schema=https://mrdocs.com/docs/mrdocs/develop/_attachments/mrdocs.schema.json
+
+source-root: ../include
+multipage: false
+generator: adoc</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_options"><a class="anchor" href="#_build_options"></a>Build Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A number of options can be used to specify with which compile options Mr.Docs should be run.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">source-root: ..
+compilation-database: ../CMakeLists.txt
+cmake: '-D MRDOCS_BUILD=ON'
+defines: 'MRDOCS_BUILD'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The compile options primarily come from the <code>compilation-database</code> file.
+When this file is generated from a <code>CMakeLists.txt</code> script, the <code>cmake</code> option can be used to specify additional options to pass to CMake.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the <code>defines</code> option can be used to specify preprocessor definitions that should be used when generating the documentation.
+These definitions are included in all targets of the compilation database.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filters"><a class="anchor" href="#_filters"></a>Filters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Not all symbols in a project may be relevant to the documentation.
+Mr.Docs provides a way to filter out symbols based on their location and names.</p>
+</div>
+<div class="sect2">
+<h3 id="_file_filters"><a class="anchor" href="#_file_filters"></a>File Filters</h3>
+<div class="paragraph">
+<p>Symbols can also be filtered based on the files where they are declared. This can be useful for excluding files that exclusively contain implementation details or test code.</p>
+</div>
+<div class="paragraph">
+<p>The <code>input</code> option is a list of directories to include and a list of file patterns to include. Only symbols in files from these directories will be extracted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">input:
+  - ../include</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value for <code>input</code> is <code>"&lt;source-root&gt;/."</code>, so only symbols defined in your project source directory will be extracted.</p>
+</div>
+<div class="paragraph">
+<p>The <code>file-patterns</code> options allows you to specify a list of glob file patterns to include. Only symbols in files whose filename match these patterns will be extracted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">file-patterns:
+  - '*.hpp'
+  - '*.h'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value for <code>file-patterns</code> include a variety of common C++ header file extensions.</p>
+</div>
+<div class="paragraph">
+<p>The <code>exclude</code> option is a list of subdirectories in <code>input</code> we want to exclude. Meanwhile, <code>exclude-patterns</code> can use glob patterns to exclude files from the extraction process.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">input:
+  - ../include
+exclude:
+  - ../include/detail
+exclude-patterns:
+  - ../include/*/detail/**
+  - ../include/*/impl/**</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The glob patterns support the following wildcards:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>*</code> matches all characters except delimiters <code>/</code></p>
+</li>
+<li>
+<p><code>**</code> matches all characters</p>
+</li>
+<li>
+<p><code>?</code> matches any single character.</p>
+</li>
+<li>
+<p><code>[&lt;chars&gt;]</code> matches one character in the bracket.</p>
+</li>
+<li>
+<p><code>[&lt;char&gt;-&lt;char&gt;]</code> matches one character in the bracket range.</p>
+</li>
+<li>
+<p><code>[^&lt;chars&gt;]</code> or <code>[!&lt;chars&gt;]</code> matches one character not in the bracket.</p>
+</li>
+<li>
+<p><code>{&lt;glob&gt;,&#8230;&#8203;}</code> matches one of the globs in the list.</p>
+</li>
+<li>
+<p><code>\</code> escapes the next character so it is treated as a literal.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_symbol_filters"><a class="anchor" href="#_symbol_filters"></a>Symbol Filters</h3>
+<div class="paragraph">
+<p>Symbols can also be filtered based on their qualified names. You can use glob patterns to specify which symbols to include or exclude.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">include-symbols:
+  - 'my_library::public_namespace::*'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, all symbols are included by <code>include-symbols</code>. The syntax for symbol glob patterns is the same as for file patterns, with the exception that the delimiter <code>::</code> is used instead of <code>/</code>. So you can match all symbols in a namespace and its subnamespaces with <code>my_library::public_namespace::**</code>.</p>
+</div>
+<div class="paragraph">
+<p>The option <code>exclude-symbols</code> can be used to exclude symbols from the extraction process.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">include-symbols:
+  - 'my_library::**'
+exclude-symbols:
+  - 'my_library::private_namespace::**'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// excluded by `include-symbols`
+void f0();
+
+// included because it matches the prefix of 'my_library::**' in `include-symbols`
+namespace my_library
+{
+    // included because it matches the pattern 'my_library::**' in `include-symbols`
+    void f1();
+
+    namespace private_namespace
+    {
+        // excluded by the pattern 'my_library::private_namespace::**' in `exclude-symbols`
+        void f2();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_private_symbols"><a class="anchor" href="#_private_symbols"></a>Private Symbols</h3>
+<div class="paragraph">
+<p>The <code>implementation-defined</code> and <code>see-below</code> options can be used to designate symbols as implementation details or "see below" in the documentation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">include-symbols:
+  - 'my_library::**'
+implementation-defined:
+  - 'my_library::detail::**'
+see-below:
+  - 'my_library::see_below::**'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">namespace my_library
+{
+    namespace detail
+    {
+        // There's no documentation page for A
+        // Any reference to `A` is rendered as `/* implementation detail */`
+        class A {};
+    }
+
+    namespace see_below
+    {
+        // The documentation page for B is marked as "see below" and its members are not extracted.
+        class B {
+            // There's no documentation page for iterator
+            class iterator;
+        };
+    }
+
+    // This function is documented, but the return type is rendered as `/* implementation detail */`
+    detail::A
+    foo();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_whitelisting_rules"><a class="anchor" href="#_whitelisting_rules"></a>Whitelisting Rules</h3>
+<div class="paragraph">
+<p>The rules for whitelisting symbols (<code>include-symbols</code>, <code>implementation-defined</code>, and <code>see-below</code>) are less strict than the rules for blacklisting symbols (<code>exclude-symbols</code>). A symbol is considered whitelisted if it matches any of the following conditions:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The symbol strictly matches one of the patterns.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For instance, the patterns <code>std::vector</code> and <code>std::*</code> both match <code>std::vector</code> strictly.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The symbol is a parent namespace of an included symbol.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For instance, the pattern <code>std::filesystem::*</code> also includes <code>std</code> and <code>std::filesystem</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The parent symbol is also included.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For instance, the pattern <code>std::*</code> also matches <code>std::vector::iterator</code> because <code>std::vector::iterator</code> is a member of  <code>std::vector</code>, which is matches the pattern.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The symbol is a child of a literal pattern representing a namespace.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For instance, the literal pattern <code>std</code> matches <code>std::filesystem::path::iterator</code> because <code>std</code> is a literal pattern matching a namespace. In other words, these literal patterns represent the namespace and its subnamespaces as if the pattern were <code>std::**</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For exclusion rules, the symbol must strictly match the pattern to be excluded. If a scope is escaped by a pattern, all symbols in that scope are also excluded.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="config-options-reference"><a class="anchor" href="#config-options-reference"></a>Reference</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following options can be defined both in the configuration file and on the command line, where the command line options always take precedence.</p>
+</div>
+<div class="paragraph">
+<p>Whenever applicable, the command line options attempt to mirror (i) non-abbreviated (ii) kebab-case variants of the equivalent commands in Doxygen. For instance, the Doxygen <code>EXTRACT_ANON_NSPACES</code> option is mirrored by the <code>extract-anonymous-namespaces</code> command line option.</p>
+</div>
+<div class="sect2">
+<h3 id="_command_line_options_options_reference">
+<a class="anchor" href="#_command_line_options_options_reference"></a>
+Command Line Options
+</h3>
+<div class="paragraph"><p><i>Options that can only be provided via the command line</i></p></div>
+<div class="paragraph"><p>The following options can be used to control the general behavior of Mr.Docs and can only be provided via the command line. These include options to specify inputs and the configuration file, which cannot be set on the configuration file itself.</p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#cmd-line-inputs_option"><code style="color: darkblue">cmd-line-inputs</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+<br/>
+<span style="color: orangered;">(Command line only)</span>
+</td>
+<td class="tableblock halign-left valign-top">Configuration or compilation database files</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#config_option"><code style="color: darkblue">config</code></a>
+<br/>
+<span style="color: darkgreen;">(file path)</span>
+<br/>
+<span style="color: orangered;">(Required, Command line only)</span>
+</td>
+<td class="tableblock halign-left valign-top">Mr.Docs configuration file</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"&lt;cwd&gt;/mrdocs.yml"</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="cmd-line-inputs_option"><p><b><code style="color: darkblue">cmd-line-inputs</code></b></p></div>
+<div class="paragraph"><p><i>Configuration or compilation database files</i></p></div>
+<div class="paragraph"><p>The inputs are configuration files or compilation database files that used to generate the documentation. When the input ends with <code>mrdocs.yml</code>, it is interpreted as a configuration file, the file is read and the options are used to generate the documentation as if it was provided to the <code>config</code> option. When the input ends with <code>compilation_database.json</code> or <code>CMakeLists.txt</code>, it is interpreted as a compilation database file, the file is read and the compiler flags are used to generate the documentation as if it was provided to the <code>compilation-database</code> option.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Command line only</li>
+<li>Default value: []</li>
+<li>This command is a command line sink. Any command line argument that is not recognized by the parser will be passed to this command.</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="config_option"><p><b><code style="color: darkblue">config</code></b></p></div>
+<div class="paragraph"><p><i>Mr.Docs configuration file</i></p></div>
+<div class="paragraph"><p>The configuration file is a YAML file that contains the options used to generate the documentation. The configuration file is read and the options are used to generate the documentation. The configuration file can be used to specify the source code, the output directory, the compilation database, the generator, and the filters.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: file path</li>
+<li><span style="color: orangered;">Required</span></li>
+<li>Command line only</li>
+<li>Default value: <span style="color: darkgreen;">"&lt;cwd&gt;/mrdocs.yml"</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_paths_options_reference">
+<a class="anchor" href="#_paths_options_reference"></a>
+Paths
+</h3>
+<div class="paragraph"><p><i>Paths to the source code and output directories</i></p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#source-root_option"><code style="color: darkblue">source-root</code></a>
+<br/>
+<span style="color: darkgreen;">(directory path)</span>
+</td>
+<td class="tableblock halign-left valign-top">Path to the root directory of the source code</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"&lt;config-dir&gt;"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#output_option"><code style="color: darkblue">output</code></a>
+<br/>
+<span style="color: darkgreen;">(path)</span>
+</td>
+<td class="tableblock halign-left valign-top">Directory or file for generating output</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"&lt;config-dir&gt;/reference-output"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#compilation-database_option"><code style="color: darkblue">compilation-database</code></a>
+<br/>
+<span style="color: darkgreen;">(file path)</span>
+</td>
+<td class="tableblock halign-left valign-top">Path to the compilation database</td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="source-root_option"><p><b><code style="color: darkblue">source-root</code></b></p></div>
+<div class="paragraph"><p><i>Path to the root directory of the source code</i></p></div>
+<div class="paragraph"><p>Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths. This should typically be the root directory of the git project, as relative paths formed from it can be used to create links to these source files in the repository. Templates use the <code>base-url</code> option to create links to the source code.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: directory path</li>
+<li>Default value: <span style="color: darkgreen;">"&lt;config-dir&gt;"</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="output_option"><p><b><code style="color: darkblue">output</code></b></p></div>
+<div class="paragraph"><p><i>Directory or file for generating output</i></p></div>
+<div class="paragraph"><p>Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: path</li>
+<li>Default value: <span style="color: darkgreen;">"&lt;config-dir&gt;/reference-output"</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="compilation-database_option"><p><b><code style="color: darkblue">compilation-database</code></b></p></div>
+<div class="paragraph"><p><i>Path to the compilation database</i></p></div>
+<div class="paragraph"><p>Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, Mr.Docs will look for CMake in <code>PATH</code> or in <code>CMAKE_ROOT</code> and run the script to generate the compilation database file.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: file path</li>
+<li>Default value: </li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_filters_options_reference">
+<a class="anchor" href="#_filters_options_reference"></a>
+Filters
+</h3>
+<div class="paragraph"><p><i>Filters to include or exclude files and symbols from the documentation</i></p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#input_option"><code style="color: darkblue">input</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+</td>
+<td class="tableblock halign-left valign-top">Input directories to extract symbols from</td>
+<td class="tableblock halign-left valign-top">[<span style="color: darkgreen;">"&lt;source-root&gt;/."</span>]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#recursive_option"><code style="color: darkblue">recursive</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Recursively include files from "input" paths</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#file-patterns_option"><code style="color: darkblue">file-patterns</code></a>
+<br/>
+<span style="color: darkgreen;">(list of path-globs)</span>
+</td>
+<td class="tableblock halign-left valign-top">File patterns to include</td>
+<td class="tableblock halign-left valign-top">[<span style="color: darkgreen;">"*.hpp"</span>, <span style="color: darkgreen;">"*.h"</span>, <span style="color: darkgreen;">"*.hh"</span>, <span style="color: darkgreen;">"*.ipp"</span>, <span style="color: darkgreen;">"*.inc"</span>, <span style="color: darkgreen;">"*.cpp"</span>, <span style="color: darkgreen;">"*.cc"</span>, <span style="color: darkgreen;">"*.cxx"</span>, <span style="color: darkgreen;">"*.c"</span>, <span style="color: darkgreen;">"*.hxx"</span>]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#exclude_option"><code style="color: darkblue">exclude</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+</td>
+<td class="tableblock halign-left valign-top">Input directories to exclude</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#exclude-patterns_option"><code style="color: darkblue">exclude-patterns</code></a>
+<br/>
+<span style="color: darkgreen;">(list of path-globs)</span>
+</td>
+<td class="tableblock halign-left valign-top">File patterns to exclude</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#include-symbols_option"><code style="color: darkblue">include-symbols</code></a>
+<br/>
+<span style="color: darkgreen;">(list of symbol-globs)</span>
+</td>
+<td class="tableblock halign-left valign-top">Symbol patterns to include</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#exclude-symbols_option"><code style="color: darkblue">exclude-symbols</code></a>
+<br/>
+<span style="color: darkgreen;">(list of symbol-globs)</span>
+</td>
+<td class="tableblock halign-left valign-top">Symbol patterns to exclude</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#see-below_option"><code style="color: darkblue">see-below</code></a>
+<br/>
+<span style="color: darkgreen;">(list of symbol-globs)</span>
+</td>
+<td class="tableblock halign-left valign-top">Exposition only symbols rendered as "see-below".</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#implementation-defined_option"><code style="color: darkblue">implementation-defined</code></a>
+<br/>
+<span style="color: darkgreen;">(list of symbol-globs)</span>
+</td>
+<td class="tableblock halign-left valign-top">Symbols rendered as "implementation-defined"</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="input_option"><p><b><code style="color: darkblue">input</code></b></p></div>
+<div class="paragraph"><p><i>Input directories to extract symbols from</i></p></div>
+<div class="paragraph"><p>Input directories to extract. Only symbols defined in files in these directories are extracted. The paths are relative to the mrdocs configuration file.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Default value: [<span style="color: darkgreen;">"&lt;source-root&gt;/."</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="recursive_option"><p><b><code style="color: darkblue">recursive</code></b></p></div>
+<div class="paragraph"><p><i>Recursively include files from "input" paths</i></p></div>
+<div class="paragraph"><p>Recursively include files. When set to true, Mr.Docs includes files in subdirectories of the input directories. When set to false, Mr.Docs includes only the files in the input directories.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="file-patterns_option"><p><b><code style="color: darkblue">file-patterns</code></b></p></div>
+<div class="paragraph"><p><i>File patterns to include</i></p></div>
+<div class="paragraph"><p>File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of path-globs</li>
+<li>Default value: [<span style="color: darkgreen;">"*.hpp"</span>, <span style="color: darkgreen;">"*.h"</span>, <span style="color: darkgreen;">"*.hh"</span>, <span style="color: darkgreen;">"*.ipp"</span>, <span style="color: darkgreen;">"*.inc"</span>, <span style="color: darkgreen;">"*.cpp"</span>, <span style="color: darkgreen;">"*.cc"</span>, <span style="color: darkgreen;">"*.cxx"</span>, <span style="color: darkgreen;">"*.c"</span>, <span style="color: darkgreen;">"*.hxx"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="exclude_option"><p><b><code style="color: darkblue">exclude</code></b></p></div>
+<div class="paragraph"><p><i>Input directories to exclude</i></p></div>
+<div class="paragraph"><p>Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, &quot;include/experimental&quot; will exclude all files in the directory <code>&lt;config-dir&gt;/include/experimental</code>.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="exclude-patterns_option"><p><b><code style="color: darkblue">exclude-patterns</code></b></p></div>
+<div class="paragraph"><p><i>File patterns to exclude</i></p></div>
+<div class="paragraph"><p>File patterns to exclude. Files that match these patterns are not extracted even if they are in the list of include directories. The patterns are relative to the configuration file. A single * will match all files in the directory. Double ** will match all files in the directory and its subdirectories.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of path-globs</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="include-symbols_option"><p><b><code style="color: darkblue">include-symbols</code></b></p></div>
+<div class="paragraph"><p><i>Symbol patterns to include</i></p></div>
+<div class="paragraph"><p>If any patterns are defined here, only symbols that match one of these patterns are extracted. The patterns are applied to the fully qualified name of the symbol without any leading &quot;::&quot;. A single &quot;*&quot; will match all symbols in the namespace. Double &quot;**&quot; will match all symbols in the namespace and its subnamespaces. The patterns also support &quot;?&quot; for any chars, &quot;[&lt;chars&gt;]&quot; for charsets, &quot;[^&lt;chars&gt;]&quot; for inverted charsets, and &quot;{&lt;glob&gt;,...}&quot; for alternatives.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of symbol-globs</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="exclude-symbols_option"><p><b><code style="color: darkblue">exclude-symbols</code></b></p></div>
+<div class="paragraph"><p><i>Symbol patterns to exclude</i></p></div>
+<div class="paragraph"><p>A symbol that matches one of these patterns is not extracted even if whitelisted by &quot;include-symbols&quot;. See the documentation for &quot;include-symbols&quot; for the pattern syntax.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of symbol-globs</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="see-below_option"><p><b><code style="color: darkblue">see-below</code></b></p></div>
+<div class="paragraph"><p><i>Exposition only symbols rendered as "see-below".</i></p></div>
+<div class="paragraph"><p>Symbols that match one of these filters are tagged as &quot;see-below&quot; in the documentation, and so do symbols in scopes tagged as &quot;see-below&quot;. This option is used to remove details about symbols that are considered part of the private API of the project but the user might need to interact with. In the documentation page for this symbol, the symbol is exposition only: the synopsis of the implementation is rendered as &quot;see-below&quot; and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual to explain the symbol. See the documentation for &quot;include-symbol&quot; for the pattern syntax.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of symbol-globs</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="implementation-defined_option"><p><b><code style="color: darkblue">implementation-defined</code></b></p></div>
+<div class="paragraph"><p><i>Symbols rendered as "implementation-defined"</i></p></div>
+<div class="paragraph"><p>Symbols that match one of these filters are tagged as &quot;implementation-defined&quot; in the documentation, and so do symbols in scopes tagged as &quot;implementation-defined&quot;. This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An &quot;implementation-defined&quot; symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as &quot;implementation-defined&quot;. See the documentation for &quot;include-symbol&quot; for the pattern syntax.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of symbol-globs</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_semantic_parsing_options_reference">
+<a class="anchor" href="#_semantic_parsing_options_reference"></a>
+Semantic Parsing
+</h3>
+<div class="paragraph"><p><i>Options to control how the source code is parsed</i></p></div>
+<div class="paragraph"><p>Mr.Docs uses libclang to parse the source code and extract symbols. The following options control how the source code is parsed.</p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#missing-include-prefixes_option"><code style="color: darkblue">missing-include-prefixes</code></a>
+<br/>
+<span style="color: darkgreen;">(list of strings)</span>
+</td>
+<td class="tableblock halign-left valign-top">Include path prefixes allowed to be missing</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#missing-include-shims_option"><code style="color: darkblue">missing-include-shims</code></a>
+<br/>
+<span style="color: darkgreen;">(map<string,string>)</span>
+</td>
+<td class="tableblock halign-left valign-top">Shims for forgiven missing include files</td>
+<td class="tableblock halign-left valign-top">{}</td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="missing-include-prefixes_option"><p><b><code style="color: darkblue">missing-include-prefixes</code></b></p></div>
+<div class="paragraph"><p><i>Include path prefixes allowed to be missing</i></p></div>
+<div class="paragraph"><p>Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use &quot;llvm/&quot; to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the &quot;missing-include-shims&quot; option.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of strings</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="missing-include-shims_option"><p><b><code style="color: darkblue">missing-include-shims</code></b></p></div>
+<div class="paragraph"><p><i>Shims for forgiven missing include files</i></p></div>
+<div class="paragraph"><p>Specifies a map of include file paths to shim contents. If a missing include file matches a forgiven prefix, MrDocs will use the shim content from this map as the file contents. If no shim is provided for a forgiven file, an empty file is used by default.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: map<string,string></li>
+<li>Default value: {}</li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_comment_parsing_options_reference">
+<a class="anchor" href="#_comment_parsing_options_reference"></a>
+Comment Parsing
+</h3>
+<div class="paragraph"><p><i>Options to control how comments are parsed</i></p></div>
+<div class="paragraph"><p>Mr.Docs extracts metadata from the comments in the source code. The following options control how comments are parsed.</p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#auto-brief_option"><code style="color: darkblue">auto-brief</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Use the first line of the comment as the brief</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#auto-relates_option"><code style="color: darkblue">auto-relates</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Automatically find non-member functions</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#auto-function-metadata_option"><code style="color: darkblue">auto-function-metadata</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Automatically provide missing documentation for special functions and trivial metadata</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="auto-brief_option"><p><b><code style="color: darkblue">auto-brief</code></b></p></div>
+<div class="paragraph"><p><i>Use the first line of the comment as the brief</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to <code>false</code>, a explicit @brief command is required.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="auto-relates_option"><p><b><code style="color: darkblue">auto-relates</code></b></p></div>
+<div class="paragraph"><p><i>Automatically find non-member functions</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, Mr.Docs automatically finds non-member functions that are related to the current class.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="auto-function-metadata_option"><p><b><code style="color: darkblue">auto-function-metadata</code></b></p></div>
+<div class="paragraph"><p><i>Automatically provide missing documentation for special functions and trivial metadata</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_metadata_extraction_options_reference">
+<a class="anchor" href="#_metadata_extraction_options_reference"></a>
+Metadata Extraction
+</h3>
+<div class="paragraph"><p><i>Metadata and C++ semantic constructs to extract</i></p></div>
+<div class="paragraph"><p>MrDocs extracts metadata and C++ semantic constructs from the source code to create the documentation. Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE. The following options control the extraction of metadata and C++ semantic constructs.</p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-all_option"><code style="color: darkblue">extract-all</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extract all symbols</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-private_option"><code style="color: darkblue">extract-private</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for private class members</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-private-virtual_option"><code style="color: darkblue">extract-private-virtual</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for private virtual methods of a class</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-private-bases_option"><code style="color: darkblue">extract-private-bases</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for private base classes</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-static_option"><code style="color: darkblue">extract-static</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for static members of a file</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-local-classes_option"><code style="color: darkblue">extract-local-classes</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for records defined locally in source files</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-anonymous-namespaces_option"><code style="color: darkblue">extract-anonymous-namespaces</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for anonymous namespaces</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-empty-namespaces_option"><code style="color: darkblue">extract-empty-namespaces</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for empty namespaces</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#inherit-base-members_option"><code style="color: darkblue">inherit-base-members</code></a>
+<br/>
+<span style="color: darkgreen;">(enum)</span>
+</td>
+<td class="tableblock halign-left valign-top">Determine how derived classes inherit base members</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"copy-dependencies"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-implicit-specializations_option"><code style="color: darkblue">extract-implicit-specializations</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Implicit template specializations used as base classes are extracted as dependencies</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#extract-friends_option"><code style="color: darkblue">extract-friends</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Extraction policy for friend functions and classes</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members_option"><code style="color: darkblue">sort-members</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Sort the members of a record</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members-by_option"><code style="color: darkblue">sort-members-by</code></a>
+<br/>
+<span style="color: darkgreen;">(enum)</span>
+</td>
+<td class="tableblock halign-left valign-top">Determine how members of a record are sorted</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"name"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-namespace-members-by_option"><code style="color: darkblue">sort-namespace-members-by</code></a>
+<br/>
+<span style="color: darkgreen;">(enum)</span>
+</td>
+<td class="tableblock halign-left valign-top">Determine how members of a namespace are sorted</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"name"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members-ctors-1st_option"><code style="color: darkblue">sort-members-ctors-1st</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Sort constructors first</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members-dtors-1st_option"><code style="color: darkblue">sort-members-dtors-1st</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Sort destructors first</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members-assignment-1st_option"><code style="color: darkblue">sort-members-assignment-1st</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Sort assignment operators first</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members-conversion-last_option"><code style="color: darkblue">sort-members-conversion-last</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Sort conversion operators last</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sort-members-relational-last_option"><code style="color: darkblue">sort-members-relational-last</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Sort relational operators last</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="extract-all_option"><p><b><code style="color: darkblue">extract-all</code></b></p></div>
+<div class="paragraph"><p><i>Extract all symbols</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs extracts all symbols from the source code, even if no documentation is provided. MrDocs can only identify whether a symbol is ultimated documented after extracting information from all translation units. For this reason, when this option is set to <code>false</code>, it&#039;s still recommendable to provide file and symbol filters so that only the desired symbols are traversed and stored by MrDocs.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-private_option"><p><b><code style="color: darkblue">extract-private</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for private class members</i></p></div>
+<div class="paragraph"><p>Determine whether private class members should be extracted</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-private-virtual_option"><p><b><code style="color: darkblue">extract-private-virtual</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for private virtual methods of a class</i></p></div>
+<div class="paragraph"><p>Determine whether private virtual methods of a class should be extracted</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-private-bases_option"><p><b><code style="color: darkblue">extract-private-bases</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for private base classes</i></p></div>
+<div class="paragraph"><p>Determine whether private base classes should be extracted</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-static_option"><p><b><code style="color: darkblue">extract-static</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for static members of a file</i></p></div>
+<div class="paragraph"><p>Determine whether static members of a file should be extracted. This option does not refer to static members of a class.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-local-classes_option"><p><b><code style="color: darkblue">extract-local-classes</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for records defined locally in source files</i></p></div>
+<div class="paragraph"><p>Determine whether records only defined locally in source files should be extracted.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-anonymous-namespaces_option"><p><b><code style="color: darkblue">extract-anonymous-namespaces</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for anonymous namespaces</i></p></div>
+<div class="paragraph"><p>Determine whether symbols in anonymous namespaces should be extracted.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-empty-namespaces_option"><p><b><code style="color: darkblue">extract-empty-namespaces</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for empty namespaces</i></p></div>
+<div class="paragraph"><p>Determine whether empty namespaces without documentation should be extracted.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="inherit-base-members_option"><p><b><code style="color: darkblue">inherit-base-members</code></b></p></div>
+<div class="paragraph"><p><i>Determine how derived classes inherit base members</i></p></div>
+<div class="paragraph"><p>Determine how derived classes inherit members of base classes. When set to <code>never</code>, derived classes do not inherit members of base classes and only the relationship is stored. When set to <code>reference</code>, derived classes list members of base classes but references are still linked to the base class. When set to <code>copy-dependencies</code>, a reference is created by default and a copy is created when the base class is a dependency. When set to <code>copy-all</code>, a copy is created for each base symbol as if it was declared in the derived class. If the base class is a dependency, the extraction mode is copied from the new parent.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: enum</li>
+<li>Default value: <span style="color: darkgreen;">"copy-dependencies"</span></li>
+<li>Allowed values: [<span style="color: darkgreen;">"never"</span>, <span style="color: darkgreen;">"reference"</span>, <span style="color: darkgreen;">"copy-dependencies"</span>, <span style="color: darkgreen;">"copy-all"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-implicit-specializations_option"><p><b><code style="color: darkblue">extract-implicit-specializations</code></b></p></div>
+<div class="paragraph"><p><i>Implicit template specializations used as base classes are extracted as dependencies</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs extracts implicit template specializations used as base classes as dependencies. This allows MrDocs to extract metadata that can later be used to determine the members of the derived class, as specified by the <code>inherit-base-members</code> option.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="extract-friends_option"><p><b><code style="color: darkblue">extract-friends</code></b></p></div>
+<div class="paragraph"><p><i>Extraction policy for friend functions and classes</i></p></div>
+<div class="paragraph"><p>Determine whether friend functions and classes should be extracted. When set to <code>true</code>, MrDocs extracts friend functions and classes. When set to <code>false</code>, friend functions and classes are not extracted.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members_option"><p><b><code style="color: darkblue">sort-members</code></b></p></div>
+<div class="paragraph"><p><i>Sort the members of a record</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, sort the members of a record by the criterion determined in the <code>sort-members-by</code> option. When set to <code>false</code>, the members are included in the declaration order they are extracted.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members-by_option"><p><b><code style="color: darkblue">sort-members-by</code></b></p></div>
+<div class="paragraph"><p><i>Determine how members of a record are sorted</i></p></div>
+<div class="paragraph"><p>If <code>sort-members</code> is set to <code>true</code>, determine how members of a record are sorted. When set to <code>name</code>, members are sorted by name. When set to <code>location</code>, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: enum</li>
+<li>Default value: <span style="color: darkgreen;">"name"</span></li>
+<li>Allowed values: [<span style="color: darkgreen;">"name"</span>, <span style="color: darkgreen;">"location"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-namespace-members-by_option"><p><b><code style="color: darkblue">sort-namespace-members-by</code></b></p></div>
+<div class="paragraph"><p><i>Determine how members of a namespace are sorted</i></p></div>
+<div class="paragraph"><p>Although members of namespaces are always sorted, determine how members of a namespace are sorted. When set to <code>name</code>, members are sorted by name. When set to <code>location</code>, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: enum</li>
+<li>Default value: <span style="color: darkgreen;">"name"</span></li>
+<li>Allowed values: [<span style="color: darkgreen;">"name"</span>, <span style="color: darkgreen;">"location"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members-ctors-1st_option"><p><b><code style="color: darkblue">sort-members-ctors-1st</code></b></p></div>
+<div class="paragraph"><p><i>Sort constructors first</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, constructors are sorted first in the list of members of a record.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members-dtors-1st_option"><p><b><code style="color: darkblue">sort-members-dtors-1st</code></b></p></div>
+<div class="paragraph"><p><i>Sort destructors first</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, destructors are sorted first in the list of members of a record.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members-assignment-1st_option"><p><b><code style="color: darkblue">sort-members-assignment-1st</code></b></p></div>
+<div class="paragraph"><p><i>Sort assignment operators first</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, assignment operators are sorted first in the list of members of a record.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members-conversion-last_option"><p><b><code style="color: darkblue">sort-members-conversion-last</code></b></p></div>
+<div class="paragraph"><p><i>Sort conversion operators last</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, conversion operators are sorted last in the list of members of a record or namespace.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="sort-members-relational-last_option"><p><b><code style="color: darkblue">sort-members-relational-last</code></b></p></div>
+<div class="paragraph"><p><i>Sort relational operators last</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, relational operators are sorted last in the list of members of a record or namespace.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_semantic_constructs_options_reference">
+<a class="anchor" href="#_semantic_constructs_options_reference"></a>
+Semantic Constructs
+</h3>
+<div class="paragraph"><p><i>C++ semantic constructs to extract</i></p></div>
+<div class="paragraph"><p>Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE.</p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#sfinae_option"><code style="color: darkblue">sfinae</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Detect and reduce SFINAE expressions</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#overloads_option"><code style="color: darkblue">overloads</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Detect and group function overloads</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="sfinae_option"><p><b><code style="color: darkblue">sfinae</code></b></p></div>
+<div class="paragraph"><p><i>Detect and reduce SFINAE expressions</i></p></div>
+<div class="paragraph"><p>When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as <code>std::enable_if&lt;...&gt;</code> are detected, removed, and documented as a requirement. MrDocs uses an algorithm that extracts SFINAE infomation from types by identifying inspecting the primary template and specializations to detect the result type and the controlling expressions in a specialization.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="overloads_option"><p><b><code style="color: darkblue">overloads</code></b></p></div>
+<div class="paragraph"><p><i>Detect and group function overloads</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs detects function overloads and groups them as a single symbol type. The documentation for this new symbol comes from the union of non-ambiguous metadata from the functions.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_generators_options_reference">
+<a class="anchor" href="#_generators_options_reference"></a>
+Generators
+</h3>
+<div class="paragraph"><p><i>Generators to create the documentation and their options</i></p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#generator_option"><code style="color: darkblue">generator</code></a>
+<br/>
+<span style="color: darkgreen;">(enum)</span>
+</td>
+<td class="tableblock halign-left valign-top">Generator used to create the documentation</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"adoc"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#multipage_option"><code style="color: darkblue">multipage</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Generate a multipage documentation</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#base-url_option"><code style="color: darkblue">base-url</code></a>
+<br/>
+<span style="color: darkgreen;">(string)</span>
+</td>
+<td class="tableblock halign-left valign-top">Base URL for links to source code</td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#addons_option"><code style="color: darkblue">addons</code></a>
+<br/>
+<span style="color: darkgreen;">(path)</span>
+</td>
+<td class="tableblock halign-left valign-top">Path to the Addons directory</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/addons"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#tagfile_option"><code style="color: darkblue">tagfile</code></a>
+<br/>
+<span style="color: darkgreen;">(file path)</span>
+</td>
+<td class="tableblock halign-left valign-top">Path for the tagfile</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"&lt;output-dir&gt;/reference.tag.xml"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#legible-names_option"><code style="color: darkblue">legible-names</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Use legible names</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#embedded_option"><code style="color: darkblue">embedded</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Output an embeddable document</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#show-namespaces_option"><code style="color: darkblue">show-namespaces</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Show namespace pages in the documentation</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#show-enum-constants_option"><code style="color: darkblue">show-enum-constants</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Show enum constant pages in the documentation</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#global-namespace-index_option"><code style="color: darkblue">global-namespace-index</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Use the global namespace page as an index for all symbols</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="generator_option"><p><b><code style="color: darkblue">generator</code></b></p></div>
+<div class="paragraph"><p><i>Generator used to create the documentation</i></p></div>
+<div class="paragraph"><p>The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The generator can create different types of documentation such as HTML, XML, and AsciiDoc.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: enum</li>
+<li>Default value: <span style="color: darkgreen;">"adoc"</span></li>
+<li>Allowed values: [<span style="color: darkgreen;">"adoc"</span>, <span style="color: darkgreen;">"html"</span>, <span style="color: darkgreen;">"xml"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="multipage_option"><p><b><code style="color: darkblue">multipage</code></b></p></div>
+<div class="paragraph"><p><i>Generate a multipage documentation</i></p></div>
+<div class="paragraph"><p>Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="base-url_option"><p><b><code style="color: darkblue">base-url</code></b></p></div>
+<div class="paragraph"><p><i>Base URL for links to source code</i></p></div>
+<div class="paragraph"><p>Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: string</li>
+<li>Default value: </li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="addons_option"><p><b><code style="color: darkblue">addons</code></b></p></div>
+<div class="paragraph"><p><i>Path to the Addons directory</i></p></div>
+<div class="paragraph"><p>Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the <code>share/mrdocs/addons</code> directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: path</li>
+<li>Default value: <span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/addons"</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="tagfile_option"><p><b><code style="color: darkblue">tagfile</code></b></p></div>
+<div class="paragraph"><p><i>Path for the tagfile</i></p></div>
+<div class="paragraph"><p>Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: file path</li>
+<li>Default value: <span style="color: darkgreen;">"&lt;output-dir&gt;/reference.tag.xml"</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="legible-names_option"><p><b><code style="color: darkblue">legible-names</code></b></p></div>
+<div class="paragraph"><p><i>Use legible names</i></p></div>
+<div class="paragraph"><p>Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="embedded_option"><p><b><code style="color: darkblue">embedded</code></b></p></div>
+<div class="paragraph"><p><i>Output an embeddable document</i></p></div>
+<div class="paragraph"><p>Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="show-namespaces_option"><p><b><code style="color: darkblue">show-namespaces</code></b></p></div>
+<div class="paragraph"><p><i>Show namespace pages in the documentation</i></p></div>
+<div class="paragraph"><p>When set to true, MrDocs creates a page for each namespace in the documentation.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="show-enum-constants_option"><p><b><code style="color: darkblue">show-enum-constants</code></b></p></div>
+<div class="paragraph"><p><i>Show enum constant pages in the documentation</i></p></div>
+<div class="paragraph"><p>When set to true, MrDocs creates a page for each enum constant in the documentation.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="global-namespace-index_option"><p><b><code style="color: darkblue">global-namespace-index</code></b></p></div>
+<div class="paragraph"><p><i>Use the global namespace page as an index for all symbols</i></p></div>
+<div class="paragraph"><p>When set to true, the page for the global namespace will recursively list all symbols in the documentation, not just those in the global namespace. This makes the global namespace page act as an index for the entire project.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_build_options_options_reference">
+<a class="anchor" href="#_build_options_options_reference"></a>
+Build options
+</h3>
+<div class="paragraph"><p><i>Options for building the source code</i></p></div>
+<div class="paragraph"><p>When MrDocs is responsible to running the build scripts and generating the compilation database, these options are used to build the source code.</p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#cmake_option"><code style="color: darkblue">cmake</code></a>
+<br/>
+<span style="color: darkgreen;">(string)</span>
+</td>
+<td class="tableblock halign-left valign-top">CMake arguments when generating the compilation database from CMakeLists.txt</td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#defines_option"><code style="color: darkblue">defines</code></a>
+<br/>
+<span style="color: darkgreen;">(list of strings)</span>
+</td>
+<td class="tableblock halign-left valign-top">Additional defines passed to the compiler</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#use-system-stdlib_option"><code style="color: darkblue">use-system-stdlib</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Use the system C++ standard library</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#stdlib-includes_option"><code style="color: darkblue">stdlib-includes</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+</td>
+<td class="tableblock halign-left valign-top">C++ Standard Library include paths</td>
+<td class="tableblock halign-left valign-top">[<span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/headers/libcxx"</span>, <span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/headers/clang"</span>]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#use-system-libc_option"><code style="color: darkblue">use-system-libc</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Use the system C standard library</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#libc-includes_option"><code style="color: darkblue">libc-includes</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+</td>
+<td class="tableblock halign-left valign-top">Standard Library include paths</td>
+<td class="tableblock halign-left valign-top">[<span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/headers/libc-stubs"</span>]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#system-includes_option"><code style="color: darkblue">system-includes</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+</td>
+<td class="tableblock halign-left valign-top">System include paths</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#includes_option"><code style="color: darkblue">includes</code></a>
+<br/>
+<span style="color: darkgreen;">(list of paths)</span>
+</td>
+<td class="tableblock halign-left valign-top">Include paths</td>
+<td class="tableblock halign-left valign-top">[]</td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="cmake_option"><p><b><code style="color: darkblue">cmake</code></b></p></div>
+<div class="paragraph"><p><i>CMake arguments when generating the compilation database from CMakeLists.txt</i></p></div>
+<div class="paragraph"><p>When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: string</li>
+<li>Default value: </li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="defines_option"><p><b><code style="color: darkblue">defines</code></b></p></div>
+<div class="paragraph"><p><i>Additional defines passed to the compiler</i></p></div>
+<div class="paragraph"><p>Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of strings</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="use-system-stdlib_option"><p><b><code style="color: darkblue">use-system-stdlib</code></b></p></div>
+<div class="paragraph"><p><i>Use the system C++ standard library</i></p></div>
+<div class="paragraph"><p>To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="stdlib-includes_option"><p><b><code style="color: darkblue">stdlib-includes</code></b></p></div>
+<div class="paragraph"><p><i>C++ Standard Library include paths</i></p></div>
+<div class="paragraph"><p>When <code>use-system-stdlib</code> is disabled, the C++ standard library headers are available in these paths.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Default value: [<span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/headers/libcxx"</span>, <span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/headers/clang"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="use-system-libc_option"><p><b><code style="color: darkblue">use-system-libc</code></b></p></div>
+<div class="paragraph"><p><i>Use the system C standard library</i></p></div>
+<div class="paragraph"><p>To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="libc-includes_option"><p><b><code style="color: darkblue">libc-includes</code></b></p></div>
+<div class="paragraph"><p><i>Standard Library include paths</i></p></div>
+<div class="paragraph"><p>When <code>use-system-libc</code> is disabled, the C standard library headers are available in these paths.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Default value: [<span style="color: darkgreen;">"&lt;mrdocs-root&gt;/share/mrdocs/headers/libc-stubs"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="system-includes_option"><p><b><code style="color: darkblue">system-includes</code></b></p></div>
+<div class="paragraph"><p><i>System include paths</i></p></div>
+<div class="paragraph"><p>System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="includes_option"><p><b><code style="color: darkblue">includes</code></b></p></div>
+<div class="paragraph"><p><i>Include paths</i></p></div>
+<div class="paragraph"><p>Include paths. These paths are used to add directories to the include search path. The include search path is used to search for headers. The headers are used to provide declarations and definitions of symbols. The headers are part of the project and are checked for warnings and errors.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: list of paths</li>
+<li>Default value: []</li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_warnings_options_reference">
+<a class="anchor" href="#_warnings_options_reference"></a>
+Warnings
+</h3>
+<div class="paragraph"><p><i>Warnings and progress messages</i></p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#verbose_option"><code style="color: darkblue">verbose</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Verbose output</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#report_option"><code style="color: red">report</code></a>
+<br/>
+<span style="color: darkgreen;">(unsigned integer)</span>
+<br/>
+<span style="color: orangered;">(Deprecated)</span>
+</td>
+<td class="tableblock halign-left valign-top">The minimum reporting level</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">-1</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#log-level_option"><code style="color: darkblue">log-level</code></a>
+<br/>
+<span style="color: darkgreen;">(enum)</span>
+</td>
+<td class="tableblock halign-left valign-top">The minimum reporting level</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkgreen;">"info"</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warnings_option"><code style="color: darkblue">warnings</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Enable warning messages</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-if-undocumented_option"><code style="color: darkblue">warn-if-undocumented</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Warn if symbols are not documented</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-if-doc-error_option"><code style="color: darkblue">warn-if-doc-error</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Warn if documentation has errors</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-no-paramdoc_option"><code style="color: darkblue">warn-no-paramdoc</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Warn if parameters are not documented</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-unnamed-param_option"><code style="color: darkblue">warn-unnamed-param</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Warn if documented functions have unnamed parameters</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-if-undoc-enum-val_option"><code style="color: darkblue">warn-if-undoc-enum-val</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Warn if enum values are not documented</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-broken-ref_option"><code style="color: darkblue">warn-broken-ref</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Warn if a documentation reference is broken</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">true</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#warn-as-error_option"><code style="color: darkblue">warn-as-error</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Treat warnings as errors</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="verbose_option"><p><b><code style="color: darkblue">verbose</code></b></p></div>
+<div class="paragraph"><p><i>Verbose output</i></p></div>
+<div class="paragraph"><p>Verbose output. When set to true, MrDocs outputs additional information during the generation of the documentation.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="report_option"><p><b><code style="color: red">report</code></b></p></div>
+<div class="paragraph"><p><i>The minimum reporting level</i></p></div>
+<div class="paragraph"><p>The reporting level determines the amount of information displayed during the generation of the documentation. The value <code>-1</code> delegates the decision to the <code>log-level</code> option.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li><span style="color: red;">Deprecated</span>: Use <code>log-level</code> instead</li>
+<li>Type: unsigned integer</li>
+<li>Default value: <span style="color: darkblue;">-1</span></li>
+<li>Minimum value: <span style="color: darkblue;">-1</span></li>
+<li>Maximum value: <span style="color: darkblue;">5</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="log-level_option"><p><b><code style="color: darkblue">log-level</code></b></p></div>
+<div class="paragraph"><p><i>The minimum reporting level</i></p></div>
+<div class="paragraph"><p>The reporting level determines the amount of information displayed during the generation of the documentation.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: enum</li>
+<li>Default value: <span style="color: darkgreen;">"info"</span></li>
+<li>Allowed values: [<span style="color: darkgreen;">"trace"</span>, <span style="color: darkgreen;">"debug"</span>, <span style="color: darkgreen;">"info"</span>, <span style="color: darkgreen;">"warn"</span>, <span style="color: darkgreen;">"error"</span>, <span style="color: darkgreen;">"fatal"</span>]</li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warnings_option"><p><b><code style="color: darkblue">warnings</code></b></p></div>
+<div class="paragraph"><p><i>Enable warning messages</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs warning messages during the generation of the documentation. It is usually recommended to enable warnings while writing the documentation.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-if-undocumented_option"><p><b><code style="color: darkblue">warn-if-undocumented</code></b></p></div>
+<div class="paragraph"><p><i>Warn if symbols are not documented</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs a warning message if a symbol that passes all filters is not documented.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-if-doc-error_option"><p><b><code style="color: darkblue">warn-if-doc-error</code></b></p></div>
+<div class="paragraph"><p><i>Warn if documentation has errors</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs a warning message if the documentation of a symbol has errors such as duplicate parameters and parameters that don&#039;t exist.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-no-paramdoc_option"><p><b><code style="color: darkblue">warn-no-paramdoc</code></b></p></div>
+<div class="paragraph"><p><i>Warn if parameters are not documented</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs a warning message if a named function parameter is not documented.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-unnamed-param_option"><p><b><code style="color: darkblue">warn-unnamed-param</code></b></p></div>
+<div class="paragraph"><p><i>Warn if documented functions have unnamed parameters</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs a warning message if a documented function has a parameter that is not named.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-if-undoc-enum-val_option"><p><b><code style="color: darkblue">warn-if-undoc-enum-val</code></b></p></div>
+<div class="paragraph"><p><i>Warn if enum values are not documented</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs a warning message if an enum value is not documented.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-broken-ref_option"><p><b><code style="color: darkblue">warn-broken-ref</code></b></p></div>
+<div class="paragraph"><p><i>Warn if a documentation reference is broken</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs outputs a warning message if a reference in the documentation is broken.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">true</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="warn-as-error_option"><p><b><code style="color: darkblue">warn-as-error</code></b></p></div>
+<div class="paragraph"><p><i>Treat warnings as errors</i></p></div>
+<div class="paragraph"><p>When set to <code>true</code>, MrDocs treats warnings as errors and stops the generation of the documentation.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+<div class="sect2">
+<h3 id="_miscellaneous_options_reference">
+<a class="anchor" href="#_miscellaneous_options_reference"></a>
+Miscellaneous
+</h3>
+<div class="paragraph"><p><i>Miscellaneous options</i></p></div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 23.3333%;">
+<col style="width: 46.6667%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#concurrency_option"><code style="color: darkblue">concurrency</code></a>
+<br/>
+<span style="color: darkgreen;">(unsigned integer)</span>
+<br/>
+<span style="color: orangered;">(Command line only)</span>
+</td>
+<td class="tableblock halign-left valign-top">Number of threads to use</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">0</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#ignore-map-errors_option"><code style="color: darkblue">ignore-map-errors</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Continue if files are not mapped correctly</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top">
+<a href="#ignore-failures_option"><code style="color: darkblue">ignore-failures</code></a>
+<br/>
+<span style="color: darkgreen;">(boolean)</span>
+</td>
+<td class="tableblock halign-left valign-top">Whether AST visitation failures should not stop the program</td>
+<td class="tableblock halign-left valign-top"><span style="color: darkblue;">false</span></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph" id="concurrency_option"><p><b><code style="color: darkblue">concurrency</code></b></p></div>
+<div class="paragraph"><p><i>Number of threads to use</i></p></div>
+<div class="paragraph"><p>The desired level of concurrency: 0 for hardware-suggested.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: unsigned integer</li>
+<li>Command line only</li>
+<li>Default value: <span style="color: darkblue;">0</span></li>
+<li>Minimum value: <span style="color: darkblue;">0</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="ignore-map-errors_option"><p><b><code style="color: darkblue">ignore-map-errors</code></b></p></div>
+<div class="paragraph"><p><i>Continue if files are not mapped correctly</i></p></div>
+<div class="paragraph"><p>When set to true, MrDocs continues to generate the documentation even if some files are not mapped correctly. Files are not mapped correctly when the source file is not found or the compilation database does not contain the compiler flags for the source file.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+<div class="paragraph" id="ignore-failures_option"><p><b><code style="color: darkblue">ignore-failures</code></b></p></div>
+<div class="paragraph"><p><i>Whether AST visitation failures should not stop the program</i></p></div>
+<div class="paragraph"><p>When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.</p></div>
+<div class="paragraph"><p>
+<div class="ulist">
+<ul>
+<li>Type: boolean</li>
+<li>Default value: <span style="color: darkblue;">false</span></li>
+</ul>
+</div>
+</p></div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+  </body>
+</html>
