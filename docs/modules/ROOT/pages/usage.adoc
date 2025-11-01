@@ -278,7 +278,7 @@ It's also common for libraries to depend on the C++ standard library, the C stan
 
 That means unless `-nostdinc` is defined, all systems include paths are included. This is what allows the user to also use headers like `<Windows.h>` or `<linux/version.h>` without explicitly including anything else, even though they are not part of the C standard library. This is often seen as a convenience but can lead to portability issues.
 
-In this context, MrDocs provides the `use-system-stdlib` and `use-system-libc` options. Both are set as `false` by default, meaning MrDocs will compile the code as if the `-nostdinc&plus;&plus; -nostdlib&plus;&plus;` and `-nostdinc` flags were passed to Clang. Additionally:
+In this context, MrDocs provides the `use-system-stdlib` and `use-system-libc` options. Both are set as `true` by default; setting both to `false` results in MrDocs compiling the code as if the `-nostdinc&plus;&plus; -nostdlib&plus;&plus;` and `-nostdinc` flags were passed to Clang. Additionally:
 
 - When `use-system-stdlib` is `false`, MrDocs will use the bundled libc&plus;&plus; headers available in `<mrdocs-root>/share/mrdocs/headers/libcxx` and `<mrdocs-root>/share/mrdocs/headers/clang`. These paths can be adjusted with the `stdlib-includes` option.
 - When `use-system-libc` is `false`, MrDocs will use the bundled libc stubs available in `<mrdocs-root>/share/mrdocs/headers/libc-stubs`. This path can be adjusted with the `libc-includes` option.

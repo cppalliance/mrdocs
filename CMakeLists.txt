@@ -387,6 +387,7 @@ if (WIN32)
             mrdocs-core
             PUBLIC
             /permissive-    # strict C++
+            /Zc:__cplusplus # report C++ standard support
             /W4             # enable all warnings
             /MP             # multi-processor compilation
             /EHs            # C++ Exception handling

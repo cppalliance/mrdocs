@@ -227,3 +227,7 @@ IncludeCategories:
 # Comments
 FixNamespaceComments: true
 CommentPragmas: '^ clang-format'
+
+---
+Language: Json
+BasedOnStyle: llvm
