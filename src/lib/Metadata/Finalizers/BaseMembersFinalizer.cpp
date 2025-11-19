@@ -85,7 +85,7 @@ shouldCopy(Config const& config, Symbol const& M)
 {
     if (config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyDependencies)
     {
-        return M.Extraction == ExtractionMode::Dependency;
+        return M.Extraction != ExtractionMode::Regular;
     }
     return config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyAll;
 }
@@ -98,6 +98,16 @@ inheritBaseMembers(
     std::vector<SymbolID>& derived,
     std::vector<SymbolID> const& base)
 {
+    Symbol const* derivedInfo = nullptr;
+    auto const getDerivedInfo = [&]() -> Symbol const*
+    {
+        if (!derivedInfo)
+        {
+            derivedInfo = corpus_.find(derivedId);
+        }
+        return derivedInfo;
+    };
+
     for (SymbolID const& otherID: base)
     {
         // Find the info from the base class
@@ -164,12 +174,12 @@ inheritBaseMembers(
                             toBase16Str(otherInfo.id)));
             derived.push_back(otherCopy->id);
             // Get the extraction mode from the derived class
-            if (otherCopy->Extraction == ExtractionMode::Dependency)
+            if (otherCopy->Extraction == ExtractionMode::Dependency ||
+                otherCopy->Extraction == ExtractionMode::ImplementationDefined)
             {
-                Symbol* derivedInfoPtr = corpus_.find(derivedId);
+                Symbol const* derivedInfoPtr = getDerivedInfo();
                 MRDOCS_CHECK_OR_CONTINUE(derivedInfoPtr);
-                Symbol const& derivedInfo = *derivedInfoPtr;
-                otherCopy->Extraction = derivedInfo.Extraction;
+                otherCopy->Extraction = derivedInfoPtr->Extraction;
             }
             corpus_.info_.insert(std::move(otherCopy));
         }
