@@ -28,7 +28,7 @@
 [cols=1]
 |===
 | Name
-| link:#N-A[`A`] 
+| link:#N-A-03[`A`] 
 | link:#N-D[`D`] 
 | link:#N-B[`B`] 
 | link:#N-C[`C`] 
@@ -44,7 +44,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using B = link:#N-A[A&lt;T&gt;];
+using B = link:#N-A-03[A&lt;T&gt;];
 ----
 
 [#N-C]
@@ -60,7 +60,7 @@ template&lt;typename T&gt;
 using C = link:#N-B[B&lt;T&gt;];
 ----
 
-[#N-A]
+[#N-A-03]
 == link:#N[N]::A
 
 === Synopsis

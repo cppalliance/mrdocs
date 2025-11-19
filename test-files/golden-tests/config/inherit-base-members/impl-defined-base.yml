@@ -1,0 +1,4 @@
+implementation-defined:
+  - detail
+inherit-base-members: copy-dependencies
+warn-no-paramdoc: false

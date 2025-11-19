@@ -212,23 +212,15 @@ traverseMembers(InfoTy& I, DeclTy const* DC)
         !std::derived_from<DeclTy, clang::FunctionDecl> &&
         std::derived_from<DeclTy, clang::DeclContext>)
     {
-        // We only need members of regular symbols and see-below namespaces
-        // - If symbol is SeeBelow we want the members if it's a namespace
-        MRDOCS_CHECK_OR(
-            I.Extraction != ExtractionMode::SeeBelow ||
-            I.Kind == SymbolKind::Namespace);
-
-        // - If symbol is a Dependency, we only want the members if
-        //   the traversal mode is BaseClass
-        MRDOCS_CHECK_OR(
-            I.Extraction != ExtractionMode::Dependency ||
-            mode_ == TraversalMode::BaseClass);
-
-        // - If symbol is ImplementationDefined, we only want the members if
-        //   the traversal mode is BaseClass
-        MRDOCS_CHECK_OR(
-            I.Extraction != ExtractionMode::ImplementationDefined ||
-            mode_ == TraversalMode::BaseClass);
+        // Only traverse hidden members (dep/impl-defined/see-below records) when
+        // we're already visiting a base class tree.
+        if (mode_ != TraversalMode::BaseClass)
+        {
+            MRDOCS_CHECK_OR(
+                I.Extraction == ExtractionMode::Regular
+                || (I.Extraction == ExtractionMode::SeeBelow
+                    && I.Kind == SymbolKind::Namespace));
+        }
 
         // There are many implicit declarations, especially in the
         // translation unit declaration, so we preemtively skip them here.
@@ -680,6 +672,33 @@ populate(
 
             clang::QualType const BT = B.getType();
             auto BaseType = toType(BT, BaseClass);
+
+            // When inheriting base members, only revisit bases whose extraction mode
+            // isn’t regular so we pick up their members/docs.
+            if (config_->inheritBaseMembers != PublicSettings::BaseMemberInheritance::Never)
+            {
+                if (auto const* baseDecl = BT->getAsCXXRecordDecl())
+                {
+                    if (auto const* baseDef = baseDecl->getDefinition();
+                        baseDef)
+                    {
+                        if (auto const* baseInfo = find(baseDef);
+                            baseInfo)
+                        {
+                            if (baseInfo->Extraction != ExtractionMode::Regular)
+                            {
+                                ScopeExitRestore s(mode_, TraversalMode::BaseClass);
+                                traverse(baseDef);
+                            }
+                        }
+                        else
+                        {
+                            ScopeExitRestore s(mode_, TraversalMode::BaseClass);
+                            traverse(baseDef);
+                        }
+                    }
+                }
+            }
 
             // If we're going to copy the members from the specialization,
             // we need to instantiate and traverse the specialization

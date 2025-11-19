@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="see_below_ns" id="exW9PGqoF7V7OCpvgUIZOhj7WwI=">
+    <struct name="base_see" id="ZFLr7GRQIMnYkYf3EtAsQX/ibQE=">
+      <file short-path="see-below-base.cpp" source-path="see-below-base.cpp" line="4" class="def"/>
+    </struct>
+  </namespace>
+  <struct name="derived_see" id="J1syoWzn2cGgGxt+fceKEo2Jpzc=">
+    <file short-path="see-below-base.cpp" source-path="see-below-base.cpp" line="11" class="def"/>
+    <base>
+      <type id="ZFLr7GRQIMnYkYf3EtAsQX/ibQE=" name="see_below_ns::base_see"/>
+    </base>
+    <function name="do_other" id="nOVGo4vrMcebHm4Ap0P9O3FPudg=">
+      <file short-path="see-below-base.cpp" source-path="see-below-base.cpp" line="6"/>
+      <doc>
+        <brief>
+          <text>Describes the see-below member</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="own" id="fm0dS2I7h8XX4MVUXEdDThuOKWg=">
+      <file short-path="see-below-base.cpp" source-path="see-below-base.cpp" line="13"/>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

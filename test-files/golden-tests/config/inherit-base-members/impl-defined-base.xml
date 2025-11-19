@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="detail" id="aMJtdgJFybRcdkRG712j3iC7JeM=">
+    <struct name="base_detail" id="zJyAW21qgGwkRrS6Ea2uUqKSLhE=">
+      <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="4" class="def"/>
+      <function name="do_it" id="0k4Wdt7n3RgOCeAZcrhJ7PruWP0=">
+        <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="6"/>
+        <doc>
+          <brief>
+            <text>Do the thing</text>
+          </brief>
+        </doc>
+      </function>
+    </struct>
+  </namespace>
+  <struct name="derived" id="ABxWcxit2TyVLv16ZxoJKAc6LKw=">
+    <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="11" class="def"/>
+    <base>
+      <type id="zJyAW21qgGwkRrS6Ea2uUqKSLhE=" name="detail::base_detail"/>
+    </base>
+    <function name="do_it" id="o0JbdzeoEgGm/tWclYdgORU0Qyw=">
+      <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="6"/>
+      <doc>
+        <brief>
+          <text>Do the thing</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="own" id="LsIEKTwhFIkvPhRlDXC1p7T+GPU=">
+      <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="13"/>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>
