@@ -1,3 +1,15 @@
 = Build tools
 
 This directory holds additional scripts and files for building and testing.
+
+== Test runner
+
+- Strict tests (self-doc, format check, warn-as-error) are enabled by default; pass `--no-strict` to disable `MRDOCS_BUILD_STRICT_TESTS`.
+- Run `python util/run_all_tests.py` to configure the best release/* preset for your OS, build, and execute the full ctest suite (golden tests first, then the rest).
+- The runner forces compiler warnings to be treated as errors with CI-matching flags: `-Werror -Wall` for gcc/clang and `/WX /W4` for MSVC, without clobbering preset defaults.
+- Add `--update-golden` to refresh golden fixtures before running the test suite when output diffs in error messages are intentional.
+- Use `--preset <name>` to override the automatic selection. The script prefers presets starting with `release/` (or `release-`) that match your OS and compiler, falling back to `debug/*` if needed.
+- After tests (and optional docs), the script installs into `install/<preset>` under the repo root to keep the prefix scoped to the workspace.
+- Docs build runs by default; pass `--skip-docs` to omit the documentation step. Docs are built after install with `MRDOCS_ROOT` pointed at the freshly installed prefix so the generated reference uses that version.
+- Strict tests (self-doc, format check, warn-as-error) are enabled by default; pass `--no-strict` to disable `MRDOCS_BUILD_STRICT_TESTS`.
+- `util/reformat.py` supports `--check` to validate formatting/include guards without modifying files (used by the strict test suite).

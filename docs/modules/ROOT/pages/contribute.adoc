@@ -3,6 +3,11 @@
 This page contains information for contributors to the Mr.Docs project.
 It is intended to provide an overview of the codebase and the process of adding new features.
 
+Before sending changes, run `python util/run_all_tests.py`.
+This script is treated as a “source of truth” pass that configures the preferred preset, builds, runs golden + unit + lint/schema/self-doc checks, installs into a local `install/<preset>` prefix, and (by default) builds docs using that fresh install.
+Not every policy can be enforced programmatically, but this script covers the checks that are automated; prefer it over ad-hoc command sequences.
+Use `--skip-docs` to omit docs or `--no-strict` to relax strict warning handling when needed.
+
 == Codebase Overview
 
 The Mr.Docs codebase is divided into several modules:
@@ -49,11 +54,17 @@ As a last step, `DoGenerateAction` converts the public `Config` settings into a 
 [#representing_symbols]
 == Representing Symbols
 
-MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), DocComment blocks, template parameters, template arguments, and data types. For each such family, we follow a consistent file layout. Most of these families are defined in the `mrdocs/Metadata` directory.
+MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), DocComment blocks, template parameters, template arguments, and data types.
+For each such family, we follow a consistent file layout.
+Most of these families are defined in the `mrdocs/Metadata` directory.
 
-Each base class is defined in its own header and, when necessary, implementation file. Each derived class also has its own header and implementation file. Finally, there is a single aggregator header file that includes all the derived headers. This file centralizes logic that requires knowledge of the full set of variants, such as visitors, comparison operators, and other operations that depend on the discriminator.
+Each base class is defined in its own header and, when necessary, implementation file.
+Each derived class also has its own header and implementation file.
+Finally, there is a single aggregator header file that includes all the derived headers.
+This file centralizes logic that requires knowledge of the full set of variants, such as visitors, comparison operators, and other operations that depend on the discriminator.
 
-Suppose we have a polymorphic family of `Symbol` objects, with derived types `Function`, `Class`, and `Enum`. The files would be organized as follows:
+Suppose we have a polymorphic family of `Symbol` objects, with derived types `Function`, `Class`, and `Enum`.
+The files would be organized as follows:
 
 * The `Symbol/SymbolNodes.inc` file defines the possible derived types and is used to generate code via macros.
 * The `Symbol/SymbolKind.hpp` file defines the `SymbolKind` enum, which is used as a discriminator for the derived types.
@@ -61,7 +72,9 @@ Suppose we have a polymorphic family of `Symbol` objects, with derived types `Fu
 * The available kinds of derived symbols are defined in `Symbol/<Derived>.hpp` and `Symbol/<Derived>.cpp` files, e.g., `Symbol/Function.hpp` and `Symbol/Function.cpp`.
 * The `Symbol.hpp` file includes all derived headers and defines operations that require knowledge of all variants, such as visitors and comparison operators.
 
-This pattern keeps the individual derived types self-contained while making cross-variant operations explicit and localized. When adding a new derived type, contributors should create its header and source file alongside the existing ones and update the corresponding aggregator file to register the new variant. This keeps the codebase predictable, avoids scattering logic, and ensures that operations over polymorphic families remain easy to find and maintain.
+This pattern keeps the individual derived types self-contained while making cross-variant operations explicit and localized.
+When adding a new derived type, contributors should create its header and source file alongside the existing ones and update the corresponding aggregator file to register the new variant.
+This keeps the codebase predictable, avoids scattering logic, and ensures that operations over polymorphic families remain easy to find and maintain.
 
 [#extract_symbols]
 === Extracting Symbols
@@ -139,8 +152,7 @@ This is necessary to generate the full interface for user-defined types.
 After running the AST traversal on all translation units, `CorpusImpl::build` contains finalization steps for the `Corpus` object.
 At this point, we process C++ constructs that are not directly represented in the AST.
 
-The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Symbol` objects from a single translation unit
-are merged into a map containing the merged results from all other TUs.
+The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Symbol` objects from a single translation unit are merged into a map containing the merged results from all other TUs.
 The merging step is necessary as there may be multiple identical definitions of the same entity.
 For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
 At this step, the doc comments are also finalized.
@@ -267,7 +279,8 @@ Why This Approach:
 * Ensures new contributors are not lost when adapting to project style.
 * Encourages consistency without rigid automation.
 
-General Advice: When in doubt, copy the style of the surrounding code. The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
+General Advice: When in doubt, copy the style of the surrounding code.
+The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
 
 The utility script `./util/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
 
