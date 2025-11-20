@@ -16,17 +16,22 @@
 
 namespace mrdocs {
 
-enum class TypeKind
-{
-    #define INFO(Type) Type,
+/** Variants of C++ types captured in metadata.
+*/
+enum class TypeKind {
+#define INFO(Type) Type,
 #include <mrdocs/Metadata/Type/TypeNodes.inc>
 };
 
+/** Convert a TypeKind to its string representation.
+*/
 MRDOCS_DECL
 dom::String
 toString(TypeKind kind) noexcept;
 
 inline
+/** Map a TypeKind into a DOM value.
+*/
 void
 tag_invoke(
     dom::ValueFromTag,

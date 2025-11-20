@@ -19,7 +19,8 @@
 
 namespace mrdocs {
 
-/** Function classifications */
+/** Function classifications
+*/
 enum class FunctionClass
 {
     /// The function is a normal function.
@@ -32,12 +33,14 @@ enum class FunctionClass
     Destructor
 };
 
+/** Convert a function class to string form.
+*/
 MRDOCS_DECL
 dom::String
 toString(FunctionClass kind) noexcept;
 
 /** Return the FunctionClass from a @ref dom::Value string.
- */
+*/
 inline
 void
 tag_invoke(

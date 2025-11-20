@@ -22,7 +22,7 @@ namespace mrdocs {
     the least specific at the beginning and the most
     specific at the end.
 
- */
+*/
 enum class ExtractionMode
 {
     /// We're extracting the current symbol because it passes
@@ -55,7 +55,7 @@ enum class ExtractionMode
 };
 
 /** Return the name of the SymbolKind as a string.
- */
+*/
 constexpr
 std::string_view
 toString(ExtractionMode kind) noexcept
@@ -75,7 +75,7 @@ toString(ExtractionMode kind) noexcept
 }
 
 /** Return the SymbolKind from a @ref dom::Value string.
- */
+*/
 inline
 void
 tag_invoke(
@@ -95,7 +95,7 @@ tag_invoke(
     as `a`, then it also passes the filter that categorizes
     it as `b` (or vice-versa), then this function will return the
     final category for the symbol.
- */
+*/
 constexpr
 ExtractionMode
 leastSpecific(ExtractionMode const a, ExtractionMode const b) noexcept
@@ -109,7 +109,7 @@ leastSpecific(ExtractionMode const a, ExtractionMode const b) noexcept
 
     This function returns the most specific of the two
     ExtractionModes in terms of number of filters passed.
- */
+*/
 constexpr
 ExtractionMode
 mostSpecific(ExtractionMode const a, ExtractionMode const b) noexcept

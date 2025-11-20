@@ -22,24 +22,39 @@
 namespace mrdocs::doc {
 
 /** A sequence of text nodes.
+
+    Syntax:
+
+    @code
+    Plain paragraph text.
+
+    Another paragraph.
+    @endcode
 */
 struct ParagraphBlock
     : BlockCommonBase<BlockKind::Paragraph>
     , InlineContainer
 {
+    /** Virtual destructor for the polymorphic block hierarchy.
+    */
     ~ParagraphBlock() override = default;
+
+    /** Construct an empty paragraph.
+    */
     ParagraphBlock() noexcept = default;
 
+    /** Compare paragraphs by their inline content.
+    */
     auto operator<=>(ParagraphBlock const&) const = default;
 };
 
-/** Map the @ref Paragraph to a @ref dom::Object.
+/** Map the @ref ParagraphBlock to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -52,8 +67,8 @@ tag_invoke(
     tag_invoke(t, io, static_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref Paragraph as a @ref dom::Value object.
- */
+/** Return the @ref ParagraphBlock as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

@@ -20,6 +20,8 @@
 
 namespace mrdocs {
 
+/** Source location of a symbol or entity.
+*/
 struct MRDOCS_DECL
     Location
 {
@@ -32,7 +34,7 @@ struct MRDOCS_DECL
     std::string ShortPath;
 
     /** The file path relative to the source-root directory
-     */
+    */
     std::string SourcePath;
 
     /** Line number within the file
@@ -49,6 +51,14 @@ struct MRDOCS_DECL
 
     //--------------------------------------------
 
+    /** Construct a location with optional fields.
+        @param full_path Absolute path to the file on disk.
+        @param short_path Repository- or search-root relative path, may be empty.
+        @param source_path Path relative to the documented source root.
+        @param line Line number within the file.
+        @param col Column number within the line.
+        @param documented Whether the location already carries user documentation.
+    */
     constexpr
     Location(
         std::string_view const full_path = {},
@@ -66,9 +76,13 @@ struct MRDOCS_DECL
     {
     }
 
+    /** Compare locations by file paths and coordinates.
+    */
     auto operator<=>(Location const&) const = default;
 };
 
+/** Serialize a location into a DOM value.
+*/
 MRDOCS_DECL
 void
 tag_invoke(
@@ -88,16 +102,22 @@ tag_invoke(
     Rationale
     - This mirrors the old LocationEmptyPredicate, which treated an empty
       ShortPath as “empty/null.”
-**/
+*/
 template<>
 struct nullable_traits<Location>
 {
+    /** Test if the location is null (empty ShortPath).
+        @return True when `ShortPath` is empty.
+    */
     static constexpr bool
     is_null(Location const& v) noexcept
     {
         return v.ShortPath.empty();
     }
 
+    /** Create a null location sentinel.
+        @return Location with every field cleared.
+    */
     static constexpr Location
     null() noexcept
     {
@@ -110,6 +130,8 @@ struct nullable_traits<Location>
         };
     }
 
+    /** Reset a location to the null sentinel state.
+    */
     static constexpr void
     make_null(Location& v) noexcept
     {
@@ -117,6 +139,7 @@ struct nullable_traits<Location>
         v.ShortPath.clear();    // sentinel condition
         v.SourcePath.clear();
         v.LineNumber  = 0;
+        v.ColumnNumber = 0;
         v.Documented  = false;
     }
 };

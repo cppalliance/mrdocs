@@ -43,6 +43,8 @@ struct FriendInfo final
 };
 
 MRDOCS_DECL
+/** Merge another FriendInfo into this one.
+*/
 void
 merge(FriendInfo& I, FriendInfo&& Other);
 
@@ -52,7 +54,7 @@ merge(FriendInfo& I, FriendInfo&& Other);
     @param io The IO object to use for mapping.
     @param I The FriendInfo to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -78,7 +80,7 @@ tag_invoke(
 }
 
 /** Map the FriendInfo to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

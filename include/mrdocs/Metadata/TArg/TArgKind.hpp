@@ -22,16 +22,20 @@ namespace mrdocs {
 
 /** The kind of template argument.
 */
-enum class TArgKind : int
-{
-    #define INFO(Type) Type,
+enum class TArgKind : int {
+#define INFO(Type) Type,
 #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 };
 
+/** Convert a template-argument kind to a string.
+    @return String view naming the argument kind.
+*/
 MRDOCS_DECL
 std::string_view
 toString(TArgKind kind) noexcept;
 
+/** Serialize a template-argument kind into a DOM value.
+*/
 inline
 void
 tag_invoke(

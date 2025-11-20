@@ -27,17 +27,21 @@ struct NamespaceAliasSymbol final
 
         This is another namespace that might or might
         not be in the same project.
-     */
+    */
     IdentifierName AliasedSymbol;
 
     //--------------------------------------------
 
+    /** Create an alias symbol bound to an ID.
+    */
     explicit NamespaceAliasSymbol(SymbolID const &ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 };
 
+/** Merge two alias symbols, preferring existing fields when present.
+*/
 MRDOCS_DECL
 void
 merge(NamespaceAliasSymbol& I, NamespaceAliasSymbol&& Other);
@@ -48,7 +52,7 @@ merge(NamespaceAliasSymbol& I, NamespaceAliasSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The NamespaceAliasSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -62,7 +66,7 @@ tag_invoke(
 }
 
 /** Map the NamespaceAliasSymbol to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

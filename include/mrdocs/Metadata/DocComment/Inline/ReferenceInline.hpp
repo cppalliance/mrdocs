@@ -22,28 +22,44 @@
 namespace mrdocs::doc {
 
 /** A reference to a symbol.
+
+    Syntax:
+
+    @code
+    @ref target "label"
+    @endcode
 */
 struct ReferenceInline
     : InlineCommonBase<InlineKind::Reference>
 {
+    /** Display text of the reference.
+    */
     std::string literal;
+    /** Symbol being referenced.
+    */
     SymbolID id = SymbolID::invalid;
 
+    /** Construct a reference with optional display text.
+    */
     explicit ReferenceInline(std::string str = {}) noexcept
         : literal(std::move(str))
     {}
 
+    /** Order references by literal and target id.
+    */
     auto operator<=>(ReferenceInline const&) const = default;
+    /** Equality compares literal and target id.
+    */
     bool operator==(ReferenceInline const&) const noexcept = default;
 };
 
-/** Map the @ref Reference to a @ref dom::Object.
+/** Map the @ref ReferenceInline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -57,8 +73,8 @@ tag_invoke(
     io.map("symbol", I.id);
 }
 
-/** Return the @ref Reference as a @ref dom::Value object.
- */
+/** Return the @ref ReferenceInline as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

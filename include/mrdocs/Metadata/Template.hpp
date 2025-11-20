@@ -36,6 +36,9 @@ enum class TemplateSpecKind
     Partial
 };
 
+/** Convert the specialization kind to a readable string.
+    @return String view naming the specialization category.
+*/
 MRDOCS_DECL
 std::string_view
 toString(TemplateSpecKind kind);
@@ -45,7 +48,12 @@ toString(TemplateSpecKind kind);
 */
 struct TemplateInfo final
 {
+    /** Template parameter list.
+    */
     std::vector<Polymorphic<TParam>> Params;
+
+    /** Bound arguments for specializations.
+    */
     std::vector<Polymorphic<TArg>> Args;
 
     /** The requires-clause for the template parameter list, if any.
@@ -60,6 +68,9 @@ struct TemplateInfo final
     // to determine the specialization kind *should* work.
     // emphasis on should.
     TemplateSpecKind
+
+    /** Deduce which specialization category this info represents.
+    */
     specializationKind() const noexcept
     {
         if (Params.empty())
@@ -73,14 +84,20 @@ struct TemplateInfo final
         return TemplateSpecKind::Partial;
     }
 
+    /** Compare templates by parameters, arguments, and primary.
+    */
     std::strong_ordering
     operator<=>(TemplateInfo const& other) const;
 };
 
+/** Merge partial template info, filling missing pieces.
+*/
 MRDOCS_DECL
 void
 merge(TemplateInfo& I, TemplateInfo&& Other);
 
+/** Compare optional template infos, treating disengaged as ordered before engaged.
+*/
 inline
 auto
 operator<=>(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
@@ -100,6 +117,8 @@ operator<=>(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs
     return *lhs <=> *rhs;
 }
 
+/** Equality helper for optional template info.
+*/
 inline
 bool
 operator==(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
@@ -107,6 +126,8 @@ operator==(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
+/** Serialize template info into a DOM value.
+*/
 MRDOCS_DECL
 void
 tag_invoke(
@@ -115,6 +136,8 @@ tag_invoke(
     TemplateInfo const& I,
     DomCorpus const* domCorpus);
 
+/** Serialize an optional template info into a DOM value.
+*/
 inline
 void
 tag_invoke(

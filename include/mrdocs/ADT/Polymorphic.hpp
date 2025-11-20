@@ -81,14 +81,18 @@ class Polymorphic {
     // {}
 
 public:
+    /// Base value type.
     using value_type = T;
+    /// Mutable pointer to the held object.
     using pointer = T*;
+    /// Const pointer to the held object.
     using const_pointer = T const*;
 
     /// Default constructs the value type (never null via public API).
     /// explicit constexpr Polymorphic() : Polymorphic(std::in_place_type<T>) {}
 
-    /** Forwarding constructor from a derived U. */
+    /** Forwarding constructor from a derived U.
+    */
     template <class U>
     constexpr explicit Polymorphic(U&& u)
         requires (!std::same_as<Polymorphic, std::remove_cvref_t<U>>) &&
@@ -99,22 +103,35 @@ public:
     /** In-place constructor for a specific derived U.
 
         @param ts Arguments to forward to U's constructor.
-     */
+    */
     template <class U, class... Ts>
     explicit constexpr Polymorphic(std::in_place_type_t<U>, Ts&&... ts)
         requires std::same_as<std::remove_cvref_t<U>, U> &&
                  std::constructible_from<U, Ts&&...> &&
                  std::copy_constructible<U> && std::derived_from<U, T>
-        : WB(new Wrapper<U>(std::forward<Ts>(ts)...)) {}
+        : WB(new Wrapper<U>(std::forward<Ts>(ts)...))
+    {}
 
+    /** Copy constructor.
+        @param V Source object.
+    */
     constexpr Polymorphic(Polymorphic const& V)
         : WB(V.WB ? V.WB->clone() : nullptr) {}
 
+    /** Move constructor.
+        @param V Source object (emptied on return).
+    */
     constexpr Polymorphic(Polymorphic&& V) noexcept
         : WB(std::exchange(V.WB, nullptr)) {}
 
+    /** Destructor.
+    */
     constexpr ~Polymorphic() { delete WB; }
 
+    /** Copy assignment.
+        @param V Source object.
+        @return *this.
+    */
     constexpr Polymorphic& operator=(Polymorphic const& V) {
         if (this != &V) {
             Polymorphic Temp(V);
@@ -123,6 +140,10 @@ public:
         return *this;
     }
 
+    /** Move assignment.
+        @param V Source object (emptied on return).
+        @return *this.
+    */
     constexpr Polymorphic& operator=(Polymorphic&& V) noexcept {
         if (this != &V) {
             delete WB;
@@ -131,26 +152,41 @@ public:
         return *this;
     }
 
+    /** Pointer-like access to the held object.
+        @return Pointer to the contained value.
+    */
     [[nodiscard]] constexpr pointer operator->() noexcept {
         MRDOCS_ASSERT(WB != nullptr);
         return &WB->getValue();
     }
 
+    /** Pointer-like access to the held object (const).
+        @return Pointer to the contained value.
+    */
     [[nodiscard]] constexpr const_pointer operator->() const noexcept {
         MRDOCS_ASSERT(WB != nullptr);
         return &WB->getValue();
     }
 
+    /** Dereference to the held object.
+        @return Reference to the contained value.
+    */
     [[nodiscard]] constexpr T& operator*() noexcept {
         MRDOCS_ASSERT(WB != nullptr);
         return WB->getValue();
     }
 
+    /** Dereference to the held object (const).
+        @return Const reference to the contained value.
+    */
     [[nodiscard]] constexpr T const& operator*() const noexcept {
         MRDOCS_ASSERT(WB != nullptr);
         return WB->getValue();
     }
 
+    /** Return true if the object has been moved-from and is disengaged.
+        @return `true` when empty.
+    */
     constexpr bool
     valueless_after_move() const noexcept
     {
@@ -224,7 +260,7 @@ CompareDerived(Base const& lhs, Base const& rhs)
     @param lhs The first Polymorphic to compare.
     @param rhs The second Polymorphic to compare.
     @return true if the two Polymorphic objects are equal, otherwise false.
- */
+*/
 template <class Base>
 requires detail::CanVisitCompare<Base>
 auto
@@ -235,6 +271,9 @@ CompareDerived(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
     return CompareDerived(*lhs, *rhs);
 }
 
+/** Three-way comparison of two polymorphic objects.
+    @return strong_ordering comparing held objects.
+*/
 template <class Base>
 requires detail::CanVisitCompare<Base>
 auto
@@ -243,6 +282,9 @@ operator<=>(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
     return CompareDerived(lhs, rhs);
 }
 
+/** Equality comparison of two polymorphic objects.
+    @return true when objects compare equal.
+*/
 template <class Base>
 requires detail::CanVisitCompare<Base>
 bool
@@ -260,12 +302,21 @@ operator==(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 template<class T>
 struct nullable_traits<Polymorphic<T>>
 {
+    /** Return true if the polymorphic value is disengaged.
+
+        @param v Value to test.
+        @return `true` when @p v does not hold an object.
+    */
     static constexpr bool
     is_null(Polymorphic<T> const& v) noexcept
     {
         return v.valueless_after_move();
     }
 
+    /** Return a null polymorphic instance.
+
+        @return Disengaged Polymorphic.
+    */
     static constexpr Polymorphic<T>
     null() noexcept
     {
@@ -273,6 +324,10 @@ struct nullable_traits<Polymorphic<T>>
         return Polymorphic<T>(typename Polymorphic<T>::_null_t{0});
     }
 
+    /** Reset the polymorphic value to null.
+
+        @param v Value to clear.
+    */
     static constexpr void
     make_null(Polymorphic<T>& v) noexcept
     {
@@ -285,6 +340,8 @@ struct nullable_traits<Polymorphic<T>>
 // isa<T>(p)
 //------------------------------------------------------------------------------
 
+/** Return true if the polymorphic object holds a value of type To.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline bool
@@ -295,6 +352,8 @@ isa(const Polymorphic<From>& p) noexcept
     return dynamic_cast<const ToU*>(std::addressof(*p)) != nullptr;
 }
 
+/** Return true if pointer is non-null and referent is of type To.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline bool
@@ -307,6 +366,9 @@ isa_or_null(const Polymorphic<From>* pp) noexcept
 // dyn_cast<T>(p)  → pointer (nullptr if not)
 //------------------------------------------------------------------------------
 
+/** Dynamic cast returning pointer or nullptr.
+    @return Pointer to To if the dynamic cast succeeds, otherwise nullptr.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -318,6 +380,9 @@ dyn_cast(Polymorphic<From>& p) noexcept
     return dynamic_cast<ToU*>(std::addressof(*p));
 }
 
+/** Dynamic cast returning pointer or nullptr (const overload).
+    @return Pointer to To if the dynamic cast succeeds, otherwise nullptr.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -329,6 +394,9 @@ dyn_cast(const Polymorphic<From>& p) noexcept
     return dynamic_cast<const ToU*>(std::addressof(*p));
 }
 
+/** Dynamic cast if pointer is non-null and engaged, else nullptr.
+    @return Pointer to To when the cast succeeds, otherwise nullptr.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -338,6 +406,9 @@ dyn_cast_or_null(Polymorphic<From>* pp) noexcept
     return (pp && !pp->valueless_after_move()) ? dyn_cast<To>(*pp) : nullptr;
 }
 
+/** Dynamic cast if pointer is non-null and engaged, else nullptr (const).
+    @return Pointer to To when the cast succeeds, otherwise nullptr.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -351,6 +422,9 @@ dyn_cast_or_null(const Polymorphic<From>* pp) noexcept
 // cast<T>(p)  → reference (asserts on failure)
 //------------------------------------------------------------------------------
 
+/** Dynamic cast returning reference; asserts on failure.
+    @return Reference to the contained object cast to To.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -363,6 +437,9 @@ cast(Polymorphic<From>& p)
     return *r;
 }
 
+/** Dynamic cast returning const reference; asserts on failure.
+    @return Const reference to the contained object cast to To.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -379,6 +456,9 @@ cast(const Polymorphic<From>& p)
 // cast_or_null<T>(pp)  → pointer (asserts on bad non-null)
 //------------------------------------------------------------------------------
 
+/** Dynamic cast pointer; returns nullptr when pp is null.
+    @return Pointer to To when the cast succeeds, otherwise nullptr.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto
@@ -391,6 +471,9 @@ cast_or_null(Polymorphic<From>* pp)
     return r;
 }
 
+/** Dynamic cast pointer; returns nullptr when pp is null (const).
+    @return Pointer to To when the cast succeeds, otherwise nullptr.
+*/
 template <class To, class From>
 requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
 [[nodiscard]] inline auto

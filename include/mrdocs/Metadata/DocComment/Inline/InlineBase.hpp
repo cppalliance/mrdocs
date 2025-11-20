@@ -36,18 +36,30 @@ namespace mrdocs::doc {
 */
 struct MRDOCS_DECL Inline
 {
+    /** Discriminator identifying which inline variant is active.
+    */
     InlineKind Kind = InlineKind::Text;
 
+    /** Virtual destructor to enable polymorphic deletion.
+    */
     virtual ~Inline() = default;
 
+    /** Three-way comparison by active inline kind and data.
+    */
     auto operator<=>(Inline const&) const = default;
+    /** Equality compares active kind and stored data.
+    */
     bool operator==(Inline const&) const noexcept = default;
 
+    /** View as const Inline reference.
+    */
     constexpr Inline const& asInline() const noexcept
     {
         return *this;
     }
 
+    /** View as mutable Inline reference.
+    */
     constexpr Inline& asInline() noexcept
     {
         return *this;
@@ -74,10 +86,14 @@ struct MRDOCS_DECL Inline
     }
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 
-#define INFO(Type) \
-    constexpr Type##Inline const* as##Type##Ptr() const noexcept { \
-        if (Kind == InlineKind::Type) { return reinterpret_cast<Type##Inline const*>(this); } \
-        return nullptr; \
+#define INFO(Type)                                               \
+    constexpr Type##Inline const* as##Type##Ptr() const noexcept \
+    {                                                            \
+        if (Kind == InlineKind::Type)                            \
+        {                                                        \
+            return reinterpret_cast<Type##Inline const*>(this);  \
+        }                                                        \
+        return nullptr;                                          \
     }
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 
@@ -89,8 +105,12 @@ struct MRDOCS_DECL Inline
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 
 protected:
+    /** Default-construct a text inline.
+    */
     constexpr Inline() noexcept = default;
 
+    /** Construct with a specific inline kind.
+    */
     Inline(
         InlineKind kind_)
         : Kind(kind_)
@@ -111,18 +131,24 @@ struct InlineCommonBase : Inline
 
         It only distinguishes from `Inline::kind` in that it is a constant.
 
-     */
+    */
     static constexpr InlineKind kind_id = K;
 
+    /** Virtual destructor to preserve polymorphic cleanup.
+    */
     virtual ~InlineCommonBase() override = default;
 
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == InlineKind::Kind; }
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 
+    /** Three-way comparison forwards to the underlying inline.
+    */
     auto operator<=>(InlineCommonBase const&) const = default;
 
 protected:
+    /** Default-construct with the fixed inline kind.
+    */
     constexpr explicit InlineCommonBase()
         : Inline(K)
     {}
@@ -135,7 +161,7 @@ protected:
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -148,7 +174,7 @@ tag_invoke(
 }
 
 /** Return the @ref Inline as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(
@@ -166,7 +192,7 @@ tag_invoke(
 
     @param in The input inline element.
     @param dst The output string to append to.
- */
+*/
 MRDOCS_DECL
 void
 getAsPlainText(doc::Inline const& in, std::string& dst);
@@ -177,7 +203,7 @@ getAsPlainText(doc::Inline const& in, std::string& dst);
 
     @param in The input inline element.
     @return The flattened plain text.
- */
+*/
 inline
 std::string
 getAsPlainText(doc::Inline const& in)
@@ -187,17 +213,27 @@ getAsPlainText(doc::Inline const& in)
     return dst;
 }
 
-/// An internal node in the inline element tree
+/// An internal node in the inline element tree.
 struct MRDOCS_DECL InlineContainer
 {
+    /** Child inline elements contained here.
+    */
     std::vector<Polymorphic<Inline>> children;
 
+    /** Virtual destructor for derived containers.
+    */
     virtual ~InlineContainer() = default;
 
+    /** Default-construct an empty container.
+    */
     InlineContainer() = default;
 
+    /** Copy-construct all child nodes.
+    */
     InlineContainer(InlineContainer const&) = default;
 
+    /** Move-construct child nodes.
+    */
     InlineContainer(InlineContainer&&) noexcept = default;
 
     /// Construct an InlineContainer with a single TextInline child.
@@ -218,9 +254,13 @@ struct MRDOCS_DECL InlineContainer
     explicit
     InlineContainer(std::string&& text);
 
+    /** Copy-assign child nodes.
+    */
     InlineContainer&
     operator=(InlineContainer const&) = default;
 
+    /** Move-assign child nodes.
+    */
     InlineContainer&
     operator=(InlineContainer&&) noexcept = default;
 
@@ -228,15 +268,17 @@ struct MRDOCS_DECL InlineContainer
     InlineContainer&
     operator=(std::string_view text);
 
-    /// Helper function so that derived classes can get a reference to
-    /// the base class.
+    /** Return this container as a base-class reference.
+
+        @return A reference to the underlying InlineContainer.
+    */
     InlineContainer&
     asInlineContainer()
     {
         return *this;
     }
 
-    /// @copydoc asInlineContainer
+    /// @copydoc asInlineContainer()
     InlineContainer const&
     asInlineContainer() const
     {
@@ -289,28 +331,46 @@ struct MRDOCS_DECL InlineContainer
         return children.size();
     }
 
-    /// Begin iterator forwarding to children
+    /** Begin iterator forwarding to children.
+
+        @param self The container instance.
+        @return Iterator to the first child.
+    */
     decltype(auto)
     begin(this auto&& self) noexcept
     {
         return self.children.begin();
     }
 
-    /// End iterator forwarding to children
+    /** End iterator forwarding to children.
+
+        @param self The container instance.
+        @return Iterator past the last child.
+    */
     decltype(auto)
     end(this auto&& self) noexcept
     {
         return self.children.end();
     }
 
-    /// Erase from children
+    /** Erase inline children.
+
+        @param self The container instance.
+        @param args Arguments forwarded to `std::vector::erase`.
+        @return The iterator returned by `erase`.
+    */
     decltype(auto)
     erase(this auto&& self, auto&&... args)
     {
         return self.children.erase(std::forward<decltype(args)>(args)...);
     }
 
-    /// Erase from children
+    /** Insert inline children.
+
+        @param self The container instance.
+        @param args Arguments forwarded to `std::vector::insert`.
+        @return The iterator returned by `insert`.
+    */
     decltype(auto)
     insert(this auto&& self, auto&&... args)
     {
@@ -324,11 +384,20 @@ struct MRDOCS_DECL InlineContainer
         children.clear();
     }
 
-    /// Append a TextInline child.
+    /** Append a TextInline child.
+
+        @param text The text to append.
+        @return A reference to this container.
+    */
     InlineContainer&
     append(std::string_view text);
 
-    /// Append a child of the specified type.
+    /** Append a child of the specified type.
+
+        @tparam InlineTy The Inline-derived type to add.
+        @param args Constructor arguments forwarded to the child.
+        @return A reference to this container.
+    */
     template <std::derived_from<Inline> InlineTy, class... Args>
     InlineContainer&
     append(Args&&... args)
@@ -353,7 +422,12 @@ struct MRDOCS_DECL InlineContainer
         return *this;
     }
 
-    /// Append a child of the specified type.
+    /** Append a child of the specified type in-place.
+
+        @tparam InlineTy The Inline-derived type to emplace.
+        @param args Constructor arguments forwarded to the child.
+        @return A reference to this container.
+    */
     template <std::derived_from<Inline> InlineTy, class... Args>
     InlineContainer&
     emplace_back(Args&&... args)
@@ -362,15 +436,22 @@ struct MRDOCS_DECL InlineContainer
         return *this;
     }
 
-    /// Compare two InlineContainers.
+    /** Compare two InlineContainers.
+    */
     std::strong_ordering
     operator<=>(InlineContainer const&) const;
 
-    /// Compare two InlineContainers.
+    /** Equality compares child sequences.
+    */
     bool
     operator==(InlineContainer const&) const = default;
 };
 
+/** Serialize a polymorphic inline node into a DOM value.
+    @param io Destination value.
+    @param I Inline storage to convert.
+    @param domCorpus Corpus context for lazy references.
+*/
 template <class IO, polymorphic_storage_for<Inline> InlineTy>
 void
 tag_invoke(
@@ -379,6 +460,13 @@ tag_invoke(
     InlineTy const& I,
     DomCorpus const* domCorpus);
 
+/** Map an InlineContainer into a DOM object.
+
+    @param t The mapping tag.
+    @param io Output object receiving serialized fields.
+    @param I Inline container to serialize.
+    @param domCorpus Optional corpus for lazy lookups.
+*/
 template <class IO>
 void
 tag_invoke(
@@ -393,6 +481,8 @@ tag_invoke(
 }
 
 inline
+/** Convert an InlineContainer to a DOM value.
+*/
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -407,7 +497,7 @@ tag_invoke(
 
     @param inlines The InlineContainer to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 ltrim(InlineContainer& inlines);
@@ -416,7 +506,7 @@ ltrim(InlineContainer& inlines);
 
     @param inlines The InlineContainer to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 rtrim(InlineContainer& inlines);
@@ -425,7 +515,7 @@ rtrim(InlineContainer& inlines);
 
     @param inlines The InlineContainer to trim.
     @return void
- */
+*/
 inline
 void
 trim(InlineContainer& inlines)
@@ -440,7 +530,7 @@ trim(InlineContainer& inlines)
 
     @param in The InlineContainer to flatten.
     @param dst The output string to append to.
- */
+*/
 MRDOCS_DECL
 void
 getAsPlainText(doc::InlineContainer const& in, std::string& dst);
@@ -451,7 +541,7 @@ getAsPlainText(doc::InlineContainer const& in, std::string& dst);
 
     @param in The InlineContainer to flatten.
     @return The flattened plain text.
- */
+*/
 inline
 std::string
 getAsPlainText(doc::InlineContainer const& in)
@@ -464,24 +554,36 @@ getAsPlainText(doc::InlineContainer const& in)
 /// A leaf node that stores a string of text.
 struct MRDOCS_DECL InlineTextLeaf
 {
+    /** Raw literal text stored in this leaf node.
+    */
     std::string literal;
 
+    /** Construct from a string view.
+    */
     explicit
     InlineTextLeaf(std::string_view literal_)
         : literal(literal_)
     {}
 
+    /** Construct from a string copy.
+    */
     explicit
     InlineTextLeaf(std::string const& literal_)
         : literal(literal_)
     {}
 
+    /** Construct by moving a string.
+    */
     explicit
     InlineTextLeaf(std::string&& literal_) noexcept
         : literal(std::move(literal_))
     {}
 
+    /** Order text leaves lexicographically by content.
+    */
     auto operator<=>(InlineTextLeaf const&) const = default;
+    /** Equality compares literal text.
+    */
     bool operator==(InlineTextLeaf const&) const noexcept = default;
 };
 

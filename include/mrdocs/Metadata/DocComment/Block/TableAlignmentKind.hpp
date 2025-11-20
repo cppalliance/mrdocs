@@ -16,13 +16,21 @@
 
 namespace mrdocs {
 
+/** Horizontal alignment for table columns.
+*/
 enum class TableAlignmentKind {
+    /// No explicit alignment; renderer default applies.
     None,
+    /// Align content to the left edge.
     Left,
+    /// Center the content.
     Center,
+    /// Align content to the right edge.
     Right,
 };
 
+/** Convert an alignment enum to its string representation.
+*/
 inline
 dom::String
 toString(TableAlignmentKind kind) noexcept
@@ -41,11 +49,16 @@ toString(TableAlignmentKind kind) noexcept
     return "unknown";
 }
 
+/** Serialize an alignment enum into a DOM value.
+    @param v Destination value.
+    @param kind Alignment to serialize.
+*/
 inline
 void
 tag_invoke(
     dom::ValueFromTag,
-    dom::Value& v, TableAlignmentKind const kind)
+    dom::Value& v,
+    TableAlignmentKind const kind)
 {
     v = toString(kind);
 }

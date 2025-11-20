@@ -18,12 +18,21 @@
 
 namespace mrdocs {
 
+/** Pointer-to-member type (object or function).
+*/
 struct MemberPointerType final
     : TypeCommonBase<TypeKind::MemberPointer>
 {
+    /** Containing class type.
+    */
     Polymorphic<Type> ParentType = Polymorphic<Type>(AutoType{});
+
+    /** Pointee type being referenced.
+    */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
+    /** Compare member pointers by parent and pointee.
+    */
     std::strong_ordering
     operator<=>(MemberPointerType const&) const;
 };

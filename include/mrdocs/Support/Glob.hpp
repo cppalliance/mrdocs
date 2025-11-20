@@ -31,7 +31,7 @@ namespace mrdocs {
     @li "\" escapes the next character so it is treated as a literal.
 
     Nested brace expansions "{<glob>,"{<glob>,...}",...}" are not supported.
- */
+*/
 class GlobPattern {
     struct Impl;
     std::unique_ptr<Impl> impl_;
@@ -43,11 +43,15 @@ public:
             If the pattern contains more subpatterns than this value,
             an error is returned. If not specified, there is no limit.
         @return The constructed GlobPattern, or an error if the pattern is invalid.
-     */
+    */
     static
     Expected<GlobPattern>
     create(std::string_view pattern, Optional<std::size_t> maxSubGlobs);
 
+    /** Create a glob pattern without limiting subpattern count.
+        @param pattern Glob expression to compile.
+        @return Compiled pattern or an error.
+    */
     static
     Expected<GlobPattern>
     create(std::string_view pattern)
@@ -55,26 +59,31 @@ public:
         return create(pattern, std::nullopt);
     }
 
-    /** Destructor */
+    /** Destructor
+    */
     ~GlobPattern();
 
     /** Construct an empty GlobPattern.
 
         An empty GlobPattern will never match any string.
-     */
+    */
     GlobPattern();
 
-    /** Copy constructor */
+    /** Copy constructor
+    */
     GlobPattern(GlobPattern const& other);
 
-    /** Move constructor */
+    /** Move constructor
+    */
     GlobPattern(GlobPattern&& other) noexcept;
 
-    /** Copy assignment */
+    /** Copy assignment
+    */
     GlobPattern&
     operator=(GlobPattern const& other);
 
-    /** Move assignment */
+    /** Move assignment
+    */
     GlobPattern&
     operator=(GlobPattern&& other) noexcept;
 
@@ -83,7 +92,7 @@ public:
         @param str The string to match against the pattern.
         @param delimiter The character that `*` does not match.
         @return true if the string matches the pattern, false otherwise.
-     */
+    */
     bool
     match(std::string_view str, char delimiter) const;
 
@@ -100,7 +109,7 @@ public:
         @param prefix The string to match against the pattern.
         @param delimiter The character that `*` does not match.
         @return true if the string prefix matches the pattern, false otherwise.
-     */
+    */
     bool
     matchPatternPrefix(std::string_view prefix, char delimiter) const;
 
@@ -110,14 +119,14 @@ public:
         any special characters. In other words, it matches a single string.
 
         @return true if the glob pattern is a literal string, false otherwise.
-     */
+    */
     bool
     isLiteral() const;
 
     /** Returns the glob pattern.
 
         @return The glob pattern as a string view.
-     */
+    */
     std::string_view
     pattern() const;
 };
@@ -126,7 +135,7 @@ public:
 
     A glob pattern matcher where "*" does not match path separators.
     The pattern "**" can be used to match any number of path separators.
- */
+*/
 class PathGlobPattern {
     GlobPattern glob_;
 public:
@@ -134,7 +143,7 @@ public:
 
         @param pattern The glob pattern to use for matching.
         @param maxSubGlobs The maximum number of subpatterns allowed.
-     */
+    */
     static
     Expected<PathGlobPattern>
     create(
@@ -148,7 +157,7 @@ public:
     /** Constructs a PathGlobPattern with the given pattern.
 
         @param pattern The glob pattern to use for matching.
-     */
+    */
     static
     Expected<PathGlobPattern>
     create(std::string_view const pattern)
@@ -160,13 +169,13 @@ public:
     /** Construct an empty PathGlobPattern.
 
         An empty PathGlobPattern will never match any string.
-     */
+    */
     PathGlobPattern() = default;
 
     /** Construct an empty PathGlobPattern.
 
         An empty PathGlobPattern will never match any string.
-     */
+    */
     explicit
     PathGlobPattern(GlobPattern glob)
         : glob_{std::move(glob)}
@@ -176,7 +185,7 @@ public:
 
         @param str The string to match against the pattern.
         @return true if the string matches the pattern, false otherwise.
-     */
+    */
     bool
     match(std::string_view const str) const
     {
@@ -195,7 +204,7 @@ public:
 
         @param prefix The string to match against the pattern.
         @return true if the string prefix matches the pattern, false otherwise.
-     */
+    */
     bool
     matchPatternPrefix(std::string_view prefix) const
     {
@@ -208,7 +217,7 @@ public:
         any special characters. In other words, it matches a single string.
 
         @return true if the glob pattern is a literal string, false otherwise.
-     */
+    */
     bool
     isLiteral() const
     {
@@ -218,7 +227,7 @@ public:
     /** Returns the glob pattern.
 
         @return The glob pattern as a string view.
-     */
+    */
     std::string_view
     pattern() const
     {
@@ -230,7 +239,7 @@ public:
 
     A glob pattern matcher where "*" does not match "::".
     The pattern "**" can be used to match any number of "::".
- */
+*/
 class SymbolGlobPattern {
     GlobPattern glob_;
 public:
@@ -238,7 +247,7 @@ public:
 
         @param pattern The glob pattern to use for matching.
         @param maxSubGlobs The maximum number of subpatterns allowed.
-     */
+    */
     static
     Expected<SymbolGlobPattern>
     create(
@@ -252,7 +261,7 @@ public:
     /** Constructs a SymbolGlobPattern with the given pattern.
 
         @param pattern The glob pattern to use for matching.
-     */
+    */
     static
     Expected<SymbolGlobPattern>
     create(std::string_view const pattern)
@@ -264,13 +273,13 @@ public:
     /** Construct an empty SymbolGlobPattern.
 
         An empty SymbolGlobPattern will never match any string.
-     */
+    */
     SymbolGlobPattern() = default;
 
     /** Construct an empty SymbolGlobPattern.
 
         An empty SymbolGlobPattern will never match any string.
-     */
+    */
     explicit
     SymbolGlobPattern(GlobPattern glob)
         : glob_{std::move(glob)}
@@ -280,7 +289,7 @@ public:
 
         @param str The string to match against the pattern.
         @return true if the string matches the pattern, false otherwise.
-     */
+    */
     bool
     match(std::string_view const str) const
     {
@@ -299,7 +308,7 @@ public:
 
         @param prefix The string to match against the pattern.
         @return true if the string prefix matches the pattern, false otherwise.
-     */
+    */
     bool
     matchPatternPrefix(std::string_view prefix) const
     {
@@ -312,7 +321,7 @@ public:
         any special characters. In other words, it matches a single string.
 
         @return true if the glob pattern is a literal string, false otherwise.
-     */
+    */
     bool
     isLiteral() const
     {
@@ -322,7 +331,7 @@ public:
     /** Returns the glob pattern.
 
         @return The glob pattern as a string view.
-     */
+    */
     std::string_view
     pattern() const
     {

@@ -30,10 +30,14 @@ enum class RecordKeyKind
     Union
 };
 
+/** Convert the key kind to its canonical string form.
+*/
 MRDOCS_DECL
 dom::String
 toString(RecordKeyKind kind) noexcept;
 
+/** Serialize the record key kind into a DOM value.
+*/
 inline
 void
 tag_invoke(

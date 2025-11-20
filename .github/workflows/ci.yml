@@ -20,12 +20,23 @@ concurrency:
 jobs:
   cpp-matrix:
     runs-on: ubuntu-24.04
+    container:
+      image: ubuntu:24.04
     name: Generate Test Matrix
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
       llvm-matrix: ${{ steps.llvm-matrix.outputs.llvm-matrix }}
       releases-matrix: ${{ steps.releases-matrix.outputs.releases-matrix }}
     steps:
+      - name: Install prerequisites
+        run: |
+          set -e
+          apt-get update
+          apt-get install -y git ca-certificates curl nodejs npm
+          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
+            ln -s /usr/bin/nodejs /usr/bin/node
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -134,6 +145,16 @@ jobs:
       contents: write
 
     steps:
+      - name: Ensure Node
+        if: matrix.container != '' && env.ACT == 'true'
+        run: |
+          set -e
+          apt-get update
+          apt-get install -y nodejs npm
+          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
+            ln -s /usr/bin/nodejs /usr/bin/node
+          fi
+
       # We install git if we are using a container because
       # containers don't always include git.
       # We need git to ensure actions/checkout@v4 will use git and
@@ -173,6 +194,55 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
+
+      - name: Configure symbolizer paths
+        if: matrix.compiler != 'msvc'
+        shell: bash
+        run: |
+          set -e
+          candidates=()
+          # 1) Anything on PATH
+          if command -v llvm-symbolizer >/dev/null 2>&1; then
+            candidates+=("$(command -v llvm-symbolizer)")
+          fi
+          uname_out="$(uname -s || true)"
+          # 2) Platform-specific common locations
+          case "$uname_out" in
+            Darwin)
+              if xcrun --find llvm-symbolizer >/dev/null 2>&1; then
+                candidates+=("$(xcrun --find llvm-symbolizer)")
+              fi
+              candidates+=("/opt/homebrew/opt/llvm/bin/llvm-symbolizer")
+              ;;
+            Linux)
+              for dir in /usr/lib/llvm-* /usr/lib/llvm; do
+                if [ -x "$dir/bin/llvm-symbolizer" ]; then
+                  candidates+=("$dir/bin/llvm-symbolizer")
+                fi
+              done
+              ;;
+            MINGW*|MSYS*|CYGWIN*)
+              for dir in "/c/Program Files/LLVM/bin" "/c/ProgramData/chocolatey/lib/llvm/tools/llvm/bin"; do
+                if [ -x "$dir/llvm-symbolizer.exe" ]; then
+                  candidates+=("$dir/llvm-symbolizer.exe")
+                fi
+              done
+              ;;
+          esac
+          sym=""
+          for c in "${candidates[@]}"; do
+            if [ -n "$c" ] && [ -x "$c" ]; then
+              sym="$c"
+              break
+            fi
+          done
+          if [ -n "$sym" ]; then
+            echo "Using llvm-symbolizer at: $sym"
+            echo "LLVM_SYMBOLIZER_PATH=$sym" >> "$GITHUB_ENV"
+            echo "ASAN_SYMBOLIZER_PATH=$sym" >> "$GITHUB_ENV"
+          else
+            echo "Warning: llvm-symbolizer not found; ASan stacks may be unsymbolized." >&2
+          fi
 
       # If apple-clang on macos, select the newest Xcode.
       - name: Select Xcode 16.4
@@ -484,6 +554,9 @@ jobs:
 
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        env:
+          # Bump per-test timeout on Windows to avoid CTest default (1500s) killing slow golden suites.
+          CTEST_TEST_TIMEOUT: ${{ runner.os == 'Windows' && '3600' || '' }}
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -619,8 +692,9 @@ jobs:
           done
 
           dir="./build"
-          lcov --rc lcov_branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent
-          lcov --rc lcov_branch_coverage=0 --ignore-errors inconsistent --list "$dir/all.info"
+          lcov --rc lcov_branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent,negative --no-external
+          lcov --rc lcov_branch_coverage=0 --remove "$dir/all.info" "/usr/*" "/lib/*" "/opt/*" --ignore-errors unused,negative --output-file "$dir/all.info"
+          lcov --rc lcov_branch_coverage=0 --ignore-errors inconsistent,negative --list "$dir/all.info"
           echo "file=$(realpath "$dir/all.info")" >> $GITHUB_OUTPUT
 
       - name: Upload Coverage as Artifact
@@ -661,6 +735,16 @@ jobs:
       contents: write
 
     steps:
+      - name: Ensure Node
+        if: matrix.container != '' && env.ACT == 'true'
+        run: |
+          set -e
+          apt-get update
+          apt-get install -y nodejs npm
+          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
+            ln -s /usr/bin/nodejs /usr/bin/node
+          fi
+
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.8.12
         id: package-install
@@ -1117,6 +1201,16 @@ jobs:
       contents: write
 
     steps:
+      - name: Ensure Node
+        if: matrix.container != '' && env.ACT == 'true'
+        run: |
+          set -e
+          apt-get update
+          apt-get install -y nodejs npm
+          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
+            ln -s /usr/bin/nodejs /usr/bin/node
+          fi
+
       # This calculates a couple of variables, which would normally go in to the regular matrix extra-values
       # section, but which depend on paths not known at that point.
       - name: Resolved Matrix

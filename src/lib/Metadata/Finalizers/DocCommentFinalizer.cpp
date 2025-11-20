@@ -989,6 +989,7 @@ setAutoRelates(Symbol& ctx)
 
     auto toRecordOrEnum = [&](Polymorphic<Type> const& type) -> Symbol* {
         MRDOCS_CHECK_OR(type, nullptr);
+        MRDOCS_CHECK_OR(!type.valueless_after_move(), nullptr);
         auto& innermost = innermostType(type);
         MRDOCS_CHECK_OR(innermost, nullptr);
         MRDOCS_CHECK_OR(innermost->isNamed(), nullptr);
@@ -1329,6 +1330,25 @@ parseInlines(DocComment& doc)
     bottomUpTraverse(doc, []<std::derived_from<doc::InlineContainer> NodeTy>(NodeTy& node) {
         if constexpr (requires { { node.children } -> range_of<Polymorphic<doc::Inline>>; })
         {
+            // Reserve enough capacity up-front so child inserts during parsing
+            // cannot reallocate and invalidate InlineContainer pointers held
+            // by the parser state.
+            std::size_t extra = 0;
+            for (auto const& child : node.children)
+            {
+                if (child->isText())
+                {
+                    extra += child->asText().literal.size();
+                }
+            }
+            if (extra > 0)
+            {
+                // Over-reserve generously to avoid any reallocation while the
+                // parser keeps pointers into these containers.
+                node.children.reserve(
+                    node.children.size() + 2 * extra + 16);
+            }
+
             auto it = node.children.begin();
             while (it != node.children.end())
             {
@@ -1342,7 +1362,18 @@ parseInlines(DocComment& doc)
 
                 auto& textEl = el->asText();
                 doc::InlineContainer v;
-                ParseResult r = parse(textEl.literal, v);
+                ParseResult r;
+                try
+                {
+                    r = parse(textEl.literal, v);
+                }
+                catch (std::bad_alloc const&)
+                {
+                    // Skip parsing this text node if it explodes memory;
+                    // leave the raw text in place.
+                    ++it;
+                    continue;
+                }
 
                 // advance on parse failure
                 if (!r)
@@ -1706,8 +1737,9 @@ DocCommentFinalizer::warnUndocumented()
             undocI.kind, {SymbolKind::Record, SymbolKind::Enum});
         this->warn(
             *getPrimaryLocation(undocI.Loc, prefer_definition),
-            "{}: Symbol is undocumented",
-            undocI.name);
+            "{}: {} is undocumented",
+            undocI.name,
+            toString(undocI.kind));
     }
     corpus_.undocumented_.clear();
 }

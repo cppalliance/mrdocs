@@ -74,7 +74,7 @@ private:
         settings are loaded or modified to
         update the DOM object representing
         the configuration keys.
-     */
+    */
     void
     updateConfigDom();
 

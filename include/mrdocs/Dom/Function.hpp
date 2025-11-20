@@ -29,53 +29,82 @@ class Value;
 // function_traits
 //
 //------------------------------------------------
+
+/** Helper traits to extract return and argument types from callables.
+*/
 template<typename F>
 struct function_traits;
 
+/** Traits specialization for free functions.
+*/
 template<typename R, typename... Args>
 struct function_traits<R(Args...)>
 {
+    /// Result type of the callable.
     using return_type = R;
+    /// Tuple of argument types accepted by the callable.
     using args_type = std::tuple<Args...>;
 };
 
+/** Traits specialization for member functions.
+*/
 template<typename C, typename R, typename... Args>
 struct function_traits<R(C::*)(Args...)>
 {
+    /// Result type of the callable.
     using return_type = R;
+    /// Tuple of argument types accepted by the callable.
     using args_type = std::tuple<Args...>;
 };
 
+/** Traits specialization for const member functions.
+*/
 template<typename C, typename R, typename... Args>
 struct function_traits<R(C::*)(Args...) const>
 {
+    /// Result type of the callable.
     using return_type = R;
+    /// Tuple of argument types accepted by the callable.
     using args_type = std::tuple<Args...>;
 };
 
+/** Traits specialization for volatile member functions.
+*/
 template<typename C, typename R, typename... Args>
 struct function_traits<R(C::*)(Args...) volatile>
 {
+    /// Result type of the callable.
     using return_type = R;
+    /// Tuple of argument types accepted by the callable.
     using args_type = std::tuple<Args...>;
 };
 
+/** Traits specialization for const volatile member functions.
+*/
 template<typename C, typename R, typename... Args>
 struct function_traits<R(C::*)(Args...) const volatile>
 {
+    /// Result type of the callable.
     using return_type = R;
+    /// Tuple of argument types accepted by the callable.
     using args_type = std::tuple<Args...>;
 };
 
 // (missing permutations of ref-qualifier and cv-qualifier)
 
+/** Traits specialization for function pointers.
+*/
 template<typename R, typename... Args>
 struct function_traits<R(*)(Args...)>
 {
+    /// Result type of the callable.
     using return_type = R;
+    /// Tuple of argument types accepted by the callable.
     using args_type = std::tuple<Args...>;
 };
 
+/** Traits specialization for functors/lambdas.
+*/
 template<typename F>
     requires requires { &F::operator(); }
 struct function_traits<F>
@@ -83,28 +112,38 @@ struct function_traits<F>
 {
 };
 
+/** Concept true when function_traits is defined for F.
+*/
 template<typename F>
 concept has_function_traits = requires {
     typename function_traits<F>::return_type;
     typename function_traits<F>::args_type;
 };
 
+/** Concept true when F returns a dom::Value or void.
+*/
 template<typename F>
 concept has_invoke_result_convertible_to_dom_value =
     std::convertible_to<typename function_traits<F>::return_type, Value> ||
     std::same_as<typename function_traits<F>::return_type, void>;
 
+/** Concept true when F returns Expected<dom::Value> or Expected<void>.
+*/
 template<typename F>
 concept has_invoke_expected_result_convertible_to_dom_value =
     detail::isExpected<typename function_traits<F>::return_type> &&
     (std::convertible_to<typename function_traits<F>::return_type::value_type, Value> ||
      std::same_as<typename function_traits<F>::return_type::value_type, void>);
 
+/** Concept enabling default function wrapper for supported return types.
+*/
 template<typename F>
 concept has_invoke_result_for_default_function_impl =
     has_invoke_result_convertible_to_dom_value<F> ||
     has_invoke_expected_result_convertible_to_dom_value<F>;
 
+/** Concept requiring all arguments be convertible to dom::Value.
+*/
 template<typename F>
 concept has_function_args_for_default_function_impl =
     // All arguments are convertible to dom::Value
@@ -117,12 +156,16 @@ concept has_function_args_for_default_function_impl =
                 Value> && ...);
         }(std::make_index_sequence<std::tuple_size_v<typename function_traits<F>::args_type>>()));
 
+/** Concept combining argument and return constraints for default wrapper.
+*/
 template<typename F>
 concept has_function_traits_for_default_function_impl =
     has_invoke_result_for_default_function_impl<F> &&
     has_function_args_for_default_function_impl<F>;
 
 
+/** Concept selecting callables convertible to dom::Value.
+*/
 template<class F>
 concept function_traits_convertible_to_value =
     has_function_traits<F> &&
@@ -134,11 +177,15 @@ concept function_traits_convertible_to_value =
 //
 //------------------------------------------------
 
+/** Value-semantic wrapper over a callable exposed to the DOM layer.
+*/
 class FunctionImpl;
 
 template<class F>
 class DefaultFunctionImpl;
 
+/** Value-semantic wrapper over a callable exposed to the DOM layer.
+*/
 class MRDOCS_DECL
     Function
 {
@@ -186,6 +233,9 @@ public:
     */
     Function(Function const&) noexcept;
 
+    /** Construct a Function from any supported callable.
+        @param f Callable to wrap.
+    */
     template<class F>
     requires
         function_traits_convertible_to_value<std::decay_t<F>>
@@ -281,6 +331,8 @@ public:
 //
 //------------------------------------------------
 
+/** Abstract base for function implementations.
+*/
 class MRDOCS_DECL
     FunctionImpl
 {
@@ -315,26 +367,39 @@ newFunction(Args&&... args)
 //
 //------------------------------------------------
 
+/** Function implementation that wraps a fixed-arity callable.
+*/
 template<class F>
 class DefaultFunctionImpl : public FunctionImpl
 {
     F f_;
 
 public:
+    /** Result type produced by the callable.
+    */
     using return_type = typename function_traits<F>::return_type;
+    /** Argument tuple type accepted by the callable.
+    */
     using args_type = typename function_traits<F>::args_type;
 
+    /** Construct from any callable convertible to `F`.
+        @param u Callable to wrap.
+    */
     template<class U>
     DefaultFunctionImpl(U&& u)
         : f_(std::forward<U>(u))
     {
     }
 
+    /** @copydoc FunctionImpl::type_key
+    */
     char const* type_key() const noexcept override
     {
         return "Function";
     }
 
+    /** Invoke the wrapped callable with the given arguments.
+    */
     Expected<Value>
     call(Array const& args) const override;
 
@@ -345,6 +410,10 @@ private:
         std::index_sequence<I...>) const;
 };
 
+/** Create a Function from a fixed-arity invocable.
+    @param f Callable to wrap.
+    @return Function that forwards arguments to `f`.
+*/
 template<class F>
 Function makeInvocable(F&& f)
 {
@@ -352,30 +421,47 @@ Function makeInvocable(F&& f)
         std::forward<F>(f));
 }
 
+/** Function implementation that forwards the entire Array to a callable.
+*/
 template<class F>
 class VariadicFunctionImpl : public FunctionImpl
 {
     F f_;
 
 public:
+    /** Result type produced by the callable.
+    */
     using return_type = typename function_traits<F>::return_type;
+    /** Argument tuple type accepted by the callable.
+    */
     using args_type = typename function_traits<F>::args_type;
 
+    /** Construct from any callable convertible to `F`.
+        @param u Callable to wrap.
+    */
     template<class U>
     VariadicFunctionImpl(U&& u)
         : f_(std::forward<U>(u))
     {
     }
 
+    /** @copydoc FunctionImpl::type_key
+    */
     char const* type_key() const noexcept override
     {
         return "VariadicFunctionImpl";
     }
 
+    /** Invoke the wrapped callable with the full argument array.
+    */
     Expected<Value>
     call(Array const& args) const override;
 };
 
+/** Create a Function that receives the argument Array directly.
+    @param f Callable invoked with the argument array.
+    @return Function wrapper for the callable.
+*/
 template<class F>
 requires std::invocable<F, Array const&>
 Function makeVariadicInvocable(F&& f)

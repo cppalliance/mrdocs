@@ -15,6 +15,8 @@
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Parse.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <algorithm>
+#include <memory>
 #include <utility>
 
 namespace mrdocs::doc {
@@ -306,11 +308,22 @@ emit_text(doc::InlineContainer& out, std::string&& text)
     out.emplace_back<doc::TextInline>(std::move(text));
 }
 
+// Emit without attempting to merge with a previous text node.
+inline
+void
+emit_text_unmerged(doc::InlineContainer& out, std::string&& text)
+{
+    if (!text.empty())
+    {
+        out.emplace_back<doc::TextInline>(std::move(text));
+    }
+}
+
 // Start a new inline container of kind k, appending it to out.
 // Returns a reference to the new container for appending children.
 inline
 doc::InlineContainer&
-start_container(doc::InlineContainer& out, doc::InlineKind k)
+start_container(doc::InlineContainer& out, doc::InlineKind k, std::size_t reserve_hint)
 {
     // Create k and return its child container.
     switch (k)
@@ -341,6 +354,10 @@ start_container(doc::InlineContainer& out, doc::InlineKind k)
     }
     auto* ic = dynamic_cast<doc::InlineContainer*>(&*out.back());
     MRDOCS_ASSERT(ic != nullptr); // container types must derive InlineContainer
+    if (reserve_hint)
+    {
+        ic->children.reserve(reserve_hint);
+    }
     return *ic;
 }
 
@@ -368,6 +385,7 @@ start_link(doc::InlineContainer& out, std::string&& href) {
     link.href = std::move(href);
     auto* ic = dynamic_cast<doc::InlineContainer*>(&*out.back());
     MRDOCS_ASSERT(ic != nullptr);
+    ic->children.reserve(href.size() + 8);
     return *ic;
 }
 
@@ -381,6 +399,7 @@ emit_image(doc::InlineContainer& out, std::string&& src, std::string&& alt)
     img.alt = std::move(alt);
     auto* ic = dynamic_cast<doc::InlineContainer*>(&*out.back());
     MRDOCS_ASSERT(ic != nullptr);
+    ic->children.reserve(8);
     return *ic;
 }
 
@@ -427,7 +446,7 @@ struct Frame {
     // where the finished node will be inserted
     doc::InlineContainer* parent;
     // children collected while open
-    doc::InlineContainer scratch;
+    doc::InlineContainer* scratch;
     // literal open token (for fallback)
     std::string open_tok;
 };
@@ -438,8 +457,37 @@ struct Bracket {
     // where link/image will be emitted
     doc::InlineContainer* parent = nullptr;
     // label/alt children
-    doc::InlineContainer label;
+    doc::InlineContainer* label;
 };
+
+inline
+bool
+frame_has_ancestor(
+    Frame const& f,
+    doc::InlineContainer const* target,
+    std::vector<Frame> const& frames)
+{
+    doc::InlineContainer const* ancestor = f.parent;
+    while (ancestor)
+    {
+        if (ancestor == target)
+        {
+            return true;
+        }
+        auto it = std::find_if(
+            frames.begin(),
+            frames.end(),
+            [ancestor](Frame const& candidate) {
+                return candidate.scratch == ancestor;
+            });
+        if (it == frames.end())
+        {
+            return false;
+        }
+        ancestor = it->parent;
+    }
+    return false;
+}
 
 // HTML parsing helpers ---------------------------------------------------------
 
@@ -587,9 +635,15 @@ html_get_attr(std::string const& attrs, std::string_view key)
 }
 
 // Minimal state holder to replace lots of lambdas in parse()
+inline constexpr std::size_t kMaxReserve = 1'000'000;
+
 struct ParserState {
     // input
     std::string_view s;
+    // hint to reserve child storage
+    std::size_t reserve_hint = 0;
+    // arena to keep temporary containers alive for the full parse
+    std::vector<std::unique_ptr<doc::InlineContainer>> arena;
     // stack of open frames
     std::vector<Frame> frames;
     // stack of open [label] or ![alt]
@@ -600,6 +654,13 @@ struct ParserState {
     std::string text;
     // whether the next char is escaped
     bool escape_next{ false };
+
+    doc::InlineContainer*
+    make_container()
+    {
+        arena.push_back(std::make_unique<doc::InlineContainer>());
+        return arena.back().get();
+    }
 
     void
     flush_text()
@@ -621,8 +682,24 @@ struct ParserState {
     push_frame(TagRule const* r)
     {
         flush_text();
-        frames.push_back(Frame{ r->kind, r, cur, {}, std::string(r->open) });
-        cur = &frames.back().scratch;
+        if (reserve_hint)
+        {
+            // Keep the parent stable while this frame is open.
+            auto const desired = std::min<std::size_t>(
+                cur->children.size() + reserve_hint,
+                kMaxReserve);
+            cur->children.reserve(desired);
+        }
+        auto* scratch = make_container();
+        frames.push_back(Frame{
+            r->kind,
+            r,
+            cur,
+            scratch,
+            std::string(r->open)
+        });
+        scratch->children.reserve(reserve_hint);
+        cur = scratch;
     }
 
     // Emit the opening token + flattened contents as literal text into its
@@ -630,12 +707,26 @@ struct ParserState {
     void
     fallback_unclosed(Frame& f)
     {
+        MRDOCS_ASSERT(f.scratch);
         std::string literal(f.open_tok);
-        for (auto& el: f.scratch)
+        for (auto& el: *f.scratch)
         {
             getAsPlainText(*el, literal);
         }
-        emit_text(*f.parent, std::move(literal));
+        try
+        {
+            emit_text_unmerged(*f.parent, std::move(literal));
+        }
+        catch (std::length_error const&)
+        {
+            // Drop the fallback text if it would overflow the container;
+            // better to keep processing than terminate the doc build.
+        }
+        catch (std::bad_alloc const&)
+        {
+            // Drop the fallback text if it would overflow the container;
+            // better to keep processing than terminate the doc build.
+        }
     }
 
     // Materialize a finished frame to its parent
@@ -643,6 +734,7 @@ struct ParserState {
     void
     materialize_and_pop(Frame f)
     {
+        MRDOCS_ASSERT(f.scratch);
         // Line breaks are leaf inlines
         if (f.kind == doc::InlineKind::LineBreak)
         {
@@ -662,7 +754,7 @@ struct ParserState {
         {
             // We recorded its body into f.scratch (as Text children) while inside the barrier.
             // Flatten to a single string and emit a MathInline leaf.
-            std::string lit = flatten_text(f.scratch);
+            std::string lit = flatten_text(*f.scratch);
             f.parent->emplace_back<doc::MathInline>();
             f.parent->back()->asMath().literal = std::move(lit);
             cur = f.parent;
@@ -674,14 +766,14 @@ struct ParserState {
             && has(f.rule->flags, RuleFlags::Html))
         {
             doc::InlineContainer& outC = start_link(*f.parent, std::move(f.open_tok));
-            move_children(outC, f.scratch);
+            move_children(outC, *f.scratch);
             cur = f.parent;
             return;
         }
 
         // All remaining supported formatting kinds are containers
-        doc::InlineContainer* outC = &start_container(*f.parent, f.kind);
-        move_children(*outC, f.scratch);
+        doc::InlineContainer* outC = &start_container(*f.parent, f.kind, reserve_hint);
+        move_children(*outC, *f.scratch);
         cur = f.parent;
     }
 
@@ -742,6 +834,7 @@ struct ParserState {
 
         Bracket b = std::move(brackets.back());
         brackets.pop_back();
+        MRDOCS_ASSERT(b.label);
 
         // After ']', expect optional spaces then '(' dest [title] ')'
         std::size_t j = i + 1;
@@ -750,9 +843,9 @@ struct ParserState {
         {
             // Not a link/image — emit literal "[...]" back to parent
             push_text_node(*b.parent, b.is_image ? "![" : "[");
-            if (!b.label.empty())
+            if (!b.label->empty())
             {
-                move_children(*b.parent, b.label);
+                move_children(*b.parent, *b.label);
             }
             push_text_node(*b.parent, "]");
             cur = b.parent;
@@ -809,9 +902,9 @@ struct ParserState {
         {
             // Invalid link — degrade to literal
             push_text_node(*b.parent, b.is_image ? "![" : "[");
-            if (!b.label.empty())
+            if (!b.label->empty())
             {
-                move_children(*b.parent, b.label);
+                move_children(*b.parent, *b.label);
             }
             push_text_node(*b.parent, "]");
             cur = b.parent;
@@ -822,12 +915,12 @@ struct ParserState {
         // Materialize
         if (b.is_image)
         {
-            emit_image(*b.parent, std::move(dest), flatten_text(b.label));
+            emit_image(*b.parent, std::move(dest), flatten_text(*b.label));
         }
         else
         {
             doc::InlineContainer& linkC = start_link(*b.parent, std::move(dest));
-            move_children(linkC, b.label);
+            move_children(linkC, *b.label);
         }
         cur = b.parent;
         return j - i;
@@ -876,9 +969,12 @@ ParseResult
 parse(char const* first, char const* last, doc::InlineContainer& out_root)
 {
     std::string_view s(first, static_cast<std::size_t>(last - first));
+    std::size_t const hint = std::min<std::size_t>(s.size() + 8, kMaxReserve);
 
     ParserState st{
         .s = s,
+        .reserve_hint = hint,
+        .arena = {},
         .frames = {},
         .brackets = {},
         .cur = &out_root,
@@ -888,6 +984,7 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
     st.frames.reserve(8);
     st.brackets.reserve(4);
     st.text.reserve(64);
+    out_root.children.reserve(st.reserve_hint);
 
     for (std::size_t i = 0; i < s.size();) {
         // If inside a barrier (e.g. backticks), only look for its own closer
@@ -919,15 +1016,23 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
         // Markdown link/image openers
         if (c == '!' && i + 1 < s.size() && s[i + 1] == '[') {
             st.flush_text();
-            st.brackets.push_back(Bracket{ true, st.cur, {} });
-            st.cur = &st.brackets.back().label;
+            st.brackets.push_back(Bracket{
+                true,
+                st.cur,
+                st.make_container()
+            });
+            st.cur = st.brackets.back().label;
             i += 2;
             continue;
         }
         if (c == '[') {
             st.flush_text();
-            st.brackets.push_back(Bracket{ false, st.cur, {} });
-            st.cur = &st.brackets.back().label;
+            st.brackets.push_back(Bracket{
+                false,
+                st.cur,
+                st.make_container()
+            });
+            st.cur = st.brackets.back().label;
             ++i;
             continue;
         }
@@ -971,8 +1076,15 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
                     } else {
                         auto href = html_get_attr(tag->attrs, "href").value_or(std::string{});
                         st.flush_text();
-                        st.frames.push_back(Frame{ doc::InlineKind::Link, &kHtmlRule, st.cur, {}, std::string{} });
-                        st.cur = &st.frames.back().scratch;
+                        auto* scratch = st.make_container();
+                        st.frames.push_back(Frame{
+                            doc::InlineKind::Link,
+                            &kHtmlRule,
+                            st.cur,
+                            scratch,
+                            std::string{}
+                        });
+                        st.cur = scratch;
                         st.frames.back().open_tok = std::move(href); // own the href bytes
                     }
                     i = tag->end;
@@ -988,8 +1100,15 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
                         }
                     } else {
                         st.flush_text();
-                        st.frames.push_back(Frame{ *kind, &kHtmlRule, st.cur, {}, "<tag>" });
-                        st.cur = &st.frames.back().scratch;
+                        auto* scratch = st.make_container();
+                        st.frames.push_back(Frame{
+                            *kind,
+                            &kHtmlRule,
+                            st.cur,
+                            scratch,
+                            "<tag>"
+                        });
+                        st.cur = scratch;
                     }
                     i = tag->end;
                     continue;
@@ -1032,9 +1151,29 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
     while (!st.brackets.empty()) {
         Bracket b = std::move(st.brackets.back());
         st.brackets.pop_back();
+        MRDOCS_ASSERT(b.label);
+
+        // Frames opened inside the dangling label still hold pointers into the
+        // label container; unwind them before we destroy the label to avoid
+        // writing to freed storage. Frames tied to this label form a suffix on
+        // the stack because we switched `cur` to the label when it opened.
+        auto const* label_ptr = static_cast<doc::InlineContainer const*>(b.label);
+        while (!st.frames.empty() && frame_has_ancestor(st.frames.back(), label_ptr, st.frames)) {
+            Frame f = std::move(st.frames.back());
+            st.frames.pop_back();
+            if (f.rule && has(f.rule->flags, RuleFlags::Html))
+            {
+                st.materialize_and_pop(std::move(f));
+            }
+            else
+            {
+                st.fallback_unclosed(f);
+                st.cur = f.parent;
+            }
+        }
         ParserState::push_text_node(*b.parent, b.is_image ? "![" : "[");
-        if (!b.label.empty())
-            move_children(*b.parent, b.label);
+        if (!b.label->empty())
+            move_children(*b.parent, *b.label);
         ParserState::push_text_node(*b.parent, "]");
         st.cur = b.parent;
     }

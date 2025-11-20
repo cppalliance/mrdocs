@@ -24,9 +24,13 @@ namespace mrdocs::doc {
 struct TableCell final
     : InlineContainer
 {
+    /** Order cells by their inline content.
+    */
     auto operator<=>(TableCell const&) const = default;
-    bool
-    operator==(TableCell const&) const noexcept = default;
+
+    /** Equality compares inline content.
+    */
+    bool operator==(TableCell const&) const noexcept = default;
 };
 
 /** Map the @ref TableCell to a @ref dom::Object.
@@ -35,7 +39,7 @@ struct TableCell final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -47,7 +51,7 @@ tag_invoke(
 }
 
 /** Return the @ref TableCell as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

@@ -24,7 +24,7 @@ namespace mrdocs {
  * 
  * \par Preconditions
  * `args.size() >= 1`.
- */
+*/
 int ExecuteAndWaitWithLogging(
     llvm::StringRef program,
     llvm::ArrayRef<llvm::StringRef> args,

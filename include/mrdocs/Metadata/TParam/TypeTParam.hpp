@@ -23,15 +23,21 @@
 
 namespace mrdocs {
 
+/** Type template parameter.
+*/
 struct TypeTParam final
     : TParamCommonBase<TParamKind::Type>
 {
-    /** Keyword (class/typename) the parameter uses */
+    /** Keyword (class/typename) the parameter uses
+    */
     TParamKeyKind KeyKind = TParamKeyKind::Class;
 
-    /** The type-constraint for the parameter, if any. */
+    /** The type-constraint for the parameter, if any.
+    */
     Optional<Polymorphic<struct Name>> Constraint = std::nullopt;
 
+    /** Compare type parameters by keyword and constraint.
+    */
     std::strong_ordering operator<=>(TypeTParam const&) const;
 };
 

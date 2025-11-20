@@ -16,15 +16,21 @@
 
 namespace mrdocs {
 
+/** Kinds of names that appear in type and symbol metadata.
+*/
 enum class NameKind {
 #define INFO(Type) Type,
 #include <mrdocs/Metadata/Name/NameNodes.inc>
 };
 
+/** Convert a NameKind to its string form.
+*/
 MRDOCS_DECL
 dom::String
 toString(NameKind kind) noexcept;
 
+/** Map a NameKind into a DOM value.
+*/
 inline
 void
 tag_invoke(

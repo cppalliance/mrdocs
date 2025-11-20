@@ -30,10 +30,12 @@ namespace mrdocs::hbs {
 class HandlebarsCorpus final : public DomCorpus
 {
 public:
-    /** Legible names for the Handlebars corpus. */
+    /** Legible names for the Handlebars corpus.
+    */
     LegibleNames names_;
 
-    /** File extension for the markup files. */
+    /** File extension for the markup files.
+    */
     std::string fileExtension;
 
     /** Constructor.

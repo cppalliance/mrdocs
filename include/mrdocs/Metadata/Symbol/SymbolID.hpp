@@ -40,11 +40,20 @@ class SymbolID
     std::uint8_t data_[20]{};
 
 public:
+    /** Sentinel ID used to represent “no symbol.”
+    */
     static const SymbolID invalid;
+
+    /** Sentinel ID representing the global namespace.
+    */
     static const SymbolID global;
 
+    /** Underlying byte storage.
+    */
     using value_type = std::uint8_t;
 
+    /** Construct a zero-initialized identifier.
+    */
     constexpr SymbolID() = default;
 
     /** Construct a SymbolID from a null-terminated string.
@@ -71,20 +80,20 @@ public:
 
         @param input The string to hash.
         @return The SymbolID created by hashing the string.
-     */
+    */
     static
     SymbolID
     createFromString(std::string_view input);
 
     /** Return true if this is a valid SymbolID.
-     */
+    */
     explicit operator bool() const noexcept
     {
         return *this != SymbolID::invalid;
     }
 
     /** Return the raw data for this SymbolID.
-     */
+    */
     constexpr auto data() const noexcept
     {
         return data_;
@@ -94,28 +103,28 @@ public:
 
         The size of a SymbolID is always 20.
 
-     */
+    */
     constexpr std::size_t size() const noexcept
     {
         return 20;
     }
 
     /** Return an iterator to the first byte of the SymbolID.
-     */
+    */
     constexpr auto begin() const noexcept
     {
         return data_;
     }
 
     /** Return an iterator to one past the last byte of the SymbolID.
-     */
+    */
     constexpr auto end() const noexcept
     {
         return data_ + size();
     }
 
     /** Return a string view of the SymbolID.
-     */
+    */
     operator std::string_view() const noexcept
     {
         return {reinterpret_cast<
@@ -123,7 +132,7 @@ public:
     }
 
     /** Compare two SymbolIDs with strong ordering.
-     */
+    */
     auto operator<=>(
         SymbolID const& other) const noexcept
     {
@@ -134,7 +143,7 @@ public:
     }
 
     /** Compare two SymbolIDs for equality.
-     */
+    */
     bool operator==(
         SymbolID const& other) const noexcept = default;
 };
@@ -155,7 +164,7 @@ constexpr inline SymbolID SymbolID::global =
 
     @param id The SymbolID to convert.
     @return The base16 string representation of the SymbolID.
- */
+*/
 MRDOCS_DECL
 std::string
 toBase16Str(SymbolID const& id);
@@ -180,7 +189,7 @@ compareSymbolNames(
     std::string_view symbolName1) noexcept;
 
 /** Convert SymbolID to dom::Value string in the DOM using toBase16
- */
+*/
 MRDOCS_DECL
 void
 tag_invoke(
@@ -189,7 +198,7 @@ tag_invoke(
     SymbolID const& id);
 
 /** Convert SymbolID to dom::Value object in the DOM using Corpus
- */
+*/
 MRDOCS_DECL
 void
 tag_invoke(
@@ -205,7 +214,7 @@ tag_invoke(
         dom::Value is set to null.
     @param domCorpus The DomCorpus to use, or nullptr. If null,
         the SymbolID is converted to a base16 string.
- */
+*/
 MRDOCS_DECL
 void
 tag_invoke(

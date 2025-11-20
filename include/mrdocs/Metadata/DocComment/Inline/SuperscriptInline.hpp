@@ -19,23 +19,33 @@
 
 namespace mrdocs::doc {
 
-/** A piece of styled text.
+/** Superscript text fragment (raised baseline).
+
+    Syntax:
+
+    @code
+    x^2^
+    @endcode
 */
 struct SuperscriptInline final
     : InlineCommonBase<InlineKind::Superscript>
     , InlineContainer
 {
+    /** Order superscript spans by their children.
+    */
     auto operator<=>(SuperscriptInline const&) const = default;
+    /** Equality compares contained inline children.
+    */
     bool operator==(SuperscriptInline const&) const noexcept = default;
 };
 
-/** Map the @ref Superscript to a @ref dom::Object.
+/** Map the @ref SuperscriptInline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -48,8 +58,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref Superscript as a @ref dom::Value object.
- */
+/** Return the @ref SuperscriptInline as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

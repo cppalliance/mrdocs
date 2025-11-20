@@ -21,15 +21,21 @@
 
 namespace mrdocs {
 
+/** Template template argument.
+*/
 struct TemplateTArg final
     : TArgCommonBase<TArgKind::Template>
 {
-    /** SymbolID of the referenced template. */
+    /** SymbolID of the referenced template.
+    */
     SymbolID Template;
 
-    /** Name of the referenced template. */
+    /** Name of the referenced template.
+    */
     std::string Name;
 
+    /** Compare template arguments by referenced template.
+    */
     auto operator<=>(TemplateTArg const&) const = default;
 };
 

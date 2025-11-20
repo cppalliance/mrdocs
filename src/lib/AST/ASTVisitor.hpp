@@ -271,7 +271,7 @@ public:
         @param compiler The compiler instance.
         @param context The AST context.
         @param sema The clang::Sema object.
-     */
+    */
     ASTVisitor(
         ConfigImpl const& config,
         Diagnostics const& diags,
@@ -298,7 +298,7 @@ public:
         is not set to `never`, a second pass is made to extract
         referenced declarations. The `buildDependencies` function
         is responsible for this second pass.
-     */
+    */
     void
     build();
 
@@ -308,7 +308,7 @@ public:
         declarations that have been extracted by the ASTVisitor.
 
         @return A reference to the SymbolSet containing the extracted Info declarations.
-     */
+    */
     SymbolSet&
     results()
     {
@@ -321,7 +321,7 @@ public:
         declarations that have been extracted by the ASTVisitor.
 
         @return A reference to the SymbolSet containing the extracted Info declarations.
-     */
+    */
     UndocumentedSymbolSet&
     undocumented()
     {

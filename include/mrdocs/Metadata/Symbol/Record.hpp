@@ -34,14 +34,26 @@ struct RecordSymbol final
     /// When present, this record is a template or specialization.
     Optional<TemplateInfo> Template;
 
-    // Indicates if the record was declared using a typedef.
-    // Things like anonymous structs in a typedef:
-    //   typedef struct { ... } foo_t;
-    // are converted into records with the typedef as the Name + this flag set.
-    // KRYSTIAN FIXME: this does not account for alias-declarations
+    /** Whether the record originated from a typedef-style declaration.
+
+        Things like anonymous structs in a typedef:
+
+        @code
+        typedef struct { ... } foo_t;
+        @endcode
+
+        are converted into records with the typedef as the Name + this flag set.
+
+        @note Alias-declarations are not yet distinguished here.
+    */
     bool IsTypeDef = false;
 
+    /** Whether the class is marked `final`.
+    */
     bool IsFinal = false;
+
+    /** Whether the destructor is marked `final`.
+    */
     bool IsFinalDestructor = false;
 
     /** List of immediate bases.
@@ -49,11 +61,11 @@ struct RecordSymbol final
     std::vector<BaseInfo> Bases;
 
     /** List of derived classes
-     */
+    */
     std::vector<SymbolID> Derived;
 
     /** Lists of members.
-     */
+    */
     RecordInterface Interface;
 
     /** List of friends.
@@ -62,15 +74,21 @@ struct RecordSymbol final
 
     //--------------------------------------------
 
+    /** Create a record symbol bound to an ID.
+    */
     explicit RecordSymbol(SymbolID const& ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 
+    /** Compare records including bases, members, and flags.
+    */
     std::strong_ordering
     operator<=>(RecordSymbol const& other) const;
 };
 
+/** Return the default accessibility for a record key kind.
+*/
 constexpr
 std::string_view
 getDefaultAccessString(
@@ -88,6 +106,9 @@ getDefaultAccessString(
     }
 }
 
+/** View all record members across access levels.
+    @return Lazy view traversing every tranche.
+*/
 inline
 auto
 allMembers(RecordSymbol const& T)
@@ -95,6 +116,8 @@ allMembers(RecordSymbol const& T)
     return allMembers(T.Interface);
 }
 
+/** Merge metadata from another record of the same identity.
+*/
 MRDOCS_DECL
 void
 merge(RecordSymbol& I, RecordSymbol&& Other);
@@ -105,7 +128,7 @@ merge(RecordSymbol& I, RecordSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The RecordSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -127,7 +150,7 @@ tag_invoke(
 }
 
 /** Map the RecordSymbol to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

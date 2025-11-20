@@ -23,12 +23,28 @@
 namespace mrdocs::doc {
 
 /** A table block
+
+    Syntax:
+
+    @code
+    | Header 1 | Header 2 | Header 3 |
+    | :------- | :------: | -------: |
+    | Left     | Center   | Right    |
+    | Cell 1A  | Cell 1B  | Cell 1C  |
+    | Cell 2A  | Cell 2B  | Cell 2C  |
+    @endcode
 */
 struct TableBlock final: BlockCommonBase<BlockKind::Table>
 {
+    /** Column alignments for each table column.
+    */
     std::vector<TableAlignmentKind> Alignments;
+    /** Rows that make up the table body (header first when present).
+    */
     std::vector<TableRow> items;
 
+    /** Order tables by row contents and alignments.
+    */
     auto operator<=>(TableBlock const& other) const {
         if (auto const cmp = items.size() <=> other.items.size();
             !std::is_eq(cmp))
@@ -46,17 +62,19 @@ struct TableBlock final: BlockCommonBase<BlockKind::Table>
         return std::strong_ordering::equal;
     }
 
+    /** Equality compares alignments and rows.
+    */
     bool
     operator==(TableBlock const&) const noexcept = default;
 };
 
-/** Map the @ref UnorderedTable to a @ref dom::Object.
+/** Map the @ref TableBlock to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -74,8 +92,8 @@ tag_invoke(
     });
 }
 
-/** Return the @ref UnorderedTable as a @ref dom::Value object.
- */
+/** Return the @ref TableBlock as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

@@ -54,7 +54,7 @@ toString(UsingClass const& value)
 
     @param v The output value.
     @param kind The UsingClass to convert.
- */
+*/
 inline
 void
 tag_invoke(
@@ -82,7 +82,7 @@ tag_invoke(
     or to introduce enumerators into namespaces, block,
     and class scopes.
 
- */
+*/
 struct UsingSymbol final
     : SymbolCommonBase<SymbolKind::Using>
 {
@@ -97,7 +97,7 @@ struct UsingSymbol final
 
         Note that this can be a qualified name, such as
         `A::f` in the example above.
-     */
+    */
     Polymorphic<struct Name> IntroducedName = Polymorphic<struct Name>(std::in_place_type<IdentifierName>);
 
     /** The shadow declarations.
@@ -131,12 +131,16 @@ struct UsingSymbol final
 
     //--------------------------------------------
 
+    /** Create a using-declaration symbol bound to an ID.
+    */
     explicit UsingSymbol(SymbolID ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 };
 
+/** Merge two using-declarations with the same identity.
+*/
 MRDOCS_DECL
 void merge(UsingSymbol& I, UsingSymbol&& Other);
 
@@ -146,7 +150,7 @@ void merge(UsingSymbol& I, UsingSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The UsingSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -162,7 +166,7 @@ tag_invoke(
 }
 
 /** Map the UsingSymbol to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(
@@ -174,6 +178,9 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
+/** Access declarations introduced by this using-declaration.
+    @return Reference to the underlying shadow list.
+*/
 inline
 auto&
 allMembers(UsingSymbol const& T)

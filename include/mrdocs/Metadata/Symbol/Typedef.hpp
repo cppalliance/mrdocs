@@ -22,10 +22,13 @@
 
 namespace mrdocs {
 
-// Info for typedef and using statements.
+/** Info for typedef and using declarations.
+*/
 struct TypedefSymbol final
     : SymbolCommonBase<SymbolKind::Typedef>
 {
+    /** The aliased type.
+    */
     Polymorphic<struct Type> Type = Polymorphic<struct Type>(NamedType{});
 
     /** Indicates if this is a new C++ "using"-style typedef
@@ -39,23 +42,31 @@ struct TypedefSymbol final
         @code
         typedef std::vector<int> MyVector;
         @endcode
-      */
+    */
     bool IsUsing = false;
 
+    /** Template information when the alias is templated.
+    */
     Optional<TemplateInfo> Template;
 
     //--------------------------------------------
 
+    /** Create a typedef symbol bound to an ID.
+    */
     explicit TypedefSymbol(SymbolID ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 
+    /** Compare typedef symbols, including alias target and template.
+    */
     std::strong_ordering
     operator<=>(TypedefSymbol const& other) const;
 
 };
 
+/** Merge typedef symbols, keeping existing info when present.
+*/
 MRDOCS_DECL
 void
 merge(TypedefSymbol& I, TypedefSymbol&& Other);
@@ -66,7 +77,7 @@ merge(TypedefSymbol& I, TypedefSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The TypedefSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -86,7 +97,7 @@ tag_invoke(
     @param v The output parameter to receive the dom::Value.
     @param I The TypedefSymbol to convert.
     @param domCorpus The DomCorpus used to resolve references.
- */
+*/
 inline
 void
 tag_invoke(

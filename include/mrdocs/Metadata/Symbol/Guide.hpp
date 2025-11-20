@@ -48,14 +48,22 @@ struct GuideSymbol final
 
     //--------------------------------------------
 
+    /** Construct a deduction guide symbol with its ID.
+    */
     explicit GuideSymbol(SymbolID ID) noexcept
         : SymbolCommonBase(ID)
     {}
 
+    /** Compare guides by params/deduced/template/explicit.
+    */
     std::strong_ordering
     operator<=>(GuideSymbol const& other) const;
 };
 
+/** Merge another GuideSymbol into this one.
+    @param I Destination symbol to update.
+    @param Other Source symbol providing data.
+*/
 MRDOCS_DECL
 void
 merge(GuideSymbol& I, GuideSymbol&& Other);
@@ -66,7 +74,7 @@ merge(GuideSymbol& I, GuideSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The GuideSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -83,7 +91,7 @@ tag_invoke(
 }
 
 /** Map the GuideSymbol to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

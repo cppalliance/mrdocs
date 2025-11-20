@@ -120,6 +120,8 @@ enum class OperatorKind
     Coawait,
 };
 
+/** Map an operator kind to a DOM value (its underlying integer).
+*/
 inline
 void
 tag_invoke(
@@ -131,13 +133,13 @@ tag_invoke(
 }
 
 /** Determines whether the operator is potentially unary.
- */
+*/
 MRDOCS_DECL
 bool
 isUnaryOperator(OperatorKind kind) noexcept;
 
 /** Determines whether the operator is potentially binary.
- */
+*/
 MRDOCS_DECL
 bool
 isBinaryOperator(OperatorKind kind) noexcept;
@@ -196,7 +198,7 @@ getSafeOperatorName(
     @param kind The kind of operator.
     @param nParams The number of parameters the operator takes.
     @return The readable name, or nullopt if the operator is not recognized.
- */
+*/
 Optional<std::string_view>
 getOperatorReadableName(
     OperatorKind kind,

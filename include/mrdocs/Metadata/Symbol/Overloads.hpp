@@ -18,7 +18,7 @@
 namespace mrdocs {
 
 /** Represents a set of function overloads.
- */
+*/
 struct OverloadsSymbol final
     : SymbolCommonBase<SymbolKind::Overloads>
 {
@@ -36,23 +36,36 @@ struct OverloadsSymbol final
         If all overloads have the same return type, this contains
         that type. Otherwise, it contains `auto` to indicate that
         the return type varies according to the parameters.
-     */
+    */
     Polymorphic<Type> ReturnType = Polymorphic<Type>(AutoType{});
 
     //--------------------------------------------
 
+    /** Create an empty overload set for the given ID.
+    */
     explicit OverloadsSymbol(SymbolID const& ID) noexcept
     : SymbolCommonBase(ID)
     {
     }
 
+    /** Create an overload set under the given parent and name.
+        @param Parent Owning symbol ID.
+        @param Name Unqualified name shared by the overloads.
+        @param Access Access specifier when the overloads are members.
+        @param isStatic Whether the overload set refers to static functions.
+    */
     explicit
     OverloadsSymbol(SymbolID const& Parent, std::string_view Name, AccessKind Access, bool isStatic) noexcept;
 };
 
+/** Merge overload sets, preserving ordering in `Members`.
+*/
 MRDOCS_DECL
 void merge(OverloadsSymbol& I, OverloadsSymbol&& Other);
 
+/** Access the list of overload members.
+    @return Reference to the ID list backing this set.
+*/
 inline
 auto&
 allMembers(OverloadsSymbol const& T)
@@ -60,6 +73,8 @@ allMembers(OverloadsSymbol const& T)
     return T.Members;
 }
 
+/** Append a new function overload to the set.
+*/
 MRDOCS_DECL
 void
 addMember(OverloadsSymbol& I, FunctionSymbol const& Member);
@@ -70,7 +85,7 @@ addMember(OverloadsSymbol& I, FunctionSymbol const& Member);
     @param io The IO object to use for mapping.
     @param I The OverloadsSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -86,7 +101,7 @@ tag_invoke(
 }
 
 /** Map the OverloadsSymbol to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

@@ -18,11 +18,17 @@
 
 namespace mrdocs {
 
+/** An lvalue reference type.
+*/
 struct LValueReferenceType final
     : TypeCommonBase<TypeKind::LValueReference>
 {
+    /** The referenced type.
+    */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
+    /** Compare references by pointee type.
+    */
     std::strong_ordering
     operator<=>(LValueReferenceType const&) const;
 };

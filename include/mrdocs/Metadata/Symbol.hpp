@@ -28,7 +28,7 @@ namespace mrdocs {
     @param fn The function object to call
     @param args Additional arguments to pass to the function object
     @return The result of calling the function object with the derived type
- */
+*/
 template<
     std::derived_from<Symbol> SymbolTy,
     class Fn,
@@ -58,7 +58,7 @@ visit(
 
     @param I The Symbol object to merge into.
     @param Other The Symbol object to merge from.
- */
+*/
 template <polymorphic_storage_for<Symbol> SymbolTy>
 void
 merge(SymbolTy& I, SymbolTy&& Other)
@@ -90,7 +90,7 @@ concept SymbolParent = requires(SymbolTy const& I)
     @param io The output parameter to receive the dom::Object.
     @param I The polymorphic Symbol to convert.
     @param domCorpus The DomCorpus used to resolve references.
- */
+*/
 template <class IO, polymorphic_storage_for<Symbol> PolymorphicSymbol>
 requires std::derived_from<PolymorphicSymbol, Symbol>
 void
@@ -109,31 +109,6 @@ tag_invoke(
             domCorpus);
     });
 }
-
-/** Map the Polymorphic Symbol as a @ref dom::Value object.
-
-    @param io The output parameter to receive the dom::Value.
-    @param I The polymorphic Symbol to convert.
-    @param domCorpus The DomCorpus used to resolve references.
- */
-//template <class IO, polymorphic_storage_for<Symbol> SymbolTy>
-//requires std::derived_from<SymbolTy, Symbol>
-//void
-//tag_invoke(
-//    dom::ValueFromTag,
-//    IO& io,
-//    SymbolTy const& I,
-//    DomCorpus const* domCorpus)
-//{
-//    visit(*I, [&](auto const& U)
-//    {
-//        tag_invoke(
-//            dom::ValueFromTag{},
-//            io,
-//            U,
-//            domCorpus);
-//    });
-//}
 
 } // mrdocs
 

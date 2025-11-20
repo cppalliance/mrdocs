@@ -72,7 +72,7 @@ enum class FundamentalTypeKind
     the shortest canonical string representing the type.
 
     @return The string representation of the kind
- */
+*/
 MRDOCS_DECL
 std::string_view
 toString(FundamentalTypeKind kind) noexcept;
@@ -90,7 +90,7 @@ toString(FundamentalTypeKind kind) noexcept;
     @param[out] kind The resulting FundamentalTypeKind
 
     @return true if the string was successfully converted
- */
+*/
 MRDOCS_DECL
 bool
 fromString(std::string_view str, FundamentalTypeKind& kind) noexcept;
@@ -106,7 +106,7 @@ fromString(std::string_view str, FundamentalTypeKind& kind) noexcept;
 
     @param[in/out] kind The type to modify
     @return Whether the operation was successful
- */
+*/
 MRDOCS_DECL
 bool
 makeLong(FundamentalTypeKind& kind) noexcept;
@@ -122,7 +122,7 @@ makeLong(FundamentalTypeKind& kind) noexcept;
 
     @param[in/out] kind The type to modify
     @return Whether the operation was successful
- */
+*/
 MRDOCS_DECL
 bool
 makeShort(FundamentalTypeKind& kind) noexcept;
@@ -148,7 +148,7 @@ makeShort(FundamentalTypeKind& kind) noexcept;
 
     @param[in/out] kind The type to modify
     @return Whether the operation was successful
- */
+*/
 MRDOCS_DECL
 bool
 makeSigned(FundamentalTypeKind& kind) noexcept;
@@ -167,7 +167,7 @@ makeSigned(FundamentalTypeKind& kind) noexcept;
 
     @param[in/out] kind The type to modify
     @return Whether the operation was successful
- */
+*/
 MRDOCS_DECL
 bool
 makeUnsigned(FundamentalTypeKind& kind) noexcept;
@@ -186,7 +186,7 @@ makeUnsigned(FundamentalTypeKind& kind) noexcept;
 
     @param[in/out] kind The type to modify
     @return Whether the operation was successful
- */
+*/
 MRDOCS_DECL
 bool
 makeChar(FundamentalTypeKind& kind) noexcept;

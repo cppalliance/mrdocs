@@ -29,7 +29,7 @@ namespace mrdocs {
  * @param tempDir The path to the temporary directory to use for CMake execution.
  * @return An `Expected` object containing the path to the generated `compile_commands.json` file if successful.
  *         Returns `Unexpected` if the project path is not found or if CMake execution fails.
- */
+*/
 Expected<std::string>
 executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs, llvm::StringRef tempDir);
 

@@ -15,7 +15,7 @@ namespace test_suite
 {
 
 /** Result of a diff between two strings
- */
+*/
 struct DiffStringsResult
 {
     /** The diff between the two strings
@@ -24,7 +24,7 @@ struct DiffStringsResult
      * strings.
      *
      * New lines are prefixed with '+' and removed lines are prefixed with '-'.
-     */
+    */
     std::string diff;
 
     /// The number of lines added in the contents
@@ -66,7 +66,7 @@ diffStrings(
     @param expected_contents_path The path to the expected contents file
     @param rendered_contents The rendered contents of the file
     @param error_output_path The path to the error output file
- */
+*/
 void
 BOOST_TEST_DIFF(
     std::string_view expected_contents,

@@ -22,13 +22,21 @@
 
 namespace mrdocs {
 
+/** A type identified by name (possibly fundamental).
+*/
 struct NamedType final
     : TypeCommonBase<TypeKind::Named>
 {
+    /** The name of the type (identifier or specialization).
+    */
     Polymorphic<struct Name> Name = Polymorphic<struct Name>(std::in_place_type<IdentifierName>);
 
+    /** Fundamental kind if this named type is a built-in.
+    */
     Optional<FundamentalTypeKind> FundamentalType;
 
+    /** Compare named types by name and fundamental kind.
+    */
     std::strong_ordering
     operator<=>(NamedType const& other) const;
 };

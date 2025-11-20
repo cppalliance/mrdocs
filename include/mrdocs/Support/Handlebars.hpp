@@ -35,17 +35,32 @@ namespace mrdocs {
     The object will also contain the line, column and position
     of the error in the template. These can be used to by the
     caller to provide more detailed error messages.
- */
+*/
 struct HandlebarsError
     : public std::runtime_error
 {
+    /** Line number in the template where the error occurred.
+    */
     std::size_t line = static_cast<std::size_t>(-1);
+    /** Column of the error in the template.
+    */
     std::size_t column = static_cast<std::size_t>(-1);
+    /** Absolute character position of the error.
+    */
     std::size_t pos = static_cast<std::size_t>(-1);
 
+    /** Construct an error with a message.
+        @param msg Description of the failure.
+    */
     HandlebarsError(std::string_view msg)
         : std::runtime_error(std::string(msg)) {}
 
+    /** Construct an error with location information.
+        @param msg Description of the failure.
+        @param line_ Line number where it occurred.
+        @param column_ Column number where it occurred.
+        @param pos_ Absolute character position.
+    */
     HandlebarsError(std::string_view msg, std::size_t line_,
                     std::size_t column_, std::size_t pos_)
         : std::runtime_error(std::format("{} - {}:{}", msg, line_, column_)),
@@ -82,7 +97,7 @@ namespace detail {
     It allows many types to be used as output streams, including
     std::string, std::ostream, llvm::raw_string_ostream, and others.
 
- */
+*/
 class MRDOCS_DECL OutputRef
 {
     friend class Handlebars;
@@ -137,7 +152,7 @@ public:
     /** Constructor for std::string output
 
         @param st The string to append to
-     */
+    */
     template<detail::SVAppendable St>
     requires std::same_as<typename St::value_type, char>
     OutputRef( St& st )
@@ -149,7 +164,7 @@ public:
     /** Constructor for llvm::raw_string_ostream output
 
         @param os The output stream to write to
-     */
+    */
     template <detail::StdLHROStreamable Os>
     requires std::is_convertible_v<Os*, std::ostream*>
     OutputRef( Os& os )
@@ -161,7 +176,7 @@ public:
     /** Constructor for std::ostream& output
 
         @param os The output stream to write to
-     */
+    */
     template <detail::LHROStreamable Os>
     requires
         std::is_convertible_v<Os*, std::ostream*> &&
@@ -177,7 +192,7 @@ public:
         @param os The output stream reference
         @param sv The string to write
         @return A reference to this object
-     */
+    */
     friend
     OutputRef&
     operator<<( OutputRef& os, std::string_view sv )
@@ -190,7 +205,7 @@ public:
         @param os The output stream reference
         @param c The character to write
         @return A reference to this object
-     */
+    */
     friend
     OutputRef&
     operator<<( OutputRef& os, char c )
@@ -203,7 +218,7 @@ public:
         @param os The output stream reference
         @param c The string to write
         @return A reference to this object
-     */
+    */
     friend
     OutputRef&
     operator<<( OutputRef& os, char const * c )
@@ -216,7 +231,7 @@ public:
         @param os The output stream reference
         @param v The character to write
         @return A reference to this object
-     */
+    */
     template <class T>
       requires std::formattable<T, char>
     friend OutputRef &operator<<(OutputRef &os, T v) {
@@ -224,12 +239,17 @@ public:
       return os.write_impl(s);
     }
 
+    /** Set the indentation level applied to writes.
+        @param indent Number of spaces to indent.
+    */
     void
     setIndent(std::size_t indent)
     {
         indent_ = indent;
     }
 
+    /** Return the current indentation level.
+    */
     std::size_t
     getIndent() const noexcept
     {
@@ -260,7 +280,7 @@ public:
 
     @param out The output stream reference where the escaped string will be written.
     @param str The string to escape.
- */
+*/
 MRDOCS_DECL
 void
 HTMLEscape(
@@ -285,7 +305,7 @@ HTMLEscape(
  *
  * \param str The string to escape.
  * \return The escaped string.
- */
+*/
 MRDOCS_DECL
 std::string
 HTMLEscape(std::string_view str);
@@ -296,11 +316,11 @@ HTMLEscape(std::string_view str);
 
     @see https://handlebarsjs.com/api-reference/compilation.html
 
- */
+*/
 struct HandlebarsOptions
 {
     /** Escape HTML entities or entities defined by the escape function
-     */
+    */
     bool noEscape = false;
 
     /** Function to escape entities
@@ -310,7 +330,7 @@ struct HandlebarsOptions
         replaced with a custom function that escapes entities in a different
         way.
 
-     */
+    */
     std::function<void(OutputRef&, std::string_view)> escapeFunction =
         static_cast<void(*)(OutputRef&, std::string_view)>(HTMLEscape);
 
@@ -319,14 +339,14 @@ struct HandlebarsOptions
         Run in strict mode. In this mode, templates will throw rather than
         silently ignore missing fields.
 
-     */
+    */
     bool strict = false;
 
     /** Removes object existence checks when traversing paths
 
         This is a subset of strict mode that generates optimized
         templates when the data inputs are known to be safe.
-     */
+    */
     bool assumeObjects = false;
 
     /** Disable the auto-indent feature
@@ -374,7 +394,7 @@ struct HandlebarsOptions
         </div>
 
 
-     */
+    */
     bool preventIndent = false;
 
     /** Disables standalone tag removal when set to true
@@ -425,14 +445,14 @@ struct HandlebarsOptions
 
         When set, blocks and partials that are on their own line will not
         remove the whitespace on that line.
-     */
+    */
     bool ignoreStandalone = false;
 
     /** Disables implicit context for partials
 
         When enabled, partials that are not passed a context value will
         execute against an empty object.
-     */
+    */
     bool explicitPartialContext = false;
 
     /** Enable recursive field lookup
@@ -442,7 +462,7 @@ struct HandlebarsOptions
 
         This mode should be used to enable complete compatibility
         with Mustache templates.
-     */
+    */
     bool compat = false;
 
     /** Enable tracking of ids
@@ -453,14 +473,14 @@ struct HandlebarsOptions
         Helpers often use this information to update the context
         path to the current expression, which can later be used to
         look up the value of the expression with ".." segments.
-     */
+    */
     bool trackIds = false;
 
     /** Custom private data object
 
         This variable can be used to pass in an object to define custom
         private variables.
-     */
+    */
     dom::Value data = nullptr;
 };
 
@@ -629,7 +649,7 @@ namespace detail {
     helpers.
 
     @see https://handlebarsjs.com/
- */
+*/
 class Handlebars {
     using helpers_map = std::unordered_map<
         std::string, dom::Function, detail::string_hash, std::equal_to<>>;
@@ -650,7 +670,7 @@ public:
         helpers or partials.
 
         @see helpers::registerBuiltinHelpers
-     */
+    */
     Handlebars();
 
     /** Render a handlebars template
@@ -667,7 +687,7 @@ public:
         @param context The data to render
         @param options The options to use
         @return The rendered text
-     */
+    */
     std::string
     render(
         std::string_view templateText,
@@ -718,11 +738,12 @@ public:
         The output stream can be any type convertible to OutputRef, which is
         a reference to a stream that can be written to with the << operator.
 
+        @param out The output stream reference
         @param templateText The handlebars template text
         @param context The data to render
         @param options The options to use
         @return The rendered text
-     */
+    */
     void
     render_to(
         OutputRef& out,
@@ -766,7 +787,7 @@ public:
     }
 
     /** @copydoc render_to(OutputRef&, std::string_view, dom::Value const&, HandlebarsOptions const&) const
-     */
+    */
     Expected<std::string, HandlebarsError>
     try_render(
         std::string_view templateText,
@@ -808,11 +829,12 @@ public:
         The output stream can be any type convertible to OutputRef, which is
         a reference to a stream that can be written to with the << operator.
 
+        @param out The output stream reference
         @param templateText The handlebars template text
         @param context The data to render
         @param options The options to use
         @return The rendered text
-     */
+    */
     Expected<void, HandlebarsError>
     try_render_to(
         OutputRef& out,
@@ -868,7 +890,7 @@ public:
 
         @see https://handlebarsjs.com/guide/partials.html
 
-     */
+    */
     void
     registerPartial(std::string_view name, std::string_view text);
 
@@ -877,7 +899,7 @@ public:
         This function unregisters a partial with the handlebars environment.
 
         @param name The name of the partial
-     */
+    */
     void
     unregisterPartial(std::string_view name) {
         auto it = partials_.find(name);
@@ -915,7 +937,7 @@ public:
         @see https://handlebarsjs.com/guide/expressions.html
         @see https://handlebarsjs.com/guide/block-helpers.html
         @see https://handlebarsjs.com/guide/builtin-helpers.html
-     */
+    */
     void
     registerHelper(std::string_view name, dom::Function const& helper);
 
@@ -924,7 +946,7 @@ public:
         This function unregisters a helper with the handlebars environment.
 
         @param name The name of the helper
-     */
+    */
     void
     unregisterHelper(std::string_view name);
 
@@ -941,10 +963,12 @@ public:
         current level and a `dom::Array` containing values to be logged.
 
         @param fn The logger function
-     */
+    */
     void
     registerLogger(dom::Function fn);
 
+    /** Internal representation of a parsed Handlebars tag.
+    */
     struct Tag;
 
 private:
@@ -1049,7 +1073,7 @@ private:
     @return True if the value is empty, false otherwise
 
     @see https://mustache.github.io/mustache.5.html#Sections
- */
+*/
 MRDOCS_DECL
 bool
 isEmpty(dom::Value const& arg);
@@ -1075,7 +1099,7 @@ isEmpty(dom::Value const& arg);
     @return The overlay object
 
     @see https://mustache.github.io/mustache.5.html#Sections
- */
+*/
 MRDOCS_DECL
 dom::Object
 createFrame(dom::Object const& parent);
@@ -1097,6 +1121,12 @@ escapeExpression(
     std::string_view str,
     HandlebarsOptions const& opt);
 
+/** Handlebars helper registry for templates.
+
+    Everything under `helpers` mirrors the runtime helper registry shipped with
+    our bundled Handlebars engine so templates can call the same helpers in
+    both Node-based dev mode and the embedded C++ rendering pipeline.
+*/
 namespace helpers {
 
 /** Register all the built-in helpers into a Handlebars instance
@@ -1112,7 +1142,7 @@ namespace helpers {
     @see https://handlebarsjs.com/guide/builtin-helpers.html
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerBuiltinHelpers(Handlebars& hbs);
@@ -1124,7 +1154,7 @@ registerBuiltinHelpers(Handlebars& hbs);
     literals in the template.
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerConstructorHelpers(Handlebars& hbs);
@@ -1145,7 +1175,7 @@ registerConstructorHelpers(Handlebars& hbs);
     @see https://gitlab.com/antora/antora-ui-default/-/tree/master/src/helpers
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerAntoraHelpers(Handlebars& hbs);
@@ -1156,7 +1186,7 @@ registerAntoraHelpers(Handlebars& hbs);
     logical operations.
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerLogicalHelpers(Handlebars& hbs);
@@ -1167,7 +1197,7 @@ registerLogicalHelpers(Handlebars& hbs);
     mathemathical operations.
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerMathHelpers(Handlebars& hbs);
@@ -1192,7 +1222,7 @@ registerMathHelpers(Handlebars& hbs);
     cannot be registered individually.
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerStringHelpers(Handlebars& hbs);
@@ -1213,7 +1243,7 @@ registerStringHelpers(Handlebars& hbs);
     cannot be registered individually.
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerContainerHelpers(Handlebars& hbs);
@@ -1224,7 +1254,7 @@ registerContainerHelpers(Handlebars& hbs);
     types, such as identity, type checking, and type conversion.
 
     @param hbs The Handlebars instance to register the helpers into
- */
+*/
 MRDOCS_DECL
 void
 registerTypeHelpers(Handlebars& hbs);
@@ -1235,7 +1265,7 @@ registerTypeHelpers(Handlebars& hbs);
 
     @param args The values to test
     @return True if all of the values are truthy, false otherwise.
- */
+*/
 MRDOCS_DECL
 bool
 and_fn(dom::Array const& args);
@@ -1243,7 +1273,7 @@ and_fn(dom::Array const& args);
 /** "or" helper function
  *
  *  The "or" helper returns true if any of the values are truthy.
- */
+*/
 MRDOCS_DECL
 dom::Value
 or_fn(dom::Array const& args);
@@ -1254,7 +1284,7 @@ or_fn(dom::Array const& args);
 
     @param args The values to compare
     @return True if all of the values are equal, false otherwise.
- */
+*/
 MRDOCS_DECL
 bool
 eq_fn(dom::Array const& args);
@@ -1265,7 +1295,7 @@ eq_fn(dom::Array const& args);
 
     @param args The values to compare
     @return True if any of the values are not equal, false otherwise.
- */
+*/
 MRDOCS_DECL
 bool
 ne_fn(dom::Array const& args);
@@ -1275,7 +1305,7 @@ ne_fn(dom::Array const& args);
     The "not" helper returns true if not all of the values are truthy.
 
     @return True if not all of the values are truthy, false otherwise.
- */
+*/
 MRDOCS_DECL
 bool
 not_fn(dom::Array const& arg);
@@ -1284,7 +1314,7 @@ not_fn(dom::Array const& arg);
  *
  *  The "select" helper returns the second argument if the first argument is
  *  truthy, and the third argument otherwise.
- */
+*/
 MRDOCS_DECL
 dom::Value
 select_fn(
@@ -1296,7 +1326,7 @@ select_fn(
  *
  *  The "increment" helper adds 1 to the value if it's an integer and converts
  *  booleans to `true`. Other values are returned as-is.
- */
+*/
 MRDOCS_DECL
 dom::Value
 increment_fn(dom::Value const& value);
@@ -1305,7 +1335,7 @@ increment_fn(dom::Value const& value);
  *
  *  The "detag" helper applies the regex expression "<[^>]+>" to the
  *  input to remove all HTML tags.
- */
+*/
 MRDOCS_DECL
 dom::Value
 detag_fn(dom::Value html);
@@ -1313,7 +1343,7 @@ detag_fn(dom::Value html);
 /** "relativize" helper function
  *
  *  The "relativize" helper makes the first path relative to the second path.
- */
+*/
 MRDOCS_DECL
 dom::Value
 relativize_fn(dom::Value to, dom::Value from, dom::Value context);
@@ -1323,7 +1353,7 @@ relativize_fn(dom::Value to, dom::Value from, dom::Value context);
     The "year" helper returns the current year as an integer.
 
     @return The current year as an integer.
- */
+*/
 MRDOCS_DECL
 int
 year_fn();

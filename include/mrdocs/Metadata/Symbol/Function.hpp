@@ -25,8 +25,8 @@
 
 namespace mrdocs {
 
-// TODO: Expand to allow for documenting templating and default args.
-// Info for functions.
+/** Metadata for a function or method.
+*/
 struct FunctionSymbol final
     : SymbolCommonBase<SymbolKind::Function>
 {
@@ -37,7 +37,7 @@ struct FunctionSymbol final
 
         By default, we also use `auto` in the member to indicate
         an unknown return type.
-     */
+    */
     Polymorphic<Type> ReturnType = Polymorphic<Type>(AutoType{});
 
     /// List of parameters.
@@ -49,45 +49,103 @@ struct FunctionSymbol final
     /// The class of function this is
     FunctionClass Class = FunctionClass::Normal;
 
+    /** Exception specification for the function.
+    */
     NoexceptInfo Noexcept;
+    /** Constrained requires-clause if present.
+    */
     ExprInfo Requires;
+    /** True when the function is variadic.
+    */
     bool IsVariadic = false;
+    /** True when this declaration is implicitly defaulted.
+    */
     bool IsDefaulted = false;
+    /** True when explicitly defaulted with `= default`.
+    */
     bool IsExplicitlyDefaulted = false;
+    /** True when this declaration is deleted.
+    */
     bool IsDeleted = false;
+    /** True when deleted as written (vs deduced).
+    */
     bool IsDeletedAsWritten = false;
+    /** True when marked [[noreturn]] or equivalent.
+    */
     bool IsNoReturn = false;
+    /** True when annotated with override.
+    */
     bool HasOverrideAttr = false;
+    /** True when using a trailing return type.
+    */
     bool HasTrailingReturn = false;
+    /** True when declared [[nodiscard]].
+    */
     bool IsNodiscard = false;
+    /** True when explicit object parameter syntax is used.
+    */
     bool IsExplicitObjectMemberFunction = false;
+    /** constexpr/consteval specifier.
+    */
     ConstexprKind Constexpr = ConstexprKind::None;
+    /** Overloaded operator kind, if any.
+    */
     OperatorKind OverloadedOperator = OperatorKind::None;
+    /** Storage class specifier.
+    */
     StorageClassKind StorageClass = StorageClassKind::None;
+    /** Collected attributes attached to the declaration.
+    */
     std::vector<std::string> Attributes;
 
     // CXXMethodDecl
+    /** True when this is a non-static member function.
+    */
     bool IsRecordMethod = false;
+    /** True when declared virtual (after overrides).
+    */
     bool IsVirtual = false;
+    /** True when explicitly written virtual.
+    */
     bool IsVirtualAsWritten = false;
+    /** True when the function is pure virtual.
+    */
     bool IsPure = false;
+    /** True when qualified const.
+    */
     bool IsConst = false;
+    /** True when qualified volatile.
+    */
     bool IsVolatile = false;
+    /** True when final-qualified.
+    */
     bool IsFinal = false;
+    /** Reference qualifier on the member function, if any.
+    */
     ReferenceKind RefQualifier = ReferenceKind::None;
+    /** explicit-specifier information.
+    */
     ExplicitInfo Explicit;
 
     //--------------------------------------------
 
+    /** Construct a function symbol with its ID.
+    */
     explicit FunctionSymbol(SymbolID const& ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 
+    /** Compare functions by signature, qualifiers, and metadata.
+    */
     std::strong_ordering
     operator<=>(FunctionSymbol const& other) const;
 };
 
+/** Merge metadata from another function symbol.
+    @param I Destination symbol to update.
+    @param Other Source symbol providing additional data.
+*/
 MRDOCS_DECL
 void
 merge(FunctionSymbol& I, FunctionSymbol&& Other);
@@ -98,7 +156,7 @@ merge(FunctionSymbol& I, FunctionSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The FunctionSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -155,7 +213,7 @@ tag_invoke(
     @param v The output parameter to receive the dom::Value.
     @param I The FunctionSymbol to convert.
     @param domCorpus The DomCorpus used to resolve references.
- */
+*/
 inline
 void
 tag_invoke(
@@ -171,7 +229,7 @@ tag_invoke(
 
     @param base The base function
     @param derived The derived function
- */
+*/
 MRDOCS_DECL
 bool
 overrides(FunctionSymbol const& base, FunctionSymbol const& derived);

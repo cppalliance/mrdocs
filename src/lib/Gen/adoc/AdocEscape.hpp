@@ -20,7 +20,7 @@
 namespace mrdocs::adoc {
 
 /** Escape a string for use in AsciiDoc
-  */
+*/
 MRDOCS_DECL
 void
 AdocEscape(OutputRef& os, std::string_view str);

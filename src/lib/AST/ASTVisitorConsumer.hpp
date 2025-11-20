@@ -35,7 +35,7 @@ namespace mrdocs {
     `clang::SemaConsumer` class. The main function this class
     overrides is `HandleTranslationUnit`, which is called
     when the translation unit is complete.
- */
+*/
 class ASTVisitorConsumer
     : public clang::SemaConsumer
 {
@@ -60,7 +60,7 @@ public:
         Initialize the semantic consumer with the Sema instance
         being used to perform semantic analysis on the abstract syntax
         tree.
-      */
+    */
     void
     InitializeSema(clang::Sema& S) override
     {
@@ -72,7 +72,7 @@ public:
     /** Inform the semantic consumer that Sema is no longer available.
 
         This is called when the Sema instance is no longer available.
-      */
+    */
     void
     ForgetSema() override
     {
@@ -91,7 +91,7 @@ public:
 
         All other `Handle*` methods called by when a specific type
         of declaration or definition is found is left as an empty stub.
-      */
+    */
     void
     HandleTranslationUnit(clang::ASTContext& Context) override;
 
@@ -101,7 +101,7 @@ public:
         top-level Decl*.
 
         @returns `true` to always continue parsing
-     */
+    */
     bool
     HandleTopLevelDecl(clang::DeclGroupRef) override
     {
@@ -121,7 +121,7 @@ public:
         returns false for these VarDecls, so we manually set it here.
 
         @param D The declaration of the static member variable
-     */
+    */
     void
     HandleCXXStaticMemberVarInstantiation(clang::VarDecl* D) override
     {
@@ -145,7 +145,7 @@ public:
         false for these clang::FunctionDecls, so we manually set it here.
 
         @param D The declaration of the function
-     */
+    */
     void
     HandleCXXImplicitFunctionInstantiation(clang::FunctionDecl* D) override
     {
@@ -160,7 +160,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration of the function
-     */
+    */
     void HandleInlineFunctionDefinition(clang::FunctionDecl*) override { }
 
     /** Handle a tag declaration definition.
@@ -171,7 +171,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration of the tag
-     */
+    */
     void HandleTagDeclDefinition(clang::TagDecl*) override { }
 
     /** Handle a tag declaration required definition.
@@ -182,7 +182,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration of the tag
-     */
+    */
     void HandleTagDeclRequiredDefinition(clang::TagDecl const*) override { }
 
     /** Handle an interesting declaration.
@@ -195,7 +195,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void HandleInterestingDecl(clang::DeclGroupRef) override { }
 
     /** Handle a tentative definition.
@@ -205,7 +205,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void CompleteTentativeDefinition(clang::VarDecl*) override { }
 
     /** Handle a tentative definition.
@@ -215,7 +215,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void CompleteExternalDeclaration(clang::DeclaratorDecl*) override { }
 
     /** Handle a vtable.
@@ -225,7 +225,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void AssignInheritanceModel(clang::CXXRecordDecl*) override { }
 
     /** Handle an implicit import declaration.
@@ -235,7 +235,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void HandleVTable(clang::CXXRecordDecl*) override { }
 
     /** Handle an implicit import declaration.
@@ -245,7 +245,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void HandleImplicitImportDecl(clang::ImportDecl*) override { }
 
     /** Handle a top-level declaration in an Objective-C container.
@@ -256,7 +256,7 @@ public:
         The implementation is an empty stub.
 
         @param D The declaration
-     */
+    */
     void HandleTopLevelDeclInObjCContainer(clang::DeclGroupRef) override { }
 };
 

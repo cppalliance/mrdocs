@@ -22,25 +22,47 @@ namespace mrdocs::doc {
 
     A block of LaTeX math, typically between
     $$ … $$ or fenced with "math".
- */
+
+    On a new line:
+
+    @code
+    $$ \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi} $$
+    @endcode
+
+    Or as a code block:
+
+    @code
+    ```math
+    \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+    ```
+    @endcode
+*/
 struct MathBlock final
     : BlockCommonBase<BlockKind::Math>
 {
     /// Raw TeX math source
     std::string literal;
 
+    /** Copy-construct a math block.
+    */
     MathBlock(MathBlock const& other) = default;
+
+    /** Copy-assign a math block.
+    */
     MathBlock& operator=(MathBlock const& other) = default;
+
+    /** Compare math blocks by literal content.
+    */
     auto operator<=>(MathBlock const&) const = default;
 };
 
-/** Map the @ref Brief to a @ref dom::Object.
+/** Map the @ref MathBlock to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -53,8 +75,8 @@ tag_invoke(
     io.map("literal", I.literal);
 }
 
-/** Return the @ref Brief as a @ref dom::Value object.
- */
+/** Return the @ref MathBlock as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

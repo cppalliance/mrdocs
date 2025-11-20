@@ -33,6 +33,8 @@ enum class ExplicitKind
     Dependent
 };
 
+/** Convert an explicit kind to its string form.
+*/
 MRDOCS_DECL
 dom::String
 toString(ExplicitKind kind) noexcept;

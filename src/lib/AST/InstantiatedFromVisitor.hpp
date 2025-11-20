@@ -22,7 +22,7 @@ namespace mrdocs {
 
     This class provides methods to visit various template declarations
     and retrieve the original declarations from which they were instantiated.
- */
+*/
 class InstantiatedFromVisitor
     : public clang::ConstDeclVisitor<InstantiatedFromVisitor, clang::Decl const*>
 {
