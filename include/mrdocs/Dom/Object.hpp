@@ -18,7 +18,6 @@
 #include <memory>
 #include <vector>
 
-
 namespace mrdocs {
 namespace dom {
 
@@ -258,7 +257,7 @@ public:
         @return `true` if the visitor returned `true`
         for all elements, otherwise `false`.
 
-     */
+    */
     template <class F>
     requires
         std::invocable<F, String, Value> &&
@@ -283,7 +282,7 @@ public:
         return an error for any element, otherwise
         `E`.
 
-     */
+    */
     template <class F>
     requires
         std::invocable<F, String, Value> &&
@@ -294,7 +293,7 @@ public:
     /** Invoke the visitor for each key/value pair
 
         @param fn The visitor function.
-     */
+    */
     template <class F>
     requires
         std::invocable<F, String, Value> &&
@@ -316,13 +315,13 @@ public:
     }
 
     /** Compare two objects for equality.
-     */
+    */
     friend
     bool
     operator==(Object const& a, Object const& b) noexcept;
 
     /** Compare two objects for precedence.
-     */
+    */
     friend
     std::strong_ordering
     operator<=>(Object const& a, Object const& b) noexcept
@@ -338,7 +337,7 @@ public:
 
     /** Return a diagnostic string.
     */
-    friend std::string toString(Object const&);
+    friend std::string toString(Object const& object);
 };
 
 //------------------------------------------------
@@ -404,7 +403,7 @@ public:
     visit(std::function<bool(String, Value)> fn) const = 0;
 
     /** Return the number of properties in the object.
-     */
+    */
     virtual
     std::size_t
     size() const = 0;
@@ -413,7 +412,7 @@ public:
 
         @param key The key to check for existence.
         @return `true` if the key exists, otherwise `false`.
-     */
+    */
     virtual
     bool
     exists(std::string_view key) const;
@@ -448,14 +447,37 @@ class MRDOCS_DECL
     DefaultObjectImpl : public ObjectImpl
 {
 public:
+    /** Create an empty object implementation.
+    */
     DefaultObjectImpl() noexcept;
 
+    /** Create an object pre-populated with entries.
+        @param entries Key/value storage to take ownership of.
+    */
     explicit DefaultObjectImpl(
         storage_type entries) noexcept;
+    /** Return number of elements stored.
+    */
     std::size_t size() const override;
-    Value get(std::string_view) const override;
-    void set(String, Value) override;
-    bool visit(std::function<bool(String, Value)>) const override;
+    /** Retrieve a value by key.
+        @param key Key to search for.
+        @return Stored value or undefined if absent.
+    */
+    Value get(std::string_view key) const override;
+    /** Set a value by key.
+        @param key Key to set.
+        @param value New value.
+    */
+    void set(String key, Value value) override;
+    /** Visit each key/value pair until the visitor returns false.
+        @param visitor Callback receiving key and value.
+        @return False if visitor requested stop, otherwise true.
+    */
+    bool visit(std::function<bool(String, Value)> visitor) const override;
+    /** Check whether a key exists in the object.
+        @param key Key to test.
+        @return True if the key exists.
+    */
     bool exists(std::string_view key) const override;
 
 private:

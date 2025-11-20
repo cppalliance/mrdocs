@@ -15,6 +15,8 @@
 #include <lib/Metadata/SymbolSet.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <format>
+#include <string>
+#include <string_view>
 #include <utility>
 
 namespace mrdocs {
@@ -499,17 +501,19 @@ populateFunctionReturns(FunctionSymbol& I, CorpusImpl const& corpus)
     a list of parameters separated by commas. This function
     returns a list of all parameter names in the doc.
  */
-llvm::SmallVector<std::string_view, 32>
+llvm::SmallVector<std::string, 32>
 getDocCommentParamNames(DocComment const& doc)
 {
-    llvm::SmallVector<std::string_view, 32> result;
+    llvm::SmallVector<std::string, 32> result;
     for (auto const& docParam: doc.params)
     {
         auto const& paramNamesStr = docParam.name;
         for (auto paramNames = std::views::split(paramNamesStr, ',');
              auto const& paramName: paramNames)
         {
-            result.push_back(trim(std::string_view(paramName.begin(), paramName.end())));
+            auto const trimmed =
+                trim(std::string_view(paramName.begin(), paramName.end()));
+            result.emplace_back(trimmed);
         }
     }
     return result;
@@ -772,7 +776,7 @@ populateFunctionParam(
     FunctionSymbol& I,
     Param& param,
     std::size_t const index,
-    llvm::SmallVector<std::string_view, 32>& documentedParams,
+    llvm::SmallVector<std::string, 32>& documentedParams,
     CorpusImpl const& corpus)
 {
     if (!param.Name)

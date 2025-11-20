@@ -20,12 +20,17 @@
 
 namespace mrdocs {
 
+/** Non-type template argument.
+*/
 struct ConstantTArg final
     : TArgCommonBase<TArgKind::Constant>
 {
-    /** Template argument expression. */
+    /** Template argument expression.
+    */
     ExprInfo Value;
 
+    /** Compare constant arguments by expression.
+    */
     auto operator<=>(ConstantTArg const&) const = default;
 };
 

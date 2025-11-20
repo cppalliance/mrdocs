@@ -47,11 +47,11 @@ public:
         bool enabled);
 
     /** Destructor.
-     */
+    */
     ~LegibleNames() noexcept;
 
     /** Return the legible name for a symbol name.
-     */
+    */
     std::string
     getUnqualified(SymbolID const& id) const;
 

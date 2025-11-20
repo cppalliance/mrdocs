@@ -35,7 +35,6 @@
 #include <mrdocs/Support/Visitor.hpp>
 #include <compare>
 
-
 namespace mrdocs::doc {
 
 /** Visit an inline.
@@ -44,7 +43,7 @@ namespace mrdocs::doc {
     @param fn The function to call for each inline.
     @param args Additional arguments to pass to the function.
     @return The result of calling the function.
- */
+*/
 template<
     class InlineTy,
     class Fn,
@@ -74,7 +73,7 @@ visit(
     @param list The list of texts to traverse.
     @param f The function to call for each text.
     @param args Additional arguments to pass to the function.
- */
+*/
 template<class F, class T, class... Args>
 requires std::derived_from<T, Inline>
 void traverse(
@@ -92,7 +91,7 @@ void traverse(
     @param io The output parameter to receive the dom::Object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO, polymorphic_storage_for<Inline> InlineTy>
 void
 tag_invoke(
@@ -111,10 +110,14 @@ tag_invoke(
     });
 }
 
+/** Three-way comparison for polymorphic inline elements.
+*/
 MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs);
 
+/** Equality delegates to the three-way comparison.
+*/
 inline
 bool
 operator==(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs) {
@@ -125,7 +128,7 @@ operator==(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs) {
 
     @param el The Polymorphic<Inline> to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 ltrim(Polymorphic<Inline>& el);
@@ -134,7 +137,7 @@ ltrim(Polymorphic<Inline>& el);
 
     @param el The Polymorphic<Inline> to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 rtrim(Polymorphic<Inline>& el);
@@ -143,7 +146,7 @@ rtrim(Polymorphic<Inline>& el);
 
     @param el The Polymorphic<Inline> to trim.
     @return void
- */
+*/
 inline
 void
 trim(Polymorphic<Inline>& el)
@@ -157,7 +160,7 @@ trim(Polymorphic<Inline>& el)
     This determines if the inline is considered to
     have no content for the purposes of trimming.
 
- */
+*/
 MRDOCS_DECL
 bool
 isEmpty(Polymorphic<Inline> const& el);

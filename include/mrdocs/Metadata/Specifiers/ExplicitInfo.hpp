@@ -37,6 +37,8 @@ struct ExplicitInfo
     */
     std::string Operand;
 
+    /** Compare explicit-specifier info.
+    */
     auto operator<=>(ExplicitInfo const&) const = default;
 };
 
@@ -59,7 +61,7 @@ toString(
 
     @param v The output parameter to receive the dom::Value.
     @param I The ExplicitInfo to convert.
- */
+*/
 inline
 void
 tag_invoke(

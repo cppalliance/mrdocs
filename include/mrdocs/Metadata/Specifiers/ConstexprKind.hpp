@@ -33,12 +33,14 @@ enum class ConstexprKind
     Consteval,
 };
 
+/** Convert a constexpr/consteval specifier kind to a string.
+*/
 MRDOCS_DECL
 dom::String
 toString(ConstexprKind kind) noexcept;
 
 /** Return the ConstexprKind as a @ref dom::Value string.
- */
+*/
 inline
 void
 tag_invoke(

@@ -23,34 +23,61 @@
 
 namespace mrdocs {
 
-class MRDOCS_DECL
-    ExecutorGroupBase
+/** Base class that owns a pool of execution agents and a shared work queue.
+*/
+class MRDOCS_DECL ExecutorGroupBase
 {
     class scoped_agent;
 
 protected:
+    /** Opaque implementation shared by all ExecutorGroup instantiations.
+    */
     struct Impl;
 
-    struct MRDOCS_DECL
-        AnyAgent
+    /** Type-erased agent holder used by the base class.
+    */
+    struct MRDOCS_DECL AnyAgent
     {
+        /** Virtual destructor to allow deleting through the base pointer.
+        */
         virtual ~AnyAgent() = 0;
+        /** Return a pointer to the stored agent object.
+        */
         virtual void* get() noexcept = 0;
     };
 
+    /** Opaque implementation pointer shared by all ExecutorGroup instantiations.
+    */
     std::unique_ptr<Impl> impl_;
+    /** Agents owned by the group.
+    */
     std::vector<std::unique_ptr<AnyAgent>> agents_;
+    /** Pending work posted to the group.
+    */
     std::deque<any_callable<void(void*)>> work_;
 
+    /** Construct with a backing thread pool.
+    */
     explicit ExecutorGroupBase(ThreadPool&);
-    void post(any_callable<void(void*)>);
-    void run(std::unique_lock<std::mutex>);
+    /** Queue work to run on the group agents.
+    */
+    void post(any_callable<void(void*)> work);
+    /** Execute queued work until empty.
+        @param lock Held lock protecting the work queue.
+    */
+    void run(std::unique_lock<std::mutex> lock);
 
 public:
     template<class T>
+    /** Argument wrapper propagated from ThreadPool.
+    */
     using arg_t = ThreadPool::arg_t<T>;
 
+    /** Destroy the executor group, waiting for outstanding work.
+    */
     ~ExecutorGroupBase();
+    /** Move-construct from another group.
+    */
     ExecutorGroupBase(ExecutorGroupBase&&) noexcept;
 
     /** Block until all work has completed.
@@ -87,6 +114,9 @@ class ExecutorGroup : public ExecutorGroupBase
     };
 
 public:
+    /** Construct a new executor group bound to a thread pool.
+        @param threadPool Pool that owns the worker threads.
+    */
     explicit
     ExecutorGroup(
         ThreadPool& threadPool)

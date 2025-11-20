@@ -21,6 +21,8 @@
 
 namespace mrdocs {
 
+/** Metadata for an enumeration declaration.
+*/
 struct EnumSymbol final
     : SymbolCommonBase<SymbolKind::Enum>
 {
@@ -55,12 +57,16 @@ struct EnumSymbol final
 
     //--------------------------------------------
 
+    /** Construct an enum symbol with its ID.
+    */
     explicit EnumSymbol(SymbolID ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 };
 
+/** Return the list of enum constants for this symbol.
+*/
 inline
 auto&
 allMembers(EnumSymbol const& T)
@@ -68,6 +74,10 @@ allMembers(EnumSymbol const& T)
     return T.Constants;
 }
 
+/** Merge another EnumSymbol into this one.
+    @param I Destination symbol to update.
+    @param Other Source symbol providing data.
+*/
 MRDOCS_DECL
 void
 merge(EnumSymbol& I, EnumSymbol&& Other);
@@ -78,7 +88,7 @@ merge(EnumSymbol& I, EnumSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The EnumSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -98,7 +108,7 @@ tag_invoke(
     @param v The output parameter to receive the dom::Value.
     @param I The EnumSymbol to convert.
     @param domCorpus The DomCorpus used to resolve references.
- */
+*/
 inline
 void
 tag_invoke(

@@ -22,7 +22,8 @@
 
 namespace mrdocs {
 
-// KRYSTIAN FIXME: this needs to be improved (a lot)
+/** Captures a `noexcept` specification and its evaluated form.
+*/
 struct NoexceptInfo
 {
     /** Whether a noexcept-specifier was user-written.
@@ -37,6 +38,8 @@ struct NoexceptInfo
     */
     std::string Operand;
 
+    /** Compare noexcept-specifier info.
+    */
     auto operator<=>(NoexceptInfo const&) const = default;
 };
 
@@ -59,10 +62,12 @@ toString(
     bool resolved = false,
     bool implicit = false);
 
+/** Convert a NoexceptInfo to a DOM value.
+*/
 inline
 void
 tag_invoke(
-    dom::ValueFromTag,
+    dom::ValueFromTag tag,
     dom::Value& v,
     NoexceptInfo const& info)
 {

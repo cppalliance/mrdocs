@@ -21,13 +21,53 @@
 
 namespace mrdocs::doc {
 
-/** A list of list items
+/** A quoted block of text.
+
+    Syntax:
+
+    @code
+    > quoted text
+    @endcode
+
+    Multi-line quotes:
+
+    @code
+    > This is the first line of a multi-line quote.
+    > This is the second line.
+    > And this is the third.
+    @endcode
+
+    Nested quotes:
+
+    @code
+    > This is the outer quote.
+    >
+    > > This is a nested quote within the outer quote.
+    > >
+    > > > This is a further nested quote.
+    @endcode
+
+    Quotes with other markdown elements:
+
+    @code
+    > ### Important Note
+    >
+    > - This blockquote contains a heading.
+    > - And a list item.
+    >
+    > *Emphasis* and **strong emphasis** also work within blockquotes.
+    @endcode
 */
 struct QuoteBlock final
     : BlockCommonBase<BlockKind::Quote>
     , BlockContainer
 {
+    /** Order quote blocks by their child content.
+    */
     auto operator<=>(QuoteBlock const&) const = default;
+
+    /** Equality compares quoted child content.
+    */
     bool operator==(QuoteBlock const&) const noexcept = default;
 };
 
@@ -37,7 +77,7 @@ struct QuoteBlock final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -51,7 +91,7 @@ tag_invoke(
 }
 
 /** Return the @ref QuoteBlock as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

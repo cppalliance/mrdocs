@@ -39,14 +39,14 @@ public:
         Corpus const& corpus) const override;
 
     /** Build a tagfile for the corpus.
-     */
+    */
     Expected<void>
     buildTagfile(
         std::ostream& os,
         Corpus const& corpus) const;
 
     /** Build a tagfile for the corpus and store the result in a file.
-     */
+    */
     Expected<void>
     buildTagfile(
         std::string_view fileName,

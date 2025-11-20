@@ -27,13 +27,16 @@ namespace mrdocs {
     Before C++26, constant template parameters were called
     non-type template parameter in the standard wording.
     The terminology was changed by P2841R6 / PR#7587.
- */
+*/
 struct ConstantTParam final
     : TParamCommonBase<TParamKind::Constant>
 {
-    /** Type of the non-type template parameter */
+    /** Type of the non-type template parameter
+    */
     Polymorphic<struct Type> Type = Polymorphic<struct Type>(AutoType{});
 
+    /** Compare constant parameters by type and defaults.
+    */
     std::strong_ordering operator<=>(ConstantTParam const&) const;
 };
 

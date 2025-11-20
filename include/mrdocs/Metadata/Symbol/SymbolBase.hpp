@@ -31,11 +31,11 @@ namespace mrdocs {
 */
 struct MRDOCS_VISIBLE Symbol {
     /** The unqualified name.
-     */
+    */
     std::string Name;
 
     /** The source location information.
-     */
+    */
     SourceInfo Loc;
 
     /** Kind of declaration.
@@ -43,7 +43,7 @@ struct MRDOCS_VISIBLE Symbol {
     SymbolKind Kind = SymbolKind::None;
 
     /** The unique identifier for this symbol.
-     */
+    */
     SymbolID id;
 
     /** Declaration access.
@@ -75,15 +75,17 @@ struct MRDOCS_VISIBLE Symbol {
 
         This is the parent namespace or record
         where the symbol is defined.
-     */
+    */
     SymbolID Parent;
 
     /** The extracted documentation for this declaration.
-     */
+    */
     Optional<DocComment> doc;
 
     //--------------------------------------------
 
+    /** Polymorphic base needs a virtual destructor.
+    */
     virtual ~Symbol() = default;
 
     #define INFO(Type) constexpr bool is##Type() const noexcept { \
@@ -91,11 +93,15 @@ struct MRDOCS_VISIBLE Symbol {
     }
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
+    /** View this instance as a const Symbol reference.
+    */
     constexpr Symbol const& asInfo() const noexcept
     {
         return *this;
     }
 
+    /** View this instance as a mutable Symbol reference.
+    */
     constexpr Symbol& asInfo() noexcept
     {
         return *this;
@@ -131,18 +137,24 @@ struct MRDOCS_VISIBLE Symbol {
     }
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
+    /** Compare symbols by structural fields.
+    */
     auto operator<=>(Symbol const&) const = default;
 
 protected:
+    /** Default constructor for derived types.
+    */
     constexpr Symbol() = default;
 
+    /** Copy constructor.
+    */
     Symbol(Symbol const& Other) = default;
 
     /** Move constructor.
-     */
+    */
     Symbol(Symbol&& Other) = default;
 
-    /** Construct an Symbol.
+    /** Construct a Symbol.
 
         @param kind The kind of symbol
         @param ID The unique identifier for this symbol
@@ -172,18 +184,24 @@ struct SymbolCommonBase : Symbol
 
         It only distinguishes from `Symbol::kind` in that it is a constant.
 
-     */
+    */
     static constexpr SymbolKind kind_id = K;
 
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == SymbolKind::Kind; }
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
+    /** Compare symbols that share the same kind.
+    */
     auto operator<=>(SymbolCommonBase const&) const = default;
 
 protected:
+    /** Default constructor.
+    */
     SymbolCommonBase() = default;
 
+    /** Construct bound to an ID.
+    */
     constexpr explicit SymbolCommonBase(SymbolID const& ID)
         : Symbol(K, ID)
     {
@@ -203,6 +221,9 @@ MRDOCS_DECL
 void
 merge(Symbol& I, Symbol&& Other);
 
+/** Check whether two symbols may be merged.
+    @return True when kinds and IDs match.
+*/
 inline
 bool
 canMerge(Symbol const& I, Symbol const& Other)
@@ -217,7 +238,7 @@ canMerge(Symbol const& I, Symbol const& Other)
     @param io The output parameter to receive the dom::Object.
     @param I The Symbol to convert.
     @param domCorpus The DomCorpus used to resolve references.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -252,7 +273,7 @@ tag_invoke(
 }
 
 /** Return the Symbol as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(
@@ -264,6 +285,8 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
+/** Determine a location to use when none is explicitly chosen.
+*/
 inline
 Optional<Location>
 getPrimaryLocation(Symbol const& I)

@@ -16,11 +16,17 @@
 
 namespace mrdocs {
 
+/** `decltype(expr)` type wrapper.
+*/
 struct DecltypeType final
     : TypeCommonBase<TypeKind::Decltype>
 {
+    /** Operand expression for decltype.
+    */
     ExprInfo Operand;
 
+    /** Compare decltype operands.
+    */
     auto operator<=>(DecltypeType const&) const = default;
 };
 

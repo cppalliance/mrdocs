@@ -34,13 +34,13 @@ enum class ParamDirection
 };
 
 /** Return the name of the ParamDirection as a string.
- */
+*/
 MRDOCS_DECL
 dom::String
 toString(ParamDirection kind) noexcept;
 
 /** Return the ParamDirection from a @ref dom::Value string.
- */
+*/
 inline
 void
 tag_invoke(

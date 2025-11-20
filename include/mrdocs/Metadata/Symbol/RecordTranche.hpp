@@ -31,23 +31,50 @@ namespace mrdocs {
 */
 struct RecordTranche
 {
+    /** Namespace aliases declared with this access.
+    */
     std::vector<SymbolID> NamespaceAliases;
+    /** Typedefs and using aliases.
+    */
     std::vector<SymbolID> Typedefs;
+    /** Nested records.
+    */
     std::vector<SymbolID> Records;
+    /** Enumerations.
+    */
     std::vector<SymbolID> Enums;
+    /** Member functions.
+    */
     std::vector<SymbolID> Functions;
+    /** Static member functions.
+    */
     std::vector<SymbolID> StaticFunctions;
+    /** Data members.
+    */
     std::vector<SymbolID> Variables;
+    /** Static data members.
+    */
     std::vector<SymbolID> StaticVariables;
+    /** Member concepts.
+    */
     std::vector<SymbolID> Concepts;
+    /** Deduction guides in the class scope.
+    */
     std::vector<SymbolID> Guides;
+    /** Using-declarations that pull members into the class.
+    */
     std::vector<SymbolID> Usings;
 };
 
+/** Merge two tranches with the same access level.
+*/
 MRDOCS_DECL
 void
 merge(RecordTranche& I, RecordTranche&& Other);
 
+/** Join every member list into a single view.
+    @return Lazy view spanning all member categories.
+*/
 inline
 auto
 allMembers(RecordTranche const& T)
@@ -80,7 +107,7 @@ allMembers(RecordTranche const& T)
     @param io The output parameter to receive the dom::Object.
     @param I The RecordTranche to convert.
     @param domCorpus The DomCorpus used to resolve references.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -103,7 +130,7 @@ tag_invoke(
 }
 
 /** Map the RecordTranche to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

@@ -23,24 +23,45 @@
 namespace mrdocs::doc {
 
 /** Documentation for a function parameter
+
+    Syntax:
+
+    @code
+    @param name description
+    @endcode
 */
 struct ParamBlock final
     : BlockCommonBase<BlockKind::Param>
     , InlineContainer
 {
+    /** Name of the parameter being documented.
+    */
     std::string name;
+    /** Direction (in/out/inout) of the parameter.
+    */
     ParamDirection direction = ParamDirection::none;
 
+    /** Inherit inline container constructors.
+    */
     using InlineContainer::InlineContainer;
 
+    /** Build from an existing inline container.
+    */
     ParamBlock(InlineContainer const& other)
         : InlineContainer(other)
     {}
 
+    /** Build from an rvalue inline container.
+    */
     ParamBlock(InlineContainer&& other) noexcept
         : InlineContainer(std::move(other))
     {}
 
+    /** Construct from name, text, and direction.
+        @param name Parameter identifier.
+        @param text Description text.
+        @param direction Flow direction of the parameter.
+    */
     ParamBlock(
         std::string_view name,
         std::string_view text,
@@ -50,7 +71,12 @@ struct ParamBlock final
         , direction(direction)
     {}
 
+    /** Order parameter docs by name, direction, and text.
+    */
     auto operator<=>(ParamBlock const&) const = default;
+
+    /** Equality compares name, direction, and text.
+    */
     bool operator==(ParamBlock const&)
         const noexcept = default;
 };
@@ -61,7 +87,7 @@ struct ParamBlock final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -77,7 +103,7 @@ tag_invoke(
 }
 
 /** Return the @ref Param as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

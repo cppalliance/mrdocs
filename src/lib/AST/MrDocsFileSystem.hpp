@@ -149,7 +149,8 @@ class MrDocsFileSystem : public llvm::vfs::FileSystem {
         if (!Mem->exists(Path))
         {
             auto Buf = llvm::MemoryBuffer::getMemBufferCopy(Contents, Path);
-            Mem->addFile(Path, /*ModTime*/ 0, std::move(Buf));
+            Mem->addFile(Path, /*ModTime
+            */ 0, std::move(Buf));
         }
     }
 

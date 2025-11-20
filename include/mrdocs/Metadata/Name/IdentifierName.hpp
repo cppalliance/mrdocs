@@ -31,11 +31,15 @@ namespace mrdocs {
 struct IdentifierName final
     : Name
 {
+    /** Default-construct an identifier with kind Identifier.
+    */
     constexpr
     IdentifierName() noexcept
         : Name(NameKind::Identifier)
     {}
 
+    /** Compare identifiers by their base name state.
+    */
     auto
     operator<=>(IdentifierName const& other) const
     {

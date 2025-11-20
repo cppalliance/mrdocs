@@ -18,11 +18,17 @@
 
 namespace mrdocs {
 
+/** Pointer type wrapper.
+*/
 struct PointerType final
     : TypeCommonBase<TypeKind::Pointer>
 {
+    /** The pointee type, defaults to `auto` when unknown.
+    */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
+    /** Compare pointer types by pointee.
+    */
     std::strong_ordering
     operator<=>(PointerType const&) const;
 };

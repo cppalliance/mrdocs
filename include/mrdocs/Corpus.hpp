@@ -31,6 +31,8 @@ class MRDOCS_VISIBLE
     Corpus
 {
 protected:
+    /** Create a corpus using the provided configuration.
+    */
     explicit
     Corpus(
         Config const& config_) noexcept
@@ -183,7 +185,7 @@ public:
     }
 
     /** Options to traverse the members of an Symbol.
-     */
+    */
     struct TraverseOptions
     {
         /// Whether to traverse in a stable order
@@ -338,25 +340,18 @@ public:
         traverse({}, I, std::forward<F>(f), std::forward<Args>(args)...);
     }
 
-    /** Return the fully qualified name of the specified Symbol.
-
-        This function returns the fully qualified name
-        of the specified Symbol `I` as a string.
-
-        The `Symbol` parents are traversed to construct
-        the fully qualified name which is stored in
-        the string `temp`.
-
+    /** Populate `temp` with the fully qualified name of `I`.
         @param I The Symbol to get the qualified name for.
         @param temp The string to store the result in.
-        @return A reference to the string `temp`.
-     */
+    */
     virtual
     void
     qualifiedName(
         Symbol const& I,
         std::string& temp) const = 0;
 
+    /** Return the fully qualified name of `I`.
+    */
     std::string
     qualifiedName(Symbol const& I) const
     {
@@ -365,25 +360,13 @@ public:
         return temp;
     }
 
-    /** Return a qualified name from the specified context.
-
-        This function returns the qualified name
-        of the specified Symbol `I` from the context
-        specified by the SymbolID `context`.
-
-        If the context is a parent of `I`, the
-        qualified name is constructed relative to
-        the context. For instance, if `I` is `A::B::C::D`
-        and context is `A::B`, the result is `C::D`.
-
-        If the context is not a parent of `I`, the
-        qualified name is constructed relative to
-        the global namespace with the prefix `::`.
-
-        @param I The Symbol to get the qualified name for.
-        @param context The context to get the qualified name from.
-        @param result The string to store the result in.
-     */
+    /** Populate `result` with a qualified name relative to `context`.
+        If `context` contains `I`, the name is relative; otherwise it
+        is computed from the global namespace.
+        @param I The Symbol to name.
+        @param context The context used to qualify the name.
+        @param result Output string receiving the name.
+    */
     virtual
     void
     qualifiedName(
@@ -391,6 +374,8 @@ public:
         SymbolID const& context,
         std::string& result) const = 0;
 
+    /** Return the qualified name of `I` relative to `context`.
+    */
     std::string
     qualifiedName(Symbol const& I, SymbolID const& context) const
     {
@@ -430,18 +415,43 @@ class Corpus::iterator
     Symbol const*(*next_)(Corpus const*, Symbol const*);
 
 public:
+    /** Value type yielded by the iterator.
+    */
     using value_type = const Symbol;
+    /** Unsigned size type.
+    */
     using size_type = std::size_t;
+    /** Signed difference type.
+    */
     using difference_type = std::ptrdiff_t;
+    /** Pointer to value.
+    */
     using pointer = value_type*;
+    /** Reference to value.
+    */
     using reference = value_type&;
+    /** Pointer to const value.
+    */
     using const_pointer = value_type const*;
+    /** Reference to const value.
+    */
     using const_reference = value_type const&;
 
+    /** Default constructor.
+    */
     iterator() = default;
+    /** Copy constructor.
+    */
     iterator(iterator const&) = default;
+    /** Copy assignment.
+    */
     iterator& operator=(iterator const&) = default;
 
+    /** Construct an iterator from corpus storage pointers.
+        @param corpus The parent corpus.
+        @param val The current symbol.
+        @param next Function that advances to the next symbol.
+    */
     iterator(
         Corpus const* corpus,
         Symbol const* val,
@@ -452,6 +462,9 @@ public:
     {
     }
 
+    /** Pre-increment.
+        @return *this advanced to next element.
+    */
     iterator& operator++() noexcept
     {
         MRDOCS_ASSERT(val_);
@@ -459,31 +472,46 @@ public:
         return *this;
     }
 
-    iterator operator++(int) noexcept
+    /** Post-increment.
+        @param dummy Unused postfix increment discriminator.
+        @return Iterator prior to increment.
+    */
+    iterator operator++(int dummy) noexcept
     {
+        (void)dummy;
         MRDOCS_ASSERT(val_);
         auto temp = *this;
         val_ = next_(corpus_, val_);
         return temp;
     }
 
+    /** Pointer-like access to the current symbol.
+        @return Pointer to the current Symbol.
+    */
     const_pointer operator->() const noexcept
     {
         MRDOCS_ASSERT(val_);
         return val_;
     }
 
+    /** Dereference to the current symbol.
+        @return Reference to the current Symbol.
+    */
     const_reference operator*() const noexcept
     {
         MRDOCS_ASSERT(val_);
         return *val_;
     }
 
+    /** Equality comparison.
+    */
     bool operator==(iterator const& other) const noexcept
     {
         return val_ == other.val_;
     }
 
+    /** Inequality comparison.
+    */
     bool operator!=(iterator const& other) const noexcept
     {
         return val_ != other.val_;
@@ -491,7 +519,7 @@ public:
 };
 
 /** Return a list of the parent symbols of the specified Symbol.
- */
+*/
 MRDOCS_DECL
 std::vector<SymbolID>
 getParents(Corpus const& C, Symbol const& I);

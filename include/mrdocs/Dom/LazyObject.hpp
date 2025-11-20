@@ -76,7 +76,7 @@ struct LazyObjectMapTag { };
     }
     @endcode
 
- */
+*/
 template<class T>
 concept HasLazyObjectMapWithoutContext = requires(
     detail::ArchetypalIO& io,
@@ -95,7 +95,7 @@ concept HasLazyObjectMapWithoutContext = requires(
     template <class IO>
     void tag_invoke( LazyObjectMapTag, IO&, T,  Context const& );
     @endcode
- */
+*/
 template<class T, class Context>
 concept HasLazyObjectMapWithContext = requires(
     detail::ArchetypalIO& io,
@@ -167,18 +167,27 @@ class LazyObjectImpl : public ObjectImpl
     MRDOCS_NO_UNIQUE_ADDRESS Context context_{};
 
 public:
+    /** Wrap an object using the default lazy mapping.
+        @param obj Object providing the data.
+    */
     explicit
     LazyObjectImpl(T const& obj)
         requires HasLazyObjectMapWithoutContext<T>
         : underlying_(&obj)
         , context_{} {}
 
+    /** Wrap an object using a custom mapping context.
+        @param obj Object providing the data.
+        @param context Context that guides the mapping.
+    */
     explicit
     LazyObjectImpl(T const& obj, Context const& context)
         requires HasLazyObjectMapWithContext<T, Context>
         : underlying_(&obj)
         , context_(context) {}
 
+    /** Virtual destructor.
+    */
     ~LazyObjectImpl() override = default;
 
     /// @copydoc ObjectImpl::type_key

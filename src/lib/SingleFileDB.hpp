@@ -20,7 +20,7 @@
 namespace mrdocs {
 
 /** Compilation database for a single file.
- */
+*/
 class SingleFileDB
     : public clang::tooling::CompilationDatabase
 {

@@ -32,7 +32,7 @@ namespace {
  * @param cmakeArgs The arguments to pass to CMake when generating the compilation database.
  * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file.
  * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
- */
+*/
 Expected<std::string>
 generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs, llvm::StringRef buildDir)
 {

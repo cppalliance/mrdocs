@@ -20,15 +20,29 @@
 
 namespace mrdocs {
 
+/** Function type with parameters, qualifiers, and noexcept info.
+*/
 struct FunctionType final
     : TypeCommonBase<TypeKind::Function>
 {
+    /** Return type, defaults to `auto` when unknown.
+    */
     Polymorphic<Type> ReturnType = Polymorphic<Type>(AutoType{});
+    /** Parameter types in declaration order.
+    */
     std::vector<Polymorphic<Type>> ParamTypes;
+    /** Reference qualifier (if present).
+    */
     ReferenceKind RefQualifier = ReferenceKind::None;
+    /** Exception specification information.
+    */
     NoexceptInfo ExceptionSpec;
+    /** True when this function type is variadic.
+    */
     bool IsVariadic = false;
 
+    /** Compare function types by return, params, and qualifiers.
+    */
     std::strong_ordering
     operator<=>(FunctionType const&) const;
 };

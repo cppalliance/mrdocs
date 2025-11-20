@@ -61,11 +61,14 @@ class MRDOCS_DECL
     Config
 {
 protected:
+    /** Construct an empty configuration interface.
+        Implementations populate settings in derived classes.
+    */
     Config() noexcept;
 
 public:
     /** Settings values used to generate the Corpus and Docs
-     */
+    */
     struct Settings : public PublicSettings
     {
         /** @brief Loads the public configuration settings from the specified YAML file.
@@ -78,7 +81,7 @@ public:
          * @param configYaml A string view representing the YAML file containing the configuration settings.
          * @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
          * @return An Expected object containing a Config::Settings object if the YAML file was successfully parsed and the configuration settings were loaded, or an error otherwise.
-         */
+        */
         static
         Expected<void>
         load(
@@ -97,7 +100,7 @@ public:
             @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
 
             @return An Expected object containing void if the file was successfully read and the configuration settings were loaded, or an error otherwise.
-         */
+        */
         static Expected<void>
         load_file(
             Config::Settings &s,
@@ -105,7 +108,7 @@ public:
             ReferenceDirectories const& dirs);
 
         /** @copydoc PublicSettings::normalize
-         */
+        */
         Expected<void>
         normalize(ReferenceDirectories const& dirs);
 
@@ -175,9 +178,12 @@ public:
         std::string cwdDir = ".";
 
         /** A string holding the complete configuration YAML.
-         */
+        */
         std::string configYaml;
 
+        /** Provide pointer-like access to settings fields.
+            @return Pointer to this Settings instance.
+        */
         constexpr Settings const*
         operator->() const noexcept
         {
@@ -203,7 +209,7 @@ public:
     threadPool() const noexcept = 0;
 
     /** Return the settings used to generate the Corpus and Docs.
-     */
+    */
     virtual Settings const& settings() const noexcept = 0;
 
     /** Return a DOM object representing the configuration keys.
@@ -211,7 +217,7 @@ public:
         The object is invalidated when the configuration
         is moved or destroyed.
 
-     */
+    */
     virtual dom::Object const& object() const = 0;
 
     /// @copydoc settings()

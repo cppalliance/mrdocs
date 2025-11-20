@@ -21,30 +21,48 @@ namespace mrdocs::doc {
 /** An inline LaTeX math expression
 
     Inline LaTeX math, typically between $…$.
- */
+
+    Syntax:
+
+    @code
+    $2 + 2 = 4$ or $x_{i+1}^2$
+    @endcode
+*/
 struct MathInline
     : InlineCommonBase<InlineKind::Math>
 {
+    /** Raw LaTeX/TeX math content.
+    */
     std::string literal;
 
+    /** Virtual destructor for inline hierarchy.
+    */
     constexpr ~MathInline() override = default;
+    /** Construct an empty math inline.
+    */
     constexpr MathInline() noexcept = default;
 
+    /** Construct a math inline from source text.
+    */
     explicit MathInline(std::string string_) noexcept
         : literal(std::move(string_))
     {}
 
+    /** Order math spans by their literal content.
+    */
     auto operator<=>(MathInline const&) const = default;
+    /** Equality compares literal content.
+    */
     bool operator==(MathInline const&) const noexcept = default;
 };
 
-/** Map the @ref Math to a @ref dom::Object.
+/** Map the @ref MathInline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -57,8 +75,8 @@ tag_invoke(
     io.map("literal", I.literal);
 }
 
-/** Return the @ref Math as a @ref dom::Value object.
- */
+/** Return the @ref MathInline as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

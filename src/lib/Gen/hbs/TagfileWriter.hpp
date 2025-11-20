@@ -59,7 +59,7 @@ public:
         is provided. Typically, the relative path to a single page output file.
         This parameter is ignored in multipage mode.
         @return An Expected object containing the TagfileWriter instance or an error.
-     */
+    */
     static
     Expected<TagfileWriter>
     create(
@@ -79,7 +79,7 @@ public:
         @param corpus The HandlebarsCorpus to use for the writer.
         @param os The output stream to write the tagfile to.
         @return An Expected object containing the TagfileWriter instance or an error.
-     */
+    */
     static
     Expected<TagfileWriter>
     create(
@@ -94,7 +94,7 @@ public:
         This function builds the tagfile by initializing the output,
         traversing the global namespace of the corpus, and finalizing
         the output.
-     */
+    */
     void
     build();
 

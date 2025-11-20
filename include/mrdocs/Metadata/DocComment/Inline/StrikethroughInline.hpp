@@ -19,23 +19,43 @@
 
 namespace mrdocs::doc {
 
-/** A piece of styled text.
+/** Strikethrough span to show removed or deprecated text.
+
+    Syntax:
+
+    @code
+    ~~crossed out~~
+    @endcode
+
+    When rendered to HTML, the Markdown syntax above
+    typically translates into the `del` tag, which
+    represents content that has been deleted or is no
+    longer accurate.
+
+    @code
+    <del>This text is struck through.</del>
+    @endcode
+
 */
 struct StrikethroughInline final
     : InlineCommonBase<InlineKind::Strikethrough>
     , InlineContainer
 {
+    /** Order strikethrough spans by their children.
+    */
     auto operator<=>(StrikethroughInline const&) const = default;
+    /** Equality compares contained inline children.
+    */
     bool operator==(StrikethroughInline const&) const noexcept = default;
 };
 
-/** Map the @ref Strikethrough to a @ref dom::Object.
+/** Map the @ref StrikethroughInline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -48,8 +68,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref Strikethrough as a @ref dom::Value object.
- */
+/** Return the @ref StrikethroughInline as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

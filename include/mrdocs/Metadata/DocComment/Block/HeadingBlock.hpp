@@ -19,25 +19,52 @@
 namespace mrdocs::doc {
 
 /** A manually specified section heading.
+
+    Syntax:
+
+    @code
+    @par Heading
+    @endcode
+
+    or in Markdown:
+
+    @code
+    # Heading 1
+    ## Heading 2
+    ### Heading 3
+    #### Heading 4
+    ##### Heading 5
+    ###### Heading 6
+    @endcode
 */
 struct HeadingBlock final
     : BlockCommonBase<BlockKind::Heading>
     , InlineContainer
 {
+    /** Heading depth (1..6).
+    */
     unsigned level = 1; // 1 to 6
 
+    /** Inherit inline container constructors.
+    */
     using InlineContainer::InlineContainer;
+
+    /** Order headings by level and inline content.
+    */
     auto operator<=>(HeadingBlock const&) const = default;
+
+    /** Equality compares level and inline content.
+    */
     bool operator==(HeadingBlock const&) const noexcept = default;
 };
 
-/** Map the @ref Heading to a @ref dom::Object.
+/** Map the @ref HeadingBlock to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -51,8 +78,8 @@ tag_invoke(
     io.map("level", I.level);
 }
 
-/** Return the @ref Heading as a @ref dom::Value object.
- */
+/** Return the @ref HeadingBlock as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

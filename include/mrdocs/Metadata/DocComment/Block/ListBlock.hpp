@@ -23,13 +23,67 @@
 namespace mrdocs::doc {
 
 /** A list of list items
+
+    Syntax:
+
+    @code
+    - item one
+    - item two
+    @endcode
+
+    Unordered list:
+
+    @code
+    - Item 1
+    - Item 2
+      - Nested item 2.1
+      - Nested item 2.2
+    * Item 3
+    + Item 4
+    @endcode
+
+    Ordered list:
+
+    @code
+    1. First item
+    2. Second item
+        1. Nested ordered item 2.1
+        2. Nested ordered item 2.2
+    3. Third item
+    @endcode
+
+    Task lists (Checklists):
+
+    @code
+    - [x] Completed task
+    - [ ] Pending task
+    - [x] Another completed task
+    @endcode
+
+    Definition Lists (@ref DefinitionListBlock)
+
+    @code
+    Term 1
+    : Definition of Term 1
+
+    Term 2
+    : Definition of Term 2
+    : Another definition for Term 2
+    @endcode
 */
 struct ListBlock final
     : BlockCommonBase<BlockKind::List>
 {
+    /** Items contained in the list.
+    */
     std::vector<ListItem> items;
+
+    /** Display style for the list.
+    */
     ListKind listKind = ListKind::Unordered;
 
+    /** Order lists by item content and list style.
+    */
     auto operator<=>(ListBlock const& other) const {
         if (auto const cmp = items.size() <=> other.items.size();
             !std::is_eq(cmp))
@@ -47,17 +101,19 @@ struct ListBlock final
         return std::strong_ordering::equal;
     }
 
+    /** Equality compares the list style and items.
+    */
     bool
     operator==(ListBlock const&) const noexcept = default;
 };
 
-/** Map the @ref UnorderedList to a @ref dom::Object.
+/** Map the @ref ListBlock to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -73,8 +129,8 @@ tag_invoke(
     io.map("listKind", toString(I.listKind));
 }
 
-/** Return the @ref UnorderedList as a @ref dom::Value object.
- */
+/** Return the @ref ListBlock as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

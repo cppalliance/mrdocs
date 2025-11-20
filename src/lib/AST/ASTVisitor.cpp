@@ -3551,28 +3551,62 @@ checkUndocumented(
     SymbolID const& id,
     DeclTy const* D)
 {
-    // If `extract-all` is enabled, we don't need to
-    // check for undocumented symbols
-    MRDOCS_CHECK_OR(!config_->extractAll, {});
-    // If the symbol is a namespace, the `extract-all`
-    // doesn't apply to it
-    MRDOCS_CHECK_OR((!std::same_as<InfoTy,NamespaceSymbol>), {});
+    // If the symbol is in the global namespace, it doesn't
+    // need documentation
+    MRDOCS_CHECK_OR(!isa<clang::TranslationUnitDecl>(D), {});
+
+    // If `extract-all` is disabled, we don't need to
+    // warn for undocumented symbols because that's
+    // the expected behavior. We use this to fail early.
+    bool const hasDoc = isDocumented(D);
+    if (!config_->extractAll &&
+        !hasDoc)
+    {
+        return Unexpected(Error("Undocumented"));
+    }
+
+    // If `warn-if-undocumented` is disabled, we don't
+    // need to check for anything else because the
+    // logic below is only used to populate the
+    // set of undocumented symbols for warning purposes.
+    MRDOCS_CHECK_OR(config_->warnIfUndocumented, {});
+
     // If the symbol is not being extracted as a Regular
     // symbol, we don't need to check for undocumented symbols
     // These are expected to be potentially undocumented
     MRDOCS_CHECK_OR(mode_ == Regular, {});
+
+    if constexpr (std::same_as<InfoTy, NamespaceSymbol>)
+    {
+        // Respect implementation-defined filters: symbols that match those patterns
+        // are intentionally kept undocumented. We re-check here to avoid emitting
+        // warnings even though extraction proceeds in regular mode for these
+        // namespaces to extract their children.
+        if (!config_->implementationDefined.empty())
+        {
+            llvm::SmallString<256> const qn = qualifiedName(D);
+            auto qns = qn.str();
+            if (checkSymbolFiltersImpl<Strict>(config_->implementationDefined, qns) ||
+                checkSymbolFiltersImpl<PrefixOnly>(config_->implementationDefined, qns))
+            {
+                return {};
+            }
+        }
+    }
+
     // Check if the symbol is documented, ensure this symbol is not in the set
     // of undocumented symbols in this translation unit and return
     // without an error if it is
-    if (isDocumented(D))
+    if (hasDoc)
     {
-        if (config_->warnIfUndocumented)
+        auto const it = undocumented_.find(id);
+        if (it != undocumented_.end())
         {
-            auto const it = undocumented_.find(id);
             undocumented_.erase(it);
         }
         return {};
     }
+
     // If the symbol is undocumented, check if we haven't seen a
     // documented version before.
     if (auto const infoIt = info_.find(id);
@@ -3581,22 +3615,28 @@ checkUndocumented(
     {
         return {};
     }
+
     // If the symbol is undocumented, and we haven't seen a documented
     // version before, store this symbol in the set of undocumented
     // symbols we've seen so far in this translation unit.
-    if (config_->warnIfUndocumented)
+    auto undocIt = undocumented_.find(id);
+    if (undocIt == undocumented_.end())
     {
-        auto const undocIt = undocumented_.find(id);
-        if (undocIt == undocumented_.end())
-        {
-            SymbolKind const kind = InfoTy::kind_id;
-            undocumented_.insert(UndocumentedSymbol{id, extractName(D), kind});
-        }
-        // Populate the location
-        auto handle = undocumented_.extract(undocIt);
-        UndocumentedSymbol& UI = handle.value();
-        populate(UI.Loc, D);
-        undocumented_.insert(std::move(handle));
+        SymbolKind const kind = InfoTy::kind_id;
+        auto [newIt, inserted] = undocumented_.insert(UndocumentedSymbol{id, extractName(D), kind});
+        MRDOCS_ASSERT(inserted);
+        undocIt = newIt;
+    }
+
+    // Populate the location
+    auto handle = undocumented_.extract(undocIt);
+    UndocumentedSymbol& UI = handle.value();
+    populate(UI.Loc, D);
+    undocumented_.insert(std::move(handle));
+
+    if (config_->extractAll)
+    {
+        return {};
     }
     return Unexpected(Error("Undocumented"));
 }

@@ -1,3 +1,4 @@
 concurrency: 1
 source-root: .
 single-page: true
+warn-if-undocumented: false

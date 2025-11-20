@@ -117,7 +117,7 @@ public:
     It stores the `SymbolSet` and `Diagnostics`
     objects, and returns them when `results`
     is called.
- */
+*/
 class InfoExecutionContext
     : public ExecutionContext
 {

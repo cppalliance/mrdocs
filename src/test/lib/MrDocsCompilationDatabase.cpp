@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/MrDocsCompilationDatabase.hpp"
-#include "lib/ConfigImpl.hpp"
-#include "lib/SingleFileDB.hpp"
+#include <lib/ConfigImpl.hpp>
+#include <lib/MrDocsCompilationDatabase.hpp>
+#include <lib/SingleFileDB.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>

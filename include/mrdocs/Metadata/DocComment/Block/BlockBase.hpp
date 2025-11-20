@@ -39,21 +39,33 @@ namespace mrdocs::doc {
 */
 struct MRDOCS_DECL Block
 {
+    /** Discriminator identifying which concrete block this instance holds.
+    */
     BlockKind Kind = BlockKind::Paragraph;
 
+    /** Virtual to allow deleting through a base pointer.
+    */
     virtual ~Block() = default;
 
+    /** Three-way comparison on the block contents.
+    */
     auto
     operator<=>(Block const& other) const = default;
 
+    /** Equality compares the block contents.
+    */
     bool
     operator==(Block const& other) const noexcept = default;
 
+    /** View this object as a `Block` reference.
+    */
     constexpr Block const& asBlock() const noexcept
     {
         return *this;
     }
 
+    /** View this object as a mutable `Block` reference.
+    */
     constexpr Block& asBlock() noexcept
     {
         return *this;
@@ -95,9 +107,13 @@ struct MRDOCS_DECL Block
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 
 protected:
+    /** Default-construct a paragraph block.
+    */
     constexpr
     Block() = default;
 
+    /** Construct a block with the specified discriminant.
+    */
     explicit
     Block(BlockKind const kind_) noexcept
         : Kind(kind_)
@@ -117,18 +133,24 @@ struct BlockCommonBase : Block
 
         It only distinguishes from `Block::kind` in that it is a constant.
 
-     */
+    */
     static constexpr BlockKind kind_id = K;
 
+    /** Virtual to keep dynamic dispatch working for block hierarchies.
+    */
     ~BlockCommonBase() override = default;
 
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == BlockKind::Kind; }
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 
+    /** Compare two blocks that share the same `kind_id`.
+    */
     auto operator<=>(BlockCommonBase const&) const = default;
 
 protected:
+    /** Construct with the fixed block kind.
+    */
     constexpr explicit BlockCommonBase()
         : Block(K)
     {}
@@ -136,15 +158,13 @@ protected:
 
 /** Map the @ref Block to a @ref dom::Object.
 
-    @param t The tag.
     @param io The output object.
     @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
-    dom::LazyObjectMapTag t,
+    dom::LazyObjectMapTag,
     IO& io,
     Block const& I,
     DomCorpus const*)
@@ -153,7 +173,7 @@ tag_invoke(
 }
 
 /** Return the @ref Block as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(
@@ -169,7 +189,7 @@ tag_invoke(
 
     @param el The Block to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 ltrim(Block& el);
@@ -178,7 +198,7 @@ ltrim(Block& el);
 
     @param el The Block to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 rtrim(Block& el);
@@ -187,7 +207,7 @@ rtrim(Block& el);
 
     @param el The Block to trim.
     @return void
- */
+*/
 inline
 void
 trim(Block& el)
@@ -197,35 +217,52 @@ trim(Block& el)
 }
 
 /** Determine if the inline is empty
- */
+*/
 MRDOCS_DECL
 bool
 isEmpty(Block const& el);
 
 
+/** A composite block that stores a sequence of child blocks.
+*/
 struct MRDOCS_DECL BlockContainer
 {
+    /** Child blocks contained within this composite block.
+    */
     std::vector<Polymorphic<Block>> blocks;
 
+    /** Access the container as a mutable view.
+    */
     BlockContainer&
     asBlockContainer()
     {
         return *this;
     }
 
+    /** Access the container as a const view.
+    */
     BlockContainer const&
     asBlockContainer() const
     {
         return *this;
     }
 
+    /** Order containers lexicographically by their children.
+    */
     std::strong_ordering
     operator<=>(BlockContainer const&) const;
 
+    /** Equality compares the stored child blocks.
+    */
     bool
     operator==(BlockContainer const&) const = default;
 };
 
+/** Convert a polymorphic block storage into a DOM value.
+    @param io Destination value to fill.
+    @param I Block to convert.
+    @param domCorpus Corpus context for lazy references.
+*/
 template <class IO, polymorphic_storage_for<Block> BlockTy>
 void
 tag_invoke(
@@ -234,10 +271,15 @@ tag_invoke(
     BlockTy const& I,
     DomCorpus const* domCorpus);
 
+/** Map a block container into a lazily-evaluated DOM object.
+    @param io Destination object.
+    @param I Block container to convert.
+    @param domCorpus Corpus context for lazy references.
+*/
 template <class IO>
 void
 tag_invoke(
-    dom::LazyObjectMapTag t,
+    dom::LazyObjectMapTag,
     IO& io,
     BlockContainer const& I,
     DomCorpus const* domCorpus)
@@ -247,6 +289,11 @@ tag_invoke(
     });
 }
 
+/** Return the block container as a DOM value.
+    @param v Destination value.
+    @param I Block container to convert.
+    @param domCorpus Corpus context for lazy references.
+*/
 inline
 void
 tag_invoke(
@@ -262,7 +309,7 @@ tag_invoke(
 
     @param blocks The BlockContainer to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 ltrim(BlockContainer& blocks);
@@ -271,7 +318,7 @@ ltrim(BlockContainer& blocks);
 
     @param blocks The BlockContainer to trim.
     @return void
- */
+*/
 MRDOCS_DECL
 void
 rtrim(BlockContainer& blocks);
@@ -280,7 +327,7 @@ rtrim(BlockContainer& blocks);
 
     @param blocks The BlockContainer to trim.
     @return void
- */
+*/
 inline
 void
 trim(BlockContainer& blocks)

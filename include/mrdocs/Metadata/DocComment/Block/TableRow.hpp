@@ -25,12 +25,19 @@ namespace mrdocs::doc {
 */
 struct TableRow final
 {
+    /** True if this row represents a header.
+    */
     bool is_header = false;
+    /** Cells contained in the row.
+    */
     std::vector<TableCell> Cells;
 
+    /** Order rows by header flag then cell contents.
+    */
     auto operator<=>(TableRow const&) const = default;
-    bool
-    operator==(TableRow const&) const noexcept = default;
+    /** Equality compares header flag and cells.
+    */
+    bool operator==(TableRow const&) const noexcept = default;
 };
 
 /** Map the @ref TableRow to a @ref dom::Object.
@@ -39,7 +46,7 @@ struct TableRow final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -55,7 +62,7 @@ tag_invoke(
 }
 
 /** Return the @ref TableRow as a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

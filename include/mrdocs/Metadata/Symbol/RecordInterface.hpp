@@ -41,7 +41,7 @@ public:
         This tranche contains all public members of a record
         or namespace.
 
-     */
+    */
     RecordTranche Public;
 
     /** The aggregated protected interfaces.
@@ -49,7 +49,7 @@ public:
         This tranche contains all protected members of a record
         or namespace.
 
-     */
+    */
     RecordTranche Protected;
 
     /** The aggregated private interfaces.
@@ -57,10 +57,12 @@ public:
         This tranche contains all private members of a record
         or namespace.
 
-     */
+    */
     RecordTranche Private;
 };
 
+/** Merge two interfaces, combining matching tranches.
+*/
 MRDOCS_DECL
 void
 merge(RecordInterface& I, RecordInterface&& Other);
@@ -69,7 +71,7 @@ merge(RecordInterface& I, RecordInterface&& Other);
 
     @param io The output parameter to receive the dom::Object.
     @param I The RecordInterface to convert.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -84,7 +86,7 @@ tag_invoke(
 }
 
 /** Map the RecordInterface to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(
@@ -97,6 +99,9 @@ tag_invoke(
 }
 
 
+/** Flatten all public/protected/private members.
+    @return View concatenating the three access tranches.
+*/
 inline
 auto
 allMembers(RecordInterface const& T)

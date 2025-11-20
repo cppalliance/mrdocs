@@ -23,7 +23,7 @@ namespace mrdocs {
     @param s The string to trim.
     @param chars The characters to remove.
     @return The modified string.
- */
+*/
 constexpr
 std::string_view
 ltrim(
@@ -37,7 +37,7 @@ ltrim(
 
     @param s The string to trim.
     @return The modified string.
- */
+*/
 constexpr
 std::string_view
 ltrim(
@@ -51,7 +51,7 @@ ltrim(
     @param s The string to trim.
     @param chars The characters to remove.
     @return The modified string.
- */
+*/
 constexpr
 std::string_view
 rtrim(
@@ -70,7 +70,7 @@ rtrim(
 
     @param s The string to trim.
     @return The modified string.
- */
+*/
 constexpr
 std::string_view
 rtrim(std::string_view const s) noexcept
@@ -82,7 +82,7 @@ rtrim(std::string_view const s) noexcept
 
     @param s The string to trim.
     @return The modified string.
- */
+*/
 constexpr
 std::string_view
 trim(std::string_view const s) noexcept
@@ -95,7 +95,7 @@ trim(std::string_view const s) noexcept
     @param s The string to trim.
     @param chars The characters to remove.
     @return The modified string.
- */
+*/
 constexpr
 std::string_view
 trim(
@@ -123,7 +123,7 @@ replace(std::string& s, std::string_view from, std::string_view to);
     @return true if the string is empty or contains only
     whitespace characters (space, tab, newline, vertical tab,
     form feed, carriage return). false otherwise.
- */
+*/
 constexpr
 bool
 isWhitespace(std::string_view s) noexcept
@@ -131,6 +131,11 @@ isWhitespace(std::string_view s) noexcept
     return s.find_first_not_of(" \t\n\v\f\r") == std::string::npos;
 }
 
+/** Determine if a character is whitespace.
+
+    @param c Character to inspect.
+    @return `true` if `c` is a horizontal or vertical whitespace character.
+*/
 constexpr
 bool
 isWhitespace(char c) noexcept
@@ -143,7 +148,7 @@ isWhitespace(char c) noexcept
 
     @param s The string to check.
     @param chars The characters to check for.
- */
+*/
 constexpr
 bool
 startsWithOneOf(std::string_view s, std::string_view chars) noexcept
@@ -155,7 +160,7 @@ startsWithOneOf(std::string_view s, std::string_view chars) noexcept
 
     @param s The string to check.
     @param chars The characters to check for.
- */
+*/
 constexpr
 bool
 endsWithOneOf(std::string_view s, std::string_view chars) noexcept
@@ -163,6 +168,11 @@ endsWithOneOf(std::string_view s, std::string_view chars) noexcept
     return !s.empty() && chars.find(s.back()) != std::string_view::npos;
 }
 
+/** Determine if a character is a lowercase ASCII letter.
+
+    @param c Character to inspect.
+    @return `true` if `c` is in the range 'a' to 'z'.
+*/
 constexpr
 bool
 isLowerCase(char const c) noexcept
@@ -170,6 +180,11 @@ isLowerCase(char const c) noexcept
     return c >= 'a' && c <= 'z';
 }
 
+/** Determine if every character in a string is lowercase ASCII.
+
+    @param s String to inspect.
+    @return `true` if all characters are lowercase ASCII letters.
+*/
 constexpr
 bool
 isLowerCase(std::string_view const s) noexcept
@@ -184,6 +199,11 @@ isLowerCase(std::string_view const s) noexcept
     return true;
 }
 
+/** Determine if a character is an uppercase ASCII letter.
+
+    @param c Character to inspect.
+    @return `true` if `c` is in the range 'A' to 'Z'.
+*/
 constexpr
 bool
 isUpperCase(char const c) noexcept
@@ -191,6 +211,11 @@ isUpperCase(char const c) noexcept
     return c >= 'A' && c <= 'Z';
 }
 
+/** Determine if every character in a string is uppercase ASCII.
+
+    @param s String to inspect.
+    @return `true` if all characters are uppercase ASCII letters.
+*/
 constexpr
 bool
 isUpperCase(std::string_view const s) noexcept
@@ -205,6 +230,11 @@ isUpperCase(std::string_view const s) noexcept
     return true;
 }
 
+/** Convert a character to lowercase ASCII without locale.
+
+    @param c Character to convert.
+    @return Lowercase version of `c` if it is uppercase; otherwise `c`.
+*/
 constexpr
 char
 toLowerCase(char const c) noexcept
@@ -212,6 +242,11 @@ toLowerCase(char const c) noexcept
     return isUpperCase(c) ? static_cast<char>(c - 'A' + 'a') : c;
 }
 
+/** Return a lowercase copy of the string without locale.
+
+    @param s Input string.
+    @return Lowercase copy of `s`.
+*/
 constexpr
 std::string
 toLowerCase(std::string_view const s) noexcept
@@ -225,6 +260,11 @@ toLowerCase(std::string_view const s) noexcept
     return result;
 }
 
+/** Convert a character to uppercase ASCII without locale.
+
+    @param c Character to convert.
+    @return Uppercase version of `c` if it is lowercase; otherwise `c`.
+*/
 constexpr
 char
 toUpperCase(char const c) noexcept
@@ -232,6 +272,11 @@ toUpperCase(char const c) noexcept
     return isLowerCase(c) ? static_cast<char>(c - 'a' + 'A') : c;
 }
 
+/** Return an uppercase copy of the string without locale.
+
+    @param s Input string.
+    @return Uppercase copy of `s`.
+*/
 constexpr
 std::string
 toUpperCase(std::string_view const s) noexcept
@@ -245,6 +290,11 @@ toUpperCase(std::string_view const s) noexcept
     return result;
 }
 
+/** Determine if a character is an ASCII digit.
+
+    @param c Character to inspect.
+    @return `true` if `c` is between '0' and '9'.
+*/
 constexpr
 bool
 isDigit(char const c) noexcept
@@ -252,6 +302,11 @@ isDigit(char const c) noexcept
     return c >= '0' && c <= '9';
 }
 
+/** Determine if every character in a string is an ASCII digit.
+
+    @param s String to inspect.
+    @return `true` if all characters are digits.
+*/
 constexpr
 bool
 isDigit(std::string_view const s) noexcept
@@ -266,6 +321,11 @@ isDigit(std::string_view const s) noexcept
     return true;
 }
 
+/** Determine if a character is an ASCII letter.
+
+    @param c Character to inspect.
+    @return `true` if `c` is in the ranges 'a'-'z' or 'A'-'Z'.
+*/
 constexpr
 bool
 isAlphabetic(char const c) noexcept
@@ -273,6 +333,11 @@ isAlphabetic(char const c) noexcept
     return isLowerCase(c) || isUpperCase(c);
 }
 
+/** Determine if every character in a string is an ASCII letter.
+
+    @param s String to inspect.
+    @return `true` if all characters are alphabetic.
+*/
 constexpr
 bool
 isAlphabetic(std::string_view const s) noexcept
@@ -287,6 +352,11 @@ isAlphabetic(std::string_view const s) noexcept
     return true;
 }
 
+/** Determine if a character is ASCII alphanumeric.
+
+    @param c Character to inspect.
+    @return `true` if `c` is an ASCII letter or digit.
+*/
 constexpr
 bool
 isAlphaNumeric(char const c) noexcept
@@ -294,6 +364,11 @@ isAlphaNumeric(char const c) noexcept
     return isAlphabetic(c) || isDigit(c);
 }
 
+/** Determine if every character in a string is ASCII alphanumeric.
+
+    @param s String to inspect.
+    @return `true` if all characters are ASCII letters or digits.
+*/
 constexpr
 bool
 isAlphaNumeric(std::string_view const s) noexcept
@@ -308,6 +383,11 @@ isAlphaNumeric(std::string_view const s) noexcept
     return true;
 }
 
+/** Convert a string to `kebab-case` using ASCII letter rules.
+
+    @param input Source string.
+    @return New string converted to kebab-case.
+*/
 constexpr
 std::string
 toKebabCase(std::string_view const input)
@@ -341,6 +421,11 @@ toKebabCase(std::string_view const input)
     return result;
 }
 
+/** Convert a string to `snake_case` using ASCII letter rules.
+
+    @param input Source string.
+    @return New string converted to snake_case.
+*/
 constexpr
 std::string
 toSnakeCase(std::string_view const input)
@@ -376,6 +461,11 @@ toSnakeCase(std::string_view const input)
     return result;
 }
 
+/** Convert a string to `camelCase` using ASCII letter rules.
+
+    @param input Source string.
+    @return New string converted to camelCase.
+*/
 constexpr
 std::string
 toCamelCase(std::string_view const input)
@@ -410,6 +500,11 @@ toCamelCase(std::string_view const input)
     return result;
 }
 
+/** Convert a string to `PascalCase` using ASCII letter rules.
+
+    @param input Source string.
+    @return New string converted to PascalCase.
+*/
 constexpr
 std::string
 toPascalCase(std::string_view const input)
@@ -442,6 +537,7 @@ toPascalCase(std::string_view const input)
 /** Reindent code by removing the common leading spaces and adding the specified indent.
 
     @param code The code block to unindent.
+    @param indent The number of spaces to insert in front of each line after trimming.
     @return The modified code block.
 */
 MRDOCS_DECL

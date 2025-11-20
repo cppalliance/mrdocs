@@ -19,24 +19,36 @@
 
 namespace mrdocs::doc {
 
-/** A piece of styled text.
+/** Strong emphasis span (typically rendered in bold).
+
+    Syntax:
+
+    @code
+    @b bold
+    @endcode
 */
 struct StrongInline final
     : InlineCommonBase<InlineKind::Strong>
     , InlineContainer
 {
+    /** Inherit text container constructors.
+    */
     using InlineContainer::InlineContainer;
+    /** Order strong spans by their children.
+    */
     auto operator<=>(StrongInline const&) const = default;
+    /** Equality compares contained inline children.
+    */
     bool operator==(StrongInline const&) const noexcept = default;
 };
 
-/** Map the @ref Strong to a @ref dom::Object.
+/** Map the @ref StrongInline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -49,8 +61,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref Strong as a @ref dom::Value object.
- */
+/** Return the @ref StrongInline as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

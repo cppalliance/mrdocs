@@ -15,7 +15,8 @@
 
 namespace mrdocs {
 
-/** Concept to check if a type is a range of T */
+/** Concept to check if a type is a range of T
+*/
 template <class Range, class T>
 concept range_of = std::ranges::range<Range> && std::same_as<std::ranges::range_value_t<Range>, T>;
 
@@ -30,7 +31,7 @@ concept range_of = std::ranges::range<Range> && std::same_as<std::ranges::range_
     The `get()` function might not always be available, but
     `operator*` and `operator->` should be available and return
     a reference to the Base class.
- */
+*/
 template <class T, class Base>
 concept polymorphic_storage_for = requires(T const& t)
 {
@@ -46,7 +47,7 @@ concept polymorphic_storage_for = requires(T const& t)
 
     Examples of such types are std::optional, std::unique_ptr,
     std::shared_ptr, Polymorphic, pointers, etc.
- */
+*/
 template <class T>
 concept dereferenceable = requires(T const& t)
 {
@@ -99,7 +100,7 @@ struct all_tuple_elements<U, std::enable_if_t<has_tuple_size<U>::value>> {
     Examples of such types are std::tuple, std::pair,
     std::array, and user-defined types that provide
     specializations for std::tuple_size and std::tuple_element.
- */
+*/
 template<class T>
 concept tuple_like =
     detail::has_tuple_size<T>::value &&
@@ -115,7 +116,7 @@ concept tuple_like =
     types that provide specializations for
     std::tuple_size and std::tuple_element with
     exactly two elements.
- */
+*/
 template<class T>
 concept pair_like =
     tuple_like<T> &&
@@ -130,7 +131,7 @@ concept pair_like =
     std::list<std::pair<...>>, and user-defined types
     that provide specializations for std::tuple_size
     and std::tuple_element for their element type.
- */
+*/
 template <class Range>
 concept range_of_tuple_like =
     std::ranges::range<Range> && tuple_like<std::ranges::range_value_t<Range>>;
@@ -139,6 +140,8 @@ concept range_of_tuple_like =
     using std::reference_constructs_from_temporary_v;
     using std::reference_converts_from_temporary_v;
 #else
+    /** True when binding `To` from `From` would require a temporary conversion.
+    */
     template <class To, class From>
     concept reference_converts_from_temporary_v
         = std::is_reference_v<To>
@@ -151,6 +154,8 @@ concept range_of_tuple_like =
                   && std::is_convertible_v<From, const std::remove_cvref_t<To>&&>
                   && !std::is_convertible_v<From, std::remove_cvref_t<To>&>) );
 
+    /** Like `reference_converts_from_temporary_v`, but for construction.
+    */
     template <class To, class From>
     concept reference_constructs_from_temporary_v
         = reference_converts_from_temporary_v<To, From>;

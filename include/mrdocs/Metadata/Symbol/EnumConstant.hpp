@@ -28,12 +28,18 @@ struct EnumConstantSymbol final
 
     //--------------------------------------------
 
+    /** Construct an enum constant with its ID.
+    */
     explicit EnumConstantSymbol(SymbolID ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 };
 
+/** Merge another EnumConstantSymbol into this one.
+    @param I Destination symbol to update.
+    @param Other Source symbol providing data.
+*/
 MRDOCS_DECL
 void
 merge(EnumConstantSymbol& I, EnumConstantSymbol&& Other);
@@ -44,7 +50,7 @@ merge(EnumConstantSymbol& I, EnumConstantSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The EnumConstantSymbol to map.
     @param domCorpus The DomCorpus used to create
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -61,7 +67,7 @@ tag_invoke(
 }
 
 /** Map the EnumConstantSymbol to a @ref dom::Value object.
- */
+*/
 inline
 void
 tag_invoke(

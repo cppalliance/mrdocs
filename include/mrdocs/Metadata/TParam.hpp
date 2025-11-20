@@ -22,6 +22,12 @@
 
 namespace mrdocs {
 
+/** Visit a template parameter, dispatching to its concrete type.
+    @param P Parameter to visit.
+    @param f Callable to receive the concrete parameter.
+    @param args Additional arguments forwarded to the callable.
+    @return Whatever the callable returns.
+*/
 template<
     typename TParamTy,
     typename F,
@@ -53,16 +59,22 @@ visit(
     }
 }
 
+/** Compare polymorphic template parameters.
+*/
 MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs);
 
+/** Equality helper for polymorphic template parameters.
+*/
 inline
 bool
 operator==(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
+/** Serialize a polymorphic template parameter.
+*/
 inline
 void
 tag_invoke(

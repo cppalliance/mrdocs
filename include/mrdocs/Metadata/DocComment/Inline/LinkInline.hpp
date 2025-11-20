@@ -19,31 +19,63 @@
 namespace mrdocs::doc {
 
 /** A hyperlink.
+
+    Syntax:
+
+    @code
+    @link https://example.com label @endlink
+    @endcode
+
+    Or with markdown syntax:
+
+    @code
+    [link text](URL)
+    [link text](URL "title")
+    @endcode
+
+    Or:
+
+    @code
+    <a href="https://www.example.com">Visit Example.com</a>
+    @endcode
 */
 struct LinkInline final
     : InlineCommonBase<InlineKind::Link>
     , InlineContainer
 {
+    /** Destination of the hyperlink.
+    */
     std::string href;
 
+    /** Construct an empty link.
+    */
     LinkInline() = default;
 
+    /** Construct a link with display text and target.
+
+        @param text Link text to display.
+        @param href Destination URI.
+    */
     LinkInline(std::string_view text, std::string_view href)
         : InlineContainer(text)
         , href(href)
     {}
 
+    /** Order links by href and child content.
+    */
     auto operator<=>(LinkInline const&) const = default;
+    /** Equality compares href and child content.
+    */
     bool operator==(LinkInline const&) const noexcept = default;
 };
 
-/** Map the @ref Link to a @ref dom::Object.
+/** Map the @ref LinkInline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
- */
+*/
 template <class IO>
 void
 tag_invoke(
@@ -57,8 +89,8 @@ tag_invoke(
     io.map("href", I.href);
 }
 
-/** Return the @ref Link as a @ref dom::Value object.
- */
+/** Return the @ref LinkInline as a @ref dom::Value object.
+*/
 inline
 void
 tag_invoke(

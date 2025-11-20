@@ -30,11 +30,15 @@ struct SpecializationName final
     */
     SymbolID specializationID = SymbolID::invalid;
 
+    /** Construct an empty specialization name.
+    */
     constexpr
     SpecializationName() noexcept
         : Name(NameKind::Specialization)
     {}
 
+    /** Compare specialization names by base name and template arguments.
+    */
     auto
     operator<=>(SpecializationName const& other) const
     {
