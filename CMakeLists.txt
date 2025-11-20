@@ -29,6 +29,7 @@ option(MRDOCS_INSTALL "Configure install target" ON)
 option(MRDOCS_PACKAGE "Build install package" ON)
 option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
+option(MRDOCS_BUILD_STRICT_TESTS "Enable strict tests" ON)
 option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
 if (MRDOCS_BUILD_TESTS OR MRDOCS_INSTALL)
     option(MRDOCS_BUILD_DOCS "Build documentation" ON)
@@ -521,9 +522,38 @@ if (MRDOCS_BUILD_TESTS)
     endforeach ()
 
     #-------------------------------------------------
+    # Self-documentation test (always run; warn-as-error toggled by strict flag)
+    #-------------------------------------------------
+    set(MRDOCS_SELF_DOC_OUTPUT "${CMAKE_BINARY_DIR}/docs/self-reference")
+    set(MRDOCS_SELF_DOC_TAGFILE "${MRDOCS_SELF_DOC_OUTPUT}/reference.tag.xml")
+
+    add_test(NAME mrdocs-self-doc
+        COMMAND
+            mrdocs
+            "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
+                "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
+                "--output=${MRDOCS_SELF_DOC_OUTPUT}"
+                --generator=adoc
+                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                "--stdlib-includes=${LIBCXX_DIR}"
+                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+                "--tagfile=${MRDOCS_SELF_DOC_TAGFILE}"
+                --multipage=true
+                --concurrency=16
+                --log-level=debug
+                $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
+        )
+
+    #-------------------------------------------------
     # XML lint
     #-------------------------------------------------
-    find_package(LibXml2)
+    if (MRDOCS_BUILD_STRICT_TESTS)
+        # Strict mode expects xml-lint to run; require LibXml2.
+        find_package(LibXml2 REQUIRED)
+    else()
+        find_package(LibXml2)
+    endif()
     if (LibXml2_FOUND)
         find_package(Java REQUIRED Runtime)
         # FindJava
@@ -541,7 +571,16 @@ if (MRDOCS_BUILD_TESTS)
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/golden-tests/*.xml)
         add_test(NAME xml-lint
                  COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
-                     --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng ${XML_SOURCES}
+                 --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng ${XML_SOURCES}
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    endif()
+
+    #-------------------------------------------------
+    # YAML schema check
+    #-------------------------------------------------
+    if (PYTHON_EXECUTABLE)
+        add_test(NAME yaml-schema-check
+                 COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-yaml-schema.py --check
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
 endif()
@@ -589,7 +628,7 @@ if (MRDOCS_BUILD_DOCS)
         set(DOCS_BUILD_DIR ${DOCS_SOURCE_DIR}/build/site)
         set(DOCS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc/mrdocs/html)
 
-        # Add custom target for generating documentation
+        # Add a custom target for generating documentation
         add_custom_target(generate_docs
                 ALL
                 COMMAND ${CMAKE_COMMAND} -E echo "Install npm dependencies"
