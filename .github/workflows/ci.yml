@@ -51,7 +51,6 @@ jobs:
             apple-clang *
           standards: '20'
           latest-factors: |
-            msvc Optimized-Debug
             gcc UBSan Coverage
             clang UBSan ASan MSan
             apple-clang UBSan ASan
@@ -66,11 +65,6 @@ jobs:
             clang: Release
             apple-clang: Release
             msvc: RelWithDebInfo
-            msvc Optimized-Debug: Debug
-          ccflags: |
-            msvc Optimized-Debug: /Ob1 /O2 /Zi
-          cxxflags: |
-            msvc Optimized-Debug: /Ob1 /O2 /Zi
           install: |
             gcc: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
             gcc Coverage: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
@@ -81,7 +75,7 @@ jobs:
             libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
             llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
             llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
-            llvm-build-preset-prefix: {{#if optimized-debug}}optimizeddebug{{else}}{{{lowercase build-type}}}{{/if}}
+            llvm-build-preset-prefix: {{{lowercase build-type}}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
             llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
