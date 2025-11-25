@@ -145,7 +145,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "mrdocs_src_dir": "MrDocs source directory.",
     "mrdocs_repo": "URL of the MrDocs repository to clone.",
     "mrdocs_branch": "Branch or tag of the MrDocs repository to use.",
-    "mrdocs_build_type": "CMake build type for MrDocs (Release, Debug, RelWithDebInfo, MilRelSize).",
+    "mrdocs_build_type": "CMake build type for MrDocs (Release, Debug, RelWithDebInfo, MinRelSize).",
     "mrdocs_use_user_presets": "Whether to use CMake User Presets for building MrDocs.",
     "mrdocs_preset_name": "Name of the CMake User Preset to use for MrDocs.",
     "mrdocs_build_dir": "Directory where MrDocs will be built.",
@@ -156,7 +156,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "third_party_src_dir": "Directory for all third-party source dependencies.",
     "duktape_src_dir": "Directory for the Duktape source code.",
     "duktape_url": "Download URL for the Duktape source archive.",
-    "duktape_build_type": "CMake build type for Duktape. (Release, Debug, RelWithDebInfo, MilRelSize)",
+    "duktape_build_type": "CMake build type for Duktape. (Release, Debug, RelWithDebInfo, MinRelSize)",
     "duktape_build_dir": "Directory where Duktape will be built.",
     "duktape_install_dir": "Directory where Duktape will be installed.",
     "lua_src_dir": "Directory for the Lua source code.",
@@ -165,13 +165,13 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "lua_build_dir": "Directory where Lua will be built.",
     "lua_install_dir": "Directory where Lua will be installed.",
     "libxml2_src_dir": "Directory for the libxml2 source code.",
-    "libxml2_build_type": "CMake build type for libxml2: Release always recommended. (Release, Debug, RelWithDebInfo, MilRelSize)",
+    "libxml2_build_type": "CMake build type for libxml2: Release always recommended. (Release, Debug, RelWithDebInfo, MinRelSize)",
     "libxml2_build_dir": "Directory where libxml2 will be built.",
     "libxml2_install_dir": "Directory where libxml2 will be installed.",
     "libxml2_repo": "URL of the libxml2 repository to clone.",
     "libxml2_branch": "Branch or tag of libxml2 to use.",
     "llvm_src_dir": "Directory for the LLVM project source code.",
-    "llvm_build_type": "CMake build type for LLVM. (Release, Debug, RelWithDebInfo, MilRelSize)",
+    "llvm_build_type": "CMake build type for LLVM. (Release, Debug, RelWithDebInfo, MinRelSize)",
     "llvm_build_dir": "Directory where LLVM will be built.",
     "llvm_install_dir": "Directory where LLVM will be installed.",
     "llvm_repo": "URL of the LLVM project repository to clone.",
@@ -305,8 +305,8 @@ class MrDocsInstaller:
 
         # Replace placeholders in the default value
         if isinstance(default_value, str):
-            constains_placeholder = "<" in default_value and ">" in default_value
-            if constains_placeholder:
+            contains_placeholder = "<" in default_value and ">" in default_value
+            if contains_placeholder:
                 has_dir_key = False
 
                 def repl(match):
