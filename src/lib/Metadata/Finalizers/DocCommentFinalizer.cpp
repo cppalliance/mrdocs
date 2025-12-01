@@ -1731,7 +1731,8 @@ DocCommentFinalizer::warnUndocumented()
         if (Symbol const* I = corpus_.find(undocI.id))
         {
             MRDOCS_CHECK_OR(
-                !I->doc || I->Extraction == ExtractionMode::Regular);
+                !I->doc || I->Extraction == ExtractionMode::Regular
+                || I->IsCopyFromInherited == false);
         }
         bool const prefer_definition = is_one_of(
             undocI.kind, {SymbolKind::Record, SymbolKind::Enum});
@@ -1752,6 +1753,7 @@ warnDocErrors()
     for (auto const& I : corpus_.info_)
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         warnParamErrors(dynamic_cast<FunctionSymbol const&>(*I));
     }
@@ -1807,6 +1809,7 @@ warnNoParamDocs()
     for (auto const& I : corpus_.info_)
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
         warnNoParamDocs(dynamic_cast<FunctionSymbol const&>(*I));
@@ -1869,6 +1872,7 @@ warnUndocEnumValues()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->isEnumConstant());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(!I->doc);
         this->warn(
             *getPrimaryLocation(*I),
@@ -1886,6 +1890,7 @@ warnUnnamedParams()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
         warnUnnamedParams(dynamic_cast<FunctionSymbol const&>(*I));
     }

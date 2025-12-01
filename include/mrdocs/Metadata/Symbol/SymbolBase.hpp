@@ -71,6 +71,11 @@ struct MRDOCS_VISIBLE Symbol {
     */
     ExtractionMode Extraction = ExtractionMode::Dependency;
 
+    /** Whether this a copy of an inherited method, as produced when
+        `inherit-base-members` is not `never`.
+    */
+    bool IsCopyFromInherited = false;
+
     /** The parent symbol, if any.
 
         This is the parent namespace or record
