@@ -20,6 +20,10 @@
 /share/mrdocs/libcxx/
 /share/mrdocs/clang/
 /docs/modules/reference
+/node_modules
 /.gdbinit
 /.lldbinit
 /.github/node_modules/
+/util/danger/node_modules/
+/.roadmap
+/AGENTS.md
