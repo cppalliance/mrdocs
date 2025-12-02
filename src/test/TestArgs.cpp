@@ -44,8 +44,8 @@ EXAMPLES:
 
 , badOption(
     "bad",
-    llvm::cl::desc("Write a .bad.xml file for each test failure."),
-    llvm::cl::init(true))
+    llvm::cl::desc("Write a .bad.<ext> file for each test failure."),
+    llvm::cl::init(false))
 
 , unitOption(
     "unit",
