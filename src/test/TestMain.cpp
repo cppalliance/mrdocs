@@ -111,7 +111,11 @@ int test_main(int argc, char const** argv)
 
     if (testArgs.unitOption.getValue())
     {
-        test_suite::unit_test_main(argc, argv);
+        int unitResult = test_suite::unit_test_main(argc, argv);
+        if (unitResult != EXIT_SUCCESS)
+        {
+            return unitResult;
+        }
     }
 
     if (report::results.errorCount > 0 ||
