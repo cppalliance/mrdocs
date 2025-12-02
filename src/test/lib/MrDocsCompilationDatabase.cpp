@@ -93,7 +93,7 @@ struct MrDocsCompilationDatabase_test {
 
         {
             auto adjusted = adjustCompileCommand({ programName });
-            BOOST_TEST(has(adjusted, "-std=c++23"));
+            BOOST_TEST(has(adjusted, "-std=c++26"));
         }
         {
             auto adjusted = adjustCompileCommand({ programName, "-std=c++11" });
@@ -217,7 +217,7 @@ struct MrDocsCompilationDatabase_test {
 
         {
             auto adjusted = adjustCompileCommand({ programName });
-            BOOST_TEST(has(adjusted, "-std:c++23preview"));
+            BOOST_TEST(has(adjusted, "-std:c++latest"));
         }
         {
             auto adjusted = adjustCompileCommand({ programName, "-std:c++11" });
@@ -238,7 +238,7 @@ struct MrDocsCompilationDatabase_test {
 
         {
             auto adjusted = adjustCompileCommand({ programName, "-x", "c" });
-            BOOST_TEST(has(adjusted, "-std:c17"));
+            BOOST_TEST(has(adjusted, "-std:clatest"));
         }
         {
             auto adjusted = adjustCompileCommand(
