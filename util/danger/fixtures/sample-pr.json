@@ -1,0 +1,36 @@
+{
+  "files": [
+    { "filename": "src/lib/example.cpp", "additions": 120, "deletions": 20 },
+    { "filename": "include/mrdocs/example.hpp", "additions": 30, "deletions": 5 },
+    { "filename": "test-files/golden-tests/foo/output.xml", "additions": 400, "deletions": 10 },
+    { "filename": "docs/modules/ROOT/pages/contribute.adoc", "additions": 12, "deletions": 3 },
+    { "filename": ".github/workflows/ci.yml", "additions": 5, "deletions": 1 }
+  ],
+  "commits": [
+    {
+      "sha": "abc1234",
+      "message": "fix(core): handle edge case",
+      "files": [
+        { "filename": "src/lib/example.cpp", "additions": 120, "deletions": 20 },
+        { "filename": "include/mrdocs/example.hpp", "additions": 30, "deletions": 5 }
+      ]
+    },
+    {
+      "sha": "def5678",
+      "message": "docs: update contributing notes",
+      "files": [
+        { "filename": "docs/modules/ROOT/pages/contribute.adoc", "additions": 12, "deletions": 3 }
+      ]
+    },
+    {
+      "sha": "9999999",
+      "message": "feat: massive change without tests",
+      "files": [
+        { "filename": "src/lib/another.cpp", "additions": 900, "deletions": 200 }
+      ]
+    }
+  ],
+  "prBody": "Sample rationale\\n\\nTesting: unit tests locally",
+  "prTitle": "Sample Danger fixture",
+  "labels": []
+}
