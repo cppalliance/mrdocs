@@ -11,6 +11,7 @@
 #include <mrdocs/Platform.hpp>
 #include "TestArgs.hpp"
 #include "TestRunner.hpp"
+#include "Support/TextNormalization.hpp"
 #include <lib/ConfigImpl.hpp>
 #include <lib/CorpusImpl.hpp>
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
@@ -56,16 +57,6 @@ writeFile(
 }
 
 namespace {
-void
-replaceCRLFWithLF(std::string &str)
-{
-    std::string::size_type pos = 0;
-    while ((pos = str.find("\r\n", pos)) != std::string::npos) {
-        str.replace(pos, 2, "\n");
-        pos += 1; // Move past the '\n' character
-    }
-}
-
 SingleFileDB
 makeSingleFileDB(llvm::StringRef pathName, std::vector<std::string> cmds)
 {
@@ -181,7 +172,9 @@ TestRunner::handleCompilationDatabase(
     {
         return report::error("{}: \"{}\"", exp.error(), filePath);
     }
-    replaceCRLFWithLF(generatedDocs);
+    auto const format = test_support::guessOutputFormat(expectedPath.str());
+    std::string normalizedGenerated = test_support::normalizeForComparison(
+        generatedDocs, format);
 
     // Generate tagfile
     if (auto hbsGen = dynamic_cast<hbs::HandlebarsGenerator const*>(gen_))
@@ -234,9 +227,9 @@ TestRunner::handleCompilationDatabase(
     }
 
     // Analyse results
-    std::string expectedDocs = expectedDocsBuf->getBuffer().str();
-    replaceCRLFWithLF(expectedDocs);
-    if (generatedDocs == expectedDocs)
+    std::string const expectedDocs = test_support::normalizeForComparison(
+        expectedDocsBuf->getBuffer(), format);
+    if (normalizedGenerated == expectedDocs)
     {
         report::info("\"{}\" passed", filePath);
         ++results.expectedDocsMatching;
@@ -259,7 +252,7 @@ TestRunner::handleCompilationDatabase(
         }
         report::error("{}: \"{}\"",
             Error("Incorrect results"), filePathSv);
-        auto res = test_suite::diffStrings(expectedDocs, generatedDocs);
+        auto res = test_suite::diffStrings(expectedDocs, normalizedGenerated);
         report::error("{} lines added", res.added);
         report::error("{} lines removed", res.removed);
 
