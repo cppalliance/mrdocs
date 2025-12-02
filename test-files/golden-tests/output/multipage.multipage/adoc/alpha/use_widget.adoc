@@ -1,0 +1,23 @@
+[#alpha-use_widget]
+= xref:alpha.adoc[alpha]::use&lowbar;widget
+:relfileprefix: ../
+:mrdocs:
+
+Uses a nested type to force cross&hyphen;page links and asset resolution&period;
+
+== Synopsis
+
+Declared in `&lt;multipage&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+xref:alpha/beta/Widget.adoc[beta::Widget]
+use&lowbar;widget(xref:alpha/beta/Widget.adoc[beta::Widget]);
+----
+
+== Return Value
+
+Widget with its own page
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

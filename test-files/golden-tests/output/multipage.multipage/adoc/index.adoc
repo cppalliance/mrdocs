@@ -1,0 +1,53 @@
+[#index]
+= Global namespace
+:mrdocs:
+
+== Namespaces
+
+[cols=1]
+|===
+| Name
+| xref:alpha.adoc[`alpha`] 
+|===
+
+== xref:alpha.adoc[alpha] namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| xref:alpha/beta.adoc[`beta`] 
+|===
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:alpha/use_widget.adoc[`use&lowbar;widget`] 
+| Uses a nested type to force cross&hyphen;page links and asset resolution&period;
+|===
+
+== xref:alpha/beta.adoc[alpha::beta] namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:alpha/beta/Widget.adoc[`Widget`] 
+| Widget with its own page
+|===
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:alpha/beta/make_widget.adoc[`make&lowbar;widget`] 
+| Factory living under a nested namespace
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -40,11 +40,16 @@ EXAMPLES:
     llvm::cl::values(
         clEnumVal(test, "Compare output against expected."),
         clEnumVal(create, "Create missing expected documentation files."),
-        clEnumVal(update, "Update all expected documentation files.")))
+        clEnumVal(update, "Update expected documentation files that differ (use --force to rewrite all).")))
 
 , badOption(
     "bad",
     llvm::cl::desc("Write a .bad.<ext> file for each test failure."),
+    llvm::cl::init(false))
+
+, forceOption(
+    "force",
+    llvm::cl::desc("When updating, rewrite expected files even if normalized contents already match."),
     llvm::cl::init(false))
 
 , unitOption(
@@ -65,6 +70,7 @@ hideForeignOptions() const
     std::vector<llvm::cl::Option const*> ours({
         &action,
         &badOption,
+        &forceOption,
         &unitOption
     });
 

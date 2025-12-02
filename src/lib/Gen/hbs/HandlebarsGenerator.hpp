@@ -28,6 +28,28 @@ class HandlebarsGenerator
     : public Generator
 {
 public:
+    struct StylesheetRef
+    {
+        /** Absolute path to the source stylesheet on disk (empty for remote). */
+        std::string sourcePath;
+        /** Href or output-relative path written to the HTML. */
+        std::string outputRelative;
+        /** True when the stylesheet is remote and should not be copied. */
+        bool external = false;
+    };
+
+    struct StylesData
+    {
+        std::vector<StylesheetRef> stylesheets;
+        std::vector<std::string> inlineStyles;
+        std::vector<std::string> inlineScripts;
+        bool hasDefaultStyles = false;
+    };
+
+private:
+    Expected<StylesData> prepareStylesheets(Config const& config) const;
+
+public:
     Expected<void>
     build(
         std::string_view outputPath,

@@ -40,6 +40,7 @@ public:
     // Test options
     llvm::cl::opt<Action>       action;
     llvm::cl::opt<bool>         badOption;
+    llvm::cl::opt<bool>         forceOption;
     llvm::cl::opt<bool>         unitOption;
 
     // Hide all options that don't belong to us
