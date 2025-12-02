@@ -263,6 +263,13 @@ The fixtures for golden testing are defined in `test-files/golden-tests`, where 
 * `<filename>.bad.xml`: The test output file generated when the test fails.
 * `<filename>.yml`: Extra configuration options for this specific file.
 
+Multipage golden tests follow a snapshot-based layout:
+
+* The suite defaults to `multipage: false` in `test-files/golden-tests/mrdocs.yml`; a multipage test must provide a `<stem>.yml` that sets `multipage: true`.
+* Expected output lives under `<stem>.multipage/<format>/...` (one directory per generator); single-page siblings like `<stem>.html`/`.xml` must be absent.
+* The harness skips `.multipage/` directories during discovery and compares generated temp output trees to the snapshot (strict tree + content).
+* Add a short comment in the `.cpp` explaining why multipage is required—use it only when single-page output cannot validate the behavior (e.g., relative asset/link handling).
+
 == Style Guide
 
 This project follows informal formatting conventions established by previous Boost projects.

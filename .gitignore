@@ -27,3 +27,5 @@
 /util/danger/node_modules/
 /.roadmap
 /AGENTS.md
+# Ignore hidden OS files under golden fixtures
+test-files/golden-tests/**/.*
