@@ -13,3 +13,10 @@ This directory holds additional scripts and files for building and testing.
 - Docs build runs by default; pass `--skip-docs` to omit the documentation step. Docs are built after install with `MRDOCS_ROOT` pointed at the freshly installed prefix so the generated reference uses that version.
 - Strict tests (self-doc, format check, warn-as-error) are enabled by default; pass `--no-strict` to disable `MRDOCS_BUILD_STRICT_TESTS`.
 - `util/reformat.py` supports `--check` to validate formatting/include guards without modifying files (used by the strict test suite).
+
+== CI tests with act
+
+- Run `python util/run_ci_with_act.py` to install https://github.com/nektos/act (if needed) under `local/act/`, pull lightweight Ubuntu runner images, and execute every job defined in `.github/workflows/ci.yml` using the `pull_request` event payload.
+- Script state (act binary, caches, artifacts, secrets stub) lives in `local/act/`, which is already git-ignored. Secrets default to placeholders so side-effecting publishing steps stay skipped.
+- Pass `--list-jobs` to see the discovered job IDs, `--jobs build llvm-releases` to target a subset, `--image ubuntu-24.04=<image>` to override the minimal runner image, or `--dry-run` to inspect the generated act commands.
+- The script maps the host architecture to `linux/amd64` or `linux/arm64` automatically and pre-pulls runner images before starting jobs. Use `--reuse` to let `act` keep containers alive between job batches if Docker resources allow.
