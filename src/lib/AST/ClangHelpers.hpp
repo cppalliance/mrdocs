@@ -50,6 +50,15 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     const clang::Sema::TemplateCompareNewDeclInfo &DeclInfo,
     const clang::Expr *ConstrExpr);
 
+/** Collapse a friend target (function/class/template) to its canonical owner.
+
+    This resolves friend declarations that name template specializations or
+    redeclarations to the primary/canonical declaration so traversal and
+    symbol IDs converge on a single entity.
+*/
+clang::Decl const*
+canonicalFriendTarget(clang::NamedDecl const* ND);
+
 /** Determine the MrDocs Info type for a Clang DeclType
 
     This trait associates a Clang Decl type with the corresponding

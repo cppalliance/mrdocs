@@ -753,10 +753,7 @@ populate(
     {
         for (clang::FriendDecl const* FD : D->friends())
         {
-            // Check if the friend is a fundamental type
-            // Declaring a fundamental type like `int` as a friend of a
-            // class or struct does not have any practical effect. Thus,
-            // it's not considered part of the public API.
+            // Skip meaningless builtin friend types
             if (clang::TypeSourceInfo const* TSI = FD->getFriendType())
             {
                 clang::Type const* T = TSI->getType().getTypePtrOrNull();
@@ -1216,9 +1213,13 @@ populate(
     }
     else if (clang::NamedDecl const* ND = D->getFriendDecl())
     {
-        // ND can be a function or a class
+        // ND can be a function or a class; converge to the semantic owner
+        // (primary template or canonical decl) before traversing so friend
+        // graphs built from many instantiations collapse to a single node.
+        clang::Decl const* Target = canonicalFriendTarget(ND);
+        MRDOCS_CHECK_OR(Target);
         ScopeExitRestore s(mode_, Dependency);
-        if (Symbol const* SI = traverse(dyn_cast<clang::Decl>(ND)))
+        if (Symbol const* SI = findOrTraverse(Target))
         {
             I.id = SI->id;
         }
