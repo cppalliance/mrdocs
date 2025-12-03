@@ -21,7 +21,7 @@
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -36,7 +36,7 @@ using &lowbar;UniqAssignable = int;
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -52,7 +52,7 @@ using &lowbar;UniqCompatible = &lowbar;Res;
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -75,7 +75,7 @@ struct enable&lowbar;if;
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -87,7 +87,7 @@ using type = T;
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -100,7 +100,7 @@ struct link:#enable_if-03[enable&lowbar;if]&lt;false, T&gt;;
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -121,7 +121,7 @@ struct is&lowbar;match;
 
 === Synopsis
 
-Declared in `&lt;1057&period;cpp&gt;`
+Declared in `&lt;using&hyphen;alias&hyphen;template&hyphen;dependent&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

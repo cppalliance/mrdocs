@@ -1,4 +1,7 @@
 
+// Regression test for issue #1057 (see PR #1076):
+// ensure alias templates with dependent enable_if patterns
+// (std::unique_ptr-like) are documented correctly.
 template <bool C, typename T>
 struct enable_if {
     using type = T;
