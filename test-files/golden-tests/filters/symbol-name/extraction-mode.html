@@ -134,6 +134,11 @@ Synopsis</h3>
 Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
 <pre><code class="source-code cpp">struct regular;</code></pre>
 </div>
+<div>
+<h3>
+Description</h3>
+<p>The symbol should have a page as usual</p>
+</div>
 <h2>
 Types</h2>
 <table style="table-layout: fixed; width: 100%;">
@@ -164,11 +169,6 @@ Non-Member Functions</h2>
 <tr><td><a href="#regular_ns-get_regular"><code>get_regular</code></a></td><td>A function to get a regular symbol</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Description</h3>
-<p>The symbol should have a page as usual</p>
 </div>
 </div>
 <div>
@@ -239,13 +239,13 @@ Synopsis</h3>
 Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
 <pre><code class="source-code cpp">struct see_below { /* see-below */ };</code></pre>
 </div>
-
-
 <div>
 <h3>
 Description</h3>
 <p>A symbol that passes the filters and the see-below filter. The symbol should have a page as usual but, because it&#x27;s a scope and not a namespace, the members should not be listed on that page.</p>
 </div>
+
+
 </div>
 <div>
 <div>
@@ -364,6 +364,12 @@ see_below_ns<a class="mrdocs-anchor" href="#see_below_ns" aria-label="Permalink"
 <p>A see-below namespace</p>
 </div>
 </div>
+<div>
+<h3>
+Description</h3>
+<p>All member symbols should become see-below. All members are traversed as see-below.</p>
+<p>The documentation page for these symbols should include the see-below comment.</p>
+</div>
 <h2>
 Types</h2>
 <table style="table-layout: fixed; width: 100%;">
@@ -394,12 +400,6 @@ Functions</h2>
 </tbody>
 </table>
 
-<div>
-<h3>
-Description</h3>
-<p>All member symbols should become see-below. All members are traversed as see-below.</p>
-<p>The documentation page for these symbols should include the see-below comment.</p>
-</div>
 </div>
 <div>
 <div>
@@ -417,13 +417,13 @@ Synopsis</h3>
 Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
 <pre><code class="source-code cpp">struct regular { /* see-below */ };</code></pre>
 </div>
-
-
 <div>
 <h3>
 Description</h3>
 <p>The symbol becomes see-below because the whole namespace is see-below.</p>
 </div>
+
+
 </div>
 <div>
 <div>
@@ -441,13 +441,13 @@ Synopsis</h3>
 Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
 <pre><code class="source-code cpp">struct see_below { /* see-below */ };</code></pre>
 </div>
-
-
 <div>
 <h3>
 Description</h3>
 <p>The symbol becomes see-below because the whole namespace is see-below and because it&#x27;s explicitly marked as see-below.</p>
 </div>
+
+
 </div>
 <div>
 <div>
@@ -574,6 +574,11 @@ Synopsis</h3>
 Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
 <pre><code class="source-code cpp">struct regular;</code></pre>
 </div>
+<div>
+<h3>
+Description</h3>
+<p>This symbol should have a page as usual.</p>
+</div>
 <h2>
 Types</h2>
 <table style="table-layout: fixed; width: 100%;">
@@ -604,11 +609,6 @@ Non-Member Functions</h2>
 <tr><td><a href="#get_regular"><code>get_regular</code></a></td><td>A function to get a regular symbol in the global namespace</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Description</h3>
-<p>This symbol should have a page as usual.</p>
 </div>
 </div>
 <div>
@@ -679,14 +679,14 @@ Synopsis</h3>
 Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
 <pre><code class="source-code cpp">struct see_below { /* see-below */ };</code></pre>
 </div>
-
-
 <div>
 <h3>
 Description</h3>
 <p>This symbol should have a page as usual but, because it&#x27;s a scope and not a namespace, the members should not be listed on that page.</p>
 <p>The synopsis should say &quot;See below&quot;.</p>
 </div>
+
+
 </div>
 <div>
 <div>

@@ -195,6 +195,10 @@ struct AView2
     : link:#AView[AView]
 ----
 
+=== Description
+
+Used to test indirect derived classes
+
 === Base Classes
 
 [cols="1,4"]
@@ -222,10 +226,6 @@ struct AView2
 | link:#f5[`f5`]
 | A non&hyphen;member function of ABase
 |===
-
-=== Description
-
-Used to test indirect derived classes
 
 [#f1]
 == f1

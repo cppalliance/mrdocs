@@ -99,6 +99,10 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 struct regular;
 ----
 
+=== Description
+
+The symbol should have a page as usual
+
 === Types
 
 [cols="1,4"]
@@ -117,10 +121,6 @@ struct regular;
 | link:#regular_ns-get_regular[`get&lowbar;regular`]
 | A function to get a regular symbol
 |===
-
-=== Description
-
-The symbol should have a page as usual
 
 [#regular_ns-regular-also_regular]
 == link:#regular_ns[regular&lowbar;ns]::link:#regular_ns-regular[regular]::also&lowbar;regular
@@ -272,6 +272,12 @@ A symbol that passes the see&hyphen;below filter
 
 A see&hyphen;below namespace
 
+=== Description
+
+All member symbols should become see&hyphen;below&period; All members are traversed as see&hyphen;below&period;
+
+The documentation page for these symbols should include the see&hyphen;below comment&period;
+
 === Types
 
 [cols="1,4"]
@@ -293,12 +299,6 @@ A see&hyphen;below namespace
 | link:#see_below_ns-get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
 | A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
 |===
-
-=== Description
-
-All member symbols should become see&hyphen;below&period; All members are traversed as see&hyphen;below&period;
-
-The documentation page for these symbols should include the see&hyphen;below comment&period;
 
 [#see_below_ns-regular]
 == link:#see_below_ns[see&lowbar;below&lowbar;ns]::regular
@@ -442,6 +442,10 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 struct regular;
 ----
 
+=== Description
+
+This symbol should have a page as usual&period;
+
 === Types
 
 [cols="1,4"]
@@ -460,10 +464,6 @@ struct regular;
 | link:#get_regular[`get&lowbar;regular`]
 | A function to get a regular symbol in the global namespace
 |===
-
-=== Description
-
-This symbol should have a page as usual&period;
 
 [#regular-also_regular]
 == link:#regular[regular]::also&lowbar;regular
