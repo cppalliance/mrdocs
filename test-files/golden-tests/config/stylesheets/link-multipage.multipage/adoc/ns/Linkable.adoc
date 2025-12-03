@@ -1,0 +1,21 @@
+[#ns-Linkable]
+= xref:ns.adoc[ns]::Linkable
+:relfileprefix: ../
+:mrdocs:
+
+:stylesheet: css&sol;custom&period;css
+:stylesdir: css
+:linkcss:
+Multipage style sample
+
+== Synopsis
+
+Declared in `&lt;link&hyphen;multipage&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Linkable;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

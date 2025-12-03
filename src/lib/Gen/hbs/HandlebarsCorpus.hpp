@@ -38,6 +38,28 @@ public:
     */
     std::string fileExtension;
 
+    /** Stylesheets to load for the page.
+
+        Array of objects with `path` (href or output-relative link) and
+        `external` (true for remote URLs). Populated by the generator with
+        resolved link targets, not source file paths.
+    */
+    dom::Array stylesheets;
+
+    /** Inline stylesheet contents (optional).
+
+        Array of raw CSS strings that may be inlined into the wrapper.
+    */
+    dom::Array inlineStyles;
+
+    /** Inline scripts to inject into the page head (optional).
+     */
+    dom::Array inlineScripts;
+
+    /** True when the generator supplied the bundled default styles.
+     */
+    bool hasDefaultStyles = false;
+
     /** Constructor.
 
         Initializes the HandlebarsCorpus with the given corpus and options.

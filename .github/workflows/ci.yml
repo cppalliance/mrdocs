@@ -1027,6 +1027,7 @@ jobs:
                 root="$(pwd)/demos/$project/$variant"
                 src="$root/adoc"
                 dst="$root/adoc-asciidoc"
+                stylesheet="$(pwd)/share/mrdocs/addons/generator/common/layouts/style.css"
           
                 # Create the top-level output dir
                 mkdir -p "$dst"
@@ -1037,7 +1038,7 @@ jobs:
                   rel="${f#"$src/"}"                 # path relative to $src
                   outdir="$dst/$(dirname "$rel")"    # mirror subdir inside $dst
                   mkdir -p "$outdir"
-                  asciidoctor -D "$outdir" "$f"
+                  asciidoctor -a stylesheet="${stylesheet}" -D "$outdir" "$f"
                 done
               done
             fi

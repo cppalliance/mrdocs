@@ -715,7 +715,7 @@ struct ParserState {
         }
         try
         {
-            emit_text_unmerged(*f.parent, std::move(literal));
+            emit_text(*f.parent, std::move(literal));
         }
         catch (std::length_error const&)
         {
@@ -1010,7 +1010,13 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
         char c = s[i];
 
         // Backslash escape
-        if (st.escape_next) { st.text.push_back(c); st.escape_next = false; ++i; continue; }
+        if (st.escape_next)
+        {
+            st.text.push_back(c);
+            st.escape_next = (c == '\\');
+            ++i;
+            continue;
+        }
         if (c == '\\')      { st.escape_next = true; ++i; continue; }
 
         // Markdown link/image openers

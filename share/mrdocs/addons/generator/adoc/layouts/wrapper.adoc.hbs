@@ -17,11 +17,29 @@
 {{#if @root.config.multipage }}
 [#{{{symbol.anchor}}}]
 = {{> symbol/qualified-name-title symbol }}
-:relfileprefix: {{{ repeat "../" (count (remove_prefix symbol.url '/') '/') }}}
+{{#if page.relfileprefix}}
+:relfileprefix: {{{ page.relfileprefix }}}
+{{/if}}
 {{else}}
 = Reference
 {{/if}}
 :mrdocs:
 
+{{!--
+    Optional Asciidoctor stylesheet hints.
+    These are ignored by Antora (it owns the UI bundle), but allow users
+    who render the .adoc directly with Asciidoctor to select/link custom CSS.
+--}}
+{{~#if page.stylesheets}}
+{{#each page.stylesheets}}
+:stylesheet: {{path}}
+{{/each}}
+{{#if @root.config.stylesdir}}
+:stylesdir: {{@root.config.stylesdir}}
+{{/if}}
+{{#if @root.config.linkcss}}
+:linkcss:
+{{/if}}
+{{~/if}}
 {{{contents}}}
 {{#>markup/span class="small"}}Created with https://www.mrdocs.com[MrDocs]{{/markup/span}}

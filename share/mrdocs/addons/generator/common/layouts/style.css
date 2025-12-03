@@ -1,0 +1,308 @@
+/* MrDocs default stylesheet */
+/*
+   Licensed under the Apache License v2.0 with LLVM Exceptions.
+   See https://llvm.org/LICENSE.txt for license information.
+   SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+   Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+
+   Official repository: https://github.com/cppalliance/mrdocs
+*/
+
+:root{
+    --bg:#f7f7ff;
+    --surface:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --border:#e5e7eb;
+    --header:#111827;
+    --link:#255dba;
+    --link-hover:#1d4ed8;
+    --radius:14px;
+    --shadow:0 10px 25px rgba(2,6,23,.06);
+}
+
+html{
+    -webkit-text-size-adjust:100%;
+    scroll-padding-top:20px;
+}
+
+/* Anchor offset for headings */
+h1,h2,h3,h4,h5,h6{
+    scroll-margin-top:20px;
+}
+
+/* Page baseline + container */
+body{
+    margin:0;
+    padding:2.25rem 1.25rem 3.5rem;
+    background:var(--bg);
+    color:var(--text);
+    font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    max-width:84rem;
+    margin-inline:auto;
+    box-sizing:border-box;
+}
+
+body>div{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:calc(var(--radius) + 4px);
+    box-shadow:var(--shadow);
+    padding:1.75rem 1.75rem 2rem;
+}
+
+@media(max-width:768px){
+    body{
+        padding:1.5rem 1rem 2.5rem;
+        max-width:none;
+    }
+}
+
+/* Headings */
+h1,h2,h3{
+    color:var(--header);
+    line-height:1.2;
+    letter-spacing:-.015em;
+    margin:1.25rem 0 .6rem;
+    font-family:"Open Sans","DejaVu Sans",sans-serif;
+}
+
+h1{
+    font-size:2.1rem;
+    margin-top:.25rem;
+    padding-bottom:.6rem;
+    border-bottom:1px solid var(--border);
+}
+
+h2{
+    font-size:1.45rem;
+    margin-top:1.8rem;
+    padding-top:.25rem;
+}
+
+h3{
+    font-size:1.05rem;
+    color:var(--text);
+}
+
+h2 code,
+h3 code{
+    background:transparent;
+    border:0;
+    padding:0;
+    font-size:1em;
+}
+
+h2:has(code),
+h3:has(code){
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:.5rem .75rem;
+}
+
+/* Links */
+a{
+    color:var(--link);
+    text-decoration:none;
+}
+
+a:hover,
+a:focus{
+    color:var(--link-hover);
+    text-decoration:underline;
+    text-underline-offset:2px;
+}
+
+a:active{
+    color:#faa700;
+}
+
+/* Inline and block code */
+code,kbd,samp,pre{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+}
+
+:not(pre)>code,
+:not(pre)>kbd,
+:not(pre)>samp{
+    font-size:.95em;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    padding:.12em .35em;
+    border-radius:10px;
+}
+
+a>code{
+    background:rgba(37,93,186,.08);
+    border-color:rgba(37,93,186,.18);
+}
+
+a:hover>code,
+a:focus>code{
+    background:rgba(37,93,186,.12);
+    border-color:rgba(37,93,186,.28);
+}
+
+pre{
+    margin:0 0 1.25rem;
+    padding:1rem 1.1rem;
+    border:1px solid rgba(15,23,42,.12);
+    border-radius:var(--radius);
+    overflow:auto;
+    box-shadow:0 8px 18px rgba(2,6,23,.1);
+}
+
+pre>code,
+pre code.hljs{
+    background:transparent!important;
+    border:0!important;
+    padding:0!important;
+    border-radius:0!important;
+    color:inherit;
+}
+
+/* Paragraph rhythm */
+p{
+    margin:.4em 0 .5em;
+    line-height:1.6;
+}
+
+/* Lists */
+ul,ol,dl{
+    line-height:1.6;
+    margin-bottom:1em;
+    list-style-position:outside;
+}
+
+ul{
+    list-style-type:square;
+    margin:.3em 0 0 1.5em;
+}
+
+ol{
+    margin:.3em 0 0 3.2em;
+}
+
+dl{
+    margin:.3em 0 0 0;
+}
+
+/* Tables */
+table{
+    width:100%;
+    table-layout:fixed;
+    border-collapse:separate;
+    border-spacing:0;
+    margin:.75rem 0 1.4rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+}
+
+thead th{
+    text-align:left;
+    font-weight:600;
+    font-size:.9rem;
+    color:#334155;
+    background:#f9fafb;
+    border-bottom:1px solid var(--border);
+}
+
+th,td{
+    padding:.72rem .9rem;
+    vertical-align:top;
+    border-bottom:1px solid var(--border);
+    text-align:left;
+}
+
+tbody tr:last-child td{
+    border-bottom:0;
+}
+
+tbody tr:nth-child(even){
+    background:#fcfdff;
+}
+
+td:nth-child(2){
+    color:var(--muted);
+}
+
+/* Block quotes */
+blockquote{
+    border-left:3px solid #ddd;
+    margin:.5em 0;
+    padding:.25em 0 .25em .75em;
+    color:#333;
+}
+
+/* Synopsis helper: "Declared in <...>" line under h3 */
+h3+div{
+    color:var(--muted);
+    margin-top:-.2rem;
+    margin-bottom:.65rem;
+    font-size:.92rem;
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+}
+
+/* Anchor jump polish */
+h1:target,
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target{
+    outline:2px solid rgba(37,93,186,.18);
+    outline-offset:4px;
+    border-radius:12px;
+}
+
+/* Footer note */
+.mrdocs-footer{
+    margin-top:1.1rem;
+    color:var(--muted);
+    font-size:.9em;
+    text-align:center;
+}
+
+.mrdocs-footer a{
+    color:inherit;
+    text-decoration:underline;
+    text-underline-offset:2px;
+}
+
+/* Permalink anchors */
+.mrdocs-anchor{
+    opacity:0;
+    display:inline-block;
+    width:1.2em;
+    text-align:center;
+    margin-left:.35rem;
+    font-size:.9em;
+    color:var(--muted);
+    text-decoration:none;
+    border-radius:6px;
+}
+
+h1:hover .mrdocs-anchor,
+h2:hover .mrdocs-anchor,
+h3:hover .mrdocs-anchor,
+h4:hover .mrdocs-anchor,
+h5:hover .mrdocs-anchor,
+h6:hover .mrdocs-anchor,
+.mrdocs-anchor:focus-visible{
+    opacity:1;
+}
+
+.mrdocs-anchor:hover{
+    color:var(--link);
+}
+
+.mrdocs-anchor:focus-visible{
+    outline:2px solid rgba(37,93,186,.3);
+    outline-offset:2px;
+}

@@ -79,6 +79,33 @@ public:
     virtual
     void
     escape(OutputRef& os, std::string_view str) const;
+
+protected:
+    /** Customize the Handlebars corpus before rendering.
+
+        Subclasses can override this to inject additional data
+        into the corpus (e.g. precomputed template context).
+        The default implementation does nothing.
+    */
+    virtual
+    void
+    prepareCorpus(HandlebarsCorpus&) const;
+
+protected:
+    /** Default stylesheet path on disk; empty means no default. */
+    virtual std::string defaultStylesheetSource(Config const& config) const;
+
+    /** Default stylesheet output relative path; empty means no default. */
+    virtual std::string defaultStylesheetOutput(Config const& config) const;
+
+    /** Default highlight stylesheet path on disk; empty means no default. */
+    virtual std::string defaultHighlightStylesheetSource(Config const& config) const;
+
+    /** Default highlight stylesheet output relative path; empty means no default. */
+    virtual std::string defaultHighlightStylesheetOutput(Config const& config) const;
+
+    /** Inline script used to load and run highlight.js from a CDN. */
+    virtual std::string defaultHighlightScript() const;
 };
 
 } // hbs

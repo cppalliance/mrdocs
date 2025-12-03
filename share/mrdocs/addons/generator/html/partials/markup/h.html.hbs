@@ -1,1 +1,6 @@
-<h{{or level 3}}{{#if class}} class="{{{class}}}"{{/if}}{{#if id}} id="{{{id}}}"{{/if}}>{{> @partial-block }}</h{{or level 3}}>
+<h{{or level 3}}{{#if class}} class="{{{class}}}"{{/if}}{{#if id}} id="{{{id}}}"{{/if}}>
+{{> @partial-block }}
+{{#if id}}
+<a class="mrdocs-anchor" href="#{{id}}" aria-label="Permalink">#</a>
+{{/if}}
+</h{{or level 3}}>

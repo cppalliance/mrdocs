@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="ns" id="GMYc6Iz1KvKgxSAysPcbtTxcAHY=">
+    <struct name="Styled" id="tUuoBRXny7PNUbWWeVryWNNUPo4=">
+      <file short-path="inline-custom.cpp" source-path="inline-custom.cpp" line="4" class="def"/>
+      <doc>
+        <brief>
+          <text>Custom style sample</text>
+        </brief>
+      </doc>
+    </struct>
+  </namespace>
+</namespace>
+</mrdocs>

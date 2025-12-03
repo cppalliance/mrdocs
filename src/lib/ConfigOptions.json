@@ -466,6 +466,41 @@
         "details": "When set to true, the page for the global namespace will recursively list all symbols in the documentation, not just those in the global namespace. This makes the global namespace page act as an index for the entire project.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "stylesheets",
+        "brief": "Ordered list of stylesheets to apply to HTML output",
+        "details": "Ordered list of stylesheet names or paths. If empty, the bundled stylesheet is used. Entries can be local paths or remote URLs; remote URLs are only linked when `linkcss` is true. Inline mode embeds local styles; link mode emits `<link>` tags for each entry and copies local files.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
+        "name": "no-default-styles",
+        "brief": "Disable the bundled default stylesheet",
+        "details": "When set to true, the bundled stylesheet is not applied. Combine with an empty `stylesheets` list to emit no styles at all.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "stylesdir",
+        "brief": "Directory for linked stylesheets",
+        "details": "Directory used to build the href for linked stylesheets when `linkcss` is true. Defaults to `css`. The directory is created under the output root when copying local styles (e.g. `css/mrdocs-default.css`).",
+        "type": "string",
+        "default": "css"
+      },
+      {
+        "name": "linkcss",
+        "brief": "Link stylesheets instead of embedding them",
+        "details": "When set to true, stylesheets are linked with `<link>` tags instead of being inlined. Links use `stylesdir` plus the stylesheet name (e.g. `css/custom.css`). Local styles are copied unless `copycss` is false; remote URLs are linked as-is.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "copycss",
+        "brief": "Copy local stylesheets when linking",
+        "details": "When `linkcss` is true, copy bundled and local stylesheet files into the output under `stylesdir`. Remote URLs are not copied. Set to false to skip copying.",
+        "type": "bool",
+        "default": true
       }
     ]
   },
