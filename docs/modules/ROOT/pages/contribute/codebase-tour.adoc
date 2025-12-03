@@ -1,0 +1,66 @@
+= Codebase tour
+
+== Codebase Overview
+
+The Mr.Docs codebase is divided into several modules:
+
+include::partial$workflow.adoc[]
+
+This section provides an overview of each module and how they interact with each other in the Mr.Docs codebase.
+
+=== Directory Layout
+
+The MrDocs codebase is organized as follows:
+
+==== `include/`—The main include directory
+
+This directory contains the public headers for the MrDocs library.
+
+* `include/mrdocs/`—The core library headers
+** `include/mrdocs/ADT`—Data Structures
+** `include/mrdocs/Dom`—The Document Object Model for Abstract Trees
+** `include/mrdocs/Metadata`—`Symbol` nodes and metadata classes
+** `include/mrdocs/Support`—Various utility classes
+
+==== `src/`—The main source directory
+
+This directory contains the source code for the MrDocs library and private headers.
+
+* `src/lib/`—The core library
+** `src/lib/AST/`—The AST traversal code
+** `src/lib/Dom/`—The Document Object Model for Abstract Trees
+** `src/lib/Gen/`—Generators
+** `src/lib/Lib/`—The core library classes
+** `src/lib/Metadata/`—`Symbol` nodes and metadata classes
+** `src/lib/Support/`—Various utility classes
+* `src/test/`—The test directory
+* `src/test_suite/`—The library used for testing
+* `src/tool/`—The main program
+
+==== `share/`—Shared resources
+
+This directory contains shared resources for the documentation generators and utilities for developers.
+Its subdirectories are installed in the `share` directory of the installation.
+
+* `share/`—Shared resources for the documentation generators
+* `share/cmake/`—CMake modules to generate the documentation
+* `share/gdb/`—GDB pretty printers
+* `share/mrdocs/`—Shared resources for the documentation generators
+
+==== `docs`—Documentation
+
+This directory contains the documentation for the MrDocs project.
+The documentation is written in AsciiDoc and can be built using the Antora tool.
+
+* `docs/`—Documentation configuration files and scripts
+** `docs/modules/`—The documentation asciidoc files
+** `docs/extensions`—Antora extensions for the documentation
+
+==== `third-party/`—Helpers for third-party libraries
+
+This directory contains build scripts and configuration files for third-party libraries.
+
+* `third-party/`—Third-party libraries
+** `third-party/llvm/`—CMake Presets for LLVM
+** `third-party/duktape/`—CMake scripts for Duktape
+** `third-party/lua/`—A bundled Lua interpreter

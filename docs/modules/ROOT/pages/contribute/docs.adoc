@@ -1,0 +1,10 @@
+= Docs changes
+
+== `docs`—Documentation
+
+This directory contains the documentation for the MrDocs project.
+The documentation is written in AsciiDoc and can be built using the Antora tool.
+
+* `docs/`—Documentation configuration files and scripts
+** `docs/modules/`—The documentation asciidoc files
+** `docs/extensions`—Antora extensions for the documentation

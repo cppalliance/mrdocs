@@ -7,5 +7,11 @@
 * xref:generators.adoc[]
 * xref:design-notes.adoc[]
 * xref:reference:index.adoc[Library Reference]
-* xref:contribute.adoc[]
+* Contribute
+** xref:contribute/quickstart.adoc[]
+** xref:contribute/workflow.adoc[]
+** xref:contribute/testing.adoc[]
+** xref:contribute/options.adoc[]
+** xref:contribute/codebase-tour.adoc[]
+** xref:contribute/docs.adoc[]
 * xref:license.adoc[]
