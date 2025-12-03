@@ -1,0 +1,4 @@
+stylesheets:
+  - https://cdn.example.com/theme.css
+linkcss: true
+no-default-styles: true

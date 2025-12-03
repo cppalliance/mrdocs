@@ -1,0 +1,28 @@
+[#index]
+= Global namespace
+:mrdocs:
+
+:stylesheet: assets&sol;css&sol;custom&period;css
+:stylesdir: assets&sol;css
+:linkcss:
+== Namespaces
+
+[cols=1]
+|===
+| Name
+| xref:ns.adoc[`ns`] 
+|===
+
+== xref:ns.adoc[ns] namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:ns/NoCopy.adoc[`NoCopy`] 
+| Linked stylesheet without copying assets
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

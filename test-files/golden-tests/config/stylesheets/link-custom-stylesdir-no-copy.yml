@@ -1,0 +1,7 @@
+stylesheets:
+  - custom.css
+stylesdir: assets/css
+linkcss: true
+copycss: false
+no-default-styles: true
+multipage: true

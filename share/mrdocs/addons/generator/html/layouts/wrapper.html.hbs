@@ -2,6 +2,25 @@
 {{! This content is not indented and neither is the partial to preserve code blocks and minimize diffs }}
 <html lang="en">
 <head>
+{{#if page.inlineStyles}}
+{{#each page.inlineStyles}}
+<style>
+{{{this}}}
+</style>
+{{/each}}
+{{/if}}
+{{#if page.stylesheets}}
+{{#each page.stylesheets }}
+<link rel="stylesheet" href="{{#if external}}{{path}}{{else}}{{#if @root.config.multipage}}{{relativize (concat "/" path)}}{{else}}{{path}}{{/if}}{{/if}}">
+{{/each}}
+{{/if}}
+{{#if page.inlineScripts}}
+{{#each page.inlineScripts}}
+<script>
+{{{this}}}
+</script>
+{{/each}}
+{{/if}}
 {{! Title }}
 {{#if @root.config.multipage }}
 {{! Multipage documentation: symbol is available to the wrapper }}
@@ -10,6 +29,7 @@
 {{! Single page documentation: symbol is not available to the wrapper }}
 <title>Reference</title>
 {{/if}}
+<meta charset="utf-8">
 </head>
 <body>
 <div>
@@ -23,8 +43,25 @@
 {{! Content generated with index.hbs }}
 {{{contents}}}
 </div>
-<div>
-<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
-</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+{{#if page.hasDefaultStyles}}
+<script>
+(function(){
+    document.addEventListener("click", function(e){
+        var anchor = e.target.closest && e.target.closest("a.mrdocs-anchor");
+        if (!anchor) return;
+        try{
+            var url = new URL(window.location.href);
+            url.hash = anchor.getAttribute("href");
+            if (navigator.clipboard && navigator.clipboard.writeText){
+                navigator.clipboard.writeText(url.toString()).catch(function(){});
+            }
+        }catch(err){}
+    }, false);
+})();
+</script>
+{{/if}}
 </body>
-</html>
+</html>{{! Trim trailing newline ~}}

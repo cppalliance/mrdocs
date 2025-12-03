@@ -1,0 +1,4 @@
+stylesheets:
+  - custom.css
+linkcss: false
+no-default-styles: true

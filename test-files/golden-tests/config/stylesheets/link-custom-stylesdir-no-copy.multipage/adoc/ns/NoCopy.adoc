@@ -1,0 +1,21 @@
+[#ns-NoCopy]
+= xref:ns.adoc[ns]::NoCopy
+:relfileprefix: ../
+:mrdocs:
+
+:stylesheet: assets&sol;css&sol;custom&period;css
+:stylesdir: assets&sol;css
+:linkcss:
+Linked stylesheet without copying assets
+
+== Synopsis
+
+Declared in `&lt;link&hyphen;custom&hyphen;stylesdir&hyphen;no&hyphen;copy&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct NoCopy;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,15 +1,19 @@
 <html lang="en">
 <head>
 <title>Reference</title>
+<meta charset="utf-8">
 </head>
 <body>
 <div>
 <h1>Reference</h1>
 <div>
 <div>
-<h2 id="index"></h2>
+<h2 id="index">
+Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
+</h2>
 </div>
-<h2>Types</h2>
+<h2>
+Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -24,7 +28,8 @@
 </tbody>
 </table>
 
-<h2>Functions</h2>
+<h2>
+Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -42,23 +47,25 @@
 </div>
 <div>
 <div>
-<h2 id="A">A</h2>
+<h2 id="A">
+A<a class="mrdocs-anchor" href="#A" aria-label="Permalink">#</a>
+</h2>
 <div>
 <p>A class with non-member functions</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;return-type.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">class A;</code>
-</pre>
+<pre><code class="source-code cpp">class A;</code></pre>
 </div>
 
 
 <div>
-<h2>Non-Member Functions</h2>
+<h2>
+Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -76,24 +83,26 @@ Declared in <code>&lt;return-type.cpp&gt;</code></div>
 </div>
 <div>
 <div>
-<h2 id="Result">Result</h2>
+<h2 id="Result">
+Result<a class="mrdocs-anchor" href="#Result" aria-label="Permalink">#</a>
+</h2>
 <div>
 <p>Helper result class</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;return-type.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">template&lt;class T&gt;
-class Result;</code>
-</pre>
+<pre><code class="source-code cpp">template&lt;class T&gt;
+class Result;</code></pre>
 </div>
 
 
 <div>
-<h2>Non-Member Functions</h2>
+<h2>
+Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -109,26 +118,28 @@ class Result;</code>
 </div>
 <div>
 <div>
-<h2 id="SmallVector">SmallVector</h2>
+<h2 id="SmallVector">
+SmallVector<a class="mrdocs-anchor" href="#SmallVector" aria-label="Permalink">#</a>
+</h2>
 <div>
 <p>Helper result class</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;return-type.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">template&lt;
+<pre><code class="source-code cpp">template&lt;
     class T,
     unsigned long N&gt;
-class SmallVector;</code>
-</pre>
+class SmallVector;</code></pre>
 </div>
 
 
 <div>
-<h2>Non-Member Functions</h2>
+<h2>
+Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -144,71 +155,77 @@ class SmallVector;</code>
 </div>
 <div>
 <div>
-<h2 id="makeA">makeA</h2>
+<h2 id="makeA">
+makeA<a class="mrdocs-anchor" href="#makeA" aria-label="Permalink">#</a>
+</h2>
 <div>
 <p>Function that returns A</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;return-type.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#A">A</a>
-makeA();</code>
-</pre>
+<pre><code class="source-code cpp"><a href="#A">A</a>
+makeA();</code></pre>
 </div>
 <div>
-<h3>Return Value</h3>
+<h3>
+Return Value</h3>
 An instance of A
 </div>
 </div>
 <div>
 <div>
-<h2 id="makeAs">makeAs</h2>
+<h2 id="makeAs">
+makeAs<a class="mrdocs-anchor" href="#makeAs" aria-label="Permalink">#</a>
+</h2>
 <div>
 <p>Function that returns template on A</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;return-type.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#SmallVector">SmallVector&lt;A, 3&gt;</a>
-makeAs();</code>
-</pre>
+<pre><code class="source-code cpp"><a href="#SmallVector">SmallVector&lt;A, 3&gt;</a>
+makeAs();</code></pre>
 </div>
 <div>
-<h3>Return Value</h3>
+<h3>
+Return Value</h3>
 A vector of As
 </div>
 </div>
 <div>
 <div>
-<h2 id="tryMakeA">tryMakeA</h2>
+<h2 id="tryMakeA">
+tryMakeA<a class="mrdocs-anchor" href="#tryMakeA" aria-label="Permalink">#</a>
+</h2>
 <div>
 <p>Function that returns template on A</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;return-type.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#Result">Result&lt;A&gt;</a>
-tryMakeA();</code>
-</pre>
+<pre><code class="source-code cpp"><a href="#Result">Result&lt;A&gt;</a>
+tryMakeA();</code></pre>
 </div>
 <div>
-<h3>Return Value</h3>
+<h3>
+Return Value</h3>
 An instance of A or an error
 </div>
 </div>
 
 </div>
-<div>
-<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
-</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
 </body>
 </html>
