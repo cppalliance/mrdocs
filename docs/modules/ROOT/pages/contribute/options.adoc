@@ -1,23 +1,7 @@
-= Contributor's Guide
-
-This page contains information for contributors to the Mr.Docs project.
-It is intended to provide an overview of the codebase and the process of adding new features.
-
-Before sending changes, run `python util/run_all_tests.py`.
-This script is treated as a “source of truth” pass that configures the preferred preset, builds, runs golden + unit + lint/schema/self-doc checks, installs into a local `install/<preset>` prefix, and (by default) builds docs using that fresh install.
-Not every policy can be enforced programmatically, but this script covers the checks that are automated; prefer it over ad-hoc command sequences.
-Use `--skip-docs` to omit docs or `--no-strict` to relax strict warning handling when needed.
-
-== Codebase Overview
-
-The Mr.Docs codebase is divided into several modules:
-
-include::partial$workflow.adoc[]
-
-This section provides an overview of each module and how they interact with each other in the Mr.Docs codebase.
+= Options & architecture
 
 [#options]
-=== Parsing options
+== Parsing options
 
 Mr.Docs options affect the behavior of the compilation database, how symbols are extracted, and how the documentation is generated.
 They are parsed from the command line and configuration file.
@@ -26,12 +10,12 @@ The main entry point of Mr.Docs is the `DoGenerateAction` function in `src/tool/
 It loads the options, creates the compilation database, and runs the extraction and generation steps.
 The options are formed from a combination of command line arguments and configuration file settings.
 
-==== Command Line Options
+=== Command Line Options
 
 Command line and common options are defined in `src/tool/ToolArgs.hpp`.
 The `ToolArgs` class uses the `llvm::cl` library to define and parse the command line arguments.
 
-==== Configuration File
+=== Configuration File
 
 Common options are defined in `mrdocs/Config.hpp`.
 The `Config` class represents all public options that could be defined in a configuration file.
@@ -41,7 +25,7 @@ The function `mrdocs::loadConfig` is also provided to parse all public options f
 
 Internally, Mr.Docs uses the derived `mrdocs::ConfigImpl` class (`src/lib/Lib/ConfigImpl.hpp`) to also store the private representation of parsed options, such as filters.
 
-==== Finalizing Options
+=== Finalizing Options
 
 Common options are stored in the `Config` class, while the `ToolArgs` class stores common options and the command line options.
 For instance, the `config` option can only be set from the command line, as it would be illogical to expect the location of the configuration file to be defined in the configuration file itself.
@@ -172,129 +156,4 @@ Documentation generators are responsible for traversing the corpus and generatin
 
 The API for documentation generators is defined in `mrdocs/Generator.hpp`.
 
-=== Directory Layout
-
-The MrDocs codebase is organized as follows:
-
-==== `include/`—The main include directory
-
-This directory contains the public headers for the MrDocs library.
-
-* `include/mrdocs/`—The core library headers
-** `include/mrdocs/ADT`—Data Structures
-** `include/mrdocs/Dom`—The Document Object Model for Abstract Trees
-** `include/mrdocs/Metadata`—`Symbol` nodes and metadata classes
-** `include/mrdocs/Support`—Various utility classes
-
-==== `src/`—The main source directory
-
-This directory contains the source code for the MrDocs library and private headers.
-
-* `src/lib/`—The core library
-** `src/lib/AST/`—The AST traversal code
-** `src/lib/Dom/`—The Document Object Model for Abstract Trees
-** `src/lib/Gen/`—Generators
-** `src/lib/Lib/`—The core library classes
-** `src/lib/Metadata/`—`Symbol` nodes and metadata classes
-** `src/lib/Support/`—Various utility classes
-* `src/test/`—The test directory
-* `src/test_suite/`—The library used for testing
-* `src/tool/`—The main program
-
-==== `share/`—Shared resources
-
-This directory contains shared resources for the documentation generators and utilities for developers.
-Its subdirectories are installed in the `share` directory of the installation.
-
-* `share/`—Shared resources for the documentation generators
-* `share/cmake/`—CMake modules to generate the documentation
-* `share/gdb/`—GDB pretty printers
-* `share/mrdocs/`—Shared resources for the documentation generators
-
-==== `docs`—Documentation
-
-This directory contains the documentation for the MrDocs project.
-The documentation is written in AsciiDoc and can be built using the Antora tool.
-
-* `docs/`—Documentation configuration files and scripts
-** `docs/modules/`—The documentation asciidoc files
-** `docs/extensions`—Antora extensions for the documentation
-
-==== `third-party/`—Helpers for third-party libraries
-
-This directory contains build scripts and configuration files for third-party libraries.
-
-* `third-party/`—Third-party libraries
-** `third-party/llvm/`—CMake Presets for LLVM
-** `third-party/duktape/`—CMake scripts for Duktape
-** `third-party/lua/`—A bundled Lua interpreter
-
 == Polymorphism
-
-== Coding Standards
-
-=== Paths
-
-The AST visitor and metadata all use forward slashes to represent file pathnames, even on Windows.
-This is so the generated reference documentation does not vary based on the platform.
-
-=== Exceptions
-
-Errors thrown by the program should always have type `Exception`.
-Objects of this type are capable of transporting an `Error` object.
-This is important for the scripting to work; exceptions are used to propagate errors from library code to scripts and back to the invoking code.
-For exceptional cases, these thrown exceptions should be uncaught.
-The tool installs an uncaught exception handler that prints a stack trace and exits the process immediately.
-
-=== Testing
-
-All new features should be accompanied by tests.
-The `mrdocs-test` target is used to run the test suites.
-This target has its entry point in `src/test/TestMain.cpp`, which can take two paths:
-
-* Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the `DoTestAction()` that iterates all files in `test-files` comparing the input source files with the expected XML output files.
-* Unit testing: When no input paths are provided, all unit tests will be run via `unit_test_main()`, defined by our test-suite library in `src/test_suite/test_suite.cpp`.
-
-The fixtures for golden testing are defined in `test-files/golden-tests`, where files in each directory have the following format:
-
-* `mrdocs.yml`: Basic configuration options for all files in this directory.
-* `<filename>.cpp`: The input source file to extract symbols from.
-* `<filename>.xml`: The expected XML output file generated with the XML generator.
-* `<filename>.bad.xml`: The test output file generated when the test fails.
-* `<filename>.yml`: Extra configuration options for this specific file.
-
-Multipage golden tests follow a snapshot-based layout:
-
-* The suite defaults to `multipage: false` in `test-files/golden-tests/mrdocs.yml`; a multipage test must provide a `<stem>.yml` that sets `multipage: true`.
-* Expected output lives under `<stem>.multipage/<format>/...` (one directory per generator); single-page siblings like `<stem>.html`/`.xml` must be absent.
-* The harness skips `.multipage/` directories during discovery and compares generated temp output trees to the snapshot (strict tree + content).
-* Add a short comment in the `.cpp` explaining why multipage is required—use it only when single-page output cannot validate the behavior (e.g., relative asset/link handling).
-
-== Style Guide
-
-This project follows informal formatting conventions established by previous Boost projects.
-To help contributors, we provide a `.clang-format` file that encodes these rules.
-
-* Do *not* apply clang-format across entire files or the whole project.
-* Use the config only as a *reference* for your IDE/editor, or to format the code you **personally add or modify** in a commit.
-* Always check the surrounding code and keep consistent with it.
-* Do not create style-only commits that introduce large diffs without functional changes.
-
-Why This Approach:
-
-* Keeps history clean: avoids large, style-only commits.
-* Ensures new contributors are not lost when adapting to project style.
-* Encourages consistency without rigid automation.
-
-General Advice: When in doubt, copy the style of the surrounding code.
-The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
-
-The utility script `./util/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
-
-== Contributing
-
-If you find a bug or have a feature request, please open an issue on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/issues
-
-If you would like to contribute a feature or bug fix, please open a pull request on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/pulls
-
-If you would like to discuss a feature or bug fix before opening a pull request, discussing happen in the `#mrdocs` channel on the Cpplang Slack: https://cpplang.slack.com/
