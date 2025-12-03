@@ -33,6 +33,10 @@ Declared in `&lt;enum&period;cpp&gt;`
 enum E0;
 ----
 
+=== Description
+
+E0 description&period;
+
 === Members
 
 [cols="1,4"]
@@ -43,10 +47,6 @@ enum E0;
 | `e1` 
 | e1 brief&period;
 |===
-
-=== Description
-
-E0 description&period;
 
 [#E1]
 == E1
@@ -83,6 +83,10 @@ Declared in `&lt;enum&period;cpp&gt;`
 enum class E2 : int;
 ----
 
+=== Description
+
+E2 description&period;
+
 === Members
 
 [cols="1,4"]
@@ -93,10 +97,6 @@ enum class E2 : int;
 | `e5` 
 | e5 brief&period;
 |===
-
-=== Description
-
-E2 description&period;
 
 [#E3]
 == E3

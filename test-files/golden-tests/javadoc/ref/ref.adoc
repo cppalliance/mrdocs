@@ -73,6 +73,12 @@ template&lt;typename&gt;
 struct B;
 ----
 
+=== Description
+
+See link:#A-f1[`A&colon;&colon;f1`]
+
+See link:#A-f1[`&colon;&colon;A&colon;&colon;f1`]
+
 === Member Functions
 
 [cols=1]
@@ -80,12 +86,6 @@ struct B;
 | Name
 | link:#A-B-f2[`f2`] 
 |===
-
-=== Description
-
-See link:#A-f1[`A&colon;&colon;f1`]
-
-See link:#A-f1[`&colon;&colon;A&colon;&colon;f1`]
 
 [#A-B-f2]
 == link:#A[A]::link:#A-B[B]::f2

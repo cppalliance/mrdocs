@@ -28,6 +28,15 @@
 
 {{> symbol/signatures symbol }}
 {{/unless}}
+{{! Description }}
+{{#if symbol.doc.description}}
+{{#unless traversing-global-namespace}}
+{{#unless (eq (lookup (first symbol.doc.description) "kind") "heading") }}
+{{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h~}}
+{{~/unless}}
+{{> doc/block/document symbol.doc.description }}
+{{/unless}}
+{{/if}}
 {{! Base classes }}
 {{#if (any_of_by symbol.bases "isPublic")}}
 {{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h~}}
@@ -126,15 +135,6 @@
 {{/each}}
 |===
 
-{{/if}}
-{{! Description }}
-{{#if symbol.doc.description}}
-{{#unless traversing-global-namespace}}
-{{#unless (eq (lookup (first symbol.doc.description) "kind") "heading") }}
-{{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h~}}
-{{~/unless}}
-{{> doc/block/document symbol.doc.description }}
-{{/unless}}
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}

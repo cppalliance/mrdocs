@@ -27,6 +27,12 @@ Declared in `&lt;styled&period;cpp&gt;`
 struct A;
 ----
 
+=== Description
+
+Paragraph with `code`, *bold* text, and _italic_ text&period;
+
+We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
+
 === Member Functions
 
 [cols="1,4"]
@@ -35,12 +41,6 @@ struct A;
 | link:#A-compare[`compare`] 
 | Compare function
 |===
-
-=== Description
-
-Paragraph with `code`, *bold* text, and _italic_ text&period;
-
-We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
 
 [#A-compare]
 == link:#A[A]::compare
