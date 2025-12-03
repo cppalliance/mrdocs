@@ -430,8 +430,8 @@ jobs:
           git-tag: ${{ matrix.llvm-hash }}
           download-dir: ../third-party/llvm-project
           patches: |
-            ./third-party/llvm/CMakePresets.json
-            ./third-party/llvm/CMakeUserPresets.json
+            ./third-party/patches/llvm/llvm/CMakePresets.json
+            ./third-party/patches/llvm/llvm/CMakeUserPresets.json
           build-dir: ${sourceDir}/build
           preset: ${{ matrix.llvm-build-preset }}
           build-type: ${{ matrix.build-type }}
@@ -467,8 +467,8 @@ jobs:
           source-dir: ../third-party/duktape
           url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
           patches: |
-            ./third-party/duktape/CMakeLists.txt
-            ./third-party/duktape/duktapeConfig.cmake.in
+            ./third-party/patches/duktape/CMakeLists.txt
+            ./third-party/patches/duktape/duktapeConfig.cmake.in
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
@@ -487,8 +487,8 @@ jobs:
           source-dir: ../third-party/lua
           url: https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz
           patches: |
-            ./third-party/lua/CMakeLists.txt
-            ./third-party/lua/LuaConfig.cmake.in
+            ./third-party/patches/lua/CMakeLists.txt
+            ./third-party/patches/lua/LuaConfig.cmake.in
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
@@ -909,6 +909,17 @@ jobs:
           npm ci
           npx gulp lint
           npx gulp
+
+      - name: Ensure all refs for Antora
+        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          # Make sure Antora sees every branch and tag from the upstream repo,
+          # regardless of who triggered the workflow.
+          git remote set-url origin https://github.com/cppalliance/mrdocs.git
+          git fetch --prune --prune-tags origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/tags/*:refs/tags/*'
 
       - name: Generate Remote Documentation
         working-directory: docs

@@ -1,0 +1,28 @@
+{
+  "name": "llvm",
+  "version": "dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae",
+  "tags": [],
+  "package_root_var": "LLVM_ROOT",
+  "source": {
+    "type": "archive",
+    "url": "https://github.com/llvm/llvm-project/archive/dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae.zip",
+    "commit": "dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae"
+  },
+  "dependencies": [],
+  "build_type": "Release",
+  "build": [
+    {
+      "type": "cmake",
+      "options": ["--preset=${BOOTSTRAP_BUILD_TYPE_LOWER}-${BOOTSTRAP_HOST_PRESET_SUFFIX}"],
+      "source_subdir": "llvm",
+      "sanitizers": {
+        "asan": ["-DLLVM_USE_SANITIZER=Address"],
+        "ubsan": ["-DLLVM_USE_SANITIZER=Undefined"],
+        "msan": ["-DLLVM_USE_SANITIZER=Memory"],
+        "tsan": ["-DLLVM_USE_SANITIZER=Thread"]
+      },
+      "config": "${BOOTSTRAP_BUILD_TYPE}",
+      "targets": ["install"]
+    }
+  ]
+}
