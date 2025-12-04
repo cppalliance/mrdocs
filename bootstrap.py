@@ -3132,7 +3132,7 @@ class MrDocsInstaller:
 
     def collect_user_inputs(self):
         """
-        Phase 1: ask all questions up front to mirror bootstrap-other's two-phase flow.
+        Phase 1: ask all questions up front for a two-phase flow.
         This keeps prompts grouped before any work begins.
         """
         self.ui.section("MrDocs Bootstrap", icon="🚀")

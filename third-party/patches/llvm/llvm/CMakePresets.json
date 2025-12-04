@@ -18,6 +18,12 @@
         "LLVM_ENABLE_RUNTIMES": "libcxx",
         "LLVM_TARGETS_TO_BUILD": "Native",
 
+
+        "LLVM_ENABLE_ZLIB": false,
+        "LLVM_ENABLE_ZSTD": false,
+        "LLVM_ENABLE_LIBXML2": false,
+        "LLVM_ENABLE_BACKTRACES": false,
+
         "LLVM_UNREACHABLE_OPTIMIZE": false,
         "LLVM_ADD_NATIVE_VISUALIZERS_TO_SOLUTION": false,
         "LLVM_ENABLE_RTTI": true,
@@ -43,14 +49,19 @@
         "LLVM_BUILD_DOCS": false,
         "LLVM_BUILD_EXAMPLES": false,
         "LLVM_ENABLE_TERMINFO": false,
-        "CLANG_ENABLE_ARCMT": true,
         "CLANG_ENABLE_HLSL": false,
         "CLANG_ENABLE_OBJC_REWRITER": false,
         "CLANG_ENABLE_PROTO_FUZZER": false,
-        "CLANG_ENABLE_STATIC_ANALYZER": true,
+        "CLANG_ENABLE_STATIC_ANALYZER": false,
+        "CLANG_ENABLE_FORMAT": false,
         "CLANG_INCLUDE_TESTS": false,
         "CLANG_INCLUDE_DOCS": false,
-        "CLANG_BUILD_EXAMPLES": false
+        "CLANG_BUILD_EXAMPLES": false,
+
+        "LIBCXX_ENABLE_SHARED": false,
+        "LIBCXX_ENABLE_STATIC": true,
+        "LIBCXX_INCLUDE_TESTS": false,
+        "LIBCXX_INCLUDE_BENCHMARKS": false
       },
       "warnings": {
         "unusedCli": false
