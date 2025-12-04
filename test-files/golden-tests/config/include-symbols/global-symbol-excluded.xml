@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="mrdocs" id="rQr6X4pFwyRradNsE4fgTcl6Jmk=">
+    <doc>
+      <brief>
+        <text>Included namespace</text>
+      </brief>
+    </doc>
+    <struct name="Foo" id="yJQinsro3N5aSu4KK6p+ChnY5FM=">
+      <file short-path="global-symbol-excluded.cpp" source-path="global-symbol-excluded.cpp" line="8" class="def"/>
+      <doc>
+        <brief>
+          <text>Included record</text>
+        </brief>
+      </doc>
+    </struct>
+  </namespace>
+</namespace>
+</mrdocs>
