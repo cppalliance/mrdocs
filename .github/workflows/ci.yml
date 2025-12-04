@@ -15,11 +15,6 @@ on:
     branches:
       - develop
 
-  # pull_request_target runs repo-owned checks (e.g., Danger comments) on the base ref with the base repo token;
-  # never executes PR code.
-  pull_request_target:
-    branches:
-      - develop
 
 concurrency:
   group: ${{format('{0}:{1}', github.repository, github.ref)}}
@@ -27,7 +22,6 @@ concurrency:
 
 jobs:
   cpp-matrix:
-    if: github.event_name != 'pull_request_target'
     runs-on: ubuntu-24.04
     container:
       image: ubuntu:24.04
@@ -133,7 +127,6 @@ jobs:
           node .github/releases-matrix.js
 
   build:
-    if: github.event_name != 'pull_request_target'
     needs: cpp-matrix
 
     strategy:
@@ -1319,33 +1312,3 @@ jobs:
           llvm_dir="/var/www/mrdox.com/llvm+clang"
           chmod 755 ${{ matrix.llvm-archive-filename }}
           scp -o StrictHostKeyChecking=no $(pwd)/${{ matrix.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
-
-  repo-checks:
-    name: Repo checks
-    # Run under pull_request_target so we can use the base-repo token to comment on forked PRs
-    # without executing forked code in this job. Declared after the matrix job so the matrix stays first in the UI.
-    if: github.event_name == 'pull_request_target'
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      statuses: write
-    steps:
-      - name: Checkout base revision
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install repo-check tools
-        run: npm --prefix util/danger ci
-
-      - name: Repo checks (Danger)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx --prefix util/danger danger ci --dangerfile util/danger/dangerfile.ts
