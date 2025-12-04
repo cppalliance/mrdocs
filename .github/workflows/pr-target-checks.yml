@@ -33,7 +33,7 @@ jobs:
       - name: Install repo-check tools
         run: npm --prefix util/danger ci
 
-      - name: Repo checks (Danger)
+      - name: Repo checks (Danger.js)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx --prefix util/danger danger ci --dangerfile util/danger/dangerfile.ts

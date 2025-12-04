@@ -73,9 +73,9 @@ jobs:
             apple-clang: Release
             msvc: RelWithDebInfo
           install: |
-            gcc: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
-            gcc Coverage: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
-            clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
+            gcc: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
+            gcc Coverage: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
+            clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
             msvc: ''
           extra-values: |
             use-libcxx: {{#if (and (ieq compiler 'clang') (ge major 19)) }}true{{else}}false{{/if}}
@@ -332,36 +332,6 @@ jobs:
           path: ${{ steps.rmatrix.outputs.llvm-path }}
           key: ${{ matrix.llvm-archive-basename }}
 
-      - name: Download LLVM Binaries
-        id: llvm-download
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
-        run: |
-          set -x
-          url=https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
-          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$url")
-          if [ "$http_status" -eq 200 ]; then
-              found="true"
-              echo "found=$found" >> $GITHUB_OUTPUT
-              curl -L -o ${{ matrix.llvm-archive-filename }} "$url"
-              install_prefix=${{ steps.rmatrix.outputs.llvm-path }}
-              mkdir -p $install_prefix
-              if [[ ${{ matrix.llvm-archive-extension }} == '7z' ]]; then
-                  7z x ${{ matrix.llvm-archive-filename }} -o$install_prefix
-              else
-                  tar -xjf ${{ matrix.llvm-archive-filename }} -C $install_prefix
-              fi
-              if [[ $(ls -1 $install_prefix | wc -l) -eq 1 ]]; then
-                  single_dir=$(ls -1 $install_prefix)
-                  if [[ -d $install_prefix/$single_dir ]]; then
-                      mv $install_prefix/$single_dir/* $install_prefix/
-                      rmdir $install_prefix/$single_dir
-                  fi
-              fi
-          else
-              found="false"
-              echo "found=$found" >> $GITHUB_OUTPUT
-          fi
-
       # Installs libc++ separately, using the LLVM standalone runtimes build.
       # The libc++ built here will be built using the host compiler, so this is
       # limited by what libc++ at the current LLVM revision supports.
@@ -375,16 +345,27 @@ jobs:
       # FIXME: Build this for the GCC and MacOS sanitizer jobs.
       # Currently GCC fails linking it, and for MacOS there are compiler-rt
       # requirements not satisfied.
+      - name: Fetch LLVM source archive
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        run: |
+          set -eux
+          mkdir -p ../third-party
+          cd ../third-party
+          archive="llvm-${{ matrix.llvm-hash }}.zip"
+          if [ ! -d llvm-project ]; then
+            curl -L -o "$archive" "https://github.com/llvm/llvm-project/archive/${{ matrix.llvm-hash }}.zip"
+            unzip -q "$archive"
+            mv "llvm-project-${{ matrix.llvm-hash }}" llvm-project
+            rm "$archive"
+          fi
+
       - name: Install libc++
         id: install_libcxx
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
+        if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true'
         with:
           cmake-version: '>=3.26'
           source-dir: ../third-party/llvm-project/runtimes
-          git-repository: https://github.com/llvm/llvm-project.git
-          git-tag: ${{ matrix.llvm-hash }}
-          download-dir: ../third-party/llvm-project
           build-dir: ${sourceDir}/build
           build-type: ${{ matrix.build-type }}
           extra-args: |
@@ -415,13 +396,10 @@ jobs:
       - name: Install LLVM
         id: install_llvm
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
         with:
           cmake-version: '>=3.26'
           source-dir: ../third-party/llvm-project/llvm
-          git-repository: https://github.com/llvm/llvm-project.git
-          git-tag: ${{ matrix.llvm-hash }}
-          download-dir: ../third-party/llvm-project
           patches: |
             ./third-party/patches/llvm/llvm/CMakePresets.json
             ./third-party/patches/llvm/llvm/CMakeUserPresets.json
@@ -1246,69 +1224,9 @@ jobs:
         with:
           apt-get: ${{ matrix.install }}
 
-      - name: Check website releases
-        id: website-releases
-        run: |
-          set -x
-          archive_url="https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}"
-          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$archive_url")
-          if [ "$http_status" -eq 200 ]; then
-              exists="true"
-          else
-              exists="false"
-          fi
-          echo "exists=$exists" >> $GITHUB_OUTPUT
-
       - name: LLVM Binaries
         id: llvm-cache
-        if: steps.website-releases.outputs.exists != 'true'
         uses: actions/cache@v4
         with:
           path: ${{ steps.rmatrix.outputs.llvm-path }}
           key: ${{ matrix.llvm-archive-basename }}
-
-      - name: Compress LLVM
-        id: llvm-upload
-        if: steps.llvm-cache.outputs.cache-hit == 'true'
-        shell: bash
-        run: |
-          # LLVM is be installed with the default compiler
-          set -x
-
-          # Use 7z on windows
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on "${{ matrix.llvm-archive-filename }}" "${{ steps.rmatrix.outputs.llvm-path }}"
-          else
-              tar -cjf "${{ matrix.llvm-archive-filename }}" -C "${{ steps.rmatrix.outputs.llvm-path }}/.." llvm
-          fi
-
-      - name: Website LLVM Releases
-        if: steps.llvm-cache.outputs.cache-hit == 'true' && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/'))
-        run: |
-          set -x
-          
-          # Ensure required commands exist
-          for cmd in ssh-keyscan ssh-agent ssh-add scp; do
-            if ! command -v $cmd >/dev/null; then
-              echo "$cmd not found"
-              exit 1
-            fi
-          done
-          
-          # Add SSH key
-          mkdir -p ~/.ssh
-          ssh-keyscan dev-websites.cpp.al >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > ~/.ssh/github_actions
-          chmod 600 ~/.ssh/github_actions
-
-          # Start ssh-agent and add the key
-          SSH_AUTH_SOCK="$RUNNER_TEMP/ssh_agent.sock"
-          export SSH_AUTH_SOCK
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add ~/.ssh/github_actions
-
-          # Copy llvm archive: This step will copy the archive to www.mrdocs.com/llvm+clang
-          llvm_dir="/var/www/mrdox.com/llvm+clang"
-          chmod 755 ${{ matrix.llvm-archive-filename }}
-          scp -o StrictHostKeyChecking=no $(pwd)/${{ matrix.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
