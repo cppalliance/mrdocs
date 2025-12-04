@@ -3201,6 +3201,26 @@ checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
     else if (AllowParent)
     {
         clang::Decl const* P = getParent(D);
+        while (P)
+        {
+            // Only propagate inclusion from meaningful scopes. Translation units
+            // (and other non-scope wrappers like linkage specs) should not cause
+            // otherwise-unmatched globals to be extracted.
+            if (isa<clang::NamespaceDecl>(P) ||
+                isa<clang::RecordDecl>(P) ||
+                isa<clang::EnumDecl>(P))
+            {
+                break;
+            }
+
+            if (isa<clang::TranslationUnitDecl>(P))
+            {
+                P = nullptr;
+                break;
+            }
+
+            P = getParent(P);
+        }
         if (P)
         {
             // 4) Parent symbols imply this symbol should be included
