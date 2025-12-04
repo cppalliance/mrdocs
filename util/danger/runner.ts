@@ -9,10 +9,10 @@
 //
 import type { DangerDSLType } from "danger";
 import { evaluateDanger, type CommitInfo, type FileChange } from "./logic";
+import { renderDangerReport } from "./format";
 
 // Danger provides these as globals at runtime; we declare them for editors/typecheckers.
 declare const danger: DangerDSLType;
-declare function warn(message: string, file?: string, line?: number): void;
 declare function markdown(message: string, file?: string, line?: number): void;
 
 /**
@@ -58,7 +58,7 @@ async function fetchChangedFiles(): Promise<FileChange[]> {
  *
  * @returns commits enriched with file-level additions/deletions.
  */
-async function fetchCommitDetails(): Promise<CommitInfo[]> {
+async function fetchCommitDetails(warningCollector: string[]): Promise<CommitInfo[]> {
     const api = danger.github.api;
     const commits = danger.github.commits;
     const pr = danger.github.pr;
@@ -81,7 +81,7 @@ async function fetchCommitDetails(): Promise<CommitInfo[]> {
                 status: file.status,
             }));
         } catch (error) {
-            warn(`Unable to load file stats for commit ${commit.sha}: ${String(error)}`);
+            warningCollector.push(`Unable to load file stats for commit ${commit.sha}: ${String(error)}`);
         }
 
         enriched.push({
@@ -102,11 +102,12 @@ export async function runDanger(): Promise<void> {
         return;
     }
 
-    const [files, commits] = await Promise.all([fetchChangedFiles(), fetchCommitDetails()]);
+    const fetchWarnings: string[] = [];
+    const [files, commits] = await Promise.all([fetchChangedFiles(), fetchCommitDetails(fetchWarnings)]);
     const pr = danger.github.pr;
     const labels = (danger.github.issue?.labels || []).map((label) => label.name);
 
-    const result = evaluateDanger({
+    const evaluation = evaluateDanger({
         files,
         commits,
         prBody: pr.body || "",
@@ -114,20 +115,8 @@ export async function runDanger(): Promise<void> {
         labels,
     });
 
-    const experimentalNote =
-        "\n_Note: Danger.js checks for MrDocs are experimental; some warnings may still be noisy or false positives._";
+    const warnings = [...fetchWarnings, ...evaluation.warnings];
+    const report = renderDangerReport({ ...evaluation, warnings });
 
-    markdown(
-        [
-            result.summary.markdown,
-            result.summary.highlights.length > 0 ? "\n**Highlights:**\n- " + result.summary.highlights.join("\n- ") : "",
-            experimentalNote,
-        ]
-            .filter(Boolean)
-            .join("\n"),
-    );
-
-    for (const message of result.warnings) {
-        warn(message);
-    }
+    markdown(report);
 }

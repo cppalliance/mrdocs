@@ -10,6 +10,7 @@
 import { readFileSync } from "fs";
 import path from "path";
 import { evaluateDanger, type DangerInputs } from "./logic";
+import { renderDangerReport } from "./format";
 
 /**
  * Load a JSON fixture from disk and parse into DangerInputs.
@@ -29,19 +30,7 @@ function loadFixture(fixturePath: string): DangerInputs {
  * @param result evaluated Danger outputs to render.
  */
 function printResult(result: ReturnType<typeof evaluateDanger>): void {
-    console.log(result.summary.markdown);
-    if (result.summary.highlights.length > 0) {
-        console.log("\nHighlights:");
-        for (const note of result.summary.highlights) {
-            console.log(`- ${note}`);
-        }
-    }
-    if (result.warnings.length > 0) {
-        console.log("\nWarnings:");
-        for (const message of result.warnings) {
-            console.log(`- ${message}`);
-        }
-    }
+    console.log(renderDangerReport(result));
 }
 
 /**

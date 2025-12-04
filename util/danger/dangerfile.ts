@@ -10,7 +10,7 @@
 import { runDanger } from "./runner";
 
 // Provided globally by Danger at runtime; declared here for editors/typecheckers.
-declare function warn(message: string, file?: string, line?: number): void;
+declare function markdown(message: string, file?: string, line?: number): void;
 
 /**
  * Entrypoint for Danger; delegates to the rule runner.
@@ -20,6 +20,6 @@ export default async function dangerfile(): Promise<void> {
     try {
         await runDanger();
     } catch (error) {
-        warn(`Danger checks hit an unexpected error: ${String(error)}`);
+        markdown(["> [!WARNING]", `> Danger checks hit an unexpected error: ${String(error)}`].join("\n"));
     }
 }
