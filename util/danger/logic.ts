@@ -59,6 +59,16 @@ export interface ScopeTotals {
     files: number;
     additions: number;
     deletions: number;
+    status: { added: number; modified: number; removed: number; renamed: number; other: number };
+}
+
+export interface FileSummary {
+    filename: string;
+    scope: ScopeKey;
+    additions: number;
+    deletions: number;
+    churn: number;
+    status?: string;
 }
 
 /**
@@ -66,7 +76,13 @@ export interface ScopeTotals {
  */
 export interface ScopeReport {
     totals: Record<ScopeKey, ScopeTotals>;
-    overall: { files: number; additions: number; deletions: number };
+    overall: {
+        files: number;
+        additions: number;
+        deletions: number;
+        status: { added: number; modified: number; removed: number; renamed: number; other: number };
+    };
+    topFiles: FileSummary[];
     markdown: string;
     highlights: string[];
 }
@@ -90,6 +106,19 @@ export interface DangerResult {
     summary: ScopeReport;
 }
 
+/** Display order for scopes in rendered reports. */
+export const scopeDisplayOrder: ScopeKey[] = [
+    "source",
+    "tests",
+    "golden-tests",
+    "docs",
+    "ci",
+    "build",
+    "tooling",
+    "third-party",
+    "other",
+];
+
 const allowedTypes = [
     "feat",
     "fix",
@@ -109,6 +138,33 @@ const typeSet = new Set(allowedTypes);
 const skipTestLabels = new Set(["no-tests-needed", "skip-tests", "tests-not-required"]);
 const skipTestMarkers = ["[skip danger tests]", "[danger skip tests]"];
 const nonTestCommitLimit = 800;
+
+/**
+ * Format churn as a + / - pair with explicit signs.
+ */
+export function formatChurn(additions: number, deletions: number): string {
+    return `+${additions} / -${deletions}`;
+}
+
+/**
+ * Normalize GitHub file status into summarized buckets.
+ */
+function normalizeStatus(status?: string): "added" | "modified" | "removed" | "renamed" | "other" {
+    switch ((status || "").toLowerCase()) {
+        case "added":
+            return "added";
+        case "removed":
+            return "removed";
+        case "renamed":
+            return "renamed";
+        case "modified":
+        case "changed":
+        case "copied":
+            return "modified";
+        default:
+            return "modified";
+    }
+}
 
 interface ScopeRule {
     scope: ScopeKey;
@@ -145,7 +201,8 @@ const scopeRules: ScopeRule[] = [
             /^mrdocs-config\.cmake\.in$/i,
         ],
     },
-    { scope: "tooling", patterns: [/^util\//i, /^tools\//i] },
+    { scope: "tooling", patterns: [/^tools\//i, /^util\/(?!danger\/)/i] },
+    { scope: "ci", patterns: [/^util\/danger\//i, /^\.github\//, /^\.roadmap\//] },
     { scope: "third-party", patterns: [/^third-party\//i] },
 ];
 
@@ -181,20 +238,76 @@ function getScope(path: string): ScopeKey {
  */
 export function summarizeScopes(files: FileChange[]): ScopeReport {
     const totals: Record<ScopeKey, ScopeTotals> = {
-        "golden-tests": { scope: "golden-tests", files: 0, additions: 0, deletions: 0 },
-        tests: { scope: "tests", files: 0, additions: 0, deletions: 0 },
-        source: { scope: "source", files: 0, additions: 0, deletions: 0 },
-        docs: { scope: "docs", files: 0, additions: 0, deletions: 0 },
-        ci: { scope: "ci", files: 0, additions: 0, deletions: 0 },
-        build: { scope: "build", files: 0, additions: 0, deletions: 0 },
-        tooling: { scope: "tooling", files: 0, additions: 0, deletions: 0 },
-        "third-party": { scope: "third-party", files: 0, additions: 0, deletions: 0 },
-        other: { scope: "other", files: 0, additions: 0, deletions: 0 },
+        "golden-tests": {
+            scope: "golden-tests",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        tests: {
+            scope: "tests",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        source: {
+            scope: "source",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        docs: {
+            scope: "docs",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        ci: {
+            scope: "ci",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        build: {
+            scope: "build",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        tooling: {
+            scope: "tooling",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        "third-party": {
+            scope: "third-party",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        other: {
+            scope: "other",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
     };
 
     let fileCount = 0;
     let additions = 0;
     let deletions = 0;
+    const statusTotals = { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 };
+    const fileSummaries: FileSummary[] = [];
 
     for (const file of files) {
         const scope = getScope(file.filename);
@@ -204,49 +317,49 @@ export function summarizeScopes(files: FileChange[]): ScopeReport {
         fileCount += 1;
         additions += file.additions || 0;
         deletions += file.deletions || 0;
+
+        const normStatus = normalizeStatus(file.status);
+        statusTotals[normStatus] += 1;
+        totals[scope].status[normStatus] += 1;
+
+        fileSummaries.push({
+            filename: file.filename,
+            scope,
+            additions: file.additions || 0,
+            deletions: file.deletions || 0,
+            churn: (file.additions || 0) + (file.deletions || 0),
+            status: file.status,
+        });
     }
 
-    const scopesInOrder: ScopeKey[] = [
-        "source",
-        "tests",
-        "golden-tests",
-        "docs",
-        "ci",
-        "build",
-        "tooling",
-        "third-party",
-        "other",
-    ];
-
-    const nonEmptyScopes = scopesInOrder.filter((scope) => totals[scope].files > 0);
-    const header = "| Scope | Files | + / - |\n| --- | ---: | ---: |\n";
+    const nonEmptyScopes = scopeDisplayOrder.filter((scope) => totals[scope].files > 0);
+    const header = ["| Scope | Files | + / - |", "| --- | ---: | ---: |"].join("\n");
     const rows =
         nonEmptyScopes
             .map((scope) => {
                 const scoped = totals[scope];
-                return `| ${scope} | ${scoped.files} | +${scoped.additions} / -${scoped.deletions} |`;
+                return `| ${scope} | **${scoped.files}** | **${formatChurn(scoped.additions, scoped.deletions)}** |`;
             })
-            .join("\n") || "| (no changes) | 0 | +0 / -0 |";
+            .join("\n") || "| (no changes) | **0** | **+0 / -0** |";
 
-    const highlights = [];
-    if (totals["golden-tests"].files > 0) {
-        highlights.push("Golden test fixtures changed");
-    }
-    if (totals.tests.files === 0 && totals.source.files > 0) {
-        highlights.push("Source updated without test coverage changes");
+    const highlights: string[] = [];
+    const goldenStatus = totals["golden-tests"].status;
+    if (goldenStatus.modified > 0 || goldenStatus.renamed > 0) {
+        highlights.push("Existing golden tests changed (behavior likely shifted)");
+    } else if (goldenStatus.added > 0) {
+        highlights.push("New golden tests added");
+    } else if (goldenStatus.removed > 0) {
+        highlights.push("Golden tests removed");
     }
 
-    const markdown = [
-        "### Change summary by scope",
-        `- Files changed: ${fileCount}`,
-        `- Total churn: +${additions} / -${deletions}`,
-        "",
-        header + rows,
-    ].join("\n");
+    const markdown = [header, rows].join("\n");
 
     return {
         totals,
-        overall: { files: fileCount, additions, deletions },
+        overall: { files: fileCount, additions, deletions, status: statusTotals },
+        topFiles: fileSummaries
+            .sort((a, b) => b.churn - a.churn || a.filename.localeCompare(b.filename))
+            .slice(0, 3),
         markdown,
         highlights,
     };
@@ -340,17 +453,20 @@ export function commitSizeWarnings(commits: CommitInfo[]): string[] {
         let churn = 0;
         for (const file of commit.files) {
             const scope = getScope(file.filename);
-            if (scope === "tests" || scope === "golden-tests") {
+            if (scope !== "source") {
                 continue;
             }
             churn += (file.additions || 0) + (file.deletions || 0);
         }
 
-        if (churn > nonTestCommitLimit) {
+        const summary = commit.message.split("\n")[0].trim();
+        const parsedType = parseCommitSummary(summary || "")?.type;
+
+        if (churn > nonTestCommitLimit && parsedType !== "refactor") {
             const shortSha = commit.sha.substring(0, 7);
             // === Commit size warnings (non-test churn) ===
             messages.push(
-                `Commit \`${shortSha}\` changes ${churn} non-test lines. Consider splitting it into smaller, reviewable chunks.`,
+                `Commit \`${shortSha}\` (${summary}) changes ${churn} source lines. Consider splitting it into smaller, reviewable chunks.`,
             );
         }
     }
@@ -387,18 +503,17 @@ export function basicChecks(input: DangerInputs, scopes: ScopeReport, parsedComm
     if (cleanedBody.length < 40) {
         // === PR description completeness warnings ===
         warnings.push("PR description looks empty. Please add a short rationale and testing notes.");
-    } else if (!/test(ed|ing)?/i.test(cleanedBody)) {
-        // === Missing testing notes warnings ===
+    } else if (
+        scopes.totals.source.files > 0 &&
+        scopes.totals["golden-tests"].files === 0 &&
+        !/test(ed|ing)?/i.test(cleanedBody)
+    ) {
+        // === Missing testing notes warnings (only when source changed and golden tests did not) ===
         warnings.push("Add a brief note about how this change was tested (or why tests are not needed).");
     }
 
     const skipTests = hasSkipTests(input.prBody || "", input.labels);
-    if (
-        !skipTests &&
-        scopes.totals.source.files > 0 &&
-        scopes.totals.tests.files === 0 &&
-        scopes.totals["golden-tests"].files === 0
-    ) {
+    if (!skipTests && scopes.totals.source.files > 0 && scopes.totals.tests.files === 0 && scopes.totals["golden-tests"].files === 0) {
         // === Source changes without tests/fixtures warnings ===
         warnings.push(
             "Source changed but no tests or fixtures were updated. Add coverage or label with `no-tests-needed` / `[skip danger tests]` when appropriate.",
