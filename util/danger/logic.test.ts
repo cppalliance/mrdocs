@@ -41,13 +41,19 @@ describe("summarizeScopes", () => {
             { filename: "src/test/file.cpp", additions: 5, deletions: 1 },
             { filename: "test-files/golden-tests/out.xml", additions: 100, deletions: 0 },
             { filename: "docs/index.adoc", additions: 4, deletions: 0 },
+            { filename: "SourceFileNames.cpp", additions: 1, deletions: 0 },
+            { filename: ".clang-format", additions: 0, deletions: 0 },
+            { filename: ".gitignore", additions: 0, deletions: 0 },
+            { filename: "LICENSE.txt", additions: 0, deletions: 0 },
         ]);
 
-        expect(report.totals.source.files).toBe(1);
+        expect(report.totals.source.files).toBe(2);
         expect(report.totals.tests.files).toBe(1);
         expect(report.totals["golden-tests"].files).toBe(1);
         expect(report.totals.docs.files).toBe(1);
-        expect(report.overall.files).toBe(4);
+        expect(report.totals.tooling.files).toBe(1);
+        expect(report.totals.ci.files).toBe(2);
+        expect(report.overall.files).toBe(8);
     });
 });
 

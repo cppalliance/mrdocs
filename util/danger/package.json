@@ -6,11 +6,12 @@
   "engines": {
     "node": ">=18"
   },
-  "scripts": {
-    "test": "vitest run",
-    "danger:ci": "danger ci --dangerfile dangerfile.ts",
-    "danger:local": "ts-node --project tsconfig.json run-local.ts"
-  },
+    "scripts": {
+        "test": "vitest run",
+        "danger:ci": "danger ci --dangerfile dangerfile.ts",
+        "danger:local": "ts-node --project tsconfig.json run-local.ts",
+        "danger:scope-map": "ts-node --project tsconfig.json list-scopes.ts"
+    },
   "devDependencies": {
     "@types/node": "^20.14.2",
     "danger": "^12.3.1",
