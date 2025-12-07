@@ -15,6 +15,7 @@ This directory contains the Danger.js rules and fixtures used in CI to add scope
 npm --prefix util/danger ci           # install dev deps (without touching the repo root)
 npm --prefix util/danger test         # run Vitest unit tests for rule logic
 npm --prefix util/danger run danger:local  # print the fixture report from util/danger/fixtures/sample-pr.json
+npm --prefix util/danger run danger:scope-map  # emit JSON mapping every tracked file to its Danger scope
 npm --prefix util/danger run danger:ci     # run Danger in CI mode (requires GitHub PR context)
 ```
 
@@ -31,7 +32,7 @@ npm --prefix util/danger run danger:ci     # run Danger in CI mode (requires Git
 
 - Scopes reflect the MrDocs tree: `source`, `tests`, `golden-tests`, `docs`, `ci`, `build`, `tooling`, `third-party`, `other`.
 - Conventional commit types allowed: `feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert`.
-- Non-test commit size warning triggers around 800 lines of churn (tests and golden fixtures ignored).
+- Non-test commit size notice triggers at 2000 lines of churn (tests and golden fixtures ignored) and is informational.
 
 ## Updating rules
 

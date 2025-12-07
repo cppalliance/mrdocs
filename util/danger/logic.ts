@@ -10,7 +10,7 @@
 /**
  * Semantic areas of the repository used to group diff churn in reports and rules.
  */
-type ScopeKey =
+export type ScopeKey =
     | "golden-tests"
     | "tests"
     | "source"
@@ -185,10 +185,10 @@ const scopeRules: ScopeRule[] = [
     },
     {
         scope: "source",
-        patterns: [/^src\//i, /^include\//i, /^examples\//i, /^share\//i],
+        patterns: [/^src\//i, /^include\//i, /^examples\//i, /^share\//i, /^SourceFileNames\.cpp$/i],
     },
     { scope: "docs", patterns: [/^docs\//i, /^README\.adoc$/i, /^Doxyfile/i] },
-    { scope: "ci", patterns: [/^\.github\//, /^\.roadmap\//] },
+    { scope: "ci", patterns: [/^\.github\//, /^\.roadmap\//, /^\.gitignore$/i, /^\.gitattributes$/i, /^LICENSE\.txt$/i] },
     {
         scope: "build",
         patterns: [
@@ -203,6 +203,7 @@ const scopeRules: ScopeRule[] = [
         ],
     },
     { scope: "tooling", patterns: [/^tools\//i, /^util\/(?!danger\/)/i] },
+    { scope: "tooling", patterns: [/^\.clang-format$/i] },
     { scope: "ci", patterns: [/^util\/danger\//i, /^\.github\//, /^\.roadmap\//] },
     { scope: "third-party", patterns: [/^third-party\//i] },
 ];
@@ -221,7 +222,7 @@ function normalizePath(path: string): string {
  * @param path raw file path from GitHub.
  * @returns matched ScopeKey or "other" if no rules match.
  */
-function getScope(path: string): ScopeKey {
+export function classifyScope(path: string): ScopeKey {
     const normalized = normalizePath(path);
     for (const rule of scopeRules) {
         if (rule.patterns.some((pattern) => pattern.test(normalized))) {
@@ -311,7 +312,7 @@ export function summarizeScopes(files: FileChange[]): ScopeReport {
     const fileSummaries: FileSummary[] = [];
 
     for (const file of files) {
-        const scope = getScope(file.filename);
+        const scope = classifyScope(file.filename);
         totals[scope].files += 1;
         totals[scope].additions += file.additions || 0;
         totals[scope].deletions += file.deletions || 0;
@@ -453,7 +454,7 @@ export function commitSizeInfos(commits: CommitInfo[]): string[] {
 
         let churn = 0;
         for (const file of commit.files) {
-            const scope = getScope(file.filename);
+            const scope = classifyScope(file.filename);
             if (scope !== "source") {
                 continue;
             }
