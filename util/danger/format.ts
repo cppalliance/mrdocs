@@ -80,6 +80,10 @@ function renderWarnings(warnings: string[]): string {
     return ["## ⚠️ Warnings", blocks.join("\n\n")].join("\n");
 }
 
+function countFileChanges(status: ScopeTotals["status"]): number {
+    return status.added + status.modified + status.renamed + status.removed + status.other;
+}
+
 /**
  * Render a single table combining change summary and per-scope breakdown.
  */
@@ -100,14 +104,14 @@ function renderChangeTable(summary: ScopeReport): string {
 
     const scopeHasChange = (totals: ScopeTotals): boolean => {
         const churn = totals.additions + totals.deletions;
-        const fileDelta = totals.status.added + totals.status.modified + totals.status.renamed - totals.status.removed;
+        const fileDelta = countFileChanges(totals.status);
         return churn !== 0 || fileDelta !== 0;
     };
 
     const scopeRows = sortedScopes.filter((scope) => scopeHasChange(summary.totals[scope])).map((scope) => {
         const scoped: ScopeTotals = summary.totals[scope];
         const s = scoped.status;
-        const fileDelta = s.added + s.modified + s.renamed - s.removed;
+        const fileDelta = countFileChanges(s);
         const churn = scoped.additions + scoped.deletions;
         const fileDeltaBold = formatCount(fileDelta); // bold delta
         const label = labelForScope(scope);
@@ -127,7 +131,7 @@ function renderChangeTable(summary: ScopeReport): string {
     const total = summary.overall;
     const totalStatus = total.status;
     const totalChurn = total.additions + total.deletions;
-    const totalFileDelta = totalStatus.added + totalStatus.modified + totalStatus.renamed - totalStatus.removed;
+    const totalFileDelta = countFileChanges(totalStatus);
     const totalRow = [
         "**Total**",
         formatCount(totalChurn),

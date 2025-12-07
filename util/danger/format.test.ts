@@ -48,4 +48,20 @@ describe("renderDangerReport", () => {
         expect(output).toContain("## ✨ Highlights");
         expect(output.trim().startsWith("> 🚧 Danger.js checks for MrDocs")).toBe(true);
     });
+
+    it("treats removed files as positive file deltas", () => {
+        const summary = summarizeScopes([
+            { filename: "src/lib/old.cpp", additions: 0, deletions: 5, status: "removed" },
+        ]);
+        const result: DangerResult = { warnings: [], summary };
+
+        const output = renderDangerReport(result);
+        const sourceRow = output.split("\n").find((line) => line.startsWith("| Source"));
+
+        expect(sourceRow).toBeDefined();
+        expect(sourceRow).not.toMatch(/-1/);
+        expect(sourceRow).toMatch(
+            /\|\s*Source\s*\|\s*\*\*5\*\*\s*\|\s*-\s*\|\s*5\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*-\s*\|\s*-\s*\|\s*1\s*\|/,
+        );
+    });
 });
