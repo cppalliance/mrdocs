@@ -26,10 +26,6 @@ jobs:
     container:
       image: ubuntu:24.04
     name: Generate Test Matrix
-    # Permissions allow Danger to read PR context and post comments.
-    permissions:
-      contents: read
-      pull-requests: write
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
       llvm-matrix: ${{ steps.llvm-matrix.outputs.llvm-matrix }}

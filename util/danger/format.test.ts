@@ -19,6 +19,7 @@ describe("renderDangerReport", () => {
         ]);
         const result: DangerResult = {
             warnings: ["First issue", "Second issue"],
+            infos: [],
             summary,
         };
 
@@ -33,12 +34,23 @@ describe("renderDangerReport", () => {
         expect(output).toContain("## 🔝 Top Files");
     });
 
+    it("renders informational notes separately from warnings", () => {
+        const summary = summarizeScopes([{ filename: "src/lib/example.cpp", additions: 1, deletions: 0 }]);
+        const result: DangerResult = { warnings: [], infos: ["Large commit"], summary };
+
+        const output = renderDangerReport(result);
+
+        expect(output).toContain("## ℹ️ Info");
+        expect(output).toContain("[!NOTE]");
+        expect(output).toContain("Large commit");
+    });
+
     it("formats scope totals with bold metrics and consistent churn", () => {
         const summary = summarizeScopes([
             { filename: "src/lib/example.cpp", additions: 3, deletions: 1 },
             { filename: "src/test/example_test.cpp", additions: 2, deletions: 0 },
         ]);
-        const result: DangerResult = { warnings: [], summary };
+        const result: DangerResult = { warnings: [], infos: [], summary };
 
         const output = renderDangerReport(result);
 
@@ -53,7 +65,7 @@ describe("renderDangerReport", () => {
         const summary = summarizeScopes([
             { filename: "src/lib/old.cpp", additions: 0, deletions: 5, status: "removed" },
         ]);
-        const result: DangerResult = { warnings: [], summary };
+        const result: DangerResult = { warnings: [], infos: [], summary };
 
         const output = renderDangerReport(result);
         const sourceRow = output.split("\n").find((line) => line.startsWith("| Source"));

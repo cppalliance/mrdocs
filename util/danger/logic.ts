@@ -103,6 +103,7 @@ export interface DangerInputs {
  */
 export interface DangerResult {
     warnings: string[];
+    infos: string[];
     summary: ScopeReport;
 }
 
@@ -137,7 +138,7 @@ const scopeFormat = /^[a-z0-9._/-]+$/i;
 const typeSet = new Set(allowedTypes);
 const skipTestLabels = new Set(["no-tests-needed", "skip-tests", "tests-not-required"]);
 const skipTestMarkers = ["[skip danger tests]", "[danger skip tests]"];
-const nonTestCommitLimit = 800;
+const nonTestCommitLimit = 2000;
 
 /**
  * Format churn as a + / - pair with explicit signs.
@@ -443,7 +444,7 @@ export function validateCommits(commits: CommitInfo[]): { warnings: string[]; pa
  * @param commits commits with per-file stats.
  * @returns warning messages for commits that exceed the threshold.
  */
-export function commitSizeWarnings(commits: CommitInfo[]): string[] {
+export function commitSizeInfos(commits: CommitInfo[]): string[] {
     const messages: string[] = [];
     for (const commit of commits) {
         if (!commit.files || commit.files.length === 0) {
@@ -464,9 +465,9 @@ export function commitSizeWarnings(commits: CommitInfo[]): string[] {
 
         if (churn > nonTestCommitLimit && parsedType !== "refactor") {
             const shortSha = commit.sha.substring(0, 7);
-            // === Commit size warnings (non-test churn) ===
+            // === Commit size informational notes (non-test churn) ===
             messages.push(
-                `Commit \`${shortSha}\` (${summary}) changes ${churn} source lines. Consider splitting it into smaller, reviewable chunks.`,
+                `Commit \`${shortSha}\` (${summary}) touches ${churn} source lines (non-test). Large change; add reviewer context if needed.`,
             );
         }
     }
@@ -555,11 +556,12 @@ export function evaluateDanger(input: DangerInputs): DangerResult {
     const summary = summarizeScopes(input.files);
     const commitValidation = validateCommits(input.commits);
 
+    const infos = commitSizeInfos(input.commits);
+
     const warnings = [
         ...commitValidation.warnings,
-        ...commitSizeWarnings(input.commits),
         ...basicChecks(input, summary, commitValidation.parsed),
     ];
 
-    return { warnings, summary };
+    return { warnings, infos, summary };
 }
