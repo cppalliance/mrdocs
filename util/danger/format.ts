@@ -80,6 +80,14 @@ function renderWarnings(warnings: string[]): string {
     return ["## ⚠️ Warnings", blocks.join("\n\n")].join("\n");
 }
 
+function renderInfos(infos: string[]): string {
+    if (infos.length === 0) {
+        return "";
+    }
+    const blocks = infos.map((message) => ["> [!NOTE]", `> ${message}`].join("\n"));
+    return ["## ℹ️ Info", blocks.join("\n\n")].join("\n");
+}
+
 function countFileChanges(status: ScopeTotals["status"]): number {
     return status.added + status.modified + status.renamed + status.removed + status.other;
 }
@@ -207,6 +215,7 @@ export function renderDangerReport(result: DangerResult): string {
     const sections = [
         notice,
         renderWarnings(result.warnings),
+        renderInfos(result.infos),
         renderHighlights(result.summary.highlights),
         renderChangeTable(result.summary),
         renderTopChanges(result.summary),

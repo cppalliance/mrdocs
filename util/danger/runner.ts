@@ -116,7 +116,7 @@ export async function runDanger(): Promise<void> {
     });
 
     const warnings = [...fetchWarnings, ...evaluation.warnings];
-    const report = renderDangerReport({ ...evaluation, warnings });
+    const report = renderDangerReport({ warnings, infos: evaluation.infos, summary: evaluation.summary });
 
     markdown(report);
 }

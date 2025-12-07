@@ -9,7 +9,7 @@
 //
 import { describe, expect, it } from "vitest";
 import {
-    commitSizeWarnings,
+    commitSizeInfos,
     parseCommitSummary,
     basicChecks,
     summarizeScopes,
@@ -51,21 +51,21 @@ describe("summarizeScopes", () => {
     });
 });
 
-describe("commitSizeWarnings", () => {
-    // Confirms that large non-test churn triggers a warning while ignoring test fixtures.
+describe("commitSizeInfos", () => {
+    // Confirms that large non-test churn emits an informational note while ignoring test fixtures.
     it("flags large non-test commits", () => {
         const commits: CommitInfo[] = [
             {
                 sha: "abc",
                 message: "feat: huge change",
                 files: [
-                    { filename: "src/lib/large.cpp", additions: 900, deletions: 200 },
+                    { filename: "src/lib/large.cpp", additions: 1800, deletions: 400 },
                     { filename: "test-files/golden-tests/out.xml", additions: 1000, deletions: 0 },
                 ],
             },
         ];
-        const warnings = commitSizeWarnings(commits);
-        expect(warnings.length).toBe(1);
+        const infos = commitSizeInfos(commits);
+        expect(infos.length).toBe(1);
     });
 });
 
