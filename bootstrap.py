@@ -8,6 +8,18 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
+# Heads up (Dec 2025): bootstrap.py is still moving toward being the single
+# setup path for ci.yml. Some presets/paths (e.g., release-msvc vs. old
+# release-windows) and edge flags may be untested. Defaults can shift while we
+# finish the move. If it blows up: 1) wipe the build dir; 2) run the matching
+# CMake/Ninja preset by hand; 3) share the failing command. This note stays
+# until Bootstrap owns the CI flow.
+
+TRANSITION_BANNER = (
+    "Heads up: bootstrap.py is mid-move to replace the process in ci.yml; presets can differ. "
+    "If it fails, try a clean build dir or run the preset yourself."
+)
+
 import argparse
 import subprocess
 import os
@@ -3404,6 +3416,7 @@ def get_command_line_args(argv=None):
 def main():
     args = get_command_line_args()
     installer = MrDocsInstaller(args)
+    installer.ui.warn(TRANSITION_BANNER)
     if installer.options.refresh_all:
         installer.refresh_all()
         exit(0)
