@@ -90,4 +90,21 @@ describe("starterChecks", () => {
         const warnings = basicChecks(inputs, summary, parsed);
         expect(warnings.some((message) => message.includes("Source changed"))).toBe(true);
     });
+
+    // Ensures refactor-only work does not nag for tests when the change is mechanical.
+    it("skips test warning for refactor commits", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: "Refactor clean-up.\n\nTesting: relies on existing coverage; no behavior change.",
+            prTitle: "refactor: tidy includes",
+            labels: [],
+        };
+
+        const summary = summarizeScopes([{ filename: "src/lib/refactor.cpp", additions: 10, deletions: 2 }]);
+        const parsed = validateCommits([{ sha: "2", message: "refactor: tidy includes" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+
+        expect(warnings.some((message) => message.includes("Source changed"))).toBe(false);
+    });
 });
