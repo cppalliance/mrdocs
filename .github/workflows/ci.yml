@@ -530,8 +530,8 @@ jobs:
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
         env:
-          # Bump per-test timeout on Windows to avoid CTest default (1500s) killing slow golden suites.
-          CTEST_TEST_TIMEOUT: ${{ runner.os == 'Windows' && '3600' || '' }}
+          # Bump per-test timeout on Windows and for MSan jobs to avoid CTest default (1500s) killing slow golden suites.
+          CTEST_TEST_TIMEOUT: ${{ (runner.os == 'Windows' || matrix.msan == 'true') && '3600' || '' }}
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
