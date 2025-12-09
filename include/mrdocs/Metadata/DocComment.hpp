@@ -194,43 +194,7 @@ tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
     DocComment const& I,
-    DomCorpus const* domCorpus)
-{
-    io.defer("description", [&I, domCorpus] {
-        return dom::LazyArray(I.Document, domCorpus);
-    });
-    if (I.brief && !I.brief->children.empty())
-    {
-        io.map("brief", I.brief);
-    }
-    io.defer("returns", [&I, domCorpus] {
-        return dom::LazyArray(I.returns, domCorpus);
-    });
-    io.defer("params", [&I, domCorpus] {
-        return dom::LazyArray(I.params, domCorpus);
-    });
-    io.defer("tparams", [&I, domCorpus] {
-        return dom::LazyArray(I.tparams, domCorpus);
-    });
-    io.defer("exceptions", [&I, domCorpus] {
-        return dom::LazyArray(I.exceptions, domCorpus);
-    });
-    io.defer("sees", [&I, domCorpus] {
-        return dom::LazyArray(I.sees, domCorpus);
-    });
-    io.defer("relates", [&I, domCorpus] {
-        return dom::LazyArray(I.relates, domCorpus);
-    });
-    io.defer("related", [&I, domCorpus] {
-        return dom::LazyArray(I.related, domCorpus);
-    });
-    io.defer("preconditions", [&I, domCorpus] {
-        return dom::LazyArray(I.preconditions, domCorpus);
-    });
-    io.defer("postconditions", [&I, domCorpus] {
-        return dom::LazyArray(I.postconditions, domCorpus);
-    });
-}
+    DomCorpus const* domCorpus);
 
 /** Return the @ref DocComment as a @ref dom::Value object.
 */

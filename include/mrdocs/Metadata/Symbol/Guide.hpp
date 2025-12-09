@@ -81,14 +81,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     GuideSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("params", dom::LazyArray(I.Params, domCorpus));
-    io.map("deduced", I.Deduced);
-    io.map("template", I.Template);
-    io.map("explicitSpec", I.Explicit);
-}
+    DomCorpus const* domCorpus);
 
 /** Map the GuideSymbol to a @ref dom::Value object.
 */

@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -30,23 +31,13 @@ enum class RecordKeyKind
     Union
 };
 
-/** Convert the key kind to its canonical string form.
-*/
-MRDOCS_DECL
-dom::String
-toString(RecordKeyKind kind) noexcept;
-
 /** Serialize the record key kind into a DOM value.
 */
-inline
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    RecordKeyKind kind)
-{
-    v = toString(kind);
-}
+    RecordKeyKind kind);
 
 } // mrdocs
 

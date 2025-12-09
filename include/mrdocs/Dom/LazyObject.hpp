@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -15,8 +16,10 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <string_view>
+#include <functional>
 
-namespace mrdocs::dom {
+namespace mrdocs {
+namespace dom {
 
 namespace detail
 {
@@ -36,7 +39,92 @@ namespace detail
     /* A helper empty struct
      */
     struct NoLazyObjectContext { };
-}
+
+    /* The IO object for lazy objects.
+
+       Mapping traits use this object to call the
+       map and defer methods, which are used to
+       access properties of the lazy object.
+
+       Each function provides different behavior
+       to `map` and `defer` methods, allowing
+       to implement functionality such as
+       `get`, `set`, `visit`, and `size`.
+
+       In some cases, only a function for
+       `map` is provided, and the `defer` function
+       is not used. In this case, the `defer` function
+       also uses the `map` function, which is
+       the default behavior.
+
+       In other cases, the `defer` function is
+       used to defer the evaluation of a property
+       to a later time, which is useful for functionality
+       that requires accessing the value.
+     */
+    template <class MapFn, class DeferFn = void*, class Context = NoLazyObjectContext>
+    class LazyObjectIO
+    {
+        MapFn mapFn;
+        DeferFn deferFn;
+        Context ctx;
+
+    public:
+        explicit
+        LazyObjectIO(MapFn mapFn, DeferFn deferFn = {}, Context ctx = {})
+            : mapFn(mapFn), deferFn(deferFn), ctx(ctx) {}
+
+        template <class T>
+        void
+        map(std::string_view name, T const& value)
+        {
+            if constexpr (std::is_same_v<Context, NoLazyObjectContext>)
+            {
+                mapFn(name, dom::ValueFrom(value));
+            }
+            else
+            {
+                mapFn(name, dom::ValueFrom(value, ctx));
+            }
+        }
+
+        template <class F>
+        void
+        defer(std::string_view name, F&& deferred)
+        {
+            if constexpr (std::same_as<DeferFn, void*>)
+            {
+                mapFn(name, deferred);
+            }
+            else if (!deferFn)
+            {
+                mapFn(name, deferred);
+            }
+            else
+            {
+                deferFn(name, deferred);
+            }
+        }
+    };
+
+    // Deduction guides.
+    template <class MapFn, class DeferFn, class Context>
+    LazyObjectIO(MapFn, DeferFn, Context) -> LazyObjectIO<MapFn, DeferFn, Context>;
+
+    template <class MapFn, class DeferFn>
+    LazyObjectIO(MapFn, DeferFn) -> LazyObjectIO<MapFn, DeferFn, NoLazyObjectContext>;
+
+    template <class MapFn>
+    LazyObjectIO(MapFn) -> LazyObjectIO<MapFn, void*, NoLazyObjectContext>;
+
+    // Type-erased LazyObjectIO type alias template.
+    template <class Context>
+    using TypeErasedLazyObjectIO = LazyObjectIO<
+        std::function<void(std::string_view, dom::Value const&)>,
+        std::function<void(std::string_view, std::function<dom::Value()>)>,
+        Context>;
+
+} // namespace detail
 
 /** Customization point tag.
 
@@ -166,6 +254,12 @@ class LazyObjectImpl : public ObjectImpl
     Object overlay_;
     MRDOCS_NO_UNIQUE_ADDRESS Context context_{};
 
+    // Type alias for the type-erased IO used by this class.
+    using IOType = detail::TypeErasedLazyObjectIO<Context>;
+
+    using MapFnType = std::function<void(std::string_view, dom::Value const&)>;
+    using DeferFnType = std::function<void(std::string_view, std::function<dom::Value()> const&)>;
+
 public:
     /** Wrap an object using the default lazy mapping.
         @param obj Object providing the data.
@@ -218,67 +312,6 @@ public:
     exists(std::string_view key) const override;
 };
 
-namespace detail
-{
-    /* The IO object for lazy objects.
-
-       Mapping traits use this object to call the
-       map and defer methods, which are used to
-       access properties of the lazy object.
-
-       Each function provides different behavior
-       to `map` and `defer` methods, allowing
-       to implement functionality such as
-       `get`, `set`, `visit`, and `size`.
-
-       In some cases, only a function for
-       `map` is provided, and the `defer` function
-       is not used. In this case, the `defer` function
-       also uses the `map` function, which is
-       the default behavior.
-
-       In other cases, the `defer` function is
-       used to defer the evaluation of a property
-       to a later time, which is useful for functionality
-       that requires accessing the value.
-     */
-    template <class MapFn, class DeferFn = void*>
-    class LazyObjectIO
-    {
-        MapFn mapFn;
-        DeferFn deferFn;
-    public:
-        explicit
-        LazyObjectIO(MapFn mapFn, DeferFn deferFn = {})
-            : mapFn(mapFn), deferFn(deferFn) {}
-
-        template <class T>
-        void
-        map(std::string_view name, T const& value)
-        {
-            mapFn(name, value);
-        }
-
-        template <class F>
-        void
-        defer(std::string_view name, F&& deferred)
-        {
-            if constexpr (std::same_as<DeferFn, void*>)
-            {
-                mapFn(name, deferred);
-            }
-            else
-            {
-                deferFn(name, deferred);
-            }
-        }
-    };
-
-    // Deduction guide
-    template <class MapFn, class DeferFn = void*>
-    LazyObjectIO(MapFn, DeferFn = {}) -> LazyObjectIO<MapFn, DeferFn>;
-}
-
 template <class T, class Context>
 requires HasLazyObjectMap<T, Context>
 std::size_t
@@ -286,11 +319,12 @@ LazyObjectImpl<T, Context>::
 size() const
 {
     std::size_t result = 0;
-    detail::LazyObjectIO io(
+    MapFnType mapFn =
         [&result, this](std::string_view name, auto const& /* value or deferred */)
         {
             result += !overlay_.exists(name);
-        });
+        };
+    IOType io(mapFn, nullptr, context_);
     if constexpr (HasLazyObjectMapWithContext<T, Context>)
     {
         tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
@@ -313,14 +347,15 @@ exists(std::string_view key) const
         return true;
     }
     bool result = false;
-    detail::LazyObjectIO io(
+    MapFnType mapFn = 
         [&result, key](std::string_view name, auto const& /* value or deferred */)
     {
         if (!result && name == key)
         {
             result = true;
         }
-    });
+    };
+    IOType io(mapFn, nullptr, context_);
     if constexpr (HasLazyObjectMapWithContext<T, Context>)
     {
         tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
@@ -344,7 +379,7 @@ get(std::string_view key) const
         return overlay_.get(key);
     }
     Value result;
-    detail::LazyObjectIO io(
+    IOType io(
         [&result, key, this](std::string_view name, auto const& value)
         {
             if (result.isUndefined() && name == key)
@@ -371,7 +406,8 @@ get(std::string_view key) const
                     ValueFrom(deferred(), result);
                 }
             }
-        });
+        },
+        context_);
     if constexpr (HasLazyObjectMapWithContext<T, Context>)
     {
         tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
@@ -399,34 +435,22 @@ LazyObjectImpl<T, Context>::
 visit(std::function<bool(String, Value)> fn) const
 {
     bool visitMore = true;
-    detail::LazyObjectIO io(
-        [&visitMore, &fn, this](std::string_view name, auto const& value)
+    MapFnType mapFn =
+    [&visitMore, &fn, this](std::string_view name, dom::Value const& value)
+    {
+        if (visitMore && !overlay_.exists(name))
         {
-            if (visitMore && !overlay_.exists(name))
-            {
-                if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(value)>, Context>)
-                {
-                    visitMore = fn(name, dom::ValueFrom(value, context_));
-                }
-                else
-                {
-                    visitMore = fn(name, dom::ValueFrom(value));
-                }
-            }
-        }, [&visitMore, &fn, this](std::string_view name, auto const& deferred)
+            visitMore = fn(String(name), value);
+        }
+    };
+    DeferFnType deferFn = [&visitMore, &fn, this](std::string_view name,
+                                                   std::function<dom::Value()> const& deferred) {
+        if (visitMore && !overlay_.exists(name))
         {
-            if (visitMore && !overlay_.exists(name))
-            {
-                if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(deferred())>, Context>)
-                {
-                    visitMore = fn(name, dom::ValueFrom(deferred(), context_));
-                }
-                else
-                {
-                    visitMore = fn(name, dom::ValueFrom(deferred()));
-                }
-            }
-        });
+            visitMore = fn(String(name), deferred());
+        }
+    };
+    IOType io(mapFn, deferFn, context_);
     if constexpr (HasLazyObjectMapWithContext<T, Context>)
     {
         tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
@@ -465,6 +489,24 @@ LazyObject(T const& arr, Context const& context)
     return newObject<LazyObjectImpl<T, Context>>(arr, context);
 }
 
-} // mrdocs::dom
+} // dom
+
+class DomCorpus;
+
+/** Type-erased IO type for lazy object mapping.
+
+    This alias provides a concrete, non-template IO type
+    that can be used with `tag_invoke()` overloads for
+    @ref dom::LazyObjectMapTag. Unlike the internal template-based
+    IO types used within @ref dom::LazyObjectImpl, this type uses
+    `std::function` for type erasure, allowing it to be used in
+    explicit template instantiations.
+
+    @see dom::LazyObjectImpl
+    @see dom::LazyObjectMapTag
+*/
+using LazyObjectIOType = dom::detail::TypeErasedLazyObjectIO<DomCorpus const*>;
+
+} // mrdocs
 
 #endif // MRDOCS_API_DOM_LAZYOBJECT_HPP

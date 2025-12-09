@@ -223,6 +223,10 @@ endif()
 
 set(CMAKE_FOLDER Dependencies)
 
+# Boost.Describe + Boost.Mp11 (header-only, fetched via bootstrap.py recipes)
+find_package(boost_mp11 REQUIRED)
+find_package(boost_describe REQUIRED)
+
 # LLVM + Clang
 if (LLVM_ROOT)
     # LLVM_ROOT is absolute
@@ -320,6 +324,7 @@ target_compile_definitions(
     PRIVATE
     -DMRDOCS_TOOL
 )
+target_link_libraries(mrdocs-core PRIVATE Boost::describe Boost::mp11)
 
 # Dependencies
 target_include_directories(mrdocs-core

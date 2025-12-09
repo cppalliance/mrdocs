@@ -23,7 +23,7 @@
 {{~#if (and parent parent.parent)~}}
 {{~> symbol/qualified-name-title parent is-qualified-name-parent=true ~}}{{#if parent.name }}::{{/if}}
 {{~/if~}}
-{{~#if (and (eq kind "function") (eq functionClass "conversion"))~}}
+{{~#if (and (eq kind "function") (eq funcClass "conversion"))~}}
     {{~> symbol/name . ~}}
 {{~else if is-qualified-name-parent ~}}
     {{!~ If this is a parent, we only print it if it really has a name ~}}

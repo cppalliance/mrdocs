@@ -59,11 +59,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     NamespaceAliasSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("aliasedSymbol", I.AliasedSymbol);
-}
+    DomCorpus const* domCorpus);
 
 /** Map the NamespaceAliasSymbol to a @ref dom::Value object.
 */

@@ -105,19 +105,7 @@ tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
     NamespaceTranche const& I,
-    DomCorpus const* domCorpus)
-{
-    io.map("namespaces", dom::LazyArray(I.Namespaces, domCorpus));
-    io.map("namespaceAliases", dom::LazyArray(I.NamespaceAliases, domCorpus));
-    io.map("typedefs", dom::LazyArray(I.Typedefs, domCorpus));
-    io.map("records", dom::LazyArray(I.Records, domCorpus));
-    io.map("enums", dom::LazyArray(I.Enums, domCorpus));
-    io.map("functions", dom::LazyArray(I.Functions, domCorpus));
-    io.map("variables", dom::LazyArray(I.Variables, domCorpus));
-    io.map("concepts", dom::LazyArray(I.Concepts, domCorpus));
-    io.map("guides", dom::LazyArray(I.Guides, domCorpus));
-    io.map("usings", dom::LazyArray(I.Usings, domCorpus));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the NamespaceTranche to a @ref dom::Value object.
 */
@@ -195,14 +183,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     NamespaceSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("isInline", I.IsInline);
-    io.map("isAnonymous", I.IsAnonymous);
-    io.map("members", I.Members);
-    io.map("usingDirectives", dom::LazyArray(I.UsingDirectives, domCorpus));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the NamespaceSymbol to a @ref dom::Value object.
 */

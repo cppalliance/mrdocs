@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,11 +14,15 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
+#include <mrdocs/Dom/Value.hpp>
 #include <concepts>
 #include <optional>
 #include <string>
 
 namespace mrdocs {
+
+class DomCorpus;
 
 /** Represents an expression
 */
@@ -88,6 +93,39 @@ static void merge(
     {
         I.Value = std::move(Other.Value);
     }
+}
+
+/** Map an ExprInfo to a @ref dom::Value object.
+
+    @param v The output parameter to receive the dom::Value.
+    @param expr The expression info to convert.
+*/
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ExprInfo const& expr,
+    DomCorpus const*)
+{
+    v = expr.Written;
+}
+
+/** Map an ExprInfo to a @ref dom::Value object.
+
+    @param v The output parameter to receive the dom::Value.
+    @param expr The expression info to convert.
+*/
+inline
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    dom::Value& v,
+    ExprInfo const& expr,
+    DomCorpus const*
+)
+{
+    v = expr.Written;
 }
 
 } // mrdocs

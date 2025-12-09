@@ -37,7 +37,7 @@ struct SymbolIDCompareFn
             std::same_as<FunctionSymbol, InfoTy> ||
             std::same_as<OverloadsSymbol, InfoTy>)
         {
-            return I.Class;
+            return I.FuncClass;
         }
         return std::nullopt;
     }

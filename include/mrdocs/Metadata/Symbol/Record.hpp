@@ -135,19 +135,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     RecordSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("tag", I.KeyKind);
-    io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
-    io.map("isFinal", I.IsFinal);
-    io.map("isTypedef", I.IsTypeDef);
-    io.map("bases", dom::LazyArray(I.Bases, domCorpus));
-    io.map("derived", dom::LazyArray(I.Derived, domCorpus));
-    io.map("interface", I.Interface);
-    io.map("template", I.Template);
-    io.map("friends", dom::LazyArray(I.Friends, domCorpus));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the RecordSymbol to a @ref dom::Value object.
 */

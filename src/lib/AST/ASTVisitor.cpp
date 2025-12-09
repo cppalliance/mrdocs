@@ -913,7 +913,7 @@ populate(
         }
     }
 
-    I.Class = toFunctionClass(D->getDeclKind());
+    I.FuncClass = toFunctionClass(D->getDeclKind());
 
     // extract the return type in direct dependency mode
     // if it contains a placeholder type which is

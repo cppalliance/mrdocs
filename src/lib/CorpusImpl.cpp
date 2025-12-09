@@ -21,6 +21,7 @@
 #include <lib/Metadata/Finalizers/NamespacesFinalizer.hpp>
 #include <lib/Metadata/Finalizers/OverloadsFinalizer.hpp>
 #include <lib/Metadata/Finalizers/SortMembersFinalizer.hpp>
+#include <lib/Support/Reflection/EnumToString.hpp>
 #include <lib/Support/Chrono.hpp>
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Metadata.hpp>
@@ -583,7 +584,7 @@ lookupImpl(
                 }
                 else if (component.isConversion())
                 {
-                    MRDOCS_CHECK_OR(M.Class == FunctionClass::Conversion, matchRes);
+                    MRDOCS_CHECK_OR(M.FuncClass == FunctionClass::Conversion, matchRes);
                     MRDOCS_CHECK_OR(component.ConversionType == M.ReturnType, matchRes);
                 }
                 else

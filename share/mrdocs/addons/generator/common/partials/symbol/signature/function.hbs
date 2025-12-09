@@ -12,11 +12,11 @@
 {{/if~}}
 {{#if explicitSpec}}{{explicitSpec}}
 {{/if~}}
-{{#if (eq functionClass "normal")}}{{>type/declarator-prefix return}}
+{{#if (eq funcClass "normal")}}{{>type/declarator-prefix return}}
 {{/if~}}
 {{~#if force-link~}}
 {{>symbol/name symbol }}
-{{~else if (eq functionClass "conversion")~}}
+{{~else if (eq funcClass "conversion")~}}
 {{>symbol/name symbol }}
 {{~else if (contains (arr "explicit" "partial") template.kind)~}}
 {{>symbol/name template.primary ~}}{{>template/args-text args=template.args ~}}
@@ -32,7 +32,7 @@
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
 {{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
-{{#if (eq functionClass "normal")}}{{>type/declarator-suffix return}}{{/if~}}
+{{#if (eq funcClass "normal")}}{{>type/declarator-suffix return}}{{/if~}}
 {{#if requires}}
 
 requires {{requires}}{{/if~}}

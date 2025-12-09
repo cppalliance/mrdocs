@@ -57,14 +57,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     EnumConstantSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    if (!I.Initializer.Written.empty())
-    {
-        io.map("initializer", I.Initializer.Written);
-    }
-}
+    DomCorpus const* domCorpus);
 
 /** Map the EnumConstantSymbol to a @ref dom::Value object.
 */
