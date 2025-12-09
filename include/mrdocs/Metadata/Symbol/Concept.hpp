@@ -68,15 +68,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     ConceptSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("template", I.Template);
-    if (!I.Constraint.Written.empty())
-    {
-        io.map("constraint", I.Constraint.Written);
-    }
-}
+    DomCorpus const* domCorpus);
 
 /** Map the ConceptSymbol to a @ref dom::Value object.
 */

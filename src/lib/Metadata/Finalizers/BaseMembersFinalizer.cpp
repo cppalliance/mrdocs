@@ -119,8 +119,8 @@ inheritBaseMembers(
         // Check if we're not attempt to copy a special member function
         if (auto const *funcPtr = otherInfoPtr->asFunctionPtr()) {
           MRDOCS_CHECK_OR_CONTINUE(
-              !is_one_of(funcPtr->Class, {FunctionClass::Constructor,
-                                          FunctionClass::Destructor}));
+              !is_one_of(funcPtr->FuncClass, {FunctionClass::Constructor,
+                                              FunctionClass::Destructor}));
         }
 
         // Check if derived class has a member that shadows the base member

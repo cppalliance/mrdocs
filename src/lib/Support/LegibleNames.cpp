@@ -49,24 +49,24 @@ getUnnamedInfoName(Symbol const& I)
         if (auto const* FI = I.asFunctionPtr())
         {
             // don't use the reserved prefix for overloaded operators
-            if(FI->Class == FunctionClass::Normal &&
+            if(FI->FuncClass == FunctionClass::Normal &&
                 FI->OverloadedOperator != OperatorKind::None)
             {
                 return std::string(getSafeOperatorName(
                     FI->OverloadedOperator, true));
             }
-            func_idx = to_underlying(FI->Class);
+            func_idx = to_underlying(FI->FuncClass);
         }
         if (auto const* FI = I.asOverloadsPtr())
         {
             // don't use the reserved prefix for overloaded operators
-            if(FI->Class == FunctionClass::Normal &&
+            if(FI->FuncClass == FunctionClass::Normal &&
                 FI->OverloadedOperator != OperatorKind::None)
             {
                 return std::string(getSafeOperatorName(
                     FI->OverloadedOperator, true));
             }
-            func_idx = to_underlying(FI->Class);
+            func_idx = to_underlying(FI->FuncClass);
         }
         MRDOCS_ASSERT(func_idx < std::size(func_reserved));
         return std::string(func_reserved[func_idx]);
@@ -219,7 +219,7 @@ public:
                 {
                     // functions can be explicitly specialized,
                     // and can be overloaded
-                    if (t.Class != FunctionClass::Normal ||
+                    if (t.FuncClass != FunctionClass::Normal ||
                         t.OverloadedOperator != OperatorKind::None)
                     {
                         return getUnnamedInfoName(t);

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -54,37 +55,13 @@ enum class ExtractionMode
     Dependency,
 };
 
-/** Return the name of the SymbolKind as a string.
-*/
-constexpr
-std::string_view
-toString(ExtractionMode kind) noexcept
-{
-    switch(kind)
-    {
-    case ExtractionMode::Regular:
-        return "regular";
-    case ExtractionMode::SeeBelow:
-        return "see-below";
-    case ExtractionMode::ImplementationDefined:
-        return "implementation-defined";
-    case ExtractionMode::Dependency:
-        return "dependency";
-    }
-    MRDOCS_UNREACHABLE();
-}
-
 /** Return the SymbolKind from a @ref dom::Value string.
 */
-inline
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    ExtractionMode kind)
-{
-    v = toString(kind);
-}
+    ExtractionMode kind);
 
 /** Compare ExtractionModes and returns the least specific
 

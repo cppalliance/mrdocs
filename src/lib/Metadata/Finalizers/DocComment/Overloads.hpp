@@ -63,7 +63,7 @@ populateOverloadsBriefIfAllSameBrief(OverloadsSymbol& I, Range&& functionsWithBr
 bool
 populateOverloadsFromClass(OverloadsSymbol& I)
 {
-    switch (I.Class)
+    switch (I.FuncClass)
     {
     case FunctionClass::Normal:
         return false;

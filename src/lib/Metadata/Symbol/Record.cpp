@@ -4,33 +4,19 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/Reflection.hpp>
+#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <ranges>
 
 namespace mrdocs {
-
-dom::String
-toString(
-    RecordKeyKind kind) noexcept
-{
-    switch(kind)
-    {
-    case RecordKeyKind::Struct:
-        return "struct";
-    case RecordKeyKind::Class:
-        return "class";
-    case RecordKeyKind::Union:
-        return "union";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
 
 namespace {
 void
@@ -165,12 +151,10 @@ tag_invoke(
     BaseInfo const& I,
     DomCorpus const* domCorpus)
 {
-    io.map("access", I.Access);
+    mapReflectedType(io, I, domCorpus);
     io.map("isPublic", I.Access == AccessKind::Public);
     io.map("isProtected", I.Access == AccessKind::Protected);
     io.map("isPrivate", I.Access == AccessKind::Private);
-    io.map("isVirtual", I.IsVirtual);
-    io.map("type", dom::ValueFrom(I.Type, domCorpus));
 }
 
 void

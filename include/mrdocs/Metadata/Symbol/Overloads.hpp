@@ -23,7 +23,7 @@ struct OverloadsSymbol final
     : SymbolCommonBase<SymbolKind::Overloads>
 {
     /// The class of the functions.
-    FunctionClass Class = FunctionClass::Normal;
+    FunctionClass FuncClass = FunctionClass::Normal;
 
     /// The overloaded operator, if any.
     OperatorKind OverloadedOperator = OperatorKind::None;
@@ -92,13 +92,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     OverloadsSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("class", I.Class);
-    io.map("overloadedOperator", I.OverloadedOperator);
-    io.map("members", dom::LazyArray(I.Members, domCorpus));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the OverloadsSymbol to a @ref dom::Value object.
 */

@@ -250,32 +250,7 @@ tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
     Symbol const& I,
-    DomCorpus const* domCorpus)
-{
-    MRDOCS_ASSERT(domCorpus);
-    io.map("class", std::string("symbol"));
-    io.map("kind", I.Kind);
-    io.map("id", I.id);
-    if (!I.Name.empty())
-    {
-        io.map("name", I.Name);
-    }
-    io.map("access", I.Access);
-    io.map("extraction", I.Extraction);
-    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
-    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
-    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
-    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
-    if (I.Parent)
-    {
-        io.map("parent", I.Parent);
-    }
-    if (I.doc)
-    {
-        io.map("doc", *I.doc);
-    }
-    io.map("loc", I.Loc);
-}
+    DomCorpus const* domCorpus);
 
 /** Return the Symbol as a @ref dom::Value object.
 */

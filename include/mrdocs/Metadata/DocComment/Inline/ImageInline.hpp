@@ -65,13 +65,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     ImageInline const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
-    tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
-    io.map("src", I.src);
-    io.map("alt", I.alt);
-}
+    DomCorpus const* domCorpus);
 
 /** Return the @ref ImageInline as a @ref dom::Value object.
 */

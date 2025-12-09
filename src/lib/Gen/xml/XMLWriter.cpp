@@ -16,6 +16,7 @@
 #include "CXXTags.hpp"
 #include <lib/Support/LegibleNames.hpp>
 #include <lib/Support/Radix.hpp>
+#include <lib/Support/Reflection/EnumToString.hpp>
 #include <llvm/Support/YAMLTraits.h>
 
 //------------------------------------------------
@@ -187,8 +188,8 @@ writeFunction(
 
     constexpr std::string_view functionTagName = "function";
     tags_.open(functionTagName, {
-        { "class", toString(I.Class),
-            I.Class != FunctionClass::Normal },
+        { "class", toString(I.FuncClass),
+            I.FuncClass != FunctionClass::Normal },
         { "name", I.Name },
         { I.Access },
         { "exception-spec", except_spec,

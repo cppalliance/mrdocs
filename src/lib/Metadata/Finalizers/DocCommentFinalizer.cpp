@@ -832,7 +832,7 @@ generateAutoFunctionMetadata(FunctionSymbol& I) const
             return;
         }
 
-        if (!is_one_of(I.Class, {
+        if (!is_one_of(I.FuncClass, {
             FunctionClass::Constructor,
             FunctionClass::Destructor }) &&
             I.doc->returns.empty())

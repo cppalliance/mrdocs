@@ -95,13 +95,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     EnumSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("type", I.UnderlyingType);
-    io.map("isScoped", I.Scoped);
-    io.map("constants", dom::LazyArray(I.Constants, domCorpus));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the EnumSymbol to a @ref dom::Value object.
 

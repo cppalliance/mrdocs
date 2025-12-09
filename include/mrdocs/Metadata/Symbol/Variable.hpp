@@ -135,37 +135,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     VariableSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("type", I.Type);
-    io.map("template", I.Template);
-    if (I.StorageClass != StorageClassKind::None)
-    {
-        io.map("storageClass", I.StorageClass);
-    }
-    io.map("isInline", I.IsInline);
-    io.map("isConstexpr", I.IsConstexpr);
-    io.map("isConstinit", I.IsConstinit);
-    io.map("isThreadLocal", I.IsThreadLocal);
-    if (!I.Initializer.Written.empty())
-    {
-        io.map("initializer", I.Initializer.Written);
-    }
-    io.map("attributes", dom::LazyArray(I.Attributes));
-    io.map("isRecordField", I.IsRecordField);
-    io.map("isMaybeUnused", I.IsMaybeUnused);
-    io.map("isDeprecated", I.IsDeprecated);
-    io.map("isVariant", I.IsVariant);
-    io.map("isMutable", I.IsMutable);
-    io.map("isBitfield", I.IsBitfield);
-    if (I.IsBitfield)
-    {
-        io.map("bitfieldWidth", I.BitfieldWidth.Written);
-    }
-    io.map("hasNoUniqueAddress", I.HasNoUniqueAddress);
-    io.map("attributes", dom::LazyArray(I.Attributes));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the VariableSymbol to a @ref dom::Value object.
 */

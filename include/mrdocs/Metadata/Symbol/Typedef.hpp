@@ -84,13 +84,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     TypedefSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("type", I.Type);
-    io.map("template", I.Template);
-    io.map("isUsing", I.IsUsing);
-}
+    DomCorpus const* domCorpus);
 
 /** Map the TypedefSymbol to a @ref dom::Value object.
 

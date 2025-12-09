@@ -61,23 +61,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     FriendInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    if (I.id)
-    {
-        io.defer("name", [&I, domCorpus]{
-            return dom::ValueFrom(I.id, domCorpus).get("name");
-        });
-        io.map("symbol", I.id);
-    }
-    else if (I.Type)
-    {
-        io.defer("name", [&]{
-            return dom::ValueFrom(I.Type, domCorpus).get("name");
-        });
-        io.map("type", I.Type);
-    }
-}
+    DomCorpus const* domCorpus);
 
 /** Map the FriendInfo to a @ref dom::Value object.
 */

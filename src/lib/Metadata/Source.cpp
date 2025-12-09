@@ -5,10 +5,13 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/Reflection.hpp>
+#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/FileKind.hpp>
@@ -18,22 +21,6 @@
 #include <ranges>
 
 namespace mrdocs {
-
-std::string_view
-toString(FileKind kind)
-{
-    switch(kind)
-    {
-    case FileKind::Source:
-        return "source";
-    case FileKind::System:
-        return "system";
-    case FileKind::Other:
-        return "other";
-    default:
-        MRDOCS_UNREACHABLE();
-    };
-}
 
 namespace
 {
@@ -107,12 +94,7 @@ tag_invoke(
     IO& io,
     Location const& loc)
 {
-    io.map("fullPath", loc.FullPath);
-    io.map("shortPath", loc.ShortPath);
-    io.map("sourcePath", loc.SourcePath);
-    io.map("line", loc.LineNumber);
-    io.map("column", loc.ColumnNumber);
-    io.map("documented", loc.Documented);
+    mapReflectedType(io, loc);
 }
 
 void

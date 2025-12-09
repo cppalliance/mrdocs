@@ -1,0 +1,19 @@
+{
+  "name": "boost_describe",
+  "version": "1.90.0",
+  "source": {
+    "type": "zip",
+    "url": "https://github.com/boostorg/describe/archive/refs/tags/boost-1.90.0.zip"
+  },
+  "dependencies": [
+    "boost_mp11"
+  ],
+  "build": [
+    {
+      "type": "cmake",
+      "options": []
+    }
+  ],
+  "package_root_var": "boost_describe_ROOT",
+  "install_scope": "global"
+}

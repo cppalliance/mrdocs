@@ -137,14 +137,14 @@
 
 {{/if}}
 {{! Using symbols }}
-{{#if symbol.shadows}}
+{{#if symbol.shadowDeclarations}}
 {{#> markup/dynamic-level-h }}Introduced Symbols{{/markup/dynamic-level-h~}}
-{{#if (any_of_by symbol.shadows "doc")}}
+{{#if (any_of_by symbol.shadowDeclarations "doc")}}
 [cols="1,4"]
 |===
 |Name|Description
 
-{{#each symbol.shadows}}
+{{#each symbol.shadowDeclarations}}
 | {{> symbol/qualified-name . }}
 | {{> doc/block/inline-brief doc.brief }}
 {{/each}}
@@ -153,7 +153,7 @@
 [cols=1]
 |===
 | Name
-{{#each symbol.shadows}}
+{{#each symbol.shadowDeclarations}}
 | {{> symbol/qualified-name . }}
 {{/each}}
 |===

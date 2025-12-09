@@ -271,24 +271,6 @@ getOperatorReadableName(
     MRDOCS_UNREACHABLE();
 }
 
-dom::String
-toString(FunctionClass const kind) noexcept
-{
-    switch(kind)
-    {
-    case FunctionClass::Normal:
-        return "normal";
-    case FunctionClass::Constructor:
-        return "constructor";
-    case FunctionClass::Conversion:
-        return "conversion";
-    case FunctionClass::Destructor:
-        return "destructor";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
 void
 merge(Param& I, Param&& Other)
 {
@@ -387,9 +369,9 @@ merge(FunctionSymbol& I, FunctionSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.Class == FunctionClass::Normal)
+    if (I.FuncClass == FunctionClass::Normal)
     {
-        I.Class = Other.Class;
+        I.FuncClass = Other.FuncClass;
     }
     I.ReturnType = std::move(Other.ReturnType);
     std::size_t const n = std::min(I.Params.size(), Other.Params.size());

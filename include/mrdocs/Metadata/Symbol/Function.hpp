@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -47,7 +48,7 @@ struct FunctionSymbol final
     Optional<TemplateInfo> Template;
 
     /// The class of function this is
-    FunctionClass Class = FunctionClass::Normal;
+    FunctionClass FuncClass = FunctionClass::Normal;
 
     /** Exception specification for the function.
     */
@@ -163,50 +164,7 @@ tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
     FunctionSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, I.asInfo(), domCorpus);
-    io.map("isVariadic", I.IsVariadic);
-    io.map("isVirtual", I.IsVirtual);
-    io.map("isVirtualAsWritten", I.IsVirtualAsWritten);
-    io.map("isPure", I.IsPure);
-    io.map("isDefaulted", I.IsDefaulted);
-    io.map("isExplicitlyDefaulted", I.IsExplicitlyDefaulted);
-    io.map("isDeleted", I.IsDeleted);
-    io.map("isDeletedAsWritten", I.IsDeletedAsWritten);
-    io.map("isNoReturn", I.IsNoReturn);
-    io.map("hasOverrideAttr", I.HasOverrideAttr);
-    io.map("hasTrailingReturn", I.HasTrailingReturn);
-    io.map("isConst", I.IsConst);
-    io.map("isVolatile", I.IsVolatile);
-    io.map("isFinal", I.IsFinal);
-    io.map("isNodiscard", I.IsNodiscard);
-    io.map("isExplicitObjectMemberFunction", I.IsExplicitObjectMemberFunction);
-    if (I.Constexpr != ConstexprKind::None)
-    {
-        io.map("constexprKind", I.Constexpr);
-    }
-    if (I.StorageClass != StorageClassKind::None)
-    {
-        io.map("storageClass", I.StorageClass);
-    }
-    if (I.RefQualifier != ReferenceKind::None)
-    {
-        io.map("refQualifier", I.RefQualifier);
-    }
-    io.map("functionClass", I.Class);
-    io.map("params", dom::LazyArray(I.Params, domCorpus));
-    io.map("return", I.ReturnType);
-    io.map("template", I.Template);
-    io.map("overloadedOperator", I.OverloadedOperator);
-    io.map("exceptionSpec", I.Noexcept);
-    io.map("explicitSpec", I.Explicit);
-    if (!I.Requires.Written.empty())
-    {
-        io.map("requires", I.Requires.Written);
-    }
-    io.map("attributes", dom::LazyArray(I.Attributes));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the FunctionSymbol to a @ref dom::Value object.
 
@@ -223,6 +181,23 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
+}
+
+/** Map a vector of parameters to a @ref dom::Value object.
+
+    @param v The output parameter to receive the dom::Value.
+    @param params The list of parameters to convert.
+    @param domCorpus The DomCorpus used to resolve references.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::vector<Param> const& params,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyArray(params, domCorpus);
 }
 
 /** Determine if one function would override the other

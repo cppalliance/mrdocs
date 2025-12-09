@@ -78,12 +78,7 @@ tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
     RecordInterface const& I,
-    DomCorpus const*)
-{
-    io.map("public", I.Public);
-    io.map("protected", I.Protected);
-    io.map("private", I.Private);
-}
+    DomCorpus const*);
 
 /** Map the RecordInterface to a @ref dom::Value object.
 */

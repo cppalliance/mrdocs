@@ -183,10 +183,10 @@
 </div>
 {{/if}}
 {{! Using symbols }}
-{{#if symbol.shadows}}
+{{#if symbol.shadowDeclarations}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Introduced Symbols{{/markup/dynamic-level-h~}}
-{{#if (any_of_by symbol.shadows "doc")}}
+{{#if (any_of_by symbol.shadowDeclarations "doc")}}
 <table>
 <thead>
 <tr>
@@ -195,7 +195,7 @@
 </tr>
 </thead>
 <tbody>
-{{#each symbol.shadows}}
+{{#each symbol.shadowDeclarations}}
 <tr>
 <td>{{> symbol/qualified-name . }}</td>
 <td>{{> doc/block/inline-brief doc.brief }}</td>
@@ -211,7 +211,7 @@
 </tr>
 </thead>
 <tbody>
-{{#each symbol.shadows}}
+{{#each symbol.shadowDeclarations}}
 <tr>
 <td>{{> symbol/qualified-name . }}</td>
 </tr>

@@ -114,20 +114,7 @@ tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
     RecordTranche const& I,
-    DomCorpus const* domCorpus)
-{
-    io.map("namespaceAliases", dom::LazyArray(I.NamespaceAliases, domCorpus));
-    io.map("typedefs", dom::LazyArray(I.Typedefs, domCorpus));
-    io.map("records", dom::LazyArray(I.Records, domCorpus));
-    io.map("enums", dom::LazyArray(I.Enums, domCorpus));
-    io.map("functions", dom::LazyArray(I.Functions, domCorpus));
-    io.map("staticFunctions", dom::LazyArray(I.StaticFunctions, domCorpus));
-    io.map("variables", dom::LazyArray(I.Variables, domCorpus));
-    io.map("staticVariables", dom::LazyArray(I.StaticVariables, domCorpus));
-    io.map("concepts", dom::LazyArray(I.Concepts, domCorpus));
-    io.map("guides", dom::LazyArray(I.Guides, domCorpus));
-    io.map("usings", dom::LazyArray(I.Usings, domCorpus));
-}
+    DomCorpus const* domCorpus);
 
 /** Map the RecordTranche to a @ref dom::Value object.
 */

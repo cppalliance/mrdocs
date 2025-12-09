@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -32,27 +33,15 @@ enum class FileKind
     Other
 };
 
-/** Convert a FileKind to its string form.
-    @param kind File category to stringify.
-    @return String view describing the kind.
-*/
-MRDOCS_DECL
-std::string_view
-toString(FileKind kind);
-
 /** Map a FileKind into a DOM value.
     @param v Destination value to populate.
     @param kind File category to serialize.
 */
-inline
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    FileKind kind)
-{
-    v = toString(kind);
-}
+    FileKind kind);
 
 } // mrdocs
 

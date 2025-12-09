@@ -25,14 +25,14 @@ bool
 isSpecialFunction(FunctionSymbol const& I)
 {
     return
-        I.Class != FunctionClass::Normal ||
+        I.FuncClass != FunctionClass::Normal ||
         I.OverloadedOperator != OperatorKind::None;
 }
 
 bool
 isDefaultConstructor(FunctionSymbol const& I)
 {
-    return I.Class == FunctionClass::Constructor && I.Params.empty();
+    return I.FuncClass == FunctionClass::Constructor && I.Params.empty();
 }
 
 template <bool move, bool assignment>
@@ -41,7 +41,7 @@ isCopyOrMoveConstructorOrAssignment(FunctionSymbol const& I)
 {
     if constexpr (!assignment)
     {
-        MRDOCS_CHECK_OR(I.Class == FunctionClass::Constructor, false);
+        MRDOCS_CHECK_OR(I.FuncClass == FunctionClass::Constructor, false);
     }
     else
     {
@@ -122,7 +122,7 @@ innermostTypenameString(Polymorphic<Type> const& T)
 bool
 populateFunctionBriefFromClass(FunctionSymbol& I, CorpusImpl const& corpus)
 {
-    switch (I.Class)
+    switch (I.FuncClass)
     {
         case FunctionClass::Normal:
             return false;
@@ -315,7 +315,7 @@ populateFunctionReturnsForSpecial(
     Polymorphic<Type> const& innerR,
     CorpusImpl const& corpus)
 {
-    if (I.Class == FunctionClass::Conversion)
+    if (I.FuncClass == FunctionClass::Conversion)
     {
         if (auto* brief = getInfoBrief(innerR, corpus))
         {
@@ -529,7 +529,7 @@ setCntrOrAssignParamName(
     MRDOCS_CHECK_OR(I.Params.size() == 1, false);
     MRDOCS_CHECK_OR(I.IsRecordMethod, false);
     MRDOCS_CHECK_OR(
-        I.Class == FunctionClass::Constructor ||
+        I.FuncClass == FunctionClass::Constructor ||
         I.OverloadedOperator == OperatorKind::Equal,
         false);
     auto paramNames =
@@ -645,7 +645,7 @@ setCntrOrAssignParamDoc(
     MRDOCS_CHECK_OR(index == 0, false);
     MRDOCS_CHECK_OR(I.IsRecordMethod, false);
     MRDOCS_CHECK_OR(
-        I.Class == FunctionClass::Constructor ||
+        I.FuncClass == FunctionClass::Constructor ||
         I.OverloadedOperator == OperatorKind::Equal,
         false);
 

@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/EnumToString.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Using.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -49,6 +50,15 @@ merge(UsingSymbol& I, UsingSymbol&& Other)
     {
         I.IntroducedName = std::move(Other.IntroducedName);
     }
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    UsingClass kind)
+{
+    v = toString(kind);
 }
 
 } // mrdocs

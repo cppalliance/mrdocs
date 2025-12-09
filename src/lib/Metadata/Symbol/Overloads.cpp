@@ -48,7 +48,7 @@ addMember(OverloadsSymbol& I, FunctionSymbol const& Member)
         I.Name = Member.Name;
         I.Access = Member.Access;
         I.Extraction = Member.Extraction;
-        I.Class = Member.Class;
+        I.FuncClass = Member.FuncClass;
         I.OverloadedOperator = Member.OverloadedOperator;
         I.ReturnType = Member.ReturnType;
     }

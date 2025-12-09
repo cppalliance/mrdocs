@@ -433,6 +433,44 @@ jobs:
         run: |
           rm -r ../third-party/llvm-project
 
+      - name: Install Boost.Mp11
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        with:
+          source-dir: ../third-party/boost_mp11
+          git-repository: https://github.com/boostorg/mp11
+          git-tag: boost-1.90.0
+          patches: |
+            ./third-party/patches/boost_mp11/CMakeLists.txt
+            ./third-party/patches/boost_mp11/boost_mp11-config.cmake.in
+          build-dir: ${sourceDir}/build
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          build-type: Release
+          shared: false
+          install: true
+          install-prefix: ${sourceDir}/install
+          run-tests: false
+          trace-commands: true
+
+      - name: Install Boost.Describe
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        with:
+          source-dir: ../third-party/boost_describe
+          git-repository: https://github.com/boostorg/describe
+          git-tag: boost-1.90.0
+          patches: |
+            ./third-party/patches/boost_describe/CMakeLists.txt
+            ./third-party/patches/boost_describe/boost_describe-config.cmake.in
+          build-dir: ${sourceDir}/build
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          build-type: Release
+          shared: false
+          install: true
+          install-prefix: ${sourceDir}/install
+          run-tests: false
+          trace-commands: true
+
       - name: Install JerryScript
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         with:
@@ -567,6 +605,8 @@ jobs:
             -D LUA_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
             -D Lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
             -D lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
+            -D boost_mp11_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/boost_mp11/install"
+            -D boost_describe_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/boost_describe/install"
             ${{ runner.os == 'Windows' && '-D LibXml2_ROOT=../third-party/libxml2/install' || '' }}
           export-compile-commands: true
           run-tests: true
