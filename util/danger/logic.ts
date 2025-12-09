@@ -501,6 +501,12 @@ function hasSkipTests(prBody: string, labels: string[]): boolean {
 export function basicChecks(input: DangerInputs, scopes: ScopeReport, parsedCommits: ParsedCommit[]): string[] {
     const warnings: string[] = [];
 
+    const commitTypes = new Set(parsedCommits.map((commit) => commit.type).filter(Boolean) as string[]);
+    const refactorSignal =
+        commitTypes.has("refactor") ||
+        /refactor/i.test(input.prTitle || "") ||
+        input.labels.some((label) => /refactor/i.test(label));
+
     const cleanedBody = (input.prBody || "").trim();
     if (cleanedBody.length < 40) {
         // === PR description completeness warnings ===
@@ -515,14 +521,17 @@ export function basicChecks(input: DangerInputs, scopes: ScopeReport, parsedComm
     }
 
     const skipTests = hasSkipTests(input.prBody || "", input.labels);
-    if (!skipTests && scopes.totals.source.files > 0 && scopes.totals.tests.files === 0 && scopes.totals["golden-tests"].files === 0) {
+    if (
+        !skipTests &&
+        !refactorSignal &&
+        scopes.totals.source.files > 0 &&
+        scopes.totals.tests.files === 0 &&
+        scopes.totals["golden-tests"].files === 0
+    ) {
         // === Source changes without tests/fixtures warnings ===
-        warnings.push(
-            "Source changed but no tests or fixtures were updated. Add coverage or label with `no-tests-needed` / `[skip danger tests]` when appropriate.",
-        );
+        warnings.push("Source changed but no tests or fixtures were updated.");
     }
 
-    const commitTypes = new Set(parsedCommits.map((commit) => commit.type).filter(Boolean) as string[]);
     const totalFiles = Object.values(scopes.totals).reduce((sum, scope) => sum + scope.files, 0);
     const nonDocFiles = totalFiles - scopes.totals.docs.files;
     const testFiles = scopes.totals.tests.files + scopes.totals["golden-tests"].files;
