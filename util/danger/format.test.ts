@@ -54,8 +54,8 @@ describe("renderDangerReport", () => {
 
         const output = renderDangerReport(result);
 
-        expect(output).toMatch(/\|\s*Source\s*\|\s*\*\*4\*\*\s*\|\s*3\s*\|\s*1\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*1\s*\|\s*-\s*\|\s*-\s*\|/);
-        expect(output).toMatch(/\|\s*Tests\s*\|\s*\*\*2\*\*\s*\|\s*2\s*\|\s*-\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*1\s*\|\s*-\s*\|\s*-\s*\|/);
+        expect(output).toMatch(/\|\s*🛠️ Source\s*\|\s*\*\*4\*\*\s*\|\s*3\s*\|\s*1\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*1\s*\|\s*-\s*\|\s*-\s*\|/u);
+        expect(output).toMatch(/\|\s*🧪 Unit Tests\s*\|\s*\*\*2\*\*\s*\|\s*2\s*\|\s*-\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*1\s*\|\s*-\s*\|\s*-\s*\|/u);
         expect(output).toMatch(/\|\s*\*\*Total\*\*\s*\|\s*\*\*6\*\*\s*\|\s*5\s*\|\s*1\s*\|\s*\*\*2\*\*\s*\|/);
         expect(output).toContain("## ✨ Highlights");
         expect(output.trim().startsWith("> 🚧 Danger.js checks for MrDocs")).toBe(true);
@@ -68,7 +68,7 @@ describe("renderDangerReport", () => {
         const result: DangerResult = { warnings: [], infos: [], summary };
 
         const output = renderDangerReport(result);
-        const sourceRow = output.split("\n").find((line) => line.startsWith("| Source"));
+        const sourceRow = output.split("\n").find((line) => line.startsWith("| 🛠️ Source"));
 
         expect(sourceRow).toBeDefined();
         expect(sourceRow).not.toMatch(/-1/);

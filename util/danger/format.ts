@@ -13,18 +13,35 @@ const notice = "> 🚧 Danger.js checks for MrDocs are experimental; expect some
 
 const scopeLabels: Record<string, string> = {
     source: "Source",
-    tests: "Tests",
+    tests: "Unit Tests",
     "golden-tests": "Golden Tests",
     docs: "Docs",
-    ci: "CI / Roadmap",
+    ci: "CI",
     build: "Build / Toolchain",
     tooling: "Tooling",
     "third-party": "Third-party",
     other: "Other",
 };
 
+const scopeEmojis: Record<string, string> = {
+    source: "🛠️",
+    tests: "🧪",
+    "golden-tests": "🥇",
+    docs: "📄",
+    ci: "⚙️",
+    build: "🏗️",
+    tooling: "🧰",
+    "third-party": "🤝",
+    other: "📦",
+};
+
 function labelForScope(scope: string): string {
     return scopeLabels[scope] ?? scope;
+}
+
+function emojiLabelForScope(scope: string): string {
+    const emoji = scopeEmojis[scope] ?? "❓";
+    return `${emoji} ${labelForScope(scope)}`;
 }
 
 /**
@@ -122,7 +139,7 @@ function renderChangeTable(summary: ScopeReport): string {
         const fileDelta = countFileChanges(s);
         const churn = scoped.additions + scoped.deletions;
         const fileDeltaBold = formatCount(fileDelta); // bold delta
-        const label = labelForScope(scope);
+        const label = emojiLabelForScope(scope);
         return [
             label,
             formatCount(churn),
