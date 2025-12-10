@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="fmt" id="csn+vnio1BK5NeCdEBf/HpD6wmY=">
+    <struct name="path" id="5RffQbxkZ8sUj37sDwK63dA5ptA=">
+      <file short-path="forward-declared-member.cpp" source-path="forward-declared-member.cpp" line="8" class="def"/>
+      <base>
+        <type id="ufjqSG34/fsb1/dKE4dBgs8spHM=" name="std::path"/>
+      </base>
+    </struct>
+  </namespace>
+</namespace>
+</mrdocs>

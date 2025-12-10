@@ -101,6 +101,17 @@ class ASTVisitor
      */
     UndocumentedSymbolSet undocumented_;
 
+    /*
+        A set of records already traversed for base class extraction
+
+        When traversing base classes in BaseClass traversal mode,
+        we need to avoid traversing the same record multiple times.
+        This set keeps track of records that have already been
+        traversed for base class extraction.
+    */
+    std::unordered_set<clang::CXXRecordDecl const*>
+        traversedRecordsForBaseClassExtraction_;
+
     /* Struct to hold pre-processed file information.
 
         This struct stores information about a file, including its full path,
