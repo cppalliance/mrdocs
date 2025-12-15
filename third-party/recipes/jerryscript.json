@@ -1,0 +1,37 @@
+{
+  "name": "jerryscript",
+  "version": "3.0.0",
+  "tags": [],
+  "package_root_var": "jerryscript_ROOT",
+  "source": {
+    "type": "archive",
+    "url": "https://github.com/jerryscript-project/jerryscript/archive/refs/tags/v3.0.0.tar.gz",
+    "tag": "v3.0.0"
+  },
+  "dependencies": [],
+  "build_type": "Release",
+  "install_scope": "per-preset",
+  "build": [
+    {
+      "type": "cmake",
+      "config": "${BOOTSTRAP_BUILD_TYPE}",
+      "options": [
+        "-DJERRY_PROFILE=es.next",
+        "-DJERRY_EXTERNAL_CONTEXT=ON",
+        "-DJERRY_PORT=ON",
+        "-DJERRY_DEBUGGER=OFF",
+        "-DJERRY_SNAPSHOT_SAVE=OFF",
+        "-DJERRY_SNAPSHOT_EXEC=OFF",
+        "-DJERRY_CMDLINE=OFF",
+        "-DJERRY_TESTS=OFF",
+        "-DJERRY_MEM_STATS=OFF",
+        "-DJERRY_PARSER_STATS=OFF",
+        "-DJERRY_LINE_INFO=OFF",
+        "-DJERRY_LTO=OFF",
+        "-DJERRY_LIBC=OFF",
+        "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL"
+      ],
+      "targets": ["install"]
+    }
+  ]
+}

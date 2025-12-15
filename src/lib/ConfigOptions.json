@@ -423,6 +423,15 @@
         "must-exist": true
       },
       {
+        "name": "addons-supplemental",
+        "brief": "Additional addons layered on top of the base addons",
+        "details": "Optional list of supplemental addons directories that are loaded after the base addons (built-in or replacement). Files in later supplemental directories override files from earlier ones and from the base addons. Use this to add or override a few templates/helpers without copying the entire addons tree.",
+        "type": "list<path>",
+        "default": [],
+        "relative-to": "<config-dir>",
+        "must-exist": true
+      },
+      {
         "name": "tagfile",
         "brief": "Path for the tagfile",
         "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",

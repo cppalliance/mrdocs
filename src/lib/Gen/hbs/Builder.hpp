@@ -13,21 +13,30 @@
 #define MRDOCS_LIB_GEN_HBS_BUILDER_HPP
 
 #include <lib/Gen/hbs/HandlebarsCorpus.hpp>
-#include <lib/Support/Radix.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
+#include <map>
 #include <ostream>
+#include <vector>
 
 
 namespace mrdocs {
 namespace hbs {
 
-/** Builds reference output as a string for any Info type
+/** Per-thread renderer for Handlebars output.
 
-    This contains all the state information
-    for a single thread to generate output.
+    A `HandlebarsGenerator` spins up one `Builder` per worker thread to
+    keep template state, JS contexts, and caches isolated while the DOM
+    visitors walk symbols in parallel. The generator itself orchestrates
+    traversal and output paths, while `Builder` focuses solely on taking a
+    single symbol (or a custom contents callback) and rendering the
+    appropriate Handlebars templates using the prepared `HandlebarsCorpus`.
+
+    Separating the renderer from the generator avoids cross-thread
+    contention on Handlebars state and keeps rendering concerns out of the
+    generator’s coordination logic.
 */
 class Builder
 {
@@ -35,9 +44,6 @@ class Builder
     Handlebars hbs_;
     std::map<std::string, std::string, std::less<>> templates_;
     std::function<void(OutputRef&, std::string_view)> escapeFn_;
-
-    std::string
-    getRelPrefix(std::size_t depth);
 
 public:
     HandlebarsCorpus const& domCorpus;
@@ -56,6 +62,17 @@ public:
         If the output is multi-page and not embedded,
         this function renders the wrapper template
         with the index template as the contents.
+
+        @param os Stream to receive rendered output.
+        @param I  Metadata symbol to render.
+        @return Success or an error describing template or I/O failures.
+
+        @par Example
+        @code
+        Builder b(corpus, Handlebars::htmlEscape);
+        std::ostringstream out;
+        b(out, *corpus.root()); // writes HTML/Adoc for the root symbol
+        @endcode
     */
     template<std::derived_from<Symbol> T>
     Expected<void>
@@ -71,6 +88,19 @@ public:
         will be executed to render the contents
         of the page.
 
+        @param os         Stream to receive rendered output.
+        @param contentsCb Callback invoked to write the inner page
+                           contents inside the wrapper layout.
+        @return Success or an error from template rendering or the
+                callback.
+
+        @par Example
+        @code
+        b.renderWrapped(out, [&] {
+            return b.callTemplate(out, "index.html.hbs", ctx);
+        });
+        @endcode
+
     */
     Expected<void>
     renderWrapped(
@@ -78,30 +108,13 @@ public:
         std::function<Expected<void>()> contentsCb);
 
 private:
-    /** The directory with the all templates.
-    */
+    /** Path to the index template file resolved for the active generator. */
     std::string
-    templatesDir() const;
+    indexTemplateFile() const;
 
-    /** A subdirectory of the templates dir
-    */
+    /** Path to the wrapper (layout) template file when multi-page output is used. */
     std::string
-    templatesDir(std::string_view subdir) const;
-
-    /** The directory with the common templates.
-    */
-    std::string
-    commonTemplatesDir() const;
-
-    /** A subdirectory of the common templates dir
-    */
-    std::string
-    commonTemplatesDir(std::string_view subdir) const;
-
-    /** The directory with the layout templates.
-    */
-    std::string
-    layoutDir() const;
+    wrapperTemplateFile() const;
 
     /** Create a handlebars context with the symbol and helper information.
 
@@ -110,11 +123,20 @@ private:
 
         It also includes a sectionref helper that describes
         the section where the symbol is located.
+
+        @param I Symbol to expose to the template.
+        @return A DOM object with `page`, `symbol`, and `config` nodes
+                ready for Handlebars rendering.
     */
     dom::Object
     createContext(Symbol const& I);
 
     /** Render a Handlebars template from the templates directory.
+
+        @param os      Output stream to receive rendered bytes.
+        @param name    Template filename (as registered in `templates_`).
+        @param context DOM data passed into Handlebars.
+        @return Success or an error describing template failures.
     */
     Expected<void>
     callTemplate(

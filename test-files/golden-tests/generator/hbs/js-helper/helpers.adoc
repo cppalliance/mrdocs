@@ -1,0 +1,16 @@
+= JS Helper Output
+:mrdocs:
+
+* echo: js&colon;mrdocs
+* bool: boolean&colon;true
+* number: number&colon;42
+* string: string&colon;hi
+* null: null&colon;
+* undefined: undefined&colon;
+* array: array&colon;a,b,3
+* hash: hash&colon;a&equals;1,b&equals;two
+* glue: x&verbar;y&verbar;z
+* block: otherwise
+* format: adoc
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

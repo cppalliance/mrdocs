@@ -10,24 +10,35 @@
 //
 
 #include "Builder.hpp"
+#include "AddonPaths.hpp"
 #include <lib/ConfigImpl.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <algorithm>
 #include <filesystem>
 #include <format>
 #include <ranges>
+#include <vector>
 
 
 namespace mrdocs {
 
-namespace lua {
-extern void lua_dump(dom::Object const& obj);
-}
-
 namespace hbs {
 
 namespace {
+
+/** Loads Handlebars partial templates from a directory.
+
+    Recursively scans the specified directory for `.hbs` files and
+    registers each as a Handlebars partial. The partial name is derived
+    from the file's relative path (without extension), allowing
+    subdirectory organization (e.g., `components/button.hbs` becomes
+    partial `components/button`).
+
+    @param hbs The Handlebars instance to register partials with.
+    @param partialsPath The directory path to scan for partial files.
+*/
 void
 loadPartials(
     Handlebars& hbs,
@@ -69,19 +80,22 @@ loadPartials(
     }
 }
 
-/* Make a URL relative to another URL.
+/** Makes a URL relative to another URL.
 
-   This function is a version of the Antora `relativize` helper,
-   used to create relative URLs between two paths in Antora projects.
+    This function implements Antora-style URL relativization, creating
+    relative URLs between two paths. It takes a target path (`to`) and
+    a source path (`from`), returning a relative path from `from` to `to`.
 
-   The function takes two paths, `to` and `from`, and returns a
-   relative path from `from` to `to`.
+    When called with a single argument, the current symbol's URL (from
+    `data.root.symbol.url`) is used as the source path.
 
-   If `from` is not provided, then the URL of the symbol being
-   rendered is used as the `from` path.
+    @param to0 The target URL to make relative.
+    @param from0 The source URL to relativize from (optional).
+    @param options Handlebars options containing context data.
+    @return The relative URL path, or the original URL if not absolute.
 
-   @see https://gitlab.com/antora/antora-ui-default/-/blob/master/src/helpers/relativize.js
- */
+    @see https://gitlab.com/antora/antora-ui-default/-/blob/master/src/helpers/relativize.js
+*/
 dom::Value
 relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
 {
@@ -157,9 +171,203 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
     return relativePath;
 }
 
+/** Registers partial templates from multiple directories.
+
+    Iterates through each directory and loads all `.hbs` files as
+    Handlebars partials. Later directories in the list can override
+    partials from earlier ones, enabling supplemental addons to
+    customize templates.
+
+    @param hbs The Handlebars instance to register partials with.
+    @param dirs The list of directories to load partials from.
+*/
+void
+registerPartials(Handlebars& hbs, std::vector<std::string> const& dirs)
+{
+    for (auto const& dir : dirs)
+        loadPartials(hbs, dir);
+}
+
+/** Registers default Handlebars Generator helpers.
+
+    Registers the default set of helpers available in all templates:
+    - `primary_location`: Returns the primary source location for a symbol
+    - `relativize`: Creates relative URLs between paths
+    - Constructor, string, Antora, logical, math, container, and type helpers
+
+    These helpers are registered before user-defined helpers, allowing
+    users to override built-in behavior if needed.
+
+    @param hbs The Handlebars instance to register helpers with.
+*/
+void
+registerDefaultHelpers(Handlebars& hbs)
+{
+    hbs.registerHelper("primary_location",
+        dom::makeInvocable([](dom::Value const& v) -> dom::Value
+        {
+            dom::Value const sourceInfo = v.get("loc");
+            if (!sourceInfo)
+                return nullptr;
+
+            dom::Value decls = sourceInfo.get("decl");
+            if (dom::Value def = sourceInfo.get("def"))
+            {
+                if (dom::Value const kind = v.get("kind");
+                    kind == "record" || kind == "enum")
+                    return def;
+                if (!decls)
+                    return def;
+            }
+            if (!decls.isArray() || decls.getArray().empty())
+                return nullptr;
+
+            for (dom::Value const& loc : decls.getArray())
+            {
+                if (loc.get("documented"))
+                    return loc;
+            }
+            return decls.getArray().get(0);
+        }));
+
+    helpers::registerConstructorHelpers(hbs);
+    helpers::registerStringHelpers(hbs);
+    helpers::registerAntoraHelpers(hbs);
+    helpers::registerLogicalHelpers(hbs);
+    helpers::registerMathHelpers(hbs);
+    helpers::registerContainerHelpers(hbs);
+    helpers::registerTypeHelpers(hbs);
+    hbs.registerHelper("relativize", dom::makeInvocable(relativize_fn));
+}
+
+/** Registers user-defined JavaScript helpers from addon directories.
+
+    Scans the specified directories for JavaScript files and registers
+    them as Handlebars helpers. Files are categorized into two types:
+
+    - **Utility files** (prefixed with `_`): Executed as scripts to define
+      shared globals. Loaded alphabetically before helper files.
+    - **Helper files**: Registered as Handlebars helpers with the filename
+      (minus `.js`) as the helper name.
+
+    This separation allows helpers to share common code through utilities
+    without duplicating implementations.
+
+    @param hbs The Handlebars instance to register helpers with.
+    @param ctx The JavaScript context for script execution.
+    @param helperDirs The directories to scan for helper files.
+    @return Success, or an error if loading/registration fails.
+*/
+Expected<void>
+registerUserHelpers(
+    Handlebars& hbs,
+    js::Context& ctx,
+    std::vector<std::string> const& helperDirs)
+{
+    // Collect all .js files, separating utilities from helpers.
+    // Utility files (starting with '_') define shared globals and are
+    // loaded before helper files. This allows helpers to share code
+    // without duplicating implementations.
+    //
+    // Utility files are loaded in alphabetical order to ensure predictable
+    // behavior when utilities depend on each other (e.g., _a.js runs before
+    // _b.js). If you need complex dependencies, consider consolidating into
+    // a single utility file.
+    std::vector<std::string> utilityFiles;
+    std::vector<std::pair<std::string, std::string>> helperFiles; // (name, path)
+
+    for (auto const& dir : helperDirs)
+    {
+        if (!files::exists(dir))
+            continue;
+
+        auto exp = forEachFile(dir, true,
+            [&](std::string_view pathName) -> Expected<void>
+            {
+                constexpr std::string_view ext = ".js";
+                if (!pathName.ends_with(ext))
+                    return {};
+                auto name = files::getFileName(pathName);
+                name.remove_suffix(ext.size());
+
+                if (name.starts_with("_"))
+                {
+                    // Utility file: will be executed as script
+                    utilityFiles.emplace_back(pathName);
+                }
+                else
+                {
+                    // Helper file: will be registered as Handlebars helper
+                    helperFiles.emplace_back(std::string(name), std::string(pathName));
+                }
+                return {};
+            });
+        if (!exp)
+            return Unexpected(exp.error());
+    }
+
+    // Sort utility files alphabetically for predictable load order
+    std::sort(utilityFiles.begin(), utilityFiles.end());
+
+    // Load utilities first (they define globals available to helpers).
+    // Each utility is loaded in its own scope; globals persist across scopes.
+    for (auto const& utilPath : utilityFiles)
+    {
+        js::Scope scope(ctx);
+        MRDOCS_TRY(auto script, files::getFileText(utilPath));
+        auto exp = scope.script(script);
+        if (!exp)
+        {
+            return Unexpected(formatError(
+                "Error loading utility {}: {}",
+                utilPath, exp.error().message()));
+        }
+    }
+
+    // Load helpers (they can use globals defined by utilities).
+    // Each helper is registered in its own scope via js::registerHelper.
+    for (auto const& [name, path] : helperFiles)
+    {
+        MRDOCS_TRY(auto script, files::getFileText(path));
+        MRDOCS_TRY(js::registerHelper(hbs, name, ctx, script));
+    }
+
+    return {};
+}
+
+/** Loads a layout template from addon directories.
+
+    Searches through the layout directories for the specified template
+    file. If found in multiple directories, later directories override
+    earlier ones (enabling supplemental addons to customize layouts).
+
+    @param templates The map to store loaded templates (filename -> content).
+    @param layoutDirs The directories to search for the template.
+    @param filename The template filename to load (e.g., "index.html.hbs").
+    @return Success, or throws an error if the template is not found.
+ */
+Expected<void, Error>
+loadLayoutTemplate(
+    std::map<std::string, std::string, std::less<>>& templates,
+    std::vector<std::string> const& layoutDirs,
+    std::string const& filename)
+{
+    bool loaded = false;
+    for (auto const& dir : layoutDirs)
+    {
+        auto const pathName = files::appendPath(dir, filename);
+        if (!files::exists(pathName))
+            continue;
+        MRDOCS_TRY(auto text, files::getFileText(pathName));
+        templates[filename] = std::move(text); // later dirs override
+        loaded = true;
+    }
+    if (!loaded)
+        formatError("Template {} not found in addons search path", filename).Throw();
+    return {};
+}
+
 } // (anon)
-
-
 
 Builder::
 Builder(
@@ -170,96 +378,25 @@ Builder(
 {
     namespace fs = std::filesystem;
 
-    // load partials
-    loadPartials(hbs_, commonTemplatesDir("partials"));
-    loadPartials(hbs_, templatesDir("partials"));
+    auto const& config = domCorpus->config;
+    auto const roots = addon_paths::addonRoots(config);
+    auto const partialDirs = addon_paths::partialDirs(roots, domCorpus.fileExtension);
+    auto const helperDirs = addon_paths::helperDirs(roots, domCorpus.fileExtension);
+    auto const layoutDirs = addon_paths::layoutDirs(roots, domCorpus.fileExtension);
 
-    // Load JavaScript helpers
-    std::string helpersPath = templatesDir("helpers");
-    auto exp = forEachFile(helpersPath, true,
-        [&](std::string_view pathName)-> Expected<void>
-        {
-            // Register JS helper function in the global object
-            constexpr std::string_view ext = ".js";
-            if (!pathName.ends_with(ext)) return {};
-            auto name = files::getFileName(pathName);
-            name.remove_suffix(ext.size());
-            MRDOCS_TRY(auto script, files::getFileText(pathName));
-            MRDOCS_TRY(js::registerHelper(hbs_, name, ctx_, script));
-            return {};
-        });
-    if (!exp)
-    {
+    // Load partials (later dirs overwrite earlier ones because we walk in order)
+    registerPartials(hbs_, partialDirs);
+
+    // Built-in helpers first, then user JS helpers so overrides work as expected.
+    registerDefaultHelpers(hbs_);
+    if (auto exp = registerUserHelpers(hbs_, ctx_, helperDirs); !exp)
         exp.error().Throw();
-    }
-
-    hbs_.registerHelper("primary_location",
-        dom::makeInvocable([](dom::Value const& v) ->
-            dom::Value
-        {
-            dom::Value const sourceInfo = v.get("loc");
-            if (!sourceInfo)
-            {
-                return nullptr;
-            }
-            dom::Value decls = sourceInfo.get("decl");
-            if (dom::Value def = sourceInfo.get("def"))
-            {
-                // for classes/enums, prefer the definition
-                if (dom::Value const kind = v.get("kind");
-                    kind == "record" || kind == "enum")
-                {
-                    return def;
-                }
-                // We only want to use the definition
-                // for non-tag types when no other declaration
-                // exists
-                if (!decls)
-                {
-                    return def;
-                }
-            }
-            if (!decls.isArray() ||
-                 decls.getArray().empty())
-            {
-                return nullptr;
-            }
-            // Use whatever declaration had docs.
-            for (dom::Value const& loc : decls.getArray())
-            {
-                if (loc.get("documented"))
-                {
-                    return loc;
-                }
-            }
-            // if no declaration had docs, fallback to the
-            // first declaration
-            return decls.getArray().get(0);
-        }));
-    helpers::registerConstructorHelpers(hbs_);
-    helpers::registerStringHelpers(hbs_);
-    helpers::registerAntoraHelpers(hbs_);
-    helpers::registerLogicalHelpers(hbs_);
-    helpers::registerMathHelpers(hbs_);
-    helpers::registerContainerHelpers(hbs_);
-    helpers::registerTypeHelpers(hbs_);
-    hbs_.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 
     // Load layout templates
-    std::string indexTemplateFilename =
-        std::format("index.{}.hbs", domCorpus.fileExtension);
-    std::string wrapperTemplateFilename =
-        std::format("wrapper.{}.hbs", domCorpus.fileExtension);
-    for (std::string const& filename : {indexTemplateFilename, wrapperTemplateFilename})
-    {
-        std::string pathName = files::appendPath(layoutDir(), filename);
-        Expected<std::string> text = files::getFileText(pathName);
-        if (!text)
-        {
-            text.error().Throw();
-        }
-        templates_.emplace(filename, text.value());
-    }
+    if (auto exp = loadLayoutTemplate(templates_, layoutDirs, std::format("index.{}.hbs", domCorpus.fileExtension)); !exp)
+        exp.error().Throw();
+    if (auto exp = loadLayoutTemplate(templates_, layoutDirs, std::format("wrapper.{}.hbs", domCorpus.fileExtension)); !exp)
+        exp.error().Throw();
 }
 
 //------------------------------------------------
@@ -287,24 +424,6 @@ callTemplate(
 }
 
 //------------------------------------------------
-
-std::string
-Builder::
-getRelPrefix(std::size_t depth)
-{
-    Config const& config = domCorpus->config;
-
-    std::string rel_prefix;
-    if(! depth || ! config->legibleNames ||
-        ! domCorpus->config->multipage)
-        return rel_prefix;
-    --depth;
-    rel_prefix.reserve(depth * 3);
-    while(depth--)
-        rel_prefix.append("../");
-    return rel_prefix;
-}
-
 static std::string
 makeRelfileprefix(std::string_view url)
 {
@@ -346,12 +465,11 @@ Expected<void>
 Builder::
 operator()(std::ostream& os, T const& I)
 {
-  std::string const templateFile =
-      std::format("index.{}.hbs", domCorpus.fileExtension);
+  std::string const templateFile = indexTemplateFile();
   dom::Object const ctx = createContext(I);
 
-  if (auto &config = domCorpus->config;
-      config->embedded || !config->multipage) {
+    if (auto &config = domCorpus->config;
+        config->embedded || !config->multipage) {
     // Single page or embedded pages render the index template directly
     // without the wrapper
     return callTemplate(os, templateFile, ctx);
@@ -360,14 +478,14 @@ operator()(std::ostream& os, T const& I)
     // Multipage output: render the wrapper template
     // The context receives the original symbol and the contents from rendering
     // the index template
-    auto const wrapperFile =
-        std::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    auto const wrapperFile = wrapperTemplateFile();
     dom::Object const wrapperCtx = createFrame(ctx);
-    wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile, &os](
+    wrapperCtx.set("contents", dom::makeInvocable([this, templateFile, ctx, &os](
         dom::Value const&) -> Expected<dom::Value>
         {
             // Helper to write contents directly to stream
-            MRDOCS_TRY(callTemplate(os, templateFile, createContext(I)));
+            // Reuse the already-built context to avoid recomputing DOM data.
+            MRDOCS_TRY(callTemplate(os, templateFile, ctx));
             return {};
         }));
     return callTemplate(os, wrapperFile, wrapperCtx);
@@ -383,87 +501,37 @@ renderWrapped(
     std::ostream& os,
     std::function<Expected<void>()> contentsCb)
 {
-  auto const wrapperFile =
-      std::format("wrapper.{}.hbs", domCorpus.fileExtension);
-  dom::Object ctx;
-  dom::Object page;
-  page.set("stylesheets", domCorpus.stylesheets);
-  page.set("inlineStyles", domCorpus.inlineStyles);
-  page.set("inlineScripts", domCorpus.inlineScripts);
-  page.set("hasDefaultStyles", domCorpus.hasDefaultStyles);
-  ctx.set("page", page);
-  ctx.set("config", domCorpus->config.object());
-  ctx.set("contents",
-          dom::makeInvocable([&](dom::Value const &) -> Expected<dom::Value> {
-            MRDOCS_TRY(contentsCb());
-            return {};
-          }));
+    auto const wrapperFile =
+        wrapperTemplateFile();
+    dom::Object ctx;
+    dom::Object page;
+    page.set("stylesheets", domCorpus.stylesheets);
+    page.set("inlineStyles", domCorpus.inlineStyles);
+    page.set("inlineScripts", domCorpus.inlineScripts);
+    page.set("hasDefaultStyles", domCorpus.hasDefaultStyles);
+    ctx.set("page", page);
+    ctx.set("config", domCorpus->config.object());
+    ctx.set("contents",
+            dom::makeInvocable([&](dom::Value const &) -> Expected<dom::Value> {
+              MRDOCS_TRY(contentsCb());
+              return {};
+            }));
 
-  // Render the wrapper directly to ostream
-  auto pathName = files::appendPath(layoutDir(), wrapperFile);
-  MRDOCS_TRY(auto fileText, files::getFileText(pathName));
-  HandlebarsOptions options;
-  options.escapeFunction = escapeFn_;
-  OutputRef outRef(os);
-  Expected<void, HandlebarsError> exp =
-      hbs_.try_render_to(outRef, fileText, ctx, options);
-  if (!exp) {
-    Error(exp.error().what()).Throw();
-  }
-    return {};
+    return callTemplate(os, wrapperFile, ctx);
 }
 
 std::string
 Builder::
-layoutDir() const
+indexTemplateFile() const
 {
-    return templatesDir("layouts");
+    return std::format("index.{}.hbs", domCorpus.fileExtension);
 }
 
 std::string
 Builder::
-templatesDir() const
+wrapperTemplateFile() const
 {
-    Config const& config = domCorpus->config;
-    return files::appendPath(
-        config->addons,
-        "generator",
-        domCorpus.fileExtension);
-}
-
-std::string
-Builder::
-templatesDir(std::string_view subdir) const
-{
-    Config const& config = domCorpus->config;
-    return files::appendPath(
-        config->addons,
-        "generator",
-        domCorpus.fileExtension,
-        subdir);
-}
-
-std::string
-Builder::
-commonTemplatesDir() const
-{
-    Config const& config = domCorpus->config;
-    return files::appendPath(
-        config->addons,
-        "generator",
-        "common");
-}
-
-std::string
-Builder::
-commonTemplatesDir(std::string_view const subdir) const
-{
-    Config const& config = domCorpus->config;
-    return files::appendPath(
-        config->addons,
-        "generator",
-        "common",
-        subdir);
+    return std::format("wrapper.{}.hbs", domCorpus.fileExtension);
 }
 
 
