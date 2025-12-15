@@ -16,15 +16,14 @@
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
-#include "Support/TestLayout.hpp"
 #include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/ErrorOr.h>
 #include <atomic>
-#include <chrono>
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <test/Support/TestLayout.hpp>
 
 
 namespace mrdocs {

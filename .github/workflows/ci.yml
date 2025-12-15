@@ -97,6 +97,7 @@ jobs:
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
           output-file: matrix.json
           trace-commands: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # Set up the version as expected by the LLVM matrix script and @actions/core
       - name: Setup Node.js
@@ -283,7 +284,7 @@ jobs:
       # section, but which depend on paths not known at that point.
       - name: Resolved Matrix
         id: rmatrix
-        run: |          
+        run: |
           set -euvx
 
           third_party_dir="$(realpath $(pwd)/..)/third-party"
@@ -428,14 +429,14 @@ jobs:
         run: |
           rm -r ../third-party/llvm-project
 
-      - name: Install Duktape
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+      - name: Install JerryScript
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
         with:
-          source-dir: ../third-party/duktape
-          url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
+          source-dir: ../third-party/jerryscript
+          url: https://github.com/jerryscript-project/jerryscript/archive/refs/tags/v3.0.0.tar.gz
           patches: |
-            ./third-party/patches/duktape/CMakeLists.txt
-            ./third-party/patches/duktape/duktapeConfig.cmake.in
+            ./third-party/patches/jerryscript/CMakeLists.txt
+            ./third-party/patches/jerryscript/jerryscriptConfig.cmake.in
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
@@ -447,6 +448,20 @@ jobs:
           install-prefix: ${sourceDir}/install
           run-tests: false
           trace-commands: true
+          extra-args: |
+            -D JERRY_PROFILE=es.next
+            -D JERRY_EXTERNAL_CONTEXT=ON
+            -D JERRY_PORT=ON
+            -D JERRY_DEBUGGER=OFF
+            -D JERRY_SNAPSHOT_SAVE=OFF
+            -D JERRY_SNAPSHOT_EXEC=OFF
+            -D JERRY_CMDLINE=OFF
+            -D JERRY_TESTS=OFF
+            -D JERRY_MEM_STATS=OFF
+            -D JERRY_PARSER_STATS=OFF
+            -D JERRY_LINE_INFO=OFF
+            -D JERRY_LTO=OFF
+            -D JERRY_LIBC=OFF
 
       - name: Install Lua
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
@@ -547,7 +562,7 @@ jobs:
             -D MRDOCS_BUILD_DOCS=OFF
             -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
             -D LLVM_ROOT="${{ steps.rmatrix.outputs.llvm-path }}"
-            -D duktape_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/duktape/install"
+            -D jerryscript_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/jerryscript/install"
             -D LUA_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
             -D Lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
             -D lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
@@ -790,7 +805,7 @@ jobs:
           $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.9.1
+        uses: alandefreitas/cpp-actions/boost-clone@v1.9.0
         id: boost-url-clone
         with:
           branch: develop
@@ -804,7 +819,7 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         run: |
           set -x
-      
+          
           if [[ $RUNNER_OS == 'macOS' ]]; then
             # Step 1: Check if llvm-symbolizer is installed
             if ! command -v llvm-symbolizer &> /dev/null; then
@@ -817,7 +832,7 @@ jobs:
                     exit 1
                 fi
             fi
-      
+          
             # Step 3: Ensure llvm-symbolizer is in your PATH
             llvm_bin_path=$(brew --prefix)/opt/llvm/bin
             PATH="$PATH:$llvm_bin_path"
@@ -835,7 +850,7 @@ jobs:
                 apt-get update
                 apt-get install -y llvm
             fi
-      
+          
             # Step 2: Ensure llvm-symbolizer is in your PATH
             LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
             if [ -z "$LLVM_SYMBOLIZER_PATH" ]; then
@@ -848,7 +863,7 @@ jobs:
             echo "Unsupported OS: $RUNNER_OS"
             exit 1
           fi
-      
+          
           # Step 4: Export LLVM_SYMBOLIZER_PATH environment variable
           export LLVM_SYMBOLIZER_PATH="$LLVM_SYMBOLIZER_PATH"
           echo -e "LLVM_SYMBOLIZER_PATH=$LLVM_SYMBOLIZER_PATH" >> $GITHUB_ENV
@@ -967,7 +982,7 @@ jobs:
             # Mirror contents of $src into $dst, overwriting existing files
             tar -C "$src" -cf - . | tar -C "$dst" -xpf -
           done
-          
+
 
       - name: Generate Demos
         run: |

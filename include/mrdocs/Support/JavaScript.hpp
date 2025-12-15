@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,7 +15,10 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <array>
+#include <cstdint>
 #include <cstdlib>
+#include <memory>
 #include <span>
 #include <string_view>
 
@@ -27,14 +31,67 @@ class Handlebars;
     These functions abstract over the embedded JavaScript engine so that
     scripts and helpers can be bound, invoked, and marshalled without leaking
     engine-specific types into the rest of the codebase.
+
+    ## Implementation Notes (for Python/Lua integrations)
+
+    The current implementation uses JerryScript with the following design choices:
+
+    ### Context Isolation
+    Each @ref Context owns an independent JerryScript interpreter with its own
+    512KB heap. This allows multiple threads to execute JavaScript in parallel
+    by giving each thread its own Context. The `JERRY_EXTERNAL_CONTEXT` build
+    flag enables this multi-context support.
+
+    ### Scope and Value Lifetime
+    JerryScript uses heap-based reference counting (not a stack like Lua/Duktape).
+    To provide deterministic cleanup similar to stack-based engines:
+
+    - **Scope** tracks values created within it and releases one reference to
+      each when the scope ends. Values that were copied elsewhere survive;
+      values that remained local are freed.
+    - **Value** holds its own reference via jerry_value_copy/jerry_value_free.
+      Values can safely outlive their creating Scope if copied.
+
+    ### Integer Limitations
+    JerryScript only guarantees 32-bit integer precision. Values outside the
+    int32 range (approximately +/-2 billion) are converted to strings when passed
+    to JavaScript to avoid wraparound bugs. When reading values back, integers
+    that fit in int64 are returned as integers; others remain as doubles.
+
+    ### DOM to JS Conversion Strategy
+    - **Objects**: Use lazy Proxy wrappers to avoid infinite recursion from
+      circular references (e.g., Handlebars symbol contexts that reference
+      parent symbols). Properties are converted on-demand when accessed.
+    - **Arrays**: Converted eagerly (snapshot semantics) because they rarely
+      contain circular references. This means JS mutations don't affect the
+      original C++ array and vice versa.
+    - **Functions**: Wrapped bidirectionally so JS can call C++ functions and
+      C++ can invoke JS functions through dom::Function.
+
+    ### Thread Safety
+    Each Context has its own mutex serializing operations on that context.
+    Different Contexts can execute in parallel on different threads. Values
+    hold a shared_ptr to their Context, keeping it alive and using the mutex
+    for all JerryScript operations.
+
+    ### Port Functions
+    JerryScript requires "port functions" for platform-specific operations.
+    We use the default jerry-port library (JERRY_PORT=ON) for most functions
+    (logging, time, fatal errors, etc.), but provide custom implementations
+    of the context management functions:
+    - `jerry_port_context_alloc`: Allocates context + heap memory
+    - `jerry_port_context_free`: Frees context memory
+    - `jerry_port_context_get`: Returns current thread's active context
+
+    The default jerry-port context functions use a static global pointer,
+    limiting all threads to a single shared context. When building with
+    JERRY_EXTERNAL_CONTEXT=ON, these functions are excluded from jerry-port
+    (see third-party/patches/jerryscript/CMakeLists.txt), and mrdocs provides
+    TLS-based implementations that allow each thread to have its own active
+    context, enabling parallel JavaScript execution.
 */
 namespace js {
 
-/** Opaque tag that allows bridge classes to reach JS internals.
-*/
-/** Grants friend-level access to internal scopes.
-*/
-struct Access;
 class Context;
 class Scope;
 
@@ -70,9 +127,9 @@ enum class Type
     number,
     /// The value is a string
     string,
-    /// The value is a function
+    /// The value is an object
     object,
-    /// The value is an array
+    /// The value is a function
     function,
     /// The value is an array
     array
@@ -80,159 +137,106 @@ enum class Type
 
 //------------------------------------------------
 
-/** Represents either a property name or array index when addressing JS objects.
-*/
-class Prop
-{
-    unsigned int index_;
-    std::string_view name_;
+/** An isolated JavaScript interpreter instance.
 
-public:
-    /** Create a property by name.
-    */
-    constexpr Prop(std::string_view name) noexcept
-        : index_(0)
-        , name_(name)
-    {
-    }
+    Each Context owns an independent JerryScript interpreter with its own
+    512KB heap. Multiple Contexts can exist simultaneously, allowing parallel
+    JavaScript execution across threads (each thread should use its own Context).
 
-    /** Create a property by numeric index.
-    */
-    constexpr Prop(unsigned int index) noexcept
-        : index_(index)
-    {
-    }
+    To execute scripts or create values, construct a @ref Scope from the Context.
+    The Scope activates the Context on the current thread and provides methods
+    for script evaluation and value creation.
 
-    /** Return true if this property refers to an array index.
-    */
-    constexpr bool
-    isIndex() const noexcept
-    {
-        return name_.empty();
-    }
-};
-
-//------------------------------------------------
-
-/** An instance of a JavaScript interpreter.
-
-    This class represents a JavaScript interpreter
-    context under which we can create @ref Scope
-    objects to define variables and execute scripts.
-
-    A context represents a JavaScript heap where
-    variables can be allocated and will be later
-    garbage collected.
-
-    Each context is associated with a single
-    heap allocated with default memory
-    management.
-
-    Once the context is created, a @ref Scope
-    in this context can be created to define
-    variables and execute scripts.
+    Contexts can be copied (via copy constructor); copies share the same
+    underlying interpreter and heap. This is useful for passing context
+    references without transferring ownership.
 
     @see Scope
 */
 class MRDOCS_DECL
     Context
 {
+public:
+    /** Shared runtime data for a JavaScript context. */
     struct Impl;
 
-    Impl* impl_;
+private:
+    std::shared_ptr<Impl> impl_;
 
-    friend struct Access;
+    friend class Value;
+    friend class Scope;
 
 public:
     /** Destructor.
+
+        Releases this reference to the interpreter. The underlying JerryScript
+        context is destroyed when the last Context (or Value) referencing it
+        is destroyed.
     */
     ~Context();
 
     /** Constructor.
 
-        Create a javascript execution context
-        associated with its own garbage-collected
-        heap.
+        Creates a new JavaScript interpreter with its own 512KB heap.
+        The interpreter is initialized but inactive until a Scope is created.
     */
     Context();
 
-    /** Constructor.
+    /** Copy constructor.
 
-        Create a javascript execution context
-        associated with the heap of another
-        context.
+        Creates a new Context that shares the same underlying interpreter.
+        Both Contexts reference the same heap and global object. This is
+        useful for passing Context references without transferring ownership.
 
-        Both contexts will share the same
-        garbage-collected heap, which is
-        destroyed when the last context
-        is destroyed.
-
-        While they share the heap, their
-        scripts can include references
-        to the same variables.
-
-        There are multi-threading
-        restrictions, however: only one
-        native thread can execute any
-        code within a single heap at any
-        time.
-
+        @note Operations on the shared interpreter are serialized by a mutex,
+        so only one thread can execute at a time per interpreter.
     */
     Context(Context const&) noexcept;
 
-    /** Copy assignment.
+    /** Copy assignment (deleted).
 
-        @copydetails Context(Context const&)
-
+        Copy assignment is deleted to prevent accidental interpreter sharing.
+        Use the copy constructor explicitly if sharing is intended.
     */
     Context& operator=(Context const&) = delete;
 };
 
 //------------------------------------------------
 
-/** A JavaScript scope
+/** A JavaScript scope for value lifetime management.
 
-    This class represents a JavaScript scope
-    under which we can define variables and
-    execute scripts.
+    Scope serves two purposes:
 
-    Each scope is a section of the context heap
-    in the JavaScript interpreter. A javascript
-    variable is defined by creating a
-    @ref Value that is associated with this
-    Scope, i.e., subsection of the context heap.
+    1. **Value batch tracking**: Tracks JavaScript values created within
+       the scope and releases one reference to each when the scope ends.
+       Values that were copied elsewhere (e.g., returned from functions,
+       stored in containers) survive because they hold their own references.
+       Values that remained local to the scope are freed.
 
-    When a scope is destroyed, the heap section
-    is popped and all variables defined in
-    that scope are invalidated.
+    2. **Thread safety**: Each Scope operation briefly locks the Context's
+       mutex and activates the context (sets TLS). This allows multiple
+       threads to share a Context while serializing access to the interpreter.
+       Values obtained from a Scope can be used from other threads; they
+       will acquire the lock as needed.
 
-    For this reason, two scopes of the
-    same context heap cannot be manipulated
-    at the same time.
+    This provides deterministic cleanup similar to stack-based engines
+    (Lua, Duktape) while working with JerryScript's reference-counted heap.
 
+    @note Multiple Scopes can exist for the same Context (even in different
+    threads), but operations are serialized by the Context's mutex.
 */
 class Scope
 {
-    Context ctx_;
-    std::size_t refs_;
-    int top_;
+    std::shared_ptr<Context::Impl> impl_;
 
-    friend struct Access;
-
-    void reset();
+    // Values to release on destruction
+    std::vector<std::uint32_t> tracked_;
 
 public:
     /** Constructor.
 
-        Construct a scope for the given context.
-
-        Variables defined in this scope will be
-        allocated on top of the specified
-        context heap.
-
-        When the Scope is destroyed, the
-        variables defined in this scope will
-        be popped from the heap.
+        Records the context for this scope. The context's mutex is NOT held
+        for the lifetime of the Scope; instead, each operation locks briefly.
 
         @param ctx The context to use.
     */
@@ -241,13 +245,9 @@ public:
 
     /** Destructor.
 
-        All variables defined in this scope
-        are popped from the internal context
-        heap.
-
-        There should be no @ref Value objects
-        associated with this scope when it
-        is destroyed.
+        Releases one reference to each value created within this scope.
+        Values whose reference count drops to zero are freed; values
+        that were copied elsewhere survive.
     */
     MRDOCS_DECL
     ~Scope();
@@ -309,6 +309,9 @@ public:
         can be used to execute commands or define
         global variables in the parent context.
 
+        ES module import/export is not enabled; scripts must be self-contained
+        or rely on globals.
+
         It evaluates the ECMAScript source code and
         converts any internal errors to @ref Error.
 
@@ -338,19 +341,10 @@ public:
 
     /** Compile a script and push results to stack.
 
-        Compile ECMAScript source code and return it
-        as a compiled function object that executes it.
-
-        Unlike the `script()` function, the code is not
-        executed. A compiled function that can be executed
-        is returned.
-
-        The returned function has zero arguments and
-        executes as if we called `script()`.
-
-        The script returns an implicit return value
-        equivalent to the last non-empty statement value
-        in the code.
+        Wraps arbitrary script text in an IIFE that calls `eval` when invoked,
+        returning the last expression result. Function declarations are
+        rejected to avoid silent re-declarations. Side effects in the script
+        run at invocation time.
 
         @param jsCode The JavaScript code to compile.
         @return A function object that can be called.
@@ -362,15 +356,11 @@ public:
 
     /** Compile a script and push results to stack.
 
-        Compile ECMAScript source code that defines a
-        function and return the compiled function object.
-
-        Unlike the `script()` function, the code is not
-        executed. A compiled function with the specified
-        number of arguments that can be executed is returned.
-
-        If the function code contains more than one function, the
-        return value is the first function compiled.
+        Coerces provided source into a callable function. First parenthesizes
+        the source to force expression parsing; if that fails, executes the
+        script and returns the first declared function name. Ambiguous sources
+        may run side effects twice (expression attempt + fallback) matching
+        existing behavior.
 
         @param jsCode The JavaScript code to compile.
         @return A function object that can be called.
@@ -457,30 +447,25 @@ public:
 class MRDOCS_DECL Value
 {
 protected:
-    /** Scope that owns the value stack entry.
-    */
-    Scope* scope_;
-    /** Index of the value within the scope stack.
-    */
-    int idx_;
+    /// Shared lifetime owner for the underlying JavaScript runtime.
+    std::shared_ptr<Context::Impl> impl_;
 
-    friend struct Access;
+    /// Opaque engine value handle stored as an integer (engine-specific inside the implementation).
+    std::uint32_t val_;
 
-    /** Construct a value bound to a stack position in the given scope.
+    friend class Scope;
+
+    /** Wrap an existing engine value without transferring ownership.
+        @param val JerryScript value handle that will be acquired.
+        @param impl Shared runtime state that keeps the context alive.
     */
-    Value(int position, Scope& scope) noexcept;
+    Value(std::uint32_t val, std::shared_ptr<Context::Impl> impl) noexcept;
 
 public:
     /** Destructor
 
-        If the value is associated with a
-        @ref Scope and it is on top of the
-        stack, it is popped. Also, if
-        there are no other Value references
-        to the @ref Scope, all variables
-        defined in that scope are popped
-        via `Scope::reset`.
-
+        Releases the underlying engine handle; lifetime is tied to the shared
+        @ref Context::Impl, not to a stack frame.
     */
     MRDOCS_DECL ~Value();
 
@@ -496,9 +481,8 @@ public:
 
     /** Constructor
 
-        The function pushes a duplicate of
-        value to the stack and associates
-        the new value the top of the stack.
+        Duplicates the underlying engine handle held by `value` and shares the
+        same runtime state.
     */
     MRDOCS_DECL Value(Value const&);
 
@@ -673,10 +657,13 @@ public:
         If the value is not a string, it is not
         converted to a string.
 
+        JerryScript allocates a new buffer for string extraction, so the
+        returned value is an owning `std::string` rather than a view.
+
         @note Behaviour is undefined if `!isString()`
 
     */
-    std::string_view
+    std::string
     getString() const;
 
     /** Return the underlying boolean value.
@@ -736,27 +723,6 @@ public:
 
     */
     dom::Value getDom() const;
-
-    /** Set "log" property
-
-        This function sets the "log" property
-        in the object.
-
-        The "log" property is populated with
-        a function that takes two javascript
-        arguments `(level, message)` where
-        `level` is an unsigned integer and
-        `message` is a string.
-
-        The mrdocs library function
-        `mrdocs::report::print`
-        is then called with these
-        two arguments to report a
-        message to the console.
-
-    */
-    void setlog();
-
 
     /** Return the element for a given key.
 
@@ -833,6 +799,12 @@ public:
         std::string_view key,
         dom::Value const& value) const;
 
+    /** Remove a property from an object if it exists.
+        @param key Property name to erase from the current object.
+    */
+    void
+    erase(std::string_view key) const;
+
     /** Return true if a key exists.
 
         @param key The key to check for.
@@ -851,6 +823,22 @@ public:
     std::size_t
     size() const;
 
+    /** Return the element for a property name.
+
+        @param key Property name to fetch from the current object.
+        @return The element for the given key, or undefined if missing / not an object.
+    */
+    Value
+    operator[](std::string_view key) const;
+
+    /** Return the element for an array index.
+
+        @param index Zero-based array index to fetch when the value is an array.
+        @return The element for the given index, or undefined if out of bounds / not an array.
+    */
+    Value
+    operator[](std::size_t index) const;
+
     /** Invoke a function.
 
         @param args Zero or more arguments to pass to the method.
@@ -860,18 +848,26 @@ public:
     Expected<Value>
     call(Args&&... args) const
     {
-        return callImpl({ dom::Value(std::forward<Args>(args))... });
+        return apply({ dom::Value(std::forward<Args>(args))... });
     }
 
-    /** Invoke a function with variadic arguments.
+    /** Invoke a function with a span of arguments.
 
-        @param args Zero or more arguments to pass to the method.
-        @return The return value of the method.
+        @param args Arguments to pass to the JavaScript function.
+        @return The return value of the function.
     */
     Expected<Value>
-    apply(std::span<dom::Value> args) const
+    apply(std::span<const dom::Value> args) const;
+
+    /** Invoke a function with an initializer_list of arguments.
+
+        @param args Arguments to pass to the JavaScript function.
+        @return The return value of the function.
+    */
+    Expected<Value>
+    apply(std::initializer_list<dom::Value> args) const
     {
-        return callImpl(args);
+        return apply(std::span<const dom::Value>(args.begin(), args.size()));
     }
 
     /** Invoke a function.
@@ -884,22 +880,6 @@ public:
     operator()(Args&&... args) const
     {
         return call(std::forward<Args>(args)...).value();
-    }
-
-    /** Invoke a method.
-
-        @param prop The property name of the method to call.
-        @param args Zero or more arguments to pass to the method.
-        @return The return value of the method.
-    */
-    template<class... Args>
-    Expected<Value>
-    callProp(
-        std::string_view prop,
-        Args&&... args) const
-    {
-        return callPropImpl(prop,
-            { dom::Value(std::forward<Args>(args))... });
     }
 
     /// @copydoc isTruthy()
@@ -1059,22 +1039,6 @@ public:
     friend
     std::string
     toString(Value const& value);
-
-private:
-    MRDOCS_DECL
-    Expected<Value>
-    callImpl(
-        std::initializer_list<dom::Value> args) const;
-
-    MRDOCS_DECL
-    Expected<Value>
-    callImpl(std::span<dom::Value> args) const;
-
-    MRDOCS_DECL
-    Expected<Value>
-    callPropImpl(
-        std::string_view prop,
-        std::initializer_list<dom::Value> args) const;
 };
 
 inline
@@ -1147,12 +1111,32 @@ isFunction() const noexcept
     as a helper function that can be called from
     Handlebars templates.
 
+    The helper source is resolved in the following order:
+
+    1. **Parenthesized eval** - wraps the script in parentheses and evaluates.
+       Handles function declarations without side effects.
+       Example: `"function add(a, b) { return a + b; }"`
+
+    2. **Direct eval** - evaluates the script as-is.
+       Handles IIFEs and expressions that return functions.
+       Example: `"(function(){ return function(x){ return x*2; }; })()"`
+
+    3. **Global lookup** - looks up the helper name on the global object.
+       Handles scripts that define globals before returning.
+       Example: `"var helper = function(x){ return x; }; helper;"`
+
+    The resolved function is stored on the shared `MrDocsHelpers` global object
+    and registered with Handlebars. When invoked, positional arguments are passed
+    to the JavaScript function (the Handlebars options object is stripped to avoid
+    expensive recursive conversion of symbol contexts).
+
     @param hbs The Handlebars instance to register the helper into
     @param name The name of the helper function
     @param ctx The JavaScript context to use
     @param script The JavaScript code that defines the helper function
+    @return Success, or an error if the script could not be resolved to a function
 */
-MRDOCS_DECL
+[[nodiscard]] MRDOCS_DECL
 Expected<void, Error>
 registerHelper(
     mrdocs::Handlebars& hbs,

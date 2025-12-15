@@ -80,55 +80,14 @@ Feel free to install them anywhere you want and adjust the main Mr.Docs configur
 
 [IMPORTANT]
 ====
-All instructions in this document assume you are using a CMake version above 3.26.
+All instructions in this document assume you are using a CMake version at or above 3.13.
 Binaries are available at https://cmake.org/download/[CMake's official website,window="_blank"].
 ====
 
-=== Duktape
+=== JerryScript
 
-Mr.Docs uses the `duktape` library for JavaScript parsing.
-From the `third-party` directory, you can download the `duktape` source code from the official release:
-
-[tabs]
-====
-Windows PowerShell::
-+
---
-[source,bash]
-----
-Invoke-WebRequest -Uri "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz" -OutFile "duktape-2.7.0.tar.xz" <.>
-----
-
-<.> Downloads the `duktape` source code.
---
-
-Unix Variants::
-+
---
-[source,bash]
-----
-curl -LJO https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz <.>
-----
-
-<.> Downloads the `duktape` source code.
---
-====
-
-Then patch the Duktape source code to provide CMake support.
-
-[source,bash]
-----
-tar -xf duktape-2.7.0.tar.xz <.>
-cp ../mrdocs/third-party/duktape/CMakeLists.txt ./duktape-2.7.0/CMakeLists.txt <.>
-cp ../mrdocs/third-party/duktape/duktapeConfig.cmake.in ./duktape-2.7.0/duktapeConfig.cmake.in <.>
-cd duktape-2.7.0
-----
-
-<.> Extracts the `duktape` source code.
-<.> Patches the source code with a `CMakeLists.txt` file to the `duktape-2.7.0` directory so that we can build it with CMake.
-<.> Copies the `duktapeConfig.cmake.in` file to the `duktape-2.7.0` directory so that we can install it with CMake and find it later from other CMake projects.
-
-Now adjust the `duk_config.h` file to indicate we are statically building Duktape.
+Mr.Docs embeds the `JerryScript` engine for JavaScript helpers.
+From the `third-party` directory, download the 3.0.0 source archive from the official repository:
 
 [tabs]
 ====
@@ -137,14 +96,10 @@ Windows PowerShell::
 --
 [source,bash]
 ----
-$content = Get-Content -Path "src\duk_config.h" <.>
-$content = $content -replace '#define DUK_F_DLL_BUILD', '#undef DUK_F_DLL_BUILD' <.>
-$content | Set-Content -Path "src\duk_config.h" <.>
+Invoke-WebRequest -Uri "https://github.com/jerryscript-project/jerryscript/archive/refs/tags/v3.0.0.tar.gz" -OutFile "jerryscript-3.0.0.tar.gz" <.>
 ----
 
-<.> Read the content of `duk_config.h`
-<.> Replace the `DUK_F_DLL_BUILD` macro with `#undef DUK_F_DLL_BUILD`
-<.> Write the content back to the file
+<.> Downloads the `JerryScript` source code.
 --
 
 Unix Variants::
@@ -152,39 +107,36 @@ Unix Variants::
 --
 [source,bash]
 ----
-sed -i 's/#define DUK_F_DLL_BUILD/#undef DUK_F_DLL_BUILD/g' "src/duk_config.h" <.>
+curl -LJO https://github.com/jerryscript-project/jerryscript/archive/refs/tags/v3.0.0.tar.gz <.>
 ----
 
-<.> Disables the `DUK_F_DLL_BUILD` macro in the `duk_config.h` file to indicate we are statically building duktape.
---
-
-MacOS::
-+
---
-[source,bash]
-----
-sed -i '' 's/#define DUK_F_DLL_BUILD/#undef DUK_F_DLL_BUILD/g' src/duk_config.h <.>
-----
-
-<.> Disables the `DUK_F_DLL_BUILD` macro in the `duk_config.h` file to indicate we are statically building duktape.
+<.> Downloads the `JerryScript` source code.
 --
 ====
 
-And finally install the library with CMake:
+Patch the JerryScript source with our CMake shim and install it:
 
 [source,bash]
 ----
-cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release <.>
-cmake --build ./build --config Release <.>
-cmake --install ./build --prefix ./install <.>
+tar -xf jerryscript-3.0.0.tar.gz <.>
+cp ../mrdocs/third-party/patches/jerryscript/CMakeLists.txt ./jerryscript-3.0.0/CMakeLists.txt <.>
+cp ../mrdocs/third-party/patches/jerryscript/jerryscriptConfig.cmake.in ./jerryscript-3.0.0/jerryscriptConfig.cmake.in <.>
+cd jerryscript-3.0.0
+
+cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release \
+  -DJERRY_PROFILE=es.next -DJERRY_CMDLINE=OFF -DJERRY_TESTS=OFF -DJERRY_DEBUGGER=OFF \
+  -DJERRY_SNAPSHOT_SAVE=OFF -DJERRY_SNAPSHOT_EXEC=OFF \
+  -DJERRY_MEM_STATS=OFF -DJERRY_PARSER_STATS=OFF -DJERRY_LINE_INFO=OFF \
+  -DJERRY_LTO=OFF -DJERRY_LIBC=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+cmake --build ./build --config Release
+cmake --install ./build --prefix ./install
 ----
 
-<.> Configures the `duktape` library with CMake.
-<.> Builds the `duktape` library in the `build` directory.
-<.> Installs the `duktape` library with CMake support in the `install` directory.
+<.> Extracts the `JerryScript` source code.
+<.> Adds CMake packaging files maintained in this repository.
 
-The scripts above download the `duktape` source code, extract it, and configure it with CMake.
-The CMake scripts provided by MrDocs are copied to the `duktape-2.7.0` directory to facilitate the build process with CMake and provide CMake installation scripts for other projects.
+The build uses JerryScript's upstream default port implementation; no custom
+`port.c` from MrDocs is required.
 
 === Libxml2
 
@@ -317,7 +269,7 @@ cd ../..
 
 The MrDocs repository also includes a `CMakePresets.json` file that contains the parameters to configure MrDocs with CMake.
 
-To specify the installation directories, you can use the `LLVM_ROOT`, `DUKTAPE_ROOT`, and `LIBXML2_ROOT` environment variables.
+To specify the installation directories, you can use the `LLVM_ROOT`, `JERRYSCRIPT_ROOT`, and `LIBXML2_ROOT` environment variables.
 To specify a generator (`-G`) and platform name (`-A`), you can use the `CMAKE_GENERATOR` and `CMAKE_GENERATOR_PLATFORM` environment variables.
 
 You can also customize the presets by duplicating and editing the `CMakeUserPresets.json.example` file in the `mrdocs` directory.

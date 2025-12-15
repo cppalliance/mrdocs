@@ -1892,8 +1892,19 @@ evalExpr(
             cb.set("root", state.rootContext);
             cb.set("log", logger_);
             setupArgs(all, context, state, args, cb, opt);
-            return Res{fn.call(args).value(), true, false, true};
-            MRDOCS_UNREACHABLE();
+            Expected<dom::Value> exp = fn.call(args);
+            if (!exp)
+            {
+                Error e = exp.error();
+                auto res = find_position_in_text(state.rootTemplateText, helper);
+                std::string const& msg = e.reason();
+                if (res)
+                {
+                    return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
+                }
+                return Unexpected(HandlebarsError(msg));
+            }
+            return Res{*exp, true, false, true};
         }
     }
     // ==============================================================
@@ -2436,10 +2447,22 @@ renderExpression(
         HandlebarsOptions noStrict = opt;
         noStrict.strict = false;
         MRDOCS_TRY(setupArgs(tag.arguments, context, state, args, cb, noStrict));
-        dom::Value res = fn.call(args).value();
-        if (!res.isUndefined()) {
-            opt2.noEscape = opt2.noEscape || res.isSafeString();
-            format_to(out, res, opt2);
+        Expected<dom::Value> exp = fn.call(args);
+        if (!exp)
+        {
+            Error e = exp.error();
+            auto res = find_position_in_text(state.rootTemplateText, tag.helper);
+            std::string const& msg = e.reason();
+            if (res)
+            {
+                return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
+            }
+            return Unexpected(HandlebarsError(msg));
+        }
+        dom::Value result = *exp;
+        if (!result.isUndefined()) {
+            opt2.noEscape = opt2.noEscape || result.isSafeString();
+            format_to(out, result, opt2);
         }
         if (tag.removeRWhitespace) {
             state.templateText = trim_lspaces(state.templateText);

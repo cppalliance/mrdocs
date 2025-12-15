@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<body>
+<ul>
+    <li id="echo">{{echo "mrdocs"}}</li>
+    <li id="bool">{{describe true}}</li>
+    <li id="number">{{describe 42}}</li>
+    <li id="string">{{describe "hi"}}</li>
+    <li id="null">{{describe null}}</li>
+    <li id="undefined">{{describe}}</li>
+    <li id="array">{{describe "a" "b" 3}}</li>
+    <li id="hash">{{hash_inspect "a" 1 "b" "two"}}</li>
+    <li id="glue">{{glue "|" "x" "y" "z"}}</li>
+    <li id="block">{{#choose}}then{{else}}otherwise{{/choose}}</li>
+    <li id="format">{{format_id}}</li>
+</ul>
+</body>
+</html>

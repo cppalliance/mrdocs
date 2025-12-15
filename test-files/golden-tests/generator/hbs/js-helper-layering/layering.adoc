@@ -1,0 +1,4 @@
+= Layering Test
+
+greet: override&hyphen;hello
+keep: base&hyphen;keep

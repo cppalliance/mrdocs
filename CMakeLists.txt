@@ -277,13 +277,8 @@ llvm_map_components_to_libnames(llvm_libs all)
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-# Duktape
-find_package(duktape CONFIG)
-if (NOT DUKTAPE_FOUND)
-    # Duktape doesn't natively support CMake.
-    # Some config script patches use the capitalized version.
-    find_package(Duktape REQUIRED CONFIG)
-endif()
+# JerryScript
+find_package(jerryscript REQUIRED CONFIG)
 
 # Lua
 find_package(Lua CONFIG REQUIRED)
@@ -344,10 +339,11 @@ target_include_directories(mrdocs-core
 )
 target_include_directories(mrdocs-core
         SYSTEM PRIVATE
-        "$<BUILD_INTERFACE:${DUKTAPE_INCLUDE_DIRS}>"
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+        "$<BUILD_INTERFACE:${JERRYSCRIPT_INCLUDE_DIRS}>"
+        "$<BUILD_INTERFACE:${jerryscript_ROOT}/include>"
+        "$<BUILD_INTERFACE:/usr/local/include>"
 )
-target_link_libraries(mrdocs-core PRIVATE ${DUKTAPE_LIBRARY})
+target_link_libraries(mrdocs-core PRIVATE jerryscript::jerry-core jerryscript::jerry-port)
 target_link_libraries(mrdocs-core PRIVATE Lua::lua)
 
 # Clang
@@ -425,8 +421,6 @@ list(APPEND TOOL_SOURCES
         ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.cpp)
 
 add_executable(mrdocs ${TOOL_SOURCES})
-target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
-
 target_include_directories(mrdocs
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"

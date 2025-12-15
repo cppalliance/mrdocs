@@ -59,8 +59,3 @@ The documentation is written in AsciiDoc and can be built using the Antora tool.
 ==== `third-party/`—Helpers for third-party libraries
 
 This directory contains build scripts and configuration files for third-party libraries.
-
-* `third-party/`—Third-party libraries
-** `third-party/llvm/`—CMake Presets for LLVM
-** `third-party/duktape/`—CMake scripts for Duktape
-** `third-party/lua/`—A bundled Lua interpreter

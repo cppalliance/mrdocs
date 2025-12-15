@@ -7,6 +7,15 @@
       "title": "Path to the Addons directory",
       "type": "string"
     },
+    "addons-supplemental": {
+      "default": [],
+      "description": "Optional list of supplemental addons directories that are loaded after the base addons (built-in or replacement). Files in later supplemental directories override files from earlier ones and from the base addons. Use this to add or override a few templates/helpers without copying the entire addons tree.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Additional addons layered on top of the base addons",
+      "type": "array"
+    },
     "auto-brief": {
       "default": true,
       "description": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",

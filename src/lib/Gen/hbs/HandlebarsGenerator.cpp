@@ -11,6 +11,7 @@
 //
 
 #include "HandlebarsGenerator.hpp"
+#include "AddonPaths.hpp"
 #include "Builder.hpp"
 #include "HandlebarsCorpus.hpp"
 #include "MultiPageVisitor.hpp"
@@ -23,20 +24,36 @@
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <filesystem>
 #include <format>
 #include <fstream>
 #include <sstream>
-#include <filesystem>
 #include <string_view>
+#include <vector>
 
 namespace mrdocs::hbs {
 
 namespace {
+
+/// Default filename for the main MrDocs stylesheet.
 constexpr std::string_view defaultStylesheetName = "mrdocs-default.css";
+
+/// Default filename for the syntax highlighting stylesheet.
 constexpr std::string_view defaultHighlightStylesheetName = "mrdocs-highlight.css";
+
+/// CDN URL for highlight.js library used for syntax highlighting.
 constexpr std::string_view highlightJsCdn =
     "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js";
 
+/** Creates an escape function bound to a generator.
+
+    Returns a callable that delegates to the generator's escape method.
+    Used by Handlebars to escape output strings according to the
+    output format (e.g., HTML escaping for HTML output).
+
+    @param gen The generator providing the escape implementation.
+    @return A function suitable for use as a Handlebars escape function.
+*/
 std::function<void(OutputRef&, std::string_view)>
 createEscapeFn(HandlebarsGenerator const& gen)
 {
@@ -45,6 +62,17 @@ createEscapeFn(HandlebarsGenerator const& gen)
     };
 }
 
+/** Creates an executor group with Builder instances for parallel rendering.
+
+    Initializes one Builder per thread in the thread pool. Each Builder
+    has its own Handlebars instance with registered templates, partials,
+    and helpers, enabling lock-free parallel page generation.
+
+    @param gen The generator providing escape function configuration.
+    @param hbsCorpus The corpus containing symbol data and configuration.
+    @return An executor group ready for parallel rendering, or an error
+            if Builder initialization fails.
+*/
 Expected<ExecutorGroup<Builder>>
 createExecutors(
     HandlebarsGenerator const& gen,
@@ -66,6 +94,7 @@ createExecutors(
     }
     return group;
 }
+
 } // (anon)
 
 //------------------------------------------------
@@ -220,28 +249,10 @@ std::string
 HandlebarsGenerator::
 defaultStylesheetSource(Config const& config) const
 {
-    auto const htmlPath = files::appendPath(
-        config->addons,
-        "generator",
-        "html",
-        "layouts",
-        "style.css");
-    if (files::exists(htmlPath))
-    {
-        return htmlPath;
-    }
-
-    auto const commonPath = files::appendPath(
-        config->addons,
-        "generator",
-        "common",
-        "layouts",
-        "style.css");
-    if (files::exists(commonPath))
-    {
-        return commonPath;
-    }
-
+    if (auto path = addon_paths::findFile(config, "html", "layouts", "style.css"))
+        return *path;
+    if (auto path = addon_paths::findFile(config, "common", "layouts", "style.css"))
+        return *path;
     return {};
 }
 
@@ -256,16 +267,8 @@ std::string
 HandlebarsGenerator::
 defaultHighlightStylesheetSource(Config const& config) const
 {
-    auto const commonPath = files::appendPath(
-        config->addons,
-        "generator",
-        "common",
-        "layouts",
-        "highlight.css");
-    if (files::exists(commonPath))
-    {
-        return commonPath;
-    }
+    if (auto path = addon_paths::findFile(config, "common", "layouts", "highlight.css"))
+        return *path;
     return {};
 }
 
@@ -304,6 +307,11 @@ defaultHighlightScript() const
         highlightJsCdn);
 }
 
+/** Checks if a path is a remote URL.
+
+    @param path The path or URL to check.
+    @return True if the path starts with "http://" or "https://".
+*/
 static bool
 isRemote(std::string_view path)
 {

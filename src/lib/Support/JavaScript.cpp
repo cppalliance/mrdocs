@@ -3,1988 +3,2277 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
-// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Report.hpp>
-#include <mrdocs/Support/Error.hpp>
+//
+// JerryScript-backed JavaScript bridge for MrDocs
+//
+// Architecture Overview
+// ---------------------
+//
+// This module provides a C++ interface to JerryScript, enabling JavaScript
+// execution for Handlebars template helpers. The design supports M:N
+// threading: any number of Context objects (interpreters) can be used by
+// any number of threads, with proper synchronization.
+//
+// Key Components:
+//
+// - Context: Owns an isolated JerryScript interpreter with its own 512KB
+//   heap. Multiple Contexts can exist simultaneously—the count is not
+//   limited by thread count. Each Context has a mutex for thread-safe
+//   access; a thread activates a Context before performing operations,
+//   then releases it for other threads to use.
+//
+// - Scope: Provides RAII-style value tracking within a Context. When a
+//   Scope is destroyed, it releases references to values created within
+//   it. Values that were copied elsewhere (returned, stored) survive;
+//   values that remained local are freed. This provides deterministic
+//   cleanup similar to stack-based scripting engines.
+//
+// - Value: Handle to a JavaScript value. Internally stores a jerry_value_t
+//   (as uint32_t) plus a shared_ptr to the owning Context. Before any
+//   JerryScript operation, the Value locks and activates its Context,
+//   ensuring thread safety and correct TLS state.
+//
+// Threading Model:
+//
+// JerryScript is single-threaded per context, but we can have multiple
+// contexts. Thread-local storage (TLS) tracks which context is currently
+// active on each thread. When a thread needs to use a Context:
+//
+//   1. Lock the Context's mutex (serializes access to that interpreter)
+//   2. Set TLS to point to that Context's interpreter
+//   3. Perform JerryScript operations
+//   4. Release the lock (TLS may still point there; that's fine)
+//
+// This allows patterns like:
+//   - 4 threads sharing 4 Contexts (1:1, maximum parallelism)
+//   - 4 threads sharing 100 Contexts (threads switch between contexts)
+//   - 1 thread using multiple Contexts sequentially
+//
+// DOM Conversion:
+//
+// - DOM → JS (toJsValue): Objects use lazy Proxy wrappers to avoid
+//   infinite recursion from circular references (e.g., Handlebars symbol
+//   contexts). Arrays are converted eagerly. Functions wrap dom::Function.
+//
+// - JS → DOM (toDomValue): Proxies unwrap to their original dom::Value.
+//   JS functions become callable from C++. Arrays/objects convert
+//   recursively.
+//
+
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
-#include <llvm/Support/raw_ostream.h>
-#include <duktape.h>
-#include <format>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
+#include <atomic>
+#include <cctype>
+#include <cmath>
+#include <cstdlib>
+#include <jerryscript.h>
+#include <limits>
+#include <memory>
+#include <mutex>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <thread>
+#include <unordered_set>
 #include <utility>
-#include <variant>
+#include <vector>
 
+#ifndef _WIN32
+#include <pthread.h>
+#endif
 
-namespace mrdocs {
-namespace js {
+// ------------------------------------------------------------
+// JerryScript External Context Port Functions
+// ------------------------------------------------------------
+//
+// JerryScript with JERRY_EXTERNAL_CONTEXT=ON requires the host to provide
+// three port functions for context management:
+//
+//   - jerry_port_context_alloc: Allocates memory for context + heap
+//   - jerry_port_context_free:  Frees context memory
+//   - jerry_port_context_get:   Returns the currently active context
+//
+// The default jerry-port implementations use a single static global pointer,
+// limiting the entire process to one interpreter. Our implementations use
+// thread-local storage (TLS) to track which context is active on each thread,
+// enabling the M:N threading model described above.
+//
+// Important: TLS stores the *currently active* context, not a per-thread
+// context. A thread activates whichever context it needs to work with;
+// multiple contexts can exist and any thread can use any context (one at
+// a time per context, enforced by the mutex).
+//
+// The context port functions are excluded from jerry-port when building
+// with JERRY_EXTERNAL_CONTEXT=ON (see third-party/patches/jerryscript/
+// CMakeLists.txt), so mrdocs provides the only implementations. All other
+// port functions (jerry_port_fatal, jerry_port_log, etc.) use the default
+// implementations from jerry-port.
 
-struct Context::Impl
+// ------------------------------------------------------------
+// Thread-Local Storage for JerryScript Context
+// ------------------------------------------------------------
+//
+// We use POSIX pthread TLS on non-Windows platforms instead of C++ thread_local
+// because GCC with static linking (-static) has known issues with C++ thread_local
+// variables accessed from extern "C" functions. The pthread TLS API is more
+// portable and works reliably with static linking.
+//
+// On Windows, we use C++ thread_local which works correctly with MSVC.
+
+#ifdef _WIN32
+// Windows: use C++ thread_local (works correctly with MSVC)
+static thread_local void* tls_jerry_context = nullptr;
+static thread_local bool tls_context_alloc_failed = false;
+
+static void* get_tls_jerry_context() { return tls_jerry_context; }
+static void set_tls_jerry_context(void* ptr) { tls_jerry_context = ptr; }
+static bool get_tls_context_alloc_failed() { return tls_context_alloc_failed; }
+static void set_tls_context_alloc_failed(bool val) { tls_context_alloc_failed = val; }
+
+#else
+// POSIX: use pthread TLS for compatibility with static linking on Linux/GCC
+
+// TLS keys for context pointer and allocation failure flag
+static pthread_key_t tls_jerry_context_key;
+static pthread_key_t tls_context_alloc_failed_key;
+static pthread_once_t tls_keys_init_once = PTHREAD_ONCE_INIT;
+
+static void init_tls_keys()
 {
-    std::size_t refs;
-    duk_context* ctx;
+    pthread_key_create(&tls_jerry_context_key, nullptr);
+    pthread_key_create(&tls_context_alloc_failed_key, nullptr);
+}
 
-    ~Impl()
+static void ensure_tls_keys_initialized()
+{
+    pthread_once(&tls_keys_init_once, init_tls_keys);
+}
+
+static void* get_tls_jerry_context()
+{
+    ensure_tls_keys_initialized();
+    return pthread_getspecific(tls_jerry_context_key);
+}
+
+static void set_tls_jerry_context(void* ptr)
+{
+    ensure_tls_keys_initialized();
+    pthread_setspecific(tls_jerry_context_key, ptr);
+}
+
+static bool get_tls_context_alloc_failed()
+{
+    ensure_tls_keys_initialized();
+    // Use pointer value as bool (nullptr = false, non-null = true)
+    return pthread_getspecific(tls_context_alloc_failed_key) != nullptr;
+}
+
+static void set_tls_context_alloc_failed(bool val)
+{
+    ensure_tls_keys_initialized();
+    // Store bool as pointer (nullptr = false, (void*)1 = true)
+    pthread_setspecific(tls_context_alloc_failed_key, val ? (void*)1 : nullptr);
+}
+#endif
+
+// Heap size per context. 512KB is JerryScript's typical maximum when built
+// with 16-bit compressed pointers (JERRY_CPOINTER_32_BIT=OFF).
+static constexpr std::size_t JERRY_HEAP_SIZE = 512 * 1024;
+
+// Allocates memory for a new JerryScript context and its heap.
+// Called internally by jerry_init(). The returned block contains the context
+// structure followed by JERRY_HEAP_SIZE bytes for the JavaScript heap.
+// Temporarily stores the pointer in TLS so jerry_port_context_get() works
+// during initialization; Context::Impl captures it and restores TLS afterward.
+extern "C" void*
+jerry_port_context_alloc(jerry_size_t context_size)
+{
+    // Allocate context structure + heap in one contiguous block.
+    // JerryScript uses the excess space beyond context_size as the JS heap.
+    std::size_t total_size = context_size + JERRY_HEAP_SIZE;
+
+    // aligned_alloc on glibc requires the size to be a multiple of the
+    // alignment. Round up to satisfy that requirement to avoid
+    // heap-corruption crashes (observed as munmap_chunk/free() errors with
+    // GCC static builds).
+    std::size_t const align = alignof(std::max_align_t);
+    if (std::size_t const rem = total_size % align)
     {
-        duk_destroy_heap(ctx);
+        total_size += align - rem;
+    }
+
+    // Use aligned allocation for proper pointer alignment
+    void* ptr = nullptr;
+#if defined(_MSC_VER)
+    ptr = _aligned_malloc(total_size, alignof(std::max_align_t));
+#else
+    ptr = std::aligned_alloc(alignof(std::max_align_t), total_size);
+#endif
+    if (!ptr)
+    {
+        // Signal allocation failure via TLS flag. The Context::Impl constructor
+        // will check this flag and throw a C++ exception for graceful error handling.
+        // We return nullptr here; JerryScript may fail, but Context::Impl will
+        // detect the failure before any operations are attempted.
+        set_tls_context_alloc_failed(true);
+        return nullptr;
+    }
+
+    // Store in TLS so jerry_port_context_get() returns this during jerry_init().
+    // The Context::Impl constructor will capture this and restore previous TLS.
+    set_tls_jerry_context(ptr);
+
+    return ptr;
+}
+
+// Frees context memory. Called internally by jerry_cleanup().
+extern "C" void
+jerry_port_context_free(void* context_p, [[maybe_unused]] jerry_size_t context_size)
+{
+#if defined(_MSC_VER)
+    _aligned_free(context_p);
+#else
+    std::free(context_p);
+#endif
+}
+
+// Returns the currently active context for this thread.
+// Called by JerryScript before every operation to find the interpreter state.
+// Returns nullptr if no context is active (which would cause JerryScript to crash).
+extern "C" struct jerry_context_t*
+jerry_port_context_get(void)
+{
+    return static_cast<jerry_context_t*>(get_tls_jerry_context());
+}
+
+namespace mrdocs::js {
+
+namespace detail {
+
+// Validate Handlebars-style helper arguments: options object must be last.
+// Returns an error if options are missing/invalid; otherwise calls the helper.
+// For simple helpers (those with only primitive arguments), we strip the
+// options object before calling JavaScript to avoid expensive/recursive
+// conversion of symbol contexts.
+Expected<dom::Value, Error>
+invokeHelper(Value const& fn, dom::Array const& args)
+{
+    if (args.empty())
+    {
+        return Unexpected(Error(
+            "Handlebars helper called without arguments; "
+            "expected options object as last argument"));
+    }
+
+    dom::Value const& options = args.back();
+    if (!options.isObject())
+    {
+        return Unexpected(Error(
+            "Handlebars helper options must be an object; "
+            "ensure the helper is called from a template context"));
+    }
+
+    // Build arguments without the options object.
+    // JavaScript helpers typically don't need Handlebars options (hash, fn,
+    // inverse, context) - they just operate on positional arguments.
+    // Passing the options object would trigger expensive recursive conversion
+    // of symbol contexts which contain circular references.
+    std::vector<dom::Value> callArgs;
+    callArgs.reserve(args.size() - 1);
+    for (std::size_t i = 0; i < args.size() - 1; ++i)
+    {
+        callArgs.push_back(args.get(i));
+    }
+
+    auto ret = fn.apply(callArgs);
+    if (!ret)
+    {
+        return Unexpected(ret.error());
+    }
+    return ret->getDom();
+}
+
+} // namespace detail
+
+// ------------------------------------------------------------
+// helpers
+// ------------------------------------------------------------
+
+// Convert a JerryScript value to UTF-8, never throwing; used for diagnostics.
+// Diagnostic-only: stringifies any value (including exceptions) to owned UTF-8
+// and returns "<error>" if JerryScript itself throws during stringification.
+static std::string
+toString(jerry_value_t v)
+{
+    jerry_value_t str = jerry_value_to_string(v);
+    if (jerry_value_is_exception(str))
+    {
+        jerry_value_free(str);
+        return "<error>";
+    }
+    jerry_size_t sz = jerry_string_size(str, JERRY_ENCODING_UTF8);
+    std::string out(sz, '\0');
+    jerry_string_to_buffer(
+        str,
+        JERRY_ENCODING_UTF8,
+        (jerry_char_t*) out.data(),
+        sz);
+    jerry_value_free(str);
+    return out;
+}
+
+// Normalize a JerryScript exception into a MrDocs Error type.
+// Order: unwrap exception → if object use .message → else if string use it →
+// otherwise stringify the original exception.
+//
+// Error message format:
+// - Syntax errors from JerryScript typically contain "Unexpected" or "SyntaxError"
+// - Runtime errors (thrown exceptions) are prefixed with "Unexpected: " if they
+//   don't already contain that marker, helping distinguish them from parse errors
+// - This prefix is intentionally consistent to aid debugging and testing
+//
+// LIMITATION: The "Unexpected" heuristic isn't perfect - some runtime errors
+// may contain "Unexpected" in their message and won't get the prefix, while
+// some custom syntax-like errors might get prefixed incorrectly. This is
+// acceptable because the prefix is for debugging convenience, not semantic
+// correctness.
+static Error
+makeError(jerry_value_t exc)
+{
+    jerry_value_t obj = jerry_value_is_exception(exc) ?
+                            jerry_exception_value(exc, false) :
+                            jerry_value_copy(exc);
+
+    std::string msg;
+    if (jerry_value_is_object(obj))
+    {
+        // Note: jerry_string_sz is used here instead of makeString because
+        // makeString is defined later in this file and we need to extract
+        // error messages early in the error handling path.
+        jerry_value_t msg_key = jerry_string_sz("message");
+        jerry_value_t msg_prop = jerry_object_get(obj, msg_key);
+        jerry_value_free(msg_key);
+        if (!jerry_value_is_exception(msg_prop))
+        {
+            msg = toString(msg_prop);
+        }
+        jerry_value_free(msg_prop);
+    }
+    else if (jerry_value_is_string(obj))
+    {
+        msg = toString(obj);
+    }
+
+    if (msg.empty() || msg == "undefined")
+    {
+        msg = toString(exc);
+    }
+
+    // Prefix runtime exceptions for consistent error messaging. Skip if the
+    // message already indicates a syntax/parse error (contains "Unexpected")
+    // or if this isn't actually an exception value.
+    if (jerry_value_is_exception(exc)
+        && msg.find("Unexpected") == std::string::npos)
+    {
+        msg = std::string("Unexpected: ") + msg;
+    }
+
+    jerry_value_free(obj);
+    return Error(msg.empty() ? "JavaScript error" : msg);
+}
+
+// Forward declarations for conversion utilities used by Scope/Value methods
+static dom::Value
+toDomValue(jerry_value_t v, std::shared_ptr<Context::Impl> const& impl);
+
+static jerry_value_t
+toJsValue(dom::Value const& v, std::shared_ptr<Context::Impl> const& impl);
+
+// Base class for native holders used by proxies/functions.
+struct NativeHolder {
+    virtual ~NativeHolder() = default;
+};
+
+// Common holder structure for lazy proxies. Stores the original dom::Value
+// so it can be retrieved when converting back from JS to DOM.
+struct DomValueHolder : NativeHolder {
+    std::shared_ptr<Context::Impl> impl;
+    dom::Value value;  // The original DOM value (Object or Array)
+
+    // free_cb defined after Context::Impl to access unregisterHolder
+    static void free_cb(void* p, jerry_object_native_info_t*);
+};
+
+// Single native info for all DOM value proxies, allowing detection in type()
+// and toDomValue. Defined later after all forward declarations are complete.
+extern jerry_object_native_info_t const kDomProxyInfo;
+
+static std::string_view
+trimLeftSpaces(std::string_view sv);
+
+// Forward declarations for helpers referenced by Scope
+static std::string
+escapeForEval(std::string_view src);
+
+static jerry_value_t
+makeString(std::string_view s);
+
+static jerry_value_t
+to_js(std::uint32_t v);
+
+static std::uint32_t
+to_handle(jerry_value_t v);
+
+// ------------------------------------------------------------
+// Context
+// ------------------------------------------------------------
+
+// Per-context state: owns an isolated JerryScript interpreter instance.
+// Contexts are thread-affine: they are created and used on the same thread,
+// but a thread may create multiple contexts if desired.
+struct Context::Impl {
+    // Opaque pointer to JerryScript context memory (context struct + heap).
+    // Allocated by jerry_port_context_alloc, freed by jerry_port_context_free.
+    void* jerry_ctx = nullptr;
+
+    // Thread that most recently used this context (for debug diagnostics).
+    mutable std::thread::id owner_thread{};
+
+    // Lifetime flag so deleters can skip freeing after cleanup.
+    bool alive = true;
+
+    // Flag set while cleanup/jerry_cleanup is running to suppress deleters.
+    bool cleaning_up = false;
+
+    // Serialize access to this JerryScript context (single-threaded engine).
+    mutable std::recursive_mutex mtx;
+
+    // Optional diagnostics: track live JS handles we create (Value copies etc).
+    std::atomic<int> live_handles{0};
+
+    // Track all native holders (DomValueHolder, FunctionHolder) so we can
+    // delete them during cleanup if JerryScript's GC doesn't finalize them.
+    // This handles the case where objects are still referenced from globals.
+    std::unordered_set<NativeHolder*> holders;
+
+    void registerHolder(NativeHolder* h)
+    {
+        holders.insert(h);
+    }
+
+    void unregisterHolder(NativeHolder* h)
+    {
+        holders.erase(h);
     }
 
     Impl()
-        : refs(1)
-        , ctx(duk_create_heap_default())
     {
-    }
-};
+        // Temporarily set TLS so jerry_init() can find the context.
+        // jerry_init() calls jerry_port_context_alloc() internally.
+        // We need a two-phase init: first allocate, then init.
+        //
+        // Actually, jerry_init() itself calls jerry_port_context_alloc(),
+        // so we set TLS *after* the allocation returns and before jerry_init()
+        // uses the context. The trick is jerry_port_context_get() is called
+        // *during* jerry_init() after allocation.
+        //
+        // Approach: jerry_init() allocates via jerry_port_context_alloc(),
+        // stores the pointer internally, then calls jerry_port_context_get()
+        // for subsequent operations. We capture the allocated pointer.
 
-Context::
-~Context()
-{
-    if(--impl_->refs == 0)
-        delete impl_;
-}
+        // For external context, jerry_init behavior:
+        // 1. Calls jerry_port_context_alloc() to get memory
+        // 2. Stores pointer and calls jerry_port_context_get() for future ops
+        //
+        // We need to ensure jerry_port_context_get() returns the right pointer.
+        // Since jerry_init() doesn't give us the pointer back directly,
+        // we use a temporary TLS approach during init.
 
-Context::
-Context()
-    : impl_(new Impl)
-{
-}
+        // Clear any previous allocation failure flag
+        set_tls_context_alloc_failed(false);
 
-Context::
-Context(
-    Context const& other) noexcept
-    : impl_(other.impl_)
-{
-    ++impl_->refs;
-}
+        // Set a sentinel so we know init is in progress
+        void* prev_ctx = get_tls_jerry_context();
 
-/* Access to the underlying duktape context in
-   Context and Scope.
- */
-struct Access
-{
-    duk_context* ctx_ = nullptr;
-    Context::Impl* impl_ = nullptr;
+        // During jerry_init(), JerryScript will:
+        // 1. Call jerry_port_context_alloc() - we allocate and save in TLS
+        // 2. Call jerry_port_context_get() - returns our TLS value
+        jerry_init(JERRY_INIT_EMPTY);
 
-    // Access from an original duktape context
-    explicit Access(duk_context* ctx) noexcept
-        : ctx_(ctx)
-    {
-    }
+        // Check if allocation failed during jerry_init()
+        if (get_tls_context_alloc_failed())
+        {
+            set_tls_context_alloc_failed(false);
+            set_tls_jerry_context(prev_ctx);
+            throw std::bad_alloc();
+        }
 
-    // Access from a Context
-    explicit Access(Context const& ctx) noexcept
-        : ctx_(ctx.impl_->ctx)
-        , impl_(ctx.impl_)
-    {
-    }
+        // After init, TLS contains the allocated context
+        jerry_ctx = get_tls_jerry_context();
 
-    // Access from a Scope
-    explicit Access(Scope const& scope) noexcept
-        : Access(scope.ctx_)
-    {
+        // Restore previous TLS (likely nullptr)
+        set_tls_jerry_context(prev_ctx);
     }
 
-    // Implicit conversion to a duktape context
-    // for use with the duktape C API
-    operator duk_context*() const noexcept
+    ~Impl()
     {
-        return ctx_;
+        // cleanup() should have been called before destruction.
+        // If not (e.g., Context was moved from), just clean up the context.
+        if (jerry_ctx)
+        {
+            cleanup();
+        }
     }
 
-    // Access to a value idx in its Scope
-    static duk_idx_t idx(Value const& value) noexcept
+    // Tear down the JerryScript context.
+    // Must run on the owning thread.
+    void cleanup()
     {
-        return value.idx_;
-    }
-
-    // Mark a scope as referenced by another
-    // scope or Value
-    // This is used to keep the scope alive
-    // while it is being used and to
-    // destroy it when it is no longer needed
-    static void addref(Scope& scope) noexcept
-    {
-        ++scope.refs_;
-    }
-
-    // Mark a scope as referenced by one less
-    // scope or Value
-    // This is used to keep the scope alive
-    // while it is being used and to
-    // destroy it when it is no longer needed
-    static void release(Scope& scope) noexcept
-    {
-        if(--scope.refs_ != 0)
+        if (!jerry_ctx)
             return;
-        scope.reset();
+
+        cleaning_up = true;
+        // Activate this context for cleanup. jerry_cleanup() uses TLS
+        // (via jerry_port_context_get) to find the context to tear down.
+        void* prev_ctx = get_tls_jerry_context();
+        set_tls_jerry_context(jerry_ctx);
+
+        // Optional optimization: run GC to finalize unreferenced objects and
+        // trigger their free_cb callbacks, which unregister them from our
+        // holders set. Objects still referenced (e.g., globals) won't be
+        // collected here but will be handled by the manual cleanup loop below.
+        jerry_heap_gc(JERRY_GC_PRESSURE_HIGH);
+
+        // jerry_cleanup() cleans up JS objects but with JERRY_EXTERNAL_CONTEXT=ON,
+        // it does NOT free the context memory - the host must do that.
+        jerry_cleanup();
+
+        // With external context, we must free the context memory ourselves.
+        // jerry_port_context_free is our implementation that calls std::free().
+        jerry_port_context_free(jerry_ctx, 0);
+
+        // Delete any remaining native holders that weren't garbage collected.
+        // This handles objects still referenced from globals at cleanup time.
+        // The free_cb won't be called for these since JerryScript just abandons
+        // them during cleanup, so we delete them manually.
+        for (NativeHolder* h : holders)
+        {
+            delete h;
+        }
+        holders.clear();
+
+        // Context is now destroyed. Set jerry_ctx to nullptr and mark dead.
+        jerry_ctx = nullptr;
+        alive = false;
+        cleaning_up = false;
+
+        // Restore previous TLS since the context is now destroyed.
+        set_tls_jerry_context(prev_ctx);
     }
 
-    static void swap(Value& v0, Value& v1) noexcept
+    // Activate this context on the current thread.
+    // Must be called before any JerryScript operations.
+    void activate() const
     {
-        std::swap(v0.scope_, v1.scope_);
-        std::swap(v0.idx_, v1.idx_);
+        owner_thread = std::this_thread::get_id();
+        set_tls_jerry_context(jerry_ctx);
     }
 
-    template<class T, class... Args>
-    static T construct(Args&&... args)
-    {
-        return T(std::forward<Args>(args)...);
-    }
 };
 
-//------------------------------------------------
-//
-// Duktape helpers
-//
-//------------------------------------------------
-
-// return string_view at stack idx
-static
-std::string_view
-dukM_get_string(
-    Access& A, duk_idx_t idx)
+// DomValueHolder free callback - defined here after Context::Impl is complete.
+void DomValueHolder::free_cb(void* p, jerry_object_native_info_t*)
 {
-    MRDOCS_ASSERT(duk_get_type(A, idx) == DUK_TYPE_STRING);
-    duk_size_t size;
-    char const* const data =
-        duk_get_lstring(A, idx, &size);
-    return {data, size};
+    auto* h = static_cast<DomValueHolder*>(p);
+    // Always unregister from tracking set so we don't double-free during cleanup.
+    if (h->impl)
+    {
+        h->impl->unregisterHolder(h);
+    }
+    delete h;
 }
 
-// push string onto stack
-static
-void
-dukM_push_string(
-    Access& A, std::string_view s)
+// Activate the context for the current thread. RAII restores previous TLS value
+// and releases the mutex lock when destroyed.
+struct ContextActivation {
+    std::shared_ptr<Context::Impl> impl;
+    std::optional<std::unique_lock<std::recursive_mutex>> lock;
+    jerry_context_t* prev_ctx{};
+
+    explicit ContextActivation(std::shared_ptr<Context::Impl> const& i)
+        : impl(i)
+    {
+        if (!impl)
+            return;
+        // Acquire mutex lock BEFORE activating the context
+        lock.emplace(impl->mtx);
+        prev_ctx = static_cast<jerry_context_t*>(get_tls_jerry_context());
+        impl->activate();
+    }
+
+    // Non-copyable to prevent double-restore of TLS
+    ContextActivation(ContextActivation const&) = delete;
+    ContextActivation& operator=(ContextActivation const&) = delete;
+
+    // Move constructor - transfers ownership of lock and TLS restoration duty
+    ContextActivation(ContextActivation&& other) noexcept
+        : impl(std::move(other.impl))
+        , lock(std::move(other.lock))
+        , prev_ctx(other.prev_ctx)
+    {
+        // other.impl is now nullptr, so its destructor won't restore TLS
+    }
+
+    // Move assignment
+    ContextActivation& operator=(ContextActivation&& other) noexcept
+    {
+        if (this != &other)
+        {
+            // Restore our prev_ctx before taking other's state
+            if (impl)
+            {
+                set_tls_jerry_context(prev_ctx);
+            }
+            impl = std::move(other.impl);
+            lock = std::move(other.lock);
+            prev_ctx = other.prev_ctx;
+        }
+        return *this;
+    }
+
+    ~ContextActivation()
+    {
+        if (impl)
+        {
+            set_tls_jerry_context(prev_ctx);
+        }
+        // lock is automatically released when destroyed (after TLS restore)
+    }
+
+    explicit operator bool() const { return static_cast<bool>(impl); }
+};
+
+static ContextActivation
+lockContext(std::shared_ptr<Context::Impl> const& impl)
 {
-    duk_push_lstring(A, s.data(), s.size());
+    // Accepts null shared_ptr so callers can use it uniformly in move/copy
+    // paths where the source Value may have been moved-from (val_ == 0).
+    // The ContextActivation constructor handles the null case.
+    return ContextActivation(impl);
 }
 
-// set an object's property
-static
-void
-dukM_put_prop_string(
-    Access& A, duk_idx_t idx, std::string_view s)
+Context::Context() : impl_(std::make_shared<Impl>()) {}
+
+Context::Context(Context const& other) noexcept = default;
+
+Context::~Context()
 {
-    duk_put_prop_lstring(A, idx, s.data(), s.size());
+    // Clean up the JerryScript context before releasing impl_.
+    // DomValueHolder objects keep shared_ptr<Impl>, so cleanup breaks that cycle.
+    if (impl_)
+    {
+        impl_->cleanup();
+    }
 }
 
-// get the property of an object as a string
-static
-std::string
-dukM_get_prop_string(
-    std::string_view name, Access const& A)
-{
-    MRDOCS_ASSERT(duk_get_type(A, -1) == DUK_TYPE_OBJECT);
-    if(! duk_get_prop_lstring(A, -1, name.data(), name.size()))
-        formatError("missing property {}", name).Throw();
-    char const* s;
-    if(duk_get_type(A, -1) != DUK_TYPE_STRING)
-        duk_to_string(A, -1);
-    duk_size_t len;
-    s = duk_get_lstring(A, -1, &len);
-    MRDOCS_ASSERT(s);
-    std::string result = std::string(s, len);
-    duk_pop(A);
-    return result;
-}
+// ------------------------------------------------------------
+// Scope
+// ------------------------------------------------------------
 
-// return an Error from a JavaScript Error on the stack
-static
-Error
-dukM_popError(Access const& A)
-{
-    auto err = formatError(
-        "{} (\"{}\" line {})",
-            dukM_get_prop_string("message", A),
-            dukM_get_prop_string("fileName", A),
-            dukM_get_prop_string("lineNumber", A));
-    duk_pop(A);
-    return err;
-}
-
-//------------------------------------------------
-
-void
-Scope::
-reset()
-{
-    Access A(ctx_);
-    duk_pop_n(A, duk_get_top(A) - top_);
-}
-
-Scope::
-Scope(
-    Context const& ctx) noexcept
-    : ctx_(ctx)
-    , refs_(0)
-    , top_(duk_get_top(Access(ctx)))
+Scope::Scope(Context const& ctx) noexcept : impl_(ctx.impl_)
 {
 }
 
-Scope::
-~Scope()
+Scope::~Scope()
 {
-    MRDOCS_ASSERT(refs_ == 0);
-    reset();
+    auto lock = lockContext(impl_);
+
+    // Release one reference to each tracked value.
+    // Values that were copied elsewhere survive (refcount > 1).
+    // Values that remained local are freed (refcount == 1).
+    for (std::uint32_t v : tracked_)
+    {
+        jerry_value_free(to_js(v));
+    }
+    tracked_.clear();
+}
+
+Value
+Scope::pushInteger(std::int64_t v)
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t jv = jerry_number(static_cast<double>(v));
+    if (jerry_value_is_exception(jv))
+    {
+        report::warn("JavaScript: failed to create integer value");
+        jerry_value_free(jv);
+        return {};
+    }
+    tracked_.push_back(to_handle(jv));  // Scope holds one ref
+    return {to_handle(jerry_value_copy(jv)), impl_};  // Value gets its own ref
+}
+
+Value
+Scope::pushDouble(double v)
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t jv = jerry_number(v);
+    if (jerry_value_is_exception(jv))
+    {
+        report::warn("JavaScript: failed to create double value");
+        jerry_value_free(jv);
+        return {};
+    }
+    tracked_.push_back(to_handle(jv));
+    return {to_handle(jerry_value_copy(jv)), impl_};
+}
+
+Value
+Scope::pushBoolean(bool v)
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t jv = jerry_boolean(v);
+    if (jerry_value_is_exception(jv))
+    {
+        report::warn("JavaScript: failed to create boolean value");
+        jerry_value_free(jv);
+        return {};
+    }
+    tracked_.push_back(to_handle(jv));
+    return {to_handle(jerry_value_copy(jv)), impl_};
+}
+
+Value
+Scope::pushString(std::string_view v)
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t jv = makeString(v);
+    if (jerry_value_is_exception(jv))
+    {
+        report::warn("JavaScript: failed to create string value");
+        jerry_value_free(jv);
+        return {};
+    }
+    tracked_.push_back(to_handle(jv));
+    return {to_handle(jerry_value_copy(jv)), impl_};
+}
+
+Value
+Scope::pushObject()
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t jv = jerry_object();
+    if (jerry_value_is_exception(jv))
+    {
+        report::warn("JavaScript: failed to create object");
+        jerry_value_free(jv);
+        return {};
+    }
+    tracked_.push_back(to_handle(jv));
+    return {to_handle(jerry_value_copy(jv)), impl_};
+}
+
+Value
+Scope::pushArray()
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t jv = jerry_array(0);
+    if (jerry_value_is_exception(jv))
+    {
+        report::warn("JavaScript: failed to create array");
+        jerry_value_free(jv);
+        return {};
+    }
+    tracked_.push_back(to_handle(jv));
+    return {to_handle(jerry_value_copy(jv)), impl_};
+}
+
+Expected<Value, Error>
+Scope::eval(std::string_view script)
+{
+    auto lock = lockContext(impl_);
+    // Values from eval are transferred to caller, not tracked by Scope.
+    jerry_value_t res = jerry_eval(
+        (jerry_char_t const*) script.data(),
+        script.size(),
+        JERRY_PARSE_NO_OPTS);
+    if (jerry_value_is_exception(res))
+    {
+        auto err = makeError(res);
+        jerry_value_free(res);
+        return Unexpected(err);
+    }
+    return Value(to_handle(res), impl_);
 }
 
 Expected<void>
-Scope::
-script(
-    std::string_view jsCode)
+Scope::script(std::string_view jsCode)
 {
-    Access A(*this);
-    duk_int_t failed = duk_peval_lstring(
-        A, jsCode.data(), jsCode.size());
-    if (failed)
+    auto exp = eval(jsCode);
+    if (!exp)
     {
-        return Unexpected(dukM_popError(A));
+        return Unexpected(exp.error());
     }
-    // pop implicit expression result from the stack
-    duk_pop(A);
     return {};
 }
 
-Expected<Value>
-Scope::
-eval(
-    std::string_view jsCode)
+Expected<Value, Error>
+Scope::compile_script(std::string_view script)
 {
-    Access A(*this);
-    duk_int_t failed = duk_peval_lstring(
-        A, jsCode.data(), jsCode.size());
-    if (failed)
+    // KNOWN LIMITATION: This implementation uses manual string matching and
+    // eval-based wrapping, which is fragile (false positives on "function" in
+    // strings/comments, escaping issues). A proper solution requires a more
+    // thoughtful design that considers:
+    // - How users import/require other modules
+    // - Whether to support ES modules (import/export)
+    // - How to handle multi-file helper libraries
+    //
+    // Turn an arbitrary script into a callable that can be executed later. We
+    // reject bare function declarations (which JerryScript treats as script
+    // statements) and wrap the source in an IIFE returning the eval result so
+    // callers get a function they can invoke repeatedly.
+    auto trimmed = trimLeftSpaces(script);
+    if (trimmed.starts_with("function"))
     {
-        return Unexpected(dukM_popError(A));
+        return Unexpected(Error("script contains a function declaration"));
     }
-    return Access::construct<Value>(duk_get_top_index(A), *this);
-}
 
-Expected<Value>
-Scope::
-compile_script(
-    std::string_view jsCode)
-{
-    Access A(*this);
-    duk_int_t failed = duk_pcompile_lstring(
-        A, 0, jsCode.data(), jsCode.size());
-    if (failed)
+    // Build a function that defers evaluation until invocation and returns the
+    // eval result
+    std::string wrapper = "(function(){ return eval(\"";
+    wrapper.append(escapeForEval(script));
+    wrapper.append("\"); })");
+
+    auto exp = eval(wrapper);
+    if (!exp)
     {
-        return Unexpected(dukM_popError(A));
+        return Unexpected(exp.error());
     }
-    return Access::construct<Value>(-1, *this);
-}
-
-Expected<Value>
-Scope::
-compile_function(
-    std::string_view jsCode)
-{
-    Access A(*this);
-    duk_int_t failed = duk_pcompile_lstring(
-        A, DUK_COMPILE_FUNCTION, jsCode.data(), jsCode.size());
-    if (failed)
+    if (!exp->isFunction())
     {
-        return Unexpected(dukM_popError(A));
+        return Unexpected(Error("compiled script is not a function"));
     }
-    return Access::construct<Value>(-1, *this);
+    return *exp;
 }
 
-Value
-Scope::
-getGlobalObject()
+Expected<Value, Error>
+Scope::compile_function(std::string_view script)
 {
-    Access A(*this);
-    duk_push_global_object(A);
-    return Access::construct<Value>(-1, *this);
-}
-
-Expected<Value>
-Scope::
-getGlobal(
-    std::string_view name)
-{
-    Access A(*this);
-    if(! duk_get_global_lstring(
-        A, name.data(), name.size()))
+    // KNOWN LIMITATION: This implementation uses manual string parsing to find
+    // function names, which is fragile:
+    // - "function" in strings/comments causes false positives
+    // - Arrow functions and async functions aren't detected
+    // - Class methods aren't supported
+    // - Trial-and-error execution may cause side effects
+    //
+    // A proper solution requires a more thoughtful design that considers:
+    // - How users import/require other modules
+    // - Whether to support ES modules (import/export)
+    // - How to handle multi-file helper libraries
+    //
+    // Current approach: First try parenthesizing to force expression parsing;
+    // if that fails, execute the script and search for the first "function"
+    // keyword to extract the declared function name.
+    //
+    // SIDE EFFECTS WARNING: If the parenthesized expression attempt fails
+    // (e.g., for scripts with statements before the function), the fallback
+    // path executes the script to define the function. Scripts like:
+    //   "counter++; function foo() {}"
+    // will increment counter during compile_function even though the intent
+    // is only to extract the function.
+    //
+    // Parenthesize the provided source so it is treated as a function expression
+    std::string wrapped = "(";
+    wrapped.append(script);
+    wrapped.append(")");
+    auto exp = eval(wrapped);
+    if (exp && exp->isFunction())
     {
-        duk_pop(A); // undefined
-        return Unexpected(formatError("global property {} not found", name));
+        return *exp;
     }
-    return Access::construct<Value>(duk_get_top_index(A), *this);
-}
 
-void
-Scope::
-setGlobal(
-    std::string_view name, dom::Value const& value)
-{
-    this->getGlobalObject().set(name, value);
-}
-
-Value
-Scope::
-pushInteger(std::int64_t value)
-{
-    Access A(*this);
-    duk_push_int(A, value);
-    return Access::construct<Value>(-1, *this);
-}
-
-Value
-Scope::
-pushDouble(double value)
-{
-    Access A(*this);
-    duk_push_number(A, value);
-    return Access::construct<Value>(-1, *this);
-}
-
-Value
-Scope::
-pushBoolean(bool value)
-{
-    Access A(*this);
-    duk_push_boolean(A, value);
-    return Access::construct<Value>(-1, *this);
-}
-
-Value
-Scope::
-pushString(std::string_view value)
-{
-    Access A(*this);
-    duk_push_lstring(A, value.data(), value.size());
-    return Access::construct<Value>(-1, *this);
-}
-
-Value
-Scope::
-pushObject()
-{
-    Access A(*this);
-    duk_push_object(A);
-    return Access::construct<Value>(-1, *this);
-}
-
-Value
-Scope::
-pushArray()
-{
-    Access A(*this);
-    duk_push_array(A);
-    return Access::construct<Value>(-1, *this);
-}
-
-//------------------------------------------------
-//
-// JS -> C++ dom::Value bindings
-//
-//------------------------------------------------
-
-namespace {
-
-class JSObjectImpl : public dom::ObjectImpl
-{
-    Access A_;
-    duk_idx_t idx_;
-    std::shared_ptr<Scope> scope_;
-
-public:
-    ~JSObjectImpl() override
-    {
-        if (scope_)
+    // Fall back: execute declarations and return the first declared function
+    // name. Note: this path runs the script, so any side effects will occur.
+    auto findFirstFunctionName =
+        [](std::string_view sv) -> std::optional<std::string> {
+        std::size_t pos = 0;
+        while (true)
         {
-            Access::release(*scope_);
-        }
-    }
-
-    JSObjectImpl(
-        Scope& scope, duk_idx_t idx) noexcept
-        : A_(scope)
-        , idx_(idx)
-    {
-        MRDOCS_ASSERT(duk_is_object(A_, idx_));
-    }
-
-    JSObjectImpl(
-        Access& A, duk_idx_t idx) noexcept
-        : A_(A)
-        , idx_(idx)
-    {
-        MRDOCS_ASSERT(duk_is_object(A_, idx_));
-    }
-
-    char const* type_key() const noexcept override
-    {
-        return "JSObject";
-    }
-
-    // Get an object property as a dom::Value
-    dom::Value get(std::string_view key) const override;
-
-    // Set an object enumerable property
-    void set(dom::String key, dom::Value value) override;
-
-    // Visit all enumerable properties
-    bool visit(std::function<bool(dom::String, dom::Value)> visitor) const override;
-
-    // Get number of enumerable properties in the object
-    std::size_t size() const override;
-
-    // Check if object contains the property
-    bool exists(std::string_view key) const override;
-
-    Access const&
-    access() const noexcept
-    {
-        return A_;
-    }
-
-    duk_idx_t
-    idx() const noexcept
-    {
-        return idx_;
-    }
-
-    // Set a shared pointer to the Scope so that it
-    // can temporarily outlive the variable
-    void
-    setScope(std::shared_ptr<Scope> scope) noexcept
-    {
-        MRDOCS_ASSERT(scope);
-        MRDOCS_ASSERT(Access(*scope.get()).ctx_ == A_.ctx_);
-        scope_ = std::move(scope);
-        Access::addref(*scope_);
-    }
-};
-
-class JSArrayImpl : public dom::ArrayImpl
-{
-    Access A_;
-    duk_idx_t idx_;
-    std::shared_ptr<Scope> scope_;
-
-public:
-    ~JSArrayImpl() override
-    {
-        if (scope_)
-        {
-            Access::release(*scope_);
-        }
-    }
-
-    JSArrayImpl(
-        Scope& scope, duk_idx_t idx) noexcept
-        : A_(scope)
-        , idx_(idx)
-    {
-        MRDOCS_ASSERT(duk_is_array(A_, idx_));
-    }
-
-    JSArrayImpl(
-        Access& A, duk_idx_t idx) noexcept
-        : A_(A)
-        , idx_(idx)
-    {
-        MRDOCS_ASSERT(duk_is_array(A_, idx_));
-    }
-
-    char const* type_key() const noexcept override
-    {
-        return "JSArray";
-    }
-
-    // Get an array value as a dom::Value
-    value_type get(size_type i) const override;
-
-    // Set an array value
-    void set(size_type, dom::Value) override;
-
-    // Push a value onto the array
-    void emplace_back(dom::Value value) override;
-
-    // Get number of enumerable properties in the object
-    size_type size() const override;
-
-    Access const&
-    access() const noexcept
-    {
-        return A_;
-    }
-
-    duk_idx_t
-    idx() const noexcept
-    {
-        return idx_;
-    }
-
-    // Set a shared pointer to the Scope so that it
-    // can temporarily outlive the variable
-    void
-    setScope(std::shared_ptr<Scope> scope) noexcept
-    {
-        MRDOCS_ASSERT(scope);
-        MRDOCS_ASSERT(Access(*scope.get()).ctx_ == A_.ctx_);
-        scope_ = std::move(scope);
-        Access::addref(*scope_);
-    }
-};
-
-// A JavaScript function defined in the scope as a dom::Function
-class JSFunctionImpl : public dom::FunctionImpl
-{
-    Access A_;
-    duk_idx_t idx_;
-    std::shared_ptr<Scope> scope_;
-
-public:
-    ~JSFunctionImpl() override
-    {
-        if (scope_)
-        {
-            Access::release(*scope_);
-        }
-    }
-
-    JSFunctionImpl(
-        Scope& scope, duk_idx_t idx) noexcept
-        : A_(scope)
-        , idx_(idx)
-    {
-        MRDOCS_ASSERT(duk_is_function(A_, idx_));
-    }
-
-    JSFunctionImpl(
-        Access& A, duk_idx_t idx) noexcept
-        : A_(A)
-        , idx_(idx)
-    {
-        MRDOCS_ASSERT(duk_is_function(A_, idx_));
-    }
-
-    char const* type_key() const noexcept override
-    {
-        return "JSFunction";
-    }
-
-    Expected<dom::Value> call(dom::Array const& args) const override;
-
-    Access const&
-    access() const noexcept
-    {
-        return A_;
-    }
-
-    duk_idx_t
-    idx() const noexcept
-    {
-        return idx_;
-    }
-
-    // Set a shared pointer to the Scope so that it
-    // can temporarily outlive the variable
-    void
-    setScope(std::shared_ptr<Scope> scope) noexcept
-    {
-        MRDOCS_ASSERT(scope);
-        MRDOCS_ASSERT(Access(*scope.get()).ctx_ == A_.ctx_);
-        scope_ = std::move(scope);
-        Access::addref(*scope_);
-    }
-};
-
-} // (anon)
-
-//------------------------------------------------
-//
-// C++ dom::Value -> JS bindings
-//
-//------------------------------------------------
-
-template <class T>
-T*
-domHiddenGet(
-    duk_context* ctx, duk_idx_t idx)
-{
-    // ... [idx target] ... -> ... [idx target] ... [buffer]
-    duk_get_prop_string(ctx, idx, DUK_HIDDEN_SYMBOL("dom"));
-    // ... [idx target] ... [buffer]
-    void* data;
-    switch(duk_get_type(ctx, -1))
-    {
-    case DUK_TYPE_POINTER:
-        data = duk_get_pointer(ctx, -1);
-        break;
-    case DUK_TYPE_BUFFER:
-        data = duk_get_buffer_data(ctx, -1, nullptr);
-        break;
-    default:
-        return nullptr;
-    }
-    // ... [idx target] ... [buffer] -> ... [idx target] ...
-    duk_pop(ctx);
-    return static_cast<T*>(data);
-}
-
-static
-dom::Value
-domValue_get(Access& A, duk_idx_t idx);
-
-static
-void
-domValue_push(
-    Access& A, dom::Value const& value);
-
-void
-domFunction_push(
-    Access& A, dom::Function const& fn)
-{
-    dom::FunctionImpl* ptr = fn.impl().get();
-    auto impl = dynamic_cast<JSFunctionImpl*>(ptr);
-
-    // Underlying function is also a JS function
-    if (impl && A.ctx_ == impl->access().ctx_)
-    {
-        duk_dup(A, impl->idx());
-        return;
-    }
-
-    // Underlying function is a C++ function pointer
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-
-        // Get the original function from
-        // the JS function's hidden property
-        duk_push_current_function(ctx);
-        auto* fn = domHiddenGet<dom::Function>(ctx, -1);
-        duk_pop(ctx);
-
-        // Construct an array of dom::Value from the
-        // duktape argments
-        dom::Array args;
-        duk_idx_t n = duk_get_top(ctx);
-        for (duk_idx_t i = 0; i < n; ++i)
-        {
-            args.push_back(domValue_get(A, i));
-        }
-
-        // Call the dom::Function
-        auto exp = fn->call(args);
-        if (!exp)
-        {
-            dukM_push_string(A, exp.error().message());
-            return duk_throw(ctx);
-        }
-        dom::Value result = exp.value();
-
-        // Push the result onto the stack
-        domValue_push(A, result);
-        return 1;
-    }, duk_get_top(A));
-
-    // Create a buffer to store the dom::Function in the
-    // JS function's hidden property
-    // [...] [fn] [buf]
-    void* data = duk_push_fixed_buffer(A, sizeof(dom::Function));
-    // [...] [fn] [buf] -> [fn]
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // Create a function finalizer to destroy the dom::Function
-    // from the buffer whenever the JS function is garbage
-    // collected
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // Push the function buffer to the stack
-        // The object being finalized is the first argument
-        auto* fn = domHiddenGet<dom::Function>(ctx, 0);
-        // Destroy the dom::Function stored at data
-        std::destroy_at(fn);
-        return 0;
-    }, 1);
-    duk_set_finalizer(A, -2);
-
-    // Construct the dom::Function in the buffer
-    auto data_ptr = static_cast<dom::Function*>(data);
-    std::construct_at(data_ptr, fn);
-}
-
-void
-domObject_push(
-    Access& A, dom::Object const& obj)
-{
-    dom::ObjectImpl* ptr = obj.impl().get();
-    auto impl = dynamic_cast<JSObjectImpl*>(ptr);
-
-    // Underlying function is also a JS function
-    if (impl && A.ctx_ == impl->access().ctx_)
-    {
-        duk_dup(A, impl->idx());
-        return;
-    }
-
-    // Underlying object is a C++ dom::Object
-    // https://wiki.duktape.org/howtovirtualproperties#ecmascript-e6-proxy-subset
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-    // ... [target]
-    duk_push_object(A);
-    // ... [target] [buffer]
-    void* data = duk_push_fixed_buffer(A, sizeof(dom::Object));
-    // ... [target] [buffer] -> [target]
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-    // Create a function finalizer to destroy the dom::Object
-    // from the buffer whenever the JS object is garbage
-    // collected
-    // ... [target] [finalizer]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // Destroy the dom::Object stored at data
-        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
-        std::destroy_at(obj);
-        return 0;
-    }, 1);
-    // ... [target] [finalizer] -> ... [target]
-    duk_set_finalizer(A, -2);
-
-    // Construct the dom::Object in the buffer
-    auto data_ptr = static_cast<dom::Object*>(data);
-    std::construct_at(data_ptr, obj);
-
-    // Create a Proxy handler object
-    // ... [target] [handler]
-    duk_push_object(A);
-
-    // Store a pointer to the dom::Object also in
-    // the handler, so it knows where to find
-    // the dom::Object
-    // ... [target] [handler] [dom::Object*]
-    duk_push_pointer(A, data_ptr);
-    // ... [target] [handler] [dom::Object*] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // ... [target] [handler] -> ... [target] [handler] [get]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key] [recv]
-        Access A(ctx);
-        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
-        std::string_view key = dukM_get_string(A, 1);
-        dom::Value value = obj->get(key);
-        domValue_push(A, value);
-        return 1;
-    }, 3);
-    // ... [target] [handler] [get] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "get");
-
-    // ... [target] [handler] -> ... [target] [handler] [has]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key]
-        Access A(ctx);
-        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
-        std::string_view key = dukM_get_string(A, 1);
-        bool value = obj->exists(key);
-        duk_push_boolean(A, value);
-        return 1;
-    }, 2);
-    // ... [target] [handler] [has] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "has");
-
-    // ... [target] [handler] -> ... [target] [handler] [set]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key] [value] [recv]
-        Access A(ctx);
-        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
-        std::string_view key = dukM_get_string(A, 1);
-        dom::Value value = domValue_get(A, 2);
-        obj->set(key, value);
-        duk_push_boolean(A, true);
-        return 1;
-    }, 4);
-    // ... [target] [handler] [set] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "set");
-
-    // ... [target] [handler] -> ... [target] [handler] [ownKeys]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target]
-        Access A(ctx);
-        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
-        // Get the object keys
-        duk_uarridx_t i = 0;
-        // [target] -> [target] [array]
-        duk_idx_t arr_idx = duk_push_array(ctx);
-        obj->visit([&](dom::String const& key, dom::Value const&)
-        {
-            // [target] [array] -> [target] [array] [key]
-            dukM_push_string(A, key);
-            // [target] [array] [key] -> [target] [array]
-            duk_put_prop_index(A, arr_idx, i++);
-        });
-        return 1;
-    }, 1);
-    // ... [target] [handler] [ownKeys] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "ownKeys");
-
-    // ... [target] [handler] -> ... [target] [handler] [deleteProperty]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key]
-        Access A(ctx);
-        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
-        std::string_view key = dukM_get_string(A, 1);
-        bool const exists = obj->exists(key);
-        if (exists)
-        {
-            obj->set(key, dom::Value(dom::Kind::Undefined));
-        }
-        duk_push_boolean(A, exists);
-        return 1;
-    }, 2);
-    // ... [target] [handler] [deleteProperty] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "deleteProperty");
-
-    // ... [target] [handler] -> ... [proxy]
-    duk_push_proxy(A, 0);
-}
-
-/* Get a value in the stack as an index
-
-   If the value is a number, it is returned as an index.
-   If the value is a string, it is parsed as a number and
-   returned as an index.
-   If the value is a string, and it cannot be parsed as a
-   number, the original string is returned.
-   If the value is not a number or a string, an empty
-   string is returned.
-
-*/
-std::variant<std::size_t, std::string_view>
-domM_get_index(
-    duk_context* ctx, duk_idx_t idx)
-{
-    switch (duk_get_type(ctx, idx))
-    {
-        case DUK_TYPE_NUMBER:
-        {
-            duk_int_t i = duk_get_int(ctx, idx);
-            return static_cast<std::size_t>(i);
-        }
-        case DUK_TYPE_STRING:
-        {
-            std::string_view key = duk_get_string(ctx, idx);
-            std::size_t i;
-            auto res = std::from_chars(
-                key.data(), key.data() + key.size(), i);
-            if (res.ec != std::errc())
+            pos = sv.find("function", pos);
+            if (pos == std::string_view::npos)
             {
-                return key;
+                return std::nullopt;
             }
-            return i;
+            pos += 8;
+            auto nameView = trimLeftSpaces(sv.substr(pos));
+            std::size_t const wsSkipped = nameView.data() - sv.data() - pos;
+            std::size_t start = pos + wsSkipped;
+            std::size_t cur = start;
+            while (cur < sv.size()
+                   && (std::isalnum(static_cast<unsigned char>(sv[cur]))
+                       || sv[cur] == '_' || sv[cur] == '$'))
+            {
+                ++cur;
+            }
+            if (start != cur)
+            {
+                return std::string(sv.substr(start, cur - start));
+            }
         }
+    };
+
+    auto name = findFirstFunctionName(script);
+    if (!name)
+    {
+        return Unexpected(Error("code did not evaluate to a function"));
+    }
+
+    std::string builder = "(function(){\n";
+    builder.append(script);
+    builder.append("\nreturn ");
+    builder.append(*name);
+    builder.append(";\n})()");
+
+    auto exec = eval(builder);
+    if (!exec)
+    {
+        return Unexpected(exec.error());
+    }
+    if (!exec->isFunction())
+    {
+        return Unexpected(Error("code did not evaluate to a function"));
+    }
+    return *exec;
+}
+
+void
+Scope::setGlobal(std::string_view name, dom::Value const& value)
+{
+    auto lock = lockContext(impl_);
+    jerry_value_t realm = jerry_current_realm();
+    jerry_value_t global = jerry_realm_this(realm);
+    jerry_value_t k = makeString(name);
+    jerry_value_t v = toJsValue(value, impl_);
+    jerry_value_t res = jerry_object_set(global, k, v);
+    jerry_value_free(k);
+    jerry_value_free(v);
+    jerry_value_free(res);
+    jerry_value_free(global);
+    jerry_value_free(realm);
+}
+
+Expected<Value, Error>
+Scope::getGlobal(std::string_view name)
+{
+    auto lock = lockContext(impl_);
+    // Returned value is transferred to caller, not tracked.
+    jerry_value_t realm = jerry_current_realm();
+    jerry_value_t global = jerry_realm_this(realm);
+    jerry_value_t k = makeString(name);
+    jerry_value_t v = jerry_object_get(global, k);
+    jerry_value_free(global);
+    jerry_value_free(realm);
+    jerry_value_free(k);
+    if (jerry_value_is_exception(v))
+    {
+        auto err = makeError(v);
+        jerry_value_free(v);
+        return Unexpected(err);
+    }
+    return Value(to_handle(v), impl_);
+}
+
+Value
+Scope::getGlobalObject()
+{
+    auto lock = lockContext(impl_);
+    // Returned value is transferred to caller, not tracked.
+    jerry_value_t realm = jerry_current_realm();
+    jerry_value_t g = jerry_realm_this(realm);
+    jerry_value_free(realm);
+    return {to_handle(g), impl_};
+}
+
+// ------------------------------------------------------------
+// Value
+// ------------------------------------------------------------
+
+// Helpers to round-trip raw JerryScript handles through our opaque Value
+// storage without reinterpreting the bits elsewhere. ABI guard: fails at
+// build-time if a future JerryScript changes jerry_value_t size/representation.
+static jerry_value_t
+to_js(std::uint32_t v)
+{
+    return static_cast<jerry_value_t>(v);
+}
+
+static std::uint32_t
+to_handle(jerry_value_t v)
+{
+    return static_cast<std::uint32_t>(v);
+}
+
+static_assert(
+    std::is_same<std::uint32_t, jerry_value_t>::value,
+    "jerry_value_t size mismatch");
+
+Value::Value() noexcept : val_(0) {}
+
+Value::Value(std::uint32_t val, std::shared_ptr<Context::Impl> impl) noexcept
+    : impl_(std::move(impl))
+    , val_(val)
+{}
+
+Value::~Value()
+{
+    // Only free the value if the context is still valid.
+    // After Context::cleanup(), jerry_ctx is nullptr and we can't call
+    // JerryScript functions. Values that outlive their Context (e.g.,
+    // captured in lambdas) will skip cleanup - the memory was already
+    // freed by jerry_cleanup().
+    // IMPORTANT: We must check jerry_ctx INSIDE the lock to avoid TOCTOU race
+    // with cleanup() which sets jerry_ctx = nullptr under the same lock.
+    if (val_ && impl_)
+    {
+        auto lock = lockContext(impl_);
+        if (impl_->jerry_ctx)
+        {
+            jerry_value_free(to_js(val_));
+        }
+    }
+}
+
+Value::Value(Value const& other) : impl_(other.impl_), val_(0)
+{
+    // Copy by bumping JerryScript handle refcount; paired with jerry_value_free
+    // in the destructor for shared lifetime management across Value copies.
+    //
+    // Thread safety note: The shared_ptr copy (impl_) is done outside the lock
+    // because std::shared_ptr is thread-safe for concurrent copies. The
+    // jerry_value_copy call requires the lock since JerryScript is single-threaded.
+    // This allows Values to be safely copied across threads while ensuring all
+    // engine operations are serialized.
+    //
+    // Skip copy if context has been cleaned up - the value can't be used anyway.
+    // IMPORTANT: We must check jerry_ctx INSIDE the lock to avoid TOCTOU race
+    // with cleanup() which sets jerry_ctx = nullptr under the same lock.
+    if (other.val_ && other.impl_)
+    {
+        auto lock = lockContext(other.impl_);
+        if (other.impl_->jerry_ctx)
+        {
+            val_ = to_handle(jerry_value_copy(to_js(other.val_)));
+        }
+    }
+}
+
+Value::Value(Value&& other) noexcept
+    : impl_(std::move(other.impl_))
+    , val_(other.val_)
+{
+    other.val_ = 0;
+}
+
+Value&
+Value::operator=(Value const& other)
+{
+    if (this == &other)
+    {
+        return *this;
+    }
+    // Free old value if context is still valid
+    // IMPORTANT: We must check jerry_ctx INSIDE the lock to avoid TOCTOU race
+    // with cleanup() which sets jerry_ctx = nullptr under the same lock.
+    if (val_ && impl_)
+    {
+        auto lock = lockContext(impl_);
+        if (impl_->jerry_ctx)
+        {
+            jerry_value_free(to_js(val_));
+        }
+    }
+    impl_ = other.impl_;
+    // Copy new value if context is still valid
+    if (other.val_ && other.impl_)
+    {
+        auto lock = lockContext(other.impl_);
+        if (other.impl_->jerry_ctx)
+        {
+            val_ = to_handle(jerry_value_copy(to_js(other.val_)));
+        }
+        else
+        {
+            val_ = 0;
+        }
+    }
+    else
+    {
+        val_ = 0;
+    }
+    return *this;
+}
+
+Value&
+Value::operator=(Value&& other) noexcept
+{
+    if (this == &other)
+    {
+        return *this;
+    }
+    // Free old value if context is still valid
+    // IMPORTANT: We must check jerry_ctx INSIDE the lock to avoid TOCTOU race
+    // with cleanup() which sets jerry_ctx = nullptr under the same lock.
+    if (val_ && impl_)
+    {
+        auto lock = lockContext(impl_);
+        if (impl_->jerry_ctx)
+        {
+            jerry_value_free(to_js(val_));
+        }
+    }
+    impl_ = std::move(other.impl_);
+    val_ = other.val_;
+    other.val_ = 0;
+    return *this;
+}
+
+void
+Value::swap(Value& other) noexcept
+{
+    using std::swap;
+    swap(impl_, other.impl_);
+    swap(val_, other.val_);
+}
+
+static bool
+isSafeNumberForJerry(double d)
+{
+    // JerryScript only guarantees 32-bit ints; reject wider values early to
+    // avoid wraparound in the engine and round-trip surprises.
+    // Note: std::isfinite returns false for NaN and ±Infinity, so those are
+    // correctly rejected here without needing a separate std::isnan check.
+    if (!std::isfinite(d))
+    {
+        return false;
+    }
+    constexpr auto kMin = static_cast<double>(
+        std::numeric_limits<std::int32_t>::min());
+    constexpr auto kMax = static_cast<double>(
+        std::numeric_limits<std::int32_t>::max());
+    return d >= kMin && d <= kMax;
+}
+
+static std::string
+escapeForEval(std::string_view src)
+{
+    std::string out;
+    out.reserve(src.size() + 16);
+    for (char c: src)
+    {
+        switch (c)
+        {
+        case '\\':
+            out += "\\\\";
+            break;
+        case '"':
+            out += "\\\"";
+            break;
+        case '\n':
+            out += "\\n";
+            break;
+        case '\r':
+            out += "\\r";
+            break;
+        case '\t':
+            out += "\\t";
+            break;
         default:
-        {
-            return std::string_view();
+            out.push_back(c);
+            break;
         }
     }
+    return out;
 }
 
-void
-domArray_push(
-    Access& A, dom::Array const& arr)
+static std::string_view
+trimLeftSpaces(std::string_view sv)
 {
-    dom::ArrayImpl* ptr = arr.impl().get();
-    auto impl = dynamic_cast<JSArrayImpl*>(ptr);
-
-    // Underlying function is also a JS function
-    if (impl && A.ctx_ == impl->access().ctx_)
+    while (!sv.empty()
+           && std::isspace(static_cast<unsigned char>(sv.front())))
     {
-        duk_dup(A, impl->idx());
-        return;
+        sv.remove_prefix(1);
     }
-
-    // Underlying object is a C++ dom::Array
-    // https://wiki.duktape.org/howtovirtualproperties#ecmascript-e6-proxy-subset
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-    // ... [target]
-    duk_push_array(A);
-    // ... [target] [buffer]
-    void* data = duk_push_fixed_buffer(A, sizeof(dom::Array));
-    // ... [target] [buffer] -> [target]
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-    // Create a function finalizer to destroy the dom::Array
-    // from the buffer whenever the JS array is garbage
-    // collected
-    // ... [target] [finalizer]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // Destroy the dom::Array stored at data
-        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
-        std::destroy_at(arr);
-        return 0;
-    }, 1);
-    // ... [target] [finalizer] -> ... [target]
-    duk_set_finalizer(A, -2);
-
-    // Construct the dom::Array in the buffer
-    auto data_ptr = static_cast<dom::Array*>(data);
-    std::construct_at(data_ptr, arr);
-
-    // Create a Proxy handler object
-    // ... [target] [handler]
-    duk_push_object(A);
-
-    // Store a pointer to the dom::Array also in
-    // the handler, so it knows where to find
-    // the dom::Array
-    // ... [target] [handler] [dom::Array*]
-    duk_push_pointer(A, data_ptr);
-    // ... [target] [handler] [dom::Array*] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // ... [target] [handler] -> ... [target] [handler] [get]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key] [recv]
-        Access A(ctx);
-        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
-        auto key = domM_get_index(ctx, 1);
-        if (std::holds_alternative<std::string_view>(key))
-        {
-            std::string_view key_str = std::get<std::string_view>(key);
-            if (key_str == "length")
-            {
-                duk_push_number(
-                    A, static_cast<double>(arr->size()));
-            }
-            else
-            {
-                duk_push_undefined(A);
-            }
-            return 1;
-        }
-        std::size_t key_idx = std::get<std::size_t>(key);
-        dom::Value value = arr->get(key_idx);
-        domValue_push(A, value);
-        return 1;
-    }, 3);
-    // ... [target] [handler] [get] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "get");
-
-    // ... [target] [handler] -> ... [target] [handler] [has]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key]
-        Access A(ctx);
-        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
-        auto key = domM_get_index(ctx, 1);
-        if (std::holds_alternative<std::string_view>(key))
-        {
-            std::string_view key_str = std::get<std::string_view>(key);
-            duk_push_boolean(A, key_str == "length");
-            return 1;
-        }
-        std::size_t key_idx = std::get<std::size_t>(key);
-        bool result = key_idx < arr->size();
-        duk_push_boolean(A, result);
-        return 1;
-    }, 2);
-    // ... [target] [handler] [has] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "has");
-
-    // ... [target] [handler] -> ... [target] [handler] [set]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key] [value] [recv]
-        Access A(ctx);
-        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
-        auto key = domM_get_index(ctx, 1);
-        if (std::holds_alternative<std::string_view>(key))
-        {
-            duk_push_boolean(A, false);
-            return 1;
-        }
-        std::size_t key_idx = std::get<std::size_t>(key);
-        dom::Value value = domValue_get(A, 2);
-        if (key_idx < arr->size())
-        {
-            arr->set(key_idx, value);
-        }
-        else
-        {
-            std::size_t diff = key_idx - arr->size();
-            for (std::size_t i = 0; i < diff; ++i)
-            {
-                arr->emplace_back(dom::Kind::Undefined);
-            }
-            arr->emplace_back(value);
-        }
-        duk_push_boolean(A, false);
-        return 1;
-    }, 4);
-    // ... [target] [handler] [set] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "set");
-
-    // ... [target] [handler] -> ... [target] [handler] [ownKeys]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target]
-        Access A(ctx);
-        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
-        // Get the array keys (list of indices)
-        // [target] -> [target] [array]
-        duk_idx_t arr_idx = duk_push_array(ctx);
-        for (std::size_t i = 0; i < arr->size(); ++i)
-        {
-            // [target] [array] -> [target] [array] [key]
-            std::string key = std::to_string(i);
-            dukM_push_string(A, key);
-            // [target] [array] [key] -> [target] [array]
-            duk_put_prop_index(ctx, arr_idx, i);
-        }
-        return 1;
-    }, 1);
-    // ... [target] [handler] [ownKeys] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "ownKeys");
-
-    // ... [target] [handler] -> ... [target] [handler] [deleteProperty]
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        // [target] [key]
-        Access A(ctx);
-        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
-        auto key = domM_get_index(ctx, 1);
-        if (std::holds_alternative<std::string_view>(key))
-        {
-            duk_push_boolean(A, false);
-            return 1;
-        }
-        std::size_t key_idx = std::get<std::size_t>(key);
-        if (key_idx < arr->size())
-        {
-            arr->set(key_idx, dom::Kind::Undefined);
-            duk_push_boolean(ctx, true);
-        }
-        else
-        {
-            duk_push_boolean(ctx, false);
-        }
-        return 1;
-    }, 2);
-    // ... [target] [handler] [deleteProperty] -> ... [target] [handler]
-    dukM_put_prop_string(A, -2, "deleteProperty");
-
-    // ... [target] [handler] -> ... [proxy array]
-    duk_push_proxy(A, 0);
+    return sv;
 }
 
-// return a dom::Value from a stack element
-static
-dom::Value
-domValue_get(
-    Access& A, duk_idx_t idx)
+static jerry_value_t
+makeString(std::string_view s)
 {
-    idx = duk_require_normalize_index(A, idx);
-    switch (duk_get_type(A, idx))
-    {
-    case DUK_TYPE_UNDEFINED:
-        return dom::Kind::Undefined;
-    case DUK_TYPE_NULL:
-        return nullptr;
-    case DUK_TYPE_BOOLEAN:
-        return static_cast<bool>(duk_get_boolean(A, idx));
-    case DUK_TYPE_NUMBER:
-        return duk_get_number(A, idx);
-    case DUK_TYPE_STRING:
-        return dukM_get_string(A, idx);
-    case DUK_TYPE_OBJECT:
-    {
-        if (duk_is_array(A, idx))
-        {
-            duk_dup(A, idx);
-            return {dom::newArray<JSArrayImpl>(A, duk_get_top_index(A))};
-        }
-        if (duk_is_function(A, idx))
-        {
-            duk_dup(A, idx);
-            return {dom::newFunction<JSFunctionImpl>(A, duk_get_top_index(A))};
-        }
-        if (duk_is_object(A, idx))
-        {
-            duk_dup(A, idx);
-            return {dom::newObject<JSObjectImpl>(A, duk_get_top_index(A))};
-        }
-        return nullptr;
-    }
-    default:
-        return dom::Kind::Undefined;
-    }
-    return dom::Kind::Undefined;
-}
-
-// Push a dom::Value onto the JS stack
-// Objects are pushed as proxies
-static
-void
-domValue_push(
-    Access& A, dom::Value const& value)
-{
-    switch(value.kind())
-    {
-    case dom::Kind::Null:
-        duk_push_null(A);
-        return;
-    case dom::Kind::Undefined:
-        duk_push_undefined(A);
-        return;
-    case dom::Kind::Boolean:
-        duk_push_boolean(A, value.getBool());
-        return;
-    case dom::Kind::Integer:
-        duk_push_int(A, static_cast<
-            duk_int_t>(value.getInteger()));
-        return;
-    case dom::Kind::String:
-    case dom::Kind::SafeString:
-        dukM_push_string(A, value.getString());
-        return;
-    case dom::Kind::Array:
-        domArray_push(A, value.getArray());
-        return;
-    case dom::Kind::Object:
-        domObject_push(A, value.getObject());
-        return;
-    case dom::Kind::Function:
-        domFunction_push(A, value.getFunction());
-        return;
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::Value
-JSObjectImpl::
-get(std::string_view key) const
-{
-    Access A(A_);
-    MRDOCS_ASSERT(duk_is_object(A, idx_));
-    // Put value on top of the stack
-    duk_get_prop_lstring(A, idx_, key.data(), key.size());
-    // Convert to dom::Value
-    return domValue_get(A, -1);
-}
-
-// Set an object enumerable property
-void
-JSObjectImpl::
-set(dom::String key, dom::Value value)
-{
-    Access A(A_);
-    MRDOCS_ASSERT(duk_is_object(A, idx_));
-    dukM_push_string(A, key);
-    domValue_push(A, value);
-    duk_put_prop(A, idx_);
-}
-
-// Visit all enumerable properties
-bool
-JSObjectImpl::
-visit(std::function<bool(dom::String, dom::Value)> visitor) const
-{
-    Access A(A_);
-    MRDOCS_ASSERT(duk_is_object(A, idx_));
-
-    // Enumerate only the object's own properties
-    // The enumerator is pushed on top of the stack
-    duk_enum(A, idx_, DUK_ENUM_OWN_PROPERTIES_ONLY);
-
-    // Iterates over each property of the object
-    while (duk_next(A, -1, 1))
-    {
-        // key and value are on top of the stack
-        dom::Value key = domValue_get(A, -2);
-        dom::Value value = domValue_get(A, -1);
-        if (!visitor(key.getString(), value)) {
-            return false;
-        }
-        // Pop both key and value
-        duk_pop_2(A);
-    }
-
-    // Pop the enum property
-    duk_pop(A);
-    return true;
-}
-
-// Get number of enumerable properties in the object
-std::size_t
-JSObjectImpl::
-size() const
-{
-    MRDOCS_ASSERT(duk_is_object(A_, idx_));
-    int numProperties = 0;
-
-    // Create an enumerator for the object
-    duk_enum(A_, idx_, DUK_ENUM_OWN_PROPERTIES_ONLY);
-
-    while (duk_next(A_, -1, 0))
-    {
-        // Iterates each enumerable property of the object
-        numProperties++;
-
-        // Pop the key from the stack
-        duk_pop(A_);
-    }
-
-    // Pop the enumerator from the stack
-    duk_pop(A_);
-
-    return numProperties;
-}
-
-// Check if object contains the property
-bool
-JSObjectImpl::
-exists(std::string_view key) const
-{
-    MRDOCS_ASSERT(duk_is_object(A_, idx_));
-    return duk_has_prop_lstring(A_, idx_, key.data(), key.size());
-}
-
-
-JSArrayImpl::value_type
-JSArrayImpl::
-get(size_type i) const
-{
-    Access A(A_);
-    MRDOCS_ASSERT(duk_is_array(A, idx_));
-    // Push result to top of the stack
-    duk_get_prop_index(A, idx_, i);
-    // Convert to dom::Value
-    return domValue_get(A, -1);
-}
-
-void
-JSArrayImpl::
-set(size_type idx, dom::Value value)
-{
-    MRDOCS_ASSERT(duk_is_array(A_, idx_));
-    // Push value to top of the stack
-    domValue_push(A_, value);
-    // Push to array
-    duk_put_prop_index(A_, idx_, idx);
-}
-
-void
-JSArrayImpl::
-emplace_back(dom::Value value)
-{
-    MRDOCS_ASSERT(duk_is_array(A_, idx_));
-    // Push value to top of the stack
-    domValue_push(A_, value);
-    // Push to array
-    duk_put_prop_index(A_, idx_, duk_get_length(A_, idx_));
-}
-
-JSArrayImpl::size_type
-JSArrayImpl::
-size() const
-{
-    Access A(A_);
-    auto t = duk_get_type(A, idx_);
-    if (t != DUK_TYPE_OBJECT && scope_)
-    {
-        auto top = duk_get_top(A);
-        MRDOCS_ASSERT(top > 0);
-    }
-    MRDOCS_ASSERT(t == DUK_TYPE_OBJECT);
-    MRDOCS_ASSERT(duk_is_array(A, idx_));
-    return duk_get_length(A, idx_);
-}
-
-Expected<dom::Value>
-JSFunctionImpl::
-call(dom::Array const& args) const
-{
-    Access A(A_);
-    MRDOCS_ASSERT(duk_is_function(A, idx_));
-    duk_dup(A, idx_);
-    for (auto const& arg : args)
-    {
-        domValue_push(A, arg);
-    }
-    auto result = duk_pcall(A, static_cast<duk_idx_t>(args.size()));
-    if(result == DUK_EXEC_ERROR)
-    {
-        return Unexpected(dukM_popError(A));
-    }
-    return domValue_get(A, -1);
-}
-
-//------------------------------------------------
-
-Value::
-Value(
-    int idx,
-    Scope& scope) noexcept
-    : scope_(&scope)
-{
-    Access A(*scope_);
-    idx_ = duk_require_normalize_index(A, idx);
-    Access::addref(*scope_);
-}
-
-Value::
-~Value()
-{
-    if( ! scope_)
-        return;
-    Access A(*scope_);
-    if (idx_ == duk_get_top(A) - 1)
-        duk_pop(A);
-    Access::release(*scope_);
-}
-
-// construct an empty value
-Value::
-Value() noexcept
-    : scope_(nullptr)
-    , idx_(DUK_INVALID_INDEX)
-{
-}
-
-Value::
-Value(
-    Value const& other)
-    : scope_(other.scope_)
-{
-    if(! scope_)
-    {
-        idx_ = DUK_INVALID_INDEX;
-        return;
-    }
-
-    Access A(*scope_);
-    duk_dup(A, other.idx_);
-    idx_ = duk_normalize_index(A, -1);
-    Access::addref(*scope_);
-}
-
-Value::
-Value(
-    Value&& other) noexcept
-    : scope_(other.scope_)
-    , idx_(other.idx_)
-{
-    other.scope_ = nullptr;
-    other.idx_ = DUK_INVALID_INDEX;
-}
-
-Value&
-Value::
-operator=(Value const& other)
-{
-    Value temp(other);
-    Access::swap(*this, temp);
-    return *this;
-}
-
-Value&
-Value::
-operator=(Value&& other) noexcept
-{
-    Value temp(std::move(other));
-    Access::swap(*this, temp);
-    return *this;
+    // Create a JerryScript UTF-8 string from a std::string_view without
+    // leaking ownership details to callers. JerryScript replaces invalid
+    // sequences with U+FFFD; inputs are expected to be UTF-8.
+    return jerry_string(
+        reinterpret_cast<jerry_char_t const*>(s.data()),
+        static_cast<jerry_size_t>(s.size()),
+        JERRY_ENCODING_UTF8);
 }
 
 Type
-Value::
-type() const noexcept
+Value::type() const noexcept
 {
-    if(! scope_)
+    if (!val_)
+    {
         return Type::undefined;
-    Access A(*scope_);
-    switch(duk_get_type(A, idx_))
-    {
-    case DUK_TYPE_UNDEFINED: return Type::undefined;
-    case DUK_TYPE_NULL:      return Type::null;
-    case DUK_TYPE_BOOLEAN:   return Type::boolean;
-    case DUK_TYPE_NUMBER:    return Type::number;
-    case DUK_TYPE_STRING:    return Type::string;
-    case DUK_TYPE_OBJECT:
-    {
-        if (duk_is_function(A, idx_))
-            return Type::function;
-        if (duk_is_array(A, idx_))
-            return Type::array;
-        return Type::object;
     }
-    case DUK_TYPE_LIGHTFUNC:
+    auto lock = lockContext(impl_);
+    auto v = to_js(val_);
+    if (jerry_value_is_undefined(v))
+    {
+        return Type::undefined;
+    }
+    if (jerry_value_is_null(v))
+    {
+        return Type::null;
+    }
+    if (jerry_value_is_boolean(v))
+    {
+        return Type::boolean;
+    }
+    if (jerry_value_is_number(v))
+    {
+        return Type::number;
+    }
+    if (jerry_value_is_string(v))
+    {
+        return Type::string;
+    }
+    if (jerry_value_is_function(v))
+    {
         return Type::function;
-    default:
-        return Type::undefined;
     }
-}
-
-bool
-Value::
-isInteger() const noexcept
-{
-    if (isNumber())
+    if (jerry_value_is_array(v))
     {
-        Access A(*scope_);
-        auto n = duk_get_number(A, idx_);
-        return n == (double)(int)n;
+        return Type::array;
     }
-    return false;
+    // Check if this is one of our DOM object proxies - if so, return object.
+    // (Arrays are converted eagerly, so they're real JS arrays, not proxies.)
+    if (jerry_value_is_proxy(v))
+    {
+        jerry_value_t handler = jerry_proxy_handler(v);
+        if (!jerry_value_is_exception(handler))
+        {
+            // Native pointer is stored directly on the handler object.
+            auto* holder = static_cast<DomValueHolder*>(
+                jerry_object_get_native_ptr(handler, &kDomProxyInfo));
+            if (holder)
+            {
+                jerry_value_free(handler);
+                // DOM object proxies wrap objects only (arrays are eager)
+                return Type::object;
+            }
+        }
+        jerry_value_free(handler);
+    }
+    return Type::object;
+}
+
+
+bool
+Value::isTruthy() const noexcept
+{
+    if (!val_)
+    {
+        return false;
+    }
+    auto lock = lockContext(impl_);
+    return jerry_value_to_boolean(to_js(val_));
+}
+
+dom::Value
+Value::getDom() const
+{
+    if (!val_)
+    {
+        return nullptr;
+    }
+    return toDomValue(to_js(val_), impl_);
+}
+
+std::string
+Value::getString() const
+{
+    return std::string(getDom().getString());
 }
 
 bool
-Value::
-isDouble() const noexcept
+Value::getBool() const noexcept
+{
+    MRDOCS_ASSERT(isBoolean());
+    return getDom().getBool();
+}
+
+std::int64_t
+Value::getInteger() const noexcept
+{
+    MRDOCS_ASSERT(isNumber());
+    auto lock = lockContext(impl_);
+    double d = jerry_value_as_number(to_js(val_));
+    if (d >= (double) std::numeric_limits<std::int64_t>::max())
+    {
+        return std::numeric_limits<std::int64_t>::max();
+    }
+    if (d <= (double) std::numeric_limits<std::int64_t>::min())
+    {
+        return std::numeric_limits<std::int64_t>::min();
+    }
+    return static_cast<std::int64_t>(d);
+}
+
+double
+Value::getDouble() const noexcept
+{
+    MRDOCS_ASSERT(isNumber());
+    auto lock = lockContext(impl_);
+    return jerry_value_as_number(to_js(val_));
+}
+
+dom::Object
+Value::getObject() const noexcept
+{
+    return getDom().getObject();
+}
+
+dom::Array
+Value::getArray() const noexcept
+{
+    return getDom().getArray();
+}
+
+dom::Function
+Value::getFunction() const noexcept
+{
+    return getDom().getFunction();
+}
+
+bool
+Value::isInteger() const noexcept
+{
+    if (!isNumber())
+    {
+        return false;
+    }
+    double d = getDouble();
+    auto i = static_cast<std::int64_t>(d);
+    return static_cast<double>(i) == d;
+}
+
+bool
+Value::isDouble() const noexcept
 {
     return isNumber() && !isInteger();
 }
 
-bool
-Value::
-isTruthy() const noexcept
+Value
+Value::get(std::size_t i) const
 {
-    Access A(*scope_);
-    switch(type())
+    if (!isArray())
     {
-    using enum Type;
-    case boolean:
-        return getBool();
-    case number:
-        return getDouble() != 0;
-    case string:
-        return !getString().empty();
-    case array:
-    case object:
-    case function:
-        return true;
-    case null:
-    case undefined:
-    default:
-        return false;
+        return {};
     }
-}
-
-std::string_view
-Value::
-getString() const
-{
-    MRDOCS_ASSERT(isString());
-    Access A(*scope_);
-    return dukM_get_string(A, idx_);
-}
-
-bool
-Value::
-getBool() const noexcept
-{
-    MRDOCS_ASSERT(isBoolean());
-    Access A(*scope_);
-    return duk_get_boolean(A, idx_) != 0;
-}
-
-std::int64_t
-Value::
-getInteger() const noexcept
-{
-    MRDOCS_ASSERT(isNumber());
-    Access A(*scope_);
-    return duk_get_int(A, idx_);
-}
-
-double
-Value::
-getDouble() const noexcept
-{
-    MRDOCS_ASSERT(isNumber());
-    Access A(*scope_);
-    return duk_get_number(A, idx_);
-}
-
-dom::Object
-Value::
-getObject() const noexcept
-{
-    MRDOCS_ASSERT(isObject());
-    return dom::newObject<JSObjectImpl>(*scope_, idx_);
-}
-
-dom::Array
-Value::
-getArray() const noexcept
-{
-    MRDOCS_ASSERT(isArray());
-    return dom::newArray<JSArrayImpl>(*scope_, idx_);
-}
-
-dom::Function
-Value::
-getFunction() const noexcept
-{
-    MRDOCS_ASSERT(isFunction());
-    return dom::newFunction<JSFunctionImpl>(*scope_, idx_);
-}
-
-dom::Value
-js::Value::
-getDom() const
-{
-    Access A(*scope_);
-    return domValue_get(A, idx_);
-}
-
-void
-Value::
-setlog()
-{
-    Access A(*scope_);
-    // Effects:
-    // Signature    (level, message)
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
+    auto lock = lockContext(impl_);
+    jerry_value_t arr = to_js(val_);
+    jerry_value_t v = jerry_object_get_index(arr, (uint32_t) i);
+    if (jerry_value_is_exception(v))
     {
-        Access A(ctx);
-        auto level = duk_get_uint(ctx, 0);
-        std::string s(dukM_get_string(A, 1));
-        report::print(report::getLevel(level), s);
-        return 0;
-    }, 2);
-    dukM_put_prop_string(A, idx_, "log");
-}
-
-Expected<Value>
-Value::
-callImpl(
-    std::initializer_list<dom::Value> args) const
-{
-    Access A(*scope_);
-    duk_dup(A, idx_);
-    for (auto const& arg : args)
-        domValue_push(A, arg);
-    auto const n = static_cast<duk_int_t>(args.size());
-    auto result = duk_pcall(A, n);
-    if(result == DUK_EXEC_ERROR)
-        return Unexpected(dukM_popError(A));
-    return Access::construct<Value>(-1, *scope_);
-}
-
-Expected<Value>
-Value::
-callImpl(std::span<dom::Value> args) const
-{
-    Access A(*scope_);
-    duk_dup(A, idx_);
-    for (auto const& arg : args)
-        domValue_push(A, arg);
-    auto const n = static_cast<duk_int_t>(args.size());
-    auto result = duk_pcall(A, n);
-    if(result == DUK_EXEC_ERROR)
-        return Unexpected(dukM_popError(A));
-    return Access::construct<Value>(-1, *scope_);
-}
-
-Expected<Value>
-Value::
-callPropImpl(
-    std::string_view prop,
-    std::initializer_list<dom::Value> args) const
-{
-    Access A(*scope_);
-    if(! duk_get_prop_lstring(A,
-            idx_, prop.data(), prop.size()))
-        return Unexpected(formatError("method {} not found", prop));
-    duk_dup(A, idx_);
-    for(auto const& arg : args)
-        domValue_push(A, arg);
-    auto rc = duk_pcall_method(
-        A, static_cast<duk_idx_t>(args.size()));
-    if(rc == DUK_EXEC_ERROR)
-    {
-        Error err = dukM_popError(A);
-        duk_pop(A); // method
-        return Unexpected(err);
+        jerry_value_free(v);
+        return {};
     }
-    return Access::construct<Value>(-1, *scope_);
+    return {to_handle(v), impl_};
 }
 
 Value
-Value::
-get(std::string_view key) const
+Value::get(dom::Value const& idx) const
 {
-    Access A(*scope_);
-    // Push the key for the value we want to retrieve
-    duk_push_lstring(A, key.data(), key.size());
-    // Get the value associated with the key
-    duk_get_prop(A, idx_);
-    // Return value or `undefined`
-    return Access::construct<Value>(-1, *scope_);
-}
-
-Value
-Value::
-get(std::size_t i) const
-{
-    Access A(*scope_);
-    duk_get_prop_index(A, idx_, i);
-    return Access::construct<Value>(-1, *scope_);
-}
-
-
-Value
-Value::
-get(dom::Value const& i) const
-{
-    if (i.isInteger())
+    if (idx.isString())
     {
-        return get(static_cast<std::size_t>(i.getInteger()));
+        return get(idx.getString());
     }
-    if (i.isString() || i.isSafeString())
+    if (idx.isInteger())
     {
-        return get(i.getString().get());
+        return get((std::size_t) idx.getInteger());
     }
     return {};
 }
 
 Value
-Value::
-lookup(std::string_view keys) const
+Value::lookup(std::string_view keys) const
 {
     Value cur = *this;
-    std::size_t pos = keys.find('.');
-    std::string_view key = keys.substr(0, pos);
-    while (pos != std::string_view::npos)
+    std::size_t start = 0;
+    for (std::size_t i = 0; i <= keys.size(); ++i)
     {
-        cur = cur.get(key);
-        if (cur.isUndefined())
+        if (i == keys.size() || keys[i] == '.')
         {
-            return cur;
+            std::string_view token = keys.substr(start, i - start);
+            cur = cur.get(token);
+            start = i + 1;
         }
-        keys = keys.substr(pos + 1);
-        pos = keys.find('.');
-        key = keys.substr(0, pos);
     }
-    return cur.get(key);
+    return cur;
 }
 
 void
-Value::
-set(
-    std::string_view key,
-    Value const& value) const
+Value::erase(std::string_view key) const
 {
-    Access A(*scope_);
-    // Push the key and value onto the stack
-    duk_push_lstring(A, key.data(), key.size());
-    duk_dup(A, value.idx_);
-    // Insert the key-value pair into the object
-    duk_put_prop(A, idx_);
-}
-
-void
-Value::
-set(
-    std::string_view key,
-    dom::Value const& value) const
-{
-    Access A(*scope_);
-    // Push the key and value onto the stack
-    duk_push_lstring(A, key.data(), key.size());
-    domValue_push(A, value);
-    // Insert the key-value pair into the object
-    duk_put_prop(A, idx_);
-}
-
-bool
-Value::
-exists(std::string_view key) const
-{
-    Access A(*scope_);
-    duk_push_lstring(A, key.data(), key.size());
-    return duk_has_prop(A, idx_);
-}
-
-bool
-Value::
-empty() const
-{
-    switch(type())
+    if (!isObject())
     {
-    using enum Type;
-    case undefined:
-    case null:
-        return true;
-    case boolean:
-    case number:
-        return false;
-    case string:
-        return getString().empty();
-    case array:
-        return getArray().empty();
-    case object:
-        return getObject().empty();
-    case function:
-        return false;
-    default:
-        MRDOCS_UNREACHABLE();
+        return;
     }
+    auto lock = lockContext(impl_);
+    jerry_value_t obj = to_js(val_);
+    jerry_value_t k = makeString(key);
+    jerry_value_t r = jerry_object_delete(obj, k);
+    jerry_value_free(r);
+    jerry_value_free(k);
+}
+
+bool
+Value::exists(std::string_view key) const
+{
+    // Fast-path array indices without allocating JerryScript strings; otherwise
+    // defer to property lookup. This mirrors JS truthiness while avoiding
+    // exceptions for missing elements.
+    if (isArray())
+    {
+        // If key is an unsigned integer index, query the array directly without
+        // allocating or throwing.
+        uint32_t idx = 0;
+        bool allDigits = !key.empty();
+        for (char c: key)
+        {
+            if (c < '0' || c > '9')
+            {
+                allDigits = false;
+                break;
+            }
+            idx = idx * 10 + static_cast<uint32_t>(c - '0');
+        }
+        if (allDigits)
+        {
+            auto lock = lockContext(impl_);
+            jerry_value_t elem = jerry_object_get_index(val_, idx);
+            bool exists = !jerry_value_is_exception(elem)
+                          && !jerry_value_is_undefined(elem);
+            jerry_value_free(elem);
+            return exists;
+        }
+    }
+    if (!isObject())
+    {
+        return false;
+    }
+    auto lock = lockContext(impl_);
+    jerry_value_t obj = to_js(val_);
+    jerry_value_t k = makeString(key);
+    jerry_value_t res = jerry_object_has(obj, k);
+    bool b = jerry_value_to_boolean(res);
+    jerry_value_free(res);
+    jerry_value_free(k);
+    return b;
+}
+
+bool
+Value::empty() const
+{
+    auto sz = size();
+    return sz == 0;
 }
 
 std::size_t
-Value::
-size() const
+Value::size() const
 {
-    switch(type())
+    // Approximate JS length semantics: arrays report their length property,
+    // objects return key count, strings return byte length, numbers/booleans
+    // count as singletons, and other types report zero.
+    if (isArray())
     {
-    using enum Type;
-    case undefined:
-    case null:
-        return 0;
-    case boolean:
-    case number:
-        return 1;
-    case string:
-        return getString().size();
-    case array:
-        return getArray().size();
-    case object:
-        return getObject().size();
-    case function:
-        return 1;
-    default:
-        MRDOCS_UNREACHABLE();
+        auto lock = lockContext(impl_);
+        jerry_value_t lenKey = makeString("length");
+        jerry_value_t lenVal = jerry_object_get(to_js(val_), lenKey);
+        jerry_value_free(lenKey);
+        if (jerry_value_is_exception(lenVal))
+        {
+            jerry_value_free(lenVal);
+            return 0;
+        }
+        std::size_t len = (std::size_t) jerry_value_as_number(lenVal);
+        jerry_value_free(lenVal);
+        return len;
     }
+    if (isObject())
+    {
+        auto lock = lockContext(impl_);
+        jerry_value_t keys = jerry_object_keys(val_);
+        std::size_t len = (std::size_t) jerry_array_length(keys);
+        jerry_value_free(keys);
+        return len;
+    }
+    if (isString())
+    {
+        return getString().size();
+    }
+    if (isNumber() || isBoolean())
+    {
+        return 1;
+    }
+    return 0;
+}
+
+Value
+Value::operator[](std::string_view key) const
+{
+    return get(key);
+}
+
+Value
+Value::operator[](std::size_t index) const
+{
+    return get(index);
 }
 
 void
-Value::
-swap(Value& other) noexcept
+Value::set(std::string_view name, Value const& value) const
 {
-    std::swap(scope_, other.scope_);
-    std::swap(idx_, other.idx_);
+    if (!val_)
+    {
+        return;
+    }
+    auto lock = lockContext(impl_);
+    jerry_value_t obj = to_js(val_);
+    jerry_value_t k = makeString(name);
+    jerry_value_t v = jerry_value_copy(to_js(value.val_));
+    jerry_value_t res = jerry_object_set(obj, k, v);
+    jerry_value_free(k);
+    jerry_value_free(v);
+    jerry_value_free(res);
 }
 
-std::string
-toString(
-    Value const& value)
+void
+Value::set(std::string_view key, dom::Value const& value) const
 {
-    Access A(*value.scope_);
-    duk_dup(A, value.idx_);
-    std::string s = duk_to_string(A, -1);
-    duk_pop(A);
-    return s;
+    Value v = Value(to_handle(toJsValue(value, impl_)), impl_);
+    set(key, v);
+}
+
+Value
+Value::get(std::string_view name) const
+{
+    if (!val_)
+    {
+        return {};
+    }
+    auto lock = lockContext(impl_);
+    jerry_value_t obj = to_js(val_);
+    jerry_value_t k = makeString(name);
+    jerry_value_t v = jerry_object_get(obj, k);
+    jerry_value_free(k);
+    if (jerry_value_is_exception(v))
+    {
+        jerry_value_free(v);
+        return {};
+    }
+    return Value(to_handle(v), impl_);
+}
+
+Expected<Value>
+Value::apply(std::span<dom::Value const> args) const
+{
+    // Shared call path for Function invocations so wrappers (`apply`,
+    // Handlebars helpers, etc.) consistently marshal DOM values into
+    // JerryScript values, call the engine, then convert back or surface an
+    // exception as Error.
+    if (!val_)
+    {
+        return Unexpected(Error("undefined"));
+    }
+    auto lock = lockContext(impl_);
+    jerry_value_t fn = val_;
+    if (!jerry_value_is_function(fn))
+    {
+        return Unexpected(Error("not a function"));
+    }
+
+    std::vector<jerry_value_t> jsArgs;
+    jsArgs.reserve(args.size());
+    for (auto const& a: args)
+    {
+        jsArgs.push_back(toJsValue(a, impl_));
+    }
+
+    jerry_value_t ret
+        = jerry_call(fn, jerry_undefined(), jsArgs.data(), jsArgs.size());
+    for (auto& a: jsArgs)
+    {
+        jerry_value_free(a);
+    }
+    if (jerry_value_is_exception(ret))
+    {
+        auto err = makeError(ret);
+        jerry_value_free(ret);
+        return Unexpected(err);
+    }
+    return Value(to_handle(ret), impl_);
+}
+
+// ------------------------------------------------------------
+// dom <-> JS conversion
+// ------------------------------------------------------------
+
+// Definition of kDomProxyInfo (declared earlier as extern)
+jerry_object_native_info_t const kDomProxyInfo{ DomValueHolder::free_cb, 0, 0 };
+
+// Retrieve the DomValueHolder from a proxy trap's handler object.
+// Returns nullptr if the holder is not found or invalid.
+static DomValueHolder*
+getHolderFromHandler(jerry_value_t thisValue)
+{
+    // The native pointer is stored directly on the handler object.
+    return static_cast<DomValueHolder*>(
+        jerry_object_get_native_ptr(thisValue, &kDomProxyInfo));
+}
+
+// ------------------------------------------------------------
+// Lazy Object Proxy
+// ------------------------------------------------------------
+// Creates a JavaScript Proxy that wraps a dom::Object. Properties are
+// converted lazily when accessed, avoiding infinite recursion from circular
+// references (e.g., symbols that reference parent symbols in Handlebars
+// options objects).
+
+static jerry_value_t
+makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
+{
+    auto* holder = new DomValueHolder();
+    holder->impl = impl;
+    holder->value = dom::Value(std::move(obj));
+    impl->registerHolder(holder);
+
+    // Create an empty target object (the proxy intercepts all access)
+    jerry_value_t target = jerry_object();
+
+    // Create handler object with traps
+    jerry_value_t handler = jerry_object();
+
+    // 'get' trap: handler.get(target, prop, receiver)
+    jerry_value_t get_fn = jerry_function_external(
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+                return jerry_undefined();
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_undefined();
+
+            std::string propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            dom::Value val = h->value.getObject().get(propName);
+            return toJsValue(val, h->impl);
+        });
+
+    jerry_value_t get_key = makeString("get");
+    jerry_value_t sr = jerry_object_set(handler, get_key, get_fn);
+    jerry_value_free(sr);
+    jerry_value_free(get_key);
+    jerry_value_free(get_fn);
+
+    // 'has' trap: handler.has(target, prop)
+    jerry_value_t has_fn = jerry_function_external(
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+                return jerry_boolean(false);
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_boolean(false);
+
+            std::string propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            return jerry_boolean(h->value.getObject().exists(propName));
+        });
+
+    jerry_value_t has_key = makeString("has");
+    sr = jerry_object_set(handler, has_key, has_fn);
+    jerry_value_free(sr);
+    jerry_value_free(has_key);
+    jerry_value_free(has_fn);
+
+    // 'ownKeys' trap: handler.ownKeys(target)
+    jerry_value_t ownKeys_fn = jerry_function_external(
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const[],
+           jerry_length_t) -> jerry_value_t
+        {
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_array(0);
+
+            auto lock = lockContext(h->impl);
+            std::vector<std::string> keys;
+            h->value.getObject().visit([&](dom::String k, dom::Value const&) {
+                keys.push_back(std::string(k.get()));
+                return true;
+            });
+
+            jerry_value_t arr = jerry_array(keys.size());
+            for (uint32_t i = 0; i < keys.size(); ++i)
+            {
+                jerry_value_t keyVal = makeString(keys[i]);
+                jerry_value_t setRes = jerry_object_set_index(arr, i, keyVal);
+                jerry_value_free(setRes);
+                jerry_value_free(keyVal);
+            }
+            return arr;
+        });
+
+    jerry_value_t ownKeys_key = makeString("ownKeys");
+    sr = jerry_object_set(handler, ownKeys_key, ownKeys_fn);
+    jerry_value_free(sr);
+    jerry_value_free(ownKeys_key);
+    jerry_value_free(ownKeys_fn);
+
+    // 'getOwnPropertyDescriptor' trap (needed for ownKeys to work properly)
+    jerry_value_t getOwnPropDesc_fn = jerry_function_external(
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+                return jerry_undefined();
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_undefined();
+
+            std::string propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            if (!h->value.getObject().exists(propName))
+                return jerry_undefined();
+
+            // Return a property descriptor
+            jerry_value_t desc = jerry_object();
+            jerry_value_t val = toJsValue(h->value.getObject().get(propName), h->impl);
+            jerry_value_t setRes;
+
+            jerry_value_t valueKey = makeString("value");
+            setRes = jerry_object_set(desc, valueKey, val);
+            jerry_value_free(setRes);
+            jerry_value_free(valueKey);
+            jerry_value_free(val);
+
+            jerry_value_t writableKey = makeString("writable");
+            setRes = jerry_object_set(desc, writableKey, jerry_boolean(true));
+            jerry_value_free(setRes);
+            jerry_value_free(writableKey);
+
+            jerry_value_t enumKey = makeString("enumerable");
+            setRes = jerry_object_set(desc, enumKey, jerry_boolean(true));
+            jerry_value_free(setRes);
+            jerry_value_free(enumKey);
+
+            jerry_value_t configKey = makeString("configurable");
+            setRes = jerry_object_set(desc, configKey, jerry_boolean(true));
+            jerry_value_free(setRes);
+            jerry_value_free(configKey);
+
+            return desc;
+        });
+
+    jerry_value_t getOwnPropDesc_key = makeString("getOwnPropertyDescriptor");
+    sr = jerry_object_set(handler, getOwnPropDesc_key, getOwnPropDesc_fn);
+    jerry_value_free(sr);
+    jerry_value_free(getOwnPropDesc_key);
+    jerry_value_free(getOwnPropDesc_fn);
+
+    // Store the holder directly on the handler object via native pointer.
+    // When the handler is garbage collected (after the proxy is collected),
+    // DomValueHolder::free_cb will be called to delete the holder.
+    jerry_object_set_native_ptr(handler, &kDomProxyInfo, holder);
+
+    // Create the proxy
+    jerry_value_t proxy = jerry_proxy(target, handler);
+    jerry_value_free(target);
+    jerry_value_free(handler);  // proxy now owns handler (and its native pointer)
+
+    // If proxy creation fails, handler was still freed above, which triggers
+    // free_cb to delete the holder. Return empty object.
+    if (jerry_value_is_exception(proxy))
+    {
+        jerry_value_free(proxy);
+        return jerry_object();
+    }
+
+    return proxy;
+}
+
+// Holder for wrapped dom::Function, inherits NativeHolder for cleanup tracking.
+struct FunctionHolder : NativeHolder {
+    std::shared_ptr<Context::Impl> impl;
+    dom::Function fn;
+
+    static void
+    free_cb(void* p, jerry_object_native_info_t*)
+    {
+        auto* h = static_cast<FunctionHolder*>(p);
+        // Always unregister from tracking set so we don't double-free during cleanup.
+        if (h->impl)
+        {
+            h->impl->unregisterHolder(h);
+        }
+        delete h;
+    }
+};
+
+static jerry_object_native_info_t const kFunctionHolderInfo{ FunctionHolder::free_cb, 0, 0 };
+
+static jerry_value_t
+makeFunctionProxy(dom::Function fn, std::shared_ptr<Context::Impl> impl)
+{
+    // Wrap a Dom::Function so JerryScript can call it while keeping the native
+    // callable alive via a heap-allocated holder.
+    auto* holder = new FunctionHolder();
+    holder->impl = impl;
+    holder->fn = std::move(fn);
+    impl->registerHolder(holder);
+
+    jerry_value_t func = jerry_function_external(
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) {
+        auto* h = static_cast<FunctionHolder*>(
+            jerry_object_get_native_ptr(call_info_p->function, &kFunctionHolderInfo));
+        if (!h)
+        {
+            return jerry_throw_sz(JERRY_ERROR_COMMON, "no function");
+        }
+        if (h->impl->owner_thread != std::this_thread::get_id())
+        {
+            return jerry_throw_sz(JERRY_ERROR_COMMON, "function called on wrong thread");
+        }
+        auto lock = lockContext(h->impl);
+        dom::Array arr;
+        for (jerry_length_t i = 0; i < argc; ++i)
+        {
+            arr.push_back(toDomValue(args_p[i], h->impl));
+        }
+        auto exp = h->fn.call(arr);
+        if (!exp)
+        {
+            return jerry_throw_sz(
+                JERRY_ERROR_COMMON,
+                exp.error().message().c_str());
+        }
+        return toJsValue(*exp, h->impl);
+    });
+
+    jerry_object_set_native_ptr(func, &kFunctionHolderInfo, holder);
+    return func;
+}
+
+static jerry_value_t
+toJsValue(dom::Value const& v, std::shared_ptr<Context::Impl> const& impl)
+{
+    // Convert a DOM value tree into JerryScript heap objects. Objects and
+    // arrays are wrapped in Proxies for lazy conversion - properties/elements
+    // are only converted when accessed. This avoids infinite recursion from
+    // circular references (e.g., symbols that reference parent symbols in
+    // Handlebars options objects) and improves performance by not converting
+    // properties that are never used.
+    auto lock = lockContext(impl);
+    switch (v.kind())
+    {
+    case dom::Kind::Null:
+        return jerry_null();
+    case dom::Kind::Boolean:
+        return jerry_boolean(v.getBool());
+    case dom::Kind::Integer:
+    {
+        // JerryScript (3.0.0) narrows through int32 fast-path; large values
+        // trip UBSan.
+        auto i = v.getInteger();
+        if (!isSafeNumberForJerry(static_cast<double>(i)))
+        {
+            return makeString(std::to_string(i));
+        }
+        return jerry_number(static_cast<double>(i));
+    }
+    case dom::Kind::String:
+    case dom::Kind::SafeString:
+    {
+        auto const& s = v.getString();
+        return makeString(s);
+    }
+    case dom::Kind::Array:
+    {
+        // Arrays are converted eagerly since they don't have the circular
+        // reference problem that objects have (Handlebars options objects
+        // contain symbol contexts with parent references, but arrays don't).
+        jerry_value_t arr = jerry_array(v.getArray().size());
+        uint32_t idx = 0;
+        for (auto const& elem: v.getArray())
+        {
+            jerry_value_t je = toJsValue(elem, impl);
+            jerry_value_t sr = jerry_object_set_index(arr, idx++, je);
+            jerry_value_free(sr);
+            jerry_value_free(je);
+        }
+        return arr;
+    }
+    case dom::Kind::Object:
+        // Use lazy proxy for objects - properties converted on access.
+        // This avoids infinite recursion from circular references in
+        // Handlebars options objects (context, data, root contain symbol
+        // trees with parent references).
+        return makeObjectProxy(v.getObject(), impl);
+    case dom::Kind::Function:
+        return makeFunctionProxy(v.getFunction(), impl);
+    default:
+        return jerry_undefined();
+    }
+}
+
+static dom::Value
+toDomValue(jerry_value_t v, std::shared_ptr<Context::Impl> const& impl)
+{
+    // Convert JerryScript values back into DOM counterparts, wrapping JS
+    // functions so native code can call them and translating arrays/objects
+    // recursively. Numbers retain integral form when they fit in int64 to match
+    // existing template expectations.
+    auto lock = lockContext(impl);
+
+    // Check if this is one of our DOM value proxies - if so, return the
+    // original dom::Value directly to preserve type information (e.g., arrays
+    // remain arrays instead of being converted to objects).
+    if (jerry_value_is_proxy(v))
+    {
+        jerry_value_t handler = jerry_proxy_handler(v);
+        if (!jerry_value_is_exception(handler))
+        {
+            // Native pointer is stored directly on the handler object.
+            auto* holder = static_cast<DomValueHolder*>(
+                jerry_object_get_native_ptr(handler, &kDomProxyInfo));
+            if (holder)
+            {
+                jerry_value_free(handler);
+                return holder->value;
+            }
+        }
+        jerry_value_free(handler);
+    }
+
+    if (jerry_value_is_undefined(v) || jerry_value_is_null(v))
+    {
+        if (jerry_value_is_undefined(v))
+        {
+            return {dom::Kind::Undefined};
+        }
+        return {dom::Kind::Null};
+    }
+    if (jerry_value_is_boolean(v))
+    {
+        return {(bool) jerry_value_to_boolean(v)};
+    }
+    if (jerry_value_is_number(v))
+    {
+        double d = jerry_value_as_number(v);
+        if (std::trunc(d) == d
+            && d >= (double) std::numeric_limits<std::int64_t>::min()
+            && d <= (double) std::numeric_limits<std::int64_t>::max())
+        {
+            return {static_cast<std::int64_t>(d)};
+        }
+        return {d};
+    }
+    if (jerry_value_is_function(v))
+    {
+        // Wrap the JS function so it can be invoked from DOM helpers.
+        // Use weak_ptr to avoid preventing Context cleanup. When the deleter
+        // runs, if the Context has been cleaned up (Impl destroyed or
+        // cleanup() called), we skip jerry_value_free since JerryScript
+        // already released all values during jerry_cleanup().
+        //
+        // Thread safety tradeoff: We check owner_thread to avoid calling
+        // JerryScript from a different thread (which would be undefined
+        // behavior). If a dom::Function is destroyed on a different thread,
+        // we skip jerry_value_free, causing a temporary JerryScript reference
+        // leak until context cleanup. This is preferable to UB.
+        auto fnHandle = std::shared_ptr<jerry_value_t>(
+            new jerry_value_t(jerry_value_copy(v)),
+            [weak_impl = std::weak_ptr<Context::Impl>(impl)](jerry_value_t const* h) {
+            if (!h)
+            {
+                return;
+            }
+            // Try to lock the weak_ptr. If Impl is still alive, free the value.
+            // If Impl is gone or cleanup() was called, the value is already freed.
+            if (auto locked = weak_impl.lock())
+            {
+                if (locked->alive && locked->jerry_ctx && !locked->cleaning_up
+                    && locked->owner_thread == std::this_thread::get_id())
+                {
+                    auto lock = lockContext(locked);
+                    jerry_value_free(*h);
+                }
+            }
+            // Always delete the handle memory, even if we skipped jerry_value_free
+            delete h;
+        });
+
+        return dom::makeVariadicInvocable(
+            [fnHandle,
+             impl](dom::Array const& args) -> Expected<dom::Value, Error> {
+            auto lock = lockContext(impl);
+            std::vector<jerry_value_t> jsArgs;
+            jsArgs.reserve(args.size());
+            for (auto const& a: args)
+            {
+                jsArgs.push_back(toJsValue(a, impl));
+            }
+
+            jerry_value_t ret = jerry_call(
+                *fnHandle,
+                jerry_undefined(),
+                jsArgs.data(),
+                jsArgs.size());
+            for (auto& a: jsArgs)
+            {
+                jerry_value_free(a);
+            }
+            if (jerry_value_is_exception(ret))
+            {
+                auto err = makeError(ret);
+                jerry_value_free(ret);
+                return Unexpected(err);
+            }
+            auto dv = toDomValue(ret, impl);
+            jerry_value_free(ret);
+            return dv;
+        });
+    }
+    if (jerry_value_is_string(v))
+    {
+        return {toString(v)};
+    }
+    if (jerry_value_is_array(v))
+    {
+        dom::Array arr;
+        uint32_t len = jerry_array_length(v);
+        for (uint32_t i = 0; i < len; ++i)
+        {
+            jerry_value_t elem = jerry_object_get_index(v, i);
+            if (!jerry_value_is_exception(elem))
+            {
+                arr.push_back(toDomValue(elem, impl));
+            }
+            jerry_value_free(elem);
+        }
+        return {std::move(arr)};
+    }
+    if (jerry_value_is_object(v))
+    {
+        dom::Object obj;
+        jerry_value_t keys = jerry_object_keys(v);
+        uint32_t len = jerry_array_length(keys);
+        for (uint32_t i = 0; i < len; ++i)
+        {
+            jerry_value_t key = jerry_object_get_index(keys, i);
+            std::string k = toString(key);
+            jerry_value_t val = jerry_object_get(v, key);
+            if (!jerry_value_is_exception(val))
+            {
+                obj.set(k, toDomValue(val, impl));
+            }
+            jerry_value_free(key);
+            jerry_value_free(val);
+        }
+        jerry_value_free(keys);
+        return {std::move(obj)};
+    }
+    return nullptr;
+}
+
+// ------------------------------------------------------------
+// registerHelper
+// ------------------------------------------------------------
+
+static Expected<Value, Error>
+resolveHelperFunction(
+    Scope& scope,
+    std::string_view name,
+    std::string_view script)
+{
+    // Coerce user-provided helper source into a callable. Resolution order:
+    //
+    // 1. Parenthesized eval - handles function declarations without side effects
+    //    e.g., "function add(a,b) { return a+b; }" -> "(function add(a,b)...)"
+    //
+    // 2. Direct eval - handles IIFEs and expressions that return functions
+    //    e.g., "(function(){ return function(){}; })()"
+    //
+    // 3. Global lookup - handles scripts that define globals
+    //    e.g., "var helper = function(){}; helper;"
+    //
+    // This order minimizes side effects: parenthesized eval of a function
+    // declaration is pure, while direct eval may execute statements.
+    Error firstErr("code did not evaluate to a function");
+
+    // Try parenthesized first (common case: function declarations)
+    std::string wrapped;
+    wrapped.reserve(script.size() + 2);
+    wrapped.push_back('(');
+    wrapped.append(script);
+    wrapped.push_back(')');
+
+    if (auto expr = scope.eval(wrapped))
+    {
+        if (expr->isFunction())
+        {
+            return *expr;
+        }
+    }
+    else
+    {
+        firstErr = expr.error();
+    }
+
+    // Try direct eval (IIFEs, expressions)
+    if (auto exp = scope.eval(script))
+    {
+        if (exp->isFunction())
+        {
+            return *exp;
+        }
+    }
+    else if (firstErr.message() == "code did not evaluate to a function")
+    {
+        // Keep the more informative error
+        firstErr = exp.error();
+    }
+
+    // Fall back to global lookup
+    if (Value global = scope.getGlobalObject())
+    {
+        Value candidate = global.get(name);
+        if (candidate.isFunction())
+        {
+            return candidate;
+        }
+    }
+
+    return Unexpected(
+        firstErr.message().empty() ?
+            Error(
+                std::string("helper is not a function: ") + std::string(name)) :
+            firstErr);
+}
+
+Expected<void, Error>
+registerHelper(
+    Handlebars& hbs,
+    std::string_view name,
+    Context& ctx,
+    std::string_view script)
+{
+    // Bridge a user-supplied helper script into Handlebars: evaluate or
+    // resolve the helper into a JS function, expose it on a shared global for
+    // reuse, then register a wrapper that handles Handlebars' `options` object
+    // with no name-specific shortcuts.
+    Scope scope(ctx);
+    auto fnExp = resolveHelperFunction(scope, name, script);
+    if (!fnExp)
+    {
+        return Unexpected(fnExp.error());
+    }
+    Value fn = *fnExp;
+
+    // Store helper on a shared global object so utility scripts can reference
+    // registered helpers. Existing helpers are preserved; re-registering a
+    // name replaces both the MrDocsHelpers entry and the Handlebars binding.
+    Value helpers = scope.getGlobal("MrDocsHelpers").value_or(Value{});
+    if (helpers.isUndefined() || !helpers.isObject())
+    {
+        helpers = scope.pushObject();
+        scope.setGlobal("MrDocsHelpers", helpers.getDom());
+    }
+    helpers.set(name, fn);
+
+    hbs.registerHelper(
+        std::string(name),
+        dom::makeVariadicInvocable(
+            [fn](
+                dom::Array const& args) -> Expected<dom::Value, Error> {
+        return detail::invokeHelper(fn, args);
+    }));
+
+    return {};
+}
+
+// ------------------------------------------------------------
+// free functions
+// ------------------------------------------------------------
+
+std::string
+toString(Value const& value)
+{
+    auto dv = value.getDom();
+    if (dv.isString())
+    {
+        return std::string(dv.getString());
+    }
+    if (dv.isInteger())
+    {
+        return std::to_string(dv.getInteger());
+    }
+    if (dv.isBoolean())
+    {
+        return dv.getBool() ? "true" : "false";
+    }
+    return {};
 }
 
 bool
-operator==(
-    Value const& lhs,
-    Value const& rhs) noexcept
+operator==(Value const& lhs, Value const& rhs) noexcept
 {
-    if (lhs.isUndefined() || rhs.isUndefined())
-    {
-        return lhs.isUndefined() && rhs.isUndefined();
-    }
-    return duk_strict_equals(
-        Access(*lhs.scope_), lhs.idx_, rhs.idx_);
+    return lhs.getDom() == rhs.getDom();
 }
 
 std::strong_ordering
 operator<=>(Value const& lhs, Value const& rhs) noexcept
 {
-    using kind_t = std::underlying_type_t<Type>;
-    if (static_cast<kind_t>(lhs.type()) < static_cast<kind_t>(rhs.type()))
-    {
-        return std::strong_ordering::less;
-    }
-    if (static_cast<kind_t>(rhs.type()) < static_cast<kind_t>(lhs.type()))
-    {
-        return std::strong_ordering::greater;
-    }
-    switch (lhs.type())
-    {
-    using enum Type;
-    case undefined:
-    case null:
-        return std::strong_ordering::equivalent;
-    case boolean:
-        return lhs.getBool() <=> rhs.getBool();
-    case number:
-        if (lhs.getDouble() < rhs.getDouble())
-        {
-            return std::strong_ordering::less;
-        }
-        if (rhs.getDouble() < lhs.getDouble())
-        {
-            return std::strong_ordering::greater;
-        }
-        return std::strong_ordering::equal;
-    case string:
-        return lhs.getString() <=> rhs.getString();
-    default:
-        if (duk_strict_equals(
-            Access(*lhs.scope_), lhs.idx_, rhs.idx_))
-        {
-            return std::strong_ordering::equal;
-        }
-        else
-        {
-            return std::strong_ordering::equivalent;
-        }
-    }
-    return std::strong_ordering::equivalent;
+    return lhs.getDom() <=> rhs.getDom();
 }
 
 Value
 operator||(Value const& lhs, Value const& rhs)
 {
-    if (lhs.isTruthy())
-    {
-        return lhs;
-    }
-    return rhs;
+    return lhs.isTruthy() ? lhs : rhs;
 }
 
 Value
 operator&&(Value const& lhs, Value const& rhs)
 {
-    if (!lhs.isTruthy())
-    {
-        return lhs;
-    }
-    return rhs;
+    return lhs.isTruthy() ? rhs : lhs;
 }
 
-Expected<void, Error>
-registerHelper(
-    mrdocs::Handlebars& hbs,
-    std::string_view name,
-    Context& ctx,
-    std::string_view script)
-{
-    // Register the compiled helper function in the global scope
-    constexpr auto global_helpers_key = DUK_HIDDEN_SYMBOL("MrDocsHelpers");
-    {
-        Scope s(ctx);
-        Value g = s.getGlobalObject();
-        MRDOCS_ASSERT(g.isObject());
-        if (!g.exists(global_helpers_key))
-        {
-            Value obj = s.pushObject();
-            MRDOCS_ASSERT(obj.isObject());
-            g.set(global_helpers_key, obj);
-        }
-        Value helpers = g.get(global_helpers_key);
-        MRDOCS_ASSERT(helpers.isObject());
-        MRDOCS_TRY(Value JSFn, s.compile_function(script));
-        if (!JSFn.isFunction())
-        {
-          return Unexpected(
-              Error(std::format("helper \"{}\" is not a function", name)));
-        }
-        helpers.set(name, JSFn);
-    }
-
-    // Register C++ helper that retrieves the helper
-    // from the global object, converts the arguments,
-    // and invokes the JS function.
-    hbs.registerHelper(name, dom::makeVariadicInvocable(
-        [&ctx, global_helpers_key, name=std::string(name)](
-            dom::Array const& args) -> Expected<dom::Value>
-        {
-            // Get function from global scope
-            auto s = std::make_shared<Scope>(ctx);
-            Value g = s->getGlobalObject();
-            MRDOCS_ASSERT(g.isObject());
-            MRDOCS_ASSERT(g.exists(global_helpers_key));
-            Value helpers = g.get(global_helpers_key);
-            MRDOCS_ASSERT(helpers.isObject());
-            Value fn = helpers.get(name);
-            MRDOCS_ASSERT(fn.isFunction());
-
-            // Call function
-            std::vector<dom::Value> arg_span;
-            arg_span.reserve(args.size());
-            for (auto const& arg : args)
-            {
-                arg_span.push_back(arg);
-            }
-            auto JSResult = fn.apply(arg_span);
-            if (!JSResult)
-            {
-                return dom::Kind::Undefined;
-            }
-
-            // Convert result to dom::Value
-            dom::Value result = JSResult->getDom();
-            const bool isPrimitive =
-                !result.isObject() &&
-                !result.isArray() &&
-                !result.isFunction();
-            if (isPrimitive)
-            {
-                return result;
-            }
-
-            // Non-primitive values need to keep the
-            // JS scope alive until the value is used
-            // by the Handlebars engine.
-            auto setScope = [&s](auto& result, auto TI)
-            {
-                using T = typename std::decay_t<decltype(TI)>::type;
-                auto* impl = dynamic_cast<T*>(result.impl().get());
-                MRDOCS_ASSERT(impl);
-                impl->setScope(s);
-            };
-            if (result.isObject())
-            {
-                setScope(
-                    result.getObject(),
-                    std::type_identity<JSObjectImpl>{});
-            }
-            else if (result.isArray())
-            {
-                setScope(
-                    result.getArray(),
-                    std::type_identity<JSArrayImpl>{});
-            }
-            else if (result.isFunction())
-            {
-                setScope(
-                    result.getFunction(),
-                    std::type_identity<JSFunctionImpl>{});
-            }
-            return result;
-        }));
-    return {};
-}
-
-} // js
-} // mrdocs
-
+} // namespace mrdocs::js
