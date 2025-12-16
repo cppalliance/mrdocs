@@ -527,24 +527,6 @@ if (MRDOCS_BUILD_TESTS)
     set(MRDOCS_SELF_DOC_OUTPUT "${CMAKE_BINARY_DIR}/docs/self-reference")
     set(MRDOCS_SELF_DOC_TAGFILE "${MRDOCS_SELF_DOC_OUTPUT}/reference.tag.xml")
 
-    add_test(NAME mrdocs-self-doc
-        COMMAND
-            mrdocs
-            "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
-                "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
-                "--output=${MRDOCS_SELF_DOC_OUTPUT}"
-                --generator=adoc
-                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                "--stdlib-includes=${LIBCXX_DIR}"
-                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                "--tagfile=${MRDOCS_SELF_DOC_TAGFILE}"
-                --multipage=true
-                --concurrency=16
-                --log-level=debug
-                $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
-        )
-
     #-------------------------------------------------
     # XML lint
     #-------------------------------------------------

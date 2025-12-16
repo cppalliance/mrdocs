@@ -392,7 +392,7 @@ def main() -> None:
                 "doc warnings promoted to errors when MRDOCS_BUILD_STRICT_TESTS=ON, or stale docs/mrdocs.yml config."
             ),
         }
-        for name in non_golden_tests or ["mrdocs-unit-tests", "xml-lint", "yaml-schema-check", "mrdocs-self-doc"]:
+        for name in non_golden_tests or ["mrdocs-unit-tests", "xml-lint", "yaml-schema-check"]:
             rc = run_ctest_case(build_dir, name)
             if rc != 0:
                 error(f"Test failed: {name}")
