@@ -28,15 +28,10 @@ enum class AutoKind
     DecltypeAuto
 };
 
-/** Convert an auto-kind to its spelling.
-    @return String naming the keyword.
-*/
 MRDOCS_DECL
 dom::String
 toString(AutoKind kind) noexcept;
 
-/** Serialize the auto kind into a DOM value.
-*/
 inline
 void
 tag_invoke(

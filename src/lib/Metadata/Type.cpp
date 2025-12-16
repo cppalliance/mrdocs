@@ -830,30 +830,38 @@ innerTypePtrImpl(TypeTy&& TI) noexcept
     return nullptr;
 }
 
-// Walk to the deepest nested type, preserving constness.
+// Get the innermost type
+// If there's an internal type, return it
+// If there's no internal type, return the current type
 template <
-    class PolyRef,
-    bool isMutable = !std::is_const_v<std::remove_reference_t<PolyRef>>,
+    class PolymorphicTypeTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<PolymorphicTypeTy>>,
     class Ref = std::conditional_t<isMutable, Polymorphic<Type>&, Polymorphic<Type> const&>>
-requires std::same_as<std::remove_cvref_t<PolyRef>, Polymorphic<Type>>
+requires std::same_as<std::remove_cvref_t<PolymorphicTypeTy>, Polymorphic<Type>>
 Ref
-innermostTypeImpl(PolyRef&& TI) noexcept
+innermostTypeImpl(PolymorphicTypeTy&& TI) noexcept
 {
-    auto* current = std::addressof(TI);
-    Optional<Ref> inner = innerTypeImpl(**current);
+    MRDOCS_ASSERT(!TI.valueless_after_move());
+    Optional<Ref> inner = innerTypeImpl(*TI);
+    if (!inner)
+    {
+        return TI;
+    }
     while (inner)
     {
-        current = std::addressof(*inner);
-        if (current->valueless_after_move())
-            break;
-        if ((*current)->isNamed())
-            break;
-        inner = innerTypeImpl(**current);
+        Ref ref = *inner;
+        MRDOCS_ASSERT(!ref.valueless_after_move());
+        if (ref->isNamed())
+        {
+            return ref;
+        }
+        inner = innerTypeImpl(*ref);
     }
-    return *current;
+    Ref ref = *inner;
+    return ref;
 }
 
-} // namespace
+}
 
 Optional<Polymorphic<Type> const&>
 innerType(Type const& TI) noexcept

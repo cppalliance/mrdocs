@@ -1,6 +1,5 @@
 == from_chars
 
-Converts strings to numbers
 
 === Synopsis
 

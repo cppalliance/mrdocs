@@ -87,45 +87,6 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     return SubstConstr.get();
 }
 
-clang::Decl const*
-canonicalFriendTarget(clang::NamedDecl const* ND)
-{
-    if (!ND)
-        return nullptr;
-
-    if (auto const* CTSD = llvm::dyn_cast<clang::ClassTemplateSpecializationDecl>(ND))
-    {
-        if (auto* T = CTSD->getSpecializedTemplate())
-            return T->getTemplatedDecl()->getCanonicalDecl();
-    }
-
-    if (auto const* CRD = llvm::dyn_cast<clang::CXXRecordDecl>(ND))
-    {
-        if (auto* CTD = CRD->getDescribedClassTemplate())
-            return CTD->getTemplatedDecl()->getCanonicalDecl();
-    }
-
-    if (auto const* VTS = llvm::dyn_cast<clang::VarTemplateSpecializationDecl>(ND))
-    {
-        if (auto* VT = VTS->getSpecializedTemplate())
-            return VT->getTemplatedDecl()->getCanonicalDecl();
-    }
-
-    if (auto const* VTD = llvm::dyn_cast<clang::VarTemplateDecl>(ND))
-        return VTD->getTemplatedDecl()->getCanonicalDecl();
-
-    if (auto const* FD = llvm::dyn_cast<clang::FunctionDecl>(ND))
-    {
-        if (auto const* PT = FD->getPrimaryTemplate())
-            return PT->getTemplatedDecl()->getCanonicalDecl();
-    }
-
-    if (auto const* FTD = llvm::dyn_cast<clang::FunctionTemplateDecl>(ND))
-        return FTD->getTemplatedDecl()->getCanonicalDecl();
-
-    return ND->getCanonicalDecl();
-}
-
 clang::AccessSpecifier
 getAccess(clang::Decl const* D)
 {

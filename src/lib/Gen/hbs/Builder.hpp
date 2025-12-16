@@ -56,7 +56,7 @@ public:
         If the output is multi-page and not embedded,
         this function renders the wrapper template
         with the index template as the contents.
-    */
+     */
     template<std::derived_from<Symbol> T>
     Expected<void>
     operator()(std::ostream& os, T const&);
@@ -71,7 +71,7 @@ public:
         will be executed to render the contents
         of the page.
 
-    */
+     */
     Expected<void>
     renderWrapped(
         std::ostream& os,
@@ -79,27 +79,27 @@ public:
 
 private:
     /** The directory with the all templates.
-    */
+     */
     std::string
     templatesDir() const;
 
     /** A subdirectory of the templates dir
-    */
+     */
     std::string
     templatesDir(std::string_view subdir) const;
 
     /** The directory with the common templates.
-    */
+     */
     std::string
     commonTemplatesDir() const;
 
     /** A subdirectory of the common templates dir
-    */
+     */
     std::string
     commonTemplatesDir(std::string_view subdir) const;
 
     /** The directory with the layout templates.
-    */
+     */
     std::string
     layoutDir() const;
 
@@ -110,12 +110,12 @@ private:
 
         It also includes a sectionref helper that describes
         the section where the symbol is located.
-    */
+     */
     dom::Object
     createContext(Symbol const& I);
 
     /** Render a Handlebars template from the templates directory.
-    */
+     */
     Expected<void>
     callTemplate(
         std::ostream& os,

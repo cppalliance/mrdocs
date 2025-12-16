@@ -38,7 +38,7 @@ namespace mrdocs {
     @tparam Base The base type of the object
     @tparam Fn The function object type
     @tparam Args The argument types
-*/
+ */
 template<
     typename Base,
     typename Fn,
@@ -55,7 +55,7 @@ public:
         @param obj The object to visit
         @param fn The function object to call
         @param args The arguments to pass to the function object
-    */
+     */
     Visitor(Base&& obj, Fn&& fn, Args&&... args)
         : obj_(std::forward<Base>(obj))
         , fn_(std::forward<Fn>(fn))
@@ -72,7 +72,7 @@ public:
 
         @tparam Derived The derived type to visit
         @return The result of calling the function object
-    */
+     */
     template <std::derived_from<std::remove_cvref_t<Base>> Derived>
     decltype(auto)
     visit()
@@ -103,7 +103,7 @@ public:
     @param args The arguments to pass to the function object
     @return The common return type of `fn` when called
             with a derived type of `obj` and `args`
-*/
+ */
 template<
     typename BaseTy,
     typename ObjectTy,

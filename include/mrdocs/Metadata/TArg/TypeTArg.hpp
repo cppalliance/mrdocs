@@ -20,17 +20,13 @@
 
 namespace mrdocs {
 
-/** Type template argument.
-*/
 struct TypeTArg final
     : TArgCommonBase<TArgKind::Type>
 {
     /** Template argument type.
-    */
+     */
     Polymorphic<struct Type> Type = Polymorphic<struct Type>(AutoType{});
 
-    /** Compare type arguments by referenced type.
-    */
     auto operator<=>(TypeTArg const&) const = default;
 };
 

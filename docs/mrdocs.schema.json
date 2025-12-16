@@ -55,16 +55,6 @@
       "title": "Path to the compilation database",
       "type": "string"
     },
-    "copycss": {
-      "default": true,
-      "description": "When `linkcss` is true, copy bundled and local stylesheet files into the output under `stylesdir`. Remote URLs are not copied. Set to false to skip copying.",
-      "enum": [
-        true,
-        false
-      ],
-      "title": "Copy local stylesheets when linking",
-      "type": "boolean"
-    },
     "defines": {
       "default": [],
       "description": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
@@ -341,16 +331,6 @@
       "title": "Standard Library include paths",
       "type": "array"
     },
-    "linkcss": {
-      "default": false,
-      "description": "When set to true, stylesheets are linked with `<link>` tags instead of being inlined. Links use `stylesdir` plus the stylesheet name (e.g. `css/custom.css`). Local styles are copied unless `copycss` is false; remote URLs are linked as-is.",
-      "enum": [
-        true,
-        false
-      ],
-      "title": "Link stylesheets instead of embedding them",
-      "type": "boolean"
-    },
     "log-level": {
       "default": "info",
       "description": "The reporting level determines the amount of information displayed during the generation of the documentation.",
@@ -390,16 +370,6 @@
         false
       ],
       "title": "Generate a multipage documentation",
-      "type": "boolean"
-    },
-    "no-default-styles": {
-      "default": false,
-      "description": "When set to true, the bundled stylesheet is not applied. Combine with an empty `stylesheets` list to emit no styles at all.",
-      "enum": [
-        true,
-        false
-      ],
-      "title": "Disable the bundled default stylesheet",
       "type": "boolean"
     },
     "output": {
@@ -569,21 +539,6 @@
         "type": "string"
       },
       "title": "C++ Standard Library include paths",
-      "type": "array"
-    },
-    "stylesdir": {
-      "default": "css",
-      "description": "Directory used to build the href for linked stylesheets when `linkcss` is true. Defaults to `css`. The directory is created under the output root when copying local styles (e.g. `css/mrdocs-default.css`).",
-      "title": "Directory for linked stylesheets",
-      "type": "string"
-    },
-    "stylesheets": {
-      "default": [],
-      "description": "Ordered list of stylesheet names or paths. If empty, the bundled stylesheet is used. Entries can be local paths or remote URLs; remote URLs are only linked when `linkcss` is true. Inline mode embeds local styles; link mode emits `<link>` tags for each entry and copies local files.",
-      "items": {
-        "type": "string"
-      },
-      "title": "Ordered list of stylesheets to apply to HTML output",
       "type": "array"
     },
     "system-includes": {

@@ -33,8 +33,6 @@ enum class NoexceptKind
     Dependent
 };
 
-/** Convert a noexcept kind to its string form.
-*/
 MRDOCS_DECL
 dom::String
 toString(NoexceptKind kind) noexcept;

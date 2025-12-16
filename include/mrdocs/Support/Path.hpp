@@ -21,20 +21,12 @@ namespace mrdocs {
 
 //------------------------------------------------
 
-/** Polymorphic visitor for files discovered during traversal.
-*/
 struct MRDOCS_VISIBLE
     AnyFileVisitor
 {
-    /** Virtual destructor.
-    */
     virtual
     ~AnyFileVisitor() = 0;
 
-    /** Visit a single file path.
-        @param fileName Path to the file being visited.
-        @return Success or error from visitor.
-    */
     virtual
     Expected<void>
     visitFile(std::string_view fileName) = 0;
@@ -114,11 +106,6 @@ forEachFile(
 
 //------------------------------------------------
 
-/** Filesystem helpers (join, temp, canonicalize) used throughout MrDocs.
-
-    The `files` namespace centralizes cross-platform path manipulation so CLI,
-    generators, and tests can share the same normalization and staging logic.
-*/
 namespace files {
 
 /** The type of a file.
@@ -356,25 +343,12 @@ withExtension(
     std::string_view fileName,
     std::string_view ext);
 
-/** Append a component to a base path using the native separator.
-
-    @param basePath Base path.
-    @param name Component to append.
-    @return Combined path string.
-*/
 MRDOCS_DECL
 std::string
 appendPath(
     std::string_view basePath,
     std::string_view name);
 
-/** Append two components to a base path using the native separator.
-
-    @param basePath Base path.
-    @param name1 First component to append.
-    @param name2 Second component to append.
-    @return Combined path string.
-*/
 MRDOCS_DECL
 std::string
 appendPath(
@@ -382,14 +356,6 @@ appendPath(
     std::string_view name1,
     std::string_view name2);
 
-/** Append three components to a base path using the native separator.
-
-    @param basePath Base path.
-    @param name1 First component to append.
-    @param name2 Second component to append.
-    @param name3 Third component to append.
-    @return Combined path string.
-*/
 MRDOCS_DECL
 std::string
 appendPath(
@@ -398,15 +364,6 @@ appendPath(
     std::string_view name2,
     std::string_view name3);
 
-/** Append four components to a base path using the native separator.
-
-    @param basePath Base path.
-    @param name1 First component to append.
-    @param name2 Second component to append.
-    @param name3 Third component to append.
-    @param name4 Fourth component to append.
-    @return Combined path string.
-*/
 MRDOCS_DECL
 std::string
 appendPath(
@@ -505,7 +462,7 @@ createDirectory(
     @param pathName A string view representing the path to be checked.
     @param prefix A string view representing the prefix to be checked against the path.
     @return A boolean value. Returns true if `pathName` starts with `prefix`, false otherwise.
-*/
+ */
 MRDOCS_DECL
 bool
 startsWith(

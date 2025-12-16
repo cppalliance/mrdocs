@@ -21,12 +21,6 @@
 namespace mrdocs {
 namespace dom {
 
-/** Internal helpers for lazy DOM arrays.
-
-    These utilities let generators expose large result sets without eagerly
-    materializing every element, deferring lookups until the DOM is traversed
-    during rendering or serialization.
-*/
 namespace detail {
     struct no_context_tag {};
     struct no_size_tag {};
@@ -85,8 +79,6 @@ class LazyArrayImpl : public ArrayImpl
     MRDOCS_NO_UNIQUE_ADDRESS Context context_;
 
 public:
-    /** Construct from a range of values.
-    */
     explicit
     LazyArrayImpl(R const& arr)
         : begin_(std::ranges::begin(arr))
@@ -98,10 +90,6 @@ public:
         }
     }
 
-    /** Construct from a range and a conversion context.
-        @param arr Range to wrap lazily.
-        @param ctx Context used to convert elements.
-    */
     explicit
     LazyArrayImpl(R const& arr, Context const& ctx)
         : begin_(std::ranges::begin(arr))
@@ -114,8 +102,6 @@ public:
         }
     }
 
-    /** Virtual destructor.
-    */
     ~LazyArrayImpl() override = default;
 
     /// @copydoc ObjectImpl::type_key
@@ -125,8 +111,6 @@ public:
         return "LazyArray";
     }
 
-    /** Return the number of elements, computing it lazily if needed.
-    */
     std::size_t
     size() const noexcept override
     {
@@ -140,9 +124,6 @@ public:
         }
     }
 
-    /** Retrieve the element at index `i`, or nil if out of range.
-        @param i Index of the element.
-    */
     dom::Value
     get(std::size_t i) const override
     {
@@ -171,7 +152,7 @@ public:
 
     @param arr The underlying range of elements.
     @return A new dom::Array whose elements are the result of converting each element in the underlying range to a dom::Value.
-*/
+ */
 template <std::ranges::random_access_range T>
 requires HasStandaloneValueFrom<std::ranges::range_value_t<T>>
 Array

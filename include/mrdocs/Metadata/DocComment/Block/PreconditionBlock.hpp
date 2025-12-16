@@ -20,38 +20,22 @@
 
 namespace mrdocs::doc {
 
-/** Text describing required conditions before entry.
-
-    Syntax:
-
-    @code
-    @pre condition
-    @endcode
-*/
 struct PreconditionBlock final
     : BlockCommonBase<BlockKind::Precondition>
     , InlineContainer
 {
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-
-    /** Order preconditions by their inline text.
-    */
     auto operator<=>(PreconditionBlock const&) const = default;
-
-    /** Equality compares the inline text.
-    */
     bool operator==(PreconditionBlock const&) const noexcept = default;
 };
 
-/** Map the @ref PreconditionBlock to a @ref dom::Object.
+/** Map the @ref Precondition to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -64,12 +48,12 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref PreconditionBlock as a @ref dom::Value object.
+/** Return the @ref Precondition as a @ref dom::Value object.
 
     @param v The value to assign to.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 inline
 void
 tag_invoke(

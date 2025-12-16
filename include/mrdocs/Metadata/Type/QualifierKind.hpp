@@ -36,14 +36,10 @@ enum QualifierKind
     Volatile
 };
 
-/** Convert a cv/ref qualifier kind to its string form.
-*/
 MRDOCS_DECL
 dom::String
 toString(QualifierKind kind) noexcept;
 
-/** Map a QualifierKind into a DOM value.
-*/
 inline
 void
 tag_invoke(

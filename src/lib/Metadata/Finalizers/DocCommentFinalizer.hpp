@@ -95,7 +95,7 @@ public:
     }
 
     /** Finalize the doc for all symbols
-    */
+     */
     void
     build();
 

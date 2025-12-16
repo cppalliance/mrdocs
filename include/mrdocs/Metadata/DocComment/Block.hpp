@@ -34,16 +34,14 @@
 #include <mrdocs/Metadata/DocComment/Block/ThrowsBlock.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 
-/** Doc-comment enums and helpers that describe admonition kinds. */
 namespace mrdocs::doc {
-
 /** Visit a block.
 
-    @param info The block to visit.
+    @param block The block to visit.
     @param fn The function to call for each block.
     @param args Additional arguments to pass to the function.
     @return The result of calling the function.
-*/
+ */
 template<
     std::derived_from<Block> BlockTy,
     class Fn,
@@ -66,14 +64,10 @@ visit(
     }
 }
 
-/** Three-way comparison between polymorphic block wrappers.
-*/
 MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<Block> const& lhs, Polymorphic<Block> const& rhs);
 
-/** Equality delegates to the three-way comparison.
-*/
 inline bool
 operator==(Polymorphic<Block> const& lhs, Polymorphic<Block> const& rhs)
 {
@@ -85,7 +79,7 @@ operator==(Polymorphic<Block> const& lhs, Polymorphic<Block> const& rhs)
     @param io The output parameter to receive the dom::Object.
     @param I The polymorphic Block to convert.
     @param domCorpus The DomCorpus used to resolve references.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -106,10 +100,10 @@ tag_invoke(
 
 /** Map the Polymorphic Block as a @ref dom::Value object.
 
-    @param v The output parameter to receive the dom::Value.
+    @param io The output parameter to receive the dom::Value.
     @param I The polymorphic Block to convert.
     @param domCorpus The DomCorpus used to resolve references.
-*/
+ */
 inline
 void
 tag_invoke(
@@ -128,11 +122,7 @@ tag_invoke(
     });
 }
 
-/** Map an optional polymorphic block into a DOM value, producing null when empty.
-    @param v Destination value.
-    @param I Optional block to convert.
-    @param domCorpus Corpus context for lazy resolution.
-*/
+
 inline
 void
 tag_invoke(
@@ -154,7 +144,7 @@ tag_invoke(
 
     @param el The Polymorphic<Block> to trim.
     @return void
-*/
+ */
 inline
 void
 ltrim(Polymorphic<Block>& el)
@@ -166,7 +156,7 @@ ltrim(Polymorphic<Block>& el)
 
     @param el The Polymorphic<Block> to trim.
     @return void
-*/
+ */
 inline
 void
 rtrim(Polymorphic<Block>& el)
@@ -178,7 +168,7 @@ rtrim(Polymorphic<Block>& el)
 
     @param el The Polymorphic<Block> to trim.
     @return void
-*/
+ */
 inline
 void
 trim(Polymorphic<Block>& el)
@@ -188,7 +178,7 @@ trim(Polymorphic<Block>& el)
 }
 
 /** Determine if the inline is empty
-*/
+ */
 inline
 bool
 isEmpty(Polymorphic<Block> const& el)

@@ -43,21 +43,12 @@ namespace mrdocs {
     @param DeclInfo The template comparison information for the new declaration.
     @param ConstrExpr The constraint expression to be substituted.
     @return The substituted constraint expression, or nullptr if an error occurs.
-*/
+ */
 clang::Expr const*
 SubstituteConstraintExpressionWithoutSatisfaction(
     clang::Sema &S,
     const clang::Sema::TemplateCompareNewDeclInfo &DeclInfo,
     const clang::Expr *ConstrExpr);
-
-/** Collapse a friend target (function/class/template) to its canonical owner.
-
-    This resolves friend declarations that name template specializations or
-    redeclarations to the primary/canonical declaration so traversal and
-    symbol IDs converge on a single entity.
-*/
-clang::Decl const*
-canonicalFriendTarget(clang::NamedDecl const* ND);
 
 /** Determine the MrDocs Info type for a Clang DeclType
 
@@ -74,7 +65,7 @@ canonicalFriendTarget(clang::NamedDecl const* ND);
 
     When there's no direct correspondence, this trait returns
     the base Info type.
-*/
+ */
 template <class>
 struct InfoTypeFor {};
 
@@ -212,7 +203,7 @@ template <class DeclType>
 using InfoTypeFor_t = typename InfoTypeFor<DeclType>::type;
 
 /** Convert a Clang AccessSpecifier into a MrDocs AccessKind
-*/
+ */
 inline
 AccessKind
 toAccessKind(clang::AccessSpecifier const spec)
@@ -229,7 +220,7 @@ toAccessKind(clang::AccessSpecifier const spec)
 }
 
 /** Convert a Clang StorageClass into a MrDocs StorageClassKind
-*/
+ */
 inline
 StorageClassKind
 toStorageClassKind(clang::StorageClass const spec)
@@ -249,7 +240,7 @@ toStorageClassKind(clang::StorageClass const spec)
 }
 
 /** Convert a Clang ConstexprSpecKind into a MrDocs ConstexprKind
-*/
+ */
 inline
 ConstexprKind
 toConstexprKind(clang::ConstexprSpecKind const spec)
@@ -270,7 +261,7 @@ toConstexprKind(clang::ConstexprSpecKind const spec)
 }
 
 /** Convert a Clang ExplicitSpecKind into a MrDocs ExplicitKind
-*/
+ */
 inline
 ExplicitKind
 toExplicitKind(clang::ExplicitSpecifier const& spec)
@@ -292,7 +283,7 @@ toExplicitKind(clang::ExplicitSpecifier const& spec)
 }
 
 /** Convert a Clang ExceptionSpecificationType into a MrDocs NoexceptKind
-*/
+ */
 inline
 NoexceptKind
 toNoexceptKind(clang::ExceptionSpecificationType const spec)
@@ -324,7 +315,7 @@ toNoexceptKind(clang::ExceptionSpecificationType const spec)
 }
 
 /** Convert a Clang clang::OverloadedOperatorKind into a MrDocs OperatorKind
-*/
+ */
 inline
 OperatorKind
 toOperatorKind(clang::OverloadedOperatorKind const kind)
@@ -429,7 +420,7 @@ toOperatorKind(clang::OverloadedOperatorKind const kind)
 }
 
 /** Convert a Clang ReferenceKind into a MrDocs ReferenceKind
-*/
+ */
 inline
 ReferenceKind
 toReferenceKind(clang::RefQualifierKind const kind)
@@ -448,7 +439,7 @@ toReferenceKind(clang::RefQualifierKind const kind)
 }
 
 /** Convert a Clang clang::TagTypeKind into a MrDocs RecordKeyKind
-*/
+ */
 inline
 RecordKeyKind
 toRecordKeyKind(clang::TagTypeKind const kind)
@@ -465,7 +456,7 @@ toRecordKeyKind(clang::TagTypeKind const kind)
 }
 
 /** Convert a Clang unsigned qualifier kind into a MrDocs QualifierKind
-*/
+ */
 inline
 QualifierKind
 toQualifierKind(unsigned const quals)
@@ -484,7 +475,7 @@ toQualifierKind(unsigned const quals)
 }
 
 /** Convert a Clang Decl::Kind into a MrDocs FunctionClass
-*/
+ */
 inline
 FunctionClass
 toFunctionClass(clang::Decl::Kind const kind)
@@ -502,7 +493,7 @@ toFunctionClass(clang::Decl::Kind const kind)
 }
 
 /** Convert a Clang clang::AutoTypeKeyword into a MrDocs AutoKind
-*/
+ */
 inline
 AutoKind
 toAutoKind(clang::AutoTypeKeyword const kind)
@@ -520,7 +511,7 @@ toAutoKind(clang::AutoTypeKeyword const kind)
 }
 
 /** Convert a Clang clang::clang::BuiltinType into a MrDocs AutoKind
-*/
+ */
 inline
 Optional<FundamentalTypeKind>
 toFundamentalTypeKind(clang::BuiltinType::Kind const kind)
@@ -579,7 +570,7 @@ toFundamentalTypeKind(clang::BuiltinType::Kind const kind)
 // ----------------------------------------------------------------
 
 /** Visit a Decl and call the appropriate visitor function.
-*/
+ */
 template<
     typename DeclTy,
     typename Visitor,
@@ -627,7 +618,7 @@ DeclToKindImpl() = delete;
 #include <clang/AST/DeclNodes.inc>
 
 /** Get the clang::Decl::Kind for a type DeclTy derived from Decl.
-*/
+ */
 template<typename DeclTy>
 consteval
 clang::Decl::Kind
@@ -640,7 +631,7 @@ DeclToKind()
 // ----------------------------------------------------------------
 
 /** Visit a Type and call the appropriate visitor function.
-*/
+ */
 template<
     typename TypeTy,
     typename Visitor,
@@ -698,7 +689,7 @@ TypeToKind()
 // ----------------------------------------------------------------
 
 /** Visit a TypeLoc and call the appropriate visitor function.
-*/
+ */
 template<
     typename TypeLocTy,
     typename Visitor,
@@ -745,7 +736,7 @@ TypeLocToKindImpl() = delete;
 #include <clang/AST/TypeLocNodes.def>
 
 /** Get the clang::TypeLoc::TypeLocClass for a type TypeLocTy derived from TypeLoc.
-*/
+ */
 template<typename TypeLocTy>
 consteval
 clang::TypeLoc::TypeLocClass
@@ -827,7 +818,7 @@ getInstantiatedFrom(DeclTy const* D)
 
     Given a `Decl`, this function will analyze the parent
     context and return the access specifier for the declaration.
-*/
+ */
 MRDOCS_DECL
 clang::AccessSpecifier
 getAccess(clang::Decl const* D);
@@ -855,7 +846,7 @@ getDeclaratorType(clang::DeclaratorDecl const* DD);
     the function will return the clang::NonTypeTemplateParmDecl
     corresponding to `x`, which is the template parameter
     of the function `f`.
-*/
+ */
 MRDOCS_DECL
 clang::NonTypeTemplateParmDecl const*
 getNTTPFromExpr(clang::Expr const* E, unsigned Depth);
@@ -1095,7 +1086,7 @@ namespace detail {
 /** Determine whether the driver mode is ClangCL.
 
     @param cc The compilation command to insepct.
-*/
+ */
 bool
 isClangCL(clang::tooling::CompileCommand const& cc);
 

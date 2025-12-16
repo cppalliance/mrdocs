@@ -24,14 +24,10 @@ namespace mrdocs {
 
     All other reference directories come directly from the
     configuration file.
-*/
+ */
 struct ReferenceDirectories
 {
-    /** Absolute path to the current working directory.
-    */
     std::string cwd;
-    /** Absolute path to the MrDocs repository root.
-    */
     std::string mrdocsRoot;
 };
 

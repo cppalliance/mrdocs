@@ -16,15 +16,11 @@
 
 namespace mrdocs::doc {
 
-/** Enumerates the different kinds of inline nodes.
-*/
 enum class InlineKind {
-#define INFO(Type) Type,
+    #define INFO(Type) Type,
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 };
 
-/** Convert an inline kind to its kebab-case string.
-*/
 inline
 dom::String
 toString(InlineKind kind) noexcept
@@ -37,16 +33,11 @@ toString(InlineKind kind) noexcept
     return "Unknown";
 }
 
-/** Serialize an inline kind into a DOM value.
-    @param v Destination DOM value.
-    @param kind Kind to serialize.
-*/
 inline
 void
 tag_invoke(
     dom::ValueFromTag,
-    dom::Value& v,
-    InlineKind const kind)
+    dom::Value& v, InlineKind const kind)
 {
     v = toString(kind);
 }

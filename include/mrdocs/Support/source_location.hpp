@@ -17,20 +17,14 @@
     __has_include(<source_location>)
 #    include <source_location>
 namespace mrdocs {
-    /** Alias to `std::source_location` when available.
-    */
     using std::source_location;
 } // mrdocs
 #else
 #    include <cstdint>
 
 namespace mrdocs {
-    /** Lightweight backport of `std::source_location`.
-    */
     struct source_location
     {
-        /** Capture the current source location.
-        */
         static
         constexpr
         source_location
@@ -49,16 +43,12 @@ namespace mrdocs {
             return result;
         }
 
-        /** Return the file name.
-        */
         constexpr
         char const*
         file_name() const noexcept
         {
             return file_;
         }
-        /** Return the function name.
-        */
         constexpr
         char const*
         function_name() const noexcept
@@ -66,16 +56,12 @@ namespace mrdocs {
             return function_;
         }
 
-        /** Return the source line number.
-        */
         constexpr
         std::uint_least32_t
         line() const noexcept
         {
             return line_;
         }
-        /** Return the source column number.
-        */
         constexpr
         std::uint_least32_t
         column() const noexcept

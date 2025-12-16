@@ -107,7 +107,7 @@ public:
 };
 
 /** Return a list of the parent symbols of the specified Info.
-*/
+ */
 MRDOCS_DECL
 dom::Array
 getParents(DomCorpus const& C, Symbol const& I);

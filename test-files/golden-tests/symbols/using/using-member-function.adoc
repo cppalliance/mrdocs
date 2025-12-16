@@ -312,10 +312,6 @@ struct U
     , protected link:#D[D]
 ----
 
-=== Description
-
-The documentation of this struct should include the function f twice&colon; once in the member functions
-
 === Base Classes
 
 [cols="1,4"]
@@ -388,6 +384,10 @@ The documentation of this struct should include the function f twice&colon; once
 | link:#U-f-07[`f`] 
 | `f` overloads
 |===
+
+=== Description
+
+The documentation of this struct should include the function f twice&colon; once in the member functions
 
 [#U-U-0a]
 == link:#U[U]::U

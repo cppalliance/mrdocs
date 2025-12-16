@@ -192,8 +192,6 @@ public:
     */
     [[noreturn]] void Throw() &&;
 
-    /** Swap the contents with another error.
-    */
     constexpr
     void
     swap(Error& rhs) noexcept
@@ -294,38 +292,24 @@ class MRDOCS_DECL
     std::string_view func_;
 
 public:
-    /** Build a location wrapper from a `source_location`.
-    */
     SourceLocation(
         source_location const& loc) noexcept;
 
-    /** File name associated with the location.
-        @return Path of the source file.
-    */
     std::string_view file_name() const noexcept
     {
         return file_;
     }
 
-    /** Line number (1-based) within the file.
-        @return One-based line index.
-    */
     std::uint_least32_t line() const noexcept
     {
         return line_;
     }
 
-    /** Column number (1-based) within the file.
-        @return One-based column index.
-    */
     std::uint_least32_t column() const noexcept
     {
         return col_;
     }
 
-    /** Function name captured at the location.
-        @return Name of the function where the location was recorded.
-    */
     std::string_view function_name() const noexcept
     {
         return func_;
@@ -337,11 +321,6 @@ public:
 template<class... Args>
 struct FormatString
 {
-    /** Capture a format string and its originating location.
-
-        @param fs_ The format string to copy.
-        @param loc_ Source location where formatting is requested.
-    */
     template <class T>
     FormatString(
         T const& fs_,
@@ -354,12 +333,7 @@ struct FormatString
             std::string_view, T const&>);
     }
 
-    /** Format string view.
-    */
     std::string_view fs;
-
-    /** Originating source location for diagnostics.
-    */
     source_location loc;
 };
 

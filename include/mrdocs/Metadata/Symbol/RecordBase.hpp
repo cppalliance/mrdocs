@@ -27,26 +27,19 @@ struct BaseInfo
         This is typically a `NamedType` that refers to a
         `RecordSymbol`, but it could also be a more complex type
         such as a `decltype`.
-    */
+     */
     Polymorphic<struct Type> Type;
 
     /** The access specifier for the base.
-    */
+     */
     AccessKind Access = AccessKind::Public;
 
     /** Whether the base is virtual.
-    */
+     */
     bool IsVirtual = false;
 
-    /** Bases must be explicitly described.
-    */
     BaseInfo() = delete;
 
-    /** Create a base description.
-        @param type The base type.
-        @param access Declared access specifier.
-        @param is_virtual Whether the base is virtual.
-    */
     BaseInfo(
         Polymorphic<struct Type>&& type,
         AccessKind const access,
@@ -58,8 +51,6 @@ struct BaseInfo
     }
 };
 
-/** Serialize a base description into a DOM value.
-*/
 MRDOCS_DECL
 void
 tag_invoke(

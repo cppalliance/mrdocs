@@ -20,54 +20,27 @@
 
 namespace mrdocs {
 
-/** Buckets the members that appear inside a namespace.
-*/
+/** The members of a Namespace
+ */
 struct NamespaceTranche {
-    /** Nested namespaces.
-    */
     std::vector<SymbolID> Namespaces;
-    /** Namespace aliases declared here.
-    */
     std::vector<SymbolID> NamespaceAliases;
-    /** Typedef or using declarations.
-    */
     std::vector<SymbolID> Typedefs;
-    /** Record types (classes/structs).
-    */
     std::vector<SymbolID> Records;
-    /** Enumerations.
-    */
     std::vector<SymbolID> Enums;
-    /** Functions and overload sets.
-    */
     std::vector<SymbolID> Functions;
-    /** Variables.
-    */
     std::vector<SymbolID> Variables;
-    /** Concepts.
-    */
     std::vector<SymbolID> Concepts;
-    /** Deduction guides.
-    */
     std::vector<SymbolID> Guides;
-    /** Using-declarations that introduce members.
-    */
     std::vector<SymbolID> Usings;
 
-    /** Compare tranches field-by-field.
-    */
     auto operator<=>(NamespaceTranche const&) const = default;
 };
 
-/** Merge two tranches, appending members from the right-hand side.
-*/
 MRDOCS_DECL
 void
 merge(NamespaceTranche& I, NamespaceTranche&& Other);
 
-/** Join all tranche member lists into a single view.
-    @return Lazy view spanning every category stored in the tranche.
-*/
 inline
 auto
 allMembers(NamespaceTranche const& T)
@@ -97,8 +70,8 @@ allMembers(NamespaceTranche const& T)
 
     @param io The IO object to use for mapping.
     @param I The NamespaceTranche to map.
-    @param domCorpus The DomCorpus used to create the DOM values.
-*/
+    @param domCorpus The DomCorpus used to create
+ */
 template <class IO>
 void
 tag_invoke(
@@ -120,7 +93,7 @@ tag_invoke(
 }
 
 /** Map the NamespaceTranche to a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(
@@ -132,16 +105,12 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-/** Describes a namespace and its members.
+/** Describes a namespace.
 */
 struct NamespaceSymbol final
     : SymbolCommonBase<SymbolKind::Namespace>
 {
-    /** Whether this declaration is inline.
-    */
     bool IsInline = false;
-    /** Whether this represents an unnamed namespace.
-    */
     bool IsAnonymous = false;
 
     /** Namespaces nominated by using-directives.
@@ -152,29 +121,19 @@ struct NamespaceSymbol final
     */
     NamespaceTranche Members;
 
-    /** Create a namespace symbol bound to an ID.
-    */
     explicit
     NamespaceSymbol(SymbolID const &ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 
-    /** Compare namespaces by attributes and member lists.
-    */
     std::strong_ordering
     operator<=>(NamespaceSymbol const&) const;
 };
 
-/** Merge two namespaces, keeping existing members stable.
-*/
 MRDOCS_DECL
-void
-merge(NamespaceSymbol& I, NamespaceSymbol&& Other);
+void merge(NamespaceSymbol& I, NamespaceSymbol&& Other);
 
-/** View all members of the namespace across tranches.
-    @return Lazy view across every member bucket.
-*/
 inline
 auto
 allMembers(NamespaceSymbol const& T)
@@ -188,7 +147,7 @@ allMembers(NamespaceSymbol const& T)
     @param io The IO object to use for mapping.
     @param I The NamespaceSymbol to map.
     @param domCorpus The DomCorpus used to create
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -205,7 +164,7 @@ tag_invoke(
 }
 
 /** Map the NamespaceSymbol to a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(

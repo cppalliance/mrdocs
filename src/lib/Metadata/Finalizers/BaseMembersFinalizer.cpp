@@ -172,7 +172,6 @@ inheritBaseMembers(
             otherCopy->id = SymbolID::createFromString(
                 std::format("{}-{}", toBase16Str(otherCopy->Parent),
                             toBase16Str(otherInfo.id)));
-            otherCopy->IsCopyFromInherited = true;
             derived.push_back(otherCopy->id);
             // Get the extraction mode from the derived class
             if (otherCopy->Extraction == ExtractionMode::Dependency ||

@@ -1,19 +1,15 @@
 <html lang="en">
 <head>
 <title>Reference</title>
-<meta charset="utf-8">
 </head>
 <body>
 <div>
 <h1>Reference</h1>
 <div>
 <div>
-<h2 id="index">
-Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
-</h2>
+<h2 id="index"></h2>
 </div>
-<h2>
-Types</h2>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -33,21 +29,19 @@ Types</h2>
 </div>
 <div>
 <div>
-<h2 id="base">
-base<a class="mrdocs-anchor" href="#base" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base">base</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">class base
-    : public <a href="#base_base">base_base</a></code></pre>
+<pre>
+<code class="source-code cpp">class base
+    : public <a href="#base_base">base_base</a></code>
+</pre>
 </div>
 <div>
-<h2>
-Base Classes</h2>
+<h2>Base Classes</h2>
 <table>
 <thead>
 <tr>
@@ -60,8 +54,7 @@ Base Classes</h2>
 </tbody>
 </table>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -81,8 +74,7 @@ Member Functions</h2>
 </table>
 
 
-<h2>
-Protected Member Functions</h2>
+<h2>Protected Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -99,8 +91,7 @@ Protected Member Functions</h2>
 
 
 <div>
-<h2>
-Derived Classes</h2>
+<h2>Derived Classes</h2>
 <table>
 <thead>
 <tr>
@@ -117,161 +108,151 @@ Derived Classes</h2>
 </div>
 <div>
 <div>
-<h2 id="base-2constructor">
-base::base<a class="mrdocs-anchor" href="#base-2constructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-2constructor">base::base</h2>
 <div>
 <p>Constructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">base();</code></pre>
+<pre>
+<code class="source-code cpp">base();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-2destructor">
-base::~base<a class="mrdocs-anchor" href="#base-2destructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-2destructor">base::~base</h2>
 <div>
 <p>Destructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">~base();</code></pre>
+<pre>
+<code class="source-code cpp">~base();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-base_inherited">
-base::base_inherited<a class="mrdocs-anchor" href="#base-base_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-base_inherited">base::base_inherited</h2>
 <div>
 <p>This function should be inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base">base</a>&
-base_inherited();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+base_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-base_shadowed">
-base::base_shadowed<a class="mrdocs-anchor" href="#base-base_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-base_shadowed">base::base_shadowed</h2>
 <div>
 <p>This function should shadow the excluded_base function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base">base</a>&
-base_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+base_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-derived_shadowed">
-base::derived_shadowed<a class="mrdocs-anchor" href="#base-derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-derived_shadowed">base::derived_shadowed</h2>
 <div>
 <p>This function should be shadowed by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base">base</a>&
-derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+derived_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-do_base_inherited">
-base::do_base_inherited<a class="mrdocs-anchor" href="#base-do_base_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-do_base_inherited">base::do_base_inherited</h2>
 <div>
 <p>This function should be inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base">base</a>&
-do_base_inherited();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+do_base_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-do_base_shadowed">
-base::do_base_shadowed<a class="mrdocs-anchor" href="#base-do_base_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-do_base_shadowed">base::do_base_shadowed</h2>
 <div>
 <p>This function should shadow the excluded_base function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base">base</a>&
-do_base_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+do_base_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base-do_derived_shadowed">
-base::do_derived_shadowed<a class="mrdocs-anchor" href="#base-do_derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base-do_derived_shadowed">base::do_derived_shadowed</h2>
 <div>
 <p>This function should be shadowed by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base">base</a>&
-do_derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base">base</a>&
+do_derived_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base_base">
-base_base<a class="mrdocs-anchor" href="#base_base" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base_base">base_base</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">class base_base;</code></pre>
+<pre>
+<code class="source-code cpp">class base_base;</code>
+</pre>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -290,8 +271,7 @@ Member Functions</h2>
 
 
 <div>
-<h2>
-Derived Classes</h2>
+<h2>Derived Classes</h2>
 <table>
 <thead>
 <tr>
@@ -308,92 +288,86 @@ Derived Classes</h2>
 </div>
 <div>
 <div>
-<h2 id="base_base-2constructor">
-base_base::base_base<a class="mrdocs-anchor" href="#base_base-2constructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base_base-2constructor">base_base::base_base</h2>
 <div>
 <p>Constructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">base_base();</code></pre>
+<pre>
+<code class="source-code cpp">base_base();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base_base-2destructor">
-base_base::~base_base<a class="mrdocs-anchor" href="#base_base-2destructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base_base-2destructor">base_base::~base_base</h2>
 <div>
 <p>Destructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">~base_base();</code></pre>
+<pre>
+<code class="source-code cpp">~base_base();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base_base-base_base_inherited">
-base_base::base_base_inherited<a class="mrdocs-anchor" href="#base_base-base_base_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base_base-base_base_inherited">base_base::base_base_inherited</h2>
 <div>
 <p>This function should be indirectly inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base_base">base_base</a>&
-base_base_inherited();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base_base">base_base</a>&
+base_base_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="base_base-do_base_base_inherited">
-base_base::do_base_base_inherited<a class="mrdocs-anchor" href="#base_base-do_base_base_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="base_base-do_base_base_inherited">base_base::do_base_base_inherited</h2>
 <div>
 <p>This function should be indirectly inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#base_base">base_base</a>&
-do_base_base_inherited();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#base_base">base_base</a>&
+do_base_base_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived">
-derived<a class="mrdocs-anchor" href="#derived" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived">derived</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">class derived
+<pre>
+<code class="source-code cpp">class derived
     : public <a href="#base">base</a>
-    , public excluded_base</code></pre>
+    , public excluded_base</code>
+</pre>
 </div>
 <div>
-<h2>
-Base Classes</h2>
+<h2>Base Classes</h2>
 <table>
 <thead>
 <tr>
@@ -407,8 +381,7 @@ Base Classes</h2>
 </tbody>
 </table>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -430,8 +403,7 @@ Member Functions</h2>
 </table>
 
 
-<h2>
-Protected Member Functions</h2>
+<h2>Protected Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -452,145 +424,136 @@ Protected Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="derived-2constructor">
-derived::derived<a class="mrdocs-anchor" href="#derived-2constructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-2constructor">derived::derived</h2>
 <div>
 <p>Constructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">derived();</code></pre>
+<pre>
+<code class="source-code cpp">derived();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived-2destructor">
-derived::~derived<a class="mrdocs-anchor" href="#derived-2destructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-2destructor">derived::~derived</h2>
 <div>
 <p>Destructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">~derived();</code></pre>
+<pre>
+<code class="source-code cpp">~derived();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived-derived_shadowed">
-derived::derived_shadowed<a class="mrdocs-anchor" href="#derived-derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-derived_shadowed">derived::derived_shadowed</h2>
 <div>
 <p>This function should shadow the base class function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#derived">derived</a>&
-derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#derived">derived</a>&
+derived_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived-do_derived_shadowed">
-derived::do_derived_shadowed<a class="mrdocs-anchor" href="#derived-do_derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-do_derived_shadowed">derived::do_derived_shadowed</h2>
 <div>
 <p>This function should shadow the base class function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#derived">derived</a>&
-do_derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#derived">derived</a>&
+do_derived_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived-excluded_inherited">
-derived::excluded_inherited<a class="mrdocs-anchor" href="#derived-excluded_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-excluded_inherited">derived::excluded_inherited</h2>
 <div>
 <p>This function should be inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">excluded_base&
-excluded_inherited();</code></pre>
+<pre>
+<code class="source-code cpp">excluded_base&
+excluded_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived-do_excluded_inherited">
-derived::do_excluded_inherited<a class="mrdocs-anchor" href="#derived-do_excluded_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-do_excluded_inherited">derived::do_excluded_inherited</h2>
 <div>
 <p>This function should be inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">excluded_base&
-do_excluded_inherited();</code></pre>
+<pre>
+<code class="source-code cpp">excluded_base&
+do_excluded_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="derived-do_shadowed">
-derived::do_shadowed<a class="mrdocs-anchor" href="#derived-do_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="derived-do_shadowed">derived::do_shadowed</h2>
 <div>
 <p>This function should be shadowed by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">excluded_base&
-do_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp">excluded_base&
+do_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="private_derived">
-private_derived<a class="mrdocs-anchor" href="#private_derived" aria-label="Permalink">#</a>
-</h2>
+<h2 id="private_derived">private_derived</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">class private_derived
+<pre>
+<code class="source-code cpp">class private_derived
     : <a href="#base">base</a>
-    , excluded_base</code></pre>
+    , excluded_base</code>
+</pre>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -611,95 +574,89 @@ Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="private_derived-2constructor">
-private_derived::private_derived<a class="mrdocs-anchor" href="#private_derived-2constructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="private_derived-2constructor">private_derived::private_derived</h2>
 <div>
 <p>Constructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">private_derived();</code></pre>
+<pre>
+<code class="source-code cpp">private_derived();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="private_derived-2destructor">
-private_derived::~private_derived<a class="mrdocs-anchor" href="#private_derived-2destructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="private_derived-2destructor">private_derived::~private_derived</h2>
 <div>
 <p>Destructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">~private_derived();</code></pre>
+<pre>
+<code class="source-code cpp">~private_derived();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="private_derived-derived_shadowed">
-private_derived::derived_shadowed<a class="mrdocs-anchor" href="#private_derived-derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="private_derived-derived_shadowed">private_derived::derived_shadowed</h2>
 <div>
 <p>This function should shadow the base class function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#private_derived">private_derived</a>&
-derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#private_derived">private_derived</a>&
+derived_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="private_derived-do_derived_shadowed">
-private_derived::do_derived_shadowed<a class="mrdocs-anchor" href="#private_derived-do_derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="private_derived-do_derived_shadowed">private_derived::do_derived_shadowed</h2>
 <div>
 <p>This function should shadow the base class function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#private_derived">private_derived</a>&
-do_derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#private_derived">private_derived</a>&
+do_derived_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived">
-protected_derived<a class="mrdocs-anchor" href="#protected_derived" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived">protected_derived</h2>
 <div>
 <p>Should inherit functions as protected.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">class protected_derived
+<pre>
+<code class="source-code cpp">class protected_derived
     : protected <a href="#base">base</a>
-    , protected excluded_base</code></pre>
+    , protected excluded_base</code>
+</pre>
 </div>
 <div>
-<h2>
-Protected Base Classes</h2>
+<h2>Protected Base Classes</h2>
 <table>
 <thead>
 <tr>
@@ -713,8 +670,7 @@ Protected Base Classes</h2>
 </tbody>
 </table>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -731,8 +687,7 @@ Member Functions</h2>
 </table>
 
 
-<h2>
-Protected Member Functions</h2>
+<h2>Protected Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -759,142 +714,133 @@ Protected Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-2constructor">
-protected_derived::protected_derived<a class="mrdocs-anchor" href="#protected_derived-2constructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-2constructor">protected_derived::protected_derived</h2>
 <div>
 <p>Constructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">protected_derived();</code></pre>
+<pre>
+<code class="source-code cpp">protected_derived();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-2destructor">
-protected_derived::~protected_derived<a class="mrdocs-anchor" href="#protected_derived-2destructor" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-2destructor">protected_derived::~protected_derived</h2>
 <div>
 <p>Destructor should not be inherited</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">~protected_derived();</code></pre>
+<pre>
+<code class="source-code cpp">~protected_derived();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-derived_shadowed">
-protected_derived::derived_shadowed<a class="mrdocs-anchor" href="#protected_derived-derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-derived_shadowed">protected_derived::derived_shadowed</h2>
 <div>
 <p>This function should shadow the base class function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
-derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
+derived_shadowed();</code>
+</pre>
 </div>
 <div>
-<h3>
-Return Value</h3>
+<h3>Return Value</h3>
 Should inherit functions as protected.
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-do_derived_shadowed">
-protected_derived::do_derived_shadowed<a class="mrdocs-anchor" href="#protected_derived-do_derived_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-do_derived_shadowed">protected_derived::do_derived_shadowed</h2>
 <div>
 <p>This function should shadow the base class function.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
-do_derived_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
+do_derived_shadowed();</code>
+</pre>
 </div>
 <div>
-<h3>
-Return Value</h3>
+<h3>Return Value</h3>
 Should inherit functions as protected.
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-do_excluded_inherited">
-protected_derived::do_excluded_inherited<a class="mrdocs-anchor" href="#protected_derived-do_excluded_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-do_excluded_inherited">protected_derived::do_excluded_inherited</h2>
 <div>
 <p>This function should be inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">excluded_base&
-do_excluded_inherited();</code></pre>
+<pre>
+<code class="source-code cpp">excluded_base&
+do_excluded_inherited();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-do_shadowed">
-protected_derived::do_shadowed<a class="mrdocs-anchor" href="#protected_derived-do_shadowed" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-do_shadowed">protected_derived::do_shadowed</h2>
 <div>
 <p>This function should be shadowed by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">excluded_base&
-do_shadowed();</code></pre>
+<pre>
+<code class="source-code cpp">excluded_base&
+do_shadowed();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="protected_derived-excluded_inherited">
-protected_derived::excluded_inherited<a class="mrdocs-anchor" href="#protected_derived-excluded_inherited" aria-label="Permalink">#</a>
-</h2>
+<h2 id="protected_derived-excluded_inherited">protected_derived::excluded_inherited</h2>
 <div>
 <p>This function should be inherited by derived classes.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;skip-special.cpp&gt;</code></div>
-<pre><code class="source-code cpp">excluded_base&
-excluded_inherited();</code></pre>
+<pre>
+<code class="source-code cpp">excluded_base&
+excluded_inherited();</code>
+</pre>
 </div>
 </div>
 
 </div>
-<footer class="mrdocs-footer">
-<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
-</footer>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
 </body>
 </html>

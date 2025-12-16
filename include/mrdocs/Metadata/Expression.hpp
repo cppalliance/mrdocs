@@ -19,47 +19,35 @@
 
 namespace mrdocs {
 
-/** Represents an expression
-*/
+/** Represents an expression */
 struct ExprInfo
 {
-    /** The expression, as written
-    */
+    /** The expression, as written */
     std::string Written;
 
-    /** View this object as its base expression.
-    */
     ExprInfo& asExpr() noexcept
     {
         return *this;
     }
 
-    /** View this object as its base expression.
-    */
     ExprInfo const& asExpr() const noexcept
     {
         return *this;
     }
 
-    /** Order expressions by written form.
-    */
     auto operator<=>(ExprInfo const&) const = default;
 };
 
-/** Merge metadata from another expression.
-*/
 MRDOCS_DECL
 void
 merge(ExprInfo& I, ExprInfo&& Other);
 
-/** Represents an expression with a (possibly known) value
-*/
+/** Represents an expression with a (possibly known) value */
 template<typename T>
 struct ConstantExprInfo
     : ExprInfo
 {
-    /** The underlying type of the expression
-    */
+    /** The underlying type of the expression */
     using type = T;
 
     /** The expressions value, if it is known
@@ -69,15 +57,11 @@ struct ConstantExprInfo
     */
     Optional<type> Value;
 
-    /** Order constant expressions by written form and value.
-    */
     auto operator<=>(ConstantExprInfo const&) const = default;
 
     static_assert(std::integral<type>, "expression type must be integral");
 };
 
-/** Merge metadata from another constant expression.
-*/
 template <class T>
 static void merge(
     ConstantExprInfo<T>& I,

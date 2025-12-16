@@ -16,7 +16,6 @@
 #include <mrdocs/Support/Report.hpp>
 #include <filesystem>
 #include <format>
-#include <ranges>
 
 
 namespace mrdocs {
@@ -305,37 +304,11 @@ getRelPrefix(std::size_t depth)
     return rel_prefix;
 }
 
-static std::string
-makeRelfileprefix(std::string_view url)
-{
-    if (!url.starts_with('/'))
-        return {};
-
-    std::size_t const depth = static_cast<std::size_t>(
-        std::ranges::count(url.substr(1), '/'));
-
-    std::string prefix;
-    prefix.reserve(depth * 3);
-    for (std::size_t i = 0; i < depth; ++i)
-        prefix.append("../");
-    return prefix;
-}
-
 dom::Object
 Builder::
 createContext(Symbol const& I)
 {
     dom::Object ctx;
-    dom::Object page;
-    page.set("stylesheets", domCorpus.stylesheets);
-    page.set("inlineStyles", domCorpus.inlineStyles);
-    page.set("inlineScripts", domCorpus.inlineScripts);
-    page.set("hasDefaultStyles", domCorpus.hasDefaultStyles);
-    if (domCorpus->config->multipage)
-    {
-        page.set("relfileprefix", makeRelfileprefix(domCorpus.getURL(I)));
-    }
-    ctx.set("page", page);
     ctx.set("symbol", domCorpus.get(I.id));
     ctx.set("config", domCorpus->config.object());
     return ctx;
@@ -386,13 +359,6 @@ renderWrapped(
   auto const wrapperFile =
       std::format("wrapper.{}.hbs", domCorpus.fileExtension);
   dom::Object ctx;
-  dom::Object page;
-  page.set("stylesheets", domCorpus.stylesheets);
-  page.set("inlineStyles", domCorpus.inlineStyles);
-  page.set("inlineScripts", domCorpus.inlineScripts);
-  page.set("hasDefaultStyles", domCorpus.hasDefaultStyles);
-  ctx.set("page", page);
-  ctx.set("config", domCorpus->config.object());
   ctx.set("contents",
           dom::makeInvocable([&](dom::Value const &) -> Expected<dom::Value> {
             MRDOCS_TRY(contentsCb());
@@ -469,3 +435,4 @@ commonTemplatesDir(std::string_view const subdir) const
 
 } // hbs
 } // mrdocs
+

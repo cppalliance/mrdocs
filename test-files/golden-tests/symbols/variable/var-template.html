@@ -1,19 +1,15 @@
 <html lang="en">
 <head>
 <title>Reference</title>
-<meta charset="utf-8">
 </head>
 <body>
 <div>
 <h1>Reference</h1>
 <div>
 <div>
-<h2 id="index">
-Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
-</h2>
+<h2 id="index"></h2>
 </div>
-<h2>
-Types</h2>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -26,8 +22,7 @@ Types</h2>
 </tbody>
 </table>
 
-<h2>
-Variables</h2>
+<h2>Variables</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -45,19 +40,17 @@ Variables</h2>
 </div>
 <div>
 <div>
-<h2 id="B">
-B<a class="mrdocs-anchor" href="#B" aria-label="Permalink">#</a>
-</h2>
+<h2 id="B">B</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">struct B;</code></pre>
+<pre>
+<code class="source-code cpp">struct B;</code>
+</pre>
 </div>
-<h2>
-Static Data Members</h2>
+<h2>Static Data Members</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -77,101 +70,95 @@ Static Data Members</h2>
 </div>
 <div>
 <div>
-<h2 id="B-C-09">
-B::C<a class="mrdocs-anchor" href="#B-C-09" aria-label="Permalink">#</a>
-</h2>
+<h2 id="B-C-09">B::C</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;typename T&gt;
+<pre>
+<code class="source-code cpp">template&lt;typename T&gt;
 inline static
-unsigned int C = 0;</code></pre>
+unsigned int C = 0;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="B-C-05">
-B::C&lt;int&gt;<a class="mrdocs-anchor" href="#B-C-05" aria-label="Permalink">#</a>
-</h2>
+<h2 id="B-C-05">B::C&lt;int&gt;</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;&gt;
+<pre>
+<code class="source-code cpp">template&lt;&gt;
 inline static
-unsigned int C&lt;int&gt; = -1;</code></pre>
+unsigned int C&lt;int&gt; = -1;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="B-C-0c">
-B::C&lt;T*&gt;<a class="mrdocs-anchor" href="#B-C-0c" aria-label="Permalink">#</a>
-</h2>
+<h2 id="B-C-0c">B::C&lt;T*&gt;</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;typename T&gt;
+<pre>
+<code class="source-code cpp">template&lt;typename T&gt;
 inline static
-unsigned int C&lt;T*&gt; = sizeof(T);</code></pre>
+unsigned int C&lt;T*&gt; = sizeof(T);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="A-0c">
-A<a class="mrdocs-anchor" href="#A-0c" aria-label="Permalink">#</a>
-</h2>
+<h2 id="A-0c">A</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;typename T&gt;
-unsigned int A = sizeof(T);</code></pre>
+<pre>
+<code class="source-code cpp">template&lt;typename T&gt;
+unsigned int A = sizeof(T);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="A-08">
-A&lt;void&gt;<a class="mrdocs-anchor" href="#A-08" aria-label="Permalink">#</a>
-</h2>
+<h2 id="A-08">A&lt;void&gt;</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;&gt;
-unsigned int A&lt;void&gt; = 0;</code></pre>
+<pre>
+<code class="source-code cpp">template&lt;&gt;
+unsigned int A&lt;void&gt; = 0;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="A-01">
-A&lt;T&&gt;<a class="mrdocs-anchor" href="#A-01" aria-label="Permalink">#</a>
-</h2>
+<h2 id="A-01">A&lt;T&&gt;</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;typename T&gt;
-unsigned int A&lt;T&&gt; = sizeof(T);</code></pre>
+<pre>
+<code class="source-code cpp">template&lt;typename T&gt;
+unsigned int A&lt;T&&gt; = sizeof(T);</code>
+</pre>
 </div>
 </div>
 
 </div>
-<footer class="mrdocs-footer">
-<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
-</footer>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
 </body>
 </html>

@@ -28,7 +28,7 @@ namespace mrdocs {
 
     @param delta The duration to format.
     @return A string representing the formatted duration.
-*/
+ */
 template <class Rep, class Period>
 std::string
 format_duration(

@@ -24,16 +24,9 @@ namespace mrdocs::doc {
 struct DefinitionListItem final
     : BlockContainer
 {
-    /** The term being defined.
-    */
     InlineContainer term;
 
-    /** Compare items by term and definition blocks.
-    */
     auto operator<=>(DefinitionListItem const&) const = default;
-
-    /** Equality compares term and definitions.
-    */
     bool operator==(DefinitionListItem const&) const noexcept = default;
 };
 
@@ -43,7 +36,7 @@ struct DefinitionListItem final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -57,7 +50,7 @@ tag_invoke(
 }
 
 /** Return the @ref DefinitionListItem as a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(

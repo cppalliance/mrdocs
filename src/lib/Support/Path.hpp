@@ -52,7 +52,7 @@ public:
 
         If a file was created, it is deleted.
 
-    */
+     */
     ~ScopedTempFile();
 
     /** Constructor
@@ -77,7 +77,7 @@ public:
     operator bool() const { return ok_; }
 
     /** Returns the path to the temporary file.
-    */
+     */
     llvm::StringRef path() const { return path_; }
 };
 
@@ -100,7 +100,7 @@ public:
 
         If a directory was created, it is deleted.
 
-    */
+     */
     ~ScopedTempDirectory();
 
     /** Constructor
@@ -151,15 +151,15 @@ public:
     }
 
     /** Returns the path to the temporary directory.
-    */
+     */
     std::string_view path() const { return static_cast<llvm::StringRef>(path_); }
 
     /** Returns the error status of the directory.
-    */
+     */
     Error error() const;
 
     /** Convert temp directory to a std::string_view
-    */
+     */
     operator std::string_view() const { return path(); }
 };
 

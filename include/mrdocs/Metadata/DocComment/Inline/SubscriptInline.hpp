@@ -19,33 +19,23 @@
 
 namespace mrdocs::doc {
 
-/** Subscript text fragment (lowered baseline).
-
-    Syntax:
-
-    @code
-    H~2~O
-    @endcode
+/** A piece of styled text.
 */
 struct SubscriptInline final
     : InlineCommonBase<InlineKind::Subscript>
     , InlineContainer
 {
-    /** Order subscript spans by their children.
-    */
     auto operator<=>(SubscriptInline const&) const = default;
-    /** Equality compares contained inline children.
-    */
     bool operator==(SubscriptInline const&) const noexcept = default;
 };
 
-/** Map the @ref SubscriptInline to a @ref dom::Object.
+/** Map the @ref Subscript to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -58,8 +48,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref SubscriptInline as a @ref dom::Value object.
-*/
+/** Return the @ref Subscript as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

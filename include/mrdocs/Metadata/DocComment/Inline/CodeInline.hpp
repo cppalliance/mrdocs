@@ -19,42 +19,24 @@
 
 namespace mrdocs::doc {
 
-/** Inline code (monospaced) used for short snippets within text.
-
-    Syntax:
-
-    @code
-    @c inline_code
-    @endcode
-
-    or
-
-    @code
-    `inline_code`
-    @endcode
+/** A piece of styled text.
 */
 struct CodeInline final
     : InlineCommonBase<InlineKind::Code>
     , InlineContainer
 {
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-    /** Order inline code by literal content.
-    */
     auto operator<=>(CodeInline const&) const = default;
-    /** Equality compares inline content.
-    */
     bool operator==(CodeInline const&) const noexcept = default;
 };
 
-/** Map the @ref CodeInline to a @ref dom::Object.
+/** Map the @ref Code to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -67,8 +49,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref CodeInline as a @ref dom::Value object.
-*/
+/** Return the @ref Code as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

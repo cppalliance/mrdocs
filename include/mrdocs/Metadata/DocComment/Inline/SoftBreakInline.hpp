@@ -18,49 +18,24 @@
 
 namespace mrdocs::doc {
 
-/** A line break that may render as a space
-
-    Syntax:
-
-    @code
-    This is the first part of a line,
-    and this is the continuation on the next line.
-    @endcode
-
-    Placing a backslash (`\`) at the end of a line,
-    followed by a new line, can also create a soft line break.
-    This method is often preferred because it is less susceptible
-    to space-trimming issues.
-
-    @code
-    This is the first part of a line,\
-    and this is the continuation on the next line.
-    @endcode
+/** A line break that may render as space
 */
 struct SoftBreakInline
     : InlineCommonBase<InlineKind::SoftBreak>
 {
-    /** Virtual destructor for inline hierarchy.
-    */
     constexpr ~SoftBreakInline() override = default;
-    /** Construct a soft line break node.
-    */
     constexpr SoftBreakInline() noexcept = default;
-    /** Order soft breaks (trivial).
-    */
     auto operator<=>(SoftBreakInline const&) const = default;
-    /** Equality compares soft breaks (trivial).
-    */
     bool operator==(SoftBreakInline const&) const noexcept = default;
 };
 
-/** Map the @ref SoftBreakInline to a @ref dom::Object.
+/** Map the @ref SoftBreak to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -72,8 +47,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
 }
 
-/** Return the @ref SoftBreakInline as a @ref dom::Value object.
-*/
+/** Return the @ref SoftBreak as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

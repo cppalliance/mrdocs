@@ -22,6 +22,29 @@ cd mrdocs
 python bootstrap.py
 ----
 
+Or if you just want to install Mr.Docs without cloning the repository, you can run the script directly from the web:
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,powershell]
+----
+python -c "$(Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py' -UseBasicParsing | Select-Object -ExpandProperty Content)"
+----
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)"
+----
+--
+====
+
 This method automates the download, configuration, and build steps for Mr.Docs and all required third-party libraries.
 It is especially useful for developers and for users who prefer a streamlined, interactive setup or need to install
 Mr.Docs in custom environments.
@@ -39,6 +62,30 @@ is handy for developers to refresh dependencies:
 ----
 python bootstrap.py --non-interactive --mrdocs-build-type=Release --third-party-src-dir=/path/to/dependencies
 ----
+
+In the default case, the script will download the source code to the current directory
+and install Mr.Docs system-wide.
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,powershell]
+----
+python -c "$(Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py' -UseBasicParsing)" --non-interactive
+----
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)" --non-interactive
+----
+--
+====
 
 The script handles tool checks, repository cloning, patching, and CMake configuration, reducing
 manual intervention and potential errors.

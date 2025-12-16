@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/ConfigImpl.hpp>
-#include <lib/MrDocsCompilationDatabase.hpp>
-#include <lib/SingleFileDB.hpp>
+#include "lib/MrDocsCompilationDatabase.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/SingleFileDB.hpp"
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
@@ -93,7 +93,7 @@ struct MrDocsCompilationDatabase_test {
 
         {
             auto adjusted = adjustCompileCommand({ programName });
-            BOOST_TEST(has(adjusted, "-std=c++26"));
+            BOOST_TEST(has(adjusted, "-std=c++23"));
         }
         {
             auto adjusted = adjustCompileCommand({ programName, "-std=c++11" });
@@ -217,7 +217,7 @@ struct MrDocsCompilationDatabase_test {
 
         {
             auto adjusted = adjustCompileCommand({ programName });
-            BOOST_TEST(has(adjusted, "-std:c++latest"));
+            BOOST_TEST(has(adjusted, "-std:c++23preview"));
         }
         {
             auto adjusted = adjustCompileCommand({ programName, "-std:c++11" });
@@ -238,7 +238,7 @@ struct MrDocsCompilationDatabase_test {
 
         {
             auto adjusted = adjustCompileCommand({ programName, "-x", "c" });
-            BOOST_TEST(has(adjusted, "-std:clatest"));
+            BOOST_TEST(has(adjusted, "-std:c17"));
         }
         {
             auto adjusted = adjustCompileCommand(

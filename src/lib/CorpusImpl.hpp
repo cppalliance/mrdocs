@@ -96,7 +96,7 @@ public:
     find(SymbolID const& id) const noexcept override;
 
     /** Return a range of Info objects for the specified Symbol IDs.
-    */
+     */
     template <range_of<SymbolID> R>
     auto
     find(R&& range)
@@ -120,7 +120,7 @@ public:
     }
 
     /** Return a range of constant Info objects for the specified Symbol IDs.
-    */
+     */
     template <range_of<SymbolID> R>
     auto
     find(R&& range) const

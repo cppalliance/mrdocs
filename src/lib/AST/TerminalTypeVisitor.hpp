@@ -68,7 +68,7 @@ namespace mrdocs {
     we reach a terminal type, such as `VisitPointerType`.
 
     @tparam Derived The derived class type.
-*/
+ */
 template <class Derived>
 class TerminalTypeVisitor
     : public clang::TypeVisitor<TerminalTypeVisitor<Derived>, bool>
@@ -96,7 +96,7 @@ public:
 
         @param Visitor The ASTVisitor instance.
         @param NNS The optional NestedNameSpecifier.
-    */
+     */
     explicit
     TerminalTypeVisitor(
         ASTVisitor& Visitor)
@@ -108,7 +108,7 @@ public:
 
         This function casts the given Type to the derived class type
         and calls the corresponding `VisitXXXType` function.
-    */
+     */
     using TerminalTypeVisitor::TypeVisitor::Visit;
 
     /** Visit a Qualified Type.
@@ -120,7 +120,7 @@ public:
         Example:
         - Wrapped type: `const int`
         - Unwrapped type: `int`
-    */
+     */
     bool
     Visit(clang::QualType const QT)
     {
@@ -136,7 +136,7 @@ public:
         This function returns a reference to the ASTVisitor instance.
 
         @return A reference to the ASTVisitor instance.
-    */
+     */
     ASTVisitor&
     getASTVisitor() const
     {
@@ -147,7 +147,7 @@ public:
 
         This function is an empty placeholder for `buildPointer` when
         not defined by the `Derived` visitor.
-    */
+     */
     static
     void
     buildPointer
@@ -160,7 +160,7 @@ public:
 
         This function is an empty placeholder for `buildLValueReference` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildLValueReference(
         clang::LValueReferenceType const*)
@@ -171,7 +171,7 @@ public:
 
         This function is an empty placeholder for `buildRValueReference` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildRValueReference(
         clang::RValueReferenceType const*)
@@ -182,7 +182,7 @@ public:
 
         This function is an empty placeholder for `buildMemberPointer` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildMemberPointer(
         clang::MemberPointerType const*, unsigned)
@@ -193,7 +193,7 @@ public:
 
         This function is an empty placeholder for `buildArray` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildArray(
         clang::ArrayType const*)
@@ -210,7 +210,7 @@ public:
 
         This function is an empty placeholder for `buildDecltype` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildDecltype(
         clang::DecltypeType const*,
@@ -223,7 +223,7 @@ public:
 
         This function is an empty placeholder for `buildAuto` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildAuto(
         clang::AutoType const*,
@@ -236,7 +236,7 @@ public:
 
         This function is an empty placeholder for `buildTerminal` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildTerminal(
         clang::NestedNameSpecifier,
@@ -250,7 +250,7 @@ public:
 
         This function is an empty placeholder for `buildTerminal` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildTerminal(
         clang::NestedNameSpecifier,
@@ -265,7 +265,7 @@ public:
 
         This function is an empty placeholder for `buildTerminal` when
         not defined by the `Derived` visitor.
-    */
+     */
     void
     buildTerminal(
         clang::NestedNameSpecifier,
@@ -283,7 +283,7 @@ private:
         This function casts the current instance to the derived class type.
 
         @return A reference to the derived class instance.
-    */
+     */
     Derived&
     getDerived()
     {
@@ -297,7 +297,7 @@ private:
         Example:
         - Wrapped type: `(int)`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitParenType(clang::ParenType const* T)
     {
@@ -312,7 +312,7 @@ private:
         Example:
         - Wrapped type: `MACRO_QUALIFIED(int)`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitMacroQualified(
         clang::MacroQualifiedType const* T)
@@ -328,7 +328,7 @@ private:
         Example:
         - Wrapped type: `[[attribute]] int`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitAttributedType(
         clang::AttributedType const* T)
@@ -344,7 +344,7 @@ private:
         Example:
         - Wrapped type: adjusted/decayed `int*`
         - Unwrapped type: original `int[4]`
-    */
+     */
     bool
     VisitAdjustedType(clang::AdjustedType const* T)
     {
@@ -359,7 +359,7 @@ private:
         Example:
         - Wrapped type: `using TypeAlias = int`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitUsingType(clang::UsingType const* T)
     {
@@ -374,7 +374,7 @@ private:
         Example:
         - Wrapped type: `T`
         - Unwrapped type: `int` (if `T` is substituted with `int`)
-    */
+     */
     bool
     VisitSubstTemplateTypeParmType(
         clang::SubstTemplateTypeParmType const* T)
@@ -392,7 +392,7 @@ private:
         Example:
         - Wrapped type: `int...`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitPackExpansionType(
         clang::PackExpansionType const* T)
@@ -411,7 +411,7 @@ private:
         Example:
         - Wrapped type: `int*`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitPointerType(
         clang::PointerType const* T)
@@ -428,7 +428,7 @@ private:
         Example:
         - Wrapped type: `int&`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitLValueReferenceType(
         clang::LValueReferenceType const* T)
@@ -446,7 +446,7 @@ private:
         Example:
         - Wrapped type: `int&&`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitRValueReferenceType(
         clang::RValueReferenceType const* T)
@@ -464,7 +464,7 @@ private:
         Example:
         - Wrapped type: `int Class::*`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitMemberPointerType(
         clang::MemberPointerType const* T)
@@ -490,7 +490,7 @@ private:
         Example:
         - Wrapped type: `int[10]`
         - Unwrapped type: `int`
-    */
+     */
     bool
     VisitArrayType(
         clang::ArrayType const* T)

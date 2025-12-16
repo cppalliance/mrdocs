@@ -26,8 +26,6 @@ namespace mrdocs {
 struct MRDOCS_DECL
     SourceInfo
 {
-    /** Construct with no locations.
-    */
     constexpr SourceInfo() = default;
 
     /** Location where the entity was defined
@@ -45,38 +43,23 @@ struct MRDOCS_DECL
     */
     std::vector<Location> Loc;
 
-    /** Polymorphic base needs a virtual destructor.
-    */
     constexpr virtual ~SourceInfo() = default;
 
-    /** Compare sources by definition and declaration locations.
-    */
     auto operator<=>(SourceInfo const&) const = default;
 };
 
-/** Merge the location sets, preferring existing def/primary.
-*/
 MRDOCS_DECL
 void
 merge(SourceInfo& I, SourceInfo const& Other);
 
-/** Merge, transferring ownership from the right-hand side.
-*/
 MRDOCS_DECL
 void
 merge(SourceInfo& I, SourceInfo&& Other);
 
-/** Choose the best location to display for a symbol.
-    @param I Source info to examine.
-    @param preferDefinition If true, favor a definition location.
-    @return The preferred location if available.
-*/
 MRDOCS_DECL
 Optional<Location>
 getPrimaryLocation(SourceInfo const& I, bool preferDefinition);
 
-/** Serialize source locations into a DOM value.
-*/
 void
 tag_invoke(
     dom::ValueFromTag,

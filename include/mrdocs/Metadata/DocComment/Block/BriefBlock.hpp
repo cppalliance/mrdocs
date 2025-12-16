@@ -21,54 +21,34 @@
 namespace mrdocs::doc {
 
 /** The brief description
-
-    Syntax:
-
-    @code
-    @brief summary
-    @endcode
 */
 struct BriefBlock final
     : BlockCommonBase<BlockKind::Brief>
     , InlineContainer
 {
-    /** Names of declarations whose brief text was reused.
-    */
     std::vector<std::string> copiedFrom;
 
-    /** Create an empty brief.
-    */
     BriefBlock() = default;
 
-    /** Copy-construct from another brief.
-    */
     BriefBlock(BriefBlock const& other) = default;
 
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
 
-    /** Copy-assign another brief.
-    */
     BriefBlock&
     operator=(BriefBlock const& other) = default;
 
-    /** Reuse inline container assignment operators.
-    */
     using InlineContainer::operator=;
 
-    /** Compare briefs by inline content and provenance.
-    */
     auto operator<=>(BriefBlock const&) const = default;
 };
 
-/** Map the @ref BriefBlock to a @ref dom::Object.
+/** Map the @ref Brief to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -84,8 +64,8 @@ tag_invoke(
     });
 }
 
-/** Return the @ref BriefBlock as a @ref dom::Value object.
-*/
+/** Return the @ref Brief as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(
@@ -99,11 +79,6 @@ tag_invoke(
     Optional<BriefBlock> o;
 }
 
-/** Map an optional brief block to a DOM value, yielding null when absent.
-    @param v Destination value.
-    @param I Optional brief block to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
 inline
 void
 tag_invoke(

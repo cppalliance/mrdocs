@@ -25,23 +25,15 @@ class MRDOCS_VISIBLE
     Generators
 {
 protected:
-    /// Construct an empty generator registry; only derived singletons create this.
     Generators() noexcept = default;
 
 public:
-    /// Pointer type for generator entries.
     using value_type = Generator const*;
-    /// Iterator over the registered generators.
     using iterator = value_type const*;
-    /// Constant iterator alias.
     using const_iterator = iterator;
-    /// Reference to a generator pointer.
     using reference = value_type const&;
-    /// Const reference to a generator pointer.
     using const_reference = value_type const&;
-    /// Number of registered generators.
     using size_type = std::size_t;
-    /// Signed distance type for iterator arithmetic.
     using difference_type = std::ptrdiff_t;
 
     /** Destructor.

@@ -19,21 +19,12 @@
 
 namespace mrdocs {
 
-/** C++ array type (bounded or unbounded).
-*/
 struct ArrayType final
     : TypeCommonBase<TypeKind::Array>
 {
-    /** Element type held by the array.
-    */
     Polymorphic<Type> ElementType = Polymorphic<Type>(AutoType{});
-
-    /** Optional bound; empty means unknown or dependent.
-    */
     ConstantExprInfo<std::uint64_t> Bounds;
 
-    /** Compare arrays by element type and bound.
-    */
     std::strong_ordering
     operator<=>(ArrayType const&) const;
 };

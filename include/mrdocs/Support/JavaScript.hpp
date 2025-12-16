@@ -18,40 +18,21 @@
 #include <span>
 #include <string_view>
 
+
 namespace mrdocs {
 
 class Handlebars;
 
-/** JavaScript interop helpers for the embedded runtime.
-
-    These functions abstract over the embedded JavaScript engine so that
-    scripts and helpers can be bound, invoked, and marshalled without leaking
-    engine-specific types into the rest of the codebase.
-*/
 namespace js {
 
-/** Opaque tag that allows bridge classes to reach JS internals.
-*/
-/** Grants friend-level access to internal scopes.
-*/
 struct Access;
 class Context;
 class Scope;
 
-/** Lightweight handle to a JavaScript array.
-*/
 class Array;
-/** Boolean wrapper for JavaScript values.
-*/
 class Boolean;
-/** Object wrapper for JavaScript values.
-*/
 class Object;
-/** String wrapper for JavaScript values.
-*/
 class String;
-/** Generic JavaScript value wrapper.
-*/
 class Value;
 
 //------------------------------------------------
@@ -80,31 +61,23 @@ enum class Type
 
 //------------------------------------------------
 
-/** Represents either a property name or array index when addressing JS objects.
-*/
 class Prop
 {
     unsigned int index_;
     std::string_view name_;
 
 public:
-    /** Create a property by name.
-    */
     constexpr Prop(std::string_view name) noexcept
         : index_(0)
         , name_(name)
     {
     }
 
-    /** Create a property by numeric index.
-    */
     constexpr Prop(unsigned int index) noexcept
         : index_(index)
     {
     }
 
-    /** Return true if this property refers to an array index.
-    */
     constexpr bool
     isIndex() const noexcept
     {
@@ -184,7 +157,7 @@ public:
 
         @copydetails Context(Context const&)
 
-    */
+     */
     Context& operator=(Context const&) = delete;
 };
 
@@ -210,7 +183,7 @@ public:
     same context heap cannot be manipulated
     at the same time.
 
-*/
+ */
 class Scope
 {
     Context ctx_;
@@ -248,7 +221,7 @@ public:
         There should be no @ref Value objects
         associated with this scope when it
         is destroyed.
-    */
+     */
     MRDOCS_DECL
     ~Scope();
 
@@ -256,7 +229,7 @@ public:
 
         @param value The integer value to push.
         @return A Value representing the integer.
-    */
+     */
     MRDOCS_DECL
     Value
     pushInteger(std::int64_t value);
@@ -265,7 +238,7 @@ public:
 
         @param value The double value to push.
         @return A Value representing the double.
-    */
+     */
     MRDOCS_DECL
     Value
     pushDouble(double value);
@@ -274,7 +247,7 @@ public:
 
         @param value The boolean value to push.
         @return A Value representing the boolean.
-    */
+     */
     MRDOCS_DECL
     Value
     pushBoolean(bool value);
@@ -285,19 +258,19 @@ public:
         The string is copied to the internal
         heap.
         @return A Value representing the string.
-    */
+     */
     MRDOCS_DECL
     Value
     pushString(std::string_view value);
 
     /** Push a new object to the stack
-    */
+     */
     MRDOCS_DECL
     Value
     pushObject();
 
     /** Push a new array to the stack
-    */
+     */
     MRDOCS_DECL
     Value
     pushArray();
@@ -314,7 +287,7 @@ public:
 
         @param jsCode The JavaScript code to execute.
 
-    */
+     */
     MRDOCS_DECL
     Expected<void>
     script(std::string_view jsCode);
@@ -331,7 +304,7 @@ public:
 
         @param jsCode The JavaScript code to execute.
 
-    */
+     */
     MRDOCS_DECL
     Expected<Value>
     eval(std::string_view jsCode);
@@ -422,7 +395,7 @@ public:
         If the global object does not exist, an
         error is returned.
 
-    */
+     */
     MRDOCS_DECL
     Value
     getGlobalObject();
@@ -457,18 +430,12 @@ public:
 class MRDOCS_DECL Value
 {
 protected:
-    /** Scope that owns the value stack entry.
-    */
     Scope* scope_;
-    /** Index of the value within the scope stack.
-    */
     int idx_;
 
     friend struct Access;
 
-    /** Construct a value bound to a stack position in the given scope.
-    */
-    Value(int position, Scope& scope) noexcept;
+    Value(int, Scope&) noexcept;
 
 public:
     /** Destructor
@@ -481,7 +448,7 @@ public:
         defined in that scope are popped
         via `Scope::reset`.
 
-    */
+     */
     MRDOCS_DECL ~Value();
 
     /** Constructor
@@ -491,7 +458,7 @@ public:
 
         The value is undefined.
 
-    */
+     */
     MRDOCS_DECL Value() noexcept;
 
     /** Constructor
@@ -499,28 +466,28 @@ public:
         The function pushes a duplicate of
         value to the stack and associates
         the new value the top of the stack.
-    */
+     */
     MRDOCS_DECL Value(Value const&);
 
     /** Constructor
 
         The function associates the
         existing value with this object.
-    */
+     */
     MRDOCS_DECL Value(Value&&) noexcept;
 
     /** Copy assignment.
 
         @copydetails Value(Value const&)
 
-    */
+     */
     MRDOCS_DECL Value& operator=(Value const&);
 
     /** Move assignment.
 
         @copydetails Value(Value&&)
 
-    */
+     */
     MRDOCS_DECL Value& operator=(Value&&) noexcept;
 
     /** Return the type of the value.
@@ -543,27 +510,27 @@ public:
         A function is an object with the
         internal ECMAScript class `Function`.
 
-    */
+     */
     MRDOCS_DECL Type type() const noexcept;
 
     /** Check if the value is undefined.
 
         @return `true` if the value is undefined, `false` otherwise
-    */
+     */
     bool
     isUndefined() const noexcept;
 
     /** Check if the value is null.
 
         @return `true` if the value is null, `false` otherwise
-    */
+     */
     bool
     isNull() const noexcept;
 
     /** Check if the value is a boolean.
 
         @return `true` if the value is a boolean, `false` otherwise
-    */
+     */
     bool
     isBoolean() const noexcept;
 
@@ -581,7 +548,7 @@ public:
         their exact non-normalized form.
 
         @return `true` if the value is a number, `false` otherwise
-    */
+     */
     bool
     isNumber() const noexcept;
 
@@ -603,28 +570,28 @@ public:
         where `d` is the result of `toDouble()`.
 
         @return `true` if the value is a number with no fractional part, `false` otherwise
-    */
+     */
     bool
     isInteger() const noexcept;
 
     /** Check if the value is a floating point number.
 
        @return `true` if the value is a number but not an integer, `false` otherwise
-    */
+     */
     bool
     isDouble() const noexcept;
 
     /** Check if the value is a string.
 
         @return `true` if the value is a string, `false` otherwise
-    */
+     */
     bool
     isString() const noexcept;
 
     /** Check if the value is an array.
 
         @return `true` if the value is an array, `false` otherwise
-    */
+     */
     bool
     isArray() const noexcept;
 
@@ -643,14 +610,14 @@ public:
 
         @return `true` if the value is an object, `false` otherwise
 
-    */
+     */
     bool
     isObject() const noexcept;
 
     /** Check if the value is a function.
 
         @return `true` if the value is a function, `false` otherwise
-    */
+     */
     bool
     isFunction() const noexcept;
 
@@ -675,7 +642,7 @@ public:
 
         @note Behaviour is undefined if `!isString()`
 
-    */
+     */
     std::string_view
     getString() const;
 
@@ -683,7 +650,7 @@ public:
 
         @note Behaviour is undefined if `!isBoolean()`
 
-    */
+     */
     bool
     getBool() const noexcept;
 
@@ -734,7 +701,7 @@ public:
         reference semantics to access the
         underlying DOM object is returned.
 
-    */
+     */
     dom::Value getDom() const;
 
     /** Set "log" property
@@ -754,7 +721,7 @@ public:
         two arguments to report a
         message to the console.
 
-    */
+     */
     void setlog();
 
 
@@ -772,8 +739,6 @@ public:
     Value
     get(std::string_view key) const;
 
-    /** @copydoc get(std::string_view)
-    */
     template <std::convertible_to<std::string_view> S>
     Value
     get(S const& key) const
@@ -815,7 +780,7 @@ public:
 
         @param key The key to set.
         @param value The value to set.
-    */
+     */
     MRDOCS_DECL
     void
     set(
@@ -826,7 +791,7 @@ public:
 
         @param key The key to set.
         @param value The value to set.
-    */
+     */
     MRDOCS_DECL
     void
     set(
@@ -910,7 +875,7 @@ public:
     }
 
     /** Return the string.
-    */
+     */
     explicit
     operator std::string() const noexcept
     {
@@ -948,7 +913,7 @@ public:
 
         @note In JavaScript, this is equivalent to the `===`
         operator, which does not perform type conversions.
-    */
+     */
     friend
     bool
     operator==(
@@ -997,7 +962,7 @@ public:
     }
 
     /** Compare two values for inequality.
-    */
+     */
     friend
     std::strong_ordering
     operator<=>(
@@ -1007,7 +972,7 @@ public:
     /** Return the first Value that is truthy, or the last one.
 
         This function is equivalent to the JavaScript `||` operator.
-    */
+     */
     friend
     Value
     operator||(Value const& lhs, Value const& rhs);
@@ -1031,7 +996,7 @@ public:
     /** Return the first Value that is not truthy, or the last one.
 
         This function is equivalent to the JavaScript `&&` operator.
-    */
+     */
     friend
     Value
     operator&&(Value const& lhs, Value const& rhs);
@@ -1151,7 +1116,7 @@ isFunction() const noexcept
     @param name The name of the helper function
     @param ctx The JavaScript context to use
     @param script The JavaScript code that defines the helper function
-*/
+ */
 MRDOCS_DECL
 Expected<void, Error>
 registerHelper(

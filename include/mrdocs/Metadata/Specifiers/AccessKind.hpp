@@ -41,14 +41,12 @@ enum class AccessKind
     Private,
 };
 
-/** Convert access specifier to its string form.
-*/
 MRDOCS_DECL
 dom::String
 toString(AccessKind kind) noexcept;
 
 /** Return the AccessKind as a @ref dom::Value string.
-*/
+ */
 inline
 void
 tag_invoke(

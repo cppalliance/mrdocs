@@ -21,17 +21,12 @@
 
 namespace mrdocs {
 
-/** Template template parameter.
-*/
 struct TemplateTParam final
     : TParamCommonBase<TParamKind::Template>
 {
-    /** Template parameters for the template-template parameter
-    */
+    /** Template parameters for the template-template parameter */
     std::vector<Polymorphic<TParam>> Params;
 
-    /** Compare template parameters including inner parameter lists.
-    */
     std::strong_ordering
     operator<=>(TemplateTParam const& other) const;
 };

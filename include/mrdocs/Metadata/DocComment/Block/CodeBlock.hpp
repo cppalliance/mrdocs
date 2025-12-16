@@ -20,35 +20,27 @@
 namespace mrdocs::doc {
 
 /** Preformatted source code.
-*/
+ */
 struct CodeBlock final
     : BlockCommonBase<BlockKind::Code>
 {
-    /** Raw code text inside the fenced block.
-    */
     std::string literal;
 
     /// Fence info string, e.g. "cpp"
     std::string info;
 
-    /** Construct an empty code block.
-    */
     CodeBlock() noexcept = default;
-    /** Compare code blocks by literal and info string.
-    */
     auto operator<=>(CodeBlock const&) const = default;
-    /** Equality compares literal and info string.
-    */
     bool operator==(CodeBlock const&) const noexcept = default;
 };
 
-/** Map the @ref CodeBlock to a @ref dom::Object.
+/** Map the @ref Code to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -65,8 +57,8 @@ tag_invoke(
     }
 }
 
-/** Return the @ref CodeBlock as a @ref dom::Value object.
-*/
+/** Return the @ref Code as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

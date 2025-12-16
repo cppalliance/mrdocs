@@ -19,33 +19,23 @@
 
 namespace mrdocs::doc {
 
-/** Highlighted text span used to call out important words.
-
-    Syntax:
-
-    @code
-    ==highlight== or <mark>highlighted</mark>
-    @endcode
+/** A piece of highlighted text.
 */
 struct HighlightInline final
     : InlineCommonBase<InlineKind::Highlight>
     , InlineContainer
 {
-    /** Order highlights by their inline content.
-    */
     auto operator<=>(HighlightInline const&) const = default;
-    /** Equality compares inline content.
-    */
     bool operator==(HighlightInline const&) const noexcept = default;
 };
 
-/** Map the @ref HighlightInline to a @ref dom::Object.
+/** Map the @ref Highlight to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -58,8 +48,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref HighlightInline as a @ref dom::Value object.
-*/
+/** Return the @ref Highlight as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

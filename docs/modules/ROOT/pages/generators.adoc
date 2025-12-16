@@ -111,34 +111,6 @@ The layout template can include other partial templates to render the symbol dat
 
 The Document Object Model (DOM) for each symbol includes all information about the symbol.One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.All references to other symbols are resolved in the templates.
 
-== Stylesheet Options
-
-The HTML and AsciiDoc generators ship a bundled stylesheet that is inlined by default. You can replace or layer styles with the following options (available in config files and on the CLI):
-
-- `stylesheets`: ordered list of stylesheet paths or URLs. If empty, the bundled CSS is used. Remote URLs require `linkcss: true`.
-- `no-default-styles`: skip the bundled CSS entirely.
-- `linkcss`: emit `<link>` tags instead of inline `<style>` blocks. Local styles are copied by default; remote URLs are only linked.
-- `copycss`: when linking, copy bundled and local styles into the output tree (default `true`). Set to `false` to skip copying.
-- `stylesdir`: directory (relative to the output root) used for linked styles, e.g. `css` results in `css/custom.css`.
-
-Example config:
-
-[source,yaml]
-----
-generator: html
-stylesheets:
-  - custom.css
-linkcss: true
-stylesdir: css
-----
-
-Equivalent CLI flags:
-
-[source,shell]
-----
-mrdocs --generator=html --stylesheets custom.css --linkcss --stylesdir css
-----
-
 [#dom_reference]
 == Document Object Model Reference
 

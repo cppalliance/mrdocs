@@ -29,8 +29,6 @@ namespace mrdocs {
 template<class>
 class any_callable;
 
-/** Type-erased callable wrapper for signature `R(Args...)`.
-*/
 template<class R, class... Args>
 class any_callable<R(Args...)>
 {
@@ -43,13 +41,8 @@ class any_callable<R(Args...)>
     std::unique_ptr<base> p_;
 
 public:
-    /** Deleted default constructor to prevent empty call targets.
-    */
     any_callable() = delete;
 
-    /** Construct from a callable object matching the signature.
-        @param f Callable to store; must satisfy `R(Args...)`.
-    */
     template<class Callable>
     requires std::is_invocable_r_v<R, Callable, Args...>
     any_callable(Callable&& f)
@@ -73,10 +66,6 @@ public:
         p_ = std::make_unique<impl>(std::forward<Callable>(f));
     }
 
-    /** Invoke the stored callable.
-        @param args Arguments forwarded to the callable.
-        @return Result of the wrapped callable.
-    */
     R operator()(Args&&...args) const
     {
         return p_->invoke(std::forward<Args>(args)...);

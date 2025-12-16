@@ -1,19 +1,15 @@
 <html lang="en">
 <head>
 <title>Reference</title>
-<meta charset="utf-8">
 </head>
 <body>
 <div>
 <h1>Reference</h1>
 <div>
 <div>
-<h2 id="index">
-Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
-</h2>
+<h2 id="index"></h2>
 </div>
-<h2>
-Namespaces</h2>
+<h2>Namespaces</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -26,8 +22,7 @@ Namespaces</h2>
 </tbody>
 </table>
 
-<h2>
-Types</h2>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -43,8 +38,7 @@ Types</h2>
 </tbody>
 </table>
 
-<h2>
-Functions</h2>
+<h2>Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -69,12 +63,9 @@ Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="B">
-B<a class="mrdocs-anchor" href="#B" aria-label="Permalink">#</a>
-</h2>
+<h2 id="B">B</h2>
 </div>
-<h2>
-Types</h2>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -90,22 +81,20 @@ Types</h2>
 </div>
 <div>
 <div>
-<h2 id="B-C">
-B::C<a class="mrdocs-anchor" href="#B-C" aria-label="Permalink">#</a>
-</h2>
+<h2 id="B-C">B::C</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">struct C;</code></pre>
+<pre>
+<code class="source-code cpp">struct C;</code>
+</pre>
 </div>
 
 
 <div>
-<h2>
-Non-Member Functions</h2>
+<h2>Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -121,68 +110,64 @@ Non-Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="A-09">
-A<a class="mrdocs-anchor" href="#A-09" aria-label="Permalink">#</a>
-</h2>
+<h2 id="A-09">A</h2>
 <div>
 <p>The partial specialization of A is enabled via a template parameter</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;
+<pre>
+<code class="source-code cpp">template&lt;
     class T,
     class Enable = void&gt;
-class A;</code></pre>
+class A;</code>
+</pre>
 </div>
 
 
 </div>
 <div>
 <div>
-<h2 id="A-07">
-A&lt;T&gt;<a class="mrdocs-anchor" href="#A-07" aria-label="Permalink">#</a>
-</h2>
+<h2 id="A-07">A&lt;T&gt;</h2>
 <div>
 <p>Specialization for integral types</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
-class <a href="#A-09">A</a>&lt;T&gt;;</code></pre>
+class <a href="#A-09">A</a>&lt;T&gt;;</code>
+</pre>
 </div>
 
 
 </div>
 <div>
 <div>
-<h2 id="S-02">
-S<a class="mrdocs-anchor" href="#S-02" aria-label="Permalink">#</a>
-</h2>
+<h2 id="S-02">S</h2>
 <div>
 <p>SFINAE with std::void_t</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;
+<pre>
+<code class="source-code cpp">template&lt;
     class T,
     class Enable = void&gt;
-struct S;</code></pre>
+struct S;</code>
+</pre>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -200,38 +185,35 @@ Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="S-02-store">
-S::store<a class="mrdocs-anchor" href="#S-02-store" aria-label="Permalink">#</a>
-</h2>
+<h2 id="S-02-store">S::store</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">void
-store(void const*);</code></pre>
+<pre>
+<code class="source-code cpp">void
+store(void const*);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="S-08">
-S&lt;T, std::void_t&lt;T::a::b&gt;&gt;<a class="mrdocs-anchor" href="#S-08" aria-label="Permalink">#</a>
-</h2>
+<h2 id="S-08">S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</h2>
 <div>
 <p>SFINAE with std::void_t</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
-struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;</code></pre>
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
+struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;</code>
+</pre>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -249,61 +231,57 @@ Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="S-08-store">
-S&lt;T, std::void_t&lt;T::a::b&gt;&gt;::store<a class="mrdocs-anchor" href="#S-08-store" aria-label="Permalink">#</a>
-</h2>
+<h2 id="S-08-store">S&lt;T, std::void_t&lt;T::a::b&gt;&gt;::store</h2>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">void
-store(void const*);</code></pre>
+<pre>
+<code class="source-code cpp">void
+store(void const*);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f1">
-f1<a class="mrdocs-anchor" href="#f1" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f1">f1</h2>
 <div>
 <p>Enabled via return type</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f1(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
+requires std::is_integral_v&lt;T&gt;;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f10">
-f10<a class="mrdocs-anchor" href="#f10" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f10">f10</h2>
 <div>
 <p>Enabled via type template parameter</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 void
-f10(T value);</code></pre>
+f10(T value);</code>
+</pre>
 </div>
 <div>
-<h3>
-Description</h3>
+<h3>Description</h3>
 <p>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</p>
 <p>It&#x27;s a common mistake is to declare two function templates that differ only in their default template arguments.</p>
 <p>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</p>
@@ -311,168 +289,160 @@ Description</h3>
 </div>
 <div>
 <div>
-<h2 id="f2">
-f2<a class="mrdocs-anchor" href="#f2" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f2">f2</h2>
 <div>
 <p>Enabling a specified return type</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 int
 f2(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
+requires std::is_integral_v&lt;T&gt;;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f3">
-f3<a class="mrdocs-anchor" href="#f3" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f3">f3</h2>
 <div>
 <p>Enabling a specified return type in another namespace</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 <a href="#B-C">B::C</a>
 f3(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
+requires std::is_integral_v&lt;T&gt;;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f4">
-f4<a class="mrdocs-anchor" href="#f4" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f4">f4</h2>
 <div>
 <p>Enabled via return type with std::enable_if</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f4(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
+requires std::is_integral_v&lt;T&gt;;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f5">
-f5<a class="mrdocs-anchor" href="#f5" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f5">f5</h2>
 <div>
 <p>Enabled via a non-type template parameter with helper</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 T
-f5(T value);</code></pre>
+f5(T value);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f6">
-f6<a class="mrdocs-anchor" href="#f6" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f6">f6</h2>
 <div>
 <p>Enabled via a non-type template parameter without helper</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 T
-f6(T value);</code></pre>
+f6(T value);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f7">
-f7<a class="mrdocs-anchor" href="#f7" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f7">f7</h2>
 <div>
 <p>Enabled via a non-type template parameter using int instead of bool</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 void
-f7(T value);</code></pre>
+f7(T value);</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f8">
-f8<a class="mrdocs-anchor" href="#f8" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f8">f8</h2>
 <div>
 <p>Enabled via parameter without helper</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f8(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
+requires std::is_integral_v&lt;T&gt;;</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="f9">
-f9<a class="mrdocs-anchor" href="#f9" aria-label="Permalink">#</a>
-</h2>
+<h2 id="f9">f9</h2>
 <div>
 <p>Enabled via parameter with helper</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f9(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
+requires std::is_integral_v&lt;T&gt;;</code>
+</pre>
 </div>
 </div>
 
 </div>
-<footer class="mrdocs-footer">
-<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
-</footer>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
 </body>
 </html>

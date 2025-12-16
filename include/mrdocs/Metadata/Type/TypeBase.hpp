@@ -33,7 +33,7 @@ namespace mrdocs {
     This base class is used to store the kind
     of type. Derived classes are used to store
     the type information according to the kind.
-*/
+ */
 struct Type {
     /** The kind of Type this is
     */
@@ -44,11 +44,11 @@ struct Type {
     bool IsPackExpansion = false;
 
     /** The const qualifier
-    */
+     */
     bool IsConst = false;
 
     /** The volatile qualifier
-    */
+     */
     bool IsVolatile = false;
 
     /** The constraints associated with the type
@@ -60,7 +60,7 @@ struct Type {
         expression `std::enable_if_t<std::is_integral_v<T>, T>`
         will have type `T` (NamedType) and constraints
         `{std::is_integral_v<T>}`.
-    */
+     */
     std::vector<ExprInfo> Constraints;
 
     /** Return the symbol named by this type.
@@ -68,19 +68,13 @@ struct Type {
     SymbolID
     namedSymbol() const noexcept;
 
-    /** Three-way comparison by kind, qualifiers, and concrete data.
-    */
     auto operator<=>(Type const&) const = default;
 
-    /** View as const Type.
-    */
     constexpr Type const& asType() const noexcept
     {
         return *this;
     }
 
-    /** View as mutable Type.
-    */
     constexpr Type& asType() noexcept
     {
         return *this;
@@ -122,12 +116,8 @@ struct Type {
 #include <mrdocs/Metadata/Type/TypeNodes.inc>
 
 protected:
-    /** Virtual destructor for polymorphic base.
-    */
     constexpr virtual ~Type() = default;
 
-    /** Construct with a concrete type kind.
-    */
     constexpr Type(
         TypeKind kind) noexcept
         : Kind(kind)
@@ -135,8 +125,6 @@ protected:
     }
 };
 
-/** Serialize a Type into a DOM value.
-*/
 MRDOCS_DECL
 void
 tag_invoke(
@@ -145,58 +133,23 @@ tag_invoke(
     Type const& I,
     DomCorpus const* domCorpus);
 
-/** CRTP base that ties a concrete type to a fixed TypeKind.
-*/
 template<TypeKind K>
 struct TypeCommonBase : Type {
-    /** Static discriminator for the concrete type.
-    */
     static constexpr TypeKind kind_id = K;
 
-    /** True when this concrete kind is a named type.
-        @return `true` if `kind_id` is `TypeKind::Named`.
-    */
     static constexpr bool isNamed()           noexcept { return K == TypeKind::Named; }
-    /** True when this concrete kind is decltype.
-        @return `true` if `kind_id` is `TypeKind::Decltype`.
-    */
     static constexpr bool isDecltype()        noexcept { return K == TypeKind::Decltype; }
-    /** True when this concrete kind is auto.
-        @return `true` if `kind_id` is `TypeKind::Auto`.
-    */
     static constexpr bool isAuto()            noexcept { return K == TypeKind::Auto; }
-    /** True when this is an lvalue reference.
-        @return `true` if `kind_id` is `TypeKind::LValueReference`.
-    */
     static constexpr bool isLValueReference() noexcept { return K == TypeKind::LValueReference; }
-    /** True when this is an rvalue reference.
-        @return `true` if `kind_id` is `TypeKind::RValueReference`.
-    */
     static constexpr bool isRValueReference() noexcept { return K == TypeKind::RValueReference; }
-    /** True when this is a pointer type.
-        @return `true` if `kind_id` is `TypeKind::Pointer`.
-    */
     static constexpr bool isPointer()         noexcept { return K == TypeKind::Pointer; }
-    /** True when this is a member pointer.
-        @return `true` if `kind_id` is `TypeKind::MemberPointer`.
-    */
     static constexpr bool isMemberPointer()   noexcept { return K == TypeKind::MemberPointer; }
-    /** True when this is an array type.
-        @return `true` if `kind_id` is `TypeKind::Array`.
-    */
     static constexpr bool isArray()           noexcept { return K == TypeKind::Array; }
-    /** True when this is a function type.
-        @return `true` if `kind_id` is `TypeKind::Function`.
-    */
     static constexpr bool isFunction()        noexcept { return K == TypeKind::Function; }
 
-    /** Compare type bases by kind-specific payload.
-    */
     auto operator<=>(TypeCommonBase const&) const = default;
 
 protected:
-    /** Construct the base with the fixed kind.
-    */
     constexpr TypeCommonBase() noexcept
         : Type(K)
     {

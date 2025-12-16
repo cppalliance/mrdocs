@@ -989,7 +989,6 @@ setAutoRelates(Symbol& ctx)
 
     auto toRecordOrEnum = [&](Polymorphic<Type> const& type) -> Symbol* {
         MRDOCS_CHECK_OR(type, nullptr);
-        MRDOCS_CHECK_OR(!type.valueless_after_move(), nullptr);
         auto& innermost = innermostType(type);
         MRDOCS_CHECK_OR(innermost, nullptr);
         MRDOCS_CHECK_OR(innermost->isNamed(), nullptr);
@@ -1330,25 +1329,6 @@ parseInlines(DocComment& doc)
     bottomUpTraverse(doc, []<std::derived_from<doc::InlineContainer> NodeTy>(NodeTy& node) {
         if constexpr (requires { { node.children } -> range_of<Polymorphic<doc::Inline>>; })
         {
-            // Reserve enough capacity up-front so child inserts during parsing
-            // cannot reallocate and invalidate InlineContainer pointers held
-            // by the parser state.
-            std::size_t extra = 0;
-            for (auto const& child : node.children)
-            {
-                if (child->isText())
-                {
-                    extra += child->asText().literal.size();
-                }
-            }
-            if (extra > 0)
-            {
-                // Over-reserve generously to avoid any reallocation while the
-                // parser keeps pointers into these containers.
-                node.children.reserve(
-                    node.children.size() + 2 * extra + 16);
-            }
-
             auto it = node.children.begin();
             while (it != node.children.end())
             {
@@ -1362,18 +1342,7 @@ parseInlines(DocComment& doc)
 
                 auto& textEl = el->asText();
                 doc::InlineContainer v;
-                ParseResult r;
-                try
-                {
-                    r = parse(textEl.literal, v);
-                }
-                catch (std::bad_alloc const&)
-                {
-                    // Skip parsing this text node if it explodes memory;
-                    // leave the raw text in place.
-                    ++it;
-                    continue;
-                }
+                ParseResult r = parse(textEl.literal, v);
 
                 // advance on parse failure
                 if (!r)
@@ -1731,16 +1700,14 @@ DocCommentFinalizer::warnUndocumented()
         if (Symbol const* I = corpus_.find(undocI.id))
         {
             MRDOCS_CHECK_OR(
-                !I->doc || I->Extraction == ExtractionMode::Regular
-                || I->IsCopyFromInherited == false);
+                !I->doc || I->Extraction == ExtractionMode::Regular);
         }
         bool const prefer_definition = is_one_of(
             undocI.kind, {SymbolKind::Record, SymbolKind::Enum});
         this->warn(
             *getPrimaryLocation(undocI.Loc, prefer_definition),
-            "{}: {} is undocumented",
-            undocI.name,
-            toString(undocI.kind));
+            "{}: Symbol is undocumented",
+            undocI.name);
     }
     corpus_.undocumented_.clear();
 }
@@ -1753,7 +1720,6 @@ warnDocErrors()
     for (auto const& I : corpus_.info_)
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         warnParamErrors(dynamic_cast<FunctionSymbol const&>(*I));
     }
@@ -1809,7 +1775,6 @@ warnNoParamDocs()
     for (auto const& I : corpus_.info_)
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
         warnNoParamDocs(dynamic_cast<FunctionSymbol const&>(*I));
@@ -1872,7 +1837,6 @@ warnUndocEnumValues()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->isEnumConstant());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(!I->doc);
         this->warn(
             *getPrimaryLocation(*I),
@@ -1890,7 +1854,6 @@ warnUnnamedParams()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
         warnUnnamedParams(dynamic_cast<FunctionSymbol const&>(*I));
     }

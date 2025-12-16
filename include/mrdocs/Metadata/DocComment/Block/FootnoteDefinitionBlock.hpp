@@ -19,43 +19,26 @@
 
 namespace mrdocs::doc {
 
-/** Text defining the content of a footnote reference.
-
-    Syntax:
-
-    @code
-    This is a sentence with a footnote[^1].
-
-    [^1]: This is the content of the footnote. It can also have multiple paragraphs.
-          Here is the second paragraph, which needs to be indented.
-    @endcode
-*/
+/** Preformatted source code.
+ */
 struct FootnoteDefinitionBlock final
     : BlockCommonBase<BlockKind::FootnoteDefinition>
     , BlockContainer
 {
-    /** Footnote label identifier.
-    */
     std::string label;
 
-    /** Construct an empty footnote definition.
-    */
     FootnoteDefinitionBlock() noexcept = default;
-    /** Compare definitions by label and block content.
-    */
     auto operator<=>(FootnoteDefinitionBlock const&) const = default;
-    /** Equality compares label and block content.
-    */
     bool operator==(FootnoteDefinitionBlock const&) const noexcept = default;
 };
 
-/** Map the @ref FootnoteDefinitionBlock to a @ref dom::Object.
+/** Map the @ref FootnoteDefinition to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -69,8 +52,8 @@ tag_invoke(
     io.map("label", I.label);
 }
 
-/** Return the @ref FootnoteDefinitionBlock as a @ref dom::Value object.
-*/
+/** Return the @ref FootnoteDefinition as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

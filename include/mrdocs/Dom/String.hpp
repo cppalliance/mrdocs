@@ -27,8 +27,6 @@ concept StringLikeTy =
     ! std::is_same_v<StringTy, String> &&
     std::convertible_to<StringTy, std::string_view>;
 
-/** UTF-8 string value used by the DOM.
-*/
 class MRDOCS_DECL
     String final
 {

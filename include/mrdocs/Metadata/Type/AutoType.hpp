@@ -19,21 +19,15 @@
 
 namespace mrdocs {
 
-/** Represents `auto` or `decltype(auto)` placeholder type.
-*/
 struct AutoType final
     : TypeCommonBase<TypeKind::Auto>
 {
-    /** Which placeholder keyword appears (`auto` or `decltype(auto)`).
-    */
     AutoKind Keyword = AutoKind::Auto;
 
     /** Constraint on the auto type, if any.
-    */
+     */
     Optional<Polymorphic<Name>> Constraint = std::nullopt;
 
-    /** Compare auto placeholders by keyword and constraint.
-    */
     std::strong_ordering
     operator<=>(AutoType const&) const;
 };

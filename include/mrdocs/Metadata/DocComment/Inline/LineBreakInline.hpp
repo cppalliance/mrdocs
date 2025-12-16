@@ -19,47 +19,23 @@
 namespace mrdocs::doc {
 
 /** A hard line break that renders as "<br>"
-
-    Syntax:
-
-    @code
-    first line\
-    second line
-    @endcode
-
-    or
-
-    @code
-    first line<br>second line
-    @endcode
 */
 struct LineBreakInline
     : InlineCommonBase<InlineKind::LineBreak>
 {
-    /** Virtual destructor for the inline hierarchy.
-    */
     constexpr ~LineBreakInline() override = default;
-
-    /** Construct a line break node.
-    */
     constexpr LineBreakInline() noexcept = default;
-
-    /** Order line breaks (trivial).
-    */
     auto operator<=>(LineBreakInline const&) const = default;
-
-    /** Equality compares line breaks (trivial).
-    */
     bool operator==(LineBreakInline const&) const noexcept = default;
 };
 
-/** Map the @ref LineBreakInline to a @ref dom::Object.
+/** Map the @ref LineBreak to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -71,8 +47,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
 }
 
-/** Return the @ref LineBreakInline as a @ref dom::Value object.
-*/
+/** Return the @ref LineBreak as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

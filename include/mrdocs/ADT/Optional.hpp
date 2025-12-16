@@ -69,7 +69,7 @@ inline constexpr bool isOptionalV<Optional<T&>> = true;
     This single implementation uses a conditional storage type plus if constexpr
     on has_nullable_traits_v<T> to select the appropriate behavior at compile
     time.
-*/
+**/
 template <class T>
 class Optional {
     using storage_t = std::conditional_t<
@@ -122,8 +122,6 @@ class Optional {
     storage_t s_;
 
 public:
-    /** Value type stored by this Optional.
-    */
     using value_type = T;
 
     /// Default-constructs to the “null” state.
@@ -140,7 +138,7 @@ public:
     {}
 
     /** Construct from std::nullopt
-    */
+     */
     constexpr Optional(std::nullopt_t) noexcept(default_ctor_noex_())
         : Optional() {}
 
@@ -153,7 +151,7 @@ public:
     /** Construct from a value.
 
         @param u The value to store. It must be convertible to T.
-    */
+     **/
     template <typename U = std::remove_cv_t<T>>
     requires(!std::is_same_v<Optional, std::remove_cvref_t<U>>)
             && (!std::is_same_v<std::in_place_t, std::remove_cvref_t<U>>)
@@ -172,10 +170,6 @@ public:
         }())
     {}
 
-    /** Construct from another Optional with a convertible contained value.
-
-        @param t Source optional.
-    */
     template <typename U>
     requires(!std::is_same_v<T, U>) && std::is_constructible_v<T, U const&>
             && ConstructFromContainedValue<U>
@@ -198,10 +192,6 @@ public:
         }())
     {}
 
-    /** Construct from another Optional rvalue with a convertible value.
-
-        @param t Source optional.
-    */
     template <typename U>
     requires(!std::is_same_v<T, U>)
             && std::is_constructible_v<T, U> && ConstructFromContainedValue<U>
@@ -224,10 +214,6 @@ public:
         }())
     {}
 
-    /** Construct from std::optional lvalue with convertible value.
-
-        @param t Source optional.
-    */
     template <typename U>
     requires
         std::is_constructible_v<T, U const&> &&
@@ -251,10 +237,6 @@ public:
         }())
     {}
 
-    /** Construct from std::optional rvalue with convertible value.
-
-        @param t Source optional.
-    */
     template <typename U>
     requires
         std::is_constructible_v<T, U> &&
@@ -278,10 +260,6 @@ public:
         }())
     {}
 
-    /** In-place construct the contained value.
-
-        @param args Arguments forwarded to T's constructor.
-    */
     template <typename... Args>
     requires std::is_constructible_v<T, Args...>
     explicit constexpr
@@ -298,11 +276,6 @@ public:
         }())
     {}
 
-    /** In-place construct the contained value from an initializer list.
-
-        @param il Initializer list forwarded to T's constructor.
-        @param args Additional arguments forwarded to T's constructor.
-    */
     template <typename U, typename... Args>
     requires std::is_constructible_v<T, std::initializer_list<U>&, Args...>
     explicit constexpr Optional(
@@ -319,21 +292,14 @@ public:
         }())
     {}
 
-    /** Copy assignment.
-        @return *this.
-    */
+    /// Copy assignment
     constexpr Optional&
     operator=(Optional const&) = default;
 
-    /** Move assignment.
-        @return *this.
-    */
+    /// Move assignment
     constexpr Optional&
     operator=(Optional&&) = default;
 
-    /** Reset to disengaged state from nullptr tag.
-        @return *this.
-    */
     constexpr Optional&
     operator=(std::nullptr_t) noexcept(reset_noex_())
     {
@@ -345,7 +311,7 @@ public:
     /** Assign from a value.
 
         @param u The value to store. It must be convertible to T.
-    */
+     **/
     template <typename U = std::remove_cv_t<T>>
     requires(!std::is_same_v<Optional, std::remove_cvref_t<U>>)
             && std::is_constructible_v<T, U> && std::is_assignable_v<T&, U>
@@ -365,9 +331,6 @@ public:
         return *this;
     }
 
-    /** Assign from another Optional with convertible contained value.
-        @param u Source optional.
-    */
     template<typename U>
     requires (!std::is_same_v<T, U>)
             && std::is_constructible_v<T, const U&>
@@ -397,43 +360,7 @@ public:
         return *this;
     }
 
-    /** Assign from std::optional lvalue with convertible value.
 
-        @param u Source optional.
-    */
-    template<typename U>
-    requires (!std::is_same_v<T, U>)
-            && std::is_constructible_v<T, const U&>
-            && std::is_assignable_v<T&, const U&>
-            && (!detail::ConvertsFromOptional<T, U>::value)
-            && (!detail::AssignsFromOptional<T, U>::value)
-    constexpr Optional&
-    operator=(std::optional<U> const& u) noexcept(
-        std::is_nothrow_constructible_v<T, U const&>
-        && std::is_nothrow_assignable_v<T&, U const&>)
-    {
-        if (u)
-        {
-            if constexpr (uses_nullable_traits)
-            {
-                s_ = *u;
-            }
-            else
-            {
-                s_ = *u;
-            }
-        }
-        else
-        {
-            reset();
-        }
-        return *this;
-    }
-
-
-    /** Assign from another Optional rvalue with convertible contained value.
-        @param u Source optional.
-    */
     template<typename U>
     requires (!std::is_same_v<T, U>)
             && std::is_constructible_v<T, U>
@@ -463,41 +390,7 @@ public:
         return *this;
     }
 
-    /** Assign from std::optional rvalue with convertible value.
-
-        @param u Source optional.
-    */
-    template<typename U>
-    requires (!std::is_same_v<T, U>)
-            && std::is_constructible_v<T, U>
-            && std::is_assignable_v<T&, U>
-            && (!detail::ConvertsFromOptional<T, U>::value)
-            && (!detail::AssignsFromOptional<T, U>::value)
-    constexpr Optional&
-    operator=(std::optional<U>&& u) noexcept(
-        std::is_nothrow_constructible_v<T, U>
-        && std::is_nothrow_assignable_v<T&, U>)
-    {
-        if (u)
-        {
-            if constexpr (uses_nullable_traits)
-            {
-                s_ = std::move(*u);
-            }
-            else
-            {
-                s_ = std::move(*u);
-            }
-        }
-        else
-        {
-            reset();
-        }
-        return *this;
-    }
-
-    /** Reset to the null state. *
-    */
+    /** Reset to the null state. **/
     constexpr void
     reset() noexcept(reset_noex_())
     {
@@ -517,7 +410,7 @@ public:
         @param args The arguments to forward to T's constructor.
 
         @return A reference to the newly constructed value.
-    */
+     **/
     template <class... Args>
     requires std::is_constructible_v<T, Args...>
     constexpr value_type&
@@ -545,7 +438,7 @@ public:
         storage is used.
 
         @return `true` if the optional uses nullable_traits<T> for storage.
-    */
+     */
     static constexpr bool
     is_inlined() noexcept
     {
@@ -555,7 +448,7 @@ public:
     /** True if engaged (contains a value).
 
         @return `true` if the optional contains a value.
-    */
+     **/
     constexpr bool
     has_value() const noexcept(has_value_noex_())
     {
@@ -570,7 +463,7 @@ public:
     }
 
     /** Contextual bool.
-    */
+     **/
     constexpr explicit
     operator bool() const noexcept(noexcept(this->has_value()))
     {
@@ -580,7 +473,7 @@ public:
     /** Value access. Preconditions: has_value() is true.
 
         @return A reference to the contained value.
-    */
+     **/
     constexpr value_type&
     value() & noexcept
     {
@@ -643,7 +536,7 @@ public:
     /** Pointer-like access.
 
         @return A pointer to the contained value.
-    */
+     **/
     constexpr value_type*
     operator->() noexcept
     {
@@ -676,7 +569,7 @@ public:
     /** Dereference-like access.
 
         @return A reference to the contained value.
-    */
+     **/
     constexpr value_type&
     operator*() noexcept
     {
@@ -743,10 +636,6 @@ concept isDerivedFromOptional = requires(T const& t) {
 
 } // namespace detail
 
-/** Optional reference wrapper that never owns storage.
-
-    Stores a pointer to an externally owned object; the disengaged state is nullptr.
-*/
 template <class T>
 class Optional<T&> {
     T* p_ = nullptr;
@@ -757,30 +646,21 @@ class Optional<T&> {
           && !reference_constructs_from_temporary_v<T&, U>;
 
 public:
-    /// Referenced value type.
     using value_type = T;
 
-    /// Construct an empty optional reference.
     constexpr
     Optional() noexcept = default;
 
-    /// Copy constructor.
     constexpr
     Optional(Optional const&) noexcept = default;
 
-    /// Move constructor.
     constexpr
     Optional(Optional&&) noexcept = default;
 
-    /// Construct disengaged from std::nullopt.
     constexpr
     Optional(std::nullopt_t) noexcept
         : Optional() {}
 
-    /** Bind to a referenceable object.
-
-        @param u Object to bind to.
-    */
     template <class U>
     requires(
         !std::is_same_v<std::remove_cvref_t<U>, Optional> &&
@@ -795,10 +675,6 @@ public:
         p_ = std::addressof(r);
     }
 
-    /** Construct from another Optional holding a related reference.
-
-        @param rhs Optional to bind to if engaged.
-    */
     template <class U>
     requires ok_bind_v<U&>
     constexpr
@@ -812,10 +688,6 @@ public:
         }
     }
 
-    /** Construct from a const Optional holding a related reference.
-
-        @param rhs Optional to bind to if engaged.
-    */
     template <class U>
     requires ok_bind_v<U const&>
     constexpr
@@ -829,10 +701,6 @@ public:
         }
     }
 
-    /** Construct from std::optional lvalue.
-
-        @param o Source optional to bind if engaged.
-    */
     template <class U>
     requires ok_bind_v<U&>
     constexpr
@@ -845,10 +713,6 @@ public:
         }
     }
 
-    /** Construct from const std::optional lvalue.
-
-        @param o Source optional to bind if engaged.
-    */
     template <class U>
     requires ok_bind_v<U const&>
     constexpr
@@ -861,15 +725,12 @@ public:
         }
     }
 
-    /// Copy assignment.
     constexpr Optional&
     operator=(Optional const&) noexcept = default;
 
-    /// Move assignment.
     constexpr Optional&
     operator=(Optional&&) noexcept = default;
 
-    /// Reset from std::nullopt.
     constexpr Optional&
     operator=(std::nullopt_t) noexcept
     {
@@ -877,11 +738,6 @@ public:
         return *this;
     }
 
-    /** Assign from a referenceable value.
-
-        @param u Reference to bind.
-        @return *this.
-    */
     template <class U>
     requires ok_bind_v<U>
     constexpr Optional&
@@ -893,11 +749,6 @@ public:
         return *this;
     }
 
-    /** Assign from another Optional reference.
-
-        @param rhs Source optional.
-        @return *this.
-    */
     template <class U>
     requires ok_bind_v<U&>
     constexpr
@@ -909,11 +760,6 @@ public:
         return *this;
     }
 
-    /** Assign from a const Optional reference.
-
-        @param rhs Source optional.
-        @return *this.
-    */
     template <class U>
     requires ok_bind_v<U const&>
     constexpr
@@ -925,11 +771,6 @@ public:
         return *this;
     }
 
-    /** Assign from a movable Optional reference.
-
-        @param rhs Source optional.
-        @return *this.
-    */
     template <class U>
     requires ok_bind_v<U>
     constexpr
@@ -941,11 +782,6 @@ public:
         return *this;
     }
 
-    /** Bind to a new referenced value.
-
-        @param u Referenceable value to bind.
-        @return Reference to the bound value.
-    */
     template <class U>
     requires ok_bind_v<U>
     constexpr
@@ -961,8 +797,6 @@ public:
     static
     constexpr
     bool
-    /** Return true because Optional<T&> never allocates storage.
-    */
     is_inlined() noexcept
     {
         return true;
@@ -970,17 +804,11 @@ public:
 
     constexpr
     bool
-    /** Check whether the optional holds a reference.
-
-        @return `true` if engaged.
-    */
     has_value() const noexcept
     {
         return p_ != nullptr;
     }
 
-    /** Return true when the optional holds a reference.
-    */
     constexpr
     explicit
     operator bool() const noexcept
@@ -990,8 +818,6 @@ public:
 
     constexpr
     void
-    /** Disengage the optional.
-    */
     reset() noexcept
     {
         p_ = nullptr;
@@ -999,10 +825,6 @@ public:
 
     constexpr
     value_type*
-    /** Return pointer to the referenced object.
-
-        @return Pointer to the bound value.
-    */
     operator->() noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1011,10 +833,6 @@ public:
 
     constexpr
     value_type const*
-    /** Return pointer to the referenced object.
-
-        @return Pointer to the bound value.
-    */
     operator->() const noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1023,10 +841,6 @@ public:
 
     constexpr
     value_type&
-    /** Dereference the referenced object.
-
-        @return Reference to the bound value.
-    */
     operator*() noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1035,10 +849,6 @@ public:
 
     constexpr
     value_type const&
-    /** Dereference the referenced object.
-
-        @return Reference to the bound value.
-    */
     operator*() const noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1047,10 +857,6 @@ public:
 
     constexpr
     value_type&
-    /** Access the referenced object.
-
-        @return Reference to the bound value.
-    */
     value() & noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1059,10 +865,6 @@ public:
 
     constexpr
     value_type const&
-    /** Access the referenced object.
-
-        @return Const reference to the bound value.
-    */
     value() const& noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1071,10 +873,6 @@ public:
 
     constexpr
     value_type&
-    /** Access the referenced object (rvalue overload).
-
-        @return Reference to the bound value.
-    */
     value() && noexcept
     {
         MRDOCS_ASSERT(has_value());
@@ -1083,20 +881,12 @@ public:
 
     constexpr
     value_type const&
-    /** Access the referenced object (const rvalue overload).
-
-        @return Const reference to the bound value.
-    */
     value() const&& noexcept
     {
         MRDOCS_ASSERT(has_value());
         return *p_;
     }
 
-    /** Exchange the contained value with another Optional.
-
-        @param other Optional to swap with.
-    */
     constexpr void
     swap(Optional& other) noexcept
     {
@@ -1105,11 +895,6 @@ public:
     }
 };
 
-/** Swap two Optional references.
-
-    @param a First optional reference.
-    @param b Second optional reference.
-*/
 template <class T>
 constexpr void
 swap(Optional<T&>& a, Optional<T&>& b) noexcept

@@ -22,31 +22,26 @@
 
 namespace mrdocs {
 
-/** Represents a single function parameter
-*/
+/** Represents a single function parameter */
 struct Param final
 {
     /** The type of this parameter
-    */
+     */
     Polymorphic<struct Type> Type = Polymorphic<struct Type>(AutoType{});
 
     /** The parameter name.
-    */
+     */
     Optional<std::string> Name;
 
     /** The default argument for this parameter, if any
-    */
+      */
     Optional<std::string> Default;
 
-    /** Create an empty parameter with an `auto` type.
-    */
+    // KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
+    // KRYSTIAN TODO: flag to indicate whether this is a function parameter pack
+
     Param() = default;
 
-    /** Construct a parameter with type, name, and default expression.
-        @param type Parameter type.
-        @param name Parameter identifier.
-        @param def_arg Default argument expression, if present.
-    */
     Param(
         Polymorphic<struct Type>&& type,
         std::string&& name,
@@ -56,20 +51,16 @@ struct Param final
         , Default(std::move(def_arg))
     {}
 
-    /** Compare parameters by type, name, and default.
-    */
     auto
     operator<=>(Param const&) const  = default;
 };
 
-/** Merge two parameters, filling missing pieces from `Other`.
-*/
 MRDOCS_DECL
 void
 merge(Param& I, Param&& Other);
 
 /** Return the Param as a @ref dom::Value object.
-*/
+ */
 MRDOCS_DECL
 void
 tag_invoke(

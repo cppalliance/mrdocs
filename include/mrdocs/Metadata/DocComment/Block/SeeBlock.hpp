@@ -21,47 +21,24 @@
 
 namespace mrdocs::doc {
 
-/** A @see paragraph listing related symbols or references.
-
-    Syntax:
-
-    @code
-    @see other_symbol
-    @endcode
-
-    or
-
-    @code
-    @see AnotherFunction()
-    @see MyClass::calculateSomething()
-    @see MyFile.h
-    @see "The Doxygen Manual"
-    @endcode
-
-
+/** A @see paragraph
 */
 struct SeeBlock final
     : BlockCommonBase<BlockKind::See>
     , InlineContainer
 {
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-    /** Order see-also entries by inline content.
-    */
     auto operator<=>(SeeBlock const&) const = default;
-    /** Equality compares inline content.
-    */
     bool operator==(SeeBlock const&) const noexcept = default;
 };
 
-/** Map the @ref SeeBlock to a @ref dom::Object.
+/** Map the @ref See to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -74,8 +51,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref SeeBlock as a @ref dom::Value object.
-*/
+/** Return the @ref See as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

@@ -22,8 +22,6 @@
 
 namespace mrdocs {
 
-/** Visit a template argument, dispatching on its concrete kind.
-*/
 template<
     std::derived_from<TArg> TArgTy,
     class F,
@@ -54,14 +52,10 @@ visit(
     }
 }
 
-/** Compare polymorphic template arguments.
-*/
 MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs);
 
-/** Serialize a polymorphic template argument into a DOM value.
-*/
 inline
 void
 tag_invoke(

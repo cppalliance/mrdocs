@@ -15,10 +15,4 @@
 {{~/if~}}
 {{~#if name ~}}
 {{~> symbol/name-text . ~}}
-{{~else~}}
-{{~#if (and (eq kind "namespace") (not parent))~}}
-Global Namespace
-{{~else~}}
-Index
-{{~/if~}}
 {{~/if~}}

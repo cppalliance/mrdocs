@@ -18,17 +18,11 @@
 
 namespace mrdocs {
 
-/** An rvalue reference type.
-*/
 struct RValueReferenceType final
     : TypeCommonBase<TypeKind::RValueReference>
 {
-    /** The referenced type, defaults to `auto` when unknown.
-    */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
-    /** Compare rvalue references by pointee.
-    */
     std::strong_ordering
     operator<=>(RValueReferenceType const&) const;
 };

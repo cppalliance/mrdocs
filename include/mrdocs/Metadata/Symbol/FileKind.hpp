@@ -20,8 +20,6 @@
 
 namespace mrdocs {
 
-/** Classifies where a file originates from.
-*/
 enum class FileKind
 {
     /// File in the source directory
@@ -32,18 +30,10 @@ enum class FileKind
     Other
 };
 
-/** Convert a FileKind to its string form.
-    @param kind File category to stringify.
-    @return String view describing the kind.
-*/
 MRDOCS_DECL
 std::string_view
 toString(FileKind kind);
 
-/** Map a FileKind into a DOM value.
-    @param v Destination value to populate.
-    @param kind File category to serialize.
-*/
 inline
 void
 tag_invoke(

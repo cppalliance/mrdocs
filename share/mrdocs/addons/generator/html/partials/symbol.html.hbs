@@ -35,20 +35,10 @@
 <div>
 {{>location/source dcl=(primary_location symbol)}}
 </div>
-{{> symbol/signatures symbol ~}}
+{{> symbol/signatures symbol }}
+
 </div>
 {{/unless}}
-{{! Description }}
-{{#if symbol.doc.description}}
-{{#unless traversing-global-namespace}}
-<div>
-{{#unless (eq (lookup (first symbol.doc.description) "kind") "heading") }}
-{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
-{{~/unless}}
-{{> doc/block/document symbol.doc.description }}
-</div>
-{{/unless}}
-{{/if}}
 {{! Base classes }}
 {{#if (any_of_by symbol.bases "isPublic")}}
 <div>
@@ -181,6 +171,17 @@
 </tbody>
 </table>
 </div>
+{{/if}}
+{{! Description }}
+{{#if symbol.doc.description}}
+{{#unless traversing-global-namespace}}
+<div>
+{{#unless (eq (lookup (first symbol.doc.description) "kind") "heading") }}
+{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
+{{~/unless}}
+{{> doc/block/document symbol.doc.description }}
+</div>
+{{/unless}}
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}

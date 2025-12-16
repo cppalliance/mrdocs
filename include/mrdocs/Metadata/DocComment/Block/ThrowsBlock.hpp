@@ -21,42 +21,25 @@
 
 namespace mrdocs::doc {
 
-/** Documentation for a function exception clause
-
-    Syntax:
-
-    @code
-    @throws Type description
-    @endcode
+/** Documentation for a function parameter
 */
 struct ThrowsBlock final
     : BlockCommonBase<BlockKind::Throws>
     , InlineContainer
 {
-    /** Exception type being described.
-    */
     ReferenceInline exception;
-
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-
-    /** Order throw clauses by exception and description.
-    */
     auto operator<=>(ThrowsBlock const&) const = default;
-
-    /** Equality compares exception and description.
-    */
     bool operator==(ThrowsBlock const&) const noexcept = default;
 };
 
-/** Map the @ref ThrowsBlock to a @ref dom::Object.
+/** Map the @ref Throws to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -70,8 +53,8 @@ tag_invoke(
     io.map("exception", I.exception);
 }
 
-/** Return the @ref ThrowsBlock as a @ref dom::Value object.
-*/
+/** Return the @ref Throws as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

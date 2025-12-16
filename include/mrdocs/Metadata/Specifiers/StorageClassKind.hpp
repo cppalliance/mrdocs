@@ -40,14 +40,12 @@ enum class StorageClassKind
     Register
 };
 
-/** Convert a storage class kind to its string form.
-*/
 MRDOCS_DECL
 dom::String
 toString(StorageClassKind kind) noexcept;
 
 /** Return the StorageClassKind as a @ref dom::Value string.
-*/
+ */
 inline
 void
 tag_invoke(

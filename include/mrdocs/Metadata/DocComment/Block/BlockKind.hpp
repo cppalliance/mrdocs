@@ -16,15 +16,11 @@
 
 namespace mrdocs::doc {
 
-/** Enumerates the different kinds of DocComment blocks.
-*/
 enum class BlockKind {
     #define INFO(Type) Type,
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 };
 
-/** Convert a block kind to its kebab-case string name.
-*/
 inline
 dom::String
 toString(BlockKind kind) noexcept
@@ -37,22 +33,15 @@ toString(BlockKind kind) noexcept
     return "Unknown";
 }
 
-/** Write a block kind into a DOM value as its string name.
-    @param v Destination value.
-    @param kind Block kind to serialize.
-*/
 inline
 void
 tag_invoke(
     dom::ValueFromTag,
-    dom::Value& v,
-    BlockKind const kind)
+    dom::Value& v, BlockKind const kind)
 {
     v = toString(kind);
 }
 
-/** Return true if the given block kind represents a command block.
-*/
 constexpr
 bool
 isBlockCommand(BlockKind k) noexcept

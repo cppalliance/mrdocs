@@ -40,39 +40,27 @@ class Expected;
 template <class E>
 class Unexpected;
 
-/** Base class for accessing an empty Expected.
-*/
 template <class E>
 class BadExpectedAccess;
 
-/** Exception thrown when reading the value of an empty Expected.
-*/
 template <>
 class BadExpectedAccess<void> : public std::exception
 {
 protected:
-    /// Default constructor.
     BadExpectedAccess() noexcept = default;
 
-    /// Copy constructor.
     BadExpectedAccess(BadExpectedAccess const&) = default;
 
-    /// Move constructor.
     BadExpectedAccess(BadExpectedAccess&&) = default;
 
-    /// Copy assignment.
     BadExpectedAccess&
     operator=(BadExpectedAccess const&) = default;
 
-    /// Move assignment.
     BadExpectedAccess&
     operator=(BadExpectedAccess&&) = default;
 
-    /// Virtual destructor.
     ~BadExpectedAccess() override = default;
 public:
-    /** Return a diagnostic string.
-    */
     [[nodiscard]]
     char const*
     what() const noexcept override
@@ -81,21 +69,14 @@ public:
     }
 };
 
-/** Exception thrown when reading the error of an Expected with a value.
-*/
 template <class E>
 class BadExpectedAccess : public BadExpectedAccess<void> {
     E unex_;
 public:
-    /** Construct with the unexpected error value.
-     */
     explicit
     BadExpectedAccess(E e)
         : unex_(std::move(e)) { }
 
-    /** Access the contained error by lvalue reference.
-        @return Reference to the stored unexpected value.
-    */
     [[nodiscard]]
     E&
     error() & noexcept
@@ -103,9 +84,6 @@ public:
         return unex_;
     }
 
-    /** Access the contained error by const lvalue reference.
-        @return Const reference to the stored unexpected value.
-    */
     [[nodiscard]]
     E const&
     error() const & noexcept
@@ -113,9 +91,6 @@ public:
         return unex_;
     }
 
-    /** Access the contained error by rvalue reference.
-        @return Rvalue reference to the stored unexpected value.
-    */
     [[nodiscard]]
     E&&
     error() && noexcept
@@ -123,9 +98,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Access the contained error by const rvalue reference.
-        @return Const rvalue reference to the stored unexpected value.
-    */
     [[nodiscard]]
     E const&&
     error() const && noexcept
@@ -134,16 +106,11 @@ public:
     }
 };
 
-/** Tag type used to select unexpected construction.
-*/
 struct unexpect_t
 {
-    /// Default constructor.
     explicit unexpect_t() = default;
 };
 
-/** Tag object to request unexpected construction.
-*/
 inline constexpr unexpect_t unexpect{};
 
 namespace detail
@@ -185,8 +152,6 @@ namespace detail
           && !reference_constructs_from_temporary_v<R, U>;
 }
 
-/** Holds an unexpected error value for Expected.
-*/
 template <class E>
 class Unexpected
 {
@@ -194,17 +159,12 @@ class Unexpected
     E unex_;
 
 public:
-    /// Copy constructor.
     constexpr
     Unexpected(Unexpected const&) = default;
 
-    /// Move constructor.
     constexpr
     Unexpected(Unexpected&&) = default;
 
-    /** Construct from an error value convertible to `E`.
-        @param e Error value to store.
-    */
     template <class Er = E>
     requires
       (!std::is_same_v<std::remove_cvref_t<Er>, Unexpected>) &&
@@ -215,47 +175,29 @@ public:
         : unex_(std::forward<Er>(e))
     {}
 
-    /** In-place construct the error value with arguments.
-        @param in_place Tag selecting in-place construction.
-        @param args Arguments forwarded to `E`'s constructor.
-    */
     template <class... Args>
     requires std::is_constructible_v<E, Args...>
     constexpr explicit
-    Unexpected(std::in_place_t in_place, Args&&... args)
+    Unexpected(std::in_place_t, Args&&... args)
     noexcept(std::is_nothrow_constructible_v<E, Args...>)
         : unex_(std::forward<Args>(args)...)
-    {
-        (void)in_place;
-    }
+    {}
 
-    /** In-place construct the error value from an initializer list.
-        @param in_place Tag selecting in-place construction.
-        @param il Initializer list for the error.
-        @param args Additional constructor arguments.
-    */
     template <class U, class... Args>
     requires std::is_constructible_v<E, std::initializer_list<U>&, Args...>
     constexpr explicit
     Unexpected(
-        std::in_place_t in_place,
+        std::in_place_t,
         std::initializer_list<U> il,
         Args&&... args)
     noexcept(std::is_nothrow_constructible_v<
         E, std::initializer_list<U>&, Args...>)
         : unex_(il, std::forward<Args>(args)...)
-    {
-        (void)in_place;
-    }
+    {}
 
-    /// Copy assignment.
     constexpr Unexpected& operator=(Unexpected const&) = default;
-    /// Move assignment.
     constexpr Unexpected& operator=(Unexpected&&) = default;
 
-    /** Return a const reference to the stored error.
-        @return Const reference to `E`.
-    */
     [[nodiscard]]
     constexpr E const&
     error() const & noexcept
@@ -263,9 +205,6 @@ public:
         return unex_;
     }
 
-    /** Return a reference to the stored error.
-        @return Reference to `E`.
-    */
     [[nodiscard]]
     constexpr E&
     error() & noexcept
@@ -273,9 +212,6 @@ public:
         return unex_;
     }
 
-    /** Return a const rvalue reference to the stored error.
-        @return Const rvalue reference to `E`.
-    */
     [[nodiscard]]
     constexpr E const&&
     error() const && noexcept
@@ -283,9 +219,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Return a rvalue reference to the stored error.
-        @return Rvalue reference to `E`.
-    */
     [[nodiscard]]
     constexpr E&&
     error() && noexcept
@@ -293,8 +226,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Swap the contained error with another instance.
-    */
     constexpr
     void
     swap(Unexpected& other) noexcept(std::is_nothrow_swappable_v<E>)
@@ -325,10 +256,7 @@ public:
     }
 };
 
-/** Deduction guide for Unexpected, forwarding the error type.
-*/
-template <class E>
-Unexpected(E) -> Unexpected<E>;
+template <class E> Unexpected(E) -> Unexpected<E>;
 
 namespace detail
 {
@@ -450,6 +378,7 @@ namespace detail
 #endif
 
 
+/// @cond undocumented
 namespace detail
 {
     template <class T>
@@ -514,11 +443,10 @@ namespace detail
         }
     }
 }
+/// @endcond
 
 /** A container holding an error or a value.
-*/
-/** Monadic result type holding either a value `T` or an unexpected error `E`.
-*/
+ */
 template <class T, class E = Error>
 class Expected
 {
@@ -560,28 +488,20 @@ class Expected
     template <class, class> friend class Expected;
 
     union {
-        /// Storage for the engaged value.
         T val_;
-        /// Storage for the unexpected error.
         E unex_;
     };
 
-    /// True when the value alternative is active.
     bool has_value_;
 
 public:
-    /// Type produced on success.
     using value_type = T;
-    /// Type produced on failure.
     using error_type = E;
-    /// Convenience alias for an Unexpected containing the error type.
     using unexpected_type = Unexpected<E>;
 
     template <class U>
-    /// Rebind to an `Expected` with a different value type and the same error type.
     using rebind = Expected<U, error_type>;
 
-    /// Construct an engaged Expected with a default-initialized value.
     constexpr
     Expected()
     noexcept(std::is_nothrow_default_constructible_v<T>)
@@ -590,13 +510,8 @@ public:
         , has_value_(true)
     {}
 
-    /// Default copy constructor.
     Expected(Expected const&) = default;
 
-    /** Copy-construct, handling non-trivial alternatives.
-    */
-    /** Copy-construct from another void Expected.
-    */
     constexpr
     Expected(Expected const& x)
     noexcept(
@@ -619,14 +534,8 @@ public:
         }
     }
 
-    /// Default move constructor.
-    /// Default move constructor.
     Expected(Expected&&) = default;
 
-    /** Move-construct, handling non-trivial alternatives.
-    */
-    /** Move-construct from another void Expected.
-    */
     constexpr
     Expected(Expected&& x)
     noexcept(
@@ -649,8 +558,6 @@ public:
         }
     }
 
-    /** Construct from another Expected with potentially different types.
-    */
     template <class U, class G>
     requires
         std::is_constructible_v<T, U const&> &&
@@ -674,8 +581,6 @@ public:
         }
     }
 
-    /** Move-construct from another Expected with potentially different types.
-    */
     template <class U, class G>
     requires
         std::is_constructible_v<T, U> &&
@@ -699,8 +604,6 @@ public:
         }
     }
 
-    /** Construct an engaged Expected from a convertible value.
-    */
     template <class U = T>
     requires
         (!std::is_same_v<std::remove_cvref_t<U>, Expected>) &&
@@ -715,8 +618,6 @@ public:
         , has_value_(true)
     { }
 
-    /** Construct a disengaged Expected from an unexpected error (copy).
-    */
     template <class G = E>
     requires std::is_constructible_v<E, G const&>
     constexpr
@@ -727,8 +628,6 @@ public:
         , has_value_(false)
     { }
 
-    /** Construct a disengaged Expected from an unexpected error (move).
-    */
     template <class G = E>
     requires std::is_constructible_v<E, G>
     constexpr
@@ -739,9 +638,6 @@ public:
         , has_value_(false)
     { }
 
-    /** Construct an engaged Expected in-place.
-        @param args Arguments forwarded to the value constructor.
-    */
     template <class... Args>
     requires std::is_constructible_v<T, Args...>
     constexpr explicit
@@ -749,13 +645,8 @@ public:
     noexcept(std::is_nothrow_constructible_v<T, Args...>)
         : val_(std::forward<Args>(args)...)
         , has_value_(true)
-    {
-    }
+    { }
 
-    /** Construct an engaged Expected from an initializer list.
-        @param il Initializer list forwarded to the value constructor.
-        @param args Additional arguments forwarded to the value constructor.
-    */
     template <class U, class... Args>
     requires
         std::is_constructible_v<T, std::initializer_list<U>&, Args...>
@@ -769,12 +660,8 @@ public:
             T, std::initializer_list<U>&, Args...>)
         : val_(il, std::forward<Args>(args)...)
         , has_value_(true)
-    {
-    }
+    { }
 
-    /** Construct a disengaged Expected holding an error.
-        @param args Arguments forwarded to the error constructor.
-    */
     template <class... Args>
     requires std::is_constructible_v<E, Args...>
     constexpr explicit
@@ -782,13 +669,8 @@ public:
     noexcept(std::is_nothrow_constructible_v<E, Args...>)
         : unex_(std::forward<Args>(args)...)
         , has_value_(false)
-    {
-    }
+    { }
 
-    /** Construct a disengaged Expected from an initializer list.
-        @param il Initializer list forwarded to the error constructor.
-        @param args Additional arguments forwarded to the error constructor.
-    */
     template <class U, class... Args>
     requires std::is_constructible_v<E, std::initializer_list<U>&, Args...>
     constexpr explicit
@@ -801,14 +683,10 @@ public:
             E, std::initializer_list<U>&, Args...>)
         : unex_(il, std::forward<Args>(args)...)
         , has_value_(false)
-    {
-    }
+    { }
 
-    /// Defaulted trivial destructor when both alternatives are trivial.
     constexpr ~Expected() = default;
 
-    /** Destroy the active alternative when a non-trivial destructor is required.
-    */
     constexpr ~Expected()
     requires
         (!std::is_trivially_destructible_v<T>)
@@ -824,13 +702,9 @@ public:
         }
     }
 
-    /** Copy-assign from another Expected.
-    */
     Expected&
     operator=(Expected const&) = delete;
 
-    /** Assign from another Expected with compatible value/error types.
-    */
     constexpr
     Expected&
     operator=(Expected const& x)
@@ -858,8 +732,6 @@ public:
         return *this;
     }
 
-    /** Move-assign from another Expected with compatible value/error types.
-    */
     constexpr
     Expected&
     operator=(Expected&& x)
@@ -887,8 +759,6 @@ public:
         return *this;
     }
 
-    /** Assign a new value, reconstructing if currently disengaged.
-    */
     template <class U = T>
     requires
         (!std::is_same_v<Expected, std::remove_cvref_t<U>>) &&
@@ -906,8 +776,6 @@ public:
         return *this;
     }
 
-    /** Assign a new unexpected error from lvalue.
-    */
     template <class G>
     requires
         std::is_constructible_v<E, G const&> &&
@@ -923,8 +791,6 @@ public:
         return *this;
     }
 
-    /** Assign a new unexpected error from rvalue.
-    */
     template <class G>
     requires
         std::is_constructible_v<E, G> &&
@@ -940,10 +806,6 @@ public:
         return *this;
     }
 
-    /** Reconstruct the value in-place, discarding any current state.
-        @param args Arguments forwarded to the value constructor.
-        @return Reference to the newly emplaced value.
-    */
     template <class... Args>
     requires std::is_nothrow_constructible_v<T, Args...>
     constexpr
@@ -965,11 +827,6 @@ public:
         return val_;
     }
 
-    /** Reconstruct the value from an initializer list.
-        @param il Initializer list forwarded to the value constructor.
-        @param args Additional constructor arguments.
-        @return Reference to the newly emplaced value.
-    */
     template <class U, class... Args>
     requires
         std::is_nothrow_constructible_v<
@@ -993,8 +850,6 @@ public:
         return val_;
     }
 
-    /** Swap the stored state with another Expected.
-    */
     constexpr
     void
     swap(Expected& x)
@@ -1039,9 +894,6 @@ public:
 
     // observers
 
-    /** Access value members through pointer syntax.
-        @return Pointer to the contained value.
-    */
     [[nodiscard]]
     constexpr
     T const*
@@ -1051,9 +903,6 @@ public:
         return std::addressof(val_);
     }
 
-    /** Access value members through pointer syntax.
-        @return Pointer to the contained value.
-    */
     [[nodiscard]]
     constexpr
     T*
@@ -1063,9 +912,6 @@ public:
         return std::addressof(val_);
     }
 
-    /** Dereference to a const lvalue value reference.
-        @return Reference to the contained value.
-    */
     [[nodiscard]]
     constexpr
     T const&
@@ -1075,9 +921,6 @@ public:
         return val_;
     }
 
-    /** Dereference to an lvalue value reference.
-        @return Reference to the contained value.
-    */
     [[nodiscard]]
     constexpr
     T&
@@ -1087,9 +930,6 @@ public:
         return val_;
     }
 
-    /** Dereference to a const rvalue value reference.
-        @return Reference to the contained value.
-    */
     [[nodiscard]]
     constexpr
     T const&&
@@ -1099,9 +939,6 @@ public:
         return std::move(val_);
     }
 
-    /** Dereference to an rvalue value reference.
-        @return Reference to the contained value.
-    */
     [[nodiscard]]
     constexpr
     T&&
@@ -1111,8 +948,6 @@ public:
         return std::move(val_);
     }
 
-    /** Return true when the Expected contains a value.
-    */
     [[nodiscard]]
     constexpr explicit
     operator bool() const noexcept
@@ -1120,17 +955,12 @@ public:
         return has_value_;
     }
 
-    /** Return true when the Expected contains a value.
-    */
     [[nodiscard]]
     constexpr bool has_value() const noexcept
     {
         return has_value_;
     }
 
-    /** Access the stored value or throw BadExpectedAccess.
-        @return Reference to the contained value.
-    */
     constexpr T const&
     value() const &
     {
@@ -1141,9 +971,6 @@ public:
         throw BadExpectedAccess<E>(unex_);
     }
 
-    /** Access the stored value or throw BadExpectedAccess.
-        @return Reference to the contained value.
-    */
     constexpr T&
     value() &
     {
@@ -1155,9 +982,6 @@ public:
         throw BadExpectedAccess<E>(unex);
     }
 
-    /** Access the stored value or throw BadExpectedAccess (rvalue overload).
-        @return Rvalue reference to the contained value.
-    */
     constexpr T const&&
     value() const &&
     {
@@ -1168,9 +992,6 @@ public:
         throw BadExpectedAccess<E>(std::move(unex_));
     }
 
-    /** Access the stored value or throw BadExpectedAccess (rvalue overload).
-        @return Rvalue reference to the contained value.
-    */
     constexpr T&&
     value() &&
     {
@@ -1181,9 +1002,6 @@ public:
         throw BadExpectedAccess<E>(std::move(unex_));
     }
 
-    /** Access the stored error; precondition: !has_value().
-        @return Reference to the contained error.
-    */
     constexpr E const&
     error() const & noexcept
     {
@@ -1191,9 +1009,6 @@ public:
         return unex_;
     }
 
-    /** Access the stored error; precondition: !has_value().
-        @return Reference to the contained error.
-    */
     constexpr E&
     error() & noexcept
     {
@@ -1201,9 +1016,6 @@ public:
         return unex_;
     }
 
-    /** Access the stored error; precondition: !has_value().
-        @return Rvalue reference to the contained error.
-    */
     constexpr E const&&
     error() const && noexcept
     {
@@ -1211,9 +1023,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Access the stored error; precondition: !has_value().
-        @return Rvalue reference to the contained error.
-    */
     constexpr E&&
     error() && noexcept
     {
@@ -1221,10 +1030,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Return the contained value or a fallback copy.
-        @param v Fallback value to use when disengaged.
-        @return Contained value or the fallback converted to `T`.
-    */
     template <class U>
     constexpr
     T
@@ -1242,10 +1047,6 @@ public:
         return static_cast<T>(std::forward<U>(v));
     }
 
-    /** Return the contained value or a fallback move.
-        @param v Fallback value to use when disengaged.
-        @return Contained value or the fallback converted to `T`.
-    */
     template <class U>
     constexpr
     T
@@ -1263,10 +1064,6 @@ public:
         return static_cast<T>(std::forward<U>(v));
     }
 
-    /** Return the contained error or a fallback copy.
-        @param e Fallback error to use when engaged.
-        @return Contained error or the fallback converted to `E`.
-    */
     template <class G = E>
     constexpr
     E
@@ -1281,10 +1078,6 @@ public:
         return unex_;
     }
 
-    /** Return the contained error or a fallback move.
-        @param e Fallback error to use when engaged.
-        @return Contained error or the fallback converted to `E`.
-    */
     template <class G = E>
     constexpr E
     error_or(G&& e) &&
@@ -1298,10 +1091,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Invoke `f` when engaged, propagate error otherwise.
-        @param f Continuation that returns another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E&>
     constexpr
@@ -1322,10 +1111,6 @@ public:
         }
     }
 
-    /** Invoke `f` when engaged (const lvalue), propagate error otherwise.
-        @param f Continuation that returns another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E const&>
     constexpr
@@ -1346,10 +1131,6 @@ public:
         }
     }
 
-    /** Invoke `f` when engaged (rvalue), propagate error otherwise.
-        @param f Continuation that returns another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E>
     constexpr
@@ -1371,10 +1152,6 @@ public:
     }
 
 
-    /** Invoke `f` when engaged (const rvalue), propagate error otherwise.
-        @param f Continuation that returns another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, const E>
     constexpr
@@ -1395,10 +1172,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error, otherwise return current value.
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, T&>
     constexpr
@@ -1419,10 +1192,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error (const lvalue).
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, T const&>
     constexpr
@@ -1443,10 +1212,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error (rvalue).
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, T>
     constexpr
@@ -1467,10 +1232,6 @@ public:
       }
     }
 
-    /** Invoke `f` when in error (const rvalue).
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, const T>
     constexpr
@@ -1491,10 +1252,6 @@ public:
         }
     }
 
-    /** Map the contained value, propagate error.
-        @param f Mapping function applied to the value.
-        @return Expected holding the mapped value or the original error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E&>
     constexpr
@@ -1517,10 +1274,6 @@ public:
         }
     }
 
-    /** Map the contained value (const overload), propagate error.
-        @param f Mapping function applied to the value.
-        @return Expected holding the mapped value or the original error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E const&>
     constexpr
@@ -1543,10 +1296,6 @@ public:
         }
     }
 
-    /** Map the contained value (rvalue), propagate error.
-        @param f Mapping function applied to the value.
-        @return Expected holding the mapped value or the original error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E>
     constexpr
@@ -1569,10 +1318,6 @@ public:
         }
     }
 
-    /** Map the contained value (const rvalue), propagate error.
-        @param f Mapping function applied to the value.
-        @return Expected holding the mapped value or the original error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, const E>
     constexpr
@@ -1595,10 +1340,6 @@ public:
         }
     }
 
-    /** Map the contained error, preserve value.
-        @param f Mapping function applied to the error.
-        @return Expected holding the original value or mapped error.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, T&>
     constexpr
@@ -1621,10 +1362,6 @@ public:
         }
     }
 
-    /** Map the contained error (const lvalue), preserve value.
-        @param f Mapping function applied to the error.
-        @return Expected holding the original value or mapped error.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, T const&>
     constexpr
@@ -1647,10 +1384,6 @@ public:
         }
     }
 
-    /** Map the contained error (rvalue), preserve value.
-        @param f Mapping function applied to the error.
-        @return Expected holding the original value or mapped error.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, T>
     constexpr
@@ -1673,10 +1406,6 @@ public:
         }
     }
 
-    /** Map the contained error (const rvalue), preserve value.
-        @param f Mapping function applied to the error.
-        @return Expected holding the original value or mapped error.
-    */
     template <class Fn>
     requires std::is_constructible_v<T, const T>
     constexpr
@@ -1738,8 +1467,6 @@ public:
         return !x.has_value() && bool(x.error() == e.error());
     }
 
-    /** Swap contents with another Expected.
-    */
     friend
     constexpr
     void
@@ -1836,9 +1563,6 @@ private:
     { }
 };
 
-/** Expected specialization for `void` values.
-    Holds either success (no payload) or an unexpected error `E`.
-*/
 template <class T, class E>
 requires std::is_void_v<T>
 class Expected<T, E>
@@ -1862,44 +1586,29 @@ class Expected<T, E>
 
     template <class, class> friend class Expected;
 
-    struct engaged_state { };
-
     union {
-        /** Placeholder for the engaged state.
-        */
-        engaged_state void_;
-        /** Stored unexpected error.
-        */
+        struct { } void_;
         E unex_;
     };
 
-    /// True when the expected is engaged.
     bool has_value_;
 
 public:
-    /// Value type for this specialization (always void).
     using value_type = T;
-    /// Error type stored when disengaged.
     using error_type = E;
-    /// Alias for the unexpected wrapper.
     using unexpected_type = Unexpected<E>;
 
-    /// Rebind to another value type with the same error type.
     template <class U>
     using rebind = Expected<U, error_type>;
 
-    /// Construct an engaged Expected<void>.
     constexpr
     Expected() noexcept
         : void_()
         , has_value_(true)
     { }
 
-    /// Default copy constructor.
     Expected(Expected const&) = default;
 
-    /** Copy-construct with explicit error handling for non-trivial `E`.
-    */
     constexpr
     Expected(Expected const& x)
     noexcept(std::is_nothrow_copy_constructible_v<E>)
@@ -1915,11 +1624,8 @@ public:
         }
     }
 
-    /// Default move constructor.
     Expected(Expected&&) = default;
 
-    /** Move-construct with explicit error handling for non-trivial `E`.
-    */
     constexpr
     Expected(Expected&& x)
     noexcept(std::is_nothrow_move_constructible_v<E>)
@@ -1934,8 +1640,6 @@ public:
         }
     }
 
-    /** Copy-construct from a compatible Expected carrying void.
-    */
     template <class U, class G>
     requires
         std::is_void_v<U> &&
@@ -1954,8 +1658,6 @@ public:
         }
     }
 
-    /** Move-construct from a compatible Expected carrying void.
-    */
     template <class U, class G>
     requires
         std::is_void_v<U> &&
@@ -1974,8 +1676,6 @@ public:
         }
     }
 
-    /** Construct a disengaged Expected from an unexpected error (copy).
-    */
     template <class G = E>
     requires std::is_constructible_v<E, G const&>
     constexpr
@@ -1986,8 +1686,6 @@ public:
         , has_value_(false)
     { }
 
-    /** Construct a disengaged Expected from an unexpected error (move).
-    */
     template <class G = E>
     requires std::is_constructible_v<E, G>
     constexpr
@@ -1997,17 +1695,11 @@ public:
         : unex_(std::move(u).error()), has_value_(false)
     { }
 
-    /** Construct an engaged Expected with in-place tag.
-    */
     constexpr explicit
     Expected(std::in_place_t) noexcept
         : Expected()
-    {
-    }
+    { }
 
-    /** Construct a disengaged Expected from error arguments.
-        @param args Arguments forwarded to the error constructor.
-    */
     template <class... Args>
     requires std::is_constructible_v<E, Args...>
     constexpr explicit
@@ -2015,31 +1707,20 @@ public:
     noexcept(std::is_nothrow_constructible_v<E, Args...>)
         : unex_(std::forward<Args>(args)...)
         , has_value_(false)
-    {
-    }
+    { }
 
-    /** Construct a disengaged Expected from an initializer list of errors.
-        @param il Initializer list forwarded to the error constructor.
-        @param args Additional arguments forwarded to the error constructor.
-    */
     template <class U, class... Args>
     requires std::is_constructible_v<E, std::initializer_list<U>&, Args...>
     constexpr explicit
-    Expected(
-        unexpect_t,
-        std::initializer_list<U> il,
-        Args&&... args)
+    Expected(unexpect_t, std::initializer_list<U> il, Args&&... args)
     noexcept(
         std::is_nothrow_constructible_v<
             E, std::initializer_list<U>&, Args...>)
         : unex_(il, std::forward<Args>(args)...), has_value_(false)
-    {
-    }
+    { }
 
-    /// Defaulted trivial destructor.
     constexpr ~Expected() = default;
 
-    /// Destroy the stored error when non-trivial.
     constexpr ~Expected()
     requires (!std::is_trivially_destructible_v<E>)
     {
@@ -2049,11 +1730,8 @@ public:
         }
     }
 
-    /// Copy assignment disabled to keep semantics explicit.
     Expected& operator=(Expected const&) = delete;
 
-    /** Copy-assign from another void Expected.
-    */
     constexpr
     Expected&
     operator=(Expected const& x)
@@ -2075,8 +1753,6 @@ public:
         return *this;
     }
 
-    /** Move-assign from another void Expected.
-    */
     constexpr
     Expected&
     operator=(Expected&& x)
@@ -2098,8 +1774,6 @@ public:
         return *this;
     }
 
-    /** Assign a new unexpected error (lvalue).
-    */
     template <class G>
     requires
         std::is_constructible_v<E, G const&> &&
@@ -2112,8 +1786,6 @@ public:
         return *this;
     }
 
-    /** Assign a new unexpected error (rvalue).
-    */
     template <class G>
     requires
         std::is_constructible_v<E, G> &&
@@ -2126,8 +1798,6 @@ public:
         return *this;
     }
 
-    /** Reset to engaged state (no error).
-    */
     constexpr
     void
     emplace() noexcept
@@ -2139,9 +1809,6 @@ public:
         }
     }
 
-    /** Swap states with another void Expected.
-        @param x Other instance to exchange with.
-    */
     constexpr
     void
     swap(Expected& x)
@@ -2183,8 +1850,6 @@ public:
         }
     }
 
-    /** Return true when the Expected holds a value.
-    */
     [[nodiscard]]
     constexpr
     explicit
@@ -2193,8 +1858,6 @@ public:
         return has_value_;
     }
 
-    /** Return true when the Expected holds a value.
-    */
     [[nodiscard]]
     constexpr
     bool has_value() const noexcept
@@ -2202,16 +1865,12 @@ public:
         return has_value_;
     }
 
-    /** Ensure the Expected is engaged; throws if it holds an error.
-    */
     constexpr
     void
     operator*() const noexcept {
         MRDOCS_ASSERT(has_value_);
     }
 
-    /** Ensure the Expected is engaged; throws BadExpectedAccess if not.
-    */
     constexpr
     void
     value() const&
@@ -2223,8 +1882,6 @@ public:
         throw BadExpectedAccess<E>(unex_);
     }
 
-    /** Ensure the Expected is engaged; throws BadExpectedAccess if not (rvalue overload).
-    */
     constexpr
     void
     value() &&
@@ -2236,8 +1893,6 @@ public:
         throw BadExpectedAccess<E>(std::move(unex_));
     }
 
-    /** Return a const reference to the contained error; precondition: disengaged.
-    */
     constexpr E const&
     error() const & noexcept
     {
@@ -2245,8 +1900,6 @@ public:
         return unex_;
     }
 
-    /** Return a reference to the contained error; precondition: disengaged.
-    */
     constexpr E&
     error() & noexcept
     {
@@ -2254,8 +1907,6 @@ public:
         return unex_;
     }
 
-    /** Return an rvalue reference to the contained error; precondition: disengaged.
-    */
     constexpr E const&&
     error() const && noexcept
     {
@@ -2263,8 +1914,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Return an rvalue reference to the contained error; precondition: disengaged.
-    */
     constexpr E&&
     error() && noexcept
     {
@@ -2272,10 +1921,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Return the error or a fallback copy.
-        @param e Fallback to return if engaged.
-        @return Contained error or the fallback converted to `E`.
-    */
     template <class G = E>
     constexpr E
     error_or(G&& e) const&
@@ -2290,10 +1935,6 @@ public:
       return unex_;
     }
 
-    /** Return the error or a fallback move.
-        @param e Fallback to return if engaged.
-        @return Contained error or the fallback converted to `E`.
-    */
     template <class G = E>
     constexpr E
     error_or(G&& e) &&
@@ -2308,10 +1949,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Invoke `f` when engaged, propagate error otherwise.
-        @param f Continuation returning another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E&>
     constexpr
@@ -2332,10 +1969,6 @@ public:
         }
     }
 
-    /** Invoke `f` when engaged (const lvalue), propagate error otherwise.
-        @param f Continuation returning another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E const&>
     constexpr
@@ -2356,10 +1989,6 @@ public:
         }
     }
 
-    /** Invoke `f` when engaged (rvalue), propagate error otherwise.
-        @param f Continuation returning another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E>
     constexpr
@@ -2380,10 +2009,6 @@ public:
       }
     }
 
-    /** Invoke `f` when engaged (const rvalue), propagate error otherwise.
-        @param f Continuation returning another Expected.
-        @return Result of `f` or this error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, const E>
     constexpr
@@ -2404,10 +2029,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error, otherwise return current value.
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2427,10 +2048,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error (const lvalue), otherwise return current value.
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2450,10 +2067,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error (rvalue), otherwise return current value.
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2473,10 +2086,6 @@ public:
         }
     }
 
-    /** Invoke `f` when in error (const rvalue), otherwise return current value.
-        @param f Recovery function returning an Expected.
-        @return Current value or result of `f`.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2496,10 +2105,6 @@ public:
         }
     }
 
-    /** Transform the contained error type when engaged (lvalue).
-        @param f Transformation to apply.
-        @return New Expected produced from `f` or the existing error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E&>
     constexpr
@@ -2519,10 +2124,6 @@ public:
         }
     }
 
-    /** Transform the contained error type when engaged (const lvalue).
-        @param f Transformation to apply.
-        @return New Expected produced from `f` or the existing error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E const&>
     constexpr
@@ -2542,10 +2143,6 @@ public:
         }
     }
 
-    /** Transform the contained error type when engaged (rvalue).
-        @param f Transformation to apply.
-        @return New Expected produced from `f` or the existing error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, E>
     constexpr
@@ -2565,10 +2162,6 @@ public:
         }
     }
 
-    /** Transform the contained error type when engaged (const rvalue).
-        @param f Transformation to apply.
-        @return New Expected produced from `f` or the existing error.
-    */
     template <class Fn>
     requires std::is_constructible_v<E, const E>
     constexpr
@@ -2588,10 +2181,6 @@ public:
         }
     }
 
-    /** Transform the stored error value when disengaged.
-        @param f Transformation to apply.
-        @return Expected containing the transformed error or the current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2613,10 +2202,6 @@ public:
         }
     }
 
-    /** Transform the stored error value when disengaged (const lvalue).
-        @param f Transformation to apply.
-        @return Expected containing the transformed error or the current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2638,10 +2223,6 @@ public:
         }
     }
 
-    /** Transform the stored error value when disengaged (rvalue).
-        @param f Transformation to apply.
-        @return Expected containing the transformed error or the current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2663,10 +2244,6 @@ public:
         }
     }
 
-    /** Transform the stored error value when disengaged (const rvalue).
-        @param f Transformation to apply.
-        @return Expected containing the transformed error or the current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -2765,24 +2342,15 @@ private:
     { }
 };
 
-/** Expected specialization for lvalue references.
-    Holds either a bound reference to `T` or an unexpected error `E`.
-*/
 template <class T, class E>
 class Expected<T&, E> {
     static_assert(detail::can_beUnexpected<E>);
 
     // Storage: either a bound pointer to T, or an error E.
     union {
-        /** Pointer to the referenced value when engaged.
-        */
         T* p_;
-        /** Stored unexpected error when disengaged.
-        */
         E unex_;
     };
-    /** True when the Expected currently binds a reference.
-    */
     bool has_value_ = false;
 
     // Short aliases
@@ -2791,18 +2359,10 @@ class Expected<T&, E> {
     static constexpr bool ok_bind_v = detail::ok_bind_ref_v<R, U>;
 
 public:
-    /** Referenced value type.
-    */
     using value_type = T&;
-    /** Error type carried when disengaged.
-    */
     using error_type = E;
-    /** Convenience alias for the unexpected wrapper.
-    */
     using unexpected_type = Unexpected<E>;
 
-    /** Rebind the reference to another value type while keeping `E`.
-    */
     template <class U>
     using rebind = Expected<U, error_type>;
 
@@ -2811,15 +2371,11 @@ public:
     // ----------------------------------
 
     // Disengaged by default
-    /** Construct a disengaged Expected with no bound reference.
-    */
     constexpr
     Expected() noexcept
         : p_(nullptr), has_value_(false) {}
 
     // Success from lvalue: bind
-    /** Bind to an lvalue result, marking the expected engaged.
-    */
     template <class U>
     requires(!std::is_same_v<std::remove_cvref_t<U>, Expected>
              && !std::is_same_v<std::remove_cvref_t<U>, std::in_place_t>
@@ -2832,38 +2388,29 @@ public:
     {}
 
     // Deleted when binding would be from a temporary / disallowed
-    /** Deleted: binding a reference Expected from a temporary would dangle.
-        @param u Temporary value (deleted).
-    */
     template <class U>
     requires(!std::is_same_v<std::remove_cvref_t<U>, Expected>
              && !std::is_same_v<std::remove_cvref_t<U>, std::in_place_t>
              && !detail::isUnexpected<std::remove_cvref_t<U>>
              && !ok_bind_v<U &&>)
-    constexpr Expected(U&& u) = delete;
+    constexpr
+    Expected(U&&) = delete;
 
     // In-place: bind to an lvalue argument
-    /** Bind in-place to an existing lvalue.
-        @param tag Tag selecting in-place construction.
-        @param u Lvalue to bind this Expected to.
-    */
     template <class U>
     requires ok_bind_v<U&>
     constexpr
     explicit
-    Expected(std::in_place_t tag, U& u) noexcept
+    Expected(std::in_place_t, U& u) noexcept
         : p_(std::addressof(static_cast<R>(u)))
         , has_value_(true)
     {}
 
     // In-place via invocation result (mirrors your in_place_inv)
-    /** Invoke a factory to obtain the bound reference in-place.
-        @param fn Callable that returns a bindable lvalue.
-    */
     template <class Fn>
     explicit
     constexpr
-    Expected(detail::in_place_inv tag, Fn&& fn)
+    Expected(detail::in_place_inv, Fn&& fn)
     {
         // Expect fn() to yield something bindable to R (i.e. an lvalue of T)
         auto&& r = std::forward<Fn>(fn)();
@@ -2873,9 +2420,6 @@ public:
     }
 
     // Error ctors (same rules as primary)
-    /** Construct from an unexpected error (copy).
-        @param u Unexpected wrapper to copy.
-    */
     template <class G = E>
     requires std::is_constructible_v<E, G const&>
     constexpr
@@ -2886,9 +2430,6 @@ public:
         , has_value_(false)
     {}
 
-    /** Construct from an unexpected error (move).
-        @param u Unexpected wrapper to move from.
-    */
     template <class G = E>
     requires std::is_constructible_v<E, G>
     constexpr
@@ -2900,13 +2441,10 @@ public:
     {}
 
     // Error via invocation-result (mirrors your unexpect_inv)
-    /** Construct an unexpected state by invoking a factory.
-        @param fn Callable that produces an error value.
-    */
     template <class Fn>
     explicit
     constexpr
-    Expected(detail::unexpect_inv tag, Fn&& fn)
+    Expected(detail::unexpect_inv, Fn&& fn)
         : unex_(std::forward<Fn>(fn)())
         , has_value_(false)
     {}
@@ -2914,9 +2452,6 @@ public:
     // Converting ctors from other Expected -----------------------
 
     // From Expected<U&, E>: safe to bind for any value category
-    /** Copy-construct from another reference Expected.
-        @param other Source instance to bind to.
-    */
     template <class U>
     requires detail::ok_bind_ref_v<R, U&>
     constexpr
@@ -2935,9 +2470,6 @@ public:
         }
     }
 
-    /** Move-construct from another reference Expected.
-        @param other Source instance to bind to.
-    */
     template <class U>
     requires detail::ok_bind_ref_v<R, U&>
     constexpr
@@ -2957,9 +2489,6 @@ public:
     }
 
     // From Expected<U, E> (non-ref): only from lvalue object; forbid rvalue
-    /** Bind to the result stored inside another Expected value.
-        @param other Source instance providing the lvalue.
-    */
     template <class U>
     requires detail::ok_bind_ref_v<R, U&>
     constexpr
@@ -2978,54 +2507,37 @@ public:
         }
     }
 
-    /** Deleted: rebinding from a temporary Expected<U, E> would dangle.
-    */
     template <class U>
     constexpr
     Expected(Expected<U, E>&&) = delete; // would dangle
 
     // Copy/move/dtor
-    /** Copy-construct from another reference Expected.
-    */
     constexpr
     Expected(Expected const&) = default;
 
-    /** Move-construct from another reference Expected.
-    */
     constexpr
     Expected(Expected&&) = default;
 
-    /** Construct a disengaged Expected from error arguments.
-        @param tag Tag selecting unexpected construction.
-        @param args Arguments forwarded to the error constructor.
-    */
     template <class... Args>
     requires std::is_constructible_v<E, Args...>
     constexpr
     explicit
-    Expected(unexpect_t tag, Args&&... args)
+    Expected(unexpect_t, Args&&... args)
         noexcept(std::is_nothrow_constructible_v<E, Args...>)
         : unex_(std::forward<Args>(args)...)
         , has_value_(false)
     {}
 
-    /** Construct a disengaged Expected from an initializer list.
-        @param tag Tag selecting unexpected construction.
-        @param il Initializer list forwarded to the error constructor.
-        @param args Additional arguments forwarded to the error constructor.
-    */
     template <class U, class... Args>
     requires std::is_constructible_v<E, std::initializer_list<U>&, Args...>
     constexpr
     explicit
-    Expected(unexpect_t tag, std::initializer_list<U> il, Args&&... args)
+    Expected(unexpect_t, std::initializer_list<U> il, Args&&... args)
         noexcept(std::is_nothrow_constructible_v<E, std::initializer_list<U>&, Args...>)
         : unex_(il, std::forward<Args>(args)...)
         , has_value_(false)
     {}
 
-    /** Destroy the held error when disengaged.
-    */
     constexpr
     ~Expected()
     {
@@ -3039,21 +2551,15 @@ public:
     // assignment (always rebind)
     // ----------------------------------
 
-    /** Copy-assign, rebinding or copying the error.
-    */
     constexpr
     Expected&
     operator=(Expected const&) = default;
 
-    /** Move-assign, rebinding or moving the error.
-    */
     constexpr
     Expected&
     operator=(Expected&&) = default;
 
     // Assign from lvalue -> rebind
-    /** Assign a new binding from an lvalue.
-    */
     template <class U>
     requires ok_bind_v<U&>
     constexpr
@@ -3071,17 +2577,13 @@ public:
     }
 
     // Deleted for temporaries
-    /** Deleted: rebinding from a temporary would dangle.
-        @param u Temporary value (deleted).
-    */
     template <class U>
     requires(!ok_bind_v<U &&>)
-    constexpr Expected& operator=(U&& u) = delete;
+    constexpr
+    Expected&
+    operator=(U&&) = delete;
 
     // Assign from Expected<U&,E> -> rebind or store error
-    /** Assign from another reference Expected (copy).
-        @param other Source instance to bind to or copy error from.
-    */
     template <class U>
     requires detail::ok_bind_ref_v<R, U&>
     constexpr
@@ -3110,9 +2612,6 @@ public:
         return *this;
     }
 
-    /** Assign from another reference Expected (move).
-        @param other Source instance to bind to or move error from.
-    */
     template <class U>
     requires detail::ok_bind_ref_v<R, U&>
     constexpr
@@ -3145,9 +2644,6 @@ public:
 
     // Assign from Expected<U,E> lvalue only (non-ref). Rvalue deleted to avoid
     // dangling.
-    /** Bind to the value contained in another Expected instance.
-        @param other Source lvalue Expected to bind to.
-    */
     template <class U>
     requires detail::ok_bind_ref_v<R, U&>
     constexpr
@@ -3176,17 +2672,12 @@ public:
         return *this;
     }
 
-    /** Deleted: cannot bind to a temporary Expected holding a value.
-    */
     template <class U>
     constexpr
     Expected&
     operator=(Expected<U, E>&&) = delete;
 
     // Assign error
-    /** Replace the stored state with an unexpected error (copy).
-        @param e Unexpected wrapper to copy from.
-    */
     template <class G>
     requires std::is_constructible_v<E, G const&>
              && std::is_assignable_v<E&, G const&>
@@ -3205,9 +2696,6 @@ public:
         return *this;
     }
 
-    /** Replace the stored state with an unexpected error (move).
-        @param e Unexpected wrapper to move from.
-    */
     template <class G>
     requires std::is_constructible_v<E, G> && std::is_assignable_v<E&, G>
     constexpr
@@ -3226,10 +2714,6 @@ public:
     }
 
     // Emplace: bind to an lvalue
-    /** Rebind to a new lvalue, returning the stored reference.
-        @param u Reference to bind to.
-        @return Bound reference.
-    */
     template <class U>
     requires ok_bind_v<U&>
     constexpr
@@ -3245,16 +2729,13 @@ public:
         return *p_;
     }
 
-    /** Deleted: cannot bind reference Expected to a temporary.
-    */
     template <class U>
     requires(!ok_bind_v<U &&>)
-    constexpr T& emplace(U&& u) = delete;
+    constexpr
+    T&
+    emplace(U&&) = delete;
 
     // swap
-    /** Swap state with another reference Expected.
-        @param x Other instance to exchange with.
-    */
     constexpr
     void
     swap(Expected& x)
@@ -3305,8 +2786,6 @@ public:
     // ----------------------------------
     // observers
     // ----------------------------------
-    /** Return true when a reference is bound.
-    */
     [[nodiscard]]
     constexpr
     explicit
@@ -3315,9 +2794,6 @@ public:
         return has_value_;
     }
 
-    /** Check whether the Expected currently contains a reference.
-        @return `true` if a reference is bound.
-    */
     [[nodiscard]]
     constexpr
     bool
@@ -3326,9 +2802,6 @@ public:
         return has_value_;
     }
 
-    /** Access the bound reference pointer; undefined if disengaged.
-        @return Pointer to the bound value.
-    */
     [[nodiscard]]
     constexpr
     T*
@@ -3338,9 +2811,6 @@ public:
         return p_;
     }
 
-    /** Access the bound reference pointer; undefined if disengaged.
-        @return Pointer to the bound value.
-    */
     [[nodiscard]]
     constexpr
     T const*
@@ -3350,9 +2820,6 @@ public:
         return p_;
     }
 
-    /** Dereference the bound reference.
-        @return Reference to the bound value.
-    */
     [[nodiscard]]
     constexpr
     T&
@@ -3362,9 +2829,6 @@ public:
         return *p_;
     }
 
-    /** Dereference the bound reference (const).
-        @return Reference to the bound value.
-    */
     [[nodiscard]]
     constexpr
     T const&
@@ -3374,9 +2838,6 @@ public:
         return *p_;
     }
 
-    /** Dereference the bound reference, preserving value category.
-        @return Reference to the bound value.
-    */
     [[nodiscard]]
     constexpr
     T&&
@@ -3386,9 +2847,6 @@ public:
         return std::move(*p_);
     }
 
-    /** Dereference the bound reference, preserving value category (const rvalue).
-        @return Reference to the bound value.
-    */
     [[nodiscard]]
     constexpr
     T const&&
@@ -3398,8 +2856,6 @@ public:
         return std::move(*p_);
     }
 
-    /** Return the bound reference or throw on disengaged state.
-    */
     constexpr
     T&
     value() &
@@ -3411,8 +2867,6 @@ public:
         throw BadExpectedAccess<E>(error());
     }
 
-    /** Return the bound reference or throw on disengaged state (const lvalue).
-    */
     constexpr
     T const&
     value() const&
@@ -3424,8 +2878,6 @@ public:
         throw BadExpectedAccess<E>(error());
     }
 
-    /** Return the bound reference or throw on disengaged state (rvalue).
-    */
     constexpr
     T&&
     value() &&
@@ -3437,8 +2889,6 @@ public:
         throw BadExpectedAccess<E>(std::move(error()));
     }
 
-    /** Return the bound reference or throw on disengaged state (const rvalue).
-    */
     constexpr
     T const&&
     value() const&&
@@ -3450,9 +2900,6 @@ public:
         throw BadExpectedAccess<E>(std::move(error()));
     }
 
-    /** Access the stored error; requires disengaged state.
-        @return Reference to the stored error.
-    */
     [[nodiscard]]
     constexpr
     E&
@@ -3462,9 +2909,6 @@ public:
         return unex_;
     }
 
-    /** Access the stored error (const lvalue).
-        @return Reference to the stored error.
-    */
     [[nodiscard]]
     constexpr
     E const&
@@ -3474,9 +2918,6 @@ public:
         return unex_;
     }
 
-    /** Access the stored error (rvalue).
-        @return Rvalue reference to the stored error.
-    */
     [[nodiscard]]
     constexpr
     E&&
@@ -3486,9 +2927,6 @@ public:
         return std::move(unex_);
     }
 
-    /** Access the stored error (const rvalue).
-        @return Rvalue reference to the stored error.
-    */
     [[nodiscard]]
     constexpr
     E const&&
@@ -3499,10 +2937,6 @@ public:
     }
 
     // value_or: return by value (copy/move), like your non-ref primary
-    /** Return the bound value or a fallback copy when disengaged.
-        @param u Fallback value to return if no reference is bound.
-        @return Bound value or fallback copy.
-    */
     template <class U>
     constexpr
     std::remove_reference_t<T>
@@ -3514,10 +2948,6 @@ public:
         return has_value_ ? *p_ : static_cast<Rval>(std::forward<U>(u));
     }
 
-    /** Return the bound value or a fallback move when disengaged.
-        @param u Fallback value to move if no reference is bound.
-        @return Bound value or fallback.
-    */
     template <class U>
     constexpr
     std::remove_reference_t<T>
@@ -3531,10 +2961,6 @@ public:
     }
 
     // error_or: identical to primary
-    /** Return the stored error or the provided fallback (copy).
-        @param g Fallback error to return when engaged.
-        @return Error value.
-    */
     template <class G = E>
     constexpr
     E
@@ -3543,10 +2969,6 @@ public:
         return has_value_ ? static_cast<E>(std::forward<G>(g)) : unex_;
     }
 
-    /** Return the stored error or the provided fallback (move).
-        @param g Fallback error to move when engaged.
-        @return Error value.
-    */
     template <class G = E>
     constexpr
     E
@@ -3561,10 +2983,6 @@ public:
     // ----------------------------------
 
     // and_then: F(T&) -> Expected<*, E>
-    /** Invoke `f` with the bound reference when engaged.
-        @param f Continuation producing another Expected.
-        @return Result of `f` or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3580,10 +2998,6 @@ public:
         return U(unexpect, unex_);
     }
 
-    /** Invoke `f` with the bound reference when engaged (const lvalue).
-        @param f Continuation producing another Expected.
-        @return Result of `f` or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3599,10 +3013,6 @@ public:
         return U(unexpect, unex_);
     }
 
-    /** Invoke `f` with the bound reference when engaged (rvalue).
-        @param f Continuation producing another Expected.
-        @return Result of `f` or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3618,10 +3028,6 @@ public:
         return U(unexpect, std::move(unex_));
     }
 
-    /** Invoke `f` with the bound reference when engaged (const rvalue).
-        @param f Continuation producing another Expected.
-        @return Result of `f` or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3639,9 +3045,6 @@ public:
 
     // or_else: same signature/behavior as primary; when engaged, return
     // self-type with same binding
-    /** Recover with `f` if disengaged, otherwise return this value.
-        @param f Recovery function returning an Expected.
-    */
     template <class Fn>
     constexpr
     Expected
@@ -3657,9 +3060,6 @@ public:
         return g;
     }
 
-    /** Recover with `f` if disengaged (const lvalue).
-        @param f Recovery function returning an Expected.
-    */
     template <class Fn>
     constexpr
     Expected
@@ -3675,9 +3075,6 @@ public:
         return g;
     }
 
-    /** Recover with `f` if disengaged (rvalue).
-        @param f Recovery function returning an Expected.
-    */
     template <class Fn>
     constexpr
     Expected
@@ -3693,9 +3090,6 @@ public:
         return g;
     }
 
-    /** Recover with `f` if disengaged (const rvalue).
-        @param f Recovery function returning an Expected.
-    */
     template <class Fn>
     constexpr
     Expected
@@ -3712,10 +3106,6 @@ public:
     }
 
     // transform: F(T&) -> U ; returns Expected<U, E>
-    /** Transform the bound value when engaged.
-        @param f Transformation applied to the bound reference.
-        @return Expected containing transformed value or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3732,10 +3122,6 @@ public:
         return Res(unexpect, unex_);
     }
 
-    /** Transform the bound value when engaged (const lvalue).
-        @param f Transformation applied to the bound reference.
-        @return Expected containing transformed value or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3752,10 +3138,6 @@ public:
         return Res(unexpect, unex_);
     }
 
-    /** Transform the bound value when engaged (rvalue).
-        @param f Transformation applied to the bound reference.
-        @return Expected containing transformed value or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3772,10 +3154,6 @@ public:
         return Res(unexpect, std::move(unex_));
     }
 
-    /** Transform the bound value when engaged (const rvalue).
-        @param f Transformation applied to the bound reference.
-        @return Expected containing transformed value or current error.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3793,10 +3171,6 @@ public:
     }
 
     // transform_error: identical to primary
-    /** Transform the stored error when disengaged.
-        @param f Transformation applied to the error.
-        @return Expected with transformed error or current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3813,10 +3187,6 @@ public:
         });
     }
 
-    /** Transform the stored error when disengaged (const lvalue).
-        @param f Transformation applied to the error.
-        @return Expected with transformed error or current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3833,10 +3203,6 @@ public:
         });
     }
 
-    /** Transform the stored error when disengaged (rvalue).
-        @param f Transformation applied to the error.
-        @return Expected with transformed error or current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3853,10 +3219,6 @@ public:
         });
     }
 
-    /** Transform the stored error when disengaged (const rvalue).
-        @param f Transformation applied to the error.
-        @return Expected with transformed error or current value.
-    */
     template <class Fn>
     constexpr
     auto
@@ -3912,7 +3274,6 @@ public:
         return !x.has_value() && bool(x.error() == e.error());
     }
 }; // class Expected<T&, E>
-
 
 } // mrdocs
 

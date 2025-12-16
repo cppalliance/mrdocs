@@ -36,13 +36,13 @@ enum class Parts
 };
 
 /** Return the name of the Parts as a string.
-*/
+ */
 MRDOCS_DECL
 dom::String
 toString(Parts kind) noexcept;
 
 /** Return the Parts from a @ref dom::Value string.
-*/
+ */
 inline
 void
 tag_invoke(

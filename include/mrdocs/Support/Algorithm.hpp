@@ -21,7 +21,7 @@ namespace mrdocs {
     @param range The range to search.
     @param el The element to search for.
     @return True if the element is found, false otherwise.
-*/
+ */
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
@@ -36,7 +36,7 @@ contains(Range&& range, El const& el)
     @param range The range to search.
     @param el The element to search for.
     @return True if the element is found, false otherwise.
-*/
+ */
 template <class T, class U>
 requires std::equality_comparable_with<T, U>
 bool
@@ -52,7 +52,7 @@ contains(std::initializer_list<T> const& range, U const& el)
     @param el The element to search for.
     @param range The range to search.
     @return True if the element is found, false otherwise.
-*/
+ */
 template <class El, std::ranges::range Range>
 requires std::equality_comparable_with<std::ranges::range_value_t<Range>, El>
 bool
@@ -74,7 +74,7 @@ is_one_of(U const& el, std::initializer_list<T> const& range)
     @param range The range to search.
     @param els The elements to search for.
     @return True if any of the elements are found, false otherwise.
-*/
+ */
 template <std::ranges::range Range, std::ranges::range Els>
 requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
 bool
@@ -97,7 +97,7 @@ contains_any(Range const& range, std::initializer_list<El> const& els)
     @param el The element to search for.
     @param n The number of instances to search for.
     @return True if the element is found, false otherwise.
-*/
+ */
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
@@ -122,7 +122,7 @@ contains_n(Range const& range, El const& el, std::size_t n)
     @param els The elements to search for.
     @param n The number of instances to search for.
     @return True if the element is found, false otherwise.
-*/
+ */
 template <std::ranges::range Range, std::ranges::range Els>
 requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
 bool
@@ -167,7 +167,7 @@ contains_n_any(Range const& range, std::initializer_list<El> const& els, std::si
     @param range The range to search.
     @param els The elements to search for.
     @return An iterator to the last element found, or std::ranges::end(range) if not found.
-*/
+ */
 template <std::ranges::range Range, std::ranges::range Els>
 requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
 auto

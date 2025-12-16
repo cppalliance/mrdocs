@@ -9,12 +9,9 @@ on:
     tags:
       - "v*.*.*"
 
-  # pull_request runs the matrix/build on the PR head with the fork-scoped token
-  # (no comment perms on base repo).
   pull_request:
     branches:
       - develop
-
 
 concurrency:
   group: ${{format('{0}:{1}', github.repository, github.ref)}}
@@ -23,27 +20,12 @@ concurrency:
 jobs:
   cpp-matrix:
     runs-on: ubuntu-24.04
-    container:
-      image: ubuntu:24.04
     name: Generate Test Matrix
-    # Permissions allow Danger to read PR context and post comments.
-    permissions:
-      contents: read
-      pull-requests: write
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
       llvm-matrix: ${{ steps.llvm-matrix.outputs.llvm-matrix }}
       releases-matrix: ${{ steps.releases-matrix.outputs.releases-matrix }}
     steps:
-      - name: Install prerequisites
-        run: |
-          set -e
-          apt-get update
-          apt-get install -y git ca-certificates curl nodejs npm
-          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
-            ln -s /usr/bin/nodejs /usr/bin/node
-          fi
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -58,6 +40,7 @@ jobs:
             apple-clang *
           standards: '20'
           latest-factors: |
+            msvc Optimized-Debug
             gcc UBSan Coverage
             clang UBSan ASan MSan
             apple-clang UBSan ASan
@@ -72,17 +55,22 @@ jobs:
             clang: Release
             apple-clang: Release
             msvc: RelWithDebInfo
+            msvc Optimized-Debug: Debug
+          ccflags: |
+            msvc Optimized-Debug: /Ob1 /O2 /Zi
+          cxxflags: |
+            msvc Optimized-Debug: /Ob1 /O2 /Zi
           install: |
-            gcc: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
-            gcc Coverage: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
-            clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
+            gcc: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
+            gcc Coverage: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
+            clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
             msvc: ''
           extra-values: |
             use-libcxx: {{#if (and (ieq compiler 'clang') (ge major 19)) }}true{{else}}false{{/if}}
             libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
             llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
             llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
-            llvm-build-preset-prefix: {{{lowercase build-type}}}
+            llvm-build-preset-prefix: {{#if optimized-debug}}optimizeddebug{{else}}{{{lowercase build-type}}}{{/if}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
             llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
@@ -146,16 +134,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Ensure Node
-        if: matrix.container != '' && env.ACT == 'true'
-        run: |
-          set -e
-          apt-get update
-          apt-get install -y nodejs npm
-          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
-            ln -s /usr/bin/nodejs /usr/bin/node
-          fi
-
       # We install git if we are using a container because
       # containers don't always include git.
       # We need git to ensure actions/checkout@v4 will use git and
@@ -195,55 +173,6 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
-
-      - name: Configure symbolizer paths
-        if: matrix.compiler != 'msvc'
-        shell: bash
-        run: |
-          set -e
-          candidates=()
-          # 1) Anything on PATH
-          if command -v llvm-symbolizer >/dev/null 2>&1; then
-            candidates+=("$(command -v llvm-symbolizer)")
-          fi
-          uname_out="$(uname -s || true)"
-          # 2) Platform-specific common locations
-          case "$uname_out" in
-            Darwin)
-              if xcrun --find llvm-symbolizer >/dev/null 2>&1; then
-                candidates+=("$(xcrun --find llvm-symbolizer)")
-              fi
-              candidates+=("/opt/homebrew/opt/llvm/bin/llvm-symbolizer")
-              ;;
-            Linux)
-              for dir in /usr/lib/llvm-* /usr/lib/llvm; do
-                if [ -x "$dir/bin/llvm-symbolizer" ]; then
-                  candidates+=("$dir/bin/llvm-symbolizer")
-                fi
-              done
-              ;;
-            MINGW*|MSYS*|CYGWIN*)
-              for dir in "/c/Program Files/LLVM/bin" "/c/ProgramData/chocolatey/lib/llvm/tools/llvm/bin"; do
-                if [ -x "$dir/llvm-symbolizer.exe" ]; then
-                  candidates+=("$dir/llvm-symbolizer.exe")
-                fi
-              done
-              ;;
-          esac
-          sym=""
-          for c in "${candidates[@]}"; do
-            if [ -n "$c" ] && [ -x "$c" ]; then
-              sym="$c"
-              break
-            fi
-          done
-          if [ -n "$sym" ]; then
-            echo "Using llvm-symbolizer at: $sym"
-            echo "LLVM_SYMBOLIZER_PATH=$sym" >> "$GITHUB_ENV"
-            echo "ASAN_SYMBOLIZER_PATH=$sym" >> "$GITHUB_ENV"
-          else
-            echo "Warning: llvm-symbolizer not found; ASan stacks may be unsymbolized." >&2
-          fi
 
       # If apple-clang on macos, select the newest Xcode.
       - name: Select Xcode 16.4
@@ -332,6 +261,36 @@ jobs:
           path: ${{ steps.rmatrix.outputs.llvm-path }}
           key: ${{ matrix.llvm-archive-basename }}
 
+      - name: Download LLVM Binaries
+        id: llvm-download
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        run: |
+          set -x
+          url=https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
+          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$url")
+          if [ "$http_status" -eq 200 ]; then
+              found="true"
+              echo "found=$found" >> $GITHUB_OUTPUT
+              curl -L -o ${{ matrix.llvm-archive-filename }} "$url"
+              install_prefix=${{ steps.rmatrix.outputs.llvm-path }}
+              mkdir -p $install_prefix
+              if [[ ${{ matrix.llvm-archive-extension }} == '7z' ]]; then
+                  7z x ${{ matrix.llvm-archive-filename }} -o$install_prefix
+              else
+                  tar -xjf ${{ matrix.llvm-archive-filename }} -C $install_prefix
+              fi
+              if [[ $(ls -1 $install_prefix | wc -l) -eq 1 ]]; then
+                  single_dir=$(ls -1 $install_prefix)
+                  if [[ -d $install_prefix/$single_dir ]]; then
+                      mv $install_prefix/$single_dir/* $install_prefix/
+                      rmdir $install_prefix/$single_dir
+                  fi
+              fi
+          else
+              found="false"
+              echo "found=$found" >> $GITHUB_OUTPUT
+          fi
+
       # Installs libc++ separately, using the LLVM standalone runtimes build.
       # The libc++ built here will be built using the host compiler, so this is
       # limited by what libc++ at the current LLVM revision supports.
@@ -345,27 +304,16 @@ jobs:
       # FIXME: Build this for the GCC and MacOS sanitizer jobs.
       # Currently GCC fails linking it, and for MacOS there are compiler-rt
       # requirements not satisfied.
-      - name: Fetch LLVM source archive
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
-        run: |
-          set -eux
-          mkdir -p ../third-party
-          cd ../third-party
-          archive="llvm-${{ matrix.llvm-hash }}.zip"
-          if [ ! -d llvm-project ]; then
-            curl -L -o "$archive" "https://github.com/llvm/llvm-project/archive/${{ matrix.llvm-hash }}.zip"
-            unzip -q "$archive"
-            mv "llvm-project-${{ matrix.llvm-hash }}" llvm-project
-            rm "$archive"
-          fi
-
       - name: Install libc++
         id: install_libcxx
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true'
+        if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
           source-dir: ../third-party/llvm-project/runtimes
+          git-repository: https://github.com/llvm/llvm-project.git
+          git-tag: ${{ matrix.llvm-hash }}
+          download-dir: ../third-party/llvm-project
           build-dir: ${sourceDir}/build
           build-type: ${{ matrix.build-type }}
           extra-args: |
@@ -396,13 +344,16 @@ jobs:
       - name: Install LLVM
         id: install_llvm
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
           source-dir: ../third-party/llvm-project/llvm
+          git-repository: https://github.com/llvm/llvm-project.git
+          git-tag: ${{ matrix.llvm-hash }}
+          download-dir: ../third-party/llvm-project
           patches: |
-            ./third-party/patches/llvm/llvm/CMakePresets.json
-            ./third-party/patches/llvm/llvm/CMakeUserPresets.json
+            ./third-party/llvm/CMakePresets.json
+            ./third-party/llvm/CMakeUserPresets.json
           build-dir: ${sourceDir}/build
           preset: ${{ matrix.llvm-build-preset }}
           build-type: ${{ matrix.build-type }}
@@ -438,8 +389,8 @@ jobs:
           source-dir: ../third-party/duktape
           url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
           patches: |
-            ./third-party/patches/duktape/CMakeLists.txt
-            ./third-party/patches/duktape/duktapeConfig.cmake.in
+            ./third-party/duktape/CMakeLists.txt
+            ./third-party/duktape/duktapeConfig.cmake.in
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
@@ -458,8 +409,8 @@ jobs:
           source-dir: ../third-party/lua
           url: https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz
           patches: |
-            ./third-party/patches/lua/CMakeLists.txt
-            ./third-party/patches/lua/LuaConfig.cmake.in
+            ./third-party/lua/CMakeLists.txt
+            ./third-party/lua/LuaConfig.cmake.in
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
@@ -533,9 +484,6 @@ jobs:
 
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        env:
-          # Bump per-test timeout on Windows to avoid CTest default (1500s) killing slow golden suites.
-          CTEST_TEST_TIMEOUT: ${{ runner.os == 'Windows' && '3600' || '' }}
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -671,9 +619,8 @@ jobs:
           done
 
           dir="./build"
-          lcov --rc lcov_branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent,negative --no-external
-          lcov --rc lcov_branch_coverage=0 --remove "$dir/all.info" "/usr/*" "/lib/*" "/opt/*" --ignore-errors unused,negative --output-file "$dir/all.info"
-          lcov --rc lcov_branch_coverage=0 --ignore-errors inconsistent,negative --list "$dir/all.info"
+          lcov --rc lcov_branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent
+          lcov --rc lcov_branch_coverage=0 --ignore-errors inconsistent --list "$dir/all.info"
           echo "file=$(realpath "$dir/all.info")" >> $GITHUB_OUTPUT
 
       - name: Upload Coverage as Artifact
@@ -714,16 +661,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Ensure Node
-        if: matrix.container != '' && env.ACT == 'true'
-        run: |
-          set -e
-          apt-get update
-          apt-get install -y nodejs npm
-          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
-            ln -s /usr/bin/nodejs /usr/bin/node
-          fi
-
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.8.12
         id: package-install
@@ -881,17 +818,6 @@ jobs:
           npx gulp lint
           npx gulp
 
-      - name: Ensure all refs for Antora
-        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
-        run: |
-          set -euo pipefail
-          # Make sure Antora sees every branch and tag from the upstream repo,
-          # regardless of who triggered the workflow.
-          git remote set-url origin https://github.com/cppalliance/mrdocs.git
-          git fetch --prune --prune-tags origin \
-            '+refs/heads/*:refs/remotes/origin/*' \
-            '+refs/tags/*:refs/tags/*'
-
       - name: Generate Remote Documentation
         working-directory: docs
         run: |
@@ -1009,7 +935,6 @@ jobs:
                 root="$(pwd)/demos/$project/$variant"
                 src="$root/adoc"
                 dst="$root/adoc-asciidoc"
-                stylesheet="$(pwd)/share/mrdocs/addons/generator/common/layouts/style.css"
           
                 # Create the top-level output dir
                 mkdir -p "$dst"
@@ -1020,7 +945,7 @@ jobs:
                   rel="${f#"$src/"}"                 # path relative to $src
                   outdir="$dst/$(dirname "$rel")"    # mirror subdir inside $dst
                   mkdir -p "$outdir"
-                  asciidoctor -a stylesheet="${stylesheet}" -D "$outdir" "$f"
+                  asciidoctor -D "$outdir" "$f"
                 done
               done
             fi
@@ -1192,16 +1117,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Ensure Node
-        if: matrix.container != '' && env.ACT == 'true'
-        run: |
-          set -e
-          apt-get update
-          apt-get install -y nodejs npm
-          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
-            ln -s /usr/bin/nodejs /usr/bin/node
-          fi
-
       # This calculates a couple of variables, which would normally go in to the regular matrix extra-values
       # section, but which depend on paths not known at that point.
       - name: Resolved Matrix
@@ -1224,9 +1139,69 @@ jobs:
         with:
           apt-get: ${{ matrix.install }}
 
+      - name: Check website releases
+        id: website-releases
+        run: |
+          set -x
+          archive_url="https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}"
+          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$archive_url")
+          if [ "$http_status" -eq 200 ]; then
+              exists="true"
+          else
+              exists="false"
+          fi
+          echo "exists=$exists" >> $GITHUB_OUTPUT
+
       - name: LLVM Binaries
         id: llvm-cache
+        if: steps.website-releases.outputs.exists != 'true'
         uses: actions/cache@v4
         with:
           path: ${{ steps.rmatrix.outputs.llvm-path }}
           key: ${{ matrix.llvm-archive-basename }}
+
+      - name: Compress LLVM
+        id: llvm-upload
+        if: steps.llvm-cache.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          # LLVM is be installed with the default compiler
+          set -x
+
+          # Use 7z on windows
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on "${{ matrix.llvm-archive-filename }}" "${{ steps.rmatrix.outputs.llvm-path }}"
+          else
+              tar -cjf "${{ matrix.llvm-archive-filename }}" -C "${{ steps.rmatrix.outputs.llvm-path }}/.." llvm
+          fi
+
+      - name: Website LLVM Releases
+        if: steps.llvm-cache.outputs.cache-hit == 'true' && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/'))
+        run: |
+          set -x
+          
+          # Ensure required commands exist
+          for cmd in ssh-keyscan ssh-agent ssh-add scp; do
+            if ! command -v $cmd >/dev/null; then
+              echo "$cmd not found"
+              exit 1
+            fi
+          done
+          
+          # Add SSH key
+          mkdir -p ~/.ssh
+          ssh-keyscan dev-websites.cpp.al >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > ~/.ssh/github_actions
+          chmod 600 ~/.ssh/github_actions
+
+          # Start ssh-agent and add the key
+          SSH_AUTH_SOCK="$RUNNER_TEMP/ssh_agent.sock"
+          export SSH_AUTH_SOCK
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add ~/.ssh/github_actions
+
+          # Copy llvm archive: This step will copy the archive to www.mrdocs.com/llvm+clang
+          llvm_dir="/var/www/mrdox.com/llvm+clang"
+          chmod 755 ${{ matrix.llvm-archive-filename }}
+          scp -o StrictHostKeyChecking=no $(pwd)/${{ matrix.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/

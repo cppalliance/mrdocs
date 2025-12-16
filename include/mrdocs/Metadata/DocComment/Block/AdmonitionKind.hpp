@@ -20,7 +20,7 @@
 namespace mrdocs::doc {
 
 /** An admonishment style.
-*/
+ */
 enum class AdmonitionKind
 {
     /// No admonishment
@@ -38,13 +38,13 @@ enum class AdmonitionKind
 };
 
 /** Return the name of the Admonish as a string.
-*/
+ */
 MRDOCS_DECL
 dom::String
 toString(AdmonitionKind kind) noexcept;
 
 /** Return the Admonish from a @ref dom::Value string.
-*/
+ */
 inline
 void
 tag_invoke(

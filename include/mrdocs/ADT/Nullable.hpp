@@ -38,7 +38,7 @@ namespace mrdocs {
 
     Notes
     - Built-in pointer types and std::nullptr_t are pre-specialized to use nullptr as the sentinel.
-*/
+**/
 template <class T>
 struct sentinel_traits
 {
@@ -48,22 +48,15 @@ struct sentinel_traits
 /** sentinel_traits specialization for raw pointers.
 
     Uses nullptr as the sentinel value.
-*/
+**/
 template <class T>
 struct sentinel_traits<T*> {
-    /** Return the sentinel pointer value (nullptr).
-    */
     static constexpr T*
     sentinel() noexcept
     {
         return nullptr;
     }
 
-    /** Return true if the pointer equals the sentinel.
-
-        @param p Pointer to test.
-        @return `true` when @p p is nullptr.
-    */
     static constexpr bool
     is_sentinel(T const* p) noexcept
     {
@@ -72,22 +65,16 @@ struct sentinel_traits<T*> {
 };
 
 /** sentinel_traits specialization for std::nullptr_t.
-*/
+**/
 template<>
 struct sentinel_traits<std::nullptr_t>
 {
-    /** Return the sentinel value for std::nullptr_t.
-    */
     static constexpr std::nullptr_t
     sentinel() noexcept
     {
         return nullptr;
     }
 
-    /** Return true if the value equals the sentinel.
-
-        @return Always true because the sentinel is unique.
-    */
     static constexpr bool
     is_sentinel(std::nullptr_t) noexcept
     {
@@ -103,24 +90,17 @@ struct sentinel_traits<std::nullptr_t>
 
     Uses the maximum representable value (~0u) as the sentinel,
     which corresponds to -1 when converted.
-*/
+**/
 template <std::unsigned_integral T>
 requires (!std::same_as<T, bool>)
 struct sentinel_traits<T>
 {
-    /** Return the sentinel value (~0u).
-    */
     static constexpr T
     sentinel() noexcept
     {
         return static_cast<T>(-1);
     }
 
-    /** Return true if the value equals the sentinel.
-
-        @param v Value to test.
-        @return `true` when @p v equals the sentinel.
-    */
     static constexpr bool
     is_sentinel(T v) noexcept
     {
@@ -132,9 +112,7 @@ struct sentinel_traits<T>
 
     Uses a quiet NaN as the sentinel value. This assumes that T
     supports NaN and that it is distinguishable from all ordinary values.
-*/
-    /** Return the floating-point NaN sentinel.
-    */
+**/
 template <std::floating_point T>
 struct sentinel_traits<T>
 {
@@ -144,11 +122,6 @@ struct sentinel_traits<T>
         return std::numeric_limits<T>::quiet_NaN();
     }
 
-    /** Return true if @p v is the NaN sentinel.
-
-        @param v Value to test.
-        @return `true` when @p v is NaN.
-    */
     static constexpr bool
     is_sentinel(T v) noexcept
     {
@@ -161,9 +134,7 @@ struct sentinel_traits<T>
     If the enum defines Unknown, UNKNOWN, None, or NONE, this trait uses
     that enumerator as the sentinel. This requires that such an enumerator
     exists and is accessible from the scope of T.
-*/
-    /** Return the enum sentinel value.
-    */
+**/
 template <typename T>
 requires std::is_enum_v<T> &&
          (requires { T::unknown; } ||
@@ -187,11 +158,6 @@ struct sentinel_traits<T>
             return T::NONE;
     }
 
-    /** Return true if @p v equals the sentinel value.
-
-        @param v Value to test.
-        @return `true` when @p v matches the sentinel enumerator.
-    */
     static constexpr bool
     is_sentinel(T v) noexcept
     {
@@ -200,7 +166,7 @@ struct sentinel_traits<T>
 };
 
 /** Concept that is satisfied when sentinel_traits<T> declares a usable sentinel.
-*/
+**/
 template<class T>
 concept HasSentinel =
     requires
@@ -217,7 +183,7 @@ concept HasSentinel =
 
     Common cases of such containers include std::string, std::vector,
     std::optional, std::unique_ptr, std::shared_ptr, and many more.
-*/
+**/
 template<class T>
 concept ClearableContainerLike =
     // ---- nested container typedefs present ----
@@ -272,7 +238,7 @@ concept ClearableContainerLike =
 
     Users may explicitly specialize nullable_traits for their types to define
     the desired semantics.
-*/
+**/
 template<class T>
 struct nullable_traits
 {
@@ -283,36 +249,23 @@ struct nullable_traits
 /** nullable_traits for types with a sentinel.
 
     Delegates null handling to sentinel_traits<T>.
-*/
+**/
 template<class T>
 requires HasSentinel<T>
 struct nullable_traits<T>
 {
-    /** Return true if @p v matches the sentinel for @c T.
-
-        @param v Value to test.
-        @return `true` when @p v equals the sentinel.
-    */
     static constexpr bool
     is_null(T const& v) noexcept
     {
         return sentinel_traits<T>::is_sentinel(v);
     }
 
-    /** Return the sentinel value representing null.
-
-        @return Sentinel value for @c T.
-    */
     static constexpr T
     null() noexcept
     {
         return sentinel_traits<T>::sentinel();
     }
 
-    /** Overwrite @p v with the sentinel null value.
-
-        @param v Value to clear.
-    */
     static constexpr void
     make_null(T& v) noexcept
     {
@@ -324,12 +277,7 @@ struct nullable_traits<T>
 
     Treats the empty state as null, creates null via default construction,
     and erases via clear().
-*/
-    /** Return true if @p v is empty.
-
-        @param v Value to test.
-        @return `true` when the container is empty.
-    */
+**/
 template<class T>
 requires (!HasSentinel<T> && ClearableContainerLike<T>)
 struct nullable_traits<T>
@@ -340,20 +288,12 @@ struct nullable_traits<T>
         return v.empty();
     }
 
-    /** Construct a null value using the default constructor.
-
-        @return Default-constructed @c T.
-    */
     static constexpr T
     null() noexcept(std::is_nothrow_default_constructible_v<T>)
     {
         return T();
     }
 
-    /** Clear @p v to its null (empty) state.
-
-        @param v Value to clear.
-    */
     static constexpr void
     make_null(T& v) noexcept(noexcept(v.clear()))
     {
@@ -361,9 +301,9 @@ struct nullable_traits<T>
     }
 };
 
-/** Utility concept that returns true if T has a nullable_traits
+/** Utility function that returns true if T has a nullable_traits
     specialization enabled.
-*/
+**/
 template<class T>
 concept has_nullable_traits_v  =
     requires
@@ -376,7 +316,7 @@ concept has_nullable_traits_v  =
 /** make_null helper that uses nullable_traits<T> if available.
 
     @param v The value to make null.
-*/
+**/
 template <has_nullable_traits_v T>
 inline void
 make_null(T& v) noexcept(noexcept(nullable_traits<T>::make_null(v)))
@@ -388,7 +328,7 @@ make_null(T& v) noexcept(noexcept(nullable_traits<T>::make_null(v)))
 
     @param v The value to test for null.
     @return true if v is null, false otherwise.
-*/
+**/
 template <has_nullable_traits_v T>
 inline bool
 is_null(T const& v) noexcept(noexcept(nullable_traits<T>::is_null(v)))
@@ -399,7 +339,7 @@ is_null(T const& v) noexcept(noexcept(nullable_traits<T>::is_null(v)))
 /** null_of helper that constructs a null T using nullable_traits<T>.
 
     @return A null T value.
-*/
+**/
 template <has_nullable_traits_v T>
 inline T
 null_of() noexcept(noexcept(nullable_traits<T>::null()))

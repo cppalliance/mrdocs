@@ -46,15 +46,10 @@ namespace mrdocs {
     @return The safe string wrapper
 
     @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
-*/
+ */
 dom::Value
 safeString(std::string_view str);
 
-/** Mark an existing string-like value as safe to emit without escaping.
-
-    This overload is useful when a helper already produced a `dom::Value`
-    and only needs to flip the safe-string flag before it is rendered.
-*/
 dom::Value
 safeString(dom::Value const& str);
 
@@ -114,23 +109,11 @@ class MRDOCS_DECL
 
     union
     {
-        /** Boolean payload when the value kind is `Boolean`.
-        */
         bool                b_{false};
-        /** Integer payload when the value kind is `Integer`.
-        */
         std::int64_t        i_;
-        /** UTF-8 string or safe-string payload.
-        */
         String              str_;
-        /** Array payload; shared with lazy arrays.
-        */
         Array               arr_;
-        /** Object payload; shared with lazy objects.
-        */
         Object              obj_;
-        /** Callable payload used by template helpers.
-        */
         Function            fn_;
     };
 
@@ -139,52 +122,18 @@ class MRDOCS_DECL
     friend Value mrdocs::safeString(std::string_view str);
 
 public:
-    /** Destroy the contained value, releasing owned storage.
-    */
     ~Value();
-
-    /** Construct an undefined value.
-    */
     Value() noexcept;
-
-    /** Copy-construct from another value.
-    */
     Value(Value const& other);
-
-    /** Move-construct from another value, leaving it undefined.
-    */
     Value(Value&& other) noexcept;
-
-    /** Construct an empty value with the specified kind.
-    */
     Value(dom::Kind kind) noexcept;
-
-    /** Construct a null value.
-    */
     Value(std::nullptr_t v) noexcept;
-
-    /** Construct an integer value.
-    */
     Value(std::int64_t v) noexcept;
-
-    /** Construct a string or safe-string value, taking ownership.
-    */
     Value(String str) noexcept;
-
-    /** Construct an array value, taking ownership of the elements.
-    */
     Value(Array arr) noexcept;
-
-    /** Construct an object value, taking ownership of the members.
-    */
     Value(Object obj) noexcept;
-
-    /** Construct a function value that can be invoked by templates.
-    */
     Value(Function fn) noexcept;
 
-    /** Construct a function value from a callable object.
-    */
     template<class F>
     requires
         function_traits_convertible_to_value<F>
@@ -192,8 +141,6 @@ public:
         : Value(Function(f))
     {}
 
-    /** Construct a boolean value.
-    */
     template<std::same_as<bool> Boolean>
     Value(Boolean const& b) noexcept
         : kind_(Kind::Boolean)
@@ -201,25 +148,17 @@ public:
     {
     }
 
-    /** Construct an integer value from an integral type other than `bool` or `char`.
-    */
     template <std::integral T>
     requires
         (!std::same_as<T, bool>) &&
         (!std::same_as<T, char>)
     Value(T v) noexcept : Value(std::int64_t(v)) {}
 
-    /** Construct an integer value from a floating-point number by truncation.
-    */
     template <std::floating_point T>
     Value(T v) noexcept : Value(std::int64_t(v)) {}
 
-    /** Construct a single-character string value.
-    */
     Value(char c) noexcept : Value(std::string_view(&c, 1)) {}
 
-    /** Construct a string value from a string literal.
-    */
     template<std::size_t N>
     Value(char const(&sz)[N])
         : Value(String(sz))
@@ -227,23 +166,17 @@ public:
     }
 
     // VFALCO Should this be a literal?
-    /** Construct a string value from a C string.
-    */
     Value(char const* s)
         : Value(String(s))
     {
     }
 
-    /** Construct a string value from any `String`-convertible type.
-    */
     template <std::convertible_to<String> StringLike>
     Value(StringLike const& s)
         : Value(String(s))
     {
     }
 
-    /** Construct from `std::optional`, using `Undefined` when empty.
-    */
     template<class T>
     requires std::constructible_from<Value, T>
     Value(std::optional<T> const& opt)
@@ -251,8 +184,6 @@ public:
     {
     }
 
-    /** Construct from `Optional`, using `Undefined` when empty.
-    */
     template<class T>
     requires std::constructible_from<Value, T>
     Value(Optional<T> const& opt)
@@ -260,19 +191,12 @@ public:
     {
     }
 
-    /** Construct an array value from raw storage.
-    */
     Value(Array::storage_type elements)
         : Value(Array(std::move(elements)))
     {
     }
 
-    /** Copy-assign from another value, replacing the stored payload.
-    */
     Value& operator=(Value const& other);
-
-    /** Move-assign from another value, leaving it undefined.
-    */
     Value& operator=(Value&& other) noexcept;
 
     /** Return the type key of the value.
@@ -359,7 +283,7 @@ public:
 
         @note Behaviour is undefined if `!isBoolean()`
 
-    */
+     */
     bool getBool() const noexcept
     {
         MRDOCS_ASSERT(isBoolean());
@@ -427,8 +351,6 @@ public:
     dom::Value
     get(std::string_view key) const;
 
-    /** @copydoc get(std::string_view)
-    */
     template <std::convertible_to<std::string_view> S>
     dom::Value
     get(S const& key) const
@@ -467,7 +389,7 @@ public:
 
         @param key The key.
         @param value The value to set.
-    */
+     */
     void
     set(String const& key, Value const& value);
 
@@ -496,7 +418,7 @@ public:
         is returned.
 
         @param args The arguments to the function.
-    */
+     */
     template<class... Args>
     Value operator()(Args&&... args) const
     {
@@ -515,7 +437,7 @@ public:
     }
 
     /** Return the string.
-    */
+     */
     explicit
     operator std::string() const noexcept
     {
@@ -553,7 +475,7 @@ public:
 
         @note In JavaScript, this is equivalent to the `===`
         operator, which does not perform type conversions.
-    */
+     */
     friend
     bool
     operator==(
@@ -561,7 +483,7 @@ public:
         Value const& rhs) noexcept;
 
     /** Compare two values for inequality.
-    */
+     */
     friend
     std::strong_ordering
     operator<=>(
@@ -591,7 +513,7 @@ public:
     }
 
     /** Add or concatenate two values.
-    */
+     */
     friend
     dom::Value
     operator+(Value const& lhs, Value const& rhs);
@@ -615,7 +537,7 @@ public:
     /** Return the first dom::Value that is truthy, or the last one.
 
         This function is equivalent to the JavaScript `||` operator.
-    */
+     */
     friend
     dom::Value
     operator||(Value const& lhs, Value const& rhs);
@@ -639,7 +561,7 @@ public:
     /** Return the first dom::Value that is not truthy, or the last one.
 
         This function is equivalent to the JavaScript `&&` operator.
-    */
+     */
     friend
     dom::Value
     operator&&(Value const& lhs, Value const& rhs);
@@ -669,12 +591,6 @@ public:
 
 //------------------------------------------------
 
-/** JSON serialization helpers for DOM values.
-
-    This namespace wraps the platform JSON encoder/decoder behavior we emulate
-    inside MrDocs so generators can round-trip DOM `Value` objects to text and
-    back with predictable spacing, escaping, and cyclic-detection rules.
-*/
 namespace JSON
 {
 /** Stringify a value as JSON
@@ -688,7 +604,7 @@ namespace JSON
     @return A string containing valid JSON.
 
     @param value The value to stringify.
-*/
+ */
 MRDOCS_DECL
 std::string
 stringify(dom::Value const& value);
@@ -767,7 +683,7 @@ struct ValueFromTag { };
     @code
     void tag_invoke( ValueFromTag, dom::Value&, T );
     @endcode
-*/
+ */
 template<class T>
 concept HasValueFromWithoutContext = requires(
     Value& v,
@@ -785,7 +701,7 @@ concept HasValueFromWithoutContext = requires(
     @code
     void tag_invoke( ValueFromTag, dom::Value&, T,  Context const& );
     @endcode
-*/
+ */
 template<class T, class Context>
 concept HasValueFromWithContext = requires(
     Value& v,
@@ -817,7 +733,7 @@ concept HasValueFrom =
     conversion to @ref dom::Value that does not require
     a context or if @ref dom::Value has a constructor
     that can be used to convert `T` to a @ref dom::Value.
-*/
+ */
 template <class T>
 concept HasStandaloneValueFrom =
     HasValueFromWithoutContext<T> ||
@@ -1016,10 +932,6 @@ ValueFrom(T&& t, Context const& ctx)
 
 } // dom
 
-/** Return a DOM string ensuring special characters are escaped.
-    @param str Source string view convertible type.
-    @return dom::Value containing the safe string.
-*/
 template <std::convertible_to<std::string_view> SV>
 dom::Value
 safeString(SV const& str) {

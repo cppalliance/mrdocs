@@ -1,0 +1,293 @@
+= Contributor's Guide
+
+This page contains information for contributors to the Mr.Docs project.
+It is intended to provide an overview of the codebase and the process of adding new features.
+
+Before sending changes, run `python util/run_all_tests.py`.
+This script is treated as a “source of truth” pass that configures the preferred preset, builds, runs golden + unit + lint/schema/self-doc checks, installs into a local `install/<preset>` prefix, and (by default) builds docs using that fresh install.
+Not every policy can be enforced programmatically, but this script covers the checks that are automated; prefer it over ad-hoc command sequences.
+Use `--skip-docs` to omit docs or `--no-strict` to relax strict warning handling when needed.
+
+== Codebase Overview
+
+The Mr.Docs codebase is divided into several modules:
+
+include::partial$workflow.adoc[]
+
+This section provides an overview of each module and how they interact with each other in the Mr.Docs codebase.
+
+[#options]
+=== Parsing options
+
+Mr.Docs options affect the behavior of the compilation database, how symbols are extracted, and how the documentation is generated.
+They are parsed from the command line and configuration file.
+
+The main entry point of Mr.Docs is the `DoGenerateAction` function in `src/tool/GenerateAction.cpp`.
+It loads the options, creates the compilation database, and runs the extraction and generation steps.
+The options are formed from a combination of command line arguments and configuration file settings.
+
+==== Command Line Options
+
+Command line and common options are defined in `src/tool/ToolArgs.hpp`.
+The `ToolArgs` class uses the `llvm::cl` library to define and parse the command line arguments.
+
+==== Configuration File
+
+Common options are defined in `mrdocs/Config.hpp`.
+The `Config` class represents all public options that could be defined in a configuration file.
+It also provides a representation plugins can use to access public options from the command line or configuration file.
+
+The function `mrdocs::loadConfig` is also provided to parse all public options from a YAML configuration file.
+
+Internally, Mr.Docs uses the derived `mrdocs::ConfigImpl` class (`src/lib/Lib/ConfigImpl.hpp`) to also store the private representation of parsed options, such as filters.
+
+==== Finalizing Options
+
+Common options are stored in the `Config` class, while the `ToolArgs` class stores common options and the command line options.
+For instance, the `config` option can only be set from the command line, as it would be illogical to expect the location of the configuration file to be defined in the configuration file itself.
+On the other hand, the `output` option can be set from both the command line and the configuration file so that the user can define a default output location in the configuration file.
+
+Thus, after the command line and configuration file options are parsed, they are finalized in the `DoGenerateAction` function by calling `ToolArgs::apply`, which overrides the configuration file options in `Config` with the command line options, when applicable.
+
+As a last step, `DoGenerateAction` converts the public `Config` settings into a `ConfigImpl` object, which is used by the rest of the program with the parsed options.
+
+[#representing_symbols]
+== Representing Symbols
+
+MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), DocComment blocks, template parameters, template arguments, and data types.
+For each such family, we follow a consistent file layout.
+Most of these families are defined in the `mrdocs/Metadata` directory.
+
+Each base class is defined in its own header and, when necessary, implementation file.
+Each derived class also has its own header and implementation file.
+Finally, there is a single aggregator header file that includes all the derived headers.
+This file centralizes logic that requires knowledge of the full set of variants, such as visitors, comparison operators, and other operations that depend on the discriminator.
+
+Suppose we have a polymorphic family of `Symbol` objects, with derived types `Function`, `Class`, and `Enum`.
+The files would be organized as follows:
+
+* The `Symbol/SymbolNodes.inc` file defines the possible derived types and is used to generate code via macros.
+* The `Symbol/SymbolKind.hpp` file defines the `SymbolKind` enum, which is used as a discriminator for the derived types.
+* The base class `Symbol` is defined in `Symbol/BaseSymbol.hpp` and `Symbol/BaseSymbol.cpp` (if needed).
+* The available kinds of derived symbols are defined in `Symbol/<Derived>.hpp` and `Symbol/<Derived>.cpp` files, e.g., `Symbol/Function.hpp` and `Symbol/Function.cpp`.
+* The `Symbol.hpp` file includes all derived headers and defines operations that require knowledge of all variants, such as visitors and comparison operators.
+
+This pattern keeps the individual derived types self-contained while making cross-variant operations explicit and localized.
+When adding a new derived type, contributors should create its header and source file alongside the existing ones and update the corresponding aggregator file to register the new variant.
+This keeps the codebase predictable, avoids scattering logic, and ensures that operations over polymorphic families remain easy to find and maintain.
+
+[#extract_symbols]
+=== Extracting Symbols
+
+At this stage, the clang frontend is used to parse the source code and generate an AST.
+The AST information is extracted and stored in a `Corpus` object (`mrdocs/Corpus.hpp`).
+
+[#compilation_database]
+==== Compilation Database
+
+The second step in `DoGenerateAction` is to create a `CompilationDatabase` object, so we can extract symbols from its source files.
+There are multiple possible sources for this file according to the configuration options: the file might be read directly from the path specified in the options, or it might be generated by Mr.Docs from build scripts.
+
+Whatever the source, a derived `Mr.DocsCompilationDatabase` object (`lib/Lib/Mr.DocsCompilationDatabase.hpp`) is created to represent the compilation database.
+The difference between the original `CompilationDatabase` and the `MrDocsCompilationDatabase` is that the latter includes a number of pre-processing steps to filter and transform compilation commands.
+
+For each compilation command:
+
+* Command line arguments are adjusted
+** Warnings are supressed
+** Additional defines are added
+** Implicit include directories are added
+** Unrecognized arguments are removed
+* Paths are normalized
+* Non C++ files are filtered
+
+[#symbol_nodes]
+==== Symbol Nodes
+
+MrDocs represents each C++ symbol or construct as an `Symbol` node (`mrdocs/Metadata/Symbol.hpp`).
+`Symbol` can not only represent direct AST symbols but also {cpp} constructs that need to be inferred from these symbols.
+Nodes in the first category will typically be created in the initial extraction step, and nodes in the second category will be created in the finalization step.
+
+When defining a new `Symbol` type, it is important to consider how this type will be supported in all other modules of the codebase, including the AST visitor, generators, tests, and the documentation.
+
+==== Clang LibTooling
+
+MrDocs uses Clang to extract `Symbol` objects from the {cpp} AST.
+Clang offers two https://clang.llvm.org/docs/Tooling.html[interfaces] to access the C++ AST: the https://clang.llvm.org/doxygen/group__CINDEX.html[`LibClang`] and https://clang.llvm.org/docs/LibTooling.html[`LibTooling`] libraries.
+MrDocs uses the latter, as it provides full control over the AST traversal process at the cost of an unstable API.
+
+In LibTooling, once we have a <<compilation_database>>, we can create a `ClangTool` object to run the Clang frontend on a set of source files.
+
+[source,c++]
+----
+clang::tooling::ClangTool Tool(compilationDatabase, sourceFiles);
+newFrontendActionFactory<clang::SyntaxOnlyAction> actionFactory();
+return Tool.run(actionFactory.get());
+----
+
+The `clang::tooling::ClangTool::run` method takes a `clang::tooling::ToolAction` object that defines how to process the AST.
+The action object usually comes from a `clang::tooling::FrontendActionFactory`.
+In the example above, the `SyntaxOnlyAction` is used to parse the source code and generate the AST without any further processing.
+
+In MrDocs, this process happens in `mrdocs::CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where we call `Tool.run` for each object in the database with our custom `ASTAction` action and `ASTActionFactory` factory (`src/lib/AST/ASTVisitor.cpp`).
+
+==== AST Traversal
+
+While `ASTAction` is the entry point for processing the AST, the real work is done by the `ASTVisitor` class.
+As the AST is generated, it is traversed by the `ASTVisitor` class.
+
+The entry point of this class is `ASTVisitor::build`, which recursively calls `ASTVisitor::traverseDecl` for the root `clang::TranslationUnitDecl` node of the translation unit.
+During the AST traversal stage, the complete AST generated by the clang frontend is walked beginning with this root `TranslationUnitDecl` node.
+
+Each `clang` node is converted into a `<<symbol_nodes,mrdocs::Symbol>>` node, which is then stored with any relevant information in a `mrdocs::Corpus` object.
+
+==== USR Generation
+
+It is during this stage that USRs (universal symbol references) are generated and hashed with SHA1 to form the 160 bit `SymbolID` for an entity.
+Except for built-in types, *all* entities referenced in the corpus will be traversed and be assigned a `SymbolID`; including those from the standard library.
+This is necessary to generate the full interface for user-defined types.
+
+==== Finalizing the Corpus
+
+After running the AST traversal on all translation units, `CorpusImpl::build` contains finalization steps for the `Corpus` object.
+At this point, we process C++ constructs that are not directly represented in the AST.
+
+The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Symbol` objects from a single translation unit are merged into a map containing the merged results from all other TUs.
+The merging step is necessary as there may be multiple identical definitions of the same entity.
+For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
+At this step, the doc comments are also finalized.
+Each `Symbol` object has a pointer to its `DocComment`  object (`mrdocs/Metadata/DocComment.hpp`), which is a representation of the documentation comments.
+
+After AST traversal and `Symbol` merging, the result is stored as a map of `Symbol` objects indexed by their respective `SymbolID`.
+A second finalization step is then performed in `mrdocs::finalize`, where any references to `SymbolID` objects that don't exist are removed.
+This is necessary because the AST traversal will generate references to entities that should be filtered and are not present in the corpus.
+
+At this point, the `Corpus` object contains representations of all entities in the code base and further semantic {cpp} constructs that are not directly represented in the AST can be inferred.
+
+=== Generators
+
+Documentation generators may traverse this structure by calling `Corpus::traverse` with a `Corpus::Visitor` derived visitor and the `SymbolID` of the entity to visit (e.g. the global namespace).
+
+Documentation generators are responsible for traversing the corpus and generating documentation in the desired format.
+
+The API for documentation generators is defined in `mrdocs/Generator.hpp`.
+
+=== Directory Layout
+
+The MrDocs codebase is organized as follows:
+
+==== `include/`—The main include directory
+
+This directory contains the public headers for the MrDocs library.
+
+* `include/mrdocs/`—The core library headers
+** `include/mrdocs/ADT`—Data Structures
+** `include/mrdocs/Dom`—The Document Object Model for Abstract Trees
+** `include/mrdocs/Metadata`—`Symbol` nodes and metadata classes
+** `include/mrdocs/Support`—Various utility classes
+
+==== `src/`—The main source directory
+
+This directory contains the source code for the MrDocs library and private headers.
+
+* `src/lib/`—The core library
+** `src/lib/AST/`—The AST traversal code
+** `src/lib/Dom/`—The Document Object Model for Abstract Trees
+** `src/lib/Gen/`—Generators
+** `src/lib/Lib/`—The core library classes
+** `src/lib/Metadata/`—`Symbol` nodes and metadata classes
+** `src/lib/Support/`—Various utility classes
+* `src/test/`—The test directory
+* `src/test_suite/`—The library used for testing
+* `src/tool/`—The main program
+
+==== `share/`—Shared resources
+
+This directory contains shared resources for the documentation generators and utilities for developers.
+Its subdirectories are installed in the `share` directory of the installation.
+
+* `share/`—Shared resources for the documentation generators
+* `share/cmake/`—CMake modules to generate the documentation
+* `share/gdb/`—GDB pretty printers
+* `share/mrdocs/`—Shared resources for the documentation generators
+
+==== `docs`—Documentation
+
+This directory contains the documentation for the MrDocs project.
+The documentation is written in AsciiDoc and can be built using the Antora tool.
+
+* `docs/`—Documentation configuration files and scripts
+** `docs/modules/`—The documentation asciidoc files
+** `docs/extensions`—Antora extensions for the documentation
+
+==== `third-party/`—Helpers for third-party libraries
+
+This directory contains build scripts and configuration files for third-party libraries.
+
+* `third-party/`—Third-party libraries
+** `third-party/llvm/`—CMake Presets for LLVM
+** `third-party/duktape/`—CMake scripts for Duktape
+** `third-party/lua/`—A bundled Lua interpreter
+
+== Polymorphism
+
+== Coding Standards
+
+=== Paths
+
+The AST visitor and metadata all use forward slashes to represent file pathnames, even on Windows.
+This is so the generated reference documentation does not vary based on the platform.
+
+=== Exceptions
+
+Errors thrown by the program should always have type `Exception`.
+Objects of this type are capable of transporting an `Error` object.
+This is important for the scripting to work; exceptions are used to propagate errors from library code to scripts and back to the invoking code.
+For exceptional cases, these thrown exceptions should be uncaught.
+The tool installs an uncaught exception handler that prints a stack trace and exits the process immediately.
+
+=== Testing
+
+All new features should be accompanied by tests.
+The `mrdocs-test` target is used to run the test suites.
+This target has its entry point in `src/test/TestMain.cpp`, which can take two paths:
+
+* Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the `DoTestAction()` that iterates all files in `test-files` comparing the input source files with the expected XML output files.
+* Unit testing: When no input paths are provided, all unit tests will be run via `unit_test_main()`, defined by our test-suite library in `src/test_suite/test_suite.cpp`.
+
+The fixtures for golden testing are defined in `test-files/golden-tests`, where files in each directory have the following format:
+
+* `mrdocs.yml`: Basic configuration options for all files in this directory.
+* `<filename>.cpp`: The input source file to extract symbols from.
+* `<filename>.xml`: The expected XML output file generated with the XML generator.
+* `<filename>.bad.xml`: The test output file generated when the test fails.
+* `<filename>.yml`: Extra configuration options for this specific file.
+
+== Style Guide
+
+This project follows informal formatting conventions established by previous Boost projects.
+To help contributors, we provide a `.clang-format` file that encodes these rules.
+
+* Do *not* apply clang-format across entire files or the whole project.
+* Use the config only as a *reference* for your IDE/editor, or to format the code you **personally add or modify** in a commit.
+* Always check the surrounding code and keep consistent with it.
+* Do not create style-only commits that introduce large diffs without functional changes.
+
+Why This Approach:
+
+* Keeps history clean: avoids large, style-only commits.
+* Ensures new contributors are not lost when adapting to project style.
+* Encourages consistency without rigid automation.
+
+General Advice: When in doubt, copy the style of the surrounding code.
+The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
+
+The utility script `./util/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
+
+== Contributing
+
+If you find a bug or have a feature request, please open an issue on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/issues
+
+If you would like to contribute a feature or bug fix, please open a pull request on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/pulls
+
+If you would like to discuss a feature or bug fix before opening a pull request, discussing happen in the `#mrdocs` channel on the Cpplang Slack: https://cpplang.slack.com/

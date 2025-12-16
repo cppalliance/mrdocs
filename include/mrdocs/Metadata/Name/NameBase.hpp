@@ -36,7 +36,7 @@ namespace mrdocs {
     which contains the arguments for a template specialization
     without requiring the application to extract an
     unnecessary symbol.
-*/
+ */
 struct Name
 {
     /** The kind of name this is.
@@ -48,7 +48,7 @@ struct Name
     SymbolID id = SymbolID::invalid;
 
     /** The unqualified name.
-    */
+     */
     std::string Identifier;
 
     /** The parent name info, if any.
@@ -63,35 +63,26 @@ struct Name
         In this case, the Prefix will contain
         this primary template information
         and the template arguments.
-    */
+
+     */
     Optional<Polymorphic<struct Name>> Prefix = std::nullopt;
 
-    /** Virtual destructor for polymorphic cleanup.
-    */
     constexpr virtual ~Name() = default;
 
-    /** Order names by kind, identifier, id, and prefix.
-    */
     std::strong_ordering
     operator<=>(Name const& other) const;
 
-    /** Equality compares all fields.
-    */
     bool
     operator==(Name const& other) const
     {
         return std::is_eq(*this <=> other);
     }
 
-    /** View as a const Name reference.
-    */
     constexpr Name const& asName() const noexcept
     {
         return *this;
     }
 
-    /** View as a mutable Name reference.
-    */
     constexpr Name& asName() noexcept
     {
         return *this;
@@ -133,29 +124,20 @@ struct Name
 #include <mrdocs/Metadata/Name/NameNodes.inc>
 
 protected:
-    /** Construct an identifier name.
-    */
     constexpr
     Name() noexcept
         : Kind(NameKind::Identifier) {};
 
-    /** Construct with an explicit name kind.
-    */
     explicit
         constexpr
         Name(NameKind const kind) noexcept
         : Kind(kind) {}
 };
 
-/** Convert the name to a human-readable string.
-    @return The textual form of the name.
-*/
 MRDOCS_DECL
 std::string
 toString(Name const& N);
 
-/** Serialize a name into a DOM value.
-*/
 MRDOCS_DECL
 void
 tag_invoke(

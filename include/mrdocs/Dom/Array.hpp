@@ -208,11 +208,11 @@ public:
     value_type back() const;
 
     /** Return an iterator to the beginning of the range of elements.
-    */
+     */
     iterator begin() const;
 
     /** Return an iterator to the end of the range of elements.
-    */
+     */
     iterator end() const;
 
     /** Append an element to the end of the array.
@@ -268,13 +268,13 @@ public:
     }
 
     /** Compare two arrays for equality.
-    */
+     */
     friend
     bool
     operator==(Array const&, Array const&) noexcept;
 
     /** Compare two arrays for precedence.
-    */
+     */
     friend
     std::strong_ordering
     operator<=>(Array const&, Array const&) noexcept;
@@ -283,7 +283,7 @@ public:
     */
     friend
     std::string
-    toString(Array const& arr);
+    toString(Array const&);
 
     /** Return a new array using a custom implementation.
 
@@ -336,7 +336,7 @@ public:
 
     /** Set the i-th element, without bounds checking.
     */
-    virtual void set(size_type index, Value value);
+    virtual void set(size_type, Value);
 
     /** Append an element to the end of the array.
 
@@ -370,31 +370,13 @@ public:
     /// @copydoc Array::storage_type
     using storage_type = Array::storage_type;
 
-    /** Create an empty array implementation.
-    */
     DefaultArrayImpl();
-    /** Create an array populated with the given elements.
-        @param elements Initial contents to take ownership of.
-    */
     explicit DefaultArrayImpl(
         storage_type elements) noexcept;
-    /** Return the number of stored elements.
-    */
     size_type size() const override;
-    /** Retrieve an element at the specified index.
-        @param i Index of the element to fetch.
-    */
     value_type get(size_type i) const override;
-    /** Replace the element at the specified index.
-        @param i Index to update.
-        @param v New value to store.
-    */
     void set(size_type i, Value v) override;
-    /** Append a value to the array.
-    */
     void emplace_back(value_type value) override;
-    /** Return the type key string for this array.
-    */
     char const* type_key() const noexcept override;
 
 private:

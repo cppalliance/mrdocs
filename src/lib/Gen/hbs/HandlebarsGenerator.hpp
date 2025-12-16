@@ -28,28 +28,6 @@ class HandlebarsGenerator
     : public Generator
 {
 public:
-    struct StylesheetRef
-    {
-        /** Absolute path to the source stylesheet on disk (empty for remote). */
-        std::string sourcePath;
-        /** Href or output-relative path written to the HTML. */
-        std::string outputRelative;
-        /** True when the stylesheet is remote and should not be copied. */
-        bool external = false;
-    };
-
-    struct StylesData
-    {
-        std::vector<StylesheetRef> stylesheets;
-        std::vector<std::string> inlineStyles;
-        std::vector<std::string> inlineScripts;
-        bool hasDefaultStyles = false;
-    };
-
-private:
-    Expected<StylesData> prepareStylesheets(Config const& config) const;
-
-public:
     Expected<void>
     build(
         std::string_view outputPath,
@@ -61,14 +39,14 @@ public:
         Corpus const& corpus) const override;
 
     /** Build a tagfile for the corpus.
-    */
+     */
     Expected<void>
     buildTagfile(
         std::ostream& os,
         Corpus const& corpus) const;
 
     /** Build a tagfile for the corpus and store the result in a file.
-    */
+     */
     Expected<void>
     buildTagfile(
         std::string_view fileName,
@@ -79,33 +57,6 @@ public:
     virtual
     void
     escape(OutputRef& os, std::string_view str) const;
-
-protected:
-    /** Customize the Handlebars corpus before rendering.
-
-        Subclasses can override this to inject additional data
-        into the corpus (e.g. precomputed template context).
-        The default implementation does nothing.
-    */
-    virtual
-    void
-    prepareCorpus(HandlebarsCorpus&) const;
-
-protected:
-    /** Default stylesheet path on disk; empty means no default. */
-    virtual std::string defaultStylesheetSource(Config const& config) const;
-
-    /** Default stylesheet output relative path; empty means no default. */
-    virtual std::string defaultStylesheetOutput(Config const& config) const;
-
-    /** Default highlight stylesheet path on disk; empty means no default. */
-    virtual std::string defaultHighlightStylesheetSource(Config const& config) const;
-
-    /** Default highlight stylesheet output relative path; empty means no default. */
-    virtual std::string defaultHighlightStylesheetOutput(Config const& config) const;
-
-    /** Inline script used to load and run highlight.js from a CDN. */
-    virtual std::string defaultHighlightScript() const;
 };
 
 } // hbs

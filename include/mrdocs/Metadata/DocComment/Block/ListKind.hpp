@@ -16,17 +16,11 @@
 
 namespace mrdocs {
 
-/** Classification of list ordering.
-*/
 enum class ListKind {
-    /// A bulleted list with no inherent ordering.
     Unordered,
-    /// A numbered list where item order matters.
     Ordered
 };
 
-/** Convert a list kind enum to its string name.
-*/
 inline
 dom::String
 toString(ListKind kind) noexcept
@@ -41,16 +35,11 @@ toString(ListKind kind) noexcept
     return "Unknown";
 }
 
-/** Serialize a list kind into a DOM value.
-    @param v Destination value.
-    @param kind List kind to serialize.
-*/
 inline
 void
 tag_invoke(
     dom::ValueFromTag,
-    dom::Value& v,
-    ListKind const kind)
+    dom::Value& v, ListKind const kind)
 {
     v = toString(kind);
 }

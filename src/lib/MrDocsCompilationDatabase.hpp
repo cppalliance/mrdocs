@@ -53,7 +53,7 @@ public:
      * @param config The shared configuration object.
      * @param implicitIncludeDirectories A map from compiler executable paths to their respective
      *        implicit include directories, as determined by the system's compiler.
-    */
+     */
     MrDocsCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
@@ -82,8 +82,7 @@ public:
     std::vector<clang::tooling::CompileCommand>
     getAllCompileCommands() const override;
 
-    /** Whether the driver mode for the compilation database is ClangCL
-    */
+    /** Whether the driver mode for the compilation database is ClangCL */
     bool
     isClangCL() const noexcept
     {

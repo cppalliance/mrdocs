@@ -23,67 +23,43 @@ namespace mrdocs::doc {
     There will be no newlines in the text. Otherwise,
     this would be represented as multiple text nodes
     within a Paragraph node.
-
-    Syntax:
-
-    @code
-    plain text
-    @endcode
 */
 struct TextInline
     : InlineCommonBase<InlineKind::Text>
 {
-    /** Plain text carried by this inline node.
-    */
     std::string literal;
 
-    /** Virtual destructor for the inline hierarchy.
-    */
     constexpr ~TextInline() override = default;
 
-    /** Construct an empty text inline.
-    */
     constexpr TextInline() noexcept = default;
 
-    /** Construct from a string view.
-    */
     explicit TextInline(std::string_view str) noexcept
         : literal(str)
     {}
 
-    /** Construct from a C string.
-    */
     explicit TextInline(char const* str) noexcept
         : literal(str)
     {}
 
-    /** Construct from a string copy.
-    */
     explicit TextInline(std::string const& str) noexcept
         : literal(str)
     {}
 
-    /** Construct by moving text storage.
-    */
     explicit TextInline(std::string&& str) noexcept
         : literal(std::move(str))
     {}
 
-    /** Order text nodes lexicographically by their literal.
-    */
     auto operator<=>(TextInline const&) const = default;
-    /** Equality compares literal strings.
-    */
     bool operator==(TextInline const&) const noexcept = default;
 };
 
-/** Map the @ref TextInline to a @ref dom::Object.
+/** Map the @ref Text to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -96,8 +72,8 @@ tag_invoke(
     io.map("literal", I.literal);
 }
 
-/** Return the @ref TextInline as a @ref dom::Value object.
-*/
+/** Return the @ref Text as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

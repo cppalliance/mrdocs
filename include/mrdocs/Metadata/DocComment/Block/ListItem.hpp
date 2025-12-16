@@ -19,17 +19,12 @@
 
 namespace mrdocs::doc {
 
-/** An item in a @ref ListBlock
+/** An item in a list
 */
 struct ListItem final
     : BlockContainer
 {
-    /** Order list items by their child blocks.
-    */
     auto operator<=>(ListItem const&) const = default;
-
-    /** Equality compares contained blocks.
-    */
     bool operator==(ListItem const&) const noexcept = default;
 };
 
@@ -39,7 +34,7 @@ struct ListItem final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -52,7 +47,7 @@ tag_invoke(
 }
 
 /** Return the @ref ListItem as a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(

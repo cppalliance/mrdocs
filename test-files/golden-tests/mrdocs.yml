@@ -1,6 +1,3 @@
 concurrency: 1
 source-root: .
-multipage: false
-warn-if-undocumented: false
-tagfile: ""
-no-default-styles: true
+single-page: true

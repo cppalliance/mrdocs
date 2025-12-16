@@ -40,7 +40,7 @@ namespace mrdocs {
     auto a = f(21);        // calls int overload
     auto b = f(std::string("hello")); // calls string overload
     @endcode
-*/
+ */
 template<class... Ts>
 struct Overload : Ts... {
     using Ts::operator()...;
@@ -48,7 +48,7 @@ struct Overload : Ts... {
     /** Constructs an Overload from the given callables.
 
         @param xs The callables to store.
-    */
+     */
     constexpr explicit Overload(Ts... xs)
         noexcept((std::is_nothrow_move_constructible_v<Ts> && ...))
         : Ts(std::move(xs))... {}
@@ -58,7 +58,7 @@ struct Overload : Ts... {
 
     Allows writing Overload{lambda1, lambda2, ...} without
     specifying template parameters.
-*/
+ */
 template<class... Ts>
 Overload(Ts...) -> Overload<Ts...>;
 
@@ -78,7 +78,7 @@ Overload(Ts...) -> Overload<Ts...>;
     );
     @endcode
 
-*/
+ */
 template<class... Ts>
 [[nodiscard]] constexpr auto makeOverload(Ts&&... xs)
     noexcept((std::is_nothrow_constructible_v<std::decay_t<Ts>, Ts&&> && ...))
@@ -105,7 +105,7 @@ template<class... Ts>
         [](const std::string& s) { return s.size(); }
     );
     @endcode
-*/
+ */
 template<class Variant, class... Ts>
 constexpr decltype(auto) match(Variant&& v, Ts&&... xs)
 {
@@ -138,7 +138,7 @@ constexpr decltype(auto) match(Variant&& v, Ts&&... xs)
         [](std::size_t i, double d) { return d + i; },
         [](std::size_t i, const std::string& s) { return s.size() + i; });
     @endcode
-*/
+ */
 template<class Variant, class... Ts>
 constexpr decltype(auto) visitIndexed(Variant&& v, Ts&&... xs)
 {
@@ -169,14 +169,14 @@ constexpr decltype(auto) visitIndexed(Variant&& v, Ts&&... xs)
         });
     auto r = fact(10);
     @endcode
-*/
+ */
 template<class F>
 class YCombinator {
 public:
     /** Constructs a YCombinator from the given callable.
 
         @param f The callable to store.
-    */
+     */
     constexpr explicit YCombinator(F f)
         noexcept(std::is_nothrow_move_constructible_v<F>)
         : f_(std::move(f)) {}
@@ -185,7 +185,7 @@ public:
 
          @param args The arguments to forward to the callable after the self reference.
          @return Whatever the callable returns.
-    */
+     */
     template<class... Args>
     constexpr decltype(auto) operator()(Args&&... args) &
     {
@@ -193,10 +193,7 @@ public:
     }
 
     /** Const lvalue overload of operator().
-
-        @param args The arguments to forward to the callable after the self reference.
-        @return Whatever the callable returns.
-    */
+     */
     template<class... Args>
     constexpr decltype(auto) operator()(Args&&... args) const &
     {
@@ -204,10 +201,7 @@ public:
     }
 
     /** Rvalue overload of operator().
-
-        @param args The arguments to forward to the callable after the self reference.
-        @return Whatever the callable returns.
-    */
+     */
     template<class... Args>
     constexpr decltype(auto) operator()(Args&&... args) &&
     {
@@ -215,10 +209,7 @@ public:
     }
 
     /** Const rvalue overload of operator().
-
-        @param args The arguments to forward to the callable after the self reference.
-        @return Whatever the callable returns.
-    */
+     */
     template<class... Args>
     constexpr decltype(auto) operator()(Args&&... args) const &&
     {
@@ -241,7 +232,7 @@ private:
         [](auto self, int n) -> int {
             return n <= 1 ? n : self(n - 1) + self(n - 2);
         });
-*/
+ */
 template<class F>
 [[nodiscard]] constexpr auto yCombinator(F&& f)
     noexcept(std::is_nothrow_constructible_v<std::decay_t<F>, F&&>)

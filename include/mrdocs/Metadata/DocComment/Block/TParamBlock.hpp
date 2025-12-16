@@ -22,29 +22,15 @@
 namespace mrdocs::doc {
 
 /** Documentation for a template parameter
-
-    Syntax:
-
-    @code
-    @tparam T description
-    @endcode
 */
 struct TParamBlock final
     : BlockCommonBase<BlockKind::TParam>
     , InlineContainer
 {
-    /** Template parameter name.
-    */
     std::string name;
 
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-    /** Order template parameter docs by name and text.
-    */
     auto operator<=>(TParamBlock const&) const = default;
-    /** Equality compares name and inline content.
-    */
     bool operator==(TParamBlock const&) const noexcept = default;
 };
 
@@ -54,7 +40,7 @@ struct TParamBlock final
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -69,7 +55,7 @@ tag_invoke(
 }
 
 /** Return the @ref TParam as a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(

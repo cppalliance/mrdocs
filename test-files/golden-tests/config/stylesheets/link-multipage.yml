@@ -1,6 +1,0 @@
-stylesheets:
-  - custom.css
-linkcss: true
-no-default-styles: true
-multipage: true
-output: reference-output

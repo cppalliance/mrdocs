@@ -13,15 +13,15 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{#if (ne kind "overloads")}}
-{{#> markup/code-block~}}
+{{#> markup/code-block }}
 {{> symbol/signature }}
-{{/markup/code-block~}}
+{{/markup/code-block}}
 {{else}}
 {{#each members as | member |}}
 {{#if member.doc.brief}}{{> doc/block/brief member.doc.brief }}{{/if}}
-{{#> markup/code-block~}}
+{{#> markup/code-block }}
 {{> symbol/signature/function member force-link=true }}
-{{/markup/code-block~}}
+{{/markup/code-block}}
 {{#> markup/span class="small" }}{{#> markup/a href=member.url }}{{#>markup/em }}» more{{ str "..." }}{{/markup/em}}{{/markup/a}}{{/markup/span}}
 
 {{/each}}

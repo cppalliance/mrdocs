@@ -4,7 +4,6 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
-// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -16,7 +15,6 @@
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
-#include "Support/TestLayout.hpp"
 #include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/ErrorOr.h>
@@ -24,7 +22,6 @@
 #include <chrono>
 #include <cstdint>
 #include <memory>
-#include <string>
 
 
 namespace mrdocs {
@@ -56,16 +53,20 @@ struct TestResults
 class TestRunner
 {
     ThreadPool threadPool_;
+    llvm::ErrorOr<std::string> diffCmdPath_;
     Generator const* gen_;
     ReferenceDirectories dirs_;
 
-    /** Run a single .cpp test file with inherited directory settings. */
+    Expected<void>
+    writeFile(
+        llvm::StringRef filePath,
+        llvm::StringRef contents);
+
     void
     handleFile(
         llvm::StringRef filePath,
         Config::Settings const& dirSettings);
 
-    /** Traverse a directory, applying configs and enqueueing .cpp tests. */
     void
     handleDir(
         std::string dirPath,
@@ -74,16 +75,13 @@ class TestRunner
 public:
     TestResults results;
 
-    /** Construct a runner for the chosen generator id. */
     TestRunner(std::string_view generator);
 
-    /** Execute a compilation/database run for one test input. */
     void
     handleCompilationDatabase(
         llvm::StringRef filePath,
         MrDocsCompilationDatabase const& compilations,
-        std::shared_ptr<ConfigImpl const> const& config,
-        TestLayout const& layout);
+        std::shared_ptr<ConfigImpl const> const& config);
 
     /** Check a single file, or a directory recursively.
 

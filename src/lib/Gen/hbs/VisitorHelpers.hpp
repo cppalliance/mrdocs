@@ -21,7 +21,7 @@ namespace mrdocs::hbs {
 
     This filters Info types for which the generator
     should not generate independent pages or sections.
-*/
+ */
 MRDOCS_DECL
 bool
 shouldGenerate(Symbol const& I, Config const& config);
@@ -39,7 +39,7 @@ shouldGenerate(Symbol const& I, Config const& config);
     template. For record and enum members, we look for
     the parent record or enum. For other Info types, we
     return nullptr.
-*/
+ */
 MRDOCS_DECL
 Symbol const*
 findAlternativeURLInfo(Corpus const& c, Symbol const& I);

@@ -20,47 +20,11 @@ namespace xsi= "http://www.w3.org/2001/XMLSchema-instance"
 
 grammar
 {
-    start = Mrdocs | Tagfile
-
-    Mrdocs =
-        element mrdocs
-        {
-            attribute xsi:noNamespaceSchemaLocation {text}?,
-            Namespace
-        }
-
-    Tagfile =
-        element tagfile
-        {
-            TagCompound+
-        }
-
-    TagCompound =
-        element compound
-        {
-            attribute kind { "namespace" | "class" },
-            element name { text },
-            element filename { text },
-            (TagClass | TagMember)*
-        }
-
-    TagClass =
-        element class
-        {
-            attribute kind { "class" },
-            text
-        }
-
-    TagMember =
-        element member
-        {
-            attribute kind { "function" },
-            element type { text },
-            element name { text },
-            element anchorfile { text },
-            element anchor { text },
-            element arglist { text }
-        }
+    start = element mrdocs
+    {
+        attribute xsi:noNamespaceSchemaLocation {text}?,
+        Namespace
+    }
 
     #---------------------------------------------
 

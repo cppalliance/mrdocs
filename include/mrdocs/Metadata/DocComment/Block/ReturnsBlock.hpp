@@ -22,57 +22,30 @@
 namespace mrdocs::doc {
 
 /** Documentation for a function return type
-
-    Syntax:
-
-    @code
-    @return description
-    @endcode
 */
 struct ReturnsBlock final
     : BlockCommonBase<BlockKind::Returns>
     , InlineContainer
 {
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-
-    /** Copy constructor.
-    */
     ReturnsBlock(ReturnsBlock const&) = default;
-    /** Move constructor.
-    */
     ReturnsBlock(ReturnsBlock&&) noexcept = default;
-    /** Construct from inline content (copy).
-    */
     ReturnsBlock(InlineContainer const& other) : InlineContainer(other) {}
-    /** Construct from inline content (move).
-    */
     ReturnsBlock(InlineContainer&& other) noexcept : InlineContainer(other) {}
-    /** Virtual destructor for polymorphic base.
-    */
     ~ReturnsBlock() override = default;
-    /** Copy assignment.
-    */
     ReturnsBlock& operator=(ReturnsBlock const&) = default;
-    /** Move assignment.
-    */
     ReturnsBlock& operator=(ReturnsBlock&&) noexcept = default;
-    /** Order return docs by inline content.
-    */
     auto operator<=>(ReturnsBlock const&) const = default;
-    /** Equality compares inline content.
-    */
     bool operator==(ReturnsBlock const&) const noexcept = default;
 };
 
-/** Map the @ref ReturnsBlock to a @ref dom::Object.
+/** Map the @ref Returns to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -85,8 +58,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref ReturnsBlock as a @ref dom::Value object.
-*/
+/** Return the @ref Returns as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

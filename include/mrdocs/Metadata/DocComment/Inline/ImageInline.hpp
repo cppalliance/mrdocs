@@ -20,45 +20,25 @@
 namespace mrdocs::doc {
 
 /** An image.
-
-    Syntax:
-
-    @code
-    @image html path/to/img "alt text"
-    @endcode
-
-    or
-
-    @code
-    ![Alt text](image_url "Optional title text")
-    @endcode
 */
 struct ImageInline final
     : InlineCommonBase<InlineKind::Image>
     , InlineContainer
 {
-    /** Image source URL or path.
-    */
     std::string src;
-    /** Alternate text when the image cannot be shown.
-    */
     std::string alt;
 
-    /** Order images by source, alt text, and inline children.
-    */
     auto operator<=>(ImageInline const&) const = default;
-    /** Equality compares source, alt text, and contents.
-    */
     bool operator==(ImageInline const&) const noexcept = default;
 };
 
-/** Map the @ref ImageInline to a @ref dom::Object.
+/** Map the @ref Image to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -73,8 +53,8 @@ tag_invoke(
     io.map("alt", I.alt);
 }
 
-/** Return the @ref ImageInline as a @ref dom::Value object.
-*/
+/** Return the @ref Image as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

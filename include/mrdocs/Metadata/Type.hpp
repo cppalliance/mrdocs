@@ -28,60 +28,53 @@
 
 namespace mrdocs {
 
-/** Visit a @ref Type with the provided callable.
-
-    @param info The type instance to visit.
-    @param fn The callable to dispatch to the concrete type.
-    @param args Additional arguments forwarded to the callable.
-    @return Whatever the callable returns.
-*/
 template<
     std::derived_from<Type> TypeTy,
     class F,
     class... Args>
 decltype(auto)
 visit(
-    TypeTy& info,
-    F&& fn,
+    TypeTy& I,
+    F&& f,
     Args&&... args)
 {
-    add_cv_from_t<TypeTy, Type>& II = info;
-    switch(info.Kind)
+    add_cv_from_t<TypeTy, Type>& II = I;
+    switch(I.Kind)
     {
     case TypeKind::Named:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, NamedType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Decltype:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, DecltypeType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Auto:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, AutoType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::LValueReference:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, LValueReferenceType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::RValueReference:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, RValueReferenceType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Pointer:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, PointerType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::MemberPointer:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, MemberPointerType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Array:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, ArrayType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Function:
-        return fn(static_cast<add_cv_from_t<
+        return f(static_cast<add_cv_from_t<
             TypeTy, FunctionType>&>(II),
                 std::forward<Args>(args)...);
     default:
@@ -89,22 +82,16 @@ visit(
     }
 }
 
-/** Compare two polymorphic types for ordering.
-*/
 MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs);
 
-/** Equality helper for polymorphic types.
-*/
 inline
 bool
 operator==(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
-/** Compare optional polymorphic types, treating disengaged as less.
-*/
 inline std::strong_ordering
 operator<=>(
     Optional<Polymorphic<Type>> const& lhs,
@@ -121,8 +108,6 @@ operator<=>(
     return bool(lhs) <=> bool(rhs);
 }
 
-/** Equality helper for optional polymorphic types.
-*/
 inline bool
 operator==(
     Optional<Polymorphic<Type>> const& lhs,
@@ -170,25 +155,17 @@ MRDOCS_DECL
 Polymorphic<Type> const&
 innermostType(Polymorphic<Type> const& TI) noexcept;
 
-/** Return the innermost type (mutable overload).
-*/
+/// @copydoc innermostType(Polymorphic<Type> const&)
 MRDOCS_DECL
 Polymorphic<Type>&
 innermostType(Polymorphic<Type>& TI) noexcept;
 
-/** Render a type to a human-readable string.
-    @param T Type to render.
-    @param Name Optional identifier to append.
-    @return Text representation of the type.
-*/
+// VFALCO maybe we should rename this to `renderType` or something?
 MRDOCS_DECL
 std::string
-toString(
-    Type const& T,
+toString(Type const& T,
     std::string_view Name = "");
 
-/** Serialize a polymorphic type into a DOM value.
-*/
 inline
 void
 tag_invoke(
@@ -201,8 +178,6 @@ tag_invoke(
     tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
-/** Serialize an optional polymorphic type into a DOM value.
-*/
 inline
 void
 tag_invoke(

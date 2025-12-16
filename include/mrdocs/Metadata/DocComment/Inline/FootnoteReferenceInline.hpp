@@ -22,35 +22,22 @@ namespace mrdocs::doc {
 /** A reference to a symbol.
 
     In markdown, this is represented as "[^label]".
-
-    Syntax:
-
-    @code
-    [^footnote-id]
-    @endcode
 */
 struct FootnoteReferenceInline
     : InlineCommonBase<InlineKind::FootnoteReference>
 {
-    /** Footnote label that the reference points to.
-    */
     std::string label;
-
-    /** Order references by their label.
-    */
     auto operator<=>(FootnoteReferenceInline const&) const = default;
-    /** Equality compares labels.
-    */
     bool operator==(FootnoteReferenceInline const&) const noexcept = default;
 };
 
-/** Map the @ref FootnoteReferenceInline to a @ref dom::Object.
+/** Map the @ref FootnoteReference to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -63,8 +50,8 @@ tag_invoke(
     io.map("label", I.label);
 }
 
-/** Return the @ref FootnoteReferenceInline as a @ref dom::Value object.
-*/
+/** Return the @ref FootnoteReference as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

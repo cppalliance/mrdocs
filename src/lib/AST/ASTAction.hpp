@@ -65,7 +65,7 @@ public:
         This `clang::ASTConsumer` then creates an
         @ref ASTVisitor that will convert the AST into a set
         of MrDocs Info objects.
-    */
+     */
     void
     ExecuteAction() override;
 
@@ -81,7 +81,7 @@ public:
         The main function of the ASTVisitorConsumer is
         the `HandleTranslationUnit` function, which is called
         to traverse the AST with the @ref ASTVisitor.
-    */
+     */
     std::unique_ptr<clang::ASTConsumer>
     CreateASTConsumer(
         clang::CompilerInstance& Compiler,

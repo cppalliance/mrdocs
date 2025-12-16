@@ -50,7 +50,7 @@ namespace mrdocs {
 
     Inline content elements contain other inlines
     but cannot contain blocks.
-*/
+ */
 struct MRDOCS_DECL DocComment {
     /// The list of text blocks.
     std::vector<Polymorphic<doc::Block>> Document;
@@ -67,7 +67,7 @@ struct MRDOCS_DECL DocComment {
 
         The results are concatenated in the order
         they appear in the source code.
-    */
+     */
     std::vector<doc::ReturnsBlock> returns;
 
     /// The list of parameters.
@@ -92,7 +92,7 @@ struct MRDOCS_DECL DocComment {
 
         These references are created with the
         \\relates command.
-    */
+     */
     std::vector<doc::ReferenceInline> relates;
 
     /** The list of "related" references.
@@ -103,7 +103,7 @@ struct MRDOCS_DECL DocComment {
         They are calculated automatically by
         MrDocs and are rendered as
         Non-Member Functions.
-    */
+     */
     std::vector<doc::ReferenceInline> related;
 
     /** Constructor.
@@ -133,8 +133,6 @@ struct MRDOCS_DECL DocComment {
             postconditions.empty();
     }
 
-    /** Three-way comparison on the rendered block sequence.
-    */
     auto operator<=>(DocComment const& other) const noexcept {
         if (auto const cmp = Document.size() <=> other.Document.size();
             !std::is_eq(cmp))
@@ -151,13 +149,7 @@ struct MRDOCS_DECL DocComment {
         }
         return std::strong_ordering::equal;
     }
-
-    /** Equality compares all stored blocks.
-    */
     bool operator==(DocComment const&) const noexcept = default;
-
-    /** Inequality is the negation of equality.
-    */
     bool operator!=(DocComment const&) const noexcept;
 
     /** Append blocks from another DocComment to this.
@@ -166,8 +158,6 @@ struct MRDOCS_DECL DocComment {
     append(DocComment&& other);
 };
 
-/** Append blocks from `other` into `I`, preserving order.
-*/
 inline
 void merge(DocComment& I, DocComment&& other)
 {
@@ -184,10 +174,11 @@ void merge(DocComment& I, DocComment&& other)
 
 /** Map the @ref DocComment to a @ref dom::Object.
 
+    @param t The tag.
     @param io The output object.
     @param I The DocComment to map.
     @param domCorpus The DOM corpus, or nullptr.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -233,7 +224,7 @@ tag_invoke(
 }
 
 /** Return the @ref DocComment as a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(
@@ -246,7 +237,7 @@ tag_invoke(
 }
 
 /** Concept to check if a type represents a DocComment node.
-*/
+ */
 template <class T>
 concept DocCommentNode =
     std::derived_from<T, doc::Block> || std::derived_from<T, doc::Inline>;
@@ -367,18 +358,12 @@ traverseImpl(Polymorphic<T>& node, F&& func)
 }
 }
 
-/** Types that can be traversed by DocComment helpers.
-*/
 template <class T>
 concept DocCommentNodeTraversable =
     DocCommentNode<T> ||
     std::same_as<DocComment, T> ||
     (detail::IsPolymorphic<T> && DocCommentNode<typename T::value_type>);
 
-/** Traverse a DocComment tree bottom-up (post-order).
-    @param node Root node to traverse.
-    @param func Visitor invoked after children are visited.
-*/
 template <DocCommentNodeTraversable T, class F>
 void
 bottomUpTraverse(T& node, F&& func)
@@ -386,10 +371,6 @@ bottomUpTraverse(T& node, F&& func)
     detail::traverseImpl<true>(node, std::forward<F>(func));
 }
 
-/** Traverse a DocComment tree top-down (pre-order).
-    @param node Root node to traverse.
-    @param func Visitor invoked before children are visited.
-*/
 template <DocCommentNodeTraversable T, class F>
 void
 topDownTraverse(T& node, F&& func)

@@ -36,21 +36,15 @@ struct ConceptSymbol final
 
     //--------------------------------------------
 
-    /** Construct a concept symbol with its ID.
-    */
     explicit ConceptSymbol(SymbolID const &ID) noexcept
         : SymbolCommonBase(ID)
     {
     }
 
-    /** Compare concept symbols by base info, template, and constraint.
-    */
     std::strong_ordering
     operator<=>(ConceptSymbol const& other) const;
 };
 
-/** Merge another ConceptSymbol into this one.
-*/
 MRDOCS_DECL
 void
 merge(ConceptSymbol& I, ConceptSymbol&& Other);
@@ -61,7 +55,7 @@ merge(ConceptSymbol& I, ConceptSymbol&& Other);
     @param io The IO object to use for mapping.
     @param I The ConceptSymbol to map.
     @param domCorpus The DomCorpus used to create
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -79,7 +73,7 @@ tag_invoke(
 }
 
 /** Map the ConceptSymbol to a @ref dom::Value object.
-*/
+ */
 inline
 void
 tag_invoke(

@@ -19,38 +19,24 @@
 
 namespace mrdocs::doc {
 
-/** Emphasized text (typically rendered in italics).
-
-    Syntax:
-
-    @code
-    @e emphasized or *italic text* or _italic text_
-    @endcode
+/** A piece of styled text.
 */
 struct EmphInline final
     : InlineCommonBase<InlineKind::Emph>
     , InlineContainer
 {
-    /** Inherit inline container constructors.
-    */
     using InlineContainer::InlineContainer;
-
-    /** Order emphasis spans by their contents.
-    */
     auto operator<=>(EmphInline const&) const = default;
-
-    /** Equality compares contained text.
-    */
     bool operator==(EmphInline const&) const noexcept = default;
 };
 
-/** Map the @ref EmphInline to a @ref dom::Object.
+/** Map the @ref Emph to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -63,8 +49,8 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
 }
 
-/** Return the @ref EmphInline as a @ref dom::Value object.
-*/
+/** Return the @ref Emph as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(

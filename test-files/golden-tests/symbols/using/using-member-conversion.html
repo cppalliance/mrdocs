@@ -1,19 +1,15 @@
 <html lang="en">
 <head>
 <title>Reference</title>
-<meta charset="utf-8">
 </head>
 <body>
 <div>
 <h1>Reference</h1>
 <div>
 <div>
-<h2 id="index">
-Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
-</h2>
+<h2 id="index"></h2>
 </div>
-<h2>
-Types</h2>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -31,39 +27,36 @@ Types</h2>
 </div>
 <div>
 <div>
-<h2 id="fun_ptr">
-fun_ptr<a class="mrdocs-anchor" href="#fun_ptr" aria-label="Permalink">#</a>
-</h2>
+<h2 id="fun_ptr">fun_ptr</h2>
 <div>
 <p>A pointer to function typedef</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
-<pre><code class="source-code cpp">using fun_ptr = void(*)();</code></pre>
+<pre>
+<code class="source-code cpp">using fun_ptr = void(*)();</code>
+</pre>
 </div>
 </div>
 <div>
 <div>
-<h2 id="X">
-X<a class="mrdocs-anchor" href="#X" aria-label="Permalink">#</a>
-</h2>
+<h2 id="X">X</h2>
 <div>
 <p>This struct will be inherited as public</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
-<pre><code class="source-code cpp">struct X;</code></pre>
+<pre>
+<code class="source-code cpp">struct X;</code>
+</pre>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -79,8 +72,7 @@ Member Functions</h2>
 
 
 <div>
-<h2>
-Derived Classes</h2>
+<h2>Derived Classes</h2>
 <table>
 <thead>
 <tr>
@@ -97,46 +89,42 @@ Derived Classes</h2>
 </div>
 <div>
 <div>
-<h2 id="X-2conversion">
-X::operator fun_ptr<a class="mrdocs-anchor" href="#X-2conversion" aria-label="Permalink">#</a>
-</h2>
+<h2 id="X-2conversion">X::operator fun_ptr</h2>
 <div>
 <p>Conversion operator to function pointer.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
-<pre><code class="source-code cpp">operator <a href="#fun_ptr">fun_ptr</a>() const;</code></pre>
+<pre>
+<code class="source-code cpp">operator <a href="#fun_ptr">fun_ptr</a>() const;</code>
+</pre>
 </div>
 <div>
-<h3>
-Return Value</h3>
+<h3>Return Value</h3>
 A pointer to function typedef
 </div>
 </div>
 <div>
 <div>
-<h2 id="Y">
-Y<a class="mrdocs-anchor" href="#Y" aria-label="Permalink">#</a>
-</h2>
+<h2 id="Y">Y</h2>
 <div>
 <p>This struct inherits from X</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
-<pre><code class="source-code cpp">struct Y
-    : <a href="#X">X</a></code></pre>
+<pre>
+<code class="source-code cpp">struct Y
+    : <a href="#X">X</a></code>
+</pre>
 </div>
 <div>
-<h2>
-Base Classes</h2>
+<h2>Base Classes</h2>
 <table>
 <thead>
 <tr>
@@ -149,8 +137,7 @@ Base Classes</h2>
 </tbody>
 </table>
 </div>
-<h2>
-Member Functions</h2>
+<h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -163,8 +150,7 @@ Member Functions</h2>
 </tbody>
 </table>
 
-<h2>
-Using Declarations</h2>
+<h2>Using Declarations</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -182,23 +168,21 @@ Using Declarations</h2>
 </div>
 <div>
 <div>
-<h2 id="Y-2conversion">
-Y::operator void(*)()<a class="mrdocs-anchor" href="#Y-2conversion" aria-label="Permalink">#</a>
-</h2>
+<h2 id="Y-2conversion">Y::operator void(*)()</h2>
 <div>
 <p>Bring X::operator fun_ptr into Y.</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
-<pre><code class="source-code cpp">using X::operator void(*)();</code></pre>
+<pre>
+<code class="source-code cpp">using X::operator void(*)();</code>
+</pre>
 </div>
 <div>
-<h3>
-Introduced Symbols</h3>
+<h3>Introduced Symbols</h3>
 <table>
 <thead>
 <tr>
@@ -218,8 +202,8 @@ Introduced Symbols</h3>
 </div>
 
 </div>
-<footer class="mrdocs-footer">
-<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
-</footer>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
 </body>
 </html>

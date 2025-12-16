@@ -20,20 +20,20 @@ namespace mrdocs {
 /** Info variant discriminator
 */
 enum class SymbolKind {
-  /// Kind is not specified.
-  None = 0,
-#define INFO(Type) Type,
+    /// Kind is not specified.
+    None = 0,
+    #define INFO(Type) Type,
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 };
 
 /** Return the name of the SymbolKind as a string.
-*/
+ */
 MRDOCS_DECL
 dom::String
 toString(SymbolKind kind) noexcept;
 
 /** Return the SymbolKind from a @ref dom::Value string.
-*/
+ */
 inline
 void
 tag_invoke(
@@ -43,9 +43,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-/** Count the number of SymbolKind enumerators.
-    @return Number of `SymbolKind` values generated from SymbolNodes.inc.
-*/
 consteval
 std::underlying_type_t<SymbolKind>
 countSymbolKind()

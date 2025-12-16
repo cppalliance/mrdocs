@@ -42,27 +42,9 @@ class MRDOCS_VISIBLE
     friend class TaskGroup;
 
 public:
-    /** Helper that preserves lvalue-ref and constness for references.
-    */
-    template <class T>
-    struct arg_ty {
-        /// Resulting adjusted type.
-        using type = T;
-    };
-
-    /** Alias returning the preserved argument type.
-
-        @tparam T Original argument type.
-        @return Argument type with reference/const qualifiers preserved.
-    */
-    template <class T>
-    struct arg_ty<T&> {
-        /// Resulting adjusted type.
-        using type = std::conditional_t<std::is_const_v<T>, T, T&>;
-    };
-
-    /** Helper that forwards argument qualifiers.
-    */
+    template<class T> struct arg_ty { using type = T; };
+    template<class T> struct arg_ty<T&> { using type =
+        std::conditional_t< std::is_const_v<T>, T, T&>; };
     template<class T> using arg_t = typename arg_ty<T>::type;
 
     /** Destructor.

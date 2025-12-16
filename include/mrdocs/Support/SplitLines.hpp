@@ -70,44 +70,20 @@ lbLen(std::string_view s, std::size_t i) noexcept
 }
 }
 
-/** A lazy input range of std::string_view lines split on all known line breaks.
-*/
+// A lazy input range of std::string_view lines split on all known line breaks.
 struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
-    /** Underlying string to split.
-    */
     std::string_view sv_;
 
-    /** Construct an empty view.
-    */
     constexpr SplitLinesView() = default;
-    /** Construct a view over @p sv.
-        @param sv String to split into lines.
-    */
     explicit constexpr SplitLinesView(std::string_view sv) : sv_(sv) {}
 
-    /** Iterator over lines produced by SplitLinesView.
-    */
     struct Iterator {
-        /** Reference to the source string.
-        */
         std::string_view sv{};
-        /** Start of the current line.
-        */
         std::size_t cur = 0;       // start of current line
-        /** Index of the next break delimiter or npos.
-        */
         std::size_t nextBreak = 0; // index of current break (or npos)
-        /** Flag indicating the end iterator.
-        */
         bool atEnd = false;
 
-        /** Construct an end iterator.
-        */
         constexpr Iterator() = default;
-        /** Construct a begin or end iterator.
-            @param s Source string.
-            @param begin If true, position at the first line; otherwise create end iterator.
-        */
         explicit constexpr Iterator(std::string_view s, bool begin) : sv(s)
         {
             if (!begin)
@@ -118,10 +94,6 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
             nextBreak = findBreak(cur);
         }
 
-        /** Compute the next line break position.
-            @param from Index to start searching.
-            @return Offset of the next break or npos.
-        */
         constexpr std::size_t
         findBreak(std::size_t from) const noexcept
         {
@@ -135,16 +107,9 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
             return std::string_view::npos;
         }
 
-        /** Line view type exposed by the iterator.
-        */
         using value_type = std::string_view;
-        /** Signed distance type for the iterator.
-        */
         using difference_type = std::ptrdiff_t;
 
-        /** Return the current line segment.
-            @return View of the current line.
-        */
         constexpr value_type
         operator*() const noexcept
         {
@@ -154,9 +119,6 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
             return sv.substr(cur, end - cur);
         }
 
-        /** Advance to the next line.
-            @return Reference to this iterator.
-        */
         constexpr Iterator&
         operator++() noexcept
         {
@@ -175,13 +137,9 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
             return *this;
         }
 
-        /** Advance to the next line (post-increment).
-            @param unused Dummy parameter for postfix form.
-        */
         constexpr void
-        operator++(int unused)
+        operator++(int)
         {
-            (void)unused;
             ++*this;
         }
 
@@ -192,17 +150,11 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
         }
     };
 
-    /** Return an iterator to the first line.
-        @return Iterator positioned at the first line.
-    */
     constexpr Iterator
     begin() const noexcept
     {
         return Iterator{ sv_, true };
     }
-    /** Return the end sentinel for the view.
-        @return Default sentinel representing the end.
-    */
     constexpr std::default_sentinel_t
     end() const noexcept
     {
@@ -213,14 +165,8 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
 // Pipeable range adaptor object:
 //   - s | text::views::splitLines
 //   - text::views::splitLines(s)
-/** Range adaptor that constructs a SplitLinesView.
-*/
 struct SplitLinesAdaptor {
     // Call-style
-    /** Split a string view into lines.
-        @param sv Source string.
-        @return View over the lines in @p sv.
-    */
     constexpr auto
     operator()(std::string_view sv) const
     {
@@ -231,10 +177,6 @@ struct SplitLinesAdaptor {
     template <std::ranges::contiguous_range R>
     requires
         std::same_as<std::remove_cv_t<std::ranges::range_value_t<R>>, char>
-    /** Split any contiguous character range into lines.
-        @param r Range of characters.
-        @return View over the lines in the range.
-    */
     constexpr auto
     operator()(R&& r) const
     {
@@ -248,11 +190,6 @@ struct SplitLinesAdaptor {
     requires
         std::ranges::contiguous_range<R> &&
         std::same_as<std::remove_cv_t<std::ranges::range_value_t<R>>, char>
-    /** Pipe a contiguous character range into the adaptor.
-        @param r Range to split.
-        @param a SplitLines adaptor instance.
-        @return View over the lines in @p r.
-    */
     friend constexpr auto
     operator|(R&& r, SplitLinesAdaptor const& a)
     {
@@ -263,7 +200,7 @@ struct SplitLinesAdaptor {
 /** Split a string view into lines, recognizing all common line breaks
 
     This is a convenience function for creating a SplitLinesView.
-*/
+ */
 inline constexpr SplitLinesAdaptor splitLines{};
 
 } // mrdocs

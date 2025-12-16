@@ -1,19 +1,15 @@
 <html lang="en">
 <head>
 <title>Reference</title>
-<meta charset="utf-8">
 </head>
 <body>
 <div>
 <h1>Reference</h1>
 <div>
 <div>
-<h2 id="index">
-Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
-</h2>
+<h2 id="index"></h2>
 </div>
-<h2>
-Types</h2>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -27,8 +23,7 @@ Types</h2>
 </tbody>
 </table>
 
-<h2>
-Enums</h2>
+<h2>Enums</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -41,8 +36,7 @@ Enums</h2>
 </tbody>
 </table>
 
-<h2>
-Functions</h2>
+<h2>Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -60,26 +54,24 @@ Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="Result">
-Result<a class="mrdocs-anchor" href="#Result" aria-label="Permalink">#</a>
-</h2>
+<h2 id="Result">Result</h2>
 <div>
 <p>Helper result class</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;enum.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;class T&gt;
-class Result;</code></pre>
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
+class Result;</code>
+</pre>
 </div>
 
 
 <div>
-<h2>
-Non-Member Functions</h2>
+<h2>Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -95,28 +87,26 @@ Non-Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="SmallVector">
-SmallVector<a class="mrdocs-anchor" href="#SmallVector" aria-label="Permalink">#</a>
-</h2>
+<h2 id="SmallVector">SmallVector</h2>
 <div>
 <p>Helper result class</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;enum.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;
+<pre>
+<code class="source-code cpp">template&lt;
     class T,
     unsigned long N&gt;
-class SmallVector;</code></pre>
+class SmallVector;</code>
+</pre>
 </div>
 
 
 <div>
-<h2>
-Non-Member Functions</h2>
+<h2>Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -132,23 +122,21 @@ Non-Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="E">
-E<a class="mrdocs-anchor" href="#E" aria-label="Permalink">#</a>
-</h2>
+<h2 id="E">E</h2>
 <div>
 <p>An enum with non-member functions</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;enum.cpp&gt;</code></div>
-<pre><code class="source-code cpp">enum class E : int;</code></pre>
+<pre>
+<code class="source-code cpp">enum class E : int;</code>
+</pre>
 </div>
 <div>
-<h2>
-Non-Member Functions</h2>
+<h2>Non-Member Functions</h2>
 <table>
 <thead>
 <tr>
@@ -166,77 +154,71 @@ Non-Member Functions</h2>
 </div>
 <div>
 <div>
-<h2 id="makeE">
-makeE<a class="mrdocs-anchor" href="#makeE" aria-label="Permalink">#</a>
-</h2>
+<h2 id="makeE">makeE</h2>
 <div>
 <p>Function that returns A</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;enum.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#E">E</a>
-makeE();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#E">E</a>
+makeE();</code>
+</pre>
 </div>
 <div>
-<h3>
-Return Value</h3>
+<h3>Return Value</h3>
 An instance of A
 </div>
 </div>
 <div>
 <div>
-<h2 id="makeEs">
-makeEs<a class="mrdocs-anchor" href="#makeEs" aria-label="Permalink">#</a>
-</h2>
+<h2 id="makeEs">makeEs</h2>
 <div>
 <p>Function that returns template on A</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;enum.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#SmallVector">SmallVector&lt;E, 3&gt;</a>
-makeEs();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#SmallVector">SmallVector&lt;E, 3&gt;</a>
+makeEs();</code>
+</pre>
 </div>
 <div>
-<h3>
-Return Value</h3>
+<h3>Return Value</h3>
 A vector of As
 </div>
 </div>
 <div>
 <div>
-<h2 id="tryMakeE">
-tryMakeE<a class="mrdocs-anchor" href="#tryMakeE" aria-label="Permalink">#</a>
-</h2>
+<h2 id="tryMakeE">tryMakeE</h2>
 <div>
 <p>Function that returns template on A</p>
 </div>
 </div>
 <div>
-<h3>
-Synopsis</h3>
+<h3>Synopsis</h3>
 <div>
 Declared in <code>&lt;enum.cpp&gt;</code></div>
-<pre><code class="source-code cpp"><a href="#Result">Result&lt;E&gt;</a>
-tryMakeE();</code></pre>
+<pre>
+<code class="source-code cpp"><a href="#Result">Result&lt;E&gt;</a>
+tryMakeE();</code>
+</pre>
 </div>
 <div>
-<h3>
-Return Value</h3>
+<h3>Return Value</h3>
 An instance of A or an error
 </div>
 </div>
 
 </div>
-<footer class="mrdocs-footer">
-<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
-</footer>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
 </body>
 </html>

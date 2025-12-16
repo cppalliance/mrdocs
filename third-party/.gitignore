@@ -1,7 +1,0 @@
-# Ignore build/install trees produced by bootstrap recipes
-build/
-install/
-source/
-*/build/
-*/install/
-*/source/

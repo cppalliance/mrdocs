@@ -30,7 +30,7 @@ namespace mrdocs {
     Builder.Visit(qt);
     std::unique_ptr<Type> typeInfo = Builder.result();
     @endcode
-*/
+ */
 class TypeBuilder
     : public TerminalTypeVisitor<TypeBuilder>
 {
@@ -72,7 +72,7 @@ public:
         as a unique pointer to the `Type` object.
 
         @return A unique pointer to the `Type` object.
-    */
+     */
     Polymorphic<Type>
     result()
     {
@@ -86,7 +86,7 @@ public:
 
         @param T The pointer type to build.
         @param quals The qualifiers for the pointer type.
-    */
+     */
     void buildPointer(clang::PointerType const* T, unsigned quals);
 
     /** Build type information for a lvalue reference type.
@@ -95,7 +95,7 @@ public:
         the pointee type.
 
         @param T The lvalue reference type to build.
-    */
+     */
     void buildLValueReference(clang::LValueReferenceType const* T);
 
     /** Build type information for an rvalue reference type.
@@ -104,7 +104,7 @@ public:
         the pointee type.
 
         @param T The rvalue reference type to build.
-    */
+     */
     void buildRValueReference(clang::RValueReferenceType const* T);
 
     /** Build type information for a member pointer type.
@@ -117,7 +117,7 @@ public:
 
         @param T The member pointer type to build.
         @param quals The qualifiers for the member pointer type.
-    */
+     */
     void buildMemberPointer(clang::MemberPointerType const* T, unsigned quals);
 
     /** Build type information for an array type.
@@ -130,7 +130,7 @@ public:
         and the expression defining the array bounds.
 
         @param T The array type to build.
-    */
+     */
     void buildArray(clang::ArrayType const* T);
 
     /** Populate type information for a function type.
@@ -142,7 +142,7 @@ public:
         It includes the return type and the parameter types.
 
         @param T The function type to populate.
-    */
+     */
     void populate(clang::FunctionType const* T);
 
     /** Build type information for a decltype type.
@@ -156,7 +156,7 @@ public:
         @param T The decltype type to build.
         @param quals The qualifiers for the decltype type.
         @param pack Whether the decltype type is a pack.
-    */
+     */
     void buildDecltype(clang::DecltypeType const* T, unsigned quals, bool pack);
 
     /** Build type information for an auto type.
@@ -171,7 +171,7 @@ public:
         @param T The auto type to build.
         @param quals The qualifiers for the auto type.
         @param pack Whether the auto type is a pack.
-    */
+     */
     void buildAuto(clang::AutoType const* T, unsigned quals, bool pack);
 
     /** Build type information for a terminal type.
@@ -187,7 +187,7 @@ public:
         @param T The terminal type to build.
         @param quals The qualifiers for the terminal type.
         @param pack Whether the terminal type is a pack.
-    */
+     */
     void buildTerminal(
         clang::Type const* T,
         unsigned quals,
@@ -207,7 +207,7 @@ public:
         @param TArgs The template arguments.
         @param quals The qualifiers for the terminal type.
         @param pack Whether the terminal type is a pack.
-    */
+     */
     void buildTerminal(
         clang::NestedNameSpecifier NNS,
         clang::IdentifierInfo const* II,
@@ -229,7 +229,7 @@ public:
         @param TArgs The template arguments.
         @param quals The qualifiers for the terminal type.
         @param pack Whether the terminal type is a pack.
-    */
+     */
     void buildTerminal(
         clang::NestedNameSpecifier NNS,
         clang::NamedDecl* D,

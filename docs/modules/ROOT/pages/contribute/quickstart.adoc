@@ -1,9 +1,0 @@
-= Contributor Quickstart
-
-This page contains information for contributors to the Mr.Docs project.
-It is intended to provide an overview of the codebase and the process of adding new features.
-
-Before sending changes, run `python util/run_all_tests.py`.
-This script is treated as a “source of truth” pass that configures the preferred preset, builds, runs golden + unit + lint/schema/self-doc checks, installs into a local `install/<preset>` prefix, and (by default) builds docs using that fresh install.
-Not every policy can be enforced programmatically, but this script covers the checks that are automated; prefer it over ad-hoc command sequences.
-Use `--skip-docs` to omit docs or `--no-strict` to relax strict warning handling when needed.

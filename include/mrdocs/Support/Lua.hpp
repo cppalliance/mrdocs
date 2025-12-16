@@ -20,17 +20,10 @@
 #include <string>
 #include <string_view>
 
-namespace mrdocs {
-/** Lua interop helpers for the optional scripting/backend integration.
 
-    This namespace contains glue for pushing/popping values, registering
-    functions, and safely executing snippets so embedders can enable Lua
-    without duplicating binding code.
-*/
+namespace mrdocs {
 namespace lua {
 
-/** Internal tag granting access to lua internals.
-*/
 struct Access;
 
 class Context;
@@ -40,8 +33,6 @@ class Table;
 class Value;
 class Function;
 
-/** Pointer to a Lua-callable function returning Value.
-*/
 using FunctionPtr = Value (*)(std::vector<Value>);
 
 //------------------------------------------------
@@ -54,33 +45,22 @@ class zstring
     char const* c_str_;
 
 public:
-    /** Construct from a C-string pointer.
-        @param s Null-terminated string.
-    */
     zstring(char const* s) noexcept
         : c_str_(s)
     {
     }
 
-    /** Construct from string_view (stores an owned copy).
-        @param s String view to copy.
-    */
     zstring(std::string_view s)
         : s_(s)
         , c_str_(s_.c_str())
     {
     }
 
-    /** Construct from std::string without copying.
-        @param s Source string.
-    */
     zstring(std::string const& s)
         : c_str_(s.c_str())
     {
     }
 
-    /** Return the underlying C-string pointer.
-    */
     char const* c_str() const noexcept
     {
         return c_str_;
@@ -121,10 +101,6 @@ public:
 
 //------------------------------------------------
 
-/** Stack scope guard for Lua calls.
-*/
-/** Helper that balances the Lua stack for a Context scope.
-*/
 class Scope
 {
     Context ctx_;
@@ -137,14 +113,9 @@ class Scope
 
 public:
     MRDOCS_DECL
-    /** Create a scope that manages Lua stack references.
-        @param ctx Lua context to guard.
-    */
     Scope(Context const& ctx) noexcept;
 
     MRDOCS_DECL
-    /** Pop any pending stack references on destruction.
-    */
     ~Scope();
 
     /** Load a Lua chunk
@@ -230,23 +201,11 @@ class MRDOCS_DECL
 
     union
     {
-        /** Stored boolean value when kind_ == boolean.
-        */
         bool b_;
-        /** Stored integer value when kind_ == integer.
-        */
         int i_;
-        /** Stack index when kind_ == value.
-        */
         int index_; // for Value
-        /** Stored string view when kind_ == string.
-        */
         std::string_view s_;
-        /** Stored array when kind_ == domArray.
-        */
         dom::Array arr_;
-        /** Stored object when kind_ == domObject.
-        */
         dom::Object obj_;
     };
 
@@ -256,41 +215,18 @@ class MRDOCS_DECL
     Param(Param&&) noexcept;
 
 public:
-    /** Destroy the stored value without throwing.
-    */
     ~Param();
-
-    /** Construct a nil parameter.
-    */
     Param(std::nullptr_t) noexcept;
-    /** Construct an integer parameter.
-    */
     Param(std::int64_t) noexcept;
-    /** Construct a string parameter (non-owning).
-    */
     Param(std::string_view s) noexcept;
-    /** Construct from a Lua Value already on the stack.
-    */
     Param(Value const& value) noexcept;
-    /** Construct from a DOM array.
-    */
     Param(dom::Array arr) noexcept;
-    /** Construct from a DOM object.
-    */
     Param(dom::Object obj) noexcept;
-    /** Construct from a generic DOM value.
-    */
     Param(dom::Value const& value) noexcept;
 
-    /** Deleted copy constructor to avoid double pops.
-    */
     Param(Param const&) = delete;
-    /** Deleted copy assignment to avoid double pops.
-    */
     Param& operator=(Param const&) = delete;
 
-    /** Construct a boolean parameter from a bool-like type.
-    */
     template<class Boolean>
     requires std::is_same_v<Boolean, bool>
     Param(Boolean const& b) noexcept
@@ -299,15 +235,11 @@ public:
     {
     }
 
-    /** Construct a string parameter from C-string.
-    */
     Param(char const* s) noexcept
         : Param(std::string_view(s))
     {
     }
 
-    /** Construct a string parameter from a convertible string type.
-    */
     template<class String>
     requires std::is_convertible_v<
         String, std::string_view>
@@ -316,8 +248,6 @@ public:
     {
     }
 
-    /** Construct an integral parameter from an enum.
-    */
     template<class Enum>
     requires std::is_enum_v<Enum>
     Param(Enum v) noexcept
@@ -353,18 +283,12 @@ class MRDOCS_DECL
     Value
 {
 protected:
-    /** Scope that owns the stack slot for this value.
-    */
     Scope* scope_;
-    /** Stack index where the value is stored.
-    */
     int index_;
 
     friend struct Access;
 
-    /** Create a value referring to a stack slot within a scope.
-    */
-    Value(int position, Scope& scope) noexcept;
+    Value(int, Scope&) noexcept;
 
 public:
     /** Destructor.
@@ -400,27 +324,13 @@ public:
     */
     Value(Value const& other);
 
-    /** Return the Lua type of this value.
-    */
     Type type() const noexcept;
 
-    /** Return true if the value is nil.
-    */
     bool isNil() const noexcept;
-    /** Return true if the value is a boolean.
-    */
     bool isBoolean() const noexcept;
-    /** Return true if the value is numeric.
-    */
     bool isNumber() const noexcept;
-    /** Return true if the value is a string.
-    */
     bool isString() const noexcept;
-    /** Return true if the value is a function.
-    */
     bool isFunction() const noexcept;
-    /** Return true if the value is a table.
-    */
     bool isTable() const noexcept;
 
     /** Return a string representation.
@@ -512,28 +422,16 @@ class String : public Value
     String(int index, Scope&) noexcept;
 
 public:
-    /** Wrap an existing Lua value as a string.
-    */
     MRDOCS_DECL String(Value value);
-    /** Create a new Lua string from the given view.
-    */
     MRDOCS_DECL explicit String(std::string_view s);
 
-    /** Retrieve the underlying string view.
-        @return View of the Lua string contents.
-    */
     MRDOCS_DECL std::string_view get() const noexcept;
 
-    /** Dereference to the underlying string view.
-        @return View of the Lua string contents.
-    */
     std::string_view operator*() const noexcept
     {
         return get();
     }
 
-    /** Implicit conversion to string view.
-    */
     operator std::string_view() const noexcept
     {
         return get();
@@ -552,8 +450,6 @@ class MRDOCS_DECL
     Function(int index, Scope&) noexcept;
 
 public:
-    /** Construct a function wrapper from an existing value.
-    */
     Function(Value value);
 };
 
@@ -574,22 +470,12 @@ class Table : public Value
         std::size_t size) const;
 
 public:
-    /** Construct a table by copying fields from a DOM object.
-    */
-    MRDOCS_DECL Table(Scope& scope, dom::Object const& obj);
-    /** Wrap an existing Lua value as a table.
-    */
+    MRDOCS_DECL Table(Scope&, dom::Object const& obj);
     MRDOCS_DECL Table(Value value);
-    /** Create an empty table in the given scope.
-    */
     MRDOCS_DECL explicit Table(Scope& scope);
 
     //MRDOCS_DECL Value get(zstring key) const;
 
-    /** Retrieve a table entry by key; returns nil if missing.
-        @param key Table key to look up.
-        @return Value stored at key or nil if absent.
-    */
     MRDOCS_DECL
     Value
     get(

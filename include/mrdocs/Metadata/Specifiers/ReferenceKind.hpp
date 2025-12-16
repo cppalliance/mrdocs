@@ -30,12 +30,10 @@ enum class ReferenceKind
     RValue
 };
 
-/** Convert a reference kind to its string representation.
-*/
 MRDOCS_DECL dom::String toString(ReferenceKind kind) noexcept;
 
 /** Return the ReferenceKind as a @ref dom::Value string.
-*/
+ */
 inline
 void
 tag_invoke(

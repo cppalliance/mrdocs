@@ -19,6 +19,7 @@
   </struct>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="1"/>
+    <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="9"/>
     <attr id="is-no-return"/>
   </function>
 </namespace>

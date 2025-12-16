@@ -29,43 +29,32 @@ class DomCorpus;
 #define INFO(Type) struct Type##TParam;
 #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 
-/** Base class for a template parameter declaration.
-*/
 struct TParam
 {
     /** The kind of template parameter this is
-    */
+     */
     TParamKind Kind = TParamKind::Type;
 
     /** The template parameters name, if any
-    */
+     */
     std::string Name;
 
-    /** Whether this template parameter is a parameter pack
-    */
+    /** Whether this template parameter is a parameter pack */
     bool IsParameterPack = false;
 
     /** The default template argument, if any
-    */
+     */
     Optional<Polymorphic<TArg>> Default = std::nullopt;
 
-    /** Polymorphic base needs a virtual destructor.
-    */
     constexpr virtual ~TParam() = default;
 
-    /** Compare parameters by kind, name, pack flag, and default.
-    */
     std::strong_ordering operator<=>(TParam const&) const;
 
-    /** View this object as a TParam reference.
-    */
     constexpr TParam const& asTParam() const noexcept
     {
         return *this;
     }
 
-    /** View this object as a mutable TParam reference.
-    */
     constexpr TParam& asTParam() noexcept
     {
         return *this;
@@ -106,14 +95,11 @@ struct TParam
     }
 #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 
+
 protected:
-    /** Defaulted base constructor.
-    */
     constexpr
     TParam() noexcept = default;
 
-    /** Construct with a fixed parameter kind.
-    */
     constexpr
     TParam(
         TParamKind kind) noexcept
@@ -122,8 +108,6 @@ protected:
     }
 };
 
-/** Serialize a template parameter into a DOM value.
-*/
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -131,37 +115,18 @@ tag_invoke(
     TParam const& I,
     DomCorpus const* domCorpus);
 
-/** CRTP base that fixes the parameter kind.
-*/
 template<TParamKind K>
 struct TParamCommonBase : TParam
 {
-    /** Static discriminator for the concrete parameter.
-    */
     static constexpr TParamKind kind_id = K;
 
-    /** True if the parameter is a type parameter.
-        @return `true` when `kind_id` equals `TParamKind::Type`.
-    */
     static constexpr bool isType()     noexcept { return K == TParamKind::Type; }
-
-    /** True if the parameter is a non-type parameter.
-        @return `true` when `kind_id` equals `TParamKind::Constant`.
-    */
     static constexpr bool isConstant() noexcept { return K == TParamKind::Constant; }
-
-    /** True if the parameter is a template template parameter.
-        @return `true` when `kind_id` equals `TParamKind::Template`.
-    */
     static constexpr bool isTemplate() noexcept { return K == TParamKind::Template; }
 
-    /** Compare parameters by their fields.
-    */
     auto operator<=>(TParamCommonBase const&) const = default;
 
 protected:
-    /** Construct with the fixed kind.
-    */
     constexpr
     TParamCommonBase() noexcept
         : TParam(K)

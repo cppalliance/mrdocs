@@ -41,13 +41,9 @@ namespace mrdocs {
 
     where more parameters can be defined as needed for
     parsing options.
-*/
+ */
 struct ParseResult {
-    /** Pointer to the first unparsed character.
-    */
     const char* ptr;
-    /** Error status for the parse operation.
-    */
     Error ec;
 
     friend
@@ -56,10 +52,6 @@ struct ParseResult {
         const ParseResult&,
         const ParseResult& ) = default;
 
-    /** Return true if parsing succeeded.
-
-        @return `true` when `ec` is not a failure.
-    */
     constexpr
     explicit
     operator bool() const noexcept
@@ -80,7 +72,7 @@ struct ParseResult {
         char const* last,
         T& value);
     @endcode
-*/
+ */
 template <class T>
 concept HasParse = requires(
     char const* first,
@@ -108,7 +100,7 @@ concept HasParse = requires(
 
     @param sv The string view to parse
     @param value The value to store the result
-*/
+ */
 template <HasParse T>
 ParseResult
 parse(std::string_view sv, T& value)
@@ -136,7 +128,7 @@ parse(std::string_view sv, T& value)
 
     @copydetails parse(std::string_view, T&)
 
-*/
+ */
 template <HasParse T>
 Expected<T>
 parse(std::string_view sv)

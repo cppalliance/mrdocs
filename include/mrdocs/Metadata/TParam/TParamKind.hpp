@@ -19,17 +19,12 @@
 
 namespace mrdocs {
 
-/** Discriminates the different template parameter categories.
-*/
 enum class TParamKind : int
 {
-#define INFO(Type) Type,
+    #define INFO(Type) Type,
 #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 };
 
-/** Convert a parameter kind to a readable string.
-    @return String view naming the parameter category.
-*/
 MRDOCS_DECL
 std::string_view
 toString(TParamKind kind) noexcept;

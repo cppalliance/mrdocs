@@ -4,7 +4,6 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
-// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -12,11 +11,9 @@
 #include <mrdocs/Platform.hpp>
 #include "TestArgs.hpp"
 #include "TestRunner.hpp"
-#include "Support/TextNormalization.hpp"
-#include "Support/TestLayout.hpp"
-#include "Support/Comparison.hpp"
 #include <lib/ConfigImpl.hpp>
 #include <lib/CorpusImpl.hpp>
+#include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/SingleFileDB.hpp>
 #include <lib/Support/ExecuteAndWaitWithLogging.hpp>
@@ -29,22 +26,46 @@
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <llvm/Support/Program.h>
 #include <atomic>
 #include <iostream>
-#include <unordered_set>
 
 namespace mrdocs {
 
 TestRunner::
 TestRunner(std::string_view generator)
-    : gen_(getGenerators().find(generator))
+    : diffCmdPath_(llvm::sys::findProgramByName("diff"))
+    , gen_(getGenerators().find(generator))
 {
     MRDOCS_ASSERT(gen_ != nullptr);
 }
 
-namespace {
+Expected<void>
+TestRunner::
+writeFile(
+    llvm::StringRef filePath,
+    llvm::StringRef contents)
+{
+    std::error_code ec;
+    llvm::raw_fd_ostream os(
+        filePath, ec, llvm::sys::fs::OF_None);
+    MRDOCS_CHECK(!ec, ec);
+    os << contents;
+    MRDOCS_CHECK(!os.has_error(), os.error());
+    return {};
+}
 
-/** Build a single-file compilation database with the provided command line. */
+namespace {
+void
+replaceCRLFWithLF(std::string &str)
+{
+    std::string::size_type pos = 0;
+    while ((pos = str.find("\r\n", pos)) != std::string::npos) {
+        str.replace(pos, 2, "\n");
+        pos += 1; // Move past the '\n' character
+    }
+}
+
 SingleFileDB
 makeSingleFileDB(llvm::StringRef pathName, std::vector<std::string> cmds)
 {
@@ -58,100 +79,7 @@ makeSingleFileDB(llvm::StringRef pathName, std::vector<std::string> cmds)
     cc.Heuristic = "unit test";
     return SingleFileDB(std::move(cc));
 }
-
-/** Ensure the given path refers to a regular .cpp file; report and fail otherwise. */
-bool
-ensureRegularCpp(llvm::StringRef filePath)
-{
-    auto ft = files::getFileType(filePath);
-    if (!ft)
-    {
-        report::error("{}: \"{}\"", ft.error(), filePath);
-        return false;
-    }
-    if (ft.value() == files::FileType::not_found) {
-        report::error("{}: \"{}\"", Error("file not found"), filePath);
-        return false;
-    }
-    if(ft.value() != files::FileType::regular) {
-        report::error("{}: \"{}\"", Error("not a regular file"), filePath);
-        return false;
-    }
-    return true;
-}
-
-/** Load and normalize directory-level settings, applying any local mrdocs.yml. */
-Expected<Config::Settings>
-loadDirSettings(
-    std::string const& dirPath,
-    Config::Settings dirSettings,
-    ReferenceDirectories const& dirs)
-{
-    dirSettings.sourceRoot = dirPath;
-    dirSettings.input = {dirPath};
-    std::string const& configPath = files::appendPath(dirPath, "mrdocs.yml");
-    bool const hasTagfileOverride = !dirSettings.tagfile.empty();
-    if (files::exists(configPath))
-    {
-        MRDOCS_TRY(Config::Settings::load_file(dirSettings, configPath, dirs));
-    }
-    MRDOCS_TRY(dirSettings.normalize(dirs));
-    // Golden tests shouldn't emit tagfiles unless a test explicitly requests one.
-    if (!hasTagfileOverride)
-    {
-        dirSettings.tagfile.clear();
-    }
-    return dirSettings;
-}
-
-/** Build root settings from CLI args and the effective input directory. */
-Expected<Config::Settings>
-makeRootSettings(
-    std::string const& inputDir,
-    char const** argv,
-    ReferenceDirectories& dirs)
-{
-    Config::Settings dirSettings;
-    testArgs.apply(dirSettings, dirs, argv);
-    dirSettings.multipage = false;
-    return loadDirSettings(inputDir, std::move(dirSettings), dirs);
-}
-
-/** Bundles the normalized path, detected type, and root settings for an input. */
-struct PathContext
-{
-    files::FileType type;
-    std::string inputPath;
-    std::string inputDir;
-    Config::Settings dirSettings;
-};
-
-/** Build PathContext, normalizing the path and loading directory settings. */
-Expected<PathContext>
-buildPathContext(std::string inputPath, char const** argv, ReferenceDirectories& dirs)
-{
-    inputPath = files::normalizePath(inputPath);
-    auto fileType = files::getFileType(inputPath);
-    if (!fileType)
-        return Unexpected(fileType.error());
-
-    std::string const inputDir = fileType == files::FileType::directory
-        ? inputPath
-        : files::getParentDir(inputPath);
-    dirs.cwd = inputDir;
-
-    auto dirSettings = makeRootSettings(inputDir, argv, dirs);
-    if (!dirSettings)
-        return Unexpected(dirSettings.error());
-
-    return PathContext{
-        *fileType,
-        std::move(inputPath),
-        inputDir,
-        *dirSettings
-    };
-}
-} // (anon)
+} // namespace
 
 void
 TestRunner::
@@ -161,48 +89,84 @@ handleFile(
 {
     report::debug("Handling {}", filePath);
 
-    MRDOCS_ASSERT(llvm::sys::path::extension(filePath).compare_insensitive(".cpp") == 0);
-    if (!ensureRegularCpp(filePath))
-        return;
+    namespace path = llvm::sys::path;
 
-    auto resolved = resolveTestLayout(
-        filePath, dirSettings, gen_->fileExtension(), dirs_, testArgs.action);
-    if (!resolved)
-    {
-        return report::error("{}: \"{}\"", resolved.error(), filePath);
+    MRDOCS_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
+
+    // Check the source file
+    auto ft = files::getFileType(filePath);
+    if (ft.value() == files::FileType::not_found) {
+        return report::error("{}: \"{}\"",
+            Error("file not found"), filePath);
     }
-    Config::Settings fileSettings = std::move(resolved->settings);
-    TestLayout layout = std::move(resolved->layout);
-
-    auto expConfig = ConfigImpl::load(fileSettings, dirs_, threadPool_);
-    if (!expConfig)
-    {
-        return report::error("{}: \"{}\"", expConfig.error(), filePath);
+    if(ft.value() != files::FileType::regular) {
+        return report::error("{}: \"{}\"",
+             Error("not a regular file"), filePath);
     }
-    std::shared_ptr<ConfigImpl const> config = *expConfig;
 
-    auto runWith = [&](std::vector<std::string> command)
+    // File-specific config
+    report::debug("Loading Config");
+    Config::Settings fileSettings = dirSettings;
+    auto configPath = files::withExtension(filePath, "yml");
+    if (files::exists(configPath)) {
+        if (auto exp = Config::Settings::load_file(fileSettings, configPath, dirs_); !exp)
+        {
+            return report::error("Failed to load config file: {}: \"{}\"", exp.error(), configPath);
+        }
+        if (auto exp = fileSettings.normalize(dirs_); !exp)
+        {
+            return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
+        }
+    }
+
+    // Config Implementation
+    std::shared_ptr<ConfigImpl const> config =
+        ConfigImpl::load(fileSettings, dirs_, threadPool_).value();
+
+    auto parentDir = files::getParentDir(filePath);
+    std::unordered_map<std::string, std::vector<std::string>>
+        defaultIncludePaths;
+
+    // Test normally
     {
-        auto const db = makeSingleFileDB(filePath, std::move(command));
+        auto const db = makeSingleFileDB(filePath, { "clang", "-std=c++23" });
+
+        // Create an adjusted MrDocsDatabase
         MrDocsCompilationDatabase compilations(
-            llvm::StringRef(files::getParentDir(filePath)),
+            llvm::StringRef(parentDir),
             db,
             config,
-            std::unordered_map<std::string, std::vector<std::string>>{});
-        handleCompilationDatabase(filePath, compilations, config, layout);
-    };
+            defaultIncludePaths);
+        handleCompilationDatabase(filePath, compilations, config);
+    }
 
-    runWith({ "clang", "-std=c++23" });
-    runWith({ "clang-cl", "/std:c++23preview" });
+    // Test again in clang-cl mode
+    {
+        auto const db
+            = makeSingleFileDB(filePath, { "clang-cl", "/std:c++23preview" });
+
+        // Create an adjusted MrDocsDatabase
+        MrDocsCompilationDatabase compilations(
+            llvm::StringRef(parentDir),
+            db,
+            config,
+            defaultIncludePaths);
+        handleCompilationDatabase(filePath, compilations, config);
+    }
 }
 
 void
 TestRunner::handleCompilationDatabase(
     llvm::StringRef filePath,
     MrDocsCompilationDatabase const& compilations,
-    std::shared_ptr<ConfigImpl const> const& config,
-    TestLayout const& layout)
+    std::shared_ptr<ConfigImpl const> const& config)
 {
+    namespace path = llvm::sys::path;
+
+    // Path with the expected results
+    SmallPathString expectedPath = filePath;
+    path::replace_extension(expectedPath, gen_->fileExtension());
+
     report::debug("Building Corpus", filePath);
     auto corpus = CorpusImpl::build(config, compilations);
     if (!corpus)
@@ -210,38 +174,129 @@ TestRunner::handleCompilationDatabase(
         return report::error("{}: \"{}\"", corpus.error(), filePath);
     }
 
-    if (layout.mode == OutputMode::SinglePage)
+    // Generate
+    report::debug("Generating documentation", filePath);
+    std::string generatedDocs;
+    if (auto exp = gen_->buildOneString(generatedDocs, **corpus); !exp)
     {
-        test_support::SinglePageArgs args{
-            layout,
-            *gen_,
-            **corpus,
-            filePath,
-            testArgs.action,
-            testArgs.badOption.getValue(),
-            testArgs.forceOption.getValue(),
-            dirs_,
-            results
-        };
-        if (auto exp = test_support::compareSinglePage(args); !exp)
+        return report::error("{}: \"{}\"", exp.error(), filePath);
+    }
+    replaceCRLFWithLF(generatedDocs);
+
+    // Generate tagfile
+    if (auto hbsGen = dynamic_cast<hbs::HandlebarsGenerator const*>(gen_))
+    {
+        report::debug("Generating tagfile", filePath);
+        std::stringstream ss;
+        if (auto exp = hbsGen->buildTagfile(ss, **corpus); !exp)
         {
             return report::error("{}: \"{}\"", exp.error(), filePath);
         }
     }
-    else
+
+    // Get expected documentation if it exists
+    std::unique_ptr<llvm::MemoryBuffer> expectedDocsBuf;
     {
-        test_support::MultipageArgs args{
-            layout,
-            *gen_,
-            **corpus,
-            testArgs.action,
-            testArgs.forceOption.getValue(),
-            results
-        };
-        if (auto exp = test_support::compareMultipage(args); !exp)
+        auto fileResult = llvm::MemoryBuffer::getFile(expectedPath, false, true, true);
+        if (fileResult)
         {
-            return report::error("{}: \"{}\"", exp.error(), filePath);
+            expectedDocsBuf = std::move(fileResult.get());
+        } else if (fileResult.getError() != std::errc::no_such_file_or_directory)
+        {
+            return report::
+                error("{}: \"{}\"", fileResult.getError(), expectedPath);
         }
+    }
+
+    // If no expected documentation file
+    if(!expectedDocsBuf)
+    {
+        if(testArgs.action == Action::test)
+        {
+            // Can't test without expected documentation file
+            return report::error("{}: \"{}\"",
+                Error("missing test file"), expectedPath);
+        }
+
+        if(testArgs.action == Action::create ||
+           testArgs.action == Action::update)
+        {
+            // Create expected documentation file
+            if(auto exp = writeFile(expectedPath, generatedDocs);
+                !exp)
+            {
+                return report::error("{}: \"{}\"", exp.error(), expectedPath);
+            }
+            report::info("\"{}\" created", expectedPath);
+            ++results.expectedDocsWritten;
+            return;
+        }
+    }
+
+    // Analyse results
+    std::string expectedDocs = expectedDocsBuf->getBuffer().str();
+    replaceCRLFWithLF(expectedDocs);
+    if (generatedDocs == expectedDocs)
+    {
+        report::info("\"{}\" passed", filePath);
+        ++results.expectedDocsMatching;
+        return;
+    }
+
+    // Mismatch
+    if(
+        testArgs.action == Action::test ||
+        testArgs.action == Action::create)
+    {
+        std::string_view filePathSv = filePath;
+        if (filePathSv.starts_with(dirs_.cwd))
+        {
+            filePathSv.remove_prefix(dirs_.cwd.size());
+            if (filePathSv.starts_with("\\") || filePathSv.starts_with("/"))
+            {
+                filePathSv.remove_prefix(1);
+            }
+        }
+        report::error("{}: \"{}\"",
+            Error("Incorrect results"), filePathSv);
+        auto res = test_suite::diffStrings(expectedDocs, generatedDocs);
+        report::error("{} lines added", res.added);
+        report::error("{} lines removed", res.removed);
+
+        report::error("Diff:\n{}", res.diff);
+
+        if(testArgs.badOption.getValue())
+        {
+            // Write the .bad.<generator> file
+            auto badPath = expectedPath;
+            path::replace_extension(badPath, llvm::Twine("bad.").concat(gen_->fileExtension()));
+            if (auto exp = writeFile(badPath, generatedDocs); !exp)
+            {
+                return report::error("{}: \"{}\"", exp.error(), badPath);
+            }
+            report::info("\"{}\" written", badPath);
+
+            // VFALCO We are calling this over and over again instead of once?
+            if(! diffCmdPath_.getError())
+            {
+                path::replace_extension(badPath, gen_->fileExtension());
+                std::array<llvm::StringRef, 5u> args {
+                    diffCmdPath_.get(), "-u", "--color", expectedPath, badPath };
+                ExecuteAndWaitWithLogging(diffCmdPath_.get(), args);
+            }
+        }
+    }
+    // update action
+    else if(testArgs.action == Action::update)
+    {
+        // Update the expected documentation
+        if (auto exp = writeFile(expectedPath, generatedDocs); !exp)
+        {
+            return report::error("{}: \"{}\"", exp.error(), expectedPath);
+        }
+        report::info("\"{}\" updated", expectedPath);
+        ++results.expectedDocsWritten;
+        return;
     }
 }
 
@@ -258,25 +313,37 @@ handleDir(
 
     ++results.numberOfDirs;
 
+    // Visit each file in the directory
     std::error_code ec;
     fs::directory_iterator const end{};
     fs::directory_iterator iter(dirPath, ec, false);
     if (ec)
+    {
         return report::error("{}: \"{}\"", dirPath, Error(ec));
-
+    }
     while(iter != end)
     {
-        auto const& entry = *iter;
-        if (entry.type() == fs::file_type::directory_file)
+        if (auto const& entry = *iter;
+            entry.type() == fs::file_type::directory_file)
         {
+            // Check for a subdirectory-wide config
             auto const& subdir = entry.path();
-            if (!path::extension(subdir).equals_insensitive(".multipage"))
+            Config::Settings subdirSettings = dirSettings;
+            subdirSettings.sourceRoot = subdir;
+            subdirSettings.input = {subdir};
+            std::string const& configPath = files::appendPath(subdir, "mrdocs.yml");
+            if (files::exists(configPath))
             {
-                auto subdirSettings = loadDirSettings(subdir, dirSettings, dirs_);
-                if (!subdirSettings)
-                    return report::error("Failed to load config file: {}: \"{}\"", subdirSettings.error(), subdir);
-                handleDir(subdir, *subdirSettings);
+                if (auto exp = Config::Settings::load_file(subdirSettings, configPath, dirs_); !exp)
+                {
+                    return report::error("Failed to load config file: {}: \"{}\"", exp.error(), configPath);
+                }
+                if (auto exp = subdirSettings.normalize(dirs_); !exp)
+                {
+                    return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
+                }
             }
+            handleDir(subdir, subdirSettings);
         }
         else if(
             entry.type() == fs::file_type::regular_file &&
@@ -290,7 +357,9 @@ handleDir(
         }
         iter.increment(ec);
         if (ec)
+        {
             return report::error("{}: \"{}\"", Error(ec), dirPath);
+        }
     }
 }
 
@@ -300,26 +369,64 @@ checkPath(
     std::string inputPath,
     char const** argv)
 {
-    auto ctx = buildPathContext(std::move(inputPath), argv, dirs_);
-    if (!ctx)
-        return report::error("{}: \"{}\"", ctx.error(), inputPath);
-
+    namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
-    switch(ctx->type)
+
+    // See if inputPath references a file or directory
+    inputPath = files::normalizePath(inputPath);
+    auto fileType = files::getFileType(inputPath);
+    if (!fileType)
+    {
+        return report::error("{}: \"{}\"", fileType.error(), inputPath);
+    }
+
+    // Set the reference directories for the test
+    std::string const inputDir = fileType == files::FileType::directory
+        ? inputPath
+        : files::getParentDir(inputPath);
+    dirs_.cwd = inputDir;
+
+    // Check for a directory-wide config
+    Config::Settings dirSettings;
+    testArgs.apply(dirSettings, dirs_, argv);
+    dirSettings.multipage = false;
+    dirSettings.sourceRoot = inputDir;
+    dirSettings.input = {inputDir};
+    std::string const& configPath = files::appendPath(inputDir, "mrdocs.yml");
+
+    if (files::exists(configPath))
+    {
+        if (auto exp = Config::Settings::load_file(dirSettings, configPath, dirs_); !exp)
+        {
+            return report::error("Failed to load config file: {}: \"{}\"", exp.error(), configPath);
+        }
+        if (auto exp = dirSettings.normalize(dirs_); !exp)
+        {
+            return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
+        }
+    }
+
+    switch(fileType.value())
     {
     case files::FileType::regular:
     {
-        if (!path::extension(ctx->inputPath).equals_insensitive(".cpp"))
-            return report::error("{}: \"{}\"", Error("not a .cpp file"), ctx->inputPath);
+        // Require a .cpp file
+        if (!path::extension(inputPath).equals_insensitive(".cpp"))
+        {
+            Error err("not a .cpp file");
+            return report::error("{}: \"{}\"",
+                err, inputPath);
+        }
 
-        handleFile(ctx->inputPath, ctx->dirSettings);
+        handleFile(inputPath, dirSettings);
         threadPool_.wait();
         return;
     }
 
     case files::FileType::directory:
     {
-        handleDir(ctx->inputPath, ctx->dirSettings);
+        // Iterate this directory and all its children
+        handleDir(inputPath, dirSettings);
         threadPool_.wait();
         return;
     }

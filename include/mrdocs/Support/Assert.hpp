@@ -13,12 +13,6 @@
 
 #include <cstdint>
 
-/** Core MrDocs support utilities.
-
-    The public `mrdocs` namespace here centralizes assert/assume hooks so we can
-    swap behavior (terminate, throw, debugbreak) in one place without leaking
-    platform specifics into the rest of the codebase.
-*/
 namespace mrdocs {
 
 #ifdef NDEBUG
@@ -35,12 +29,6 @@ namespace mrdocs {
         #define MRDOCS_UNREACHABLE() static_cast<void>(__debugbreak(), __assume(false))
     #endif
 
-    /** Handler invoked when `MRDOCS_ASSERT` fails.
-
-        @param msg Expression string that failed.
-        @param file Source file where the assertion triggered.
-        @param line Line within the source file.
-    */
     void
     assert_failed(
         char const* msg,

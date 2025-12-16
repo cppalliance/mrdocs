@@ -27,12 +27,6 @@ namespace mrdocs::doc {
     This paragraph represents an admonition, such as
     a note, tip, important, caution, or warning.
 
-
-    Syntax:
-
-    @code
-    @note text
-    @endcode
 */
 struct AdmonitionBlock final
     : BlockCommonBase<BlockKind::Admonition>
@@ -41,36 +35,29 @@ struct AdmonitionBlock final
     /** The kind of admonition
 
         This is typically a string in other implementations.
-    */
+     */
     AdmonitionKind admonish;
 
     /// Optional title for the admonition
     Optional<Polymorphic<Inline>> Title;
 
-    /** Construct an admonition with the given kind.
-    */
     explicit
     AdmonitionBlock(
         AdmonitionKind const admonish_ = AdmonitionKind::none) noexcept
         : admonish(admonish_)
     {}
 
-    /** Compare admonitions by kind, title, and contents.
-    */
     auto operator<=>(AdmonitionBlock const&) const = default;
-
-    /** Equality compares the admonition contents.
-    */
     bool operator==(AdmonitionBlock const&) const noexcept = default;
 };
 
-/** Map the @ref AdmonitionBlock to a @ref dom::Object.
+/** Map the @ref Admonition to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
+ */
 template <class IO>
 void
 tag_invoke(
@@ -84,8 +71,8 @@ tag_invoke(
     io.map("admonish", I.admonish);
 }
 
-/** Return the @ref AdmonitionBlock as a @ref dom::Value object.
-*/
+/** Return the @ref Admonition as a @ref dom::Value object.
+ */
 inline
 void
 tag_invoke(
