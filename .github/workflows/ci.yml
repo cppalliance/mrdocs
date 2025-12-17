@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.9.1
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.9.2
         id: cpp-matrix
         with:
           compilers: |
@@ -74,19 +74,19 @@ jobs:
             clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
             msvc: ''
           extra-values: |
-            use-libcxx: {{#if (and (ieq compiler 'clang') msan) }}true{{else}}false{{/if}}
+            use-libcxx: {{#if (and (ieq compiler 'clang') (or msan asan)) }}true{{else}}false{{/if}}
             libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
             llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
             llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
             llvm-build-preset-prefix: {{{lowercase build-type}}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
-            llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
             llvm-os-key: {{#if container}}{{{ container }}}{{else}}{{{ runs-on }}}{{/if}}
-            llvm-archive-basename: {{#if msan}}llvm-{{{ substr llvm-hash 0 7 }}}-{{{ llvm-build-preset-prefix }}}-{{{ llvm-os-key }}}-{{{ compiler }}}-{{{ version }}}-MSan{{else}}llvm-{{{ substr llvm-hash 0 7 }}}-{{{ llvm-build-preset-prefix }}}-{{{ llvm-os-key }}}{{/if}}
+            llvm-archive-sanitizer-str: {{#if (ieq compiler 'clang')}}{{#if ubsan}}UBSan{{else if asan}}ASan{{/if}}{{/if}}
+            llvm-archive-basename: llvm-{{{ substr llvm-hash 0 7 }}}-{{{ llvm-build-preset-prefix }}}-{{{ llvm-os-key }}}{{#if (and (ieq compiler 'clang') (or msan asan)) }}-{{{ compiler }}}-{{{ version }}}-{{{ llvm-archive-sanitizer-str }}}{{/if}}
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
-            llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+            llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
             warning-flags: {{#if (eq compiler 'msvc') }}/WX /W4 {{else}}-Werror -Wall {{/if}}
             common-flags-base: {{#if (ieq compiler 'clang')}}-gz=zstd {{/if}}
             common-flags: {{{ common-flags-base }}}{{#if msan }}-fsanitize-memory-track-origins {{/if}}
@@ -158,7 +158,7 @@ jobs:
       # We need git to ensure actions/checkout@v4 will use git and
       # for the next steps that need to clone repositories
       - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.9.1
+        uses: alandefreitas/cpp-actions/package-install@v1.9.2
         if: matrix.container != ''
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -175,7 +175,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@v1.9.1
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.9.2
         id: setup-cmake
         with:
           version: '>=3.26'
@@ -187,7 +187,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.1
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.2
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -261,7 +261,7 @@ jobs:
           ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.9.1
+        uses: alandefreitas/cpp-actions/package-install@v1.9.2
         if: matrix.compiler != 'msvc'
         id: package-install
         env:
@@ -362,7 +362,7 @@ jobs:
 
       - name: Install libc++
         id: install_libcxx
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true'
         with:
           cmake-version: '>=3.26'
@@ -396,7 +396,7 @@ jobs:
       # This is controlled by the llvm-runtimes matrix variable.
       - name: Install LLVM
         id: install_llvm
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         if: steps.llvm-cache.outputs.cache-hit != 'true'
         with:
           cmake-version: '>=3.26'
@@ -434,7 +434,7 @@ jobs:
           rm -r ../third-party/llvm-project
 
       - name: Install JerryScript
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         with:
           source-dir: ../third-party/jerryscript
           url: https://github.com/jerryscript-project/jerryscript/archive/refs/tags/v3.0.0.tar.gz
@@ -468,7 +468,7 @@ jobs:
             -D JERRY_LIBC=OFF
 
       - name: Install Lua
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         with:
           source-dir: ../third-party/lua
           url: https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz
@@ -488,7 +488,7 @@ jobs:
           trace-commands: true
 
       - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         if: matrix.compiler == 'msvc'
         with:
           source-dir: ../third-party/libxml2
@@ -547,10 +547,7 @@ jobs:
           node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
-        env:
-          # Bump per-test timeout on Windows and for MSan jobs to avoid CTest default (1500s) killing slow golden suites.
-          CTEST_TEST_TIMEOUT: ${{ (runner.os == 'Windows' || matrix.msan == 'true') && '3600' || '' }}
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -578,6 +575,7 @@ jobs:
           package-dir: packages
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
+          ctest-timeout: 3600
 
       - name: Check YAML schema
         run: |
@@ -664,7 +662,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.9.1
+        uses: alandefreitas/cpp-actions/flamegraph@v1.9.2
         if: matrix.time-trace
         with:
           build-dir: build
@@ -740,7 +738,7 @@ jobs:
           fi
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.9.1
+        uses: alandefreitas/cpp-actions/package-install@v1.9.2
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git rsync
@@ -765,7 +763,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.1
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.2
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -809,7 +807,7 @@ jobs:
           $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.9.0
+        uses: alandefreitas/cpp-actions/boost-clone@v1.9.2
         id: boost-url-clone
         with:
           branch: develop
@@ -896,8 +894,36 @@ jobs:
           npx gulp lint
           npx gulp
 
+      # Website publishing gate:
+      # - Only publish on pushes to master/develop and on tags
+      # - Only on Linux runners (the publish steps assume GNU tooling)
+      #
+      # Use `if: env.PUBLISH_WEBSITE == 'true'` for all steps that
+      # write into `build/website/` and get deployed to the website.
+      - name: Set website publish gate
+        run: |
+          is_publish_ref='false'
+          if [[ "${{ github.event_name }}" == 'push' ]]; then
+            if [[ "${{ github.ref_name }}" == 'master' || "${{ github.ref_name }}" == 'develop' ]]; then
+              is_publish_ref='true'
+            fi
+            if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+              is_publish_ref='true'
+            fi
+          fi
+
+          publish_website="$is_publish_ref"
+          if [[ "${{ runner.os }}" != 'Linux' ]]; then
+            publish_website='false'
+          fi
+
+          {
+            echo "IS_PUBLISH_REF=$is_publish_ref"
+            echo "PUBLISH_WEBSITE=$publish_website"
+          } >> "$GITHUB_ENV"
+
       - name: Ensure all refs for Antora
-        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
+        if: env.PUBLISH_WEBSITE == 'true'
         run: |
           set -euo pipefail
           # Make sure Antora sees every branch and tag from the upstream repo,
@@ -1132,8 +1158,23 @@ jobs:
           path: demos-diff
           retention-days: 30
 
+      # Generate a static roadmap page from the git-tracked issue index.
+      #
+      # Output location:
+      # - Writes `build/website/roadmap/index.html`.
+      # - The generator may copy `styles.css` into `build/website/` if it's missing,
+      #   so the report can reference `../styles.css`.
+      # - Since the website is published from `build/website`, this becomes
+      #   `/roadmap/` on the deployed site.
+      - name: Generate Roadmap Report
+        if: env.PUBLISH_WEBSITE == 'true'
+        run: |
+          set -euvx
+          cd ${{ github.workspace }}
+          python -m util.roadmap report -o build/website/roadmap
+
       - name: Publish Website to GitHub Pages
-        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
+        if: env.PUBLISH_WEBSITE == 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -1141,7 +1182,7 @@ jobs:
           force_orphan: true
 
       - name: Publish website
-        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
+        if: env.PUBLISH_WEBSITE == 'true'
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
@@ -1166,7 +1207,7 @@ jobs:
           time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.9.1
+        uses: alandefreitas/cpp-actions/create-changelog@v1.9.2
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -1175,7 +1216,7 @@ jobs:
           update-summary: ${{ runner.os == 'Linux' && 'true' || 'false' }}
 
       - name: Create GitHub Package Release
-        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        if: env.IS_PUBLISH_REF == 'true'
         uses: softprops/action-gh-release@v2
         with:
           files: packages/MrDocs-*.*.*-*.*
@@ -1238,7 +1279,7 @@ jobs:
           echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.9.1
+        uses: alandefreitas/cpp-actions/package-install@v1.9.2
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
