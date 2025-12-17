@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.12
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.9.1
         id: cpp-matrix
         with:
           compilers: |
@@ -157,7 +157,7 @@ jobs:
       # We need git to ensure actions/checkout@v4 will use git and
       # for the next steps that need to clone repositories
       - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.8.12
+        uses: alandefreitas/cpp-actions/package-install@v1.9.1
         if: matrix.container != ''
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -174,7 +174,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.7
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.9.1
         id: setup-cmake
         with:
           version: '>=3.26'
@@ -186,7 +186,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.12
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.1
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -260,7 +260,7 @@ jobs:
           ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.12
+        uses: alandefreitas/cpp-actions/package-install@v1.9.1
         if: matrix.compiler != 'msvc'
         id: package-install
         env:
@@ -357,7 +357,7 @@ jobs:
 
       - name: Install libc++
         id: install_libcxx
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
         if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true'
         with:
           cmake-version: '>=3.26'
@@ -391,7 +391,7 @@ jobs:
       # This is controlled by the llvm-runtimes matrix variable.
       - name: Install LLVM
         id: install_llvm
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
         if: steps.llvm-cache.outputs.cache-hit != 'true'
         with:
           cmake-version: '>=3.26'
@@ -449,7 +449,7 @@ jobs:
           trace-commands: true
 
       - name: Install Lua
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
         with:
           source-dir: ../third-party/lua
           url: https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz
@@ -469,7 +469,7 @@ jobs:
           trace-commands: true
 
       - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
         if: matrix.compiler == 'msvc'
         with:
           source-dir: ../third-party/libxml2
@@ -528,7 +528,7 @@ jobs:
           node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.1
         env:
           # Bump per-test timeout on Windows and for MSan jobs to avoid CTest default (1500s) killing slow golden suites.
           CTEST_TEST_TIMEOUT: ${{ (runner.os == 'Windows' || matrix.msan == 'true') && '3600' || '' }}
@@ -645,7 +645,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.12
+        uses: alandefreitas/cpp-actions/flamegraph@v1.9.1
         if: matrix.time-trace
         with:
           build-dir: build
@@ -721,7 +721,7 @@ jobs:
           fi
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.12
+        uses: alandefreitas/cpp-actions/package-install@v1.9.1
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git rsync
@@ -746,7 +746,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.12
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.1
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -790,7 +790,7 @@ jobs:
           $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.12
+        uses: alandefreitas/cpp-actions/boost-clone@v1.9.1
         id: boost-url-clone
         with:
           branch: develop
@@ -1147,7 +1147,7 @@ jobs:
           time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.12
+        uses: alandefreitas/cpp-actions/create-changelog@v1.9.1
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -1215,7 +1215,7 @@ jobs:
           echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.12
+        uses: alandefreitas/cpp-actions/package-install@v1.9.1
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
