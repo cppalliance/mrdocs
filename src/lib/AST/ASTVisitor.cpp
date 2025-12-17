@@ -677,25 +677,18 @@ populate(
             // isn’t regular so we pick up their members/docs.
             if (config_->inheritBaseMembers != PublicSettings::BaseMemberInheritance::Never)
             {
-                if (auto const* baseDecl = BT->getAsCXXRecordDecl())
+                if (auto const* baseDecl = BT->getAsCXXRecordDecl();
+                    baseDecl && baseDecl->isCompleteDefinition())
                 {
-                    if (auto const* baseDef = baseDecl->getDefinition();
-                        baseDef)
+                    if (auto* baseInfo = find(baseDecl);
+                        !baseInfo
+                        || (baseInfo->Extraction != ExtractionMode::Regular
+                            && traversedRecordsForBaseClassExtraction_
+                                   .emplace(baseDecl)
+                                   .second))
                     {
-                        if (auto const* baseInfo = find(baseDef);
-                            baseInfo)
-                        {
-                            if (baseInfo->Extraction != ExtractionMode::Regular)
-                            {
-                                ScopeExitRestore s(mode_, TraversalMode::BaseClass);
-                                traverse(baseDef);
-                            }
-                        }
-                        else
-                        {
-                            ScopeExitRestore s(mode_, TraversalMode::BaseClass);
-                            traverse(baseDef);
-                        }
+                        ScopeExitRestore s(mode_, TraversalMode::BaseClass);
+                        traverse(baseDecl);
                     }
                 }
             }
