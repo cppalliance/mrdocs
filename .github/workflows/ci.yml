@@ -74,7 +74,7 @@ jobs:
             clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
             msvc: ''
           extra-values: |
-            use-libcxx: {{#if (and (ieq compiler 'clang') (ge major 19)) }}true{{else}}false{{/if}}
+            use-libcxx: {{#if (and (ieq compiler 'clang') msan) }}true{{else}}false{{/if}}
             libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
             llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
             llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
@@ -82,8 +82,8 @@ jobs:
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
             llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
-            llvm-compiler-version: {{#if (or (contains version '*') (contains version '^'))}}{{else}}-{{{ version }}}{{/if}}
-            llvm-archive-basename: llvm-{{{ lowercase os }}}-{{{ compiler }}}{{{ llvm-compiler-version }}}-{{{ llvm-build-preset-prefix }}}{{{ llvm-sanitizer }}}-{{{ substr llvm-hash 0 7 }}}
+            llvm-os-key: {{#if container}}{{{ container }}}{{else}}{{{ runs-on }}}{{/if}}
+            llvm-archive-basename: {{#if msan}}llvm-{{{ substr llvm-hash 0 7 }}}-{{{ llvm-build-preset-prefix }}}-{{{ llvm-os-key }}}-{{{ compiler }}}-{{{ version }}}-MSan{{else}}llvm-{{{ substr llvm-hash 0 7 }}}-{{{ llvm-build-preset-prefix }}}-{{{ llvm-os-key }}}{{/if}}
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
             llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
@@ -322,12 +322,16 @@ jobs:
           fi
           echo "common-ldflags=$common_ldflags" >> $GITHUB_OUTPUT
 
+          llvm_cache_key="${{ matrix.llvm-archive-basename }}"
+          llvm_cache_key="${llvm_cache_key//:/-}"
+          echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
+
       - name: Cached LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
           path: ${{ steps.rmatrix.outputs.llvm-path }}
-          key: ${{ matrix.llvm-archive-basename }}
+          key: ${{ steps.rmatrix.outputs.llvm-cache-key }}
 
       # Installs libc++ separately, using the LLVM standalone runtimes build.
       # The libc++ built here will be built using the host compiler, so this is
@@ -1229,6 +1233,10 @@ jobs:
           llvm_path=$third_party_dir/llvm
           echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
 
+          llvm_cache_key="${{ matrix.llvm-archive-basename }}"
+          llvm_cache_key="${llvm_cache_key//:/-}"
+          echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
+
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.9.1
         id: package-install
@@ -1240,4 +1248,4 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.rmatrix.outputs.llvm-path }}
-          key: ${{ matrix.llvm-archive-basename }}
+          key: ${{ steps.rmatrix.outputs.llvm-cache-key }}
