@@ -113,7 +113,6 @@ buildDecltype(
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<DecltypeType>);
     (*Inner)->Constraints = this->Constraints;
-    (*Inner)->IsPackExpansion = pack;
 
     auto &I = (*Inner)->asDecltype();
     getASTVisitor().populate(I.Operand, T->getUnderlyingExpr());
@@ -134,7 +133,6 @@ buildAuto(
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<AutoType>);
     (*Inner)->Constraints = this->Constraints;
-    (*Inner)->IsPackExpansion = pack;
 
     auto &I = (*Inner)->asAuto();
     I.IsConst = quals & clang::Qualifiers::Const;
@@ -167,7 +165,6 @@ buildTerminal(
     MRDOCS_SYMBOL_TRACE(T, getASTVisitor().context_);
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<NamedType>);
-    (*Inner)->IsPackExpansion = pack;
     (*Inner)->Constraints = this->Constraints;
 
     auto &TI = (*Inner)->asNamed();
@@ -195,7 +192,6 @@ buildTerminal(
 {
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<NamedType>);
-    (*Inner)->IsPackExpansion = pack;
     (*Inner)->Constraints = this->Constraints;
 
     auto &I = (*Inner)->asNamed();
@@ -247,7 +243,6 @@ buildTerminal(
 
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<NamedType>);
-    (*Inner)->IsPackExpansion = pack;
     (*Inner)->Constraints = this->Constraints;
 
     auto &TI = (*Inner)->asNamed();
