@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="Ts" class="type"/>
+    <function name="by_const_ref" id="48I+DPPjc7oVgnOqvRHnCnFIMRA=">
+      <file short-path="pack-expansion.cpp" source-path="pack-expansion.cpp" line="16"/>
+      <param name="args">
+        <type class="lvalue-reference" is-pack="1">
+          <pointee-type name="Ts" cv-qualifiers="const"/>
+        </type>
+      </param>
+    </function>
+  </template>
+  <template>
+    <tparam name="Ts" class="type"/>
+    <function name="by_pointer" id="1uVKKR0qH3jqJg3vUUY+gN0nO6o=">
+      <file short-path="pack-expansion.cpp" source-path="pack-expansion.cpp" line="19"/>
+      <param name="args">
+        <type class="pointer" is-pack="1">
+          <pointee-type name="Ts"/>
+        </type>
+      </param>
+    </function>
+  </template>
+  <template>
+    <tparam name="Ts" class="type"/>
+    <function name="by_ref" id="/W/y4BHD5QC3h6HiQc2zHFs9XZM=">
+      <file short-path="pack-expansion.cpp" source-path="pack-expansion.cpp" line="13"/>
+      <param name="args">
+        <type class="lvalue-reference" is-pack="1">
+          <pointee-type name="Ts"/>
+        </type>
+      </param>
+    </function>
+  </template>
+  <template>
+    <tparam name="Ts" class="type"/>
+    <function name="by_value" id="2dPhCCrvmoBHZ2V3zGebTIf1GJw=">
+      <file short-path="pack-expansion.cpp" source-path="pack-expansion.cpp" line="10"/>
+      <param name="args">
+        <type is-pack="1" name="Ts"/>
+      </param>
+    </function>
+  </template>
+  <template>
+    <tparam name="Args" class="type"/>
+    <function name="forward_all" id="s1dIpJCzH1qM6C834Cm+Cj1mh9M=">
+      <file short-path="pack-expansion.cpp" source-path="pack-expansion.cpp" line="7"/>
+      <param name="args">
+        <type class="rvalue-reference" is-pack="1">
+          <pointee-type name="Args"/>
+        </type>
+      </param>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="Args" class="type"/>
+    <function name="make_ptr" id="8RneSjP7y4RoThh/UAa4tw8/cC0=">
+      <file short-path="pack-expansion.cpp" source-path="pack-expansion.cpp" line="4"/>
+      <return>
+        <type class="pointer">
+          <pointee-type name="T"/>
+        </type>
+      </return>
+      <param name="args">
+        <type class="rvalue-reference" is-pack="1">
+          <pointee-type name="Args"/>
+        </type>
+      </param>
+    </function>
+  </template>
+</namespace>
+</mrdocs>

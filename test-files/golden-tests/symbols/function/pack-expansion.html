@@ -1,0 +1,139 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">
+Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
+</h2>
+</div>
+<h2>
+Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#by_const_ref"><code>by_const_ref</code></a> </td></tr><tr>
+<td><a href="#by_pointer"><code>by_pointer</code></a> </td></tr><tr>
+<td><a href="#by_ref"><code>by_ref</code></a> </td></tr><tr>
+<td><a href="#by_value"><code>by_value</code></a> </td></tr><tr>
+<td><a href="#forward_all"><code>forward_all</code></a> </td></tr><tr>
+<td><a href="#make_ptr"><code>make_ptr</code></a> </td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="by_const_ref">
+by_const_ref<a class="mrdocs-anchor" href="#by_const_ref" aria-label="Permalink">#</a>
+</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;pack-expansion.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename... Ts&gt;
+void
+by_const_ref(Ts const&... args);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="by_pointer">
+by_pointer<a class="mrdocs-anchor" href="#by_pointer" aria-label="Permalink">#</a>
+</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;pack-expansion.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename... Ts&gt;
+void
+by_pointer(Ts*... args);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="by_ref">
+by_ref<a class="mrdocs-anchor" href="#by_ref" aria-label="Permalink">#</a>
+</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;pack-expansion.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename... Ts&gt;
+void
+by_ref(Ts&... args);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="by_value">
+by_value<a class="mrdocs-anchor" href="#by_value" aria-label="Permalink">#</a>
+</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;pack-expansion.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename... Ts&gt;
+void
+by_value(Ts... args);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="forward_all">
+forward_all<a class="mrdocs-anchor" href="#forward_all" aria-label="Permalink">#</a>
+</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;pack-expansion.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;class... Args&gt;
+void
+forward_all(Args&&... args);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="make_ptr">
+make_ptr<a class="mrdocs-anchor" href="#make_ptr" aria-label="Permalink">#</a>
+</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;pack-expansion.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;
+    class T,
+    class... Args&gt;
+T*
+make_ptr(Args&&... args);</code></pre>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>
