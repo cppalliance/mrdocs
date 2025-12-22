@@ -1,6 +1,10 @@
 <h{{or level 3}}{{#if class}} class="{{{class}}}"{{/if}}{{#if id}} id="{{{id}}}"{{/if}}>
 {{> @partial-block }}
 {{#if id}}
-<a class="mrdocs-anchor" href="#{{id}}" aria-label="Permalink">#</a>
+{{#if @root.config.multipage}}
+{{#unless @root.config.embedded}}
+<a class="mrdocs-anchor" style="visibility:hidden" href="#{{id}}" aria-label="Permalink">#</a>
+{{/unless}}
+{{/if}}
 {{/if}}
 </h{{or level 3}}>

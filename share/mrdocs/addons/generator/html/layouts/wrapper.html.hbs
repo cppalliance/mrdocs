@@ -49,6 +49,11 @@
 {{#if page.hasDefaultStyles}}
 <script>
 (function(){
+    // Enable anchor visibility (hidden by default for graceful degradation)
+    document.querySelectorAll("a.mrdocs-anchor").forEach(function(el){
+        el.style.visibility = "visible";
+    });
+    // Copy permalink URL to clipboard on anchor click
     document.addEventListener("click", function(e){
         var anchor = e.target.closest && e.target.closest("a.mrdocs-anchor");
         if (!anchor) return;
