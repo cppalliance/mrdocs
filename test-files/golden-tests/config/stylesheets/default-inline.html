@@ -418,8 +418,7 @@ code.hljs{
 <div>
 <div>
 <h2 id="index">
-Global Namespace<a class="mrdocs-anchor" href="#index" aria-label="Permalink">#</a>
-</h2>
+Global Namespace</h2>
 </div>
 <h2>
 Namespaces</h2>
@@ -439,8 +438,7 @@ Namespaces</h2>
 <div>
 <div>
 <h2 id="ns">
-ns<a class="mrdocs-anchor" href="#ns" aria-label="Permalink">#</a>
-</h2>
+ns</h2>
 </div>
 <h2>
 Types</h2>
@@ -460,8 +458,7 @@ Types</h2>
 <div>
 <div>
 <h2 id="ns-Foo">
-ns::Foo<a class="mrdocs-anchor" href="#ns-Foo" aria-label="Permalink">#</a>
-</h2>
+ns::Foo</h2>
 <div>
 <p>Doc for Foo</p>
 </div>
@@ -483,6 +480,11 @@ Declared in <code>&lt;default-inline.cpp&gt;</code></div>
 </footer>
 <script>
 (function(){
+    // Enable anchor visibility (hidden by default for graceful degradation)
+    document.querySelectorAll("a.mrdocs-anchor").forEach(function(el){
+        el.style.visibility = "visible";
+    });
+    // Copy permalink URL to clipboard on anchor click
     document.addEventListener("click", function(e){
         var anchor = e.target.closest && e.target.closest("a.mrdocs-anchor");
         if (!anchor) return;
