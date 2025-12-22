@@ -4,11 +4,12 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "GeneratorsImpl.hpp"
+#include "GeneratorRegistryImpl.hpp"
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/STLExtras.h>
 
@@ -27,11 +28,11 @@ extern
 std::unique_ptr<Generator>
 makeHTMLGenerator();
 
-Generators::
-~Generators() noexcept = default;
+GeneratorRegistry::
+~GeneratorRegistry() noexcept = default;
 
 void
-GeneratorsImpl::
+GeneratorRegistryImpl::
 refresh_plist()
 {
     plist_.clear();
@@ -40,8 +41,8 @@ refresh_plist()
         plist_.push_back(g.get());
 }
 
-GeneratorsImpl::
-GeneratorsImpl()
+GeneratorRegistryImpl::
+GeneratorRegistryImpl()
 {
     insert(makeAdocGenerator());
     insert(makeXMLGenerator());
@@ -49,10 +50,11 @@ GeneratorsImpl()
 }
 
 Generator const*
-GeneratorsImpl::
+GeneratorRegistryImpl::
 find(
     std::string_view id) const noexcept
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     for (auto const& li : list_)
     {
         if(li->id() == id)
@@ -64,11 +66,22 @@ find(
 }
 
 Expected<void>
-GeneratorsImpl::
+GeneratorRegistryImpl::
 insert(
     std::unique_ptr<Generator> G)
 {
-    MRDOCS_CHECK(find(G->id()) == nullptr, formatError("generator id=\"{}\" already exists", G->id()));
+    if (!G)
+    {
+        return Unexpected(formatError("cannot install null generator"));
+    }
+    std::lock_guard<std::mutex> lock(mutex_);
+    for (auto const& li : list_)
+    {
+        if (li->id() == G->id())
+        {
+            return Unexpected(formatError("generator id=\"{}\" already exists", G->id()));
+        }
+    }
     list_.emplace_back(std::move(G));
     refresh_plist();
     return {};
@@ -76,18 +89,11 @@ insert(
 
 //------------------------------------------------
 
-GeneratorsImpl&
-getGeneratorsImpl() noexcept
+GeneratorRegistryImpl&
+getGeneratorRegistryImpl() noexcept
 {
-    static GeneratorsImpl impl;
+    static GeneratorRegistryImpl impl;
     return impl;
 }
 
-Generators const&
-getGenerators() noexcept
-{
-    return getGeneratorsImpl();
-}
-
 } // mrdocs
-

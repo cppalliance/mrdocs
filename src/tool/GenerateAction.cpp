@@ -16,7 +16,7 @@
 #include <lib/CorpusImpl.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/Support/Path.hpp>
-#include <mrdocs/Generators.hpp>
+#include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
@@ -53,7 +53,7 @@ DoGenerateAction(
     auto& settings = config->settings();
     MRDOCS_TRY(
         Generator const& generator,
-        getGenerators().find(to_string(settings.generator)),
+        findGenerator(to_string(settings.generator)),
         formatError(
             "the Generator \"{}\" was not found",
             to_string(config->settings().generator)));

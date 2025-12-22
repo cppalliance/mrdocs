@@ -4,12 +4,13 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_GENERATORS_HPP
-#define MRDOCS_API_GENERATORS_HPP
+#ifndef MRDOCS_LIB_SUPPORT_GENERATORREGISTRY_HPP
+#define MRDOCS_LIB_SUPPORT_GENERATORREGISTRY_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
@@ -22,11 +23,11 @@ namespace mrdocs {
 /** A dynamic list of @ref Generator elements.
 */
 class MRDOCS_VISIBLE
-    Generators
+    GeneratorRegistry
 {
 protected:
     /// Construct an empty generator registry; only derived singletons create this.
-    Generators() noexcept = default;
+    GeneratorRegistry() noexcept = default;
 
 public:
     /// Pointer type for generator entries.
@@ -48,7 +49,7 @@ public:
     */
     MRDOCS_DECL
     virtual
-    ~Generators() noexcept;
+    ~GeneratorRegistry() noexcept;
 
     /** Return an iterator to the beginning.
     */
@@ -78,13 +79,7 @@ public:
         std::string_view name) const noexcept = 0;
 };
 
-/** Return a reference to the global Generators instance.
-*/
-MRDOCS_DECL
-Generators const&
-getGenerators() noexcept;
-
 } // mrdocs
 
 
-#endif // MRDOCS_API_GENERATORS_HPP
+#endif // MRDOCS_LIB_SUPPORT_GENERATORREGISTRY_HPP
