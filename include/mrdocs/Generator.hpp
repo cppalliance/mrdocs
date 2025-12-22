@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -19,6 +20,7 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <memory>
 #include <ostream>
 #include <string>
 #include <string_view>
@@ -201,10 +203,49 @@ public:
     @param outputPath The specified output path, which can be a directory or file.
     @param extension The file extension to use for single-page output.
 */
+MRDOCS_DECL
 Expected<std::string>
 getSinglePageFullPath(
     std::string_view outputPath,
     std::string_view extension);
+
+/** Install a custom generator.
+
+    This function registers a generator with the global
+    generator registry, making it available for use.
+
+    Plugins can use this function to register custom
+    generators.
+
+    @par Thread Safety
+    This function is thread-safe and may be called
+    concurrently from multiple threads.
+
+    @return An error if a generator with the same id
+    already exists.
+
+    @param G The generator to install. Ownership is
+    transferred to the registry.
+*/
+MRDOCS_DECL
+Expected<void>
+installGenerator(std::unique_ptr<Generator> G);
+
+/** Find a generator by its id.
+
+    @par Thread Safety
+    This function is thread-safe and may be called
+    concurrently from multiple threads.
+
+    @return A pointer to the generator, or `nullptr`
+    if no generator with the given id exists.
+
+    @param id The symbolic name of the generator.
+    The name must be an exact match, including case.
+*/
+MRDOCS_DECL
+Generator const*
+findGenerator(std::string_view id) noexcept;
 
 } // mrdocs
 

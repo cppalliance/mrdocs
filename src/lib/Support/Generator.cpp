@@ -5,12 +5,14 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include <lib/AST/ExtractDocComment.hpp>
 #include <lib/Support/Chrono.hpp>
+#include <lib/Support/GeneratorRegistryImpl.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -154,6 +156,18 @@ getSinglePageFullPath(
     path::append(fileName, "reference");
     path::replace_extension(fileName, ext);
     return fileName.str().str();
+}
+
+Expected<void>
+installGenerator(std::unique_ptr<Generator> G)
+{
+    return getGeneratorRegistryImpl().insert(std::move(G));
+}
+
+Generator const*
+findGenerator(std::string_view id) noexcept
+{
+    return getGeneratorRegistryImpl().find(id);
 }
 
 } // mrdocs

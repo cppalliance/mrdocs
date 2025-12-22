@@ -4,28 +4,31 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_SUPPORT_GENERATORSIMPL_HPP
-#define MRDOCS_LIB_SUPPORT_GENERATORSIMPL_HPP
+#ifndef MRDOCS_LIB_SUPPORT_GENERATORREGISTRYIMPL_HPP
+#define MRDOCS_LIB_SUPPORT_GENERATORREGISTRYIMPL_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Generators.hpp>
+#include <lib/Support/GeneratorRegistry.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 
 namespace mrdocs {
 
-/** Implementaiton of Generators.
+/** Implementation of GeneratorRegistry.
 */
 class MRDOCS_VISIBLE
-    GeneratorsImpl : public Generators
+    GeneratorRegistryImpl : public GeneratorRegistry
 {
+    mutable std::mutex mutex_;
     llvm::SmallVector<Generator const*, 3> plist_;
     llvm::SmallVector<
         std::unique_ptr<Generator>> list_;
@@ -33,7 +36,7 @@ class MRDOCS_VISIBLE
     void refresh_plist();
 
 public:
-    GeneratorsImpl();
+    GeneratorRegistryImpl();
 
     iterator
     begin() const noexcept override
@@ -57,10 +60,10 @@ public:
     insert(std::unique_ptr<Generator> G);
 };
 
-/** Return a reference to the global GeneratorsImpl instance.
+/** Return a reference to the global GeneratorRegistryImpl instance.
 */
-GeneratorsImpl&
-getGeneratorsImpl() noexcept;
+GeneratorRegistryImpl&
+getGeneratorRegistryImpl() noexcept;
 
 } // mrdocs
 

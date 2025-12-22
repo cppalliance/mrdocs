@@ -23,7 +23,7 @@
 #include <lib/Support/Path.hpp>
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Config.hpp>
-#include <mrdocs/Generators.hpp>
+#include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <test_suite/diff.hpp>
 #include <llvm/Support/CommandLine.h>
@@ -37,7 +37,7 @@ namespace mrdocs {
 
 TestRunner::
 TestRunner(std::string_view generator)
-    : gen_(getGenerators().find(generator))
+    : gen_(findGenerator(generator))
 {
     MRDOCS_ASSERT(gen_ != nullptr);
 }
