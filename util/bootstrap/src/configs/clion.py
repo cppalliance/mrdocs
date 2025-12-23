@@ -1,0 +1,227 @@
+#!/usr/bin/env python3
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+"""
+CLion run configuration generation.
+
+Generates XML run configuration files for JetBrains CLion IDE.
+"""
+
+import os
+import shlex
+import xml.etree.ElementTree as ET
+from typing import Optional, List, Dict, Any
+
+from ..core.filesystem import ensure_dir
+from ..core.ui import TextUI, get_default_ui
+
+
+def generate_clion_run_configs(
+    configs: List[Dict[str, Any]],
+    source_dir: str,
+    build_dir: str,
+    preset: str,
+    run_config_dir: Optional[str] = None,
+    dry_run: bool = False,
+    ui: Optional[TextUI] = None,
+):
+    """
+    Generate CLion run configuration XML files.
+
+    Args:
+        configs: List of run configuration dictionaries.
+        source_dir: MrDocs source directory.
+        build_dir: Build directory.
+        preset: Preset name.
+        run_config_dir: Directory to write run configs. Defaults to source_dir/.run
+        dry_run: If True, only print what would be done.
+        ui: TextUI instance for output.
+    """
+    if ui is None:
+        ui = get_default_ui()
+
+    if run_config_dir is None:
+        run_config_dir = os.path.join(source_dir, ".run")
+
+    ensure_dir(run_config_dir, dry_run=dry_run, ui=ui)
+
+    for config in configs:
+        config_name = config["name"]
+        run_config_path = os.path.join(run_config_dir, f"{config_name}.run.xml")
+        root = ET.Element("component", name="ProjectRunConfigurationManager")
+
+        if 'target' in config:
+            # CMake target configuration
+            attrib = {
+                "default": "false",
+                "name": config["name"],
+                "type": "CMakeRunConfiguration",
+                "factoryName": "Application",
+                "PROGRAM_PARAMS": ' '.join(shlex.quote(arg) for arg in config.get("args", [])),
+                "REDIRECT_INPUT": "false",
+                "ELEVATE": "false",
+                "USE_EXTERNAL_CONSOLE": "false",
+                "EMULATE_TERMINAL": "false",
+                "PASS_PARENT_ENVS_2": "true",
+                "PROJECT_NAME": "MrDocs",
+                "TARGET_NAME": config["target"],
+                "CONFIG_NAME": preset or "debug",
+                "RUN_TARGET_PROJECT_NAME": "MrDocs",
+                "RUN_TARGET_NAME": config["target"]
+            }
+            if 'folder' in config:
+                attrib["folderName"] = config["folder"]
+            clion_config = ET.SubElement(root, "configuration", attrib)
+            if 'env' in config:
+                envs = ET.SubElement(clion_config, "envs")
+                for key, value in config['env'].items():
+                    ET.SubElement(envs, "env", name=key, value=value)
+            method = ET.SubElement(clion_config, "method", v="2")
+            ET.SubElement(method, "option",
+                          name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask",
+                          enabled="true")
+
+        elif 'script' in config:
+            if config["script"].endswith(".py"):
+                # Python script configuration
+                attrib = {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "PythonConfigurationType",
+                    "factoryName": "Python",
+                    "nameIsGenerated": "false"
+                }
+                if 'folder' in config:
+                    attrib["folderName"] = config["folder"]
+                clion_config = ET.SubElement(root, "configuration", attrib)
+                ET.SubElement(clion_config, "module", name="mrdocs")
+                ET.SubElement(clion_config, "option", name="ENV_FILES", value="")
+                ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                ET.SubElement(clion_config, "option", name="PARENT_ENVS", value="true")
+                envs = ET.SubElement(clion_config, "envs")
+                ET.SubElement(envs, "env", name="PYTHONUNBUFFERED", value="1")
+                ET.SubElement(clion_config, "option", name="SDK_HOME", value="")
+                if 'cwd' in config and config["cwd"] != source_dir:
+                    ET.SubElement(clion_config, "option", name="WORKING_DIRECTORY", value=config["cwd"])
+                else:
+                    ET.SubElement(clion_config, "option", name="WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                ET.SubElement(clion_config, "option", name="IS_MODULE_SDK", value="true")
+                ET.SubElement(clion_config, "option", name="ADD_CONTENT_ROOTS", value="true")
+                ET.SubElement(clion_config, "option", name="ADD_SOURCE_ROOTS", value="true")
+                ET.SubElement(clion_config, "option", name="SCRIPT_NAME", value=config["script"])
+                ET.SubElement(clion_config, "option", name="PARAMETERS",
+                              value=' '.join(shlex.quote(arg) for arg in config.get("args", [])))
+                ET.SubElement(clion_config, "option", name="SHOW_COMMAND_LINE", value="false")
+                ET.SubElement(clion_config, "option", name="EMULATE_TERMINAL", value="false")
+                ET.SubElement(clion_config, "option", name="MODULE_MODE", value="false")
+                ET.SubElement(clion_config, "option", name="REDIRECT_INPUT", value="false")
+                ET.SubElement(clion_config, "option", name="INPUT_FILE", value="")
+                ET.SubElement(clion_config, "method", v="2")
+
+            elif config["script"].endswith(".sh"):
+                # Shell script configuration
+                attrib = {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "ShConfigurationType"
+                }
+                if 'folder' in config:
+                    attrib["folderName"] = config["folder"]
+                clion_config = ET.SubElement(root, "configuration", attrib)
+                ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
+                              value=f"bash {shlex.quote(config['script'])}")
+                ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
+                ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
+                ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
+                ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY", value="true")
+                if 'cwd' in config and config["cwd"] != source_dir:
+                    ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value=config["cwd"])
+                else:
+                    ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                ET.SubElement(clion_config, "option", name="INDEPENDENT_INTERPRETER_PATH", value="true")
+                ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
+                ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
+                ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="false")
+                ET.SubElement(clion_config, "envs")
+                ET.SubElement(clion_config, "method", v="2")
+
+            elif config["script"].endswith(".js"):
+                # Node.js script configuration
+                attrib = {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "NodeJSConfigurationType",
+                    "path-to-js-file": config["script"],
+                    "working-dir": config.get("cwd", "$PROJECT_DIR$")
+                }
+                if 'folder' in config:
+                    attrib["folderName"] = config["folder"]
+                clion_config = ET.SubElement(root, "configuration", attrib)
+                envs = ET.SubElement(clion_config, "envs")
+                if 'env' in config:
+                    for key, value in config['env'].items():
+                        ET.SubElement(envs, "env", name=key, value=value)
+                ET.SubElement(clion_config, "method", v="2")
+
+            elif config["script"] == "npm":
+                # npm script configuration
+                attrib = {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "js.build_tools.npm"
+                }
+                if 'folder' in config:
+                    attrib["folderName"] = config["folder"]
+                clion_config = ET.SubElement(root, "configuration", attrib)
+                ET.SubElement(clion_config, "package-json", value=os.path.join(config["cwd"], "package.json"))
+                ET.SubElement(clion_config, "command", value=config["args"][0] if config.get("args") else "ci")
+                ET.SubElement(clion_config, "node-interpreter", value="project")
+                envs = ET.SubElement(clion_config, "envs")
+                if 'env' in config:
+                    for key, value in config['env'].items():
+                        ET.SubElement(envs, "env", name=key, value=value)
+                ET.SubElement(clion_config, "method", v="2")
+
+            else:
+                # Generic shell configuration fallback
+                attrib = {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "ShConfigurationType"
+                }
+                if 'folder' in config:
+                    attrib["folderName"] = config["folder"]
+                clion_config = ET.SubElement(root, "configuration", attrib)
+                args = config.get("args") or []
+                ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
+                              value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in args)}")
+                ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
+                ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
+                ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
+                ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY", value="true")
+                if 'cwd' in config and config["cwd"] != source_dir:
+                    ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value=config["cwd"])
+                else:
+                    ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                ET.SubElement(clion_config, "option", name="INDEPENDENT_INTERPRETER_PATH", value="true")
+                ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
+                ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
+                ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="false")
+                ET.SubElement(clion_config, "envs")
+                ET.SubElement(clion_config, "method", v="2")
+
+        tree = ET.ElementTree(root)
+        if dry_run:
+            ui.info(f"dry-run: would write CLion run configuration {run_config_path}")
+        else:
+            tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
