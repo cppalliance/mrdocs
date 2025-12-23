@@ -1157,21 +1157,6 @@ jobs:
           path: demos-diff
           retention-days: 30
 
-      # Generate a static roadmap page from the git-tracked issue index.
-      #
-      # Output location:
-      # - Writes `build/website/roadmap/index.html`.
-      # - The generator may copy `styles.css` into `build/website/` if it's missing,
-      #   so the report can reference `../styles.css`.
-      # - Since the website is published from `build/website`, this becomes
-      #   `/roadmap/` on the deployed site.
-      - name: Generate Roadmap Report
-        if: env.PUBLISH_WEBSITE == 'true'
-        run: |
-          set -euvx
-          cd ${{ github.workspace }}
-          python -m util.roadmap report -o build/website/roadmap
-
       - name: Publish Website to GitHub Pages
         if: env.PUBLISH_WEBSITE == 'true'
         uses: peaceiris/actions-gh-pages@v3
