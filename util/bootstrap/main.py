@@ -9,24 +9,13 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-"""
-MrDocs Bootstrap Tool - Entry Point
-
-This script sets up the MrDocs development environment by installing
-dependencies, configuring build presets, and generating IDE configurations.
-
-Usage:
-    python bootstrap.py [options]
-    python -m util.bootstrap [options]
-
-For help:
-    python bootstrap.py --help
-"""
+"""Entry point for the MrDocs Bootstrap tool."""
 
 import runpy
 import sys
 from pathlib import Path
 
 if __name__ == "__main__":
-    sys.path.insert(0, str(Path(__file__).parent / "util" / "bootstrap"))
+    # Run src/ as a package
+    sys.path.insert(0, str(Path(__file__).parent))
     runpy.run_module("src", run_name="__main__", alter_sys=True)
