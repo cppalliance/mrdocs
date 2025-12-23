@@ -182,7 +182,7 @@ function renderChangeTable(summary: ScopeReport): string {
  */
 function renderHighlights(highlights: string[]): string {
     if (highlights.length === 0) {
-        return "## ✨ Highlights\n- None noted.";
+        return "";
     }
     const decorated = highlights.map((note) => {
         const lower = note.toLowerCase();
