@@ -57,7 +57,8 @@ describe("renderDangerReport", () => {
         expect(output).toMatch(/\|\s*🛠️ Source\s*\|\s*\*\*4\*\*\s*\|\s*3\s*\|\s*1\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*1\s*\|\s*-\s*\|\s*-\s*\|/u);
         expect(output).toMatch(/\|\s*🧪 Unit Tests\s*\|\s*\*\*2\*\*\s*\|\s*2\s*\|\s*-\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*1\s*\|\s*-\s*\|\s*-\s*\|/u);
         expect(output).toMatch(/\|\s*\*\*Total\*\*\s*\|\s*\*\*6\*\*\s*\|\s*5\s*\|\s*1\s*\|\s*\*\*2\*\*\s*\|/);
-        expect(output).toContain("## ✨ Highlights");
+        // No highlights section when no golden tests changed
+        expect(output).not.toContain("## ✨ Highlights");
         expect(output.trim().startsWith("> 🚧 Danger.js checks for MrDocs")).toBe(true);
     });
 
@@ -73,7 +74,7 @@ describe("renderDangerReport", () => {
         expect(sourceRow).toBeDefined();
         expect(sourceRow).not.toMatch(/-1/);
         expect(sourceRow).toMatch(
-            /\|\s*Source\s*\|\s*\*\*5\*\*\s*\|\s*-\s*\|\s*5\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*-\s*\|\s*-\s*\|\s*1\s*\|/,
+            /\|\s*🛠️ Source\s*\|\s*\*\*5\*\*\s*\|\s*-\s*\|\s*5\s*\|\s*\*\*1\*\*\s*\|\s*-\s*\|\s*-\s*\|\s*-\s*\|\s*1\s*\|/u,
         );
     });
 });
