@@ -581,44 +581,57 @@ class MrDocsInstaller:
     def reprompt_option(self, name, prompt_text):
         return self.prompt_option(name, prompt_text, force_prompt=True)
 
+    def prompt_validated_option(self, name, prompt_text, valid_values, normalizer=None, allow_empty=False):
+        """
+        Prompts for an option with validation and retry support.
+
+        :param name: The option name.
+        :param prompt_text: The prompt to display.
+        :param valid_values: List of valid values (canonical forms).
+        :param normalizer: Optional function to normalize input before comparison.
+                           If None, uses case-insensitive comparison.
+        :param allow_empty: If True, empty input is accepted (returns '').
+        :return: The validated value.
+        """
+        if normalizer is None:
+            normalizer = lambda v: v.lower()
+
+        def match_value(input_val):
+            if allow_empty and (not input_val or input_val.lower() == "none"):
+                return ''
+            for v in valid_values:
+                if normalizer(v) == normalizer(input_val):
+                    return v
+            return None
+
+        valid_display = ', '.join(valid_values)
+        if allow_empty:
+            valid_display += ', or none'
+
+        for attempt in range(2):
+            if attempt == 0:
+                value = self.prompt_option(name, prompt_text)
+            else:
+                value = self.reprompt_option(name, prompt_text)
+
+            matched = match_value(value)
+            if matched is not None:
+                setattr(self.options, name, matched)
+                return matched
+
+            print(f"Invalid {name.replace('_', ' ')} '{value}'. Must be one of: {valid_display}.")
+
+        raise ValueError(f"Invalid {name.replace('_', ' ')} '{value}'. Must be one of: {valid_display}.")
+
     def prompt_build_type_option(self, name):
-        value = self.prompt_option(name, "Build type")
         valid_build_types = ["Debug", "Release", "RelWithDebInfo", "MinSizeRel", "OptimizedDebug", "DebugFast"]
-        for t in valid_build_types:
-            if t.lower().replace("-", "") == value.lower().replace("-", ""):
-                if t == "DebugFast":
-                    value = "DebugFast"
-                setattr(self.options, name, t)
-                return value
-        print(f"Invalid build type '{value}'. Must be one of: {', '.join(valid_build_types)}.")
-        value = self.reprompt_option(name, "Build type")
-        for t in valid_build_types:
-            if t.lower().replace("-", "") == value.lower().replace("-", ""):
-                if t == "DebugFast":
-                    value = "DebugFast"
-                setattr(self.options, name, t)
-                return value
-        print(f"Invalid build type '{value}'. Must be one of: {', '.join(valid_build_types)}.")
-        raise ValueError(f"Invalid build type '{value}'. Must be one of: {', '.join(valid_build_types)}.")
+        normalizer = lambda v: v.lower().replace("-", "")
+        return self.prompt_validated_option(name, "Build type", valid_build_types, normalizer=normalizer)
 
     def prompt_sanitizer_option(self, name):
-        value = self.prompt_option(name, "Sanitizer (asan/ubsan/msan/tsan/none)")
-        if not value:
-            value = ''
-            return value
         valid_sanitizers = ["ASan", "UBSan", "MSan", "TSan"]
-        for t in valid_sanitizers:
-            if t.lower() == value.lower():
-                setattr(self.options, name, t)
-                return value
-        print(f"Invalid sanitizer '{value}'. Must be one of: {', '.join(valid_sanitizers)}.")
-        value = self.reprompt_option(name, "Sanitizer (asan/ubsan/msan/tsan/none)")
-        for t in valid_sanitizers:
-            if t.lower() == value.lower():
-                setattr(self.options, name, t)
-                return value
-        print(f"Invalid sanitizer '{value}'. Must be one of: {', '.join(valid_sanitizers)}.")
-        raise ValueError(f"Invalid sanitizer '{value}'. Must be one of: {', '.join(valid_sanitizers)}.")
+        return self.prompt_validated_option(
+            name, "Sanitizer (asan/ubsan/msan/tsan/none)", valid_sanitizers, allow_empty=True)
 
     def supports_ansi(self):
         return bool(self.ui.color_enabled)
