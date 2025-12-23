@@ -1,0 +1,61 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+# Codecov Configuration
+# https://docs.codecov.com/docs/codecovyml-reference
+#
+# Patch Coverage Threshold Rationale
+# ==================================
+#
+# We allow a small threshold for patch coverage NOT because reduced coverage
+# is acceptable, but because some lines are inherently uncoverable and
+# produce false positives:
+#
+#   - Class declarations (e.g., `class Foo : public Bar`)
+#   - Struct declarations (e.g., `struct MyTest`)
+#   - Access specifiers (`public:`, `private:`)
+#   - Pure virtual method declarations
+#   - Opening/closing braces on their own lines
+#
+# These are not executable code - they don't generate machine instructions -
+# yet coverage tools (gcov) report them as "uncovered lines."
+#
+# Preferred Solutions (in order)
+# ------------------------------
+#
+# 1st best: Configure gcov/lcov to exclude declarations from coverage
+#           tracking entirely, so they never appear as uncovered lines.
+#           This would eliminate false positives at the source.
+#           Status: Not currently available/configured.
+#
+# 2nd best: Use an absolute threshold (e.g., "allow up to 5 uncovered lines")
+#           rather than a percentage. This would be precise and predictable.
+#           Status: Codecov only supports percentage-based thresholds.
+#
+# 3rd best: Use a percentage-based threshold (what we implement below).
+#           The threshold is set small enough that any real logic
+#           (conditionals, loops, function bodies, error paths) that isn't
+#           covered will still trigger a failure. Only trivial declaration
+#           noise should pass through.
+#
+# With typical PR sizes, a 90% patch target achieves a similar effect to
+# allowing ~5 uncovered lines in a 50-line change.
+
+coverage:
+  status:
+    # Project-wide coverage should not decrease
+    project:
+      default:
+        threshold: 1%
+
+    # Patch coverage: only applies to new/modified lines in the PR
+    patch:
+      default:
+        target: 90%
