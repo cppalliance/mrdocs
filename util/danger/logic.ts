@@ -198,6 +198,7 @@ const scopeRules: ScopeRule[] = [
             /^CMakeUserPresets\.json\.example/i,
             /^install\//i,
             /^bootstrap\.py$/i,
+            /^util\/bootstrap\//i,
             /^mrdocs\.rnc$/i,
             /^mrdocs-config\.cmake\.in$/i,
         ],
