@@ -1185,7 +1185,7 @@ jobs:
           demo_dir="$website_dir/demos/${{ github.ref_name }}"
 
           # Copy files: This step will copy the landing page and the documentation to www.mrdocs.com
-          time rsync "${rsyncopts[@]}" --exclude=llvm+clang/ --exclude=demos/ $(pwd)/build/website/ "$website_dir"/
+          time rsync "${rsyncopts[@]}" --exclude=llvm+clang/ --exclude=demos/ --exclude=roadmap/ $(pwd)/build/website/ "$website_dir"/
 
           # Copy demos: This step will copy the demos to www.mrdocs.com/demos
           time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
