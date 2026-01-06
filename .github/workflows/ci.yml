@@ -54,8 +54,8 @@ jobs:
             apple-clang *
           standards: '20'
           latest-factors: |
-            gcc UBSan Coverage
-            clang UBSan ASan MSan
+            gcc UBSan
+            clang UBSan ASan MSan Coverage
             apple-clang UBSan ASan
           factors: ''
           runs-on: |
@@ -64,14 +64,12 @@ jobs:
             clang: ubuntu:24.04
           build-types: |
             gcc: Release
-            gcc Coverage: Release
             clang: Release
             apple-clang: Release
             msvc: RelWithDebInfo
           install: |
             gcc: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
-            gcc Coverage: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
-            clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
+            clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04 elfutils
             msvc: ''
           extra-values: |
             use-libcxx: {{#if (and (ieq compiler 'clang') (or msan asan)) }}true{{else}}false{{/if}}
@@ -91,7 +89,7 @@ jobs:
             common-flags-base: {{#if (ieq compiler 'clang')}}-gz=zstd {{/if}}
             common-flags: {{{ common-flags-base }}}{{#if msan }}-fsanitize-memory-track-origins {{/if}}
             common-ccflags: {{{ ccflags }}} {{{ common-flags }}}
-            mrdocs-flags: {{{ warning-flags }}}{{#if (and (eq compiler 'gcc') (not asan)) }}-static {{/if}}
+            mrdocs-flags: {{{ warning-flags }}}{{#if (and (eq compiler 'gcc') (not asan)) }}-static {{/if}}{{#if (and (ieq compiler 'clang') coverage)}}-fprofile-instr-generate -fcoverage-mapping {{/if}}
             mrdocs-ccflags: {{{ common-ccflags }}} {{{ mrdocs-flags }}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
@@ -278,7 +276,7 @@ jobs:
         run: |
           echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-21 main" >> /etc/apt/sources.list
           apt-get update
-          apt-get install -y libclang-${{ matrix.major }}-dev
+          apt-get install -y libclang-${{ matrix.major }}-dev llvm-${{ matrix.major }}-tools
 
       # This calculates a bunch of variables, which would normally go in to the regular matrix extra-values
       # section, but which depend on paths not known at that point.
@@ -586,6 +584,8 @@ jobs:
 
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
+        env:
+          LLVM_PROFILE_FILE: mrdocs-%b-%m.profraw
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -714,19 +714,11 @@ jobs:
         run: |
           set -euvx
 
-          # Find gcov
-          gcov_tool="gcov"
-          for version in "${{steps.setup-cpp.outputs.version-major}}.${{steps.setup-cpp.outputs.version-minor}}" "${{steps.setup-cpp.outputs.version-major}}"; do
-            if command -v "gcov-$version" &> /dev/null; then
-              gcov_tool="gcov-$version"
-              break
-            fi
-          done
-
-          dir="./build"
-          lcov --rc branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent,negative
-          lcov --rc branch_coverage=0 --ignore-errors inconsistent,negative --list "$dir/all.info"
-          echo "file=$(realpath "$dir/all.info")" >> $GITHUB_OUTPUT
+          cd build
+          build_id=$(eu-readelf -n bin/mrdocs-test | awk '/Build ID:/{print $NF}')
+          llvm-profdata-${{ matrix.major }} merge -sparse mrdocs-${build_id}-*.profraw -o default.profdata
+          llvm-cov-${{ matrix.major }} export -format=lcov -instr-profile=default.profdata bin/mrdocs-test > "mrdocs-test.info"
+          echo "file=$(realpath "mrdocs-test.info")" >> $GITHUB_OUTPUT
 
       - name: Upload Coverage as Artifact
         if: matrix.coverage
