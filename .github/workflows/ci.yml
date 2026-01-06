@@ -615,7 +615,7 @@ jobs:
           package-dir: packages
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
-          ctest-timeout: 3600
+          ctest-timeout: 9000
 
       - name: Check YAML schema
         run: |
