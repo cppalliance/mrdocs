@@ -484,7 +484,6 @@ if (MRDOCS_BUILD_TESTS)
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                 --generator=${testgenerator}
                 "--stdlib-includes=${LIBCXX_DIR}"
-                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                 --log-level=warn
         )
@@ -499,7 +498,6 @@ if (MRDOCS_BUILD_TESTS)
                     "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                     --generator=${testgenerator}
                     "--stdlib-includes=${LIBCXX_DIR}"
-                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                     "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                     --log-level=warn
                 DEPENDS mrdocs-test

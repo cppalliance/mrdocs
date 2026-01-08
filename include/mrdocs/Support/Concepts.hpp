@@ -137,8 +137,12 @@ concept range_of_tuple_like =
     std::ranges::range<Range> && tuple_like<std::ranges::range_value_t<Range>>;
 
 #ifdef __cpp_lib_reference_from_temporary
-    using std::reference_constructs_from_temporary_v;
-    using std::reference_converts_from_temporary_v;
+/** True when binding `To` from `From` would require a temporary conversion.
+ */
+using std::reference_constructs_from_temporary_v;
+/** Like `reference_converts_from_temporary_v`, but for construction.
+ */
+using std::reference_converts_from_temporary_v;
 #else
     /** True when binding `To` from `From` would require a temporary conversion.
     */
