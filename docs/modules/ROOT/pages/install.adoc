@@ -45,6 +45,12 @@ manual intervention and potential errors.
 This approach is recommended for developers, advanced users, or those integrating Mr.Docs
 into larger projects.
 
+[NOTE]
+====
+The bootstrap script automatically installs all dependencies (LLVM, Clang, etc.) to the same prefix as Mr.Docs.
+This ensures that the Clang resource directory can be found at runtime without additional configuration.
+====
+
 [#mrdocs-source]
 == Manually Install from Source
 
@@ -315,11 +321,18 @@ Then build and install MrDocs with:
 ----
 cd build
 cmake --build .
-cmake --install .
+cmake --install . --prefix /path/to/llvm/install/prefix
 ----
 
 To customize the installation directory, use the `CMAKE_INSTALL_PREFIX` option or use the `--prefix` option for the `cmake --install .` command.
 To customize the C and C++ compilers, use the `CMAKE_C_COMPILER` and `CMAKE_CXX_COMPILER` options.
+
+[IMPORTANT]
+====
+The `--prefix` for MrDocs installation *must* match the installation prefix used for LLVM/Clang.
+This is critical for proper runtime resolution of the Clang resource directory.
+For example, if LLVM was installed to `/opt/llvm`, then install MrDocs with `cmake --install . --prefix /opt/llvm`.
+====
 
 [NOTE]
 ====
@@ -337,3 +350,10 @@ The MrDocs installation directory follows the "Filesystem Hierarchy Standard" (F
 * `lib`: the MrDocs library
 
 The FHS layout provides a directory structure that also serves as a widely accepted convention for organizing files and directories in Unix-like systems, but that can be used in any operating system.
+
+[IMPORTANT]
+====
+The MrDocs binary must be installed in the same installation prefix as the Clang library it was built from.
+This is required because the Clang resource directory location is resolved relative to the MrDocs executable at runtime.
+When installing both LLVM/Clang and MrDocs, ensure they share the same `CMAKE_INSTALL_PREFIX`.
+====

@@ -627,7 +627,7 @@ class DocCommentVisitor
         auto compsExp = parseHTMLStartSpan(C, cur);
         if (!compsExp)
         {
-            report::error(
+            report::warn(
                 "{} at {} ({})",
                 compsExp.error().message(),
                 filename,

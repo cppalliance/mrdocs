@@ -726,6 +726,26 @@ jobs:
       contents: write
 
     steps:
+      # This calculates a bunch of variables, which would normally go in to the regular matrix extra-values
+      # section, but which depend on paths not known at that point.
+      - name: Resolved Matrix
+        id: rmatrix
+        run: |
+          set -euvx
+
+          third_party_dir="$(realpath $(pwd)/..)/third-party"
+          if [[ "${{ runner.os }}" == 'Windows' ]]; then
+              third_party_dir="$(echo "$third_party_dir" | sed 's/\\/\//g; s|^/d/|D:/|')"
+          fi
+          echo "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
+
+          llvm_path="$third_party_dir/llvm"
+          echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
+
+          llvm_cache_key="${{ matrix.llvm-archive-basename }}"
+          llvm_cache_key="${llvm_cache_key//:/-}"
+          echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
+
       - name: Ensure Node
         if: matrix.container != '' && env.ACT == 'true'
         run: |
@@ -768,6 +788,14 @@ jobs:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
 
+      - name: Cached LLVM Binaries
+        id: llvm-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.rmatrix.outputs.llvm-path }}
+          key: ${{ steps.rmatrix.outputs.llvm-cache-key }}
+          fail-on-cache-miss: true
+
       - name: Download MrDocs package
         uses: actions/download-artifact@v4
         with:
@@ -776,28 +804,29 @@ jobs:
 
       - name: Install MrDocs from Package
         run: |
-          set -x
-          
+          set -euvx
+
           # Delete packages/_CPack_Packages files from previous runs
           rm -rf packages/_CPack_Packages
-          
+
           # Print tree structure
           find packages -print | sed 's;[^/]*/;|____;g;s;____|; |;g'
-          
+
+          dest_dir="${{ steps.rmatrix.outputs.llvm-path }}"
+
           if [[ ${{ runner.os }} != 'Windows' ]]; then
-              dest_dir="$HOME/local"
-              mkdir -p "$dest_dir" 
               find packages -maxdepth 1 -name 'MrDocs-*.tar.gz' -exec tar -vxzf {} -C $dest_dir --strip-components=1 \;              
           else
-              dest_dir="$GITHUB_WORKSPACE/usr/local"
-              dest_dir=$(echo "$dest_dir" | sed 's/\\/\//g')
-              find packages -maxdepth 1 -name "MrDocs-*.7z" -exec 7z x {} -o$dest_dir \;
-              if [[ $(ls -1 $dest_dir | wc -l) -eq 1 ]]; then
-                  single_dir=$(ls -1 $dest_dir)
-                  if [[ -d $dest_dir/$single_dir ]]; then
-                      mv $dest_dir/$single_dir/* $dest_dir/
-                      rmdir $dest_dir/$single_dir
-                  fi
+              package=$(find packages -maxdepth 1 -name "MrDocs-*.7z" -print -quit)
+              filename=$(basename "$package")
+              name="${filename%.*}"
+              7z x "${package}" -o${dest_dir}
+              set +e
+              robocopy "${dest_dir}/${name}" "${dest_dir}" //move //e //np //nfl
+              exit_code=$?
+              set -e
+              if (( exit_code >= 8 )); then
+                exit 1
               fi
           fi
           MRDOCS_ROOT="$dest_dir"

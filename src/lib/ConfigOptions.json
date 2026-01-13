@@ -537,7 +537,7 @@
         "brief": "Use the system C++ standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
         "type": "bool",
-        "default": false
+        "default": true
       },
       {
         "name": "stdlib-includes",
@@ -545,8 +545,7 @@
         "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
         "type": "list<path>",
         "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libcxx",
-          "<mrdocs-root>/share/mrdocs/headers/clang"
+          "<mrdocs-root>/share/mrdocs/headers/libcxx"
         ],
         "relative-to": "<config-dir>",
         "must-exist": false,
@@ -557,7 +556,7 @@
         "brief": "Use the system C standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
         "type": "bool",
-        "default": false
+        "default": true
       },
       {
         "name": "libc-includes",

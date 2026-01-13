@@ -222,11 +222,11 @@ def load_recipe_files(
         if recipe.install_scope == "global":
             recipe.source_dir = os.path.join(tp_root, "source", recipe.name)
             recipe.build_dir = os.path.join(tp_root, "build", recipe.name)
-            recipe.install_dir = os.path.join(tp_root, "install", recipe.name)
+            recipe.install_dir = install_dir  # Use the same install prefix as MrDocs
         else:
             recipe.source_dir = os.path.join(tp_root, "source", recipe.name)
             recipe.build_dir = os.path.join(tp_root, "build", dep_preset, recipe.name)
-            recipe.install_dir = os.path.join(tp_root, "install", dep_preset, recipe.name)
+            recipe.install_dir = install_dir  # Use the same install prefix as MrDocs
 
         recipes.append(recipe)
 

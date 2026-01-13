@@ -1,5 +1,4 @@
 #include <type_traits>
-#include <stdexcept>
 
 /// Enabled via return type
 template <class T>

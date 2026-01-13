@@ -570,8 +570,7 @@
     },
     "stdlib-includes": {
       "default": [
-        "<mrdocs-root>/share/mrdocs/headers/libcxx",
-        "<mrdocs-root>/share/mrdocs/headers/clang"
+        "<mrdocs-root>/share/mrdocs/headers/libcxx"
       ],
       "description": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
       "items": {
@@ -611,7 +610,7 @@
       "type": "string"
     },
     "use-system-libc": {
-      "default": false,
+      "default": true,
       "description": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
       "enum": [
         true,
@@ -621,7 +620,7 @@
       "type": "boolean"
     },
     "use-system-stdlib": {
-      "default": false,
+      "default": true,
       "description": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
       "enum": [
         true,

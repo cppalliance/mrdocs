@@ -302,7 +302,14 @@ adjustCommandLine(
         cmdLineCStrs.data(),
         cmdLineCStrs.data() + cmdLineCStrs.size());
 
-    auto const systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
+    char const* systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
+    // FIXME: No CL equivalent, and not really needed for the microsoft system
+    // headers, but other users could depend on this.
+    char const* afterIncludeFlag = is_clang_cl ? "-external:I" : "-idirafter";
+    char const* latestCxxStandardFlag = is_clang_cl ? "-std:c++latest" : "-std=c++26";
+    char const* latestCStandardFlag = is_clang_cl ? "-std:clatest" : "-std=c23";
+    char const* noStdlibFlag = is_clang_cl ? "-X" : "-nostdinc++";
+    char const* noSystemLibFlag = is_clang_cl ? "-X" : "-nostdlibinc";
 
     // ------------------------------------------------------
     // Supress all warnings
@@ -348,12 +355,11 @@ adjustCommandLine(
     {
         if (!isCCompileCommand)
         {
-            new_cmdline.emplace_back(
-                is_clang_cl ? "-std:c++latest" : "-std=c++26");
+            new_cmdline.emplace_back(latestCxxStandardFlag);
         }
         else
         {
-            new_cmdline.emplace_back(is_clang_cl ? "-std:clatest" : "-std=c23");
+            new_cmdline.emplace_back(latestCStandardFlag);
         }
     }
 
@@ -396,7 +402,7 @@ adjustCommandLine(
         // implicit include paths and add the standard library
         // and system includes manually. That gives MrDocs
         // access to libc++ in a portable way.
-        new_cmdline.emplace_back(is_clang_cl ? "-X" : "-nostdinc++");
+        new_cmdline.emplace_back(noStdlibFlag);
         for (auto const& inc : (*config)->stdlibIncludes)
         {
             new_cmdline.emplace_back(systemIncludeFlag);
@@ -406,10 +412,10 @@ adjustCommandLine(
 
     if (!(*config)->useSystemLibc)
     {
-        new_cmdline.emplace_back("-nostdinc");
+        new_cmdline.emplace_back(noSystemLibFlag);
         for (auto const& inc : (*config)->libcIncludes)
         {
-            new_cmdline.emplace_back(systemIncludeFlag);
+            new_cmdline.emplace_back(afterIncludeFlag);
             new_cmdline.emplace_back(inc);
         }
     }

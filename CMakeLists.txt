@@ -261,15 +261,6 @@ if (NOT EXISTS "${LIBCXX_DIR}")
             "Please provide a LLVM with libc++ enabled\n")
 endif()
 
-set(STDLIB_INCLUDE_DIR "${LLVM_BINARY_DIR}/lib/clang/${Clang_VERSION_MAJOR}/include"
-                       CACHE PATH "Path to the clang headers include directory")
-message(STATUS "STDLIB_INCLUDE_DIR: ${STDLIB_INCLUDE_DIR}")
-if (NOT EXISTS "${STDLIB_INCLUDE_DIR}")
-    message(FATAL_ERROR
-            "STDLIB_INCLUDE_DIR (${STDLIB_INCLUDE_DIR}) does not exist.\n"
-            "Missing clang headers\n")
-endif()
-
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
@@ -407,6 +398,15 @@ if (MRDOCS_DOCUMENTATION_BUILD)
     return()
 endif()
 
+# Replicate the clang resource directory structure within our own build,
+# so that libclang will find it when executing directly from the build directory.
+# The installed binary will use runtime path resolution to locate the resource directory
+# relative to the executable, so both LLVM and MrDocs must be installed to the same prefix.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib/clang")
+set(RESOURCE_DIR "lib/clang/${Clang_VERSION_MAJOR}")
+file(CREATE_LINK "${LLVM_BINARY_DIR}/${RESOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/${RESOURCE_DIR}" SYMBOLIC)
+
 #-------------------------------------------------
 #
 # Tool
@@ -484,7 +484,6 @@ if (MRDOCS_BUILD_TESTS)
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                 --generator=${testgenerator}
                 "--stdlib-includes=${LIBCXX_DIR}"
-                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                 --log-level=warn
         )
@@ -499,7 +498,6 @@ if (MRDOCS_BUILD_TESTS)
                     "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                     --generator=${testgenerator}
                     "--stdlib-includes=${LIBCXX_DIR}"
-                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                     "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                     --log-level=warn
                 DEPENDS mrdocs-test
@@ -696,9 +694,6 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     install(DIRECTORY ${LIBCXX_DIR}/
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libcxx
-            FILES_MATCHING PATTERN "*")
-    install(DIRECTORY ${STDLIB_INCLUDE_DIR}/
-            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/clang
             FILES_MATCHING PATTERN "*")
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs/
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libc-stubs

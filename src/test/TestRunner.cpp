@@ -184,11 +184,16 @@ handleFile(
     auto runWith = [&](std::vector<std::string> command)
     {
         auto const db = makeSingleFileDB(filePath, std::move(command));
+        std::unordered_map<std::string, std::vector<std::string>>
+            defaultIncludePaths = {
+                {    "clang", { MRDOCS_TEST_FILES_DIR "/include" } },
+                { "clang-cl", { MRDOCS_TEST_FILES_DIR "/include" } },
+        };
         MrDocsCompilationDatabase compilations(
             llvm::StringRef(files::getParentDir(filePath)),
             db,
             config,
-            std::unordered_map<std::string, std::vector<std::string>>{});
+            defaultIncludePaths);
         handleCompilationDatabase(filePath, compilations, config, layout);
     };
 
