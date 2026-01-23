@@ -13,7 +13,7 @@
 --}}
 {{~#if (and (eq kind "function") (eq funcClass "conversion"))~}}
     {{! Conversion operator: "operator" and the type declarator ~}}
-    operator {{>type/declarator return ~}}
+    operator {{>type/declarator returnType ~}}
 {{~else if (eq kind "guide")~}}
     {{! Deduction guide: "deduced" type declarator ~}}
     {{>type/declarator deduced ~}}
