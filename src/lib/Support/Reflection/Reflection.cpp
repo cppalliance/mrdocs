@@ -26,7 +26,9 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     MRDOCS_ASSERT(domCorpus);
-    mapReflectedType(io, I, domCorpus);
+    // Note: Symbol is always a base class, never most-derived,
+    // so we don't add $meta here. The derived type adds it.
+    mapReflectedType<false>(io, I, domCorpus);
     io.map("class", std::string("symbol"));
     io.map("isRegular", I.Extraction == ExtractionMode::Regular);
     io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
@@ -58,7 +60,7 @@ doc::tag_invoke(
     doc::ImageInline const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -81,7 +83,7 @@ tag_invoke(
     ConceptSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -104,6 +106,8 @@ tag_invoke(
     DocComment const& I,
     DomCorpus const* domCorpus)
 {
+    addMetaObject<DocComment>(io);
+
     boost::mp11::mp_for_each<boost::describe::describe_members<
         DocComment, boost::describe::mod_public>>([&](auto D)
         {
@@ -154,7 +158,7 @@ tag_invoke(
     EnumConstantSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -177,6 +181,8 @@ tag_invoke(
     EnumSymbol const& I,
     DomCorpus const* domCorpus)
 {
+    addMetaObject<EnumSymbol>(io);
+
     tag_invoke(dom::LazyObjectMapTag{}, io, I.asInfo(), domCorpus);
     io.map("type", I.UnderlyingType);
     io.map("isScoped", I.Scoped);
@@ -203,7 +209,7 @@ tag_invoke(
     FunctionSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -226,7 +232,7 @@ tag_invoke(
     GuideSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -249,7 +255,7 @@ tag_invoke(
     NamespaceTranche const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -272,7 +278,7 @@ tag_invoke(
     NamespaceSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -295,7 +301,7 @@ tag_invoke(
     NamespaceAliasSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -318,7 +324,7 @@ tag_invoke(
     OverloadsSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -341,7 +347,7 @@ tag_invoke(
     RecordTranche const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -364,7 +370,7 @@ tag_invoke(
     RecordInterface const& I,
     DomCorpus const*)
 {
-    mapReflectedType(io, I);
+    mapReflectedType<true>(io, I);
 }
 
 template
@@ -387,7 +393,7 @@ tag_invoke(
     RecordSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
     io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
 }
 
@@ -411,7 +417,7 @@ tag_invoke(
     TypedefSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -434,7 +440,7 @@ tag_invoke(
     UsingSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -457,7 +463,7 @@ tag_invoke(
     VariableSymbol const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template
@@ -493,7 +499,7 @@ tag_invoke(
             return dom::ValueFrom(I.Type, domCorpus).get("name");
         });
     }
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
 }
 
 template

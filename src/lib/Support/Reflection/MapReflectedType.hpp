@@ -11,6 +11,7 @@
 #ifndef MRDOCS_LIB_SUPPORT_REFLECTION_MAPREFLECTEDTYPE_HPP
 #define MRDOCS_LIB_SUPPORT_REFLECTION_MAPREFLECTEDTYPE_HPP
 
+#include <mrdocs/Dom/Array.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Specifiers/ConstexprKind.hpp>
@@ -103,10 +104,6 @@ normalizeMemberName(std::string_view name)
     {
         return "tag";
     }
-    else if (name == "Class")
-    {
-        return "usingClass";
-    }
     else
     {
         std::string result(name);
@@ -116,6 +113,116 @@ normalizeMemberName(std::string_view name)
         }
         return result;
     }
+}
+
+/** Remove namespace qualifiers from a type name.
+
+    E.g.: "mrdocs::FunctionSymbol" -> "FunctionSymbol".
+*/
+constexpr std::string_view
+removeNamespaceQualifiers(std::string_view name)
+{
+    constexpr std::string_view scopeDelimiter = "::";
+    std::string_view::size_type const pos = name.rfind(scopeDelimiter);
+    if (pos != std::string_view::npos)
+    {
+        return name.substr(pos + scopeDelimiter.size());
+    }
+    return name;
+}
+
+/** Get the unqualified name of a type.
+
+    Extracts the name from __PRETTY_FUNCTION__ (Clang/GCC) or __FUNCSIG__ (MSVC).
+
+    E.g.: readableTypeName<mrdocs::FunctionSymbol>() -> "FunctionSymbol".
+*/
+template <typename T>
+constexpr std::string_view
+readableTypeName()
+{
+    constexpr std::string_view unknown = "Unknown";
+
+#if defined(__clang__) || defined(__GNUC__)
+    // Clang: "std::string_view mrdocs::detail::readableTypeName() [T = mrdocs::FunctionSymbol]"
+    // GCC:   "constexpr std::string_view mrdocs::detail::readableTypeName() [with T = mrdocs::FunctionSymbol; ...]"
+    constexpr std::string_view typePrefix = "T = ";
+    std::string_view const fn = __PRETTY_FUNCTION__;
+    std::string_view::size_type start = fn.find(typePrefix);
+    if (start == std::string_view::npos)
+    {
+        return unknown;
+    }
+    start += typePrefix.size();
+    std::string_view::size_type const end = fn.find_first_of(";]", start);
+    std::string_view const name = fn.substr(start, end - start);
+    return removeNamespaceQualifiers(name);
+
+#elif defined(_MSC_VER)
+    // MSVC: "... __cdecl mrdocs::detail::readableTypeName<struct mrdocs::FunctionSymbol>(void)"
+    constexpr std::string_view funcPrefix = "readableTypeName<";
+    constexpr std::string_view structPrefix = "struct ";
+    constexpr std::string_view classPrefix = "class ";
+    constexpr std::string_view enumPrefix = "enum ";
+
+    std::string_view const fn = __FUNCSIG__;
+    std::string_view::size_type start = fn.find(funcPrefix);
+    if (start == std::string_view::npos)
+    {
+        return unknown;
+    }
+    start += funcPrefix.size();
+
+    // Skip "struct ", "class ", "enum ".
+    if (fn.substr(start, structPrefix.size()) == structPrefix)
+    {
+        start += structPrefix.size();
+    }
+    else if (fn.substr(start, classPrefix.size()) == classPrefix)
+    {
+        start += classPrefix.size();
+    }
+    else if (fn.substr(start, enumPrefix.size()) == enumPrefix)
+    {
+        start += enumPrefix.size();
+    }
+
+    std::string_view::size_type const end = fn.find('>', start);
+    std::string_view const name = fn.substr(start, end - start);
+    return removeNamespaceQualifiers(name);
+
+#else
+    return unknown;
+#endif
+}
+
+/** Collect all base class names recursively.
+
+    Traverses the class hierarchy using Boost.Describe and collects
+    the names of all base classes. This enables templates to check
+    inheritance relationships (e.g., whether a type is derived from
+    Symbol or Name).
+*/
+template <typename T>
+std::vector<std::string>
+collectBaseNames()
+{
+    std::vector<std::string> names;
+    if constexpr (boost::describe::has_describe_bases<T>::value)
+    {
+        boost::mp11::mp_for_each<boost::describe::describe_bases<T, boost::describe::mod_any_access>>(
+            [&](auto const& descriptor)
+            {
+                using BaseType = typename std::decay_t<decltype(descriptor)>::type;
+                constexpr std::string_view name = readableTypeName<BaseType>();
+                names.emplace_back(name);
+                // Recursively collect the bases of this base class.
+                std::vector<std::string> const baseNames = collectBaseNames<BaseType>();
+                names.insert(names.end(), baseNames.cbegin(), baseNames.cend());
+            }
+        );
+    }
+    return names;
 }
 
 /** Map a single member to the IO object.
@@ -151,11 +258,45 @@ mapMember(
 
 }
 
+/** Add a $meta object with type information.
+
+    Creates a $meta object containing:
+    - type: The unqualified C++ class name (e.g., "FunctionSymbol").
+    - bases: Array of base class names (e.g., ["Symbol", "SourceInfo"]).
+
+    The bases array allows templates to check inheritance relationships.
+    For example, a template can verify if an object is derived from Symbol
+    or Name without knowing the exact derived type.
+
+    The bases array is always included (even if empty), so templates can
+    safely access it.
+*/
+template <typename T, typename IO>
+void
+addMetaObject(IO& io)
+{
+    dom::Object meta;
+    constexpr std::string_view typeName = detail::readableTypeName<T>();
+    meta.set("type", typeName);
+
+    std::vector<std::string> const baseNames = detail::collectBaseNames<T>();
+    dom::Array bases;
+    for (std::string const& name : baseNames)
+    {
+        bases.push_back(name);
+    }
+    meta.set("bases", std::move(bases));
+
+    io.map("$meta", meta);
+}
+
 /** Automatically map all Boost.Describe'd members of a type to the DOM.
 
     This replaces the manual `tag_invoke()` implementations with a single
     call that handles all member mappings via reflection.
 
+    @tparam isMostDerived Whether this is the most-derived type.
+                          When true, adds the $meta object.
     @param io The IO object to use for mapping.
     @param obj The object to be mapped.
     @param domCorpus The DomCorpus used to create the DOM values, or a null pointer.
@@ -170,15 +311,13 @@ mapMember(
         FunctionSymbol const& I,
         DomCorpus const* domCorpus)
     {
-        // First, map base Symbol members.
-        tag_invoke(t, io, I.asInfo(), domCorpus);
-
-        // Then, automatically map all FunctionSymbol-specific members.
-        mapReflectedType(io, I, domCorpus);
+        // Automatically map all members including bases.
+        // Pass true for isMostDerived to add $meta.
+        mapReflectedType<true>(io, I, domCorpus);
     }
     @endcode
 */
-template <typename IO, typename T>
+template <bool isMostDerived, typename IO, typename T>
     requires boost::describe::has_describe_members<T>::value
 void
 mapReflectedType(
@@ -186,6 +325,11 @@ mapReflectedType(
     T const& obj,
     DomCorpus const* domCorpus)
 {
+    if constexpr (isMostDerived)
+    {
+        addMetaObject<T>(io);
+    }
+
     // First, map all bases.
     boost::mp11::mp_for_each<boost::describe::describe_bases<T, boost::describe::mod_any_access>>(
         [&](auto const& descriptor)
@@ -194,8 +338,8 @@ mapReflectedType(
 
             if constexpr (boost::describe::has_describe_members<BaseType>::value)
             {
-                // Base is described: recurse.
-                mapReflectedType(io, static_cast<BaseType const&>(obj), domCorpus);
+                // Base is described: recurse (not most-derived).
+                mapReflectedType<false>(io, static_cast<BaseType const&>(obj), domCorpus);
             }
             else
             {
@@ -231,16 +375,22 @@ mapReflectedType(
     This version passes raw member values to `io.map()`, letting
     the IO object handle conversion with its stored context.
 
+    @tparam isMostDerived Whether this is the most-derived type (adds $meta if true).
     @param io The IO object to use for mapping.
     @param obj The object to be mapped.
 */
-template <typename IO, typename T>
+template <bool isMostDerived, typename IO, typename T>
     requires boost::describe::has_describe_members<T>::value
 void
 mapReflectedType(
     IO& io,
     T const& obj)
 {
+    if constexpr (isMostDerived)
+    {
+        addMetaObject<T>(io);
+    }
+
     boost::mp11::mp_for_each<boost::describe::describe_members<T, boost::describe::mod_any_access>>(
         [&](auto const& descriptor)
         {
