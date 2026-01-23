@@ -151,7 +151,7 @@ tag_invoke(
     BaseInfo const& I,
     DomCorpus const* domCorpus)
 {
-    mapReflectedType(io, I, domCorpus);
+    mapReflectedType<true>(io, I, domCorpus);
     io.map("isPublic", I.Access == AccessKind::Public);
     io.map("isProtected", I.Access == AccessKind::Protected);
     io.map("isPrivate", I.Access == AccessKind::Private);

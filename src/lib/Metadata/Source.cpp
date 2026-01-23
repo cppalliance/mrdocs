@@ -94,7 +94,7 @@ tag_invoke(
     IO& io,
     Location const& loc)
 {
-    mapReflectedType(io, loc);
+    mapReflectedType<true>(io, loc);
 }
 
 void

@@ -5,10 +5,12 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
@@ -150,7 +152,7 @@ tag_invoke(
     Name const& I,
     DomCorpus const* domCorpus)
 {
-    io.map("class", std::string("name"));
+    addMetaObject<Name>(io);
     io.map("kind", I.Kind);
     visit(I, [domCorpus, &io]<typename T>(T const& t)
     {

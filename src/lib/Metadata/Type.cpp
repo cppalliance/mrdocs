@@ -4,10 +4,12 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
@@ -419,7 +421,7 @@ tag_invoke(
     Type const& I,
     DomCorpus const* domCorpus)
 {
-    io.map("class", std::string("type"));
+    addMetaObject<Type>(io);
     io.map("kind", I.Kind);
     io.map("is-pack", I.IsPackExpansion);
     visit(I, [&io, domCorpus]<typename T>(T const& t)
