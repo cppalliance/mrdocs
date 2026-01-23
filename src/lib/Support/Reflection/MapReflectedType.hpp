@@ -83,36 +83,12 @@ inline
 std::string
 normalizeMemberName(std::string_view name)
 {
-    // Special cases.
-    if (name == "Constexpr")
+    std::string result(name);
+    if (!result.empty())
     {
-        return "constexprKind";
+        result.front() = std::tolower(result.front(), std::locale::classic());
     }
-    else if (name == "ReturnType")
-    {
-        return "return";
-    }
-    else if (name == "Noexcept")
-    {
-        return "exceptionSpec";
-    }
-    else if (name == "Explicit")
-    {
-        return "explicitSpec";
-    }
-    else if (name == "KeyKind")
-    {
-        return "tag";
-    }
-    else
-    {
-        std::string result(name);
-        if (!result.empty())
-        {
-            result.front() = std::tolower(result.front(), std::locale::classic());
-        }
-        return result;
-    }
+    return result;
 }
 
 /** Remove namespace qualifiers from a type name.

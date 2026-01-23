@@ -4,15 +4,15 @@
 {{/if~}}
 {{#if attributes}}{{#unless isFriend}}{{ str "[[" }}{{join ", " attributes}}{{ str "]]" }}
 {{/unless}}{{/if~}}
-{{#if constexprKind}}{{constexprKind}}
+{{#if constexpr}}{{constexpr}}
 {{/if~}}
 {{#if storageClass}}{{storageClass}}
 {{/if~}}
 {{#if isVirtual}}virtual
 {{/if~}}
-{{#if explicitSpec}}{{explicitSpec}}
+{{#if explicit}}{{explicit}}
 {{/if~}}
-{{#if (eq funcClass "normal")}}{{>type/declarator-prefix return}}
+{{#if (eq funcClass "normal")}}{{>type/declarator-prefix returnType}}
 {{/if~}}
 {{~#if force-link~}}
 {{>symbol/name symbol }}
@@ -31,8 +31,8 @@
 {{~#if isConst}} const{{/if~}}
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
-{{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
-{{#if (eq funcClass "normal")}}{{>type/declarator-suffix return}}{{/if~}}
+{{#if noexcept}} {{noexcept}}{{/if~}}
+{{#if (eq funcClass "normal")}}{{>type/declarator-suffix returnType}}{{/if~}}
 {{#if requires}}
 
 requires {{requires}}{{/if~}}

@@ -13,7 +13,7 @@
 --}}
 {{~#if (and (eq kind "function") (eq funcClass "conversion"))~}}
     {{! Conversion operator: "operator" and the type declarator ~}}
-    operator {{>type/declarator-text return ~}}
+    operator {{>type/declarator-text returnType ~}}
 {{~else if (eq kind "guide")~}}
     {{! Deduction guide: "deduced" type declarator ~}}
     {{>type/declarator-text deduced ~}}
@@ -22,7 +22,7 @@
     {{~#if name~}}
         {{~name~}}
     {{~else if parent ~}}
-        Unnamed {{or tag kind~}}
+        Unnamed {{or keyKind kind~}}
     {{~else ~}}
         Global namespace
     {{~/if~}}
