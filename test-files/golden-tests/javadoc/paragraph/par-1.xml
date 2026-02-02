@@ -1,60 +1,198 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file short-path="par-1.cpp" source-path="par-1.cpp" line="11"/>
-    <doc>
-      <brief>
-        <text>Brief</text>
-      </brief>
-      <head>Custom par</head>
-      <para>
-        <text>Paragraph 1</text>
-      </para>
-      <code>
-        <text>void f1();</text>
-      </code>
-    </doc>
-  </function>
-  <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
-    <file short-path="par-1.cpp" source-path="par-1.cpp" line="24"/>
-    <doc>
-      <brief>
-        <text>Brief</text>
-      </brief>
-      <head>Custom par</head>
-      <para>
-        <text>Paragraph 2</text>
-      </para>
-      <code>
-        <text>void f2();</text>
-      </code>
-    </doc>
-  </function>
-  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
-    <file short-path="par-1.cpp" source-path="par-1.cpp" line="33"/>
-    <doc>
-      <brief>
-        <text>Brief</text>
-      </brief>
-      <head>Custom par</head>
-      <code>
-        <text>void f3();</text>
-      </code>
-    </doc>
-  </function>
-  <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
-    <file short-path="par-1.cpp" source-path="par-1.cpp" line="43"/>
-    <doc>
-      <brief>
-        <text>Brief</text>
-      </brief>
-      <head>Custom par</head>
-      <code>
-        <text>void f4();</text>
-      </code>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
+    <functions>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</functions>
+    <functions>khwJweIqd5FuWAg8T+l+GEljQVc=</functions>
+    <functions>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>par-1.cpp</short-path>
+      <source-path>par-1.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Custom par</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Paragraph 1</literal>
+      </text>
+    </paragraph>
+    <code>
+      <kind>code</kind>
+      <literal>void f1();</literal>
+    </code>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>par-1.cpp</short-path>
+      <source-path>par-1.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Custom par</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Paragraph 2</literal>
+      </text>
+    </paragraph>
+    <code>
+      <kind>code</kind>
+      <literal>void f2();</literal>
+    </code>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>par-1.cpp</short-path>
+      <source-path>par-1.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>khwJweIqd5FuWAg8T+l+GEljQVc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Custom par</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <code>
+      <kind>code</kind>
+      <literal>void f3();</literal>
+    </code>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>par-1.cpp</short-path>
+      <source-path>par-1.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Custom par</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <code>
+      <kind>code</kind>
+      <literal>void f4();</literal>
+    </code>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

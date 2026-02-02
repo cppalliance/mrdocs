@@ -1,17 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="extract-private-virtual.cpp" source-path="extract-private-virtual.cpp" line="1" class="def"/>
-    <function name="f" id="hLXvGC+nOrLQRH9lODKkgi/oUas=">
-      <file short-path="extract-private-virtual.cpp" source-path="extract-private-virtual.cpp" line="3" class="def"/>
-      <attr id="is-virtual-as-written"/>
-    </function>
-    <function name="g" access="private" id="IWP5ktgJAZgjufMQ6EE1eb6mm9g=">
-      <file short-path="extract-private-virtual.cpp" source-path="extract-private-virtual.cpp" line="5" class="def"/>
-      <attr id="is-virtual-as-written"/>
-    </function>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>extract-private-virtual.cpp</short-path>
+      <source-path>extract-private-virtual.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>hLXvGC+nOrLQRH9lODKkgi/oUas=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+      <functions>IWP5ktgJAZgjufMQ6EE1eb6mm9g=</functions>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>extract-private-virtual.cpp</short-path>
+      <source-path>extract-private-virtual.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>3</column-number>
+    </location>
+  </source>
+  <id>hLXvGC+nOrLQRH9lODKkgi/oUas=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+  <is-virtual-as-written>1</is-virtual-as-written>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>extract-private-virtual.cpp</short-path>
+      <source-path>extract-private-virtual.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>3</column-number>
+    </location>
+  </source>
+  <id>IWP5ktgJAZgjufMQ6EE1eb6mm9g=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+  <is-virtual-as-written>1</is-virtual-as-written>
+</function>
 </mrdocs>

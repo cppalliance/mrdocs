@@ -1,58 +1,204 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="styled.cpp" source-path="styled.cpp" line="8" class="def"/>
-    <doc>
-      <brief>
-        <text>Brief for A</text>
-      </brief>
-      <para>
-        <text>Paragraph with </text>
-        <mono>code</mono>
-        <text>, </text>
-        <bold>bold</bold>
-        <text> text, and </text>
-        <italic>italic</italic>
-        <text> text.</text>
-      </para>
-      <para>
-        <text>We can also escape these markers: `, *, and _.</text>
-      </para>
-    </doc>
-    <function name="compare" exception-spec="noexcept" id="CKPqawUTt6FNIN9qEFTMcdnvPkI=">
-      <file short-path="styled.cpp" source-path="styled.cpp" line="16"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="other">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Compare function</text>
-        </brief>
-        <returns>
-          <mono>-1</mono>
-          <text> if </text>
-          <mono>*this &lt; other</mono>
-          <text>, </text>
-          <mono>0</mono>
-          <text> if </text>
-          <mono>this == other</mono>
-          <text>, and 1 if </text>
-          <mono>this &gt; other</mono>
-          <text>.</text>
-        </returns>
-        <param name="other">
-          <text>The other object to compare against.</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>styled.cpp</short-path>
+      <source-path>styled.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Paragraph with </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>code</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>, </literal>
+      </text>
+      <strong>
+        <kind>strong</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bold</literal>
+        </text>
+      </strong>
+      <text>
+        <kind>text</kind>
+        <literal> text, and </literal>
+      </text>
+      <emph>
+        <kind>emph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>italic</literal>
+        </text>
+      </emph>
+      <text>
+        <kind>text</kind>
+        <literal> text.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>We can also escape these markers: `, *, and _.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief for A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>CKPqawUTt6FNIN9qEFTMcdnvPkI=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>compare</name>
+  <source>
+    <location>
+      <short-path>styled.cpp</short-path>
+      <source-path>styled.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>CKPqawUTt6FNIN9qEFTMcdnvPkI=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Compare function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>-1</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this &lt; other</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>0</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>this == other</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>, and 1 if </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>this &gt; other</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The other object to compare against.</literal>
+      </text>
+      <name>other</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>other</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

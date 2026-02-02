@@ -1,12 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
-    <struct name="S" id="BOgJOhZPKKMy9QBLYD1JPMD1Doc=">
-      <file short-path="out-of-line-record-def.cpp" source-path="out-of-line-record-def.cpp" line="6" class="def"/>
-      <file short-path="out-of-line-record-def.cpp" source-path="out-of-line-record-def.cpp" line="3"/>
-    </struct>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>N</name>
+  <source>
+    <location>
+      <short-path>out-of-line-record-def.cpp</short-path>
+      <source-path>out-of-line-record-def.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>4</column-number>
+    </location>
+  </source>
+  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>BOgJOhZPKKMy9QBLYD1JPMD1Doc=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>S</name>
+  <source>
+    <location>
+      <short-path>out-of-line-record-def.cpp</short-path>
+      <source-path>out-of-line-record-def.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>out-of-line-record-def.cpp</short-path>
+      <source-path>out-of-line-record-def.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>BOgJOhZPKKMy9QBLYD1JPMD1Doc=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

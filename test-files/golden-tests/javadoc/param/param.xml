@@ -1,96 +1,338 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file short-path="param.cpp" source-path="param.cpp" line="4" class="def"/>
-    <param name="x">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x">
-        <text>An integer </text>
-        <mono>x</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
-    <file short-path="param.cpp" source-path="param.cpp" line="10" class="def"/>
-    <param name="x">
-      <type name="int"/>
-    </param>
-    <param name="y">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x">
-        <text>An integer </text>
-        <mono>x</mono>
-      </param>
-      <param name="y">
-        <text>An integer </text>
-        <mono>y</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="h" id="rxzCccrw6I3QTAhGPnAfCKLwzTA=">
-    <file short-path="param.cpp" source-path="param.cpp" line="17" class="def"/>
-    <param name="x">
-      <type name="int"/>
-    </param>
-    <param name="y">
-      <type name="int"/>
-    </param>
-    <param name="z">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x">
-        <text>An integer </text>
-        <mono>x</mono>
-      </param>
-      <param name="y">
-        <text>An integer </text>
-        <mono>y</mono>
-      </param>
-      <param name="z">
-        <text>An integer </text>
-        <mono>z</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="i" id="owRiLpD5mLW5E/kfLQC0oOzxkDM=">
-    <file short-path="param.cpp" source-path="param.cpp" line="25" class="def"/>
-    <param name="w">
-      <type name="int"/>
-    </param>
-    <param name="x">
-      <type name="int"/>
-    </param>
-    <param name="y">
-      <type name="int"/>
-    </param>
-    <param name="z">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="w">
-        <text>An integer </text>
-        <mono>w</mono>
-      </param>
-      <param name="x">
-        <text>An integer </text>
-        <mono>x</mono>
-      </param>
-      <param name="y">
-        <text>An integer </text>
-        <mono>y</mono>
-      </param>
-      <param name="z">
-        <text>An integer </text>
-        <mono>z</mono>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>ackjGh57CJQLwtO8PihiSPPKIBY=</functions>
+    <functions>wOc7mtwXPodKdeWFmSfib8PaSww=</functions>
+    <functions>rxzCccrw6I3QTAhGPnAfCKLwzTA=</functions>
+    <functions>owRiLpD5mLW5E/kfLQC0oOzxkDM=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param.cpp</short-path>
+      <source-path>param.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <name>x</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param.cpp</short-path>
+      <source-path>param.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wOc7mtwXPodKdeWFmSfib8PaSww=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <name>x</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y</literal>
+        </text>
+      </code>
+      <name>y</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h</name>
+  <source>
+    <location>
+      <short-path>param.cpp</short-path>
+      <source-path>param.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>rxzCccrw6I3QTAhGPnAfCKLwzTA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <name>x</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y</literal>
+        </text>
+      </code>
+      <name>y</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>z</literal>
+        </text>
+      </code>
+      <name>z</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>z</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>param.cpp</short-path>
+      <source-path>param.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>owRiLpD5mLW5E/kfLQC0oOzxkDM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>w</literal>
+        </text>
+      </code>
+      <name>w</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <name>x</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y</literal>
+        </text>
+      </code>
+      <name>y</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>z</literal>
+        </text>
+      </code>
+      <name>z</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>w</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>z</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

@@ -1,25 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <enum name="E" class="scoped" id="a5uhL/8g9ACd/JSUdADFNrjlrmA=">
-      <base>
-        <type name="int"/>
-      </base>
-      <file short-path="using-enum-in-ns.cpp" source-path="using-enum-in-ns.cpp" line="3" class="def"/>
-      <enum-constant name="e1" initializer="0" id="wwbsykALj7y7OWYYyP6gTbo876U=">
-        <file short-path="using-enum-in-ns.cpp" source-path="using-enum-in-ns.cpp" line="5"/>
-        <doc>
-          <brief>
-            <text>The constant to be introduced</text>
-          </brief>
-        </doc>
-      </enum-constant>
-    </enum>
-  </namespace>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="using-enum-in-ns.cpp" source-path="using-enum-in-ns.cpp" line="11" class="def"/>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>using-enum-in-ns.cpp</short-path>
+      <source-path>using-enum-in-ns.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <enums>a5uhL/8g9ACd/JSUdADFNrjlrmA=</enums>
+  </namespace-tranche>
+</namespace>
+<enum>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>using-enum-in-ns.cpp</short-path>
+      <source-path>using-enum-in-ns.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>a5uhL/8g9ACd/JSUdADFNrjlrmA=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <scoped>1</scoped>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <constants>wwbsykALj7y7OWYYyP6gTbo876U=</constants>
+</enum>
+<enum-constant>
+  <name>e1</name>
+  <source>
+    <location>
+      <short-path>using-enum-in-ns.cpp</short-path>
+      <source-path>using-enum-in-ns.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wwbsykALj7y7OWYYyP6gTbo876U=</id>
+  <extraction>regular</extraction>
+  <parent>a5uhL/8g9ACd/JSUdADFNrjlrmA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The constant to be introduced</literal>
+      </text>
+    </brief>
+  </doc-comment>
+</enum-constant>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-enum-in-ns.cpp</short-path>
+      <source-path>using-enum-in-ns.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

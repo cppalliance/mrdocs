@@ -1,51 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam class="constant" type="int"/>
-    <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
-      <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="3" class="def"/>
-    </struct>
-  </template>
-  <guide name="X" explicit-spec="explicit" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
-    <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="6"/>
-    <deduced>
-      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
-    </deduced>
-    <param>
-      <type name="bool"/>
-    </param>
-  </guide>
-  <guide name="X" explicit-spec="explicit(true)" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
-    <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="8"/>
-    <deduced>
-      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
-    </deduced>
-    <param>
-      <type name="char"/>
-    </param>
-  </guide>
-  <guide name="X" explicit-spec="explicit(false)" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
-    <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="10"/>
-    <deduced>
-      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
-    </deduced>
-    <param>
-      <type name="int"/>
-    </param>
-  </guide>
-  <template>
-    <tparam name="B" class="constant" type="bool" default="true"/>
-    <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
-      <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="12"/>
-      <deduced>
-        <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
-      </deduced>
-      <param>
-        <type name="long"/>
-      </param>
-    </guide>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>7wllQWhGGsbbeoZVa3gh4d7bcq8=</records>
+    <guides>2IF4pOfGcA57GQDlE3PJgs7yeUs=</guides>
+    <guides>AtQyLakD3CjcM24GabAbHMNgVU4=</guides>
+    <guides>tkYkUU6H8cbFpCU7yBuvBLkT6dg=</guides>
+    <guides>YS/v8XQ/9ShQ2spNAh5EY33PN7s=</guides>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>explicit-deduct-guide.cpp</short-path>
+      <source-path>explicit-deduct-guide.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<guide>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>explicit-deduct-guide.cpp</short-path>
+      <source-path>explicit-deduct-guide.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>2IF4pOfGcA57GQDlE3PJgs7yeUs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
+      <identifier>X</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>bool</identifier>
+      </name>
+    </named>
+  </param>
+</guide>
+<guide>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>explicit-deduct-guide.cpp</short-path>
+      <source-path>explicit-deduct-guide.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>AtQyLakD3CjcM24GabAbHMNgVU4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
+      <identifier>X</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </param>
+</guide>
+<guide>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>explicit-deduct-guide.cpp</short-path>
+      <source-path>explicit-deduct-guide.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>tkYkUU6H8cbFpCU7yBuvBLkT6dg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
+      <identifier>X</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+</guide>
+<guide>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>explicit-deduct-guide.cpp</short-path>
+      <source-path>explicit-deduct-guide.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YS/v8XQ/9ShQ2spNAh5EY33PN7s=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
+      <identifier>X</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>long</identifier>
+      </name>
+    </named>
+  </param>
+</guide>
 </mrdocs>

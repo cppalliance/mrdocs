@@ -1,77 +1,280 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace-alias name="fun_ptr" id="+MazWJHV0srd0yDU8brifDayTEU=">
-    <file short-path="using-member-conversion.cpp" source-path="using-member-conversion.cpp" line="2"/>
-    <type class="pointer">
-      <pointee-type class="function">
-        <return-type name="void"/>
-      </pointee-type>
-    </type>
-    <doc>
-      <brief>
-        <text>A pointer to function typedef</text>
-      </brief>
-    </doc>
-  </namespace-alias>
-  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
-    <file short-path="using-member-conversion.cpp" source-path="using-member-conversion.cpp" line="5" class="def"/>
-    <doc>
-      <brief>
-        <text>This struct will be inherited as public</text>
-      </brief>
-    </doc>
-    <function class="conversion" name="operator void(*)()" id="Yyyb35deIA+gpVYakhwVjtGJBkQ=">
-      <file short-path="using-member-conversion.cpp" source-path="using-member-conversion.cpp" line="8"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="+MazWJHV0srd0yDU8brifDayTEU=" name="fun_ptr"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion operator to function pointer.</text>
-        </brief>
-        <returns>
-          <text>A pointer to function typedef</text>
-        </returns>
-      </doc>
-    </function>
-  </struct>
-  <struct name="Y" id="yi1fc3tRK4IAsSp9WUPwfU6MSc8=">
-    <file short-path="using-member-conversion.cpp" source-path="using-member-conversion.cpp" line="12" class="def"/>
-    <base>
-      <type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-    </base>
-    <doc>
-      <brief>
-        <text>This struct inherits from X</text>
-      </brief>
-    </doc>
-    <function class="conversion" name="operator void(*)()" id="Yyyb35deIA+gpVYakhwVjtGJBkQ=">
-      <file short-path="using-member-conversion.cpp" source-path="using-member-conversion.cpp" line="8"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="+MazWJHV0srd0yDU8brifDayTEU=" name="fun_ptr"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion operator to function pointer.</text>
-        </brief>
-        <returns>
-          <text>A pointer to function typedef</text>
-        </returns>
-      </doc>
-    </function>
-    <using id="EFiZJ7JGhYhYwHH32s8HA+C+gns=" class="using" qualifier="X::operator void(*)()">
-      <file short-path="using-member-conversion.cpp" source-path="using-member-conversion.cpp" line="15"/>
-      <doc>
-        <brief>
-          <text>Bring X::operator fun_ptr into Y.</text>
-        </brief>
-      </doc>
-      <named id="Yyyb35deIA+gpVYakhwVjtGJBkQ="/>
-    </using>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>+MazWJHV0srd0yDU8brifDayTEU=</typedefs>
+    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
+    <records>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</records>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>fun_ptr</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A pointer to function typedef</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <pointer>
+    <function>
+      <named>
+        <name>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </function>
+  </pointer>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This struct will be inherited as public</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <derived>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>Yyyb35deIA+gpVYakhwVjtGJBkQ=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator void(*)()</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion operator to function pointer.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A pointer to function typedef</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
+      <identifier>fun_ptr</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<record>
+  <name>Y</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This struct inherits from X</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+        <identifier>X</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>Yyyb35deIA+gpVYakhwVjtGJBkQ=</functions>
+      <usings>EFiZJ7JGhYhYwHH32s8HA+C+gns=</usings>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator void(*)()</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion operator to function pointer.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A pointer to function typedef</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
+      <identifier>fun_ptr</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<using>
+  <name>operator void(*)()</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>EFiZJ7JGhYhYwHH32s8HA+C+gns=</id>
+  <extraction>regular</extraction>
+  <parent>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Bring X::operator fun_ptr into Y.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <class>normal</class>
+  <name>
+    <identifier>operator void(*)()</identifier>
+    <name>
+      <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+      <identifier>X</identifier>
+    </name>
+  </name>
+  <shadow-declarations>Yyyb35deIA+gpVYakhwVjtGJBkQ=</shadow-declarations>
+</using>
+<function>
+  <name>operator void(*)()</name>
+  <source>
+    <location>
+      <short-path>using-member-conversion.cpp</short-path>
+      <source-path>using-member-conversion.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion operator to function pointer.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A pointer to function typedef</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
+      <identifier>fun_ptr</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

@@ -1,15 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s=">
-    <struct name="A" id="F2TZRvEqYUTyFh8Xxk3AsRzOiFU=">
-      <file short-path="namespace-alias-1.cpp" source-path="namespace-alias-1.cpp" line="2"/>
-    </struct>
-  </namespace>
-  <namespace-alias name="A" id="8bX9GsmeU9RHTU5qqahjfu5RFHw=">
-    <file short-path="namespace-alias-1.cpp" source-path="namespace-alias-1.cpp" line="5"/>
-    <aliased name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s="/>
-  </namespace-alias>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>IjtkITsyqdEWPMXZF3lD/2/XH0s=</namespaces>
+    <namespace-aliases>8bX9GsmeU9RHTU5qqahjfu5RFHw=</namespace-aliases>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>LongName</name>
+  <source>
+    <location>
+      <short-path>namespace-alias-1.cpp</short-path>
+      <source-path>namespace-alias-1.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>F2TZRvEqYUTyFh8Xxk3AsRzOiFU=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>namespace-alias-1.cpp</short-path>
+      <source-path>namespace-alias-1.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>F2TZRvEqYUTyFh8Xxk3AsRzOiFU=</id>
+  <extraction>regular</extraction>
+  <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<namespace-alias>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>namespace-alias-1.cpp</short-path>
+      <source-path>namespace-alias-1.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>8bX9GsmeU9RHTU5qqahjfu5RFHw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+</namespace-alias>
 </mrdocs>

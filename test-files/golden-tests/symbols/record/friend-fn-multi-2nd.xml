@@ -1,27 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="friend-fn-multi-2nd.cpp" source-path="friend-fn-multi-2nd.cpp" line="1" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
-    </friend>
-  </struct>
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file short-path="friend-fn-multi-2nd.cpp" source-path="friend-fn-multi-2nd.cpp" line="6" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
-    </friend>
-  </struct>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="friend-fn-multi-2nd.cpp" source-path="friend-fn-multi-2nd.cpp" line="3"/>
-    <file short-path="friend-fn-multi-2nd.cpp" source-path="friend-fn-multi-2nd.cpp" line="12"/>
-    <doc>
-      <brief>
-        <text>U::f</text>
-      </brief>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
+    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>friend-fn-multi-2nd.cpp</short-path>
+      <source-path>friend-fn-multi-2nd.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  </friend>
+</record>
+<record>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>friend-fn-multi-2nd.cpp</short-path>
+      <source-path>friend-fn-multi-2nd.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  </friend>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>friend-fn-multi-2nd.cpp</short-path>
+      <source-path>friend-fn-multi-2nd.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>friend-fn-multi-2nd.cpp</short-path>
+      <source-path>friend-fn-multi-2nd.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>U::f</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

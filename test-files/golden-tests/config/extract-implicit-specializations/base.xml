@@ -1,27 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="base.cpp" source-path="base.cpp" line="5" class="def"/>
-    <base>
-      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
-    </base>
-    <function name="value" id="TokaYJ9UI6a6x0IfsXTGliIuJ9k=">
-      <file short-path="base.cpp" source-path="base.cpp" line="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-  </struct>
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="base.cpp" source-path="base.cpp" line="1" class="def"/>
-    <function name="value" id="TokaYJ9UI6a6x0IfsXTGliIuJ9k=">
-      <file short-path="base.cpp" source-path="base.cpp" line="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>base.cpp</short-path>
+      <source-path>base.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>TokaYJ9UI6a6x0IfsXTGliIuJ9k=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>base.cpp</short-path>
+      <source-path>base.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TokaYJ9UI6a6x0IfsXTGliIuJ9k=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>base.cpp</short-path>
+      <source-path>base.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <derived>YrPSaKAbmXgzCAX5WByx4eVoqBM=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>TokaYJ9UI6a6x0IfsXTGliIuJ9k=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>base.cpp</short-path>
+      <source-path>base.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TokaYJ9UI6a6x0IfsXTGliIuJ9k=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

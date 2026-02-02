@@ -1,401 +1,1561 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="6"/>
-    <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-  </namespace-alias>
-  <namespace-alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="8"/>
-    <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-  </namespace-alias>
-  <template>
-    <tparam name="T" class="type"/>
-    <namespace-alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
-      <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="10"/>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, long&gt;"/>
-    </namespace-alias>
-  </template>
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="1" class="def"/>
-  </struct>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="U" class="type"/>
-    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
-      <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="3" class="def"/>
-    </struct>
-  </template>
-  <function name="f0" id="NmPMV0MWNFJUjfSOLHtzdbgpFoQ=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="13"/>
-    <param>
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-  </function>
-  <function name="f1" id="BaEDPGJuuB/LSgDi3IbZIcI8+hQ=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="14"/>
-    <param>
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-    </param>
-  </function>
-  <function name="f2" id="7hoCtaKnV3q0+0LGpIwT05DsCzM=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="15"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </type>
-    </param>
-  </function>
-  <function name="f3" id="+u77KXnhVCt71fF6pXSP0epFvnk=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="16"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="f4" id="9T7aRCZADylTGfrzXLBOVh0ozys=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="17"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </type>
-    </param>
-  </function>
-  <function name="f5" id="kT0jo07C7QGLPer3WTjynau4uqw=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="18"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="f6" id="MdHfxQfzVjQ3CUyn9Mpn7fQk+/M=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="19"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="f7" id="w10F/8wyLcytn7L65/ILYU0EdXo=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="20"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="f8" id="CClm4VbfLVJuyMbCoDMeADEgyqc=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="21"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="g0" id="yrx2OB9QNNSl9+wzVkVQ8SEabRs=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="23"/>
-    <param>
-      <type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
-    </param>
-  </function>
-  <function name="g1" id="Rj6P6+H/ZPGfGuoquGgLekbJPqg=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="24"/>
-    <param>
-      <type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
-    </param>
-  </function>
-  <function name="g2" id="ZoIZSEi5P7rybxKK8Kjgxla7+4Y=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="25"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
-      </type>
-    </param>
-  </function>
-  <function name="g3" id="Q0DuYbFpCkEF2ouXRvQLKKq1zh8=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="26"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="g4" id="SayuQ3M/mTSdbTbGozDw6t08++w=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="27"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
-      </type>
-    </param>
-  </function>
-  <function name="g5" id="PaQ7BnZjNHfJZQsH/h+VxhlT36c=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="28"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="g6" id="Q3jmjtDscKaRlk9NmZeWQrE/qC0=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="29"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="g7" id="c258MEng+EH63J85RJQ0lCqTn9c=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="30"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="g8" id="ycKVTIHwB/Z8IbNKkEaJj75S3bA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="31"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="h0" id="E5y/fD9iZ0MCXYoHtunBFFWTWhg=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="33"/>
-    <param>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-    </param>
-  </function>
-  <function name="h1" id="BI0JWw00VfmJGJLhcVYpoks79MI=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="34"/>
-    <param>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
-    </param>
-  </function>
-  <function name="h2" id="ysfWNk4t2HuUA1jfw595fkiD1PA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="35"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-      </type>
-    </param>
-  </function>
-  <function name="h3" id="3YZIC0cuzzvjybwCWJjk6kMYkzk=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="36"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="h4" id="fIfvv5LTjuRTX2EoKkdnMHXq8E0=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="37"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-      </type>
-    </param>
-  </function>
-  <function name="h5" id="oFewAAa3bKYS3Sk8SzrCV2pZjwY=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="38"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="h6" id="4+iF5tOtJgZ7ZcqfZljDl0zsJaY=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="39"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="h7" id="spvd/tFS+th4JW6fc601EqTD5hA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="40"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="h8" id="AIIJjypsyznlYuu8zS5f9VVTsqM=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="41"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="i0" id="UUnnujM/qHDrH/lhqape19i4ygc=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="43"/>
-    <param>
-      <type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
-    </param>
-  </function>
-  <function name="i1" id="oZaT3+tjcRZ1TqV3dDRcibfcIUA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="44"/>
-    <param>
-      <type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
-    </param>
-  </function>
-  <function name="i2" id="9ssXVWUhTzxQgA12dFAzDjoQsSo=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="45"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
-      </type>
-    </param>
-  </function>
-  <function name="i3" id="lt3C1MYHyvgc69kaQIicxt6GShw=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="46"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="i4" id="T8COa5LWeytxzI9W9tsQ0yn3pMQ=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="47"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
-      </type>
-    </param>
-  </function>
-  <function name="i5" id="yjcvYN+iBULxlO9Ye2mlCrItu0E=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="48"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="i6" id="n5ijVugkR+RdqWc8HhULfhumEa8=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="49"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="i7" id="ZjHOF6kLLIcBXeh5KZapmnzPEnI=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="50"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="i8" id="D9mUtv975QoRibry0HtjynvRkzs=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="51"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="j0" id="iegBG/1Lpr/GF9vznbapPd8d6Ws=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="53"/>
-    <param>
-      <type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
-    </param>
-  </function>
-  <function name="j1" id="al+9zRjNTBZZcU69a8iMD6KngWA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="54"/>
-    <param>
-      <type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
-    </param>
-  </function>
-  <function name="j2" id="2cJI8v0G+GfLxlnF+d0p52Lt9zE=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="55"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
-      </type>
-    </param>
-  </function>
-  <function name="j3" id="gGkJqESKyHkjrDimz/Z1Uj2cK+0=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="56"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="j4" id="Mj/s1nUSVoc1ekzTBsQf9pPgkFw=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="57"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
-      </type>
-    </param>
-  </function>
-  <function name="j5" id="gVVoORJQLKCql9+xiRwm1JBfiBE=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="58"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
-      </type>
-    </param>
-  </function>
-  <function name="j6" id="sprKg2FCJZqWV8vVSeoW2hF5RL8=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="59"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="j7" id="VSCpXF9FwRBZvC4dq2fu0/+CXgY=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="60"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer">
-          <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
-  <function name="j8" id="rjNquALg5slBV3zcGK7kbMiR/Oc=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="61"/>
-    <param>
-      <type class="pointer">
-        <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
-        </pointee-type>
-      </type>
-    </param>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>f75RIL8qKOwbyH6ffvrv59F0nCA=</typedefs>
+    <typedefs>LXTs1uTCF/vevZU29QYVICehLFQ=</typedefs>
+    <typedefs>ikh/cWe22atB10u7UsOKS5W39CA=</typedefs>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>swBEqeWAJoaWVKty+1lCoYUK04A=</records>
+    <functions>NmPMV0MWNFJUjfSOLHtzdbgpFoQ=</functions>
+    <functions>BaEDPGJuuB/LSgDi3IbZIcI8+hQ=</functions>
+    <functions>7hoCtaKnV3q0+0LGpIwT05DsCzM=</functions>
+    <functions>+u77KXnhVCt71fF6pXSP0epFvnk=</functions>
+    <functions>9T7aRCZADylTGfrzXLBOVh0ozys=</functions>
+    <functions>kT0jo07C7QGLPer3WTjynau4uqw=</functions>
+    <functions>MdHfxQfzVjQ3CUyn9Mpn7fQk+/M=</functions>
+    <functions>w10F/8wyLcytn7L65/ILYU0EdXo=</functions>
+    <functions>CClm4VbfLVJuyMbCoDMeADEgyqc=</functions>
+    <functions>yrx2OB9QNNSl9+wzVkVQ8SEabRs=</functions>
+    <functions>Rj6P6+H/ZPGfGuoquGgLekbJPqg=</functions>
+    <functions>ZoIZSEi5P7rybxKK8Kjgxla7+4Y=</functions>
+    <functions>Q0DuYbFpCkEF2ouXRvQLKKq1zh8=</functions>
+    <functions>SayuQ3M/mTSdbTbGozDw6t08++w=</functions>
+    <functions>PaQ7BnZjNHfJZQsH/h+VxhlT36c=</functions>
+    <functions>Q3jmjtDscKaRlk9NmZeWQrE/qC0=</functions>
+    <functions>c258MEng+EH63J85RJQ0lCqTn9c=</functions>
+    <functions>ycKVTIHwB/Z8IbNKkEaJj75S3bA=</functions>
+    <functions>E5y/fD9iZ0MCXYoHtunBFFWTWhg=</functions>
+    <functions>BI0JWw00VfmJGJLhcVYpoks79MI=</functions>
+    <functions>ysfWNk4t2HuUA1jfw595fkiD1PA=</functions>
+    <functions>3YZIC0cuzzvjybwCWJjk6kMYkzk=</functions>
+    <functions>fIfvv5LTjuRTX2EoKkdnMHXq8E0=</functions>
+    <functions>oFewAAa3bKYS3Sk8SzrCV2pZjwY=</functions>
+    <functions>4+iF5tOtJgZ7ZcqfZljDl0zsJaY=</functions>
+    <functions>spvd/tFS+th4JW6fc601EqTD5hA=</functions>
+    <functions>AIIJjypsyznlYuu8zS5f9VVTsqM=</functions>
+    <functions>UUnnujM/qHDrH/lhqape19i4ygc=</functions>
+    <functions>oZaT3+tjcRZ1TqV3dDRcibfcIUA=</functions>
+    <functions>9ssXVWUhTzxQgA12dFAzDjoQsSo=</functions>
+    <functions>lt3C1MYHyvgc69kaQIicxt6GShw=</functions>
+    <functions>T8COa5LWeytxzI9W9tsQ0yn3pMQ=</functions>
+    <functions>yjcvYN+iBULxlO9Ye2mlCrItu0E=</functions>
+    <functions>n5ijVugkR+RdqWc8HhULfhumEa8=</functions>
+    <functions>ZjHOF6kLLIcBXeh5KZapmnzPEnI=</functions>
+    <functions>D9mUtv975QoRibry0HtjynvRkzs=</functions>
+    <functions>iegBG/1Lpr/GF9vznbapPd8d6Ws=</functions>
+    <functions>al+9zRjNTBZZcU69a8iMD6KngWA=</functions>
+    <functions>2cJI8v0G+GfLxlnF+d0p52Lt9zE=</functions>
+    <functions>gGkJqESKyHkjrDimz/Z1Uj2cK+0=</functions>
+    <functions>Mj/s1nUSVoc1ekzTBsQf9pPgkFw=</functions>
+    <functions>gVVoORJQLKCql9+xiRwm1JBfiBE=</functions>
+    <functions>sprKg2FCJZqWV8vVSeoW2hF5RL8=</functions>
+    <functions>VSCpXF9FwRBZvC4dq2fu0/+CXgY=</functions>
+    <functions>rjNquALg5slBV3zcGK7kbMiR/Oc=</functions>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>NmPMV0MWNFJUjfSOLHtzdbgpFoQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BaEDPGJuuB/LSgDi3IbZIcI8+hQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>7hoCtaKnV3q0+0LGpIwT05DsCzM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>+u77KXnhVCt71fF6pXSP0epFvnk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>9T7aRCZADylTGfrzXLBOVh0ozys=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>kT0jo07C7QGLPer3WTjynau4uqw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>MdHfxQfzVjQ3CUyn9Mpn7fQk+/M=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <name>
+            <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+            <identifier>A</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f7</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>w10F/8wyLcytn7L65/ILYU0EdXo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+            <identifier>A</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f8</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CClm4VbfLVJuyMbCoDMeADEgyqc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <is-const>1</is-const>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+            <identifier>A</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g0</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>yrx2OB9QNNSl9+wzVkVQ8SEabRs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+        <identifier>C</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g1</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Rj6P6+H/ZPGfGuoquGgLekbJPqg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+        <identifier>C</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g2</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ZoIZSEi5P7rybxKK8Kjgxla7+4Y=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+          <identifier>C</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g3</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Q0DuYbFpCkEF2ouXRvQLKKq1zh8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+          <identifier>C</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g4</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>27</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>SayuQ3M/mTSdbTbGozDw6t08++w=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+          <identifier>C</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g5</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>PaQ7BnZjNHfJZQsH/h+VxhlT36c=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+          <identifier>C</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g6</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Q3jmjtDscKaRlk9NmZeWQrE/qC0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <name>
+            <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+            <identifier>C</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g7</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>c258MEng+EH63J85RJQ0lCqTn9c=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+            <identifier>C</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g8</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ycKVTIHwB/Z8IbNKkEaJj75S3bA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <is-const>1</is-const>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+            <identifier>C</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h0</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>E5y/fD9iZ0MCXYoHtunBFFWTWhg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h1</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>34</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BI0JWw00VfmJGJLhcVYpoks79MI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h2</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ysfWNk4t2HuUA1jfw595fkiD1PA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+          <identifier>B</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h3</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>3YZIC0cuzzvjybwCWJjk6kMYkzk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+          <identifier>B</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h4</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>fIfvv5LTjuRTX2EoKkdnMHXq8E0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+          <identifier>B</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h5</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>38</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>oFewAAa3bKYS3Sk8SzrCV2pZjwY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+          <identifier>B</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h6</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>4+iF5tOtJgZ7ZcqfZljDl0zsJaY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <name>
+            <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+            <identifier>B</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h7</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>40</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>spvd/tFS+th4JW6fc601EqTD5hA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+            <identifier>B</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h8</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>41</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>AIIJjypsyznlYuu8zS5f9VVTsqM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <is-const>1</is-const>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+            <identifier>B</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i0</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>UUnnujM/qHDrH/lhqape19i4ygc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+        <identifier>D</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i1</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>44</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>oZaT3+tjcRZ1TqV3dDRcibfcIUA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+        <identifier>D</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i2</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>45</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>9ssXVWUhTzxQgA12dFAzDjoQsSo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+          <identifier>D</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i3</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>lt3C1MYHyvgc69kaQIicxt6GShw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+          <identifier>D</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i4</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>T8COa5LWeytxzI9W9tsQ0yn3pMQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+          <identifier>D</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i5</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>48</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>yjcvYN+iBULxlO9Ye2mlCrItu0E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+          <identifier>D</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i6</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>n5ijVugkR+RdqWc8HhULfhumEa8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <name>
+            <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+            <identifier>D</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i7</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>50</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ZjHOF6kLLIcBXeh5KZapmnzPEnI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+            <identifier>D</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i8</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>51</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>D9mUtv975QoRibry0HtjynvRkzs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <is-const>1</is-const>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
+            <identifier>D</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j0</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>53</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>iegBG/1Lpr/GF9vznbapPd8d6Ws=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+        <identifier>E</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j1</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>54</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>al+9zRjNTBZZcU69a8iMD6KngWA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+        <identifier>E</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j2</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>55</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>2cJI8v0G+GfLxlnF+d0p52Lt9zE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+          <identifier>E</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j3</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>56</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>gGkJqESKyHkjrDimz/Z1Uj2cK+0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+          <identifier>E</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j4</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>57</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Mj/s1nUSVoc1ekzTBsQf9pPgkFw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+          <identifier>E</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j5</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>58</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>gVVoORJQLKCql9+xiRwm1JBfiBE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+          <identifier>E</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j6</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>59</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>sprKg2FCJZqWV8vVSeoW2hF5RL8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <name>
+            <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+            <identifier>E</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j7</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>60</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>VSCpXF9FwRBZvC4dq2fu0/+CXgY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+            <identifier>E</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j8</name>
+  <source>
+    <location>
+      <short-path>type-resolution.cpp</short-path>
+      <source-path>type-resolution.cpp</source-path>
+      <line-number>61</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>rjNquALg5slBV3zcGK7kbMiR/Oc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <pointer>
+        <is-const>1</is-const>
+        <named>
+          <is-const>1</is-const>
+          <name>
+            <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
+            <identifier>E</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

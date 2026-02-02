@@ -1,108 +1,306 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
-    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="5" class="def"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <doc>
-      <brief>
-        <text>f0 brief</text>
-      </brief>
-      <returns>
-        <text>int</text>
-      </returns>
-      <returns>
-        <text>int</text>
-      </returns>
-    </doc>
-  </function>
-  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="11" class="def"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <doc>
-      <brief>
-        <text>f1 brief</text>
-      </brief>
-      <returns>
-        <text>int</text>
-      </returns>
-      <returns>
-        <text>bool</text>
-      </returns>
-    </doc>
-  </function>
-  <function name="g0" id="Vn88rrW6JgrUc7j/24MUTRnpkRg=">
-    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="17" class="def"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>g0 brief</text>
-      </brief>
-      <param name="a">
-        <text>one</text>
-      </param>
-      <param name="a">
-        <text>one</text>
-      </param>
-    </doc>
-  </function>
-  <function name="g1" id="99zzvQbBwXKh7ewapNRMnAKND3I=">
-    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="23" class="def"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>g1 brief</text>
-      </brief>
-      <param name="a">
-        <text>one</text>
-      </param>
-      <param name="b">
-        <text>two</text>
-      </param>
-    </doc>
-  </function>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="h0" id="GUlieEk6E+t8qLpALj3XrWv0CGw=">
-      <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="29" class="def"/>
-      <doc>
-        <brief>
-          <text>h0 brief</text>
-        </brief>
-        <tparam name="T">
-          <text>one</text>
-        </tparam>
-        <tparam name="T">
-          <text>one</text>
-        </tparam>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="h1" id="q8fclJU+n2M3XqifIjVL9vT9fKQ=">
-      <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="36" class="def"/>
-      <doc>
-        <brief>
-          <text>h1 brief</text>
-        </brief>
-        <tparam name="T">
-          <text>one</text>
-        </tparam>
-        <tparam name="U">
-          <text>two</text>
-        </tparam>
-      </doc>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>e1UQQek5v3C9OClW5cGf57XvwQo=</functions>
+    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
+    <functions>Vn88rrW6JgrUc7j/24MUTRnpkRg=</functions>
+    <functions>99zzvQbBwXKh7ewapNRMnAKND3I=</functions>
+    <functions>GUlieEk6E+t8qLpALj3XrWv0CGw=</functions>
+    <functions>q8fclJU+n2M3XqifIjVL9vT9fKQ=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>param-duplicate.cpp</short-path>
+      <source-path>param-duplicate.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>f0 brief</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>int</literal>
+      </text>
+    </returns>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>int</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>param-duplicate.cpp</short-path>
+      <source-path>param-duplicate.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>f1 brief</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>int</literal>
+      </text>
+    </returns>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>bool</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g0</name>
+  <source>
+    <location>
+      <short-path>param-duplicate.cpp</short-path>
+      <source-path>param-duplicate.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Vn88rrW6JgrUc7j/24MUTRnpkRg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>g0 brief</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>one</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>one</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g1</name>
+  <source>
+    <location>
+      <short-path>param-duplicate.cpp</short-path>
+      <source-path>param-duplicate.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>99zzvQbBwXKh7ewapNRMnAKND3I=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>g1 brief</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>one</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>two</literal>
+      </text>
+      <name>b</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h0</name>
+  <source>
+    <location>
+      <short-path>param-duplicate.cpp</short-path>
+      <source-path>param-duplicate.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>GUlieEk6E+t8qLpALj3XrWv0CGw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>h0 brief</literal>
+      </text>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>one</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>one</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h1</name>
+  <source>
+    <location>
+      <short-path>param-duplicate.cpp</short-path>
+      <source-path>param-duplicate.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>q8fclJU+n2M3XqifIjVL9vT9fKQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>h1 brief</literal>
+      </text>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>one</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>two</literal>
+      </text>
+      <name>U</name>
+    </t-param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

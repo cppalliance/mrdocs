@@ -12,7 +12,6 @@
 #include "TagfileWriter.hpp"
 #include <lib/ConfigImpl.hpp>
 #include <lib/Gen/hbs/VisitorHelpers.hpp>
-#include <lib/Gen/xml/CXXTags.hpp>
 #include <lib/Support/RawOstream.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>

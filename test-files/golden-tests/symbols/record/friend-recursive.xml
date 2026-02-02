@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="repro" id="TbLT2OLri0f15uavHJgGv+UqjH0=">
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="FriendLoop" id="FCqV132dA3DBMjJi6NETuUxv8SE=">
-        <file short-path="friend-recursive.cpp" source-path="friend-recursive.cpp" line="6" class="def"/>
-        <friend id="FCqV132dA3DBMjJi6NETuUxv8SE=">
-          <befriended id="FCqV132dA3DBMjJi6NETuUxv8SE="/>
-        </friend>
-      </struct>
-    </template>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>TbLT2OLri0f15uavHJgGv+UqjH0=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>repro</name>
+  <source>
+    <location>
+      <short-path>friend-recursive.cpp</short-path>
+      <source-path>friend-recursive.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>TbLT2OLri0f15uavHJgGv+UqjH0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>FCqV132dA3DBMjJi6NETuUxv8SE=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>FriendLoop</name>
+  <source>
+    <location>
+      <short-path>friend-recursive.cpp</short-path>
+      <source-path>friend-recursive.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FCqV132dA3DBMjJi6NETuUxv8SE=</id>
+  <extraction>regular</extraction>
+  <parent>TbLT2OLri0f15uavHJgGv+UqjH0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>FCqV132dA3DBMjJi6NETuUxv8SE=</id>
+  </friend>
+</record>
 </mrdocs>

@@ -1,138 +1,468 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="1" class="def"/>
-      <function class="constructor" name="A" explicit-spec="explicit(sizeof(T) &gt; 4)" id="tu1aWR2dJXMP1qCjx0wfqGbHUrU=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="11"/>
-        <param name="value">
-          <type name="char"/>
-        </param>
-        <doc>
-          <brief>
-            <text>Conditionally explicit conversion from char</text>
-          </brief>
-          <param name="value">
-            <text>The value to construct from</text>
-          </param>
-        </doc>
-      </function>
-      <function class="constructor" name="A" explicit-spec="explicit" id="F4U5PyaDoe8VKg41ubwK8aze9QE=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="7"/>
-        <param name="value">
-          <type name="int"/>
-        </param>
-        <doc>
-          <brief>
-            <text>Explicit conversion from int</text>
-          </brief>
-          <param name="value">
-            <text>The value to construct from</text>
-          </param>
-        </doc>
-      </function>
-      <function class="constructor" name="A" id="AXLv33SreHARdqogAHAgfhC3lFA=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="4"/>
-        <param name="value">
-          <type name="double"/>
-        </param>
-        <doc>
-          <brief>
-            <text>Implicit conversion from double</text>
-          </brief>
-          <param name="value">
-            <text>The value to construct from</text>
-          </param>
-        </doc>
-      </function>
-      <template>
-        <tparam name="U" class="type"/>
-        <function class="constructor" name="A" explicit-spec="explicit(sizeof(U) &gt; 4)" id="Lh5IpjK5DH9VZV67YWZB6MBX3eg=">
-          <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="15"/>
-          <param name="value">
-            <type name="U"/>
-          </param>
-          <doc>
-            <brief>
-              <text>Conditionally explicit conversion from other types</text>
-            </brief>
-            <param name="value">
-              <text>The object to construct from</text>
-            </param>
-          </doc>
-        </function>
-      </template>
-      <template>
-        <tparam name="U" class="type"/>
-        <function class="conversion" name="operator " explicit-spec="explicit(sizeof(U) &gt; 1)" id="8QQvac4UAEj232hkdEvLmrs4iXo=">
-          <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="32"/>
-          <attr id="is-const"/>
-          <return>
-            <type name="U"/>
-          </return>
-          <doc>
-            <brief>
-              <text>Conditional explicit conversion to other types</text>
-            </brief>
-            <returns>
-              <text>The object converted to </text>
-              <mono>U</mono>
-            </returns>
-          </doc>
-        </function>
-      </template>
-      <function class="conversion" name="operator bool" explicit-spec="explicit" id="BQIWwUrUqUCA8gEZNkinmhykZiw=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="24"/>
-        <attr id="is-const"/>
-        <return>
-          <type name="bool"/>
-        </return>
-        <doc>
-          <brief>
-            <text>Explicit conversion to bool</text>
-          </brief>
-          <returns>
-            <text>The object converted to </text>
-            <mono>bool</mono>
-          </returns>
-        </doc>
-      </function>
-      <function class="conversion" name="operator char" explicit-spec="explicit(sizeof(T) &gt; 4)" id="RoN1eWo04RrcRuREabBhJcBRP9g=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="28"/>
-        <attr id="is-const"/>
-        <return>
-          <type name="char"/>
-        </return>
-        <doc>
-          <brief>
-            <text>Conditionally explicit conversion to char</text>
-          </brief>
-          <returns>
-            <text>The object converted to </text>
-            <mono>char</mono>
-          </returns>
-        </doc>
-      </function>
-      <function class="conversion" name="operator double" id="G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="20"/>
-        <attr id="is-const"/>
-        <return>
-          <type name="double"/>
-        </return>
-        <doc>
-          <brief>
-            <text>Implicit conversion to double</text>
-          </brief>
-          <returns>
-            <text>The object converted to </text>
-            <mono>double</mono>
-          </returns>
-        </doc>
-      </function>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>90LmpTUv2mRF4c7fOK5KY82aqfg=</functions>
+      <functions>8QQvac4UAEj232hkdEvLmrs4iXo=</functions>
+      <functions>BQIWwUrUqUCA8gEZNkinmhykZiw=</functions>
+      <functions>RoN1eWo04RrcRuREabBhJcBRP9g=</functions>
+      <functions>G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>90LmpTUv2mRF4c7fOK5KY82aqfg=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Constructors</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>constructor</func-class>
+  <members>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</members>
+  <members>F4U5PyaDoe8VKg41ubwK8aze9QE=</members>
+  <members>AXLv33SreHARdqogAHAgfhC3lFA=</members>
+  <members>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conditionally explicit conversion from char</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>F4U5PyaDoe8VKg41ubwK8aze9QE=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Explicit conversion from int</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>AXLv33SreHARdqogAHAgfhC3lFA=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Implicit conversion from double</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conditionally explicit conversion from other types</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>U</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator </name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>8QQvac4UAEj232hkdEvLmrs4iXo=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conditional explicit conversion to other types</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>U</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>U</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator bool</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>BQIWwUrUqUCA8gEZNkinmhykZiw=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Explicit conversion to bool</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bool</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator char</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RoN1eWo04RrcRuREabBhJcBRP9g=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conditionally explicit conversion to char</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>char</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator double</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Implicit conversion to double</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>double</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

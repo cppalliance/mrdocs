@@ -1,15 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
-    <file short-path="class-private-alias.cpp" source-path="class-private-alias.cpp" line="1" class="def"/>
-    <function name="f" id="rEl08eLCQtT5kTV7R87YlkuVPa8=">
-      <file short-path="class-private-alias.cpp" source-path="class-private-alias.cpp" line="5" class="def"/>
-      <param>
-        <type id="9Spd2Hgcx11GK/zJPhJblwaMxfU=" name="type"/>
-      </param>
-    </function>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>pOYGF6pLJlICuiGO0Xj0daDb/to=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>S</name>
+  <source>
+    <location>
+      <short-path>class-private-alias.cpp</short-path>
+      <source-path>class-private-alias.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>rEl08eLCQtT5kTV7R87YlkuVPa8=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+      <typedefs>9Spd2Hgcx11GK/zJPhJblwaMxfU=</typedefs>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>class-private-alias.cpp</short-path>
+      <source-path>class-private-alias.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>rEl08eLCQtT5kTV7R87YlkuVPa8=</id>
+  <extraction>regular</extraction>
+  <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>9Spd2Hgcx11GK/zJPhJblwaMxfU=</id>
+        <identifier>type</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

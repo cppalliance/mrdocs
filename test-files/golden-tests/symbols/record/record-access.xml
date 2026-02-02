@@ -1,42 +1,282 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">
-    <file short-path="record-access.cpp" source-path="record-access.cpp" line="12" class="def"/>
-    <function name="f2" id="ZOAAp99eH9zKUZqx0JzW6AuhRTQ=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="18"/>
-    </function>
-    <function name="f1" access="protected" id="EyRDT2mXtRNmcISD2rsC6/mLusw=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="16"/>
-    </function>
-    <function name="f0" access="private" id="IdInRLjINkaIuyTqWyEUhoM1DZM=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="14"/>
-    </function>
-  </class>
-  <struct name="S0" id="u38+snleg17KL7EQuD9FV1Z8b9E=">
-    <file short-path="record-access.cpp" source-path="record-access.cpp" line="3" class="def"/>
-    <function name="f0" id="STTnU4grbgOl2xPE6okWC57zruc=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="5"/>
-    </function>
-    <function name="f1" access="protected" id="IaPeEIwn9q94M3MuwxsB3qhBOSE=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="7"/>
-    </function>
-    <function name="f2" access="private" id="QicvGhxlL09TrpXiFYAS+pz8/9g=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="9"/>
-    </function>
-  </struct>
-  <union name="U0" id="SHIJWZPzfYtLVfe/rzFAmeVpANk=">
-    <file short-path="record-access.cpp" source-path="record-access.cpp" line="21" class="def"/>
-    <function name="f0" id="eY4R9etszWK2H42p4kWNm5XfpnE=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="23"/>
-    </function>
-    <function name="f1" access="protected" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="25"/>
-    </function>
-    <function name="f2" access="private" id="KXASSTkImsSKBg6l0hOSkbt1K7M=">
-      <file short-path="record-access.cpp" source-path="record-access.cpp" line="27"/>
-    </function>
-  </union>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>sTaqkoFcVbtntbfpe777v5/pWL0=</records>
+    <records>u38+snleg17KL7EQuD9FV1Z8b9E=</records>
+    <records>SHIJWZPzfYtLVfe/rzFAmeVpANk=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>C0</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>ZOAAp99eH9zKUZqx0JzW6AuhRTQ=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>EyRDT2mXtRNmcISD2rsC6/mLusw=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>IdInRLjINkaIuyTqWyEUhoM1DZM=</functions>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ZOAAp99eH9zKUZqx0JzW6AuhRTQ=</id>
+  <extraction>regular</extraction>
+  <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>EyRDT2mXtRNmcISD2rsC6/mLusw=</id>
+  <extraction>regular</extraction>
+  <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>IdInRLjINkaIuyTqWyEUhoM1DZM=</id>
+  <extraction>regular</extraction>
+  <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>u38+snleg17KL7EQuD9FV1Z8b9E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>STTnU4grbgOl2xPE6okWC57zruc=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>IaPeEIwn9q94M3MuwxsB3qhBOSE=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>QicvGhxlL09TrpXiFYAS+pz8/9g=</functions>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>STTnU4grbgOl2xPE6okWC57zruc=</id>
+  <extraction>regular</extraction>
+  <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>IaPeEIwn9q94M3MuwxsB3qhBOSE=</id>
+  <extraction>regular</extraction>
+  <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>QicvGhxlL09TrpXiFYAS+pz8/9g=</id>
+  <extraction>regular</extraction>
+  <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>U0</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>SHIJWZPzfYtLVfe/rzFAmeVpANk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>union</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>eY4R9etszWK2H42p4kWNm5XfpnE=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>KjiG7Uufpmd65dhiSV+Jv2RjgHA=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>KXASSTkImsSKBg6l0hOSkbt1K7M=</functions>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>eY4R9etszWK2H42p4kWNm5XfpnE=</id>
+  <extraction>regular</extraction>
+  <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>KjiG7Uufpmd65dhiSV+Jv2RjgHA=</id>
+  <extraction>regular</extraction>
+  <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>record-access.cpp</short-path>
+      <source-path>record-access.cpp</source-path>
+      <line-number>27</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>KXASSTkImsSKBg6l0hOSkbt1K7M=</id>
+  <extraction>regular</extraction>
+  <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

@@ -1,21 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="mrdocs" id="rQr6X4pFwyRradNsE4fgTcl6Jmk=">
-    <doc>
-      <brief>
-        <text>Included namespace</text>
-      </brief>
-    </doc>
-    <struct name="Foo" id="yJQinsro3N5aSu4KK6p+ChnY5FM=">
-      <file short-path="global-symbol-excluded.cpp" source-path="global-symbol-excluded.cpp" line="8" class="def"/>
-      <doc>
-        <brief>
-          <text>Included record</text>
-        </brief>
-      </doc>
-    </struct>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>rQr6X4pFwyRradNsE4fgTcl6Jmk=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>mrdocs</name>
+  <source>
+    <location>
+      <short-path>global-symbol-excluded.cpp</short-path>
+      <source-path>global-symbol-excluded.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>rQr6X4pFwyRradNsE4fgTcl6Jmk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Included namespace</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <namespace-tranche>
+    <records>yJQinsro3N5aSu4KK6p+ChnY5FM=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>Foo</name>
+  <source>
+    <location>
+      <short-path>global-symbol-excluded.cpp</short-path>
+      <source-path>global-symbol-excluded.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>yJQinsro3N5aSu4KK6p+ChnY5FM=</id>
+  <extraction>regular</extraction>
+  <parent>rQr6X4pFwyRradNsE4fgTcl6Jmk=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Included record</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

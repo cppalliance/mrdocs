@@ -1,26 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="detail" id="aMJtdgJFybRcdkRG712j3iC7JeM=">
-    <struct name="absolute_uri_rule_t" id="vOKKVGAcuI3CBaMkdZstuFgnnuQ=">
-      <file short-path="impl-defined-member.cpp" source-path="impl-defined-member.cpp" line="2" class="def"/>
-    </struct>
-  </namespace>
-  <namespace name="regular" id="FmK1G1VDxt6WyumYC2tUbb5VjSs=">
-    <struct name="absolute_uri_rule_t" id="fA+/UQOR2lG0f1+BZ+GeGlfo5sY=">
-      <file short-path="impl-defined-member.cpp" source-path="impl-defined-member.cpp" line="6" class="def"/>
-    </struct>
-  </namespace>
-  <variable name="absolute_uri_rule" id="/ePshzEghZYl/D7bJ6X3M2XbKEg=" default="{}">
-    <file short-path="impl-defined-member.cpp" source-path="impl-defined-member.cpp" line="9" class="def"/>
-    <attr id="is-constexpr"/>
-    <type id="vOKKVGAcuI3CBaMkdZstuFgnnuQ=" name="detail::absolute_uri_rule_t"/>
-  </variable>
-  <variable name="regular_absolute_uri_rule" id="ixmivDXFAcQVJd4G7XOqINAR858=" default="{}">
-    <file short-path="impl-defined-member.cpp" source-path="impl-defined-member.cpp" line="11" class="def"/>
-    <attr id="is-constexpr"/>
-    <type id="fA+/UQOR2lG0f1+BZ+GeGlfo5sY=" name="regular::absolute_uri_rule_t"/>
-  </variable>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>aMJtdgJFybRcdkRG712j3iC7JeM=</namespaces>
+    <namespaces>FmK1G1VDxt6WyumYC2tUbb5VjSs=</namespaces>
+    <variables>/ePshzEghZYl/D7bJ6X3M2XbKEg=</variables>
+    <variables>ixmivDXFAcQVJd4G7XOqINAR858=</variables>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>detail</name>
+  <source>
+    <location>
+      <short-path>impl-defined-member.cpp</short-path>
+      <source-path>impl-defined-member.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>absolute_uri_rule_t</name>
+  <source>
+    <location>
+      <short-path>impl-defined-member.cpp</short-path>
+      <source-path>impl-defined-member.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>aMJtdgJFybRcdkRG712j3iC7JeM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<namespace>
+  <name>regular</name>
+  <source>
+    <location>
+      <short-path>impl-defined-member.cpp</short-path>
+      <source-path>impl-defined-member.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>absolute_uri_rule_t</name>
+  <source>
+    <location>
+      <short-path>impl-defined-member.cpp</short-path>
+      <source-path>impl-defined-member.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
+  <extraction>regular</extraction>
+  <parent>FmK1G1VDxt6WyumYC2tUbb5VjSs=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>absolute_uri_rule</name>
+  <source>
+    <location>
+      <short-path>impl-defined-member.cpp</short-path>
+      <source-path>impl-defined-member.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>/ePshzEghZYl/D7bJ6X3M2XbKEg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
+      <identifier>absolute_uri_rule_t</identifier>
+      <name>
+        <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
+        <identifier>detail</identifier>
+      </name>
+    </name>
+  </named>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>regular_absolute_uri_rule</name>
+  <source>
+    <location>
+      <short-path>impl-defined-member.cpp</short-path>
+      <source-path>impl-defined-member.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ixmivDXFAcQVJd4G7XOqINAR858=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
+      <identifier>absolute_uri_rule_t</identifier>
+      <name>
+        <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
+        <identifier>regular</identifier>
+      </name>
+    </name>
+  </named>
+  <is-constexpr>1</is-constexpr>
+</variable>
 </mrdocs>

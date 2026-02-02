@@ -1,20 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="Empty" id="iczIHP1J59EwYw3xxL3w2C3Q43Q=">
-    <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="3" class="def"/>
-  </struct>
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="5" class="def"/>
-    <variable name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=" default="Empty{}">
-      <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="8"/>
-      <type id="iczIHP1J59EwYw3xxL3w2C3Q43Q=" name="Empty"/>
-    </variable>
-    <variable name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
-      <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="7"/>
-      <type name="int"/>
-    </variable>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>iczIHP1J59EwYw3xxL3w2C3Q43Q=</records>
+    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>Empty</name>
+  <source>
+    <location>
+      <short-path>no_unique_address.cpp</short-path>
+      <source-path>no_unique_address.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>iczIHP1J59EwYw3xxL3w2C3Q43Q=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>no_unique_address.cpp</short-path>
+      <source-path>no_unique_address.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>h2j8f921HD+Fyaokcs4ndGM/yNk=</variables>
+      <variables>91xV6rCFObgi6i1/U2uZ/GnD3WM=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>e</name>
+  <source>
+    <location>
+      <short-path>no_unique_address.cpp</short-path>
+      <source-path>no_unique_address.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>h2j8f921HD+Fyaokcs4ndGM/yNk=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <id>iczIHP1J59EwYw3xxL3w2C3Q43Q=</id>
+      <identifier>Empty</identifier>
+    </name>
+  </named>
+  <attributes>deprecated</attributes>
+  <attributes>maybe_unused</attributes>
+  <is-maybe-unused>1</is-maybe-unused>
+  <is-deprecated>1</is-deprecated>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>no_unique_address.cpp</short-path>
+      <source-path>no_unique_address.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>91xV6rCFObgi6i1/U2uZ/GnD3WM=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
 </mrdocs>

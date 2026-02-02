@@ -1,90 +1,323 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="bar" id="mHoykrvnCPrloD8rIG6+dIga8dM=">
-    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="35"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="a">
-      <type class="pointer">
-        <pointee-type name="int"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Brief from </text>
-        <mono>foo()</mono>
-      </brief>
-      <para>
-        <text>This is the function original documentation for the foo function with an array parameter.</text>
-      </para>
-      <returns>
-        <text>A boolean value.</text>
-      </returns>
-      <param name="a">
-        <text>An array of integers.</text>
-      </param>
-    </doc>
-  </function>
-  <function name="foo" id="yi6+RKHXbSoVR9R7xtUev7R+tpA=">
-    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="7"/>
-    <doc>
-      <brief>
-        <text>We should not copy this doc</text>
-      </brief>
-      <para>
-        <mono>bar</mono>
-        <text> should not copy this documentation just because it has the same name and is simpler.</text>
-      </para>
-    </doc>
-  </function>
-  <function name="foo" id="HS4sKOwEsAJwIGrfX/wfr/SW0/c=">
-    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="18"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>We should not copy this doc</text>
-      </brief>
-      <para>
-        <mono>bar</mono>
-        <text> should not copy this documentation just because it has the same number of parameters.</text>
-      </para>
-      <param name="a">
-        <text>An integer.</text>
-      </param>
-    </doc>
-  </function>
-  <function name="foo" id="72bbA46XC/75Vpdubu57UmYSBBk=">
-    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="29"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="a">
-      <type class="array" bounds="3">
-        <element-type name="int"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Brief from </text>
-        <mono>foo()</mono>
-      </brief>
-      <para>
-        <text>This is the function original documentation for the foo function with an array parameter.</text>
-      </para>
-      <returns>
-        <text>A boolean value.</text>
-      </returns>
-      <param name="a">
-        <text>An array of integers.</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>mHoykrvnCPrloD8rIG6+dIga8dM=</functions>
+    <functions>IPZj2cmKd30EV/ztyuacllbdZcg=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>bar</name>
+  <source>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>mHoykrvnCPrloD8rIG6+dIga8dM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This is the function original documentation for the foo function with an array parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>foo()</literal>
+        </text>
+      </code>
+      <copied-from>foo(int*) </copied-from>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A boolean value.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An array of integers.</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>IPZj2cmKd30EV/ztyuacllbdZcg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>foo</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A boolean value.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer.</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>yi6+RKHXbSoVR9R7xtUev7R+tpA=</members>
+  <members>HS4sKOwEsAJwIGrfX/wfr/SW0/c=</members>
+  <members>72bbA46XC/75Vpdubu57UmYSBBk=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>yi6+RKHXbSoVR9R7xtUev7R+tpA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bar</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> should not copy this documentation just because it has the same name and is simpler.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>We should not copy this doc</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>HS4sKOwEsAJwIGrfX/wfr/SW0/c=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bar</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> should not copy this documentation just because it has the same number of parameters.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>We should not copy this doc</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer.</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>decay-params.cpp</short-path>
+      <source-path>decay-params.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>72bbA46XC/75Vpdubu57UmYSBBk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This is the function original documentation for the foo function with an array parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>foo()</literal>
+        </text>
+      </code>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A boolean value.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An array of integers.</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <array>
+      <named>
+        <name>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </array>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

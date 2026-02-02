@@ -1,23 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
-      <file short-path="concept.cpp" source-path="concept.cpp" line="4"/>
-    </function>
-  </template>
-  <variable name="x" id="ujOvtFFNPf6akih2fga4S9j6Y9M=" default="0">
-    <file short-path="concept.cpp" source-path="concept.cpp" line="7" class="def"/>
-    <type class="auto" keyword="auto" constraint="C">
-    </type>
-  </variable>
-  <template>
-    <tparam name="T" class="type"/>
-    <concept name="C" id="Bzh2Bz1ZBW0d6sKvxtXunIUU31k=" constraint="sizeof(T) == sizeof(int)">
-      <file short-path="concept.cpp" source-path="concept.cpp" line="1"/>
-    </concept>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>PmhXjCXUJYVnj/a7NhfjjSesyp0=</functions>
+    <variables>ujOvtFFNPf6akih2fga4S9j6Y9M=</variables>
+    <concepts>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</concepts>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>concept.cpp</short-path>
+      <source-path>concept.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>PmhXjCXUJYVnj/a7NhfjjSesyp0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>concept.cpp</short-path>
+      <source-path>concept.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ujOvtFFNPf6akih2fga4S9j6Y9M=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <auto>
+    <name>
+      <id>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</id>
+      <identifier>C</identifier>
+    </name>
+  </auto>
+</variable>
+<concept>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>concept.cpp</short-path>
+      <source-path>concept.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+</concept>
 </mrdocs>

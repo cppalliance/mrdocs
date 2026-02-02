@@ -1,60 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="U" class="type"/>
-    <struct name="pair" id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=">
-      <file short-path="returns.cpp" source-path="returns.cpp" line="7" class="def"/>
-      <doc>
-        <related>
-          <reference id="43ASI/aC9fCLy8T+1gn7pUdis+g=">g</reference>
-        </related>
-      </doc>
-      <variable name="first" id="zYZRwoC/XWBesPi1AQs+kPHibHI=">
-        <file short-path="returns.cpp" source-path="returns.cpp" line="9"/>
-        <type name="T"/>
-      </variable>
-      <variable name="second" id="AfaC9XI9L85KNgrioXVThVhljqA=">
-        <file short-path="returns.cpp" source-path="returns.cpp" line="10"/>
-        <type name="U"/>
-      </variable>
-    </struct>
-  </template>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="returns.cpp" source-path="returns.cpp" line="5"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <doc>
-      <brief>
-        <text>A function with a single return value.</text>
-      </brief>
-      <returns>
-        <text>The return value of the function.</text>
-      </returns>
-    </doc>
-  </function>
-  <function name="g" id="43ASI/aC9fCLy8T+1gn7pUdis+g=">
-    <file short-path="returns.cpp" source-path="returns.cpp" line="18"/>
-    <return>
-      <type id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=" name="pair&lt;int, int&gt;"/>
-    </return>
-    <doc>
-      <brief>
-        <text>A function with multiple return values.</text>
-      </brief>
-      <returns>
-        <text>The first return value of the function.</text>
-      </returns>
-      <returns>
-        <text>The second return value of the function.</text>
-      </returns>
-      <relates>
-        <reference id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=">pair</reference>
-      </relates>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</records>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+    <functions>43ASI/aC9fCLy8T+1gn7pUdis+g=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>pair</name>
+  <source>
+    <location>
+      <short-path>returns.cpp</short-path>
+      <source-path>returns.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <reference>
+      <kind>reference</kind>
+      <literal>g</literal>
+      <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>zYZRwoC/XWBesPi1AQs+kPHibHI=</variables>
+      <variables>AfaC9XI9L85KNgrioXVThVhljqA=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>first</name>
+  <source>
+    <location>
+      <short-path>returns.cpp</short-path>
+      <source-path>returns.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>zYZRwoC/XWBesPi1AQs+kPHibHI=</id>
+  <extraction>regular</extraction>
+  <parent>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>second</name>
+  <source>
+    <location>
+      <short-path>returns.cpp</short-path>
+      <source-path>returns.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>AfaC9XI9L85KNgrioXVThVhljqA=</id>
+  <extraction>regular</extraction>
+  <parent>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</parent>
+  <named>
+    <name>
+      <identifier>U</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>returns.cpp</short-path>
+      <source-path>returns.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function with a single return value.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value of the function.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>returns.cpp</short-path>
+      <source-path>returns.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function with multiple return values.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first return value of the function.</literal>
+      </text>
+    </returns>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The second return value of the function.</literal>
+      </text>
+    </returns>
+    <reference>
+      <kind>reference</kind>
+      <literal>pair</literal>
+      <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
+      <identifier>pair</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

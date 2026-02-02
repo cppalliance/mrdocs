@@ -1,29 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
-    <file short-path="brief-1.cpp" source-path="brief-1.cpp" line="30"/>
-    <doc>
-      <brief>
-        <text>brief </text>
-        <bold>bold</bold>
-        <text> it continues to the line.</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
-    <file short-path="brief-1.cpp" source-path="brief-1.cpp" line="39"/>
-    <doc>
-      <brief>
-        <text>brief</text>
-      </brief>
-      <para>
-        <text>many lined </text>
-        <bold>bold</bold>
-        <text> what will happen?</text>
-      </para>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>RnDTZyCZuSqydMEPutN0yG4E/xg=</functions>
+    <functions>NEkWCLiknLGzCD6JnXuBTSAAne8=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>brief-1.cpp</short-path>
+      <source-path>brief-1.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RnDTZyCZuSqydMEPutN0yG4E/xg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief </literal>
+      </text>
+      <strong>
+        <kind>strong</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bold</literal>
+        </text>
+      </strong>
+      <text>
+        <kind>text</kind>
+        <literal> it continues to the line.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>brief-1.cpp</short-path>
+      <source-path>brief-1.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>NEkWCLiknLGzCD6JnXuBTSAAne8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>many lined </literal>
+      </text>
+      <strong>
+        <kind>strong</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bold</literal>
+        </text>
+      </strong>
+      <text>
+        <kind>text</kind>
+        <literal> what will happen?</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

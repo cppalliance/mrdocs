@@ -1,77 +1,276 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="record-1.cpp" source-path="record-1.cpp" line="1" class="def"/>
-    <namespace-alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="3"/>
-      <type name="int"/>
-    </namespace-alias>
-    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="4"/>
-      <type name="char"/>
-    </typedef>
-    <function name="f1" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="6"/>
-    </function>
-    <function name="f2" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="7"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-    <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="8"/>
-      <return>
-        <type name="char"/>
-      </return>
-    </function>
-    <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="15"/>
-      <doc>
-        <brief>
-          <text>brief-g1</text>
-        </brief>
-        <para>
-          <text>desc</text>
-        </para>
-      </doc>
-    </function>
-    <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="21"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <doc>
-        <brief>
-          <text>brief-g2</text>
-        </brief>
-        <returns>
-          <text>the number 2</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="28"/>
-      <return>
-        <type name="char"/>
-      </return>
-      <param name="x">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>brief-g3</text>
-        </brief>
-        <returns>
-          <text>the separator</text>
-        </returns>
-        <param name="x">
-          <text>any old number</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>6UtddyCJy89K/bZpTmDb5jVXwAY=</typedefs>
+      <typedefs>wwp4SQjMPktMmsnvq1thxjxFHFs=</typedefs>
+      <functions>9sznTZ3/SXQNZpCsoMG8KWGLuEc=</functions>
+      <functions>w0ONazxXaWlB0RQLjfDqDWICUwo=</functions>
+      <functions>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>/xzUDYrXtCl2xCoyCvXqIZ4fKfA=</functions>
+      <functions>flHl59B/bdRwuiNeh3sHqCycic0=</functions>
+      <functions>DKxv4h+rP37b0u6O1qbB+u416ZY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>U1</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6UtddyCJy89K/bZpTmDb5jVXwAY=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>U2</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>wwp4SQjMPktMmsnvq1thxjxFHFs=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+</typedef>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>9sznTZ3/SXQNZpCsoMG8KWGLuEc=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>w0ONazxXaWlB0RQLjfDqDWICUwo=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>g1</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>/xzUDYrXtCl2xCoyCvXqIZ4fKfA=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>desc</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief-g1</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>g2</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>flHl59B/bdRwuiNeh3sHqCycic0=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief-g2</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>the number 2</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>g3</name>
+  <source>
+    <location>
+      <short-path>record-1.cpp</short-path>
+      <source-path>record-1.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>DKxv4h+rP37b0u6O1qbB+u416ZY=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief-g3</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>the separator</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>any old number</literal>
+      </text>
+      <name>x</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

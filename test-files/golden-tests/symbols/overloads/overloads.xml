@@ -1,188 +1,713 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="1" class="def"/>
-    <friend id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
-      <befriended id="7bqo4XOxyyg5NIOu+8i4lZ3L47c="/>
-    </friend>
-    <friend id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
-      <befriended id="pqHl3WkOZfX6m6ltquhjuQtzXp4="/>
-    </friend>
-    <function name="f" id="hLXvGC+nOrLQRH9lODKkgi/oUas=">
-      <file short-path="overloads.cpp" source-path="overloads.cpp" line="2"/>
-    </function>
-    <function name="f" id="7Bg4Ruo9NHdsGok6ICFQWW1MBuE=">
-      <file short-path="overloads.cpp" source-path="overloads.cpp" line="3"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-    <function name="g" id="qw8/QuVZ7n9UkJWa5gz1gYkPlBc=">
-      <file short-path="overloads.cpp" source-path="overloads.cpp" line="5"/>
-      <attr id="storage-class" name="static" value="2"/>
-    </function>
-    <function name="g" id="E2RBHdoNQKveCfR6zUiWe+Ztmtk=">
-      <file short-path="overloads.cpp" source-path="overloads.cpp" line="6"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-  </struct>
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="15" class="def"/>
-    <doc>
-      <related>
-        <reference id="cVrZLPSmQHMz47ziL64cElytjh0=">operator==</reference>
-        <reference id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">operator==</reference>
-      </related>
-    </doc>
-  </struct>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="12"/>
-  </function>
-  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="13"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <param>
-      <type name="int"/>
-    </param>
-  </function>
-  <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
-    <attr id="operator" name="eq" value="28"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <param name="rhs">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Equality operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are equal, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-    </doc>
-  </function>
-  <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
-    <attr id="operator" name="eq" value="28"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <param name="rhs">
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Equality operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are equal, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-    </doc>
-  </function>
-  <function name="operator==" id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="17"/>
-    <attr id="operator" name="eq" value="28"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
-    </param>
-    <param name="rhs">
-      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Equality operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are equal, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="3JsK1DO0O+wZhv+0meptQrbs3fY=">B</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator==" id="cVrZLPSmQHMz47ziL64cElytjh0=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="18"/>
-    <attr id="operator" name="eq" value="28"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
-    </param>
-    <param name="rhs">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Equality operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are equal, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="3JsK1DO0O+wZhv+0meptQrbs3fY=">B</reference>
-      </relates>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
+    <functions>c3LDQg7wK1RzpLzXObmUCRAFDco=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>ct3b2BagsWFMKFtMRx/UVwhsQmo=</functions>
+      <static-functions>2gneMpbsIf1Dp6ctLj6MDFw9p/w=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>7bqo4XOxyyg5NIOu+8i4lZ3L47c=</id>
+  </friend>
+  <friend>
+    <id>pqHl3WkOZfX6m6ltquhjuQtzXp4=</id>
+  </friend>
+</record>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ct3b2BagsWFMKFtMRx/UVwhsQmo=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <func-class>normal</func-class>
+  <members>hLXvGC+nOrLQRH9lODKkgi/oUas=</members>
+  <members>7Bg4Ruo9NHdsGok6ICFQWW1MBuE=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>hLXvGC+nOrLQRH9lODKkgi/oUas=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>7Bg4Ruo9NHdsGok6ICFQWW1MBuE=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>2gneMpbsIf1Dp6ctLj6MDFw9p/w=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <func-class>normal</func-class>
+  <members>qw8/QuVZ7n9UkJWa5gz1gYkPlBc=</members>
+  <members>E2RBHdoNQKveCfR6zUiWe+Ztmtk=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>qw8/QuVZ7n9UkJWa5gz1gYkPlBc=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>E2RBHdoNQKveCfR6zUiWe+Ztmtk=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator==</literal>
+      <id>cVrZLPSmQHMz47ziL64cElytjh0=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator==</literal>
+      <id>gddLjn5hKdr6Ei8xKgtcB3bktI4=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <func-class>normal</func-class>
+  <members>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</members>
+  <members>ackjGh57CJQLwtO8PihiSPPKIBY=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<overloads>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>c3LDQg7wK1RzpLzXObmUCRAFDco=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operators</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>7bqo4XOxyyg5NIOu+8i4lZ3L47c=</members>
+  <members>pqHl3WkOZfX6m6ltquhjuQtzXp4=</members>
+  <members>gddLjn5hKdr6Ei8xKgtcB3bktI4=</members>
+  <members>cVrZLPSmQHMz47ziL64cElytjh0=</members>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>7bqo4XOxyyg5NIOu+8i4lZ3L47c=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+    <name>lhs</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>pqHl3WkOZfX6m6ltquhjuQtzXp4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+    <name>lhs</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>gddLjn5hKdr6Ei8xKgtcB3bktI4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+    <name>lhs</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>overloads.cpp</short-path>
+      <source-path>overloads.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>cVrZLPSmQHMz47ziL64cElytjh0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+    <name>lhs</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

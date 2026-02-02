@@ -1,18 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="ct_mc.cpp" source-path="ct_mc.cpp" line="1" class="def"/>
-      <struct name="B" id="fWoD36lD5WiSb4UmeWlbUQhHuXU=">
-        <file short-path="ct_mc.cpp" source-path="ct_mc.cpp" line="4" class="def"/>
-        <function name="f" id="FBE8MWhdRJutTkraJIXajcEr4U0=">
-          <file short-path="ct_mc.cpp" source-path="ct_mc.cpp" line="4" class="def"/>
-        </function>
-      </struct>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>ct_mc.cpp</short-path>
+      <source-path>ct_mc.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>fWoD36lD5WiSb4UmeWlbUQhHuXU=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>ct_mc.cpp</short-path>
+      <source-path>ct_mc.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>fWoD36lD5WiSb4UmeWlbUQhHuXU=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>FBE8MWhdRJutTkraJIXajcEr4U0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ct_mc.cpp</short-path>
+      <source-path>ct_mc.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>16</column-number>
+    </location>
+  </source>
+  <id>FBE8MWhdRJutTkraJIXajcEr4U0=</id>
+  <extraction>regular</extraction>
+  <parent>fWoD36lD5WiSb4UmeWlbUQhHuXU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

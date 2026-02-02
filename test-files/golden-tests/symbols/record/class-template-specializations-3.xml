@@ -1,328 +1,1624 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="4" class="def"/>
-          <struct name="C" id="bmgK1R0ByNI2o0uDX/xUzqUPaB0=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="7" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="9" class="def"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="8gtdVs8Zc/2hE1ugmc5SJaowDrk=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="13" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="double"/>
-        <struct name="B" id="Ax52oDYNHKdb/kayrTPXtP7EnLo=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="17" class="def"/>
-          <struct name="C" id="AwZsTwyQp9xqkJ5YDcGgbnNSg3Q=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="19" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="21" class="def"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="2n2EC+ZzX4R61vVgqMqWD1h4Fqc=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="25" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="short"/>
-    <struct name="A" id="C6fFmGgpPJ7jgwKJA98mfx5cxts=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="7YGPyrC+yNaV349G+Ofic+lrQQ0=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="4"/>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="void"/>
-        <struct name="B" id="AmrHzqMyGcAD714oirSEx/XCTwk=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="44" class="def"/>
-          <struct name="C" id="uGKF2n5ovA4i95uQxRmzyMq2uqY=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="46" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="NXKMuGv+ES2JssXCxPAKpwv8kek=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="48" class="def"/>
-            </struct>
-          </template>
-          <template class="explicit" id="NXKMuGv+ES2JssXCxPAKpwv8kek=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="52" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="double"/>
-        <struct name="B" id="fSC2izK+T4vA4Kndw3xNjCTDpoQ=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="17" class="def"/>
-          <struct name="C" id="7Z6H18MmJp6db1Qe2eaOiN597z0=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="19"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="FbDKEGMJtBcKX13TWrKFGTDcIfc=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="21"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="FQCRWOnd4VbpVowmyiWSRR2l2cA=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="25" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="unsigned int"/>
-    <struct name="A" id="eeh34/7lF7rCmE7zXKBrUC7mz3A=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="OqH2nTulqZzSwHPpqaqq/8Aw1rA=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="4"/>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="float"/>
-        <struct name="B" id="X9RyjucPb3aRFUq3aZCNE4g/ZVE=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="5" class="def"/>
-          <struct name="C" id="eXPfVkdfVF382Q5KqAEfOcjpVmo=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="7" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="7BP9bS6v3+IVgLRg4/sPKlbVgwc=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="9"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="E3rBDckOC8QkP+2YLNtbMxg69mc=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="13" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="double"/>
-        <struct name="B" id="Pna+OT/o27zekcoRTFxKtb5m+BQ=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="17" class="def"/>
-          <struct name="C" id="Gv8ovSPi4vbvyLsPbAfOvhMp5+o=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="19"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="Hx+JG1wcGiKbsf3sdpq4N3s6yPg=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="21"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="9bJvdwRZpk2+HRV+Az3lOybs1Wc=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="25" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="long"/>
-    <struct name="A" id="y/8TvVlacBAIG2ds2aYgZE+zGUU=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="30" class="def"/>
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="4"/>
-          <struct name="C" id="Dpv+NzmwhV+wRSY65GFxl+38zQM=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="33" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="35" class="def"/>
-            </struct>
-          </template>
-          <template class="explicit" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="vu+upAyFdAr9NpomAT9maDrr5VU=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="39" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-      <template class="explicit" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
-        <targ class="type" type="float"/>
-        <struct name="B" id="jvnZWmA3eB78JX83nJawhD8NGhw=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="31" class="def"/>
-          <struct name="C" id="ctaWbbvndczuSnONWd9XeHYCB9w=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="33" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="hJww7bbg+EMQbb4Z6K/mcREdNrI=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="35"/>
-            </struct>
-          </template>
-          <template class="explicit" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="NNxnP63PrqW2AkyLFpJx0uaNuTk=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="39" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-      <template class="explicit" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
-        <targ class="type" type="double"/>
-        <struct name="B" id="3fOXhba/en8Im2gUSThzllitRc0=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="17" class="def"/>
-          <struct name="C" id="y0bAB1lqim3CuNevLIQcyhSRoF0=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="19" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="yLNKrbXJxOfwo1+MCru26q+JH3c=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="21"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="P+rxL5vI4ct+gzn9YkO97Pt7Ras=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="25" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="float"/>
-    <struct name="A" id="GFV3P/JtfrnQwjOLVfI9VbJpd9U=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="eAzY1gFXtaCsmFJ7gW8gRwXcMpI=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="4"/>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="double"/>
-        <struct name="B" id="gNJJgsCrBHI+de6/WxRWfc6QUSQ=">
-          <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="17" class="def"/>
-          <struct name="C" id="B/thZ5I0G7tgrSCTq/QPdxvZ7mk=">
-            <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="19" class="def"/>
-          </struct>
-          <template>
-            <tparam name="V" class="type"/>
-            <struct name="D" id="rofuVJc3n2uMiYUFG+jEprNPhfk=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="21"/>
-            </struct>
-          </template>
-          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-            <targ class="type" type="bool"/>
-            <struct name="D" id="rzmzIDLemEwnRqvVCiQsLO9rHE4=">
-              <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="25" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
-  <struct name="E" id="KJWEqOD/QXinlGIqVHqmIlA5Z6E=">
-    <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="55" class="def"/>
-    <variable name="m0" id="oHfKrPnHC+B6Hx/yJYk5Fyxe+CI=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="57"/>
-      <type id="gNJJgsCrBHI+de6/WxRWfc6QUSQ=" name="A&lt;float&gt;::B&lt;double&gt;"/>
-    </variable>
-    <variable name="m1" id="EvoFLEsY/zIQw+ATCcszcUXQX1U=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="58"/>
-      <type id="3fOXhba/en8Im2gUSThzllitRc0=" name="A&lt;long&gt;::B&lt;double&gt;"/>
-    </variable>
-    <variable name="m10" id="M37GfnOSLu7LdwyWNUKiLSwQU8E=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="69"/>
-      <type id="rzmzIDLemEwnRqvVCiQsLO9rHE4=" name="A&lt;float&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
-    </variable>
-    <variable name="m11" id="zs4yFWypzJvC9fBTuqRIWShHXDI=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="70"/>
-      <type id="P+rxL5vI4ct+gzn9YkO97Pt7Ras=" name="A&lt;long&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
-    </variable>
-    <variable name="m12" id="npnYjIFI4UqRV4lM1m0vGdOXafw=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="71"/>
-      <type id="NNxnP63PrqW2AkyLFpJx0uaNuTk=" name="A&lt;long&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
-    </variable>
-    <variable name="m13" id="m3ZkUTvg5FF0YzKrQCCIMDL4Gjk=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="72"/>
-      <type id="E3rBDckOC8QkP+2YLNtbMxg69mc=" name="A&lt;unsigned int&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
-    </variable>
-    <variable name="m14" id="lvoZQmyEhLRRqpEiNgzPQH1SOJ0=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="73"/>
-      <type id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=" name="A&lt;short&gt;::B&lt;void&gt;::D&lt;bool&gt;"/>
-    </variable>
-    <variable name="m2" id="QerDxfhCX/VklfvPy6KMWR5/grA=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="59"/>
-      <type id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=" name="A&lt;long&gt;::B&lt;float&gt;"/>
-    </variable>
-    <variable name="m3" id="jkZFwdFnuuwOAnc9RU1Pi4xsuZQ=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="60"/>
-      <type id="OqH2nTulqZzSwHPpqaqq/8Aw1rA=" name="A&lt;unsigned int&gt;::B&lt;float&gt;"/>
-    </variable>
-    <variable name="m4" id="Jz1/8DLujy3S44Nw3O0+j7/ib/E=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="61"/>
-      <type id="AmrHzqMyGcAD714oirSEx/XCTwk=" name="A&lt;short&gt;::B&lt;void&gt;"/>
-    </variable>
-    <variable name="m5" id="caJb3xi3hSrcOYpFTjaGGYy2Lwo=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="63"/>
-      <type id="B/thZ5I0G7tgrSCTq/QPdxvZ7mk=" name="A&lt;float&gt;::B&lt;double&gt;::C"/>
-    </variable>
-    <variable name="m6" id="I9XmCN/8GnrjYZlx8qXp383uWq0=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="64"/>
-      <type id="y0bAB1lqim3CuNevLIQcyhSRoF0=" name="A&lt;long&gt;::B&lt;double&gt;::C"/>
-    </variable>
-    <variable name="m7" id="1q9S+RfN6FdeN1hVj4px4bBGHps=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="65"/>
-      <type id="ctaWbbvndczuSnONWd9XeHYCB9w=" name="A&lt;long&gt;::B&lt;float&gt;::C"/>
-    </variable>
-    <variable name="m8" id="lV8Cih1vnhktZoDmSG/54XfsVMY=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="66"/>
-      <type id="eXPfVkdfVF382Q5KqAEfOcjpVmo=" name="A&lt;unsigned int&gt;::B&lt;float&gt;::C"/>
-    </variable>
-    <variable name="m9" id="HXroC5e+xF7qrqN/j/TCTfZsqRM=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="67"/>
-      <type id="uGKF2n5ovA4i95uQxRmzyMq2uqY=" name="A&lt;short&gt;::B&lt;void&gt;::C"/>
-    </variable>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+    <records>C6fFmGgpPJ7jgwKJA98mfx5cxts=</records>
+    <records>eeh34/7lF7rCmE7zXKBrUC7mz3A=</records>
+    <records>y/8TvVlacBAIG2ds2aYgZE+zGUU=</records>
+    <records>GFV3P/JtfrnQwjOLVfI9VbJpd9U=</records>
+    <records>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>dKDSVrZun8skBV/NUCmJyCUOvJA=</records>
+      <records>Ax52oDYNHKdb/kayrTPXtP7EnLo=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>dKDSVrZun8skBV/NUCmJyCUOvJA=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>bmgK1R0ByNI2o0uDX/xUzqUPaB0=</records>
+      <records>mavB0Yf/srdYpaA0qL6bxBdfPlk=</records>
+      <records>8gtdVs8Zc/2hE1ugmc5SJaowDrk=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>bmgK1R0ByNI2o0uDX/xUzqUPaB0=</id>
+  <extraction>regular</extraction>
+  <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>mavB0Yf/srdYpaA0qL6bxBdfPlk=</id>
+  <extraction>regular</extraction>
+  <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>8gtdVs8Zc/2hE1ugmc5SJaowDrk=</id>
+  <extraction>regular</extraction>
+  <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Ax52oDYNHKdb/kayrTPXtP7EnLo=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>AwZsTwyQp9xqkJ5YDcGgbnNSg3Q=</records>
+      <records>mlI5CyZeYMi0hLKKprnY2lkWYuI=</records>
+      <records>2n2EC+ZzX4R61vVgqMqWD1h4Fqc=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>AwZsTwyQp9xqkJ5YDcGgbnNSg3Q=</id>
+  <extraction>regular</extraction>
+  <parent>Ax52oDYNHKdb/kayrTPXtP7EnLo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>mlI5CyZeYMi0hLKKprnY2lkWYuI=</id>
+  <extraction>regular</extraction>
+  <parent>Ax52oDYNHKdb/kayrTPXtP7EnLo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>2n2EC+ZzX4R61vVgqMqWD1h4Fqc=</id>
+  <extraction>regular</extraction>
+  <parent>Ax52oDYNHKdb/kayrTPXtP7EnLo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>C6fFmGgpPJ7jgwKJA98mfx5cxts=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>7YGPyrC+yNaV349G+Ofic+lrQQ0=</records>
+      <records>AmrHzqMyGcAD714oirSEx/XCTwk=</records>
+      <records>fSC2izK+T4vA4Kndw3xNjCTDpoQ=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>7YGPyrC+yNaV349G+Ofic+lrQQ0=</id>
+  <extraction>regular</extraction>
+  <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>44</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>AmrHzqMyGcAD714oirSEx/XCTwk=</id>
+  <extraction>regular</extraction>
+  <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>uGKF2n5ovA4i95uQxRmzyMq2uqY=</records>
+      <records>NXKMuGv+ES2JssXCxPAKpwv8kek=</records>
+      <records>eYdoT3vlHlbkG+t3+ckhZAqrnlY=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>uGKF2n5ovA4i95uQxRmzyMq2uqY=</id>
+  <extraction>regular</extraction>
+  <parent>AmrHzqMyGcAD714oirSEx/XCTwk=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>48</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>NXKMuGv+ES2JssXCxPAKpwv8kek=</id>
+  <extraction>regular</extraction>
+  <parent>AmrHzqMyGcAD714oirSEx/XCTwk=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>eYdoT3vlHlbkG+t3+ckhZAqrnlY=</id>
+  <extraction>regular</extraction>
+  <parent>AmrHzqMyGcAD714oirSEx/XCTwk=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>fSC2izK+T4vA4Kndw3xNjCTDpoQ=</id>
+  <extraction>regular</extraction>
+  <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>7Z6H18MmJp6db1Qe2eaOiN597z0=</records>
+      <records>FbDKEGMJtBcKX13TWrKFGTDcIfc=</records>
+      <records>FQCRWOnd4VbpVowmyiWSRR2l2cA=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>7Z6H18MmJp6db1Qe2eaOiN597z0=</id>
+  <extraction>regular</extraction>
+  <parent>fSC2izK+T4vA4Kndw3xNjCTDpoQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>FbDKEGMJtBcKX13TWrKFGTDcIfc=</id>
+  <extraction>regular</extraction>
+  <parent>fSC2izK+T4vA4Kndw3xNjCTDpoQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>FQCRWOnd4VbpVowmyiWSRR2l2cA=</id>
+  <extraction>regular</extraction>
+  <parent>fSC2izK+T4vA4Kndw3xNjCTDpoQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>eeh34/7lF7rCmE7zXKBrUC7mz3A=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>OqH2nTulqZzSwHPpqaqq/8Aw1rA=</records>
+      <records>X9RyjucPb3aRFUq3aZCNE4g/ZVE=</records>
+      <records>Pna+OT/o27zekcoRTFxKtb5m+BQ=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>OqH2nTulqZzSwHPpqaqq/8Aw1rA=</id>
+  <extraction>regular</extraction>
+  <parent>eeh34/7lF7rCmE7zXKBrUC7mz3A=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>X9RyjucPb3aRFUq3aZCNE4g/ZVE=</id>
+  <extraction>regular</extraction>
+  <parent>eeh34/7lF7rCmE7zXKBrUC7mz3A=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>eXPfVkdfVF382Q5KqAEfOcjpVmo=</records>
+      <records>7BP9bS6v3+IVgLRg4/sPKlbVgwc=</records>
+      <records>E3rBDckOC8QkP+2YLNtbMxg69mc=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>eXPfVkdfVF382Q5KqAEfOcjpVmo=</id>
+  <extraction>regular</extraction>
+  <parent>X9RyjucPb3aRFUq3aZCNE4g/ZVE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>7BP9bS6v3+IVgLRg4/sPKlbVgwc=</id>
+  <extraction>regular</extraction>
+  <parent>X9RyjucPb3aRFUq3aZCNE4g/ZVE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>E3rBDckOC8QkP+2YLNtbMxg69mc=</id>
+  <extraction>regular</extraction>
+  <parent>X9RyjucPb3aRFUq3aZCNE4g/ZVE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Pna+OT/o27zekcoRTFxKtb5m+BQ=</id>
+  <extraction>regular</extraction>
+  <parent>eeh34/7lF7rCmE7zXKBrUC7mz3A=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>Gv8ovSPi4vbvyLsPbAfOvhMp5+o=</records>
+      <records>Hx+JG1wcGiKbsf3sdpq4N3s6yPg=</records>
+      <records>9bJvdwRZpk2+HRV+Az3lOybs1Wc=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>Gv8ovSPi4vbvyLsPbAfOvhMp5+o=</id>
+  <extraction>regular</extraction>
+  <parent>Pna+OT/o27zekcoRTFxKtb5m+BQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>Hx+JG1wcGiKbsf3sdpq4N3s6yPg=</id>
+  <extraction>regular</extraction>
+  <parent>Pna+OT/o27zekcoRTFxKtb5m+BQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>9bJvdwRZpk2+HRV+Az3lOybs1Wc=</id>
+  <extraction>regular</extraction>
+  <parent>Pna+OT/o27zekcoRTFxKtb5m+BQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>y/8TvVlacBAIG2ds2aYgZE+zGUU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</records>
+      <records>jvnZWmA3eB78JX83nJawhD8NGhw=</records>
+      <records>3fOXhba/en8Im2gUSThzllitRc0=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</id>
+  <extraction>regular</extraction>
+  <parent>y/8TvVlacBAIG2ds2aYgZE+zGUU=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>Dpv+NzmwhV+wRSY65GFxl+38zQM=</records>
+      <records>AzqBWCSJNi1p7gzPriIyLxFdnrY=</records>
+      <records>vu+upAyFdAr9NpomAT9maDrr5VU=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Dpv+NzmwhV+wRSY65GFxl+38zQM=</id>
+  <extraction>regular</extraction>
+  <parent>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>AzqBWCSJNi1p7gzPriIyLxFdnrY=</id>
+  <extraction>regular</extraction>
+  <parent>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>vu+upAyFdAr9NpomAT9maDrr5VU=</id>
+  <extraction>regular</extraction>
+  <parent>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jvnZWmA3eB78JX83nJawhD8NGhw=</id>
+  <extraction>regular</extraction>
+  <parent>y/8TvVlacBAIG2ds2aYgZE+zGUU=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>ctaWbbvndczuSnONWd9XeHYCB9w=</records>
+      <records>hJww7bbg+EMQbb4Z6K/mcREdNrI=</records>
+      <records>NNxnP63PrqW2AkyLFpJx0uaNuTk=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ctaWbbvndczuSnONWd9XeHYCB9w=</id>
+  <extraction>regular</extraction>
+  <parent>jvnZWmA3eB78JX83nJawhD8NGhw=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>hJww7bbg+EMQbb4Z6K/mcREdNrI=</id>
+  <extraction>regular</extraction>
+  <parent>jvnZWmA3eB78JX83nJawhD8NGhw=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>NNxnP63PrqW2AkyLFpJx0uaNuTk=</id>
+  <extraction>regular</extraction>
+  <parent>jvnZWmA3eB78JX83nJawhD8NGhw=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>3fOXhba/en8Im2gUSThzllitRc0=</id>
+  <extraction>regular</extraction>
+  <parent>y/8TvVlacBAIG2ds2aYgZE+zGUU=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>y0bAB1lqim3CuNevLIQcyhSRoF0=</records>
+      <records>yLNKrbXJxOfwo1+MCru26q+JH3c=</records>
+      <records>P+rxL5vI4ct+gzn9YkO97Pt7Ras=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>y0bAB1lqim3CuNevLIQcyhSRoF0=</id>
+  <extraction>regular</extraction>
+  <parent>3fOXhba/en8Im2gUSThzllitRc0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>yLNKrbXJxOfwo1+MCru26q+JH3c=</id>
+  <extraction>regular</extraction>
+  <parent>3fOXhba/en8Im2gUSThzllitRc0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>P+rxL5vI4ct+gzn9YkO97Pt7Ras=</id>
+  <extraction>regular</extraction>
+  <parent>3fOXhba/en8Im2gUSThzllitRc0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>GFV3P/JtfrnQwjOLVfI9VbJpd9U=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>eAzY1gFXtaCsmFJ7gW8gRwXcMpI=</records>
+      <records>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>eAzY1gFXtaCsmFJ7gW8gRwXcMpI=</id>
+  <extraction>regular</extraction>
+  <parent>GFV3P/JtfrnQwjOLVfI9VbJpd9U=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</id>
+  <extraction>regular</extraction>
+  <parent>GFV3P/JtfrnQwjOLVfI9VbJpd9U=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>B/thZ5I0G7tgrSCTq/QPdxvZ7mk=</records>
+      <records>rofuVJc3n2uMiYUFG+jEprNPhfk=</records>
+      <records>rzmzIDLemEwnRqvVCiQsLO9rHE4=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>B/thZ5I0G7tgrSCTq/QPdxvZ7mk=</id>
+  <extraction>regular</extraction>
+  <parent>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>rofuVJc3n2uMiYUFG+jEprNPhfk=</id>
+  <extraction>regular</extraction>
+  <parent>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>rzmzIDLemEwnRqvVCiQsLO9rHE4=</id>
+  <extraction>regular</extraction>
+  <parent>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>55</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>oHfKrPnHC+B6Hx/yJYk5Fyxe+CI=</variables>
+      <variables>EvoFLEsY/zIQw+ATCcszcUXQX1U=</variables>
+      <variables>M37GfnOSLu7LdwyWNUKiLSwQU8E=</variables>
+      <variables>zs4yFWypzJvC9fBTuqRIWShHXDI=</variables>
+      <variables>npnYjIFI4UqRV4lM1m0vGdOXafw=</variables>
+      <variables>m3ZkUTvg5FF0YzKrQCCIMDL4Gjk=</variables>
+      <variables>lvoZQmyEhLRRqpEiNgzPQH1SOJ0=</variables>
+      <variables>QerDxfhCX/VklfvPy6KMWR5/grA=</variables>
+      <variables>jkZFwdFnuuwOAnc9RU1Pi4xsuZQ=</variables>
+      <variables>Jz1/8DLujy3S44Nw3O0+j7/ib/E=</variables>
+      <variables>caJb3xi3hSrcOYpFTjaGGYy2Lwo=</variables>
+      <variables>I9XmCN/8GnrjYZlx8qXp383uWq0=</variables>
+      <variables>1q9S+RfN6FdeN1hVj4px4bBGHps=</variables>
+      <variables>lV8Cih1vnhktZoDmSG/54XfsVMY=</variables>
+      <variables>HXroC5e+xF7qrqN/j/TCTfZsqRM=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>m0</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>57</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>oHfKrPnHC+B6Hx/yJYk5Fyxe+CI=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</id>
+      <identifier>B</identifier>
+      <name>
+        <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+        <identifier>A</identifier>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m1</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>58</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>EvoFLEsY/zIQw+ATCcszcUXQX1U=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>3fOXhba/en8Im2gUSThzllitRc0=</id>
+      <identifier>B</identifier>
+      <name>
+        <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+        <identifier>A</identifier>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m10</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>69</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>M37GfnOSLu7LdwyWNUKiLSwQU8E=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>rzmzIDLemEwnRqvVCiQsLO9rHE4=</id>
+      <identifier>D</identifier>
+      <name>
+        <id>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m11</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>70</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>zs4yFWypzJvC9fBTuqRIWShHXDI=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>P+rxL5vI4ct+gzn9YkO97Pt7Ras=</id>
+      <identifier>D</identifier>
+      <name>
+        <id>3fOXhba/en8Im2gUSThzllitRc0=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m12</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>71</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>npnYjIFI4UqRV4lM1m0vGdOXafw=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>NNxnP63PrqW2AkyLFpJx0uaNuTk=</id>
+      <identifier>D</identifier>
+      <name>
+        <id>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m13</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>72</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>m3ZkUTvg5FF0YzKrQCCIMDL4Gjk=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>E3rBDckOC8QkP+2YLNtbMxg69mc=</id>
+      <identifier>D</identifier>
+      <name>
+        <id>OqH2nTulqZzSwHPpqaqq/8Aw1rA=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m14</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>73</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>lvoZQmyEhLRRqpEiNgzPQH1SOJ0=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>eYdoT3vlHlbkG+t3+ckhZAqrnlY=</id>
+      <identifier>D</identifier>
+      <name>
+        <id>AmrHzqMyGcAD714oirSEx/XCTwk=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m2</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>59</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>QerDxfhCX/VklfvPy6KMWR5/grA=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</id>
+      <identifier>B</identifier>
+      <name>
+        <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+        <identifier>A</identifier>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m3</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>60</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>jkZFwdFnuuwOAnc9RU1Pi4xsuZQ=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>OqH2nTulqZzSwHPpqaqq/8Aw1rA=</id>
+      <identifier>B</identifier>
+      <name>
+        <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+        <identifier>A</identifier>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m4</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>61</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Jz1/8DLujy3S44Nw3O0+j7/ib/E=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>AmrHzqMyGcAD714oirSEx/XCTwk=</id>
+      <identifier>B</identifier>
+      <name>
+        <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+        <identifier>A</identifier>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m5</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>63</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>caJb3xi3hSrcOYpFTjaGGYy2Lwo=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>B/thZ5I0G7tgrSCTq/QPdxvZ7mk=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m6</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>I9XmCN/8GnrjYZlx8qXp383uWq0=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>y0bAB1lqim3CuNevLIQcyhSRoF0=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>3fOXhba/en8Im2gUSThzllitRc0=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m7</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>65</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>1q9S+RfN6FdeN1hVj4px4bBGHps=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>ctaWbbvndczuSnONWd9XeHYCB9w=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>sJKQ/XsqBeYlnpwi1s54+RRv5NA=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m8</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>66</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>lV8Cih1vnhktZoDmSG/54XfsVMY=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>eXPfVkdfVF382Q5KqAEfOcjpVmo=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>OqH2nTulqZzSwHPpqaqq/8Aw1rA=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>m9</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-3.cpp</short-path>
+      <source-path>class-template-specializations-3.cpp</source-path>
+      <line-number>67</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>HXroC5e+xF7qrqN/j/TCTfZsqRM=</id>
+  <extraction>regular</extraction>
+  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
+  <named>
+    <name>
+      <id>uGKF2n5ovA4i95uQxRmzyMq2uqY=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>AmrHzqMyGcAD714oirSEx/XCTwk=</id>
+        <identifier>B</identifier>
+        <name>
+          <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+          <identifier>A</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
 </mrdocs>

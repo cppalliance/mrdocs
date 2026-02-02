@@ -1,94 +1,479 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="record-data.cpp" source-path="record-data.cpp" line="3" class="def"/>
-    <variable name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="5"/>
-      <type name="int"/>
-    </variable>
-    <variable name="j" id="g7xcHrg43mq7PlaOEmNvMHlU+Hk=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="6"/>
-      <type name="double"/>
-    </variable>
-    <variable name="k" id="DDn/yzxAAKSmBASeK+/IuU+FvzM=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="7"/>
-      <attr id="is-mutable"/>
-      <type name="int"/>
-    </variable>
-    <variable name="l" id="wmuk99bazNMSdS8W8oD/7vIsIhQ=" width="8">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="8"/>
-      <type name="int"/>
-    </variable>
-    <variable name="m" id="8Olj7aMWgTqR7bHtl+C3EZ5wILI=" width="8">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="9"/>
-      <type name="int"/>
-    </variable>
-  </struct>
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file short-path="record-data.cpp" source-path="record-data.cpp" line="14" class="def"/>
-    <variable name="t" id="LvEIBVXJYQQL4yraOaQv7ijMDng=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="16"/>
-      <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
-    </variable>
-  </struct>
-  <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
-    <file short-path="record-data.cpp" source-path="record-data.cpp" line="19" class="def"/>
-    <variable name="j" access="protected" id="VKvx+Pci4bUmtjCsXJqKb7SNYqw=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="23"/>
-      <type name="unsigned long"/>
-    </variable>
-    <variable name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="21"/>
-      <type name="int"/>
-    </variable>
-    <variable name="k" access="private" id="iKr1oLycejUWY6AnSgoQnbmaCEE=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="25"/>
-      <type name="double"/>
-    </variable>
-  </class>
-  <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
-    <file short-path="record-data.cpp" source-path="record-data.cpp" line="28" class="def"/>
-    <variable name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="30"/>
-      <type class="array" bounds="64">
-        <element-type name="char"/>
-      </type>
-    </variable>
-  </struct>
-  <template>
-    <tparam name="P" class="type"/>
-    <tparam name="I" class="constant" type="int"/>
-    <struct name="X" id="XSI9u4gB6ZYb6pWxN29K8+iKza4=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="33" class="def"/>
-      <namespace-alias name="Q" id="nkW23Ykh9wywIjUzLqEQlHf8R5k=">
-        <file short-path="record-data.cpp" source-path="record-data.cpp" line="36"/>
-        <type name="P"/>
-      </namespace-alias>
-      <variable name="x0" id="WMA7IrW+2LvVbOV8OxRgz1lZtgs=" default="0">
-        <file short-path="record-data.cpp" source-path="record-data.cpp" line="38"/>
-        <type name="int"/>
-      </variable>
-      <variable name="x1" id="9mHoUUHldwcRXKA3lf94KNCXALA=">
-        <file short-path="record-data.cpp" source-path="record-data.cpp" line="39"/>
-        <type name="P"/>
-      </variable>
-      <variable name="x2" id="BBtkYfP6w9XgHxk01Va2e1WZHo0=">
-        <file short-path="record-data.cpp" source-path="record-data.cpp" line="40"/>
-        <type class="array" bounds="32">
-          <element-type name="P" cv-qualifiers="const"/>
-        </type>
-      </variable>
-      <variable name="x3" id="nnQtR7SV1kLSZgMv0quXSh0M8/A=">
-        <file short-path="record-data.cpp" source-path="record-data.cpp" line="41"/>
-        <type id="nkW23Ykh9wywIjUzLqEQlHf8R5k=" name="Q"/>
-      </variable>
-      <variable name="x4" id="iixsM8X5M740uqb1jSRUfUuvNo0=" width="I + 4">
-        <file short-path="record-data.cpp" source-path="record-data.cpp" line="43"/>
-        <type name="int"/>
-      </variable>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
+    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
+    <records>9kzYwt0WPztMEDUaFxul1Jvqqs8=</records>
+    <records>6OhcFM3BV6KlrvmfpsljaMHxpdA=</records>
+    <records>XSI9u4gB6ZYb6pWxN29K8+iKza4=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>91xV6rCFObgi6i1/U2uZ/GnD3WM=</variables>
+      <variables>g7xcHrg43mq7PlaOEmNvMHlU+Hk=</variables>
+      <variables>DDn/yzxAAKSmBASeK+/IuU+FvzM=</variables>
+      <variables>wmuk99bazNMSdS8W8oD/7vIsIhQ=</variables>
+      <variables>8Olj7aMWgTqR7bHtl+C3EZ5wILI=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>91xV6rCFObgi6i1/U2uZ/GnD3WM=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>j</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>g7xcHrg43mq7PlaOEmNvMHlU+Hk=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>k</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>DDn/yzxAAKSmBASeK+/IuU+FvzM=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+  <is-mutable>1</is-mutable>
+</variable>
+<variable>
+  <name>l</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>wmuk99bazNMSdS8W8oD/7vIsIhQ=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+  <is-bitfield>1</is-bitfield>
+</variable>
+<variable>
+  <name>m</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>8Olj7aMWgTqR7bHtl+C3EZ5wILI=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+  <is-bitfield>1</is-bitfield>
+</variable>
+<record>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>LvEIBVXJYQQL4yraOaQv7ijMDng=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>t</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>LvEIBVXJYQQL4yraOaQv7ijMDng=</id>
+  <extraction>regular</extraction>
+  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
+  <named>
+    <name>
+      <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<record>
+  <name>V</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>9kzYwt0WPztMEDUaFxul1Jvqqs8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+      <variables>VKvx+Pci4bUmtjCsXJqKb7SNYqw=</variables>
+    </record-tranche>
+    <record-tranche>
+      <variables>EWXCzRl9erjnMQFZ8VmHC5cVkLM=</variables>
+      <variables>iKr1oLycejUWY6AnSgoQnbmaCEE=</variables>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>j</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>VKvx+Pci4bUmtjCsXJqKb7SNYqw=</id>
+  <extraction>regular</extraction>
+  <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
+  <named>
+    <name>
+      <identifier>unsigned long</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>EWXCzRl9erjnMQFZ8VmHC5cVkLM=</id>
+  <extraction>regular</extraction>
+  <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>k</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>iKr1oLycejUWY6AnSgoQnbmaCEE=</id>
+  <extraction>regular</extraction>
+  <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<record>
+  <name>W</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>6OhcFM3BV6KlrvmfpsljaMHxpdA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>2akJUSKKPN7IylZjqGMRlhXupds=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>buf</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>2akJUSKKPN7IylZjqGMRlhXupds=</id>
+  <extraction>regular</extraction>
+  <parent>6OhcFM3BV6KlrvmfpsljaMHxpdA=</parent>
+  <array>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </array>
+  <is-record-field>1</is-record-field>
+</variable>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>XSI9u4gB6ZYb6pWxN29K8+iKza4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>nkW23Ykh9wywIjUzLqEQlHf8R5k=</typedefs>
+      <variables>WMA7IrW+2LvVbOV8OxRgz1lZtgs=</variables>
+      <variables>9mHoUUHldwcRXKA3lf94KNCXALA=</variables>
+      <variables>BBtkYfP6w9XgHxk01Va2e1WZHo0=</variables>
+      <variables>nnQtR7SV1kLSZgMv0quXSh0M8/A=</variables>
+      <variables>iixsM8X5M740uqb1jSRUfUuvNo0=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>Q</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>nkW23Ykh9wywIjUzLqEQlHf8R5k=</id>
+  <extraction>regular</extraction>
+  <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
+  <named>
+    <name>
+      <identifier>P</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<variable>
+  <name>x0</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>38</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>WMA7IrW+2LvVbOV8OxRgz1lZtgs=</id>
+  <extraction>regular</extraction>
+  <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>x1</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>9mHoUUHldwcRXKA3lf94KNCXALA=</id>
+  <extraction>regular</extraction>
+  <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
+  <named>
+    <name>
+      <identifier>P</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>x2</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>40</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>BBtkYfP6w9XgHxk01Va2e1WZHo0=</id>
+  <extraction>regular</extraction>
+  <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
+  <array>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <identifier>P</identifier>
+      </name>
+    </named>
+  </array>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>x3</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>41</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>nnQtR7SV1kLSZgMv0quXSh0M8/A=</id>
+  <extraction>regular</extraction>
+  <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
+  <named>
+    <name>
+      <id>nkW23Ykh9wywIjUzLqEQlHf8R5k=</id>
+      <identifier>Q</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>x4</name>
+  <source>
+    <location>
+      <short-path>record-data.cpp</short-path>
+      <source-path>record-data.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>iixsM8X5M740uqb1jSRUfUuvNo0=</id>
+  <extraction>regular</extraction>
+  <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+  <is-bitfield>1</is-bitfield>
+</variable>
 </mrdocs>

@@ -1,588 +1,2187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <template>
-      <tparam class="type"/>
-      <struct name="B" id="w1h8sAoo8RqYTF+5WQRakdFasXg=">
-        <file short-path="ref.cpp" source-path="ref.cpp" line="20" class="def"/>
-        <doc>
-          <brief>
-            <text>See </text>
-            <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">f1</reference>
-          </brief>
-          <para>
-            <text>See </text>
-            <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">A::f1</reference>
-          </para>
-          <para>
-            <text>See </text>
-            <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">::A::f1</reference>
-          </para>
-        </doc>
-        <function name="f2" id="UrNEyy62P/QaY1BkJmO7NDGZSj4=">
-          <file short-path="ref.cpp" source-path="ref.cpp" line="23"/>
-        </function>
-      </struct>
-    </template>
-    <struct name="C" id="DJrmic0LRMkHQmpzqYXGqAbcxAc=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="26" class="def"/>
-      <function name="f3" id="zsIKv6vJxoUhHtYtugUJIB9aWMo=">
-        <file short-path="ref.cpp" source-path="ref.cpp" line="28"/>
-      </function>
-      <function name="f4" id="8ScA2YfwRe5KHsj/rEbtJeXWYz8=">
-        <file short-path="ref.cpp" source-path="ref.cpp" line="29"/>
-      </function>
-    </struct>
-    <struct name="D" id="/TldxA72JGXtufh5RbJgxLW2mwU=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="32" class="def"/>
-      <base>
-        <type id="DJrmic0LRMkHQmpzqYXGqAbcxAc=" name="C"/>
-      </base>
-      <struct name="E" id="10qzjzJQhBscbAmic63bnI+Xm4g=">
-        <file short-path="ref.cpp" source-path="ref.cpp" line="43" class="def"/>
-        <doc>
-          <brief>
-            <text>See </text>
-            <reference id="zsIKv6vJxoUhHtYtugUJIB9aWMo=">f3</reference>
-          </brief>
-          <para>
-            <text>See </text>
-            <reference id="BJ7/Ds7ODvX+B2GNt69Xylatb0M=">f4</reference>
-          </para>
-          <para>
-            <text>See </text>
-            <reference id="8ScA2YfwRe5KHsj/rEbtJeXWYz8=">C::f4</reference>
-          </para>
-        </doc>
-      </struct>
-      <function name="f3" id="zsIKv6vJxoUhHtYtugUJIB9aWMo=">
-        <file short-path="ref.cpp" source-path="ref.cpp" line="28"/>
-      </function>
-      <function name="f4" id="BJ7/Ds7ODvX+B2GNt69Xylatb0M=">
-        <file short-path="ref.cpp" source-path="ref.cpp" line="34"/>
-      </function>
-    </struct>
-    <function name="f1" id="DXEL7gSsX/52beNneRRW463qzLQ=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="11"/>
-      <doc>
-        <brief>
-          <text>See </text>
-          <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">f0</reference>
-        </brief>
-        <para>
-          <text>See </text>
-          <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">::f0</reference>
-        </para>
-      </doc>
-    </function>
-  </namespace>
-  <struct name="F" id="47VHAvq/9ANwJboZT8J8RwBjMLU=">
-    <file short-path="ref.cpp" source-path="ref.cpp" line="54" class="def"/>
-    <function name="operator=" id="4kEX5cyrkrbZqQhxb/7zuwJe06c=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="91"/>
-      <attr id="operator" name="assign" value="14"/>
-      <param name="other">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator%" id="73SLmNIvWuD1x05NFJfjN5Tw9dI=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="85"/>
-      <attr id="operator" name="mod" value="9"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator%=" id="eH/S82KH2Afa//Il8eL+eetP2oY=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="86"/>
-      <attr id="operator" name="mod_eq" value="19"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&amp;" id="Ua+I8TjggG4f6Kh9Cd4PqWl+L3c=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="63"/>
-      <attr id="operator" name="bitand" value="11"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&amp;&amp;" id="q1RRcpfiolN+sGlkQKFIR7zXw3Y=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="64"/>
-      <attr id="operator" name="and" value="35"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&amp;=" id="s8Sj0SHvk8ztPnOv7kqTpLOFym0=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="65"/>
-      <attr id="operator" name="and_eq" value="21"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator()" id="dgeFs66S2JTHtYJ46SdfSKrTHpw=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="58"/>
-      <attr id="operator" name="call" value="42"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator*" id="6E9Wc51OXC1EuYFyXcfnRKyaSUQ=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="83"/>
-      <attr id="operator" name="star" value="7"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator*=" id="iRsJO4RJUDxRReCEOEGUr8z2Dog=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="84"/>
-      <attr id="operator" name="star_eq" value="17"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator+" id="uWgcvJSykruOksCy3oG6mliThTU=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="60"/>
-      <attr id="operator" name="plus" value="5"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator++" id="ayIMyqIPvK5ooT3+6bzqvikAe2M=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="61"/>
-      <attr id="operator" name="inc" value="37"/>
-    </function>
-    <function name="operator+=" id="PJEPb391sh5h9UGcBsg9S+NbbOc=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="62"/>
-      <attr id="operator" name="plus_eq" value="15"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator," id="MdfknCJ8anbDNS7X0ZYzre/aWQQ=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="57"/>
-      <attr id="operator" name="comma" value="39"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator-" id="gvnFfUpiWSxAgTxhtpuiEjIoCb4=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="69"/>
-      <attr id="operator" name="minus" value="6"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator--" id="IMTroH5DZKQ9XB1WksK3iSCShbU=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="70"/>
-      <attr id="operator" name="dec" value="38"/>
-    </function>
-    <function name="operator-=" id="KDQr8/lEqgd8pJtSdTnd3fC66vY=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="71"/>
-      <attr id="operator" name="minus_eq" value="16"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator-&gt;" id="jEkSq3UPl4dH1KNAwrVl3jY5lw4=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="72"/>
-      <attr id="operator" name="ptr" value="41"/>
-    </function>
-    <function name="operator-&gt;*" id="O/dGYwCIdWpqL6atSM3pmq8Yk98=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="73"/>
-      <attr id="operator" name="ptrmem" value="40"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator/" id="CqAcZ21y0JP32hw7PHO31UxiviA=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="87"/>
-      <attr id="operator" name="slash" value="8"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator/=" id="nlXVuPy3T3MP7qelm3WGXP9sxHs=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="88"/>
-      <attr id="operator" name="slash_eq" value="18"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;&lt;=" id="rn2dr+lEU1Y+nZ76RvF705Amt7Y=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="76"/>
-      <attr id="operator" name="lshift_eq" value="25"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&gt;&gt;" id="UW/rnK+Cj7mGybqf3Ftz8ov8AAk=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="80"/>
-      <attr id="operator" name="rshift" value="24"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&gt;&gt;=" id="P2xgjlanIonF9IWlntd4b45qHv8=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="81"/>
-      <attr id="operator" name="rshift_eq" value="26"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator[]" id="3JThobgsU4rdNkfW2McxqHS/9CA=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="59"/>
-      <attr id="operator" name="subs" value="43"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator^" id="SSFNeC35i5KtYL6Tno8HnVjyX4U=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="89"/>
-      <attr id="operator" name="xor" value="10"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator^=" id="PCZOPisEjvPudnFdMOV2Wqc+HDI=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="90"/>
-      <attr id="operator" name="xor_eq" value="20"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator|" id="MJ6J65nDyFc+MnN7Jx4/DjOFJGw=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="66"/>
-      <attr id="operator" name="bitor" value="12"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator|=" id="oSeQzrs59Zd9rcweG2DRZVa6OpQ=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="68"/>
-      <attr id="operator" name="or_eq" value="22"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator||" id="GKmeopHLbzp3t6uxUtanpR4Tdk4=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="67"/>
-      <attr id="operator" name="or" value="36"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator~" id="i0ULCt5GV/PS0YAGQP2fValTik8=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="56"/>
-      <attr id="operator" name="bitnot" value="13"/>
-    </function>
-    <function name="operator&lt;&lt;" id="1pkl7XGJ2JVw7Xbm/xwSNKmflV4=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="75"/>
-      <attr id="operator" name="lshift" value="23"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator!" id="ZoClmvCX93Yg08gfEaOD38rj0EM=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="93"/>
-      <attr id="operator" name="not" value="27"/>
-    </function>
-    <function name="operator==" id="k1TITJ9F+RdpX68VCHzCVjpumSE=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="92"/>
-      <attr id="operator" name="eq" value="28"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator!=" id="+h1YcypZimsCxOl2AOqurQDO6/w=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="94"/>
-      <attr id="operator" name="not_eq" value="29"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;" id="qZqDjtbfsftj0EhxY2cdp4y5r6E=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="74"/>
-      <attr id="operator" name="lt" value="30"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;=" id="0rK5iNi5hwJI0k+ajN7X/jsUDew=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="77"/>
-      <attr id="operator" name="le" value="31"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&gt;" id="im95jlqAf+bFSRJ6laltkGbJj38=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="79"/>
-      <attr id="operator" name="gt" value="32"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&gt;=" id="c1PYDvrte7rUAE4DaiUopjWnAWY=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="82"/>
-      <attr id="operator" name="ge" value="33"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;=&gt;" id="cqSDwRFzB3Z6A5z95/VLPQSp5GI=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="78"/>
-      <attr id="operator" name="3way" value="34"/>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-  </struct>
-  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
-    <file short-path="ref.cpp" source-path="ref.cpp" line="1"/>
-  </function>
-  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
-    <file short-path="ref.cpp" source-path="ref.cpp" line="52"/>
-    <doc>
-      <brief>
-        <text>See </text>
-        <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">A::f1</reference>
-      </brief>
-      <para>
-        <text>See </text>
-        <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">::A::f1</reference>
-      </para>
-    </doc>
-  </function>
-  <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
-    <file short-path="ref.cpp" source-path="ref.cpp" line="176"/>
-    <doc>
-      <brief>
-        <text>See </text>
-        <reference id="i0ULCt5GV/PS0YAGQP2fValTik8=">F::operator~</reference>
-      </brief>
-      <para>
-        <text>See </text>
-        <reference id="MdfknCJ8anbDNS7X0ZYzre/aWQQ=">F::operator,</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="dgeFs66S2JTHtYJ46SdfSKrTHpw=">F::operator()</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="3JThobgsU4rdNkfW2McxqHS/9CA=">F::operator[]</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="uWgcvJSykruOksCy3oG6mliThTU=">F::operator+</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="ayIMyqIPvK5ooT3+6bzqvikAe2M=">F::operator++</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="PJEPb391sh5h9UGcBsg9S+NbbOc=">F::operator+=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="Ua+I8TjggG4f6Kh9Cd4PqWl+L3c=">F::operator&amp;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="q1RRcpfiolN+sGlkQKFIR7zXw3Y=">F::operator&amp;&amp;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="s8Sj0SHvk8ztPnOv7kqTpLOFym0=">F::operator&amp;=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="MJ6J65nDyFc+MnN7Jx4/DjOFJGw=">F::operator|</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="GKmeopHLbzp3t6uxUtanpR4Tdk4=">F::operator||</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="oSeQzrs59Zd9rcweG2DRZVa6OpQ=">F::operator|=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="gvnFfUpiWSxAgTxhtpuiEjIoCb4=">F::operator-</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="IMTroH5DZKQ9XB1WksK3iSCShbU=">F::operator--</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="KDQr8/lEqgd8pJtSdTnd3fC66vY=">F::operator-=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="jEkSq3UPl4dH1KNAwrVl3jY5lw4=">F::operator-&gt;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="O/dGYwCIdWpqL6atSM3pmq8Yk98=">F::operator-&gt;*</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="qZqDjtbfsftj0EhxY2cdp4y5r6E=">F::operator&lt;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="1pkl7XGJ2JVw7Xbm/xwSNKmflV4=">F::operator&lt;&lt;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="rn2dr+lEU1Y+nZ76RvF705Amt7Y=">F::operator&lt;&lt;=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="0rK5iNi5hwJI0k+ajN7X/jsUDew=">F::operator&lt;=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="cqSDwRFzB3Z6A5z95/VLPQSp5GI=">F::operator&lt;=&gt;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="im95jlqAf+bFSRJ6laltkGbJj38=">F::operator&gt;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="UW/rnK+Cj7mGybqf3Ftz8ov8AAk=">F::operator&gt;&gt;</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="P2xgjlanIonF9IWlntd4b45qHv8=">F::operator&gt;&gt;=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="c1PYDvrte7rUAE4DaiUopjWnAWY=">F::operator&gt;=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="6E9Wc51OXC1EuYFyXcfnRKyaSUQ=">F::operator*</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="iRsJO4RJUDxRReCEOEGUr8z2Dog=">F::operator*=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="73SLmNIvWuD1x05NFJfjN5Tw9dI=">F::operator%</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="eH/S82KH2Afa//Il8eL+eetP2oY=">F::operator%=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="CqAcZ21y0JP32hw7PHO31UxiviA=">F::operator/</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="nlXVuPy3T3MP7qelm3WGXP9sxHs=">F::operator/=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="SSFNeC35i5KtYL6Tno8HnVjyX4U=">F::operator^</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="PCZOPisEjvPudnFdMOV2Wqc+HDI=">F::operator^=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="4kEX5cyrkrbZqQhxb/7zuwJe06c=">F::operator=</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="k1TITJ9F+RdpX68VCHzCVjpumSE=">F::operator==</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="ZoClmvCX93Yg08gfEaOD38rj0EM=">F::operator!</reference>
-      </para>
-      <para>
-        <text>See </text>
-        <reference id="+h1YcypZimsCxOl2AOqurQDO6/w=">F::operator!=</reference>
-      </para>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <records>47VHAvq/9ANwJboZT8J8RwBjMLU=</records>
+    <functions>e1UQQek5v3C9OClW5cGf57XvwQo=</functions>
+    <functions>RnDTZyCZuSqydMEPutN0yG4E/xg=</functions>
+    <functions>NEkWCLiknLGzCD6JnXuBTSAAne8=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>w1h8sAoo8RqYTF+5WQRakdFasXg=</records>
+    <records>DJrmic0LRMkHQmpzqYXGqAbcxAc=</records>
+    <records>/TldxA72JGXtufh5RbJgxLW2mwU=</records>
+    <functions>DXEL7gSsX/52beNneRRW463qzLQ=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>w1h8sAoo8RqYTF+5WQRakdFasXg=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>A::f1</literal>
+        <id>DXEL7gSsX/52beNneRRW463qzLQ=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>::A::f1</literal>
+        <id>DXEL7gSsX/52beNneRRW463qzLQ=</id>
+      </reference>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>f1</literal>
+        <id>DXEL7gSsX/52beNneRRW463qzLQ=</id>
+      </reference>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>UrNEyy62P/QaY1BkJmO7NDGZSj4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>UrNEyy62P/QaY1BkJmO7NDGZSj4=</id>
+  <extraction>regular</extraction>
+  <parent>w1h8sAoo8RqYTF+5WQRakdFasXg=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>DJrmic0LRMkHQmpzqYXGqAbcxAc=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <key-kind>struct</key-kind>
+  <derived>/TldxA72JGXtufh5RbJgxLW2mwU=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>zsIKv6vJxoUhHtYtugUJIB9aWMo=</functions>
+      <functions>8ScA2YfwRe5KHsj/rEbtJeXWYz8=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>zsIKv6vJxoUhHtYtugUJIB9aWMo=</id>
+  <extraction>regular</extraction>
+  <parent>DJrmic0LRMkHQmpzqYXGqAbcxAc=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>8ScA2YfwRe5KHsj/rEbtJeXWYz8=</id>
+  <extraction>regular</extraction>
+  <parent>DJrmic0LRMkHQmpzqYXGqAbcxAc=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>DJrmic0LRMkHQmpzqYXGqAbcxAc=</id>
+        <identifier>C</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <records>10qzjzJQhBscbAmic63bnI+Xm4g=</records>
+      <functions>zsIKv6vJxoUhHtYtugUJIB9aWMo=</functions>
+      <functions>BJ7/Ds7ODvX+B2GNt69Xylatb0M=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>9</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>10qzjzJQhBscbAmic63bnI+Xm4g=</id>
+  <extraction>regular</extraction>
+  <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>f4</literal>
+        <id>BJ7/Ds7ODvX+B2GNt69Xylatb0M=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>C::f4</literal>
+        <id>8ScA2YfwRe5KHsj/rEbtJeXWYz8=</id>
+      </reference>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>f3</literal>
+        <id>zsIKv6vJxoUhHtYtugUJIB9aWMo=</id>
+      </reference>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>zsIKv6vJxoUhHtYtugUJIB9aWMo=</id>
+  <extraction>regular</extraction>
+  <parent>DJrmic0LRMkHQmpzqYXGqAbcxAc=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>34</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>BJ7/Ds7ODvX+B2GNt69Xylatb0M=</id>
+  <extraction>regular</extraction>
+  <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>DXEL7gSsX/52beNneRRW463qzLQ=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>::f0</literal>
+        <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+      </reference>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>f0</literal>
+        <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+      </reference>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<record>
+  <name>F</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>54</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>4kEX5cyrkrbZqQhxb/7zuwJe06c=</functions>
+      <functions>73SLmNIvWuD1x05NFJfjN5Tw9dI=</functions>
+      <functions>eH/S82KH2Afa//Il8eL+eetP2oY=</functions>
+      <functions>Ua+I8TjggG4f6Kh9Cd4PqWl+L3c=</functions>
+      <functions>q1RRcpfiolN+sGlkQKFIR7zXw3Y=</functions>
+      <functions>s8Sj0SHvk8ztPnOv7kqTpLOFym0=</functions>
+      <functions>dgeFs66S2JTHtYJ46SdfSKrTHpw=</functions>
+      <functions>6E9Wc51OXC1EuYFyXcfnRKyaSUQ=</functions>
+      <functions>iRsJO4RJUDxRReCEOEGUr8z2Dog=</functions>
+      <functions>uWgcvJSykruOksCy3oG6mliThTU=</functions>
+      <functions>ayIMyqIPvK5ooT3+6bzqvikAe2M=</functions>
+      <functions>PJEPb391sh5h9UGcBsg9S+NbbOc=</functions>
+      <functions>MdfknCJ8anbDNS7X0ZYzre/aWQQ=</functions>
+      <functions>gvnFfUpiWSxAgTxhtpuiEjIoCb4=</functions>
+      <functions>IMTroH5DZKQ9XB1WksK3iSCShbU=</functions>
+      <functions>KDQr8/lEqgd8pJtSdTnd3fC66vY=</functions>
+      <functions>jEkSq3UPl4dH1KNAwrVl3jY5lw4=</functions>
+      <functions>O/dGYwCIdWpqL6atSM3pmq8Yk98=</functions>
+      <functions>CqAcZ21y0JP32hw7PHO31UxiviA=</functions>
+      <functions>nlXVuPy3T3MP7qelm3WGXP9sxHs=</functions>
+      <functions>rn2dr+lEU1Y+nZ76RvF705Amt7Y=</functions>
+      <functions>UW/rnK+Cj7mGybqf3Ftz8ov8AAk=</functions>
+      <functions>P2xgjlanIonF9IWlntd4b45qHv8=</functions>
+      <functions>3JThobgsU4rdNkfW2McxqHS/9CA=</functions>
+      <functions>SSFNeC35i5KtYL6Tno8HnVjyX4U=</functions>
+      <functions>PCZOPisEjvPudnFdMOV2Wqc+HDI=</functions>
+      <functions>MJ6J65nDyFc+MnN7Jx4/DjOFJGw=</functions>
+      <functions>oSeQzrs59Zd9rcweG2DRZVa6OpQ=</functions>
+      <functions>GKmeopHLbzp3t6uxUtanpR4Tdk4=</functions>
+      <functions>i0ULCt5GV/PS0YAGQP2fValTik8=</functions>
+      <functions>1pkl7XGJ2JVw7Xbm/xwSNKmflV4=</functions>
+      <functions>ZoClmvCX93Yg08gfEaOD38rj0EM=</functions>
+      <functions>k1TITJ9F+RdpX68VCHzCVjpumSE=</functions>
+      <functions>+h1YcypZimsCxOl2AOqurQDO6/w=</functions>
+      <functions>qZqDjtbfsftj0EhxY2cdp4y5r6E=</functions>
+      <functions>0rK5iNi5hwJI0k+ajN7X/jsUDew=</functions>
+      <functions>im95jlqAf+bFSRJ6laltkGbJj38=</functions>
+      <functions>c1PYDvrte7rUAE4DaiUopjWnAWY=</functions>
+      <functions>cqSDwRFzB3Z6A5z95/VLPQSp5GI=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>91</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4kEX5cyrkrbZqQhxb/7zuwJe06c=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>other</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator%</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>85</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>73SLmNIvWuD1x05NFJfjN5Tw9dI=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator%=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>86</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>eH/S82KH2Afa//Il8eL+eetP2oY=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&amp;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>63</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Ua+I8TjggG4f6Kh9Cd4PqWl+L3c=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&amp;&amp;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>q1RRcpfiolN+sGlkQKFIR7zXw3Y=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&amp;=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>65</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>s8Sj0SHvk8ztPnOv7kqTpLOFym0=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>58</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>dgeFs66S2JTHtYJ46SdfSKrTHpw=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator*</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>83</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6E9Wc51OXC1EuYFyXcfnRKyaSUQ=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator*=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>84</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>iRsJO4RJUDxRReCEOEGUr8z2Dog=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>60</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>uWgcvJSykruOksCy3oG6mliThTU=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator++</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>61</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ayIMyqIPvK5ooT3+6bzqvikAe2M=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator+=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>62</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>PJEPb391sh5h9UGcBsg9S+NbbOc=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator,</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>57</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>MdfknCJ8anbDNS7X0ZYzre/aWQQ=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator-</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>69</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>gvnFfUpiWSxAgTxhtpuiEjIoCb4=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator--</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>70</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>IMTroH5DZKQ9XB1WksK3iSCShbU=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator-=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>71</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>KDQr8/lEqgd8pJtSdTnd3fC66vY=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator-&gt;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>72</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>jEkSq3UPl4dH1KNAwrVl3jY5lw4=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator-&gt;*</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>73</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>O/dGYwCIdWpqL6atSM3pmq8Yk98=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator/</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>87</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>CqAcZ21y0JP32hw7PHO31UxiviA=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator/=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>88</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>nlXVuPy3T3MP7qelm3WGXP9sxHs=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;&lt;=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>76</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>rn2dr+lEU1Y+nZ76RvF705Amt7Y=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&gt;&gt;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>80</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>UW/rnK+Cj7mGybqf3Ftz8ov8AAk=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&gt;&gt;=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>81</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>P2xgjlanIonF9IWlntd4b45qHv8=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator[]</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>59</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>3JThobgsU4rdNkfW2McxqHS/9CA=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator^</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>89</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>SSFNeC35i5KtYL6Tno8HnVjyX4U=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator^=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>90</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>PCZOPisEjvPudnFdMOV2Wqc+HDI=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator|</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>66</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>MJ6J65nDyFc+MnN7Jx4/DjOFJGw=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator|=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>68</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>oSeQzrs59Zd9rcweG2DRZVa6OpQ=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator||</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>67</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>GKmeopHLbzp3t6uxUtanpR4Tdk4=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator~</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>56</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>i0ULCt5GV/PS0YAGQP2fValTik8=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>75</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>1pkl7XGJ2JVw7Xbm/xwSNKmflV4=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator!</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>93</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ZoClmvCX93Yg08gfEaOD38rj0EM=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>92</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>k1TITJ9F+RdpX68VCHzCVjpumSE=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator!=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>94</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>+h1YcypZimsCxOl2AOqurQDO6/w=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>74</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>qZqDjtbfsftj0EhxY2cdp4y5r6E=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>77</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>0rK5iNi5hwJI0k+ajN7X/jsUDew=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&gt;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>79</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>im95jlqAf+bFSRJ6laltkGbJj38=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&gt;=</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>82</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>c1PYDvrte7rUAE4DaiUopjWnAWY=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;=&gt;</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>78</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>cqSDwRFzB3Z6A5z95/VLPQSp5GI=</id>
+  <extraction>regular</extraction>
+  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+          <identifier>F</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RnDTZyCZuSqydMEPutN0yG4E/xg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>::A::f1</literal>
+        <id>DXEL7gSsX/52beNneRRW463qzLQ=</id>
+      </reference>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>A::f1</literal>
+        <id>DXEL7gSsX/52beNneRRW463qzLQ=</id>
+      </reference>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>ref.cpp</short-path>
+      <source-path>ref.cpp</source-path>
+      <line-number>176</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>NEkWCLiknLGzCD6JnXuBTSAAne8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator,</literal>
+        <id>MdfknCJ8anbDNS7X0ZYzre/aWQQ=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator()</literal>
+        <id>dgeFs66S2JTHtYJ46SdfSKrTHpw=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator[]</literal>
+        <id>3JThobgsU4rdNkfW2McxqHS/9CA=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator+</literal>
+        <id>uWgcvJSykruOksCy3oG6mliThTU=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator++</literal>
+        <id>ayIMyqIPvK5ooT3+6bzqvikAe2M=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator+=</literal>
+        <id>PJEPb391sh5h9UGcBsg9S+NbbOc=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&amp;</literal>
+        <id>Ua+I8TjggG4f6Kh9Cd4PqWl+L3c=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&amp;&amp;</literal>
+        <id>q1RRcpfiolN+sGlkQKFIR7zXw3Y=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&amp;=</literal>
+        <id>s8Sj0SHvk8ztPnOv7kqTpLOFym0=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator|</literal>
+        <id>MJ6J65nDyFc+MnN7Jx4/DjOFJGw=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator||</literal>
+        <id>GKmeopHLbzp3t6uxUtanpR4Tdk4=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator|=</literal>
+        <id>oSeQzrs59Zd9rcweG2DRZVa6OpQ=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator-</literal>
+        <id>gvnFfUpiWSxAgTxhtpuiEjIoCb4=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator--</literal>
+        <id>IMTroH5DZKQ9XB1WksK3iSCShbU=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator-=</literal>
+        <id>KDQr8/lEqgd8pJtSdTnd3fC66vY=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator-&gt;</literal>
+        <id>jEkSq3UPl4dH1KNAwrVl3jY5lw4=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator-&gt;*</literal>
+        <id>O/dGYwCIdWpqL6atSM3pmq8Yk98=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&lt;</literal>
+        <id>qZqDjtbfsftj0EhxY2cdp4y5r6E=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&lt;&lt;</literal>
+        <id>1pkl7XGJ2JVw7Xbm/xwSNKmflV4=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&lt;&lt;=</literal>
+        <id>rn2dr+lEU1Y+nZ76RvF705Amt7Y=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&lt;=</literal>
+        <id>0rK5iNi5hwJI0k+ajN7X/jsUDew=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&lt;=&gt;</literal>
+        <id>cqSDwRFzB3Z6A5z95/VLPQSp5GI=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&gt;</literal>
+        <id>im95jlqAf+bFSRJ6laltkGbJj38=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&gt;&gt;</literal>
+        <id>UW/rnK+Cj7mGybqf3Ftz8ov8AAk=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&gt;&gt;=</literal>
+        <id>P2xgjlanIonF9IWlntd4b45qHv8=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator&gt;=</literal>
+        <id>c1PYDvrte7rUAE4DaiUopjWnAWY=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator*</literal>
+        <id>6E9Wc51OXC1EuYFyXcfnRKyaSUQ=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator*=</literal>
+        <id>iRsJO4RJUDxRReCEOEGUr8z2Dog=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator%</literal>
+        <id>73SLmNIvWuD1x05NFJfjN5Tw9dI=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator%=</literal>
+        <id>eH/S82KH2Afa//Il8eL+eetP2oY=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator/</literal>
+        <id>CqAcZ21y0JP32hw7PHO31UxiviA=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator/=</literal>
+        <id>nlXVuPy3T3MP7qelm3WGXP9sxHs=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator^</literal>
+        <id>SSFNeC35i5KtYL6Tno8HnVjyX4U=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator^=</literal>
+        <id>PCZOPisEjvPudnFdMOV2Wqc+HDI=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator=</literal>
+        <id>4kEX5cyrkrbZqQhxb/7zuwJe06c=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator==</literal>
+        <id>k1TITJ9F+RdpX68VCHzCVjpumSE=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator!</literal>
+        <id>ZoClmvCX93Yg08gfEaOD38rj0EM=</id>
+      </reference>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator!=</literal>
+        <id>+h1YcypZimsCxOl2AOqurQDO6/w=</id>
+      </reference>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>F::operator~</literal>
+        <id>i0ULCt5GV/PS0YAGQP2fValTik8=</id>
+      </reference>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

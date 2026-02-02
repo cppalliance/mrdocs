@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <namespace-alias name="A" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
-      <file short-path="at_dtst.cpp" source-path="at_dtst.cpp" line="1"/>
-      <type name="T::XX&lt;&gt;"/>
-    </namespace-alias>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>z3eMoJQlHlg0acXVyn1pwg9Ktys=</typedefs>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>at_dtst.cpp</short-path>
+      <source-path>at_dtst.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>z3eMoJQlHlg0acXVyn1pwg9Ktys=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>XX</identifier>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
 </mrdocs>

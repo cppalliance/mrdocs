@@ -1,22 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <class name="Base" id="pOlR4JvM07kjg0dk5WSjWZiChpc=">
-      <file short-path="using-typename.cpp" source-path="using-typename.cpp" line="1" class="def"/>
-      <namespace-alias name="V" id="GJwWDf/H5L0HhOr2GLrume6MtVg=">
-        <file short-path="using-typename.cpp" source-path="using-typename.cpp" line="4"/>
-        <type name="T"/>
-      </namespace-alias>
-    </class>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <class name="Derived" id="jGFAabkrVv9Glu0e6ensMu9FByY=">
-      <file short-path="using-typename.cpp" source-path="using-typename.cpp" line="7" class="def"/>
-    </class>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>pOlR4JvM07kjg0dk5WSjWZiChpc=</records>
+    <records>jGFAabkrVv9Glu0e6ensMu9FByY=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>Base</name>
+  <source>
+    <location>
+      <short-path>using-typename.cpp</short-path>
+      <source-path>using-typename.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>pOlR4JvM07kjg0dk5WSjWZiChpc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>GJwWDf/H5L0HhOr2GLrume6MtVg=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>V</name>
+  <source>
+    <location>
+      <short-path>using-typename.cpp</short-path>
+      <source-path>using-typename.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>GJwWDf/H5L0HhOr2GLrume6MtVg=</id>
+  <extraction>regular</extraction>
+  <parent>pOlR4JvM07kjg0dk5WSjWZiChpc=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>Derived</name>
+  <source>
+    <location>
+      <short-path>using-typename.cpp</short-path>
+      <source-path>using-typename.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jGFAabkrVv9Glu0e6ensMu9FByY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

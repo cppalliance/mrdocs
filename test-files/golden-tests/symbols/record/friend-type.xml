@@ -1,47 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="2" class="def"/>
-    <friend id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
-      <befriended id="NQ8uQgTcafPcttyBMHHLHAXA4MA="/>
-    </friend>
-    <doc>
-      <brief>
-        <text>Struct T brief</text>
-      </brief>
-    </doc>
-  </struct>
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="12" class="def"/>
-    <friend id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-      <befriended id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
-    </friend>
-    <doc>
-      <brief>
-        <text>Struct U brief</text>
-      </brief>
-    </doc>
-  </struct>
-  <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
-    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="19" class="def"/>
-    <friend id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-      <befriended id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
-    </friend>
-    <doc>
-      <brief>
-        <text>Struct V brief</text>
-      </brief>
-    </doc>
-  </struct>
-  <class name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
-    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="8"/>
-    <doc>
-      <brief>
-        <text>Friend class Z brief</text>
-      </brief>
-    </doc>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
+    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
+    <records>9kzYwt0WPztMEDUaFxul1Jvqqs8=</records>
+    <records>NQ8uQgTcafPcttyBMHHLHAXA4MA=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>friend-type.cpp</short-path>
+      <source-path>friend-type.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Struct T brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <named>
+      <name>
+        <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+        <identifier>Z</identifier>
+      </name>
+    </named>
+    <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+  </friend>
+</record>
+<record>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>friend-type.cpp</short-path>
+      <source-path>friend-type.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Struct U brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <named>
+      <name>
+        <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  </friend>
+</record>
+<record>
+  <name>V</name>
+  <source>
+    <location>
+      <short-path>friend-type.cpp</short-path>
+      <source-path>friend-type.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>9kzYwt0WPztMEDUaFxul1Jvqqs8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Struct V brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <named>
+      <name>
+        <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+        <identifier>U</identifier>
+      </name>
+    </named>
+    <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  </friend>
+</record>
+<record>
+  <name>Z</name>
+  <source>
+    <location>
+      <short-path>friend-type.cpp</short-path>
+      <source-path>friend-type.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>12</column-number>
+    </location>
+  </source>
+  <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Friend class Z brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

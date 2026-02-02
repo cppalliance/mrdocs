@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="TEST" id="C0LRBO38MuY9CAdrRQ/gbJutBAw=">
-    <struct name="SUCCESS" id="3fDo50p0XYyS9fd9RqKyi2wjy/M=">
-      <file short-path="include-self.cpp" source-path="include-self.cpp" line="3" class="def"/>
-    </struct>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>C0LRBO38MuY9CAdrRQ/gbJutBAw=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>TEST</name>
+  <source>
+    <location>
+      <short-path>include-self.cpp</short-path>
+      <source-path>include-self.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>C0LRBO38MuY9CAdrRQ/gbJutBAw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>3fDo50p0XYyS9fd9RqKyi2wjy/M=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>SUCCESS</name>
+  <source>
+    <location>
+      <short-path>include-self.cpp</short-path>
+      <source-path>include-self.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>3fDo50p0XYyS9fd9RqKyi2wjy/M=</id>
+  <extraction>regular</extraction>
+  <parent>C0LRBO38MuY9CAdrRQ/gbJutBAw=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

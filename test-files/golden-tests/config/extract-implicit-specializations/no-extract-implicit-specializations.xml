@@ -1,34 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="no-extract-implicit-specializations.cpp" source-path="no-extract-implicit-specializations.cpp" line="6" class="def"/>
-    <base>
-      <type id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=" name="B&lt;int&gt;"/>
-    </base>
-    <function name="value" id="yNvFAvs6ngp6sqCFBzu5nPSIyfk=">
-      <file short-path="no-extract-implicit-specializations.cpp" source-path="no-extract-implicit-specializations.cpp" line="3"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="T"/>
-        </type>
-      </return>
-    </function>
-  </struct>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="B" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
-      <file short-path="no-extract-implicit-specializations.cpp" source-path="no-extract-implicit-specializations.cpp" line="1" class="def"/>
-      <function name="value" id="yNvFAvs6ngp6sqCFBzu5nPSIyfk=">
-        <file short-path="no-extract-implicit-specializations.cpp" source-path="no-extract-implicit-specializations.cpp" line="3"/>
-        <return>
-          <type class="lvalue-reference">
-            <pointee-type name="T"/>
-          </type>
-        </return>
-      </function>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>92ZV5IMMinudZbBHiK7y3lyLihc=</records>
+    <records>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>no-extract-implicit-specializations.cpp</short-path>
+      <source-path>no-extract-implicit-specializations.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>no-extract-implicit-specializations.cpp</short-path>
+      <source-path>no-extract-implicit-specializations.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</id>
+  <extraction>regular</extraction>
+  <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>no-extract-implicit-specializations.cpp</short-path>
+      <source-path>no-extract-implicit-specializations.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <derived>YrPSaKAbmXgzCAX5WByx4eVoqBM=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>no-extract-implicit-specializations.cpp</short-path>
+      <source-path>no-extract-implicit-specializations.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</id>
+  <extraction>regular</extraction>
+  <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

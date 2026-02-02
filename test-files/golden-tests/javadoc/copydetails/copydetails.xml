@@ -1,181 +1,435 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="A" class="type"/>
-    <tparam name="B" class="type"/>
-    <function name="dest" id="fxzw55khD3HmtxJT7y2nk1M9N08=">
-      <file short-path="copydetails.cpp" source-path="copydetails.cpp" line="55"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <param name="b">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Destination doc function</text>
-        </brief>
-        <para>
-          <text>Documentation prefix for dest only.</text>
-        </para>
-        <para>
-          <text>This is the documentation from the source function.</text>
-        </para>
-        <para>
-          <text>Documentation suffix for dest only.</text>
-        </para>
-        <returns>
-          <text>A nice integer</text>
-        </returns>
-        <param name="a">
-          <text>The parameter a.</text>
-        </param>
-        <param name="b">
-          <text>The parameter b.</text>
-        </param>
-        <tparam name="A">
-          <text>The template parameter A.</text>
-        </tparam>
-        <tparam name="B">
-          <text>The template parameter B.</text>
-        </tparam>
-        <see>
-          <text>dest</text>
-        </see>
-        <pre>
-          <text>a must be greater than 0.</text>
-        </pre>
-        <post>
-          <text>The return value is greater than 0.</text>
-        </post>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="A" class="type"/>
-    <tparam name="C" class="type"/>
-    <tparam name="D" class="type"/>
-    <function name="destOverride" id="Y8nVX1yV+bSlfZbVuMtm6gUnslE=">
-      <file short-path="copydetails.cpp" source-path="copydetails.cpp" line="85"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <param name="c">
-        <type name="int"/>
-      </param>
-      <param name="d">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Destination doc function</text>
-        </brief>
-        <para>
-          <text>Documentation prefix for dest only.</text>
-        </para>
-        <para>
-          <text>This is the documentation from the source function.</text>
-        </para>
-        <para>
-          <text>Documentation suffix for dest only.</text>
-        </para>
-        <para>
-          <text>Parameter b is not copied because it doesn&apos;t exist in the destination function.</text>
-        </para>
-        <returns>
-          <text>An integer meaning something else.</text>
-        </returns>
-        <param name="a">
-          <text>Overwrites the parameter a.</text>
-        </param>
-        <param name="c">
-          <text>The parameter c.</text>
-        </param>
-        <param name="d">
-          <text>The parameter d.</text>
-        </param>
-        <tparam name="A">
-          <text>Overwrites the template parameter A.</text>
-        </tparam>
-        <tparam name="C">
-          <text>The template parameter C.</text>
-        </tparam>
-        <tparam name="D">
-          <text>The template parameter D.</text>
-        </tparam>
-        <throws>
-          <text>Overwrites the exception.</text>
-        </throws>
-        <see>
-          <text>source</text>
-        </see>
-        <pre>
-          <text>overriden precondition</text>
-        </pre>
-        <post>
-          <text>overriden postcondition</text>
-        </post>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="A" class="type"/>
-    <tparam name="B" class="type"/>
-    <function name="source" id="H3WiIjBO//83NjXtkFDPf3JvDsc=">
-      <file short-path="copydetails.cpp" source-path="copydetails.cpp" line="43"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <param name="b">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Source doc function</text>
-        </brief>
-        <para>
-          <text>This is the documentation from the source function.</text>
-        </para>
-        <returns>
-          <text>A nice integer</text>
-        </returns>
-        <param name="a">
-          <text>The parameter a.</text>
-        </param>
-        <param name="b">
-          <text>The parameter b.</text>
-        </param>
-        <tparam name="A">
-          <text>The template parameter A.</text>
-        </tparam>
-        <tparam name="B">
-          <text>The template parameter B.</text>
-        </tparam>
-        <throws>
-          <text>If something goes wrong.</text>
-        </throws>
-        <see>
-          <text>dest</text>
-        </see>
-        <pre>
-          <text>a must be greater than 0.</text>
-        </pre>
-        <post>
-          <text>The return value is greater than 0.</text>
-        </post>
-      </doc>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>fxzw55khD3HmtxJT7y2nk1M9N08=</functions>
+    <functions>Y8nVX1yV+bSlfZbVuMtm6gUnslE=</functions>
+    <functions>H3WiIjBO//83NjXtkFDPf3JvDsc=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>dest</name>
+  <source>
+    <location>
+      <short-path>copydetails.cpp</short-path>
+      <source-path>copydetails.cpp</source-path>
+      <line-number>55</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>fxzw55khD3HmtxJT7y2nk1M9N08=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation prefix for dest only.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This is the documentation from the source function.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation suffix for dest only.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Destination doc function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A nice integer</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parameter a.</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parameter b.</literal>
+      </text>
+      <name>b</name>
+    </param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The template parameter A.</literal>
+      </text>
+      <name>A</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The template parameter B.</literal>
+      </text>
+      <name>B</name>
+    </t-param>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>dest</literal>
+      </text>
+    </see>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>a must be greater than 0.</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value is greater than 0.</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>b</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>destOverride</name>
+  <source>
+    <location>
+      <short-path>copydetails.cpp</short-path>
+      <source-path>copydetails.cpp</source-path>
+      <line-number>85</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Y8nVX1yV+bSlfZbVuMtm6gUnslE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation prefix for dest only.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This is the documentation from the source function.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation suffix for dest only.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Parameter b is not copied because it doesn&apos;t exist in the destination function.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Destination doc function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer meaning something else.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Overwrites the parameter a.</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parameter c.</literal>
+      </text>
+      <name>c</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parameter d.</literal>
+      </text>
+      <name>d</name>
+    </param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Overwrites the template parameter A.</literal>
+      </text>
+      <name>A</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The template parameter C.</literal>
+      </text>
+      <name>C</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The template parameter D.</literal>
+      </text>
+      <name>D</name>
+    </t-param>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Overwrites the exception.</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::runtime_error</literal>
+      </reference>
+    </throws>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>source</literal>
+      </text>
+    </see>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>overriden precondition</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>overriden postcondition</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>c</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>d</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>source</name>
+  <source>
+    <location>
+      <short-path>copydetails.cpp</short-path>
+      <source-path>copydetails.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>H3WiIjBO//83NjXtkFDPf3JvDsc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This is the documentation from the source function.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Source doc function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A nice integer</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parameter a.</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parameter b.</literal>
+      </text>
+      <name>b</name>
+    </param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The template parameter A.</literal>
+      </text>
+      <name>A</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The template parameter B.</literal>
+      </text>
+      <name>B</name>
+    </t-param>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>If something goes wrong.</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::runtime_error</literal>
+      </reference>
+    </throws>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>dest</literal>
+      </text>
+    </see>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>a must be greater than 0.</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value is greater than 0.</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>b</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

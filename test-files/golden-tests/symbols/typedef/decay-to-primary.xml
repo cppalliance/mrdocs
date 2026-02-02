@@ -1,65 +1,265 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace-alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
-    <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="10"/>
-    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
-  </namespace-alias>
-  <namespace-alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
-    <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="11"/>
-    <type id="rd0VksPlzUP2z9uBlAh7QCSvXlc=" name="A0::M1&lt;short&gt;::M0"/>
-  </namespace-alias>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="S0" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-      <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="1" class="def"/>
-      <namespace-alias name="M0" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=">
-        <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="4"/>
-        <type name="T"/>
-      </namespace-alias>
-      <template>
-        <tparam name="U" class="type"/>
-        <namespace-alias name="M1" id="14SKPuw/wwAUmFZKoonB8Uu8gaY=">
-          <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="6"/>
-          <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
-        </namespace-alias>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-    <targ class="type" type="void"/>
-    <struct name="S0" id="BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=">
-      <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="2" class="def"/>
-      <namespace-alias name="M0" id="xwZQjxyx34OE1PjRX/paK2bdWb0=">
-        <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="4"/>
-        <type name="void"/>
-      </namespace-alias>
-      <template>
-        <tparam name="U" class="type"/>
-        <namespace-alias name="M1" id="59lOx3WiBtHW8lORAEbx2R0bEwM=">
-          <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="6"/>
-          <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
-        </namespace-alias>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-    <targ class="type" type="short"/>
-    <struct name="S0" id="nM49pHyBLj9V6pphxxYAxi4tXXc=">
-      <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="2" class="def"/>
-      <namespace-alias name="M0" id="rd0VksPlzUP2z9uBlAh7QCSvXlc=">
-        <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="4"/>
-        <type name="short"/>
-      </namespace-alias>
-      <template>
-        <tparam name="U" class="type"/>
-        <namespace-alias name="M1" id="55w2+SxFbPDR4zxtZen23YT6oyY=">
-          <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="6"/>
-          <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
-        </namespace-alias>
-      </template>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>ApI0xrWYyA88AQ9a3mi+ochJbJc=</typedefs>
+    <typedefs>zbm2FwMgaOYZ1PJI3zAcR9gD1DE=</typedefs>
+    <records>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</records>
+    <records>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</records>
+    <records>nM49pHyBLj9V6pphxxYAxi4tXXc=</records>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>A0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ApI0xrWYyA88AQ9a3mi+ochJbJc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+      <identifier>S0</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>A1</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>zbm2FwMgaOYZ1PJI3zAcR9gD1DE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>rd0VksPlzUP2z9uBlAh7QCSvXlc=</id>
+      <identifier>M0</identifier>
+      <name>
+        <id>59lOx3WiBtHW8lORAEbx2R0bEwM=</id>
+        <identifier>M1</identifier>
+        <name>
+          <id>ApI0xrWYyA88AQ9a3mi+ochJbJc=</id>
+          <identifier>A0</identifier>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>aBQMz/OqX2QEHy4Cqfjgby4lSi4=</typedefs>
+      <typedefs>14SKPuw/wwAUmFZKoonB8Uu8gaY=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>M0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>aBQMz/OqX2QEHy4Cqfjgby4lSi4=</id>
+  <extraction>regular</extraction>
+  <parent>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>M1</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>14SKPuw/wwAUmFZKoonB8Uu8gaY=</id>
+  <extraction>regular</extraction>
+  <parent>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</parent>
+  <named>
+    <name>
+      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+      <identifier>S0</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>xwZQjxyx34OE1PjRX/paK2bdWb0=</typedefs>
+      <typedefs>59lOx3WiBtHW8lORAEbx2R0bEwM=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>M0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>xwZQjxyx34OE1PjRX/paK2bdWb0=</id>
+  <extraction>regular</extraction>
+  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>M1</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>59lOx3WiBtHW8lORAEbx2R0bEwM=</id>
+  <extraction>regular</extraction>
+  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
+  <named>
+    <name>
+      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+      <identifier>S0</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>nM49pHyBLj9V6pphxxYAxi4tXXc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>rd0VksPlzUP2z9uBlAh7QCSvXlc=</typedefs>
+      <typedefs>55w2+SxFbPDR4zxtZen23YT6oyY=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>M0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>rd0VksPlzUP2z9uBlAh7QCSvXlc=</id>
+  <extraction>regular</extraction>
+  <parent>nM49pHyBLj9V6pphxxYAxi4tXXc=</parent>
+  <named>
+    <name>
+      <identifier>short</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>M1</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>55w2+SxFbPDR4zxtZen23YT6oyY=</id>
+  <extraction>regular</extraction>
+  <parent>nM49pHyBLj9V6pphxxYAxi4tXXc=</parent>
+  <named>
+    <name>
+      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+      <identifier>S0</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
 </mrdocs>

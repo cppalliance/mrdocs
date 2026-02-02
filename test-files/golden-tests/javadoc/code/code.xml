@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="code.cpp" source-path="code.cpp" line="18"/>
-    <doc>
-      <brief>
-        <text>brief</text>
-      </brief>
-      <para>
-        <text>This description contains code:</text>
-      </para>
-      <code>
-        <text>// code comment
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>code.cpp</short-path>
+      <source-path>code.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This description contains code:</literal>
+      </text>
+    </paragraph>
+    <code>
+      <kind>code</kind>
+      <literal>// code comment
 // code comment
 template &lt; class T &gt;
 auto
@@ -20,9 +42,21 @@ algorithm( T&amp;&amp; v = {} ) -&gt;
     typename T::result_type
 {
     return v.result();
-}</text>
-      </code>
-    </doc>
-  </function>
-</namespace>
+}</literal>
+    </code>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

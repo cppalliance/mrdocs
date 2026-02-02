@@ -1,22 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="docFunction" id="5x56dR04az7i0nZ7FnDVQhMFz4w=">
-    <file short-path="no-extract-all.cpp" source-path="no-extract-all.cpp" line="4"/>
-    <doc>
-      <brief>
-        <text>Documented function</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="sometimesDocFunction" id="zfmhYS+B5jkLgBi5x/Ciuh0zH6Y=">
-    <file short-path="no-extract-all.cpp" source-path="no-extract-all.cpp" line="9"/>
-    <doc>
-      <brief>
-        <text>Sometimes documented function</text>
-      </brief>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>5x56dR04az7i0nZ7FnDVQhMFz4w=</functions>
+    <functions>zfmhYS+B5jkLgBi5x/Ciuh0zH6Y=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>docFunction</name>
+  <source>
+    <location>
+      <short-path>no-extract-all.cpp</short-path>
+      <source-path>no-extract-all.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>5x56dR04az7i0nZ7FnDVQhMFz4w=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documented function</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>sometimesDocFunction</name>
+  <source>
+    <location>
+      <short-path>no-extract-all.cpp</short-path>
+      <source-path>no-extract-all.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>zfmhYS+B5jkLgBi5x/Ciuh0zH6Y=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Sometimes documented function</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

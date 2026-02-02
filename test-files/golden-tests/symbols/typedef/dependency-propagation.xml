@@ -1,37 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
-    <template>
-      <tparam name="T" class="type"/>
-      <namespace-alias name="B" id="YZjBn7yW7NyL8yCKqswVvbiptNM=">
-        <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="6"/>
-        <type id="P3wHAbrIf4CGxTZs+lXT5a3t2K0=" name="A&lt;T&gt;"/>
-      </namespace-alias>
-    </template>
-    <template>
-      <tparam name="T" class="type"/>
-      <namespace-alias name="C" id="1aINBgFfB9zQVkEDJdB0DyLWTmQ=">
-        <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="9"/>
-        <type id="YZjBn7yW7NyL8yCKqswVvbiptNM=" name="B&lt;T&gt;"/>
-      </namespace-alias>
-    </template>
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="A" id="P3wHAbrIf4CGxTZs+lXT5a3t2K0=">
-        <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="3" class="def"/>
-      </struct>
-    </template>
-    <struct name="D" id="G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=">
-      <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="12" class="def"/>
-    </struct>
-  </namespace>
-  <struct name="E" id="KJWEqOD/QXinlGIqVHqmIlA5Z6E=">
-    <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="15" class="def"/>
-    <base>
-      <type id="1aINBgFfB9zQVkEDJdB0DyLWTmQ=" name="N::C&lt;int&gt;"/>
-    </base>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
+    <records>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</records>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>N</name>
+  <source>
+    <location>
+      <short-path>dependency-propagation.cpp</short-path>
+      <source-path>dependency-propagation.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <typedefs>YZjBn7yW7NyL8yCKqswVvbiptNM=</typedefs>
+    <typedefs>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</typedefs>
+    <records>CvmTMb/ji8iqIZMky8t7bt71VbE=</records>
+    <records>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</records>
+    <records>G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=</records>
+  </namespace-tranche>
+</namespace>
+<typedef>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>dependency-propagation.cpp</short-path>
+      <source-path>dependency-propagation.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <named>
+    <name>
+      <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>dependency-propagation.cpp</short-path>
+      <source-path>dependency-propagation.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <named>
+    <name>
+      <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>dependency-propagation.cpp</short-path>
+      <source-path>dependency-propagation.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>dependency-propagation.cpp</short-path>
+      <source-path>dependency-propagation.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>dependency-propagation.cpp</short-path>
+      <source-path>dependency-propagation.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
+        <identifier>C</identifier>
+        <name>
+          <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+          <identifier>N</identifier>
+        </name>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

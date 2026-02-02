@@ -1,34 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="R" id="iiL9gikPcQtnSisz70tbNep58xQ=">
-    <file short-path="returns-from-return-brief.cpp" source-path="returns-from-return-brief.cpp" line="2"/>
-    <doc>
-      <brief>
-        <text>The return type of the function</text>
-      </brief>
-      <related>
-        <reference id="9qWYEt0yZtWNXCd4PxS2BGM2N00=">getR</reference>
-      </related>
-    </doc>
-  </struct>
-  <function name="getR" id="9qWYEt0yZtWNXCd4PxS2BGM2N00=">
-    <file short-path="returns-from-return-brief.cpp" source-path="returns-from-return-brief.cpp" line="5"/>
-    <return>
-      <type id="iiL9gikPcQtnSisz70tbNep58xQ=" name="R"/>
-    </return>
-    <doc>
-      <brief>
-        <text>Test function</text>
-      </brief>
-      <returns>
-        <text>The return type of the function</text>
-      </returns>
-      <relates>
-        <reference id="iiL9gikPcQtnSisz70tbNep58xQ=">R</reference>
-      </relates>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>iiL9gikPcQtnSisz70tbNep58xQ=</records>
+    <functions>9qWYEt0yZtWNXCd4PxS2BGM2N00=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>R</name>
+  <source>
+    <location>
+      <short-path>returns-from-return-brief.cpp</short-path>
+      <source-path>returns-from-return-brief.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return type of the function</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>getR</literal>
+      <id>9qWYEt0yZtWNXCd4PxS2BGM2N00=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>getR</name>
+  <source>
+    <location>
+      <short-path>returns-from-return-brief.cpp</short-path>
+      <source-path>returns-from-return-brief.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>9qWYEt0yZtWNXCd4PxS2BGM2N00=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return type of the function</literal>
+      </text>
+    </returns>
+    <reference>
+      <kind>reference</kind>
+      <literal>R</literal>
+      <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
+      <identifier>R</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

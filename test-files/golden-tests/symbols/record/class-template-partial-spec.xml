@@ -1,34 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="class-template-partial-spec.cpp" source-path="class-template-partial-spec.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <tparam name="V" class="type"/>
-        <struct name="B" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
-          <file short-path="class-template-partial-spec.cpp" source-path="class-template-partial-spec.cpp" line="4" class="def"/>
-        </struct>
-      </template>
-      <template class="explicit" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
-        <targ class="type" type="T"/>
-        <targ class="type" type="long"/>
-        <struct name="B" id="RB9DBMAJDxjxuRQCinQOVPFSNek=">
-          <file short-path="class-template-partial-spec.cpp" source-path="class-template-partial-spec.cpp" line="11" class="def"/>
-        </struct>
-      </template>
-      <template class="partial" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
-        <tparam name="U" class="type"/>
-        <targ class="type" type="U*"/>
-        <targ class="type" type="T"/>
-        <struct name="B" id="Y/lm1lkT88vf1Ml123mbuN6Fp2Y=">
-          <file short-path="class-template-partial-spec.cpp" source-path="class-template-partial-spec.cpp" line="8" class="def"/>
-        </struct>
-      </template>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>class-template-partial-spec.cpp</short-path>
+      <source-path>class-template-partial-spec.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>oAtKB0INIy/QCSdQExvcQwsaZJA=</records>
+      <records>RB9DBMAJDxjxuRQCinQOVPFSNek=</records>
+      <records>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-partial-spec.cpp</short-path>
+      <source-path>class-template-partial-spec.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>oAtKB0INIy/QCSdQExvcQwsaZJA=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-partial-spec.cpp</short-path>
+      <source-path>class-template-partial-spec.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>RB9DBMAJDxjxuRQCinQOVPFSNek=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>class-template-partial-spec.cpp</short-path>
+      <source-path>class-template-partial-spec.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

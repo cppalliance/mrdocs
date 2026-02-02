@@ -1,184 +1,977 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="T01" id="O2UBDeG42PMrk1up8f8PGVFhIGk=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="3" class="def"/>
-    <function name="f" id="dmtEtFE6EVKE6hWuugP9vFuib6Y=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="3"/>
-    </function>
-  </struct>
-  <struct name="T02" id="H+pnPDuG6B+W6+srjVP2qhqXCrQ=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="4" class="def"/>
-    <function name="f" id="QPLurkQ2BXODb4xY6bw1mlNtQ28=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="4"/>
-      <attr id="storage-class" name="static" value="2"/>
-    </function>
-  </struct>
-  <struct name="T03" id="rM+ml6ikwiS9Twa1IwpCHbSHTbg=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="5" class="def"/>
-    <function name="f" id="p6A5dCCvCkASDE6pH4cJA/27/o8=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="5"/>
-      <attr id="ref-qualifier" name="&amp;" value="1"/>
-    </function>
-  </struct>
-  <struct name="T04" id="MBpLzhyCDdQBHul4AN2i2fR8fw0=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="6" class="def"/>
-    <function name="f" id="G71rDzcAZPSKGoGGoDswQjD1JuA=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="6"/>
-      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
-    </function>
-  </struct>
-  <struct name="T05" id="5s81XyCIgauM5viJN9KAwx2A6DU=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="7" class="def"/>
-    <function name="f" id="rWLMsKBEv1FtDyk7Y7XNzcgmt68=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="7"/>
-      <attr id="is-const"/>
-    </function>
-  </struct>
-  <struct name="T06" id="SzwXGFnhX4HlHjHolU7XF/KEqDs=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="8" class="def"/>
-    <function name="f" id="A3MUO5+pwkURxw+SBeh1y0BKv7c=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="8" class="def"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-    </function>
-  </struct>
-  <struct name="T08" id="WU9ZeQm0IOT8cYJkWXom3NXeWsM=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="10" class="def"/>
-    <function name="f" id="jlrEtbnYd1B6OAjYlF0gQ/oYu5w=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="10"/>
-    </function>
-  </struct>
-  <struct name="T09" id="SX7tpa77UInh7a4AsMFjfiCtoLY=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="11" class="def"/>
-    <function name="f" exception-spec="noexcept" id="u+MePKsNF/sYSk6UpgNS65+USGU=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="11"/>
-    </function>
-  </struct>
-  <struct name="T10" id="TJnjDRnoO8E/5XEw8BaODsKxlwQ=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="12" class="def"/>
-    <function name="f" id="0hjrVGeDlQhdYkOu4shvWWPqNKU=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="12"/>
-      <attr id="has-trailing-return"/>
-    </function>
-  </struct>
-  <struct name="T11" id="MXMa4TZZfdRkREzWSLpIF6ruUyw=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="13" class="def"/>
-    <function name="f" id="+NevzZlqigIe1KSKS7eqq7pCd40=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="13"/>
-      <attr id="has-trailing-return"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-  </struct>
-  <struct name="T12" id="7rg34TfmIwu+7zOd7DN+Dq8mLCc=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="14" class="def"/>
-    <function name="f" id="I0S8eMgTnTkagm+IrM34MBiU4XI=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="14"/>
-      <attr id="is-variadic"/>
-    </function>
-  </struct>
-  <struct name="T13" id="NyLraUP0R3lYeyTpHQYZpyZMstc=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="15" class="def"/>
-    <function name="f" id="5d5eSOvkYwBOnpbLcrkRuFvJGP4=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="15"/>
-      <attr id="is-virtual-as-written"/>
-    </function>
-  </struct>
-  <struct name="T14" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="16" class="def"/>
-    <function name="f" id="1Lz3aFupR+OsCqiPOaIFWqGuyCc=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="16"/>
-      <attr id="is-virtual-as-written"/>
-      <attr id="is-pure"/>
-    </function>
-  </struct>
-  <struct name="T15" id="Bu7lz+fvOPzOR6oSlAo9R8R0alg=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="17" class="def"/>
-    <function name="f" id="wSFf8IAx5Twq6aD5T8XdnXGuhw8=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="17"/>
-      <attr id="is-volatile"/>
-    </function>
-  </struct>
-  <struct name="T16" id="75395VGvKeZbe1EhfJwktZuWLs0=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="18" class="def"/>
-    <function name="f" id="OEX+TUed8FjXJPiI4c3+9WHzJl4=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="18"/>
-      <attr id="storage-class" name="static" value="2"/>
-    </function>
-  </struct>
-  <struct name="T17" id="HL3/1NhKSels2G5ay7F0IYzlSLs=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="20" class="def"/>
-    <base>
-      <type id="SLJhBKx+2u4KxSJ78Fg6wqlObPc=" name="T14"/>
-    </base>
-    <function name="f" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="20"/>
-      <attr id="has-override"/>
-    </function>
-  </struct>
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="22" class="def"/>
-    <function name="f1" exception-spec="noexcept" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="24" class="def"/>
-      <attr id="is-variadic"/>
-      <attr id="has-trailing-return"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="is-const"/>
-      <attr id="is-volatile"/>
-    </function>
-    <function name="f3" exception-spec="noexcept" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="26"/>
-      <attr id="is-virtual-as-written"/>
-      <attr id="is-pure"/>
-      <attr id="is-const"/>
-      <attr id="is-volatile"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
-      <attr id="has-trailing-return"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="char"/>
-      </return>
-    </function>
-  </struct>
-  <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
-    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="29" class="def"/>
-    <base>
-      <type id="FLgkhM3m0U3Lo2o3XLPUizWPH00=" name="U"/>
-    </base>
-    <function name="f1" exception-spec="noexcept" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="24" class="def"/>
-      <attr id="is-variadic"/>
-      <attr id="has-trailing-return"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="is-const"/>
-      <attr id="is-volatile"/>
-    </function>
-    <function name="f3" exception-spec="noexcept" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="31"/>
-      <attr id="has-override"/>
-      <attr id="is-const"/>
-      <attr id="is-volatile"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
-      <attr id="has-trailing-return"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="char"/>
-      </return>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>O2UBDeG42PMrk1up8f8PGVFhIGk=</records>
+    <records>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</records>
+    <records>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</records>
+    <records>MBpLzhyCDdQBHul4AN2i2fR8fw0=</records>
+    <records>5s81XyCIgauM5viJN9KAwx2A6DU=</records>
+    <records>SzwXGFnhX4HlHjHolU7XF/KEqDs=</records>
+    <records>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</records>
+    <records>SX7tpa77UInh7a4AsMFjfiCtoLY=</records>
+    <records>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</records>
+    <records>MXMa4TZZfdRkREzWSLpIF6ruUyw=</records>
+    <records>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</records>
+    <records>NyLraUP0R3lYeyTpHQYZpyZMstc=</records>
+    <records>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</records>
+    <records>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</records>
+    <records>75395VGvKeZbe1EhfJwktZuWLs0=</records>
+    <records>HL3/1NhKSels2G5ay7F0IYzlSLs=</records>
+    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
+    <records>9kzYwt0WPztMEDUaFxul1Jvqqs8=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>T01</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>O2UBDeG42PMrk1up8f8PGVFhIGk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>dmtEtFE6EVKE6hWuugP9vFuib6Y=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>dmtEtFE6EVKE6hWuugP9vFuib6Y=</id>
+  <extraction>regular</extraction>
+  <parent>O2UBDeG42PMrk1up8f8PGVFhIGk=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T02</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <static-functions>QPLurkQ2BXODb4xY6bw1mlNtQ28=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>QPLurkQ2BXODb4xY6bw1mlNtQ28=</id>
+  <extraction>regular</extraction>
+  <parent>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T03</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>p6A5dCCvCkASDE6pH4cJA/27/o8=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>p6A5dCCvCkASDE6pH4cJA/27/o8=</id>
+  <extraction>regular</extraction>
+  <parent>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T04</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>MBpLzhyCDdQBHul4AN2i2fR8fw0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>G71rDzcAZPSKGoGGoDswQjD1JuA=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>G71rDzcAZPSKGoGGoDswQjD1JuA=</id>
+  <extraction>regular</extraction>
+  <parent>MBpLzhyCDdQBHul4AN2i2fR8fw0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T05</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5s81XyCIgauM5viJN9KAwx2A6DU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>rWLMsKBEv1FtDyk7Y7XNzcgmt68=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>rWLMsKBEv1FtDyk7Y7XNzcgmt68=</id>
+  <extraction>regular</extraction>
+  <parent>5s81XyCIgauM5viJN9KAwx2A6DU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<record>
+  <name>T06</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>SzwXGFnhX4HlHjHolU7XF/KEqDs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>A3MUO5+pwkURxw+SBeh1y0BKv7c=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>A3MUO5+pwkURxw+SBeh1y0BKv7c=</id>
+  <extraction>regular</extraction>
+  <parent>SzwXGFnhX4HlHjHolU7XF/KEqDs=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T08</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>jlrEtbnYd1B6OAjYlF0gQ/oYu5w=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>jlrEtbnYd1B6OAjYlF0gQ/oYu5w=</id>
+  <extraction>regular</extraction>
+  <parent>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T09</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>SX7tpa77UInh7a4AsMFjfiCtoLY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>u+MePKsNF/sYSk6UpgNS65+USGU=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>u+MePKsNF/sYSk6UpgNS65+USGU=</id>
+  <extraction>regular</extraction>
+  <parent>SX7tpa77UInh7a4AsMFjfiCtoLY=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T10</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>0hjrVGeDlQhdYkOu4shvWWPqNKU=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>0hjrVGeDlQhdYkOu4shvWWPqNKU=</id>
+  <extraction>regular</extraction>
+  <parent>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <has-trailing-return>1</has-trailing-return>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T11</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>MXMa4TZZfdRkREzWSLpIF6ruUyw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>+NevzZlqigIe1KSKS7eqq7pCd40=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>+NevzZlqigIe1KSKS7eqq7pCd40=</id>
+  <extraction>regular</extraction>
+  <parent>MXMa4TZZfdRkREzWSLpIF6ruUyw=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <has-trailing-return>1</has-trailing-return>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T12</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>I0S8eMgTnTkagm+IrM34MBiU4XI=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>I0S8eMgTnTkagm+IrM34MBiU4XI=</id>
+  <extraction>regular</extraction>
+  <parent>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-variadic>1</is-variadic>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T13</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>NyLraUP0R3lYeyTpHQYZpyZMstc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>5d5eSOvkYwBOnpbLcrkRuFvJGP4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>5d5eSOvkYwBOnpbLcrkRuFvJGP4=</id>
+  <extraction>regular</extraction>
+  <parent>NyLraUP0R3lYeyTpHQYZpyZMstc=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+  <is-virtual-as-written>1</is-virtual-as-written>
+</function>
+<record>
+  <name>T14</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <derived>HL3/1NhKSels2G5ay7F0IYzlSLs=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>1Lz3aFupR+OsCqiPOaIFWqGuyCc=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>1Lz3aFupR+OsCqiPOaIFWqGuyCc=</id>
+  <extraction>regular</extraction>
+  <parent>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+  <is-virtual-as-written>1</is-virtual-as-written>
+  <is-pure>1</is-pure>
+</function>
+<record>
+  <name>T15</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>wSFf8IAx5Twq6aD5T8XdnXGuhw8=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>wSFf8IAx5Twq6aD5T8XdnXGuhw8=</id>
+  <extraction>regular</extraction>
+  <parent>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-volatile>1</is-volatile>
+</function>
+<record>
+  <name>T16</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>75395VGvKeZbe1EhfJwktZuWLs0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <static-functions>OEX+TUed8FjXJPiI4c3+9WHzJl4=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>OEX+TUed8FjXJPiI4c3+9WHzJl4=</id>
+  <extraction>regular</extraction>
+  <parent>75395VGvKeZbe1EhfJwktZuWLs0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>T17</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>HL3/1NhKSels2G5ay7F0IYzlSLs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</id>
+        <identifier>T14</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>5+yfyWtDpz80IwKT3xugro18Ev0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>20</column-number>
+    </location>
+  </source>
+  <id>5+yfyWtDpz80IwKT3xugro18Ev0=</id>
+  <extraction>regular</extraction>
+  <parent>HL3/1NhKSels2G5ay7F0IYzlSLs=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <has-override-attr>1</has-override-attr>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+</function>
+<record>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>22</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <derived>9kzYwt0WPztMEDUaFxul1Jvqqs8=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>DBXd564vaQo7GHkh6XCC6HV78/I=</functions>
+      <functions>YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=</functions>
+      <static-functions>II436kVwM/ZBYOf9q474VxRXK6c=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>DBXd564vaQo7GHkh6XCC6HV78/I=</id>
+  <extraction>regular</extraction>
+  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-variadic>1</is-variadic>
+  <has-trailing-return>1</has-trailing-return>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+  <is-volatile>1</is-volatile>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=</id>
+  <extraction>regular</extraction>
+  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+  <is-virtual-as-written>1</is-virtual-as-written>
+  <is-pure>1</is-pure>
+  <is-const>1</is-const>
+  <is-volatile>1</is-volatile>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>II436kVwM/ZBYOf9q474VxRXK6c=</id>
+  <extraction>regular</extraction>
+  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <has-trailing-return>1</has-trailing-return>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>V</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>9kzYwt0WPztMEDUaFxul1Jvqqs8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+        <identifier>U</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>DBXd564vaQo7GHkh6XCC6HV78/I=</functions>
+      <functions>/C2pxLlwRMKnr6YRbVnykUArzEI=</functions>
+      <static-functions>II436kVwM/ZBYOf9q474VxRXK6c=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>DBXd564vaQo7GHkh6XCC6HV78/I=</id>
+  <extraction>regular</extraction>
+  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-variadic>1</is-variadic>
+  <has-trailing-return>1</has-trailing-return>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+  <is-volatile>1</is-volatile>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>/C2pxLlwRMKnr6YRbVnykUArzEI=</id>
+  <extraction>regular</extraction>
+  <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <has-override-attr>1</has-override-attr>
+  <is-record-method>1</is-record-method>
+  <is-virtual>1</is-virtual>
+  <is-const>1</is-const>
+  <is-volatile>1</is-volatile>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>mem-fn.cpp</short-path>
+      <source-path>mem-fn.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>II436kVwM/ZBYOf9q474VxRXK6c=</id>
+  <extraction>regular</extraction>
+  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <has-trailing-return>1</has-trailing-return>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

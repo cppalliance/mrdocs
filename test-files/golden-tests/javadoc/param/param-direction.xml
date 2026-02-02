@@ -1,199 +1,732 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="4" class="def"/>
-    <param name="x0">
-      <type name="int"/>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>ackjGh57CJQLwtO8PihiSPPKIBY=</functions>
+    <functions>wOc7mtwXPodKdeWFmSfib8PaSww=</functions>
+    <functions>SUTpP/LXJ8XB7ZE93wUMkKJEFzE=</functions>
+    <functions>r7dQzLcKLYSiiLyeiW1mNXI0/dk=</functions>
+    <functions>r31pQ1z3fOa9WmZAd065l+zwBuo=</functions>
+    <functions>/AoXdw7cVEwQaKQbx9cHio6Nmg4=</functions>
+    <functions>IcsfRcafZ9MAxyscbeqD6JBWohA=</functions>
+    <functions>F8cRGf9/eHn/XbtREVgRcfoLdZQ=</functions>
+    <functions>VQbsVNVJyIh3DE7+az/K+7nc2nA=</functions>
+    <functions>AnuHurRy/SuMp7tO9bRT33UqDko=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x0</literal>
+        </text>
+      </code>
+      <name>x0</name>
     </param>
-    <doc>
-      <param name="x0">
-        <text>An integer </text>
-        <mono>x0</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="10" class="def"/>
-    <param name="x1">
-      <type name="int"/>
-    </param>
-    <param name="y1">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x1">
-        <text>An integer </text>
-        <mono>x1</mono>
-      </param>
-      <param name="y1" class="in">
-        <text>An integer </text>
-        <mono>y1</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="h" id="SUTpP/LXJ8XB7ZE93wUMkKJEFzE=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="16" class="def"/>
-    <param name="x2">
-      <type name="int"/>
-    </param>
-    <param name="y2">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x2">
-        <text>An integer </text>
-        <mono>x2</mono>
-      </param>
-      <param name="y2" class="out">
-        <text>An integer </text>
-        <mono>y2</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="i" id="r7dQzLcKLYSiiLyeiW1mNXI0/dk=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="22" class="def"/>
-    <param name="x3">
-      <type name="int"/>
-    </param>
-    <param name="y3">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x3" class="in">
-        <text>An integer </text>
-        <mono>x3</mono>
-      </param>
-      <param name="y3" class="out">
-        <text>An integer </text>
-        <mono>y3</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="j" id="r31pQ1z3fOa9WmZAd065l+zwBuo=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="28" class="def"/>
-    <param name="x4">
-      <type name="int"/>
-    </param>
-    <param name="y4">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x4">
-        <text>An integer </text>
-        <mono>x4</mono>
-      </param>
-      <param name="y4" class="inout">
-        <text>An integer </text>
-        <mono>y4</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="k" id="/AoXdw7cVEwQaKQbx9cHio6Nmg4=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="35" class="def"/>
-    <param name="x5">
-      <type name="int"/>
-    </param>
-    <param name="y5">
-      <type name="int"/>
-    </param>
-    <param name="z5">
-      <type name="int"/>
-    </param>
-    <doc>
-      <param name="x5" class="out">
-        <text>An integer </text>
-        <mono>x5</mono>
-      </param>
-      <param name="y5" class="in">
-        <text>An integer </text>
-        <mono>y5</mono>
-      </param>
-      <param name="z5">
-        <text>An integer </text>
-        <mono>z5</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="l" id="IcsfRcafZ9MAxyscbeqD6JBWohA=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="42" class="def"/>
-    <param name="x6">
-      <type name="int"/>
-    </param>
-    <param name="y6">
-      <type name="int"/>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x0</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wOc7mtwXPodKdeWFmSfib8PaSww=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x1</literal>
+        </text>
+      </code>
+      <name>x1</name>
     </param>
     <param>
-      <type name="int"/>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y1</literal>
+        </text>
+      </code>
+      <name>y1</name>
     </param>
-    <param name="z6">
-      <type name="int"/>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x1</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y1</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>SUTpP/LXJ8XB7ZE93wUMkKJEFzE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x2</literal>
+        </text>
+      </code>
+      <name>x2</name>
     </param>
-    <doc>
-      <param name="x6" class="out">
-        <text>An integer </text>
-        <mono>x6</mono>
-      </param>
-      <param name="y6">
-        <text>An integer </text>
-        <mono>y6</mono>
-      </param>
-      <param name="z6" class="in">
-        <text>An integer </text>
-        <mono>z6</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="m" id="F8cRGf9/eHn/XbtREVgRcfoLdZQ=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="47"/>
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="52"/>
-    <param name="x7">
-      <type name="int"/>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y2</literal>
+        </text>
+      </code>
+      <name>y2</name>
     </param>
-    <param name="y7">
-      <type name="int"/>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x2</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y2</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>22</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>r7dQzLcKLYSiiLyeiW1mNXI0/dk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x3</literal>
+        </text>
+      </code>
+      <name>x3</name>
     </param>
-    <doc>
-      <param name="x7" class="in">
-        <text>An integer </text>
-        <mono>x7</mono>
-      </param>
-      <param name="y7" class="out">
-        <text>An integer </text>
-        <mono>y7</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="n" id="VQbsVNVJyIh3DE7+az/K+7nc2nA=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="57"/>
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="62"/>
-    <param name="x8">
-      <type name="int"/>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y3</literal>
+        </text>
+      </code>
+      <name>y3</name>
     </param>
-    <doc>
-      <param name="x8" class="in">
-        <text>An integer </text>
-        <mono>x8</mono>
-      </param>
-    </doc>
-  </function>
-  <function name="o" id="AnuHurRy/SuMp7tO9bRT33UqDko=">
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="67"/>
-    <file short-path="param-direction.cpp" source-path="param-direction.cpp" line="72"/>
-    <param name="x9">
-      <type name="int"/>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x3</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y3</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>r31pQ1z3fOa9WmZAd065l+zwBuo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x4</literal>
+        </text>
+      </code>
+      <name>x4</name>
     </param>
-    <doc>
-      <param name="x9" class="in">
-        <text>An integer </text>
-        <mono>x9</mono>
-      </param>
-      <param name="x9" class="out">
-        <text>An integer </text>
-        <mono>x9</mono>
-      </param>
-    </doc>
-  </function>
-</namespace>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y4</literal>
+        </text>
+      </code>
+      <name>y4</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x4</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y4</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>k</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>/AoXdw7cVEwQaKQbx9cHio6Nmg4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x5</literal>
+        </text>
+      </code>
+      <name>x5</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y5</literal>
+        </text>
+      </code>
+      <name>y5</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>z5</literal>
+        </text>
+      </code>
+      <name>z5</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x5</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y5</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>z5</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>l</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>42</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>IcsfRcafZ9MAxyscbeqD6JBWohA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x6</literal>
+        </text>
+      </code>
+      <name>x6</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y6</literal>
+        </text>
+      </code>
+      <name>y6</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>z6</literal>
+        </text>
+      </code>
+      <name>z6</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x6</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y6</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>z6</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>m</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>F8cRGf9/eHn/XbtREVgRcfoLdZQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x7</literal>
+        </text>
+      </code>
+      <name>x7</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>y7</literal>
+        </text>
+      </code>
+      <name>y7</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x7</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>y7</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>n</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>57</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>62</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>VQbsVNVJyIh3DE7+az/K+7nc2nA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x8</literal>
+        </text>
+      </code>
+      <name>x8</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x8</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>o</name>
+  <source>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>67</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-direction.cpp</short-path>
+      <source-path>param-direction.cpp</source-path>
+      <line-number>72</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>AnuHurRy/SuMp7tO9bRT33UqDko=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x9</literal>
+        </text>
+      </code>
+      <name>x9</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An integer </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x9</literal>
+        </text>
+      </code>
+      <name>x9</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x9</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

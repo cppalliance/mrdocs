@@ -1,24 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="ct_mft_expl_inline.cpp" source-path="ct_mft_expl_inline.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <function name="f" id="fycIFVnUjGsczEihLemEC7pcV4w=">
-          <file short-path="ct_mft_expl_inline.cpp" source-path="ct_mft_expl_inline.cpp" line="4" class="def"/>
-        </function>
-      </template>
-      <template class="explicit" id="fycIFVnUjGsczEihLemEC7pcV4w=">
-        <targ class="type" type="int"/>
-        <function name="f" id="TneA5Ayz4v/9oOUbbnRL1ybm8VM=">
-          <file short-path="ct_mft_expl_inline.cpp" source-path="ct_mft_expl_inline.cpp" line="7" class="def"/>
-        </function>
-      </template>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>ct_mft_expl_inline.cpp</short-path>
+      <source-path>ct_mft_expl_inline.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>AvAESYZFVvK3PiO4+x9D9ee81UQ=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ct_mft_expl_inline.cpp</short-path>
+      <source-path>ct_mft_expl_inline.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>AvAESYZFVvK3PiO4+x9D9ee81UQ=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <func-class>normal</func-class>
+  <members>fycIFVnUjGsczEihLemEC7pcV4w=</members>
+  <members>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ct_mft_expl_inline.cpp</short-path>
+      <source-path>ct_mft_expl_inline.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>fycIFVnUjGsczEihLemEC7pcV4w=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ct_mft_expl_inline.cpp</short-path>
+      <source-path>ct_mft_expl_inline.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

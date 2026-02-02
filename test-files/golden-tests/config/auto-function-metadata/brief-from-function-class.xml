@@ -1,161 +1,566 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="2" class="def"/>
-    <doc>
-      <brief>
-        <text>A helper tag</text>
-      </brief>
-    </doc>
-  </struct>
-  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
-    <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="6" class="def"/>
-    <doc>
-      <brief>
-        <text>Test class</text>
-      </brief>
-    </doc>
-    <function class="constructor" name="X" id="6Jx2eK9l4C46QIRucTvox+6PH2k=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="8" class="def"/>
-      <attr id="is-defaulted"/>
-      <attr id="is-explicitly-defaulted"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <doc>
-        <brief>
-          <text>Default constructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function class="constructor" name="X" id="4C2UEs8la3Eghf4mLyeViCJNOwY=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="9" class="def"/>
-      <attr id="is-defaulted"/>
-      <attr id="is-explicitly-defaulted"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <param name="other">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Copy constructor</text>
-        </brief>
-        <param name="other">
-          <text>The object to copy construct from</text>
-        </param>
-      </doc>
-    </function>
-    <function class="constructor" name="X" id="ad/AzbLEE6b8dNnnX2OLy1+HxDQ=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="10" class="def"/>
-      <attr id="is-defaulted"/>
-      <attr id="is-explicitly-defaulted"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <param name="other">
-        <type class="rvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Move constructor</text>
-        </brief>
-        <param name="other">
-          <text>The object to move construct from</text>
-        </param>
-      </doc>
-    </function>
-    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="13"/>
-      <param name="value">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Construct from </text>
-          <mono>int</mono>
-        </brief>
-        <param name="value">
-          <text>The value to construct from</text>
-        </param>
-      </doc>
-    </function>
-    <function class="constructor" name="X" id="vwV8S8Oz6MQV3vNlcR0jdKhSlfc=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="11"/>
-      <param name="value">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Construct from </text>
-          <mono>A</mono>
-        </brief>
-        <param name="value">
-          <text>The object to copy construct from</text>
-        </param>
-      </doc>
-    </function>
-    <function class="constructor" name="X" id="ALa0jXrxokW17OgDFIUlk/PCxSQ=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="12"/>
-      <param name="value">
-        <type class="rvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Construct from </text>
-          <mono>A</mono>
-        </brief>
-        <param name="value">
-          <text>The object to move construct from</text>
-        </param>
-      </doc>
-    </function>
-    <function class="destructor" name="~X" id="HK6hbp0kJrHWxbYoHddN1v/GCWc=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="14"/>
-      <doc>
-        <brief>
-          <text>Destructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function class="conversion" name="operator A" id="CWQgyDAMsfX65S2osLlxVceQp04=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="16"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion to </text>
-          <mono>A</mono>
-        </brief>
-        <returns>
-          <text>A helper tag</text>
-        </returns>
-      </doc>
-    </function>
-    <function class="conversion" name="operator int" id="ugTeBmZlVDCwimu6VQtRkOKlfL8=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="15"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion to </text>
-          <mono>int</mono>
-        </brief>
-        <returns>
-          <text>The object converted to </text>
-          <mono>int</mono>
-        </returns>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A helper tag</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test class</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>iRe6Tyv0qU6vIHNyvLHuISP/Fw4=</functions>
+      <functions>HK6hbp0kJrHWxbYoHddN1v/GCWc=</functions>
+      <functions>CWQgyDAMsfX65S2osLlxVceQp04=</functions>
+      <functions>ugTeBmZlVDCwimu6VQtRkOKlfL8=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>iRe6Tyv0qU6vIHNyvLHuISP/Fw4=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Constructors</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>constructor</func-class>
+  <members>6Jx2eK9l4C46QIRucTvox+6PH2k=</members>
+  <members>4C2UEs8la3Eghf4mLyeViCJNOwY=</members>
+  <members>ad/AzbLEE6b8dNnnX2OLy1+HxDQ=</members>
+  <members>d9h3reyOyp3JT3kwQOTPOI9tmzg=</members>
+  <members>vwV8S8Oz6MQV3vNlcR0jdKhSlfc=</members>
+  <members>ALa0jXrxokW17OgDFIUlk/PCxSQ=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6Jx2eK9l4C46QIRucTvox+6PH2k=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Default constructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>constructor</func-class>
+  <is-defaulted>1</is-defaulted>
+  <is-explicitly-defaulted>1</is-explicitly-defaulted>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4C2UEs8la3Eghf4mLyeViCJNOwY=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Copy constructor</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to copy construct from</literal>
+      </text>
+      <name>other</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>other</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-defaulted>1</is-defaulted>
+  <is-explicitly-defaulted>1</is-explicitly-defaulted>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ad/AzbLEE6b8dNnnX2OLy1+HxDQ=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Move constructor</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to move construct from</literal>
+      </text>
+      <name>other</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>other</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-defaulted>1</is-defaulted>
+  <is-explicitly-defaulted>1</is-explicitly-defaulted>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>d9h3reyOyp3JT3kwQOTPOI9tmzg=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Construct from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>vwV8S8Oz6MQV3vNlcR0jdKhSlfc=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Construct from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>A</literal>
+        </text>
+      </code>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to copy construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ALa0jXrxokW17OgDFIUlk/PCxSQ=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Construct from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>A</literal>
+        </text>
+      </code>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to move construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>~X</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>HK6hbp0kJrHWxbYoHddN1v/GCWc=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Destructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>destructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator A</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>CWQgyDAMsfX65S2osLlxVceQp04=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>A</literal>
+        </text>
+      </code>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A helper tag</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator int</name>
+  <source>
+    <location>
+      <short-path>brief-from-function-class.cpp</short-path>
+      <source-path>brief-from-function-class.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ugTeBmZlVDCwimu6VQtRkOKlfL8=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

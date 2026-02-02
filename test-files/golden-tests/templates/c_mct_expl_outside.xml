@@ -1,27 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="c_mct_expl_outside.cpp" source-path="c_mct_expl_outside.cpp" line="1" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="B" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
-        <file short-path="c_mct_expl_outside.cpp" source-path="c_mct_expl_outside.cpp" line="3" class="def"/>
-        <function name="f" id="GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=">
-          <file short-path="c_mct_expl_outside.cpp" source-path="c_mct_expl_outside.cpp" line="4" class="def"/>
-        </function>
-      </struct>
-    </template>
-    <template class="explicit" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
-      <targ class="type" type="int"/>
-      <struct name="B" id="FxMFFVpoV2/LOOndnkQ2gu3w69U=">
-        <file short-path="c_mct_expl_outside.cpp" source-path="c_mct_expl_outside.cpp" line="9" class="def"/>
-        <function name="g" id="nxkAf/oNulEWX8A/IPUHkew79Y4=">
-          <file short-path="c_mct_expl_outside.cpp" source-path="c_mct_expl_outside.cpp" line="9" class="def"/>
-        </function>
-      </struct>
-    </template>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>c_mct_expl_outside.cpp</short-path>
+      <source-path>c_mct_expl_outside.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</records>
+      <records>FxMFFVpoV2/LOOndnkQ2gu3w69U=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>c_mct_expl_outside.cpp</short-path>
+      <source-path>c_mct_expl_outside.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>c_mct_expl_outside.cpp</short-path>
+      <source-path>c_mct_expl_outside.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>16</column-number>
+    </location>
+  </source>
+  <id>GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=</id>
+  <extraction>regular</extraction>
+  <parent>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>c_mct_expl_outside.cpp</short-path>
+      <source-path>c_mct_expl_outside.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FxMFFVpoV2/LOOndnkQ2gu3w69U=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>nxkAf/oNulEWX8A/IPUHkew79Y4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>c_mct_expl_outside.cpp</short-path>
+      <source-path>c_mct_expl_outside.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>20</column-number>
+    </location>
+  </source>
+  <id>nxkAf/oNulEWX8A/IPUHkew79Y4=</id>
+  <extraction>regular</extraction>
+  <parent>FxMFFVpoV2/LOOndnkQ2gu3w69U=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

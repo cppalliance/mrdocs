@@ -1,57 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="boost" id="+jO0pmMB/RXahxtatVUYoEwUKWs=">
-    <namespace name="openmethod" id="8vOLQN1FS3phbXzrBx8KohfFQCw=">
-      <namespace name="policies" id="iyqzr2bAIIz4tcVOh2wjYTkCOC0=">
-        <namespace name="runtime_checks" id="TVhmFYxnwUAmcG327zb+ghem758=">
-          <struct name="runtime_checks" id="1Jkj+l8tdM+DGWC1GVMWML70iGA=">
-            <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="14"/>
-            <doc>
-              <brief>
-                <text>Documentation with ref to final_virtual_ptr</text>
-              </brief>
-              <para>
-                <text>See </text>
-                <reference id="RgmcrbKVGmXz6c3Lxk0nacbfXkg=">final_virtual_ptr</reference>
-              </para>
-            </doc>
-          </struct>
-        </namespace>
-      </namespace>
-      <template>
-        <tparam name="Arg" class="type"/>
-        <function name="final_virtual_ptr" id="jq5N3pt8pWn/EcTzXTPM1Gj1O9s=">
-          <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="2"/>
-          <return>
-            <type class="auto" keyword="auto">
-            </type>
-          </return>
-          <param name="obj">
-            <type class="rvalue-reference">
-              <pointee-type name="Arg"/>
-            </type>
-          </param>
-        </function>
-      </template>
-      <template>
-        <tparam name="Registry" class="type"/>
-        <tparam name="Arg" class="type"/>
-        <function name="final_virtual_ptr" id="N+/tS2Uxf62zshI73QwQ0n3wcJg=">
-          <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="5"/>
-          <return>
-            <type class="auto" keyword="auto">
-            </type>
-          </return>
-          <param name="obj">
-            <type class="rvalue-reference">
-              <pointee-type name="Arg"/>
-            </type>
-          </param>
-        </function>
-      </template>
-    </namespace>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>+jO0pmMB/RXahxtatVUYoEwUKWs=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>boost</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>+jO0pmMB/RXahxtatVUYoEwUKWs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>8vOLQN1FS3phbXzrBx8KohfFQCw=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>openmethod</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>16</column-number>
+    </location>
+  </source>
+  <id>8vOLQN1FS3phbXzrBx8KohfFQCw=</id>
+  <extraction>regular</extraction>
+  <parent>+jO0pmMB/RXahxtatVUYoEwUKWs=</parent>
+  <namespace-tranche>
+    <namespaces>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</namespaces>
+    <functions>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</functions>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>policies</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</id>
+  <extraction>regular</extraction>
+  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
+  <namespace-tranche>
+    <namespaces>TVhmFYxnwUAmcG327zb+ghem758=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>runtime_checks</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>23</column-number>
+    </location>
+  </source>
+  <id>TVhmFYxnwUAmcG327zb+ghem758=</id>
+  <extraction>regular</extraction>
+  <parent>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</parent>
+  <namespace-tranche>
+    <records>1Jkj+l8tdM+DGWC1GVMWML70iGA=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>runtime_checks</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>9</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>1Jkj+l8tdM+DGWC1GVMWML70iGA=</id>
+  <extraction>regular</extraction>
+  <parent>TVhmFYxnwUAmcG327zb+ghem758=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>See </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>final_virtual_ptr</literal>
+        <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
+      </reference>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation with ref to final_virtual_ptr</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>final_virtual_ptr</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
+  <extraction>regular</extraction>
+  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
+  <func-class>normal</func-class>
+  <members>jq5N3pt8pWn/EcTzXTPM1Gj1O9s=</members>
+  <members>N+/tS2Uxf62zshI73QwQ0n3wcJg=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>final_virtual_ptr</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>jq5N3pt8pWn/EcTzXTPM1Gj1O9s=</id>
+  <extraction>regular</extraction>
+  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
+  <auto>
+  </auto>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <identifier>Arg</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>obj</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>final_virtual_ptr</name>
+  <source>
+    <location>
+      <short-path>parent_context.cpp</short-path>
+      <source-path>parent_context.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>N+/tS2Uxf62zshI73QwQ0n3wcJg=</id>
+  <extraction>regular</extraction>
+  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
+  <auto>
+  </auto>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <identifier>Arg</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>obj</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

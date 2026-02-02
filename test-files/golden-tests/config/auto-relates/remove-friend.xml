@@ -1,82 +1,212 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="3" class="def"/>
-    <friend id="kibUx6k1SXB+HsXkRXroJl9f59w=">
-      <befriended id="kibUx6k1SXB+HsXkRXroJl9f59w="/>
-    </friend>
-    <doc>
-      <brief>
-        <text>A record with non-member functions</text>
-      </brief>
-      <related>
-        <reference id="Cj0rUkOoWSqUDmHfuLvwlZdq9+0=">to_string</reference>
-      </related>
-    </doc>
-  </class>
-  <function name="to_string" id="Cj0rUkOoWSqUDmHfuLvwlZdq9+0=">
-    <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="23"/>
-    <return>
-      <type class="pointer">
-        <pointee-type name="char" cv-qualifiers="const"/>
-      </type>
-    </return>
-    <param name="a">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Non-member function of A</text>
-      </brief>
-      <returns>
-        <text>The string representation of the object</text>
-      </returns>
-      <param name="a">
-        <text>The object to stringify</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
-    <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="13"/>
-    <attr id="operator" name="eq" value="28"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Friend function not listed as non-member</text>
-      </brief>
-      <para>
-        <text>Friends are already listed in the class definition.</text>
-      </para>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are equal</text>
-      </returns>
-      <param name="lhs">
-        <text>The left-hand side of the comparison</text>
-      </param>
-      <param name="rhs">
-        <text>The right-hand side of the comparison</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <functions>Cj0rUkOoWSqUDmHfuLvwlZdq9+0=</functions>
+    <functions>kibUx6k1SXB+HsXkRXroJl9f59w=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>remove-friend.cpp</short-path>
+      <source-path>remove-friend.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A record with non-member functions</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>to_string</literal>
+      <id>Cj0rUkOoWSqUDmHfuLvwlZdq9+0=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
+  </friend>
+</record>
+<function>
+  <name>to_string</name>
+  <source>
+    <location>
+      <short-path>remove-friend.cpp</short-path>
+      <source-path>remove-friend.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Cj0rUkOoWSqUDmHfuLvwlZdq9+0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Non-member function of A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The string representation of the object</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to stringify</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <pointer>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </pointer>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>remove-friend.cpp</short-path>
+      <source-path>remove-friend.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Friends are already listed in the class definition.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Friend function not listed as non-member</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left-hand side of the comparison</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right-hand side of the comparison</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

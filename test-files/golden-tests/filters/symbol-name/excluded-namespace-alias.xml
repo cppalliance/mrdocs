@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
-    <namespace name="U" id="X48ZrJbrwHITObLn6vxlcgApA20=">
-      <namespace-alias name="E" id="TDj0Rc30uD7P5e+F1gsHzHoaV2U=">
-        <file short-path="excluded-namespace-alias.cpp" source-path="excluded-namespace-alias.cpp" line="7"/>
-        <aliased name="B::S::E"/>
-      </namespace-alias>
-    </namespace>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>excluded-namespace-alias.cpp</short-path>
+      <source-path>excluded-namespace-alias.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>X48ZrJbrwHITObLn6vxlcgApA20=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>excluded-namespace-alias.cpp</short-path>
+      <source-path>excluded-namespace-alias.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>X48ZrJbrwHITObLn6vxlcgApA20=</id>
+  <extraction>regular</extraction>
+  <parent>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</parent>
+  <namespace-tranche>
+    <namespace-aliases>TDj0Rc30uD7P5e+F1gsHzHoaV2U=</namespace-aliases>
+  </namespace-tranche>
+</namespace>
+<namespace-alias>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>excluded-namespace-alias.cpp</short-path>
+      <source-path>excluded-namespace-alias.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>TDj0Rc30uD7P5e+F1gsHzHoaV2U=</id>
+  <extraction>regular</extraction>
+  <parent>X48ZrJbrwHITObLn6vxlcgApA20=</parent>
+</namespace-alias>
 </mrdocs>

@@ -1,153 +1,738 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="6" class="def"/>
-          <function name="g" id="P0HRKTdcNYA5qjhIXTqtJIxYItQ=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="9" class="def"/>
-          </function>
-        </struct>
-      </template>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="C" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="12" class="def"/>
-          <function name="h" id="5XAhWGI1AQuRh2DnECuhvkGU0qs=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="15" class="def"/>
-          </function>
-        </struct>
-      </template>
-      <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4" class="def"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="bool"/>
-    <struct name="A" id="/vjeowK9rbOfBZNuMjVMRn2iGMo=">
-      <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="6QY0PJXWe/WbREWJNqGWAxKfjl8=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="6"/>
-        </struct>
-      </template>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="C" id="CmGU1i/sBhCN4qrHoR7Et/3vN18=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="12"/>
-        </struct>
-      </template>
-      <template class="explicit" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
-        <targ class="type" type="double*"/>
-        <struct name="C" id="EyperGIiZ7cSv/PB2BApKjPRQVA=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
-          <function name="j" id="4hePn1dLCqLal3xld/sSlBvpu6U=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="41" class="def"/>
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="38"/>
-          </function>
-        </struct>
-      </template>
-      <template class="partial" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
-        <tparam name="U" class="type"/>
-        <targ class="type" type="U*"/>
-        <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
-          <function name="j" id="ks7mzzkRLaNXkyZ4CdZPO75g8js=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="38" class="def"/>
-          </function>
-        </struct>
-      </template>
-      <function name="f" id="MXnrYOauCPqySxkgtxhqKGFRX5w=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="short"/>
-    <struct name="A" id="C6fFmGgpPJ7jgwKJA98mfx5cxts=">
-      <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="7YGPyrC+yNaV349G+Ofic+lrQQ0=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="6"/>
-        </struct>
-      </template>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="C" id="bJ8v5jNLvcM2EtaEdF2cpbTmU5s=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="27" class="def"/>
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="12"/>
-          <function name="i" id="FnUXB08e7tKDcXA1I7E6hiu2/i0=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="30" class="def"/>
-          </function>
-        </struct>
-      </template>
-      <function name="f" id="Bkfxhhw3rhTX4AsAahIpOZcNmmo=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="int"/>
-    <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
-      <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="O0cvG3FLegojxWfTpLGLrtCaiDg=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="6"/>
-        </struct>
-      </template>
-      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ class="type" type="long"/>
-        <struct name="B" id="kLfkJ6zwS7/fgRzTYaPfbg3WHg8=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="7" class="def"/>
-          <function name="g" id="7fGykhsl+TDnhidf/wArzvaeUXY=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="22" class="def"/>
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="9"/>
-          </function>
-        </struct>
-      </template>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="C" id="TIHR+/r3scoX8MpUnGX9TnhdTMw=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="12"/>
-        </struct>
-      </template>
-      <function name="f" id="5vQMmBbKdcjmr6fZ5KE/+hqkRD0=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="19" class="def"/>
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <struct name="D" id="CSFzdUEgi4+pu0K2D3isHXeaoFQ=">
-    <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="45" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="E" id="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="47" class="def"/>
-        <function name="k" id="cJsLsaJ126sgoCXsFOa+lMSNEVI=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="50" class="def"/>
-        </function>
-      </struct>
-    </template>
-    <template class="explicit" id="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-      <targ class="type" type="int"/>
-      <struct name="E" id="27+9TQyh1Vcx+C3POBLdyXJP8bo=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="48" class="def"/>
-        <function name="k" id="ePyn5n+volZWM9Xn5rQhbb07Yn8=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="54" class="def"/>
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="50"/>
-        </function>
-      </struct>
-    </template>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+    <records>/vjeowK9rbOfBZNuMjVMRn2iGMo=</records>
+    <records>C6fFmGgpPJ7jgwKJA98mfx5cxts=</records>
+    <records>AKwlChAOi+0ttIAPsD7uitS+gk0=</records>
+    <records>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>dKDSVrZun8skBV/NUCmJyCUOvJA=</records>
+      <records>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</records>
+      <functions>c4jAAYDw9qnOxUCpXquNT7fALUY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>dKDSVrZun8skBV/NUCmJyCUOvJA=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>P0HRKTdcNYA5qjhIXTqtJIxYItQ=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>P0HRKTdcNYA5qjhIXTqtJIxYItQ=</id>
+  <extraction>regular</extraction>
+  <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>5XAhWGI1AQuRh2DnECuhvkGU0qs=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>h</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>5XAhWGI1AQuRh2DnECuhvkGU0qs=</id>
+  <extraction>regular</extraction>
+  <parent>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>c4jAAYDw9qnOxUCpXquNT7fALUY=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>/vjeowK9rbOfBZNuMjVMRn2iGMo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>6QY0PJXWe/WbREWJNqGWAxKfjl8=</records>
+      <records>CmGU1i/sBhCN4qrHoR7Et/3vN18=</records>
+      <records>EyperGIiZ7cSv/PB2BApKjPRQVA=</records>
+      <records>xYK8qpEgWzczUMGnNUx+ozeBle0=</records>
+      <functions>MXnrYOauCPqySxkgtxhqKGFRX5w=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6QY0PJXWe/WbREWJNqGWAxKfjl8=</id>
+  <extraction>regular</extraction>
+  <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>CmGU1i/sBhCN4qrHoR7Et/3vN18=</id>
+  <extraction>regular</extraction>
+  <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>EyperGIiZ7cSv/PB2BApKjPRQVA=</id>
+  <extraction>regular</extraction>
+  <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>4hePn1dLCqLal3xld/sSlBvpu6U=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>j</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>41</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>38</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4hePn1dLCqLal3xld/sSlBvpu6U=</id>
+  <extraction>regular</extraction>
+  <parent>EyperGIiZ7cSv/PB2BApKjPRQVA=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>xYK8qpEgWzczUMGnNUx+ozeBle0=</id>
+  <extraction>regular</extraction>
+  <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>ks7mzzkRLaNXkyZ4CdZPO75g8js=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>j</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>38</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ks7mzzkRLaNXkyZ4CdZPO75g8js=</id>
+  <extraction>regular</extraction>
+  <parent>xYK8qpEgWzczUMGnNUx+ozeBle0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>MXnrYOauCPqySxkgtxhqKGFRX5w=</id>
+  <extraction>regular</extraction>
+  <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>C6fFmGgpPJ7jgwKJA98mfx5cxts=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>7YGPyrC+yNaV349G+Ofic+lrQQ0=</records>
+      <records>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</records>
+      <functions>Bkfxhhw3rhTX4AsAahIpOZcNmmo=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>7YGPyrC+yNaV349G+Ofic+lrQQ0=</id>
+  <extraction>regular</extraction>
+  <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>27</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</id>
+  <extraction>regular</extraction>
+  <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>FnUXB08e7tKDcXA1I7E6hiu2/i0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>FnUXB08e7tKDcXA1I7E6hiu2/i0=</id>
+  <extraction>regular</extraction>
+  <parent>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Bkfxhhw3rhTX4AsAahIpOZcNmmo=</id>
+  <extraction>regular</extraction>
+  <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>AKwlChAOi+0ttIAPsD7uitS+gk0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>O0cvG3FLegojxWfTpLGLrtCaiDg=</records>
+      <records>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</records>
+      <records>TIHR+/r3scoX8MpUnGX9TnhdTMw=</records>
+      <functions>5vQMmBbKdcjmr6fZ5KE/+hqkRD0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>O0cvG3FLegojxWfTpLGLrtCaiDg=</id>
+  <extraction>regular</extraction>
+  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</id>
+  <extraction>regular</extraction>
+  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>7fGykhsl+TDnhidf/wArzvaeUXY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>22</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>7fGykhsl+TDnhidf/wArzvaeUXY=</id>
+  <extraction>regular</extraction>
+  <parent>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TIHR+/r3scoX8MpUnGX9TnhdTMw=</id>
+  <extraction>regular</extraction>
+  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>5vQMmBbKdcjmr6fZ5KE/+hqkRD0=</id>
+  <extraction>regular</extraction>
+  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>45</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</records>
+      <records>27+9TQyh1Vcx+C3POBLdyXJP8bo=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</id>
+  <extraction>regular</extraction>
+  <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>cJsLsaJ126sgoCXsFOa+lMSNEVI=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>k</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>50</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>cJsLsaJ126sgoCXsFOa+lMSNEVI=</id>
+  <extraction>regular</extraction>
+  <parent>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>48</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>27+9TQyh1Vcx+C3POBLdyXJP8bo=</id>
+  <extraction>regular</extraction>
+  <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>ePyn5n+volZWM9Xn5rQhbb07Yn8=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>k</name>
+  <source>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>54</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>spec-mem-implicit-instantiation.cpp</short-path>
+      <source-path>spec-mem-implicit-instantiation.cpp</source-path>
+      <line-number>50</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>ePyn5n+volZWM9Xn5rQhbb07Yn8=</id>
+  <extraction>regular</extraction>
+  <parent>27+9TQyh1Vcx+C3POBLdyXJP8bo=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

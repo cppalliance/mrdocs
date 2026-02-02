@@ -1,173 +1,606 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="1" class="def"/>
-    <class name="const_iterator" id="mHefDbLazHBw57+qAsFRfF7H528=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="3"/>
-    </class>
-    <class name="iterator" id="js4a2N+AFdpGVqiwDoP6CRe5qnw=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="2"/>
-    </class>
-    <function name="begin" id="bHIVx85/epfX445qui1ES+eXxAE=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="12"/>
-      <return>
-        <type id="js4a2N+AFdpGVqiwDoP6CRe5qnw=" name="iterator"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Returns an iterator to the beginning</text>
-        </brief>
-        <para>
-          <text>Returns an iterator to the first element of the vector.</text>
-        </para>
-        <returns>
-          <text>Iterator to the first element.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="begin" id="wdqJSwTs1MoRjomfd+M0f99GpL0=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="21"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="mHefDbLazHBw57+qAsFRfF7H528=" name="const_iterator"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Return a const iterator to the beginning</text>
-        </brief>
-        <para>
-          <text>Returns a const iterator to the first element of the vector.</text>
-        </para>
-        <returns>
-          <text>Const iterator to the first element.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="cbegin" id="nrGLN7FWjL9EkildFya4MufPTi8=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="25"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="mHefDbLazHBw57+qAsFRfF7H528=" name="const_iterator"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Return a const iterator to the beginning</text>
-        </brief>
-        <para>
-          <text>Returns a const iterator to the first element of the vector.</text>
-        </para>
-        <returns>
-          <text>Const iterator to the first element.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="crvalue" id="up/n+NenUj2VFy/iJnzCQL2/j3E=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="57"/>
-      <attr id="is-const"/>
-      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
-      <return>
-        <type class="rvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>An const rvalue reference to A</text>
-        </brief>
-        <returns>
-          <text>A reference to A</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="ref" id="UdqSOVfju1IlXGfdLPp3gwh4bQo=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="31"/>
-      <attr id="ref-qualifier" name="&amp;" value="1"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>An lvalue reference to A</text>
-        </brief>
-        <returns>
-          <text>A reference to A</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="ref" id="51kEb0dyrnHV5CD4f0ndIecmNig=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="37"/>
-      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
-      <return>
-        <type class="rvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>An rvalue reference to A</text>
-        </brief>
-        <returns>
-          <text>A reference to A</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="ref" id="RPHQosc2m05tKyyFkpodac2CBUU=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="43"/>
-      <attr id="is-const"/>
-      <attr id="ref-qualifier" name="&amp;" value="1"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>An const lvalue reference to A</text>
-        </brief>
-        <returns>
-          <text>A reference to A</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="ref" id="eQB30nnNgju4ULQ5w/fxpDFoRmI=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="49"/>
-      <attr id="is-const"/>
-      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
-      <return>
-        <type class="rvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>An const rvalue reference to A</text>
-        </brief>
-        <returns>
-          <text>A reference to A</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="rvalue" id="6KwEPWneBuFYEn0I8T3yYt0yN+k=">
-      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="53"/>
-      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
-      <return>
-        <type class="rvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>An rvalue reference to A</text>
-        </brief>
-        <returns>
-          <text>A reference to A</text>
-        </returns>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>mHefDbLazHBw57+qAsFRfF7H528=</records>
+      <records>js4a2N+AFdpGVqiwDoP6CRe5qnw=</records>
+      <functions>MmuFIkmRn2CIRDHWFph0P7qxq6s=</functions>
+      <functions>nrGLN7FWjL9EkildFya4MufPTi8=</functions>
+      <functions>up/n+NenUj2VFy/iJnzCQL2/j3E=</functions>
+      <functions>X2obKmJv3pBU/lvZ6h+2rPfxXow=</functions>
+      <functions>6KwEPWneBuFYEn0I8T3yYt0yN+k=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>const_iterator</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>mHefDbLazHBw57+qAsFRfF7H528=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>iterator</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>js4a2N+AFdpGVqiwDoP6CRe5qnw=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>begin</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MmuFIkmRn2CIRDHWFph0P7qxq6s=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>begin</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Iterator to the first element.</literal>
+      </text>
+    </returns>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Const iterator to the first element.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>bHIVx85/epfX445qui1ES+eXxAE=</members>
+  <members>wdqJSwTs1MoRjomfd+M0f99GpL0=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>begin</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>bHIVx85/epfX445qui1ES+eXxAE=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns an iterator to the first element of the vector.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns an iterator to the beginning</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Iterator to the first element.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>js4a2N+AFdpGVqiwDoP6CRe5qnw=</id>
+      <identifier>iterator</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>begin</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wdqJSwTs1MoRjomfd+M0f99GpL0=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns a const iterator to the first element of the vector.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return a const iterator to the beginning</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Const iterator to the first element.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>mHefDbLazHBw57+qAsFRfF7H528=</id>
+      <identifier>const_iterator</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>cbegin</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>nrGLN7FWjL9EkildFya4MufPTi8=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns a const iterator to the first element of the vector.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return a const iterator to the beginning</literal>
+      </text>
+      <copied-from>begin() const</copied-from>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Const iterator to the first element.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>mHefDbLazHBw57+qAsFRfF7H528=</id>
+      <identifier>const_iterator</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>crvalue</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>57</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>up/n+NenUj2VFy/iJnzCQL2/j3E=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An const rvalue reference to A</literal>
+      </text>
+      <copied-from>ref() const &amp;&amp;</copied-from>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <r-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </r-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<overloads>
+  <name>ref</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>X2obKmJv3pBU/lvZ6h+2rPfxXow=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>ref</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>UdqSOVfju1IlXGfdLPp3gwh4bQo=</members>
+  <members>51kEb0dyrnHV5CD4f0ndIecmNig=</members>
+  <members>RPHQosc2m05tKyyFkpodac2CBUU=</members>
+  <members>eQB30nnNgju4ULQ5w/fxpDFoRmI=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>ref</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>UdqSOVfju1IlXGfdLPp3gwh4bQo=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An lvalue reference to A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>ref</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>51kEb0dyrnHV5CD4f0ndIecmNig=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An rvalue reference to A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <r-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </r-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>ref</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RPHQosc2m05tKyyFkpodac2CBUU=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An const lvalue reference to A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>ref</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>eQB30nnNgju4ULQ5w/fxpDFoRmI=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An const rvalue reference to A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <r-value-reference>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </r-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>rvalue</name>
+  <source>
+    <location>
+      <short-path>qualifiers.cpp</short-path>
+      <source-path>qualifiers.cpp</source-path>
+      <line-number>53</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>6KwEPWneBuFYEn0I8T3yYt0yN+k=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An rvalue reference to A</literal>
+      </text>
+      <copied-from>ref() &amp;&amp;</copied-from>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A reference to A</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <r-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </r-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

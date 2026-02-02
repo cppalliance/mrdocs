@@ -34,10 +34,6 @@ tag_invoke(
     io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
     io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
     io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
-    if (I.doc)
-    {
-        io.map("doc", dom::ValueFrom(*I.doc, domCorpus));
-    }
 }
 
 template

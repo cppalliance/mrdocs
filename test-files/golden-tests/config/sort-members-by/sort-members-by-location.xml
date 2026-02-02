@@ -1,163 +1,554 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
-    <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="1" class="def"/>
-    <function class="constructor" name="Z" id="aQWtFVa4Xa+eceLXiLW74q44JRk=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="10"/>
-      <param name="value">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Construct from </text>
-          <mono>int</mono>
-        </brief>
-        <param name="value">
-          <text>The value to construct from</text>
-        </param>
-      </doc>
-    </function>
-    <function class="constructor" name="Z" id="WltomC+2IcmzMN0COGL0OWWmbZk=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="11"/>
-      <doc>
-        <brief>
-          <text>Default constructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function class="destructor" name="~Z" id="HMG56OCQ5OpB2E9hu4bG3/hoOho=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="9"/>
-      <doc>
-        <brief>
-          <text>Destructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="foo" id="lBA1besl9J3wAZAcEn9C+K05hf4=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="7"/>
-      <attr id="is-const"/>
-    </function>
-    <function name="bar" id="gRx0djRTyQ5zuzBd9ujP7LLlWNg=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="8"/>
-      <attr id="is-const"/>
-    </function>
-    <function class="conversion" name="operator bool" id="zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="6"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion to </text>
-          <mono>bool</mono>
-        </brief>
-        <returns>
-          <text>The object converted to </text>
-          <mono>bool</mono>
-        </returns>
-      </doc>
-    </function>
-    <function name="operator!" id="rjPdhFxUkaC43tWXi+kka78JQxI=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="5"/>
-      <attr id="operator" name="not" value="27"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Negation operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the object is falsy, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="operator==" id="atwUGLD+QHVhH3x1+8qzINNxzMY=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="4"/>
-      <attr id="operator" name="eq" value="28"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Equality operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the objects are equal, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator!=" id="CB0pXrzU8BKZ2LF0BSpclxIfgrs=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="3"/>
-      <attr id="operator" name="not_eq" value="29"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Inequality operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the objects are not equal, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator&lt;=&gt;" id="6/NYLeQdPqWrbu5kHnTpE3u6Yg4=">
-      <file short-path="sort-members-by-location.cpp" source-path="sort-members-by-location.cpp" line="2"/>
-      <attr id="operator" name="3way" value="34"/>
-      <attr id="is-const"/>
-      <return>
-        <type class="auto" keyword="auto">
-        </type>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Three-way comparison operator</text>
-        </brief>
-        <returns>
-          <text>The relative order of the objects</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>NQ8uQgTcafPcttyBMHHLHAXA4MA=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>Z</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>Cnsc4OfzqGbrnICr/PmPGh6bkZc=</functions>
+      <functions>HMG56OCQ5OpB2E9hu4bG3/hoOho=</functions>
+      <functions>lBA1besl9J3wAZAcEn9C+K05hf4=</functions>
+      <functions>gRx0djRTyQ5zuzBd9ujP7LLlWNg=</functions>
+      <functions>zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=</functions>
+      <functions>rjPdhFxUkaC43tWXi+kka78JQxI=</functions>
+      <functions>atwUGLD+QHVhH3x1+8qzINNxzMY=</functions>
+      <functions>CB0pXrzU8BKZ2LF0BSpclxIfgrs=</functions>
+      <functions>6/NYLeQdPqWrbu5kHnTpE3u6Yg4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>Z</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Cnsc4OfzqGbrnICr/PmPGh6bkZc=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Constructors</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>constructor</func-class>
+  <members>aQWtFVa4Xa+eceLXiLW74q44JRk=</members>
+  <members>WltomC+2IcmzMN0COGL0OWWmbZk=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>Z</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>aQWtFVa4Xa+eceLXiLW74q44JRk=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Construct from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>Z</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>WltomC+2IcmzMN0COGL0OWWmbZk=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Default constructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>~Z</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>HMG56OCQ5OpB2E9hu4bG3/hoOho=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Destructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>destructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>lBA1besl9J3wAZAcEn9C+K05hf4=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>bar</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>gRx0djRTyQ5zuzBd9ujP7LLlWNg=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator bool</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bool</literal>
+        </text>
+      </code>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bool</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator!</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>rjPdhFxUkaC43tWXi+kka78JQxI=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Negation operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the object is falsy, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>atwUGLD+QHVhH3x1+8qzINNxzMY=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+          <identifier>Z</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator!=</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>CB0pXrzU8BKZ2LF0BSpclxIfgrs=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Inequality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are not equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+          <identifier>Z</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator&lt;=&gt;</name>
+  <source>
+    <location>
+      <short-path>sort-members-by-location.cpp</short-path>
+      <source-path>sort-members-by-location.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6/NYLeQdPqWrbu5kHnTpE3u6Yg4=</id>
+  <extraction>regular</extraction>
+  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Three-way comparison operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The relative order of the objects</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <auto>
+  </auto>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+          <identifier>Z</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>
