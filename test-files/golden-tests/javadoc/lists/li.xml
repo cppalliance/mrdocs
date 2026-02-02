@@ -1,28 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="li.cpp" source-path="li.cpp" line="10"/>
-    <doc>
-      <brief>
-        <text>A function</text>
-      </brief>
-      <para>
-        <text>Description:</text>
-      </para>
-      <unorderedlist>
-        <listitem>
-          <text>Point 1</text>
-        </listitem>
-        <listitem>
-          <text>Point 2</text>
-        </listitem>
-      </unorderedlist>
-      <para>
-        <text>Another paragraph.</text>
-      </para>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>li.cpp</short-path>
+      <source-path>li.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Description:</literal>
+      </text>
+    </paragraph>
+    <list>
+      <kind>list</kind>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <text>
+            <kind>text</kind>
+            <literal>Point 1</literal>
+          </text>
+        </paragraph>
+      </list-item>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <text>
+            <kind>text</kind>
+            <literal>Point 2</literal>
+          </text>
+        </paragraph>
+      </list-item>
+    </list>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Another paragraph.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

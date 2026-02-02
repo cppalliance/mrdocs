@@ -1,59 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="alpha" id="zgrZYRcj7JuNKGpVFGLPo0bnk9I=">
-    <namespace name="beta" id="MbmED4YNhsRB+AYY214QbcHBQX4=">
-      <struct name="Widget" id="i31wa/i4U5vydhdzOh4d2calhOI=">
-        <file short-path="multipage.cpp" source-path="multipage.cpp" line="9" class="def"/>
-        <doc>
-          <brief>
-            <text>Widget with its own page</text>
-          </brief>
-          <related>
-            <reference id="auJ5R2FaQbaa9BwmEUUWMVJLc7w=">make_widget</reference>
-            <reference id="l0+/XcMJPcoSehJrMSl1Zo+3knU=">::alpha::use_widget</reference>
-          </related>
-        </doc>
-      </struct>
-      <function name="make_widget" id="auJ5R2FaQbaa9BwmEUUWMVJLc7w=">
-        <file short-path="multipage.cpp" source-path="multipage.cpp" line="12"/>
-        <return>
-          <type id="i31wa/i4U5vydhdzOh4d2calhOI=" name="Widget"/>
-        </return>
-        <doc>
-          <brief>
-            <text>Factory living under a nested namespace</text>
-          </brief>
-          <returns>
-            <text>Widget with its own page</text>
-          </returns>
-          <relates>
-            <reference id="i31wa/i4U5vydhdzOh4d2calhOI=">Widget</reference>
-          </relates>
-        </doc>
-      </function>
-    </namespace>
-    <function name="use_widget" id="l0+/XcMJPcoSehJrMSl1Zo+3knU=">
-      <file short-path="multipage.cpp" source-path="multipage.cpp" line="17"/>
-      <return>
-        <type id="i31wa/i4U5vydhdzOh4d2calhOI=" name="beta::Widget"/>
-      </return>
-      <param>
-        <type id="i31wa/i4U5vydhdzOh4d2calhOI=" name="beta::Widget"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Uses a nested type to force cross-page links and asset resolution.</text>
-        </brief>
-        <returns>
-          <text>Widget with its own page</text>
-        </returns>
-        <relates>
-          <reference id="i31wa/i4U5vydhdzOh4d2calhOI=">Widget</reference>
-        </relates>
-      </doc>
-    </function>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>alpha</name>
+  <source>
+    <location>
+      <short-path>multipage.cpp</short-path>
+      <source-path>multipage.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>MbmED4YNhsRB+AYY214QbcHBQX4=</namespaces>
+    <functions>l0+/XcMJPcoSehJrMSl1Zo+3knU=</functions>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>beta</name>
+  <source>
+    <location>
+      <short-path>multipage.cpp</short-path>
+      <source-path>multipage.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>MbmED4YNhsRB+AYY214QbcHBQX4=</id>
+  <extraction>regular</extraction>
+  <parent>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</parent>
+  <namespace-tranche>
+    <records>i31wa/i4U5vydhdzOh4d2calhOI=</records>
+    <functions>auJ5R2FaQbaa9BwmEUUWMVJLc7w=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>Widget</name>
+  <source>
+    <location>
+      <short-path>multipage.cpp</short-path>
+      <source-path>multipage.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
+  <extraction>regular</extraction>
+  <parent>MbmED4YNhsRB+AYY214QbcHBQX4=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Widget with its own page</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>make_widget</literal>
+      <id>auJ5R2FaQbaa9BwmEUUWMVJLc7w=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>::alpha::use_widget</literal>
+      <id>l0+/XcMJPcoSehJrMSl1Zo+3knU=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>make_widget</name>
+  <source>
+    <location>
+      <short-path>multipage.cpp</short-path>
+      <source-path>multipage.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>auJ5R2FaQbaa9BwmEUUWMVJLc7w=</id>
+  <extraction>regular</extraction>
+  <parent>MbmED4YNhsRB+AYY214QbcHBQX4=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Factory living under a nested namespace</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Widget with its own page</literal>
+      </text>
+    </returns>
+    <reference>
+      <kind>reference</kind>
+      <literal>Widget</literal>
+      <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
+      <identifier>Widget</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>use_widget</name>
+  <source>
+    <location>
+      <short-path>multipage.cpp</short-path>
+      <source-path>multipage.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>l0+/XcMJPcoSehJrMSl1Zo+3knU=</id>
+  <extraction>regular</extraction>
+  <parent>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Uses a nested type to force cross-page links and asset resolution.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Widget with its own page</literal>
+      </text>
+    </returns>
+    <reference>
+      <kind>reference</kind>
+      <literal>Widget</literal>
+      <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
+      <identifier>Widget</identifier>
+      <name>
+        <id>MbmED4YNhsRB+AYY214QbcHBQX4=</id>
+        <identifier>beta</identifier>
+      </name>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
+        <identifier>Widget</identifier>
+        <name>
+          <id>MbmED4YNhsRB+AYY214QbcHBQX4=</id>
+          <identifier>beta</identifier>
+        </name>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

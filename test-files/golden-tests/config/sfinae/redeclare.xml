@@ -1,17 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f" requires="std::is_class_v&lt;T&gt;" id="YbGnuURHdmyq4hExRxVObh4FTU8=">
-      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="11" class="def"/>
-      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="5"/>
-      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="8"/>
-      <param>
-        <type name="void"/>
-      </param>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>YbGnuURHdmyq4hExRxVObh4FTU8=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>redeclare.cpp</short-path>
+      <source-path>redeclare.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>redeclare.cpp</short-path>
+      <source-path>redeclare.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>redeclare.cpp</short-path>
+      <source-path>redeclare.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YbGnuURHdmyq4hExRxVObh4FTU8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>void</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

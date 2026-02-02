@@ -1,37 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="1"/>
-    <type class="function" is-variadic="1">
-      <return-type name="void"/>
-    </type>
-  </namespace-alias>
-  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="3"/>
-    <type class="function" is-variadic="1">
-      <return-type name="void"/>
-      <param-type name="int"/>
-    </type>
-  </namespace-alias>
-  <template>
-    <tparam name="A" class="type" default="void(...)"/>
-    <tparam name="B" class="type" default="void(int, ...)"/>
-    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
-      <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="9"/>
-    </struct>
-  </template>
-  <function name="f" id="CMaAySU4txrIlGl6edqWDSabBRA=">
-    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="5"/>
-    <attr id="is-variadic"/>
-  </function>
-  <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
-    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="7"/>
-    <attr id="is-variadic"/>
-    <param>
-      <type name="int"/>
-    </param>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>PvNOREc+JWxdkVgvSz+jC45IbGQ=</typedefs>
+    <typedefs>h6hupdyuT6SfsCGFl6UUFGtvrcc=</typedefs>
+    <records>8nYw0KA23eAszqSOs0wOXAD1DYQ=</records>
+    <functions>CMaAySU4txrIlGl6edqWDSabBRA=</functions>
+    <functions>lldWvRg9y+NwRnDpK3x2NF9+e08=</functions>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>variadic-function.cpp</short-path>
+      <source-path>variadic-function.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>PvNOREc+JWxdkVgvSz+jC45IbGQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <function>
+    <named>
+      <name>
+        <identifier>void</identifier>
+      </name>
+    </named>
+    <is-variadic>1</is-variadic>
+  </function>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>variadic-function.cpp</short-path>
+      <source-path>variadic-function.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>h6hupdyuT6SfsCGFl6UUFGtvrcc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <function>
+    <named>
+      <name>
+        <identifier>void</identifier>
+      </name>
+    </named>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <is-variadic>1</is-variadic>
+  </function>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>variadic-function.cpp</short-path>
+      <source-path>variadic-function.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>8nYw0KA23eAszqSOs0wOXAD1DYQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>variadic-function.cpp</short-path>
+      <source-path>variadic-function.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CMaAySU4txrIlGl6edqWDSabBRA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-variadic>1</is-variadic>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>variadic-function.cpp</short-path>
+      <source-path>variadic-function.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>lldWvRg9y+NwRnDpK3x2NF9+e08=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-variadic>1</is-variadic>
+</function>
 </mrdocs>

@@ -1,36 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="detail" id="aMJtdgJFybRcdkRG712j3iC7JeM=">
-    <struct name="base_detail" id="zJyAW21qgGwkRrS6Ea2uUqKSLhE=">
-      <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="4" class="def"/>
-      <function name="do_it" id="0k4Wdt7n3RgOCeAZcrhJ7PruWP0=">
-        <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="6"/>
-        <doc>
-          <brief>
-            <text>Do the thing</text>
-          </brief>
-        </doc>
-      </function>
-    </struct>
-  </namespace>
-  <struct name="derived" id="ABxWcxit2TyVLv16ZxoJKAc6LKw=">
-    <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="11" class="def"/>
-    <base>
-      <type id="zJyAW21qgGwkRrS6Ea2uUqKSLhE=" name="detail::base_detail"/>
-    </base>
-    <function name="do_it" id="o0JbdzeoEgGm/tWclYdgORU0Qyw=">
-      <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="6"/>
-      <doc>
-        <brief>
-          <text>Do the thing</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="own" id="LsIEKTwhFIkvPhRlDXC1p7T+GPU=">
-      <file short-path="impl-defined-base.cpp" source-path="impl-defined-base.cpp" line="13"/>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>aMJtdgJFybRcdkRG712j3iC7JeM=</namespaces>
+    <records>ABxWcxit2TyVLv16ZxoJKAc6LKw=</records>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>detail</name>
+  <source>
+    <location>
+      <short-path>impl-defined-base.cpp</short-path>
+      <source-path>impl-defined-base.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>base_detail</name>
+  <source>
+    <location>
+      <short-path>impl-defined-base.cpp</short-path>
+      <source-path>impl-defined-base.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>aMJtdgJFybRcdkRG712j3iC7JeM=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>0k4Wdt7n3RgOCeAZcrhJ7PruWP0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>do_it</name>
+  <source>
+    <location>
+      <short-path>impl-defined-base.cpp</short-path>
+      <source-path>impl-defined-base.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>0k4Wdt7n3RgOCeAZcrhJ7PruWP0=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Do the thing</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>derived</name>
+  <source>
+    <location>
+      <short-path>impl-defined-base.cpp</short-path>
+      <source-path>impl-defined-base.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
+        <identifier>base_detail</identifier>
+        <name>
+          <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
+          <identifier>detail</identifier>
+        </name>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>o0JbdzeoEgGm/tWclYdgORU0Qyw=</functions>
+      <functions>LsIEKTwhFIkvPhRlDXC1p7T+GPU=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>do_it</name>
+  <source>
+    <location>
+      <short-path>impl-defined-base.cpp</short-path>
+      <source-path>impl-defined-base.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>o0JbdzeoEgGm/tWclYdgORU0Qyw=</id>
+  <extraction>regular</extraction>
+  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Do the thing</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>own</name>
+  <source>
+    <location>
+      <short-path>impl-defined-base.cpp</short-path>
+      <source-path>impl-defined-base.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>LsIEKTwhFIkvPhRlDXC1p7T+GPU=</id>
+  <extraction>regular</extraction>
+  <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

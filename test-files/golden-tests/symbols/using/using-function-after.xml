@@ -1,45 +1,241 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <function name="f" id="Bt/dVoQvE7M4sJbKQH+g/hiv0Os=">
-      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="24"/>
-      <param>
-        <type name="char"/>
-      </param>
-      <doc>
-        <brief>
-          <text>A non-shadowing declaration</text>
-        </brief>
-        <para>
-          <text>This declaration is not part of the shadow declarations of the using directive because it comes after it.</text>
-        </para>
-        <para>
-          <text>Only the declarations at the point of the using directive are considered for shadowing in the documentation.</text>
-        </para>
-      </doc>
-    </function>
-    <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="4"/>
-      <param>
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>A shadow declaration</text>
-        </brief>
-      </doc>
-    </function>
-  </namespace>
-  <using id="FhSdC4kR2+KOxLCiCUQ9mu1WNoY=" class="using" qualifier="A::f">
-    <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="8"/>
-    <doc>
-      <brief>
-        <text>f overloads are also available in the global namespace</text>
-      </brief>
-    </doc>
-    <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
-  </using>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <usings>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</usings>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>gAFZ/q+ghQPrWK8SOl+US+U0jTU=</functions>
+  </namespace-tranche>
+</namespace>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>gAFZ/q+ghQPrWK8SOl+US+U0jTU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>f</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>Bt/dVoQvE7M4sJbKQH+g/hiv0Os=</members>
+  <members>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Bt/dVoQvE7M4sJbKQH+g/hiv0Os=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This declaration is not part of the shadow declarations of the using directive because it comes after it.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Only the declarations at the point of the using directive are considered for shadowing in the documentation.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-shadowing declaration</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A shadow declaration</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<using>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>f overloads are also available in the global namespace</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <class>normal</class>
+  <name>
+    <identifier>f</identifier>
+    <name>
+      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+      <identifier>A</identifier>
+    </name>
+  </name>
+  <shadow-declarations>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</shadow-declarations>
+</using>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-after.cpp</short-path>
+      <source-path>using-function-after.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A shadow declaration</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

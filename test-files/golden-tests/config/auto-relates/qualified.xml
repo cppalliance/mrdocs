@@ -1,134 +1,458 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
-    <namespace name="M" id="/zZYK9RwdepvVZXQEMRgSV41SYM=">
-      <function name="f4" id="K6eFImrP3/sRrXj3u/aj81qc8fg=">
-        <file short-path="qualified.cpp" source-path="qualified.cpp" line="25"/>
-        <param>
-          <type class="lvalue-reference">
-            <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
-          </type>
-        </param>
-        <doc>
-          <brief>
-            <text>A non-member function of ::N::B</text>
-          </brief>
-          <relates>
-            <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
-          </relates>
-        </doc>
-      </function>
-    </namespace>
-    <struct name="B" id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">
-      <file short-path="qualified.cpp" source-path="qualified.cpp" line="16" class="def"/>
-      <doc>
-        <brief>
-          <text>A nested class with non-member functions</text>
-        </brief>
-        <related>
-          <reference id="WfE0quFJSnvTd7XyO5miuq4hsLw=">f3</reference>
-          <reference id="K6eFImrP3/sRrXj3u/aj81qc8fg=">M::f4</reference>
-          <reference id="UBv8CVemoytxgZG/86OYRQMDZ+c=">::f5</reference>
-          <reference id="GoJprm5LvAWleAmGCo2SRy5pP8w=">::O::f6</reference>
-        </related>
-      </doc>
-    </struct>
-    <function name="f2" id="w5MtPPWGKCR+REkFL4NLEJ1omqk=">
-      <file short-path="qualified.cpp" source-path="qualified.cpp" line="12"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>A non-member function of A</text>
-        </brief>
-        <relates>
-          <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-        </relates>
-      </doc>
-    </function>
-    <function name="f3" id="WfE0quFJSnvTd7XyO5miuq4hsLw=">
-      <file short-path="qualified.cpp" source-path="qualified.cpp" line="20"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>A non-member function of B</text>
-        </brief>
-        <relates>
-          <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
-        </relates>
-      </doc>
-    </function>
-  </namespace>
-  <namespace name="O" id="5bODO+U8fW/dyPrEFRkvas/AZdg=">
-    <function name="f6" id="GoJprm5LvAWleAmGCo2SRy5pP8w=">
-      <file short-path="qualified.cpp" source-path="qualified.cpp" line="36"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>A non-member function of ::N::B</text>
-        </brief>
-        <relates>
-          <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
-        </relates>
-      </doc>
-    </function>
-  </namespace>
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="qualified.cpp" source-path="qualified.cpp" line="3" class="def"/>
-    <doc>
-      <brief>
-        <text>A class with non-member functions</text>
-      </brief>
-      <related>
-        <reference id="ooHpLirR92IHAREJQjN6yqVVgDc=">f1</reference>
-        <reference id="w5MtPPWGKCR+REkFL4NLEJ1omqk=">N::f2</reference>
-      </related>
-    </doc>
-  </struct>
-  <function name="f1" id="ooHpLirR92IHAREJQjN6yqVVgDc=">
-    <file short-path="qualified.cpp" source-path="qualified.cpp" line="7"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f5" id="UBv8CVemoytxgZG/86OYRQMDZ+c=">
-    <file short-path="qualified.cpp" source-path="qualified.cpp" line="31"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of ::N::B</text>
-      </brief>
-      <relates>
-        <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
-      </relates>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
+    <namespaces>5bODO+U8fW/dyPrEFRkvas/AZdg=</namespaces>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <functions>ooHpLirR92IHAREJQjN6yqVVgDc=</functions>
+    <functions>UBv8CVemoytxgZG/86OYRQMDZ+c=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>N</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>/zZYK9RwdepvVZXQEMRgSV41SYM=</namespaces>
+    <records>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</records>
+    <functions>w5MtPPWGKCR+REkFL4NLEJ1omqk=</functions>
+    <functions>WfE0quFJSnvTd7XyO5miuq4hsLw=</functions>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>M</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>22</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>/zZYK9RwdepvVZXQEMRgSV41SYM=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <namespace-tranche>
+    <functions>K6eFImrP3/sRrXj3u/aj81qc8fg=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>9</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>K6eFImrP3/sRrXj3u/aj81qc8fg=</id>
+  <extraction>regular</extraction>
+  <parent>/zZYK9RwdepvVZXQEMRgSV41SYM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of ::N::B</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+          <identifier>B</identifier>
+          <name>
+            <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+            <identifier>N</identifier>
+          </name>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A nested class with non-member functions</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>f3</literal>
+      <id>WfE0quFJSnvTd7XyO5miuq4hsLw=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>M::f4</literal>
+      <id>K6eFImrP3/sRrXj3u/aj81qc8fg=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>::f5</literal>
+      <id>UBv8CVemoytxgZG/86OYRQMDZ+c=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>::O::f6</literal>
+      <id>GoJprm5LvAWleAmGCo2SRy5pP8w=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>w5MtPPWGKCR+REkFL4NLEJ1omqk=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>WfE0quFJSnvTd7XyO5miuq4hsLw=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of B</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+          <identifier>B</identifier>
+          <name>
+            <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+            <identifier>N</identifier>
+          </name>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>O</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5bODO+U8fW/dyPrEFRkvas/AZdg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>GoJprm5LvAWleAmGCo2SRy5pP8w=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>GoJprm5LvAWleAmGCo2SRy5pP8w=</id>
+  <extraction>regular</extraction>
+  <parent>5bODO+U8fW/dyPrEFRkvas/AZdg=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of ::N::B</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+          <identifier>B</identifier>
+          <name>
+            <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+            <identifier>N</identifier>
+          </name>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class with non-member functions</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>f1</literal>
+      <id>ooHpLirR92IHAREJQjN6yqVVgDc=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>N::f2</literal>
+      <id>w5MtPPWGKCR+REkFL4NLEJ1omqk=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ooHpLirR92IHAREJQjN6yqVVgDc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>qualified.cpp</short-path>
+      <source-path>qualified.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>UBv8CVemoytxgZG/86OYRQMDZ+c=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of ::N::B</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
+          <identifier>B</identifier>
+          <name>
+            <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+            <identifier>N</identifier>
+          </name>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

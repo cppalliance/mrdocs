@@ -1,31 +1,204 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="N0" id="YAQKEfxRmUjg43kkhT1n65uziVY=">
-    <function name="f0" id="YuxL8gi2heeMoessDsonV4JrAE8=">
-      <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="3"/>
-      <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="16"/>
-    </function>
-  </namespace>
-  <namespace name="N4" id="5KW7wj+cGonGOIACqamGb1QGyoA=">
-    <namespace name="N5" id="9FbH1+tQ3QOHCAntoCpAF02+8Kk=">
-      <function name="f1" id="sK1hKPIAxfUIYUOIhOe9SnoXfg0=">
-        <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="43"/>
-      </function>
-    </namespace>
-    <namespace name="N6" id="MNQItF4HxM3PrWN0lDhIV9SWyJ0=">
-      <function name="f1" id="A2qNEj3jle5vHK6wdVGm8fPrpmA=">
-        <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="49"/>
-      </function>
-    </namespace>
-  </namespace>
-  <namespace name="N7" id="8E1oh5tVObxYv0gOEFPZQKych8Q=">
-    <namespace name="N9" id="u4ylO6On5J13jZbcYjnClcxqHJ4=">
-      <function name="g0" id="n2jChqyQNCb7NN3FjohUkKbB2M8=">
-        <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="64"/>
-      </function>
-    </namespace>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>YAQKEfxRmUjg43kkhT1n65uziVY=</namespaces>
+    <namespaces>5KW7wj+cGonGOIACqamGb1QGyoA=</namespaces>
+    <namespaces>8E1oh5tVObxYv0gOEFPZQKych8Q=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>N0</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YAQKEfxRmUjg43kkhT1n65uziVY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>YuxL8gi2heeMoessDsonV4JrAE8=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YuxL8gi2heeMoessDsonV4JrAE8=</id>
+  <extraction>regular</extraction>
+  <parent>YAQKEfxRmUjg43kkhT1n65uziVY=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>N4</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>38</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5KW7wj+cGonGOIACqamGb1QGyoA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>9FbH1+tQ3QOHCAntoCpAF02+8Kk=</namespaces>
+    <namespaces>MNQItF4HxM3PrWN0lDhIV9SWyJ0=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>N5</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>40</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>9FbH1+tQ3QOHCAntoCpAF02+8Kk=</id>
+  <extraction>regular</extraction>
+  <parent>5KW7wj+cGonGOIACqamGb1QGyoA=</parent>
+  <namespace-tranche>
+    <functions>sK1hKPIAxfUIYUOIhOe9SnoXfg0=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>sK1hKPIAxfUIYUOIhOe9SnoXfg0=</id>
+  <extraction>regular</extraction>
+  <parent>9FbH1+tQ3QOHCAntoCpAF02+8Kk=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>N6</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>MNQItF4HxM3PrWN0lDhIV9SWyJ0=</id>
+  <extraction>regular</extraction>
+  <parent>5KW7wj+cGonGOIACqamGb1QGyoA=</parent>
+  <namespace-tranche>
+    <functions>A2qNEj3jle5vHK6wdVGm8fPrpmA=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>A2qNEj3jle5vHK6wdVGm8fPrpmA=</id>
+  <extraction>regular</extraction>
+  <parent>MNQItF4HxM3PrWN0lDhIV9SWyJ0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>N7</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>53</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>8E1oh5tVObxYv0gOEFPZQKych8Q=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>u4ylO6On5J13jZbcYjnClcxqHJ4=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>N9</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>61</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>u4ylO6On5J13jZbcYjnClcxqHJ4=</id>
+  <extraction>regular</extraction>
+  <parent>8E1oh5tVObxYv0gOEFPZQKych8Q=</parent>
+  <namespace-tranche>
+    <functions>n2jChqyQNCb7NN3FjohUkKbB2M8=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>g0</name>
+  <source>
+    <location>
+      <short-path>blacklist_0.cpp</short-path>
+      <source-path>blacklist_0.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>n2jChqyQNCb7NN3FjohUkKbB2M8=</id>
+  <extraction>regular</extraction>
+  <parent>u4ylO6On5J13jZbcYjnClcxqHJ4=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

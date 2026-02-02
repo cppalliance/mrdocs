@@ -1,294 +1,1206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="15" class="def"/>
-    <doc>
-      <brief>
-        <text>Overload briefs from function or operator classes</text>
-      </brief>
-      <related>
-        <reference id="16NjhjbwoK+Vd6t1bcmM8VOHLNA=">operator+</reference>
-      </related>
-    </doc>
-    <function class="constructor" name="A" id="NsCpw4jurMmwsYzp5jE+NgG1eLE=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="18"/>
-      <doc>
-        <brief>
-          <text>First constructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function class="constructor" name="A" id="HkGsg4usg6CytwvmqPS1ZbH99t8=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="24"/>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Second constructor</text>
-        </brief>
-        <param name="a">
-          <text>Describe a</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator=" id="RRhK09XtJWQqLWvHlgZUv4deW1E=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="31"/>
-      <attr id="operator" name="assign" value="14"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </return>
-      <param name="a">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Assign from A</text>
-        </brief>
-        <returns>
-          <mono>*this</mono>
-        </returns>
-        <param name="a">
-          <text>Describe a</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator=" id="aOkWiNwfbs/JSs8z9GP/vTAwsbA=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="39"/>
-      <attr id="operator" name="assign" value="14"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Assign from int</text>
-        </brief>
-        <returns>
-          <mono>*this</mono>
-        </returns>
-        <param name="a">
-          <text>Describe b</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator+" id="ycaQWu1bpL50KsLIdks09uNq0fw=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="54"/>
-      <attr id="operator" name="plus" value="5"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Addition operator for ints</text>
-        </brief>
-        <returns>
-          <mono>*this</mono>
-        </returns>
-        <param name="a">
-          <text>Describe a</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator+" id="4jg29DjTLdYrWC4PLhyeE68ztvQ=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="47"/>
-      <attr id="operator" name="plus" value="5"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <param name="a">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Addition operator for As</text>
-        </brief>
-        <returns>
-          <mono>*this</mono>
-        </returns>
-        <param name="a">
-          <text>Describe a</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator-" id="JJtrUCsKraCMZOeI5dC8UzKCEmI=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="64"/>
-      <attr id="operator" name="minus" value="6"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Unary operator- for A</text>
-        </brief>
-        <para>
-          <text>No way to generate a brief from the operator kind because there are unary and binary operators.</text>
-        </para>
-        <returns>
-          <text>Result</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="operator-" id="x8gblCF18xnamr/xm7nsLiL0taU=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="73"/>
-      <attr id="operator" name="minus" value="6"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Binary operator- for A</text>
-        </brief>
-        <para>
-          <text>No way to generate a brief from the operator kind.</text>
-        </para>
-        <returns>
-          <text>Result</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="77" class="def"/>
-    <doc>
-      <brief>
-        <text>Auxiliary class</text>
-      </brief>
-      <related>
-        <reference id="bXeiHBnzzEhdDwJnWuc6kLHjG08=">operator+</reference>
-      </related>
-    </doc>
-  </struct>
-  <function name="no_way_to_infer_this_brief" id="KZjtZopBNIQu6m7CSYtaW15nzVY=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="93"/>
-    <doc>
-      <brief>
-        <text>Function with no params</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="no_way_to_infer_this_brief" id="GWvdMejp7gyak8VbJmHqkdDAIwk=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="99"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Function with single param</text>
-      </brief>
-      <param name="a">
-        <text>Describe a</text>
-      </param>
-    </doc>
-  </function>
-  <function name="operator+" id="16NjhjbwoK+Vd6t1bcmM8VOHLNA=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="83"/>
-    <attr id="operator" name="plus" value="5"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <param name="value">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Unary operator for A</text>
-      </brief>
-      <returns>
-        <text>Result</text>
-      </returns>
-      <param name="value">
-        <text>The operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator+" id="bXeiHBnzzEhdDwJnWuc6kLHjG08=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="89"/>
-    <attr id="operator" name="plus" value="5"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <param name="value">
-      <type class="lvalue-reference">
-        <pointee-type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Unary operator for B</text>
-      </brief>
-      <returns>
-        <text>Result</text>
-      </returns>
-      <param name="value">
-        <text>The operand</text>
-      </param>
-      <relates>
-        <reference id="3JsK1DO0O+wZhv+0meptQrbs3fY=">B</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="sameBrief" id="o9LYFrNet5gKZmsdnuPL/NS0fA8=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="5"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Function with same brief</text>
-      </brief>
-      <param name="a">
-        <text>Describe a</text>
-      </param>
-    </doc>
-  </function>
-  <function name="sameBrief" id="6KV+YRw8Uydz6Cbetqmnu2NSCNw=">
-    <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="12"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <param name="b">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Function with same brief</text>
-      </brief>
-      <param name="a">
-        <text>Describe a again</text>
-      </param>
-      <param name="b">
-        <text>Describe b</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <functions>RjY3QWFLXBVMaEm9BnT1iH8A5JU=</functions>
+    <functions>lk5hZ+u3TPuYLv5UfIl4hOGGzjM=</functions>
+    <functions>fSdp0tRtLwcb+V3z/2Nwq8IdAAU=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Overload briefs from function or operator classes</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator+</literal>
+      <id>16NjhjbwoK+Vd6t1bcmM8VOHLNA=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>+yf24/wS549V5ZqYWGboHExPRoY=</functions>
+      <functions>TBURMVj9++7bBh2sg4BgMGmdMP4=</functions>
+      <functions>DqUsxXtK/1rFeA0YoMBaT2oD5iw=</functions>
+      <functions>nmsbNfdtYwc961rRlS7GTlnL3ik=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>+yf24/wS549V5ZqYWGboHExPRoY=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Constructors</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <func-class>constructor</func-class>
+  <members>NsCpw4jurMmwsYzp5jE+NgG1eLE=</members>
+  <members>HkGsg4usg6CytwvmqPS1ZbH99t8=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>NsCpw4jurMmwsYzp5jE+NgG1eLE=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>First constructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>HkGsg4usg6CytwvmqPS1ZbH99t8=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Second constructor</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>TBURMVj9++7bBh2sg4BgMGmdMP4=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Assignment operators</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this</literal>
+        </text>
+      </code>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>RRhK09XtJWQqLWvHlgZUv4deW1E=</members>
+  <members>aOkWiNwfbs/JSs8z9GP/vTAwsbA=</members>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+</overloads>
+<function>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RRhK09XtJWQqLWvHlgZUv4deW1E=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Assign from A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this</literal>
+        </text>
+      </code>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>aOkWiNwfbs/JSs8z9GP/vTAwsbA=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Assign from int</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this</literal>
+        </text>
+      </code>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe b</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>54</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>DqUsxXtK/1rFeA0YoMBaT2oD5iw=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Addition operators</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this</literal>
+        </text>
+      </code>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>ycaQWu1bpL50KsLIdks09uNq0fw=</members>
+  <members>4jg29DjTLdYrWC4PLhyeE68ztvQ=</members>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>54</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ycaQWu1bpL50KsLIdks09uNq0fw=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Addition operator for ints</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this</literal>
+        </text>
+      </code>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>4jg29DjTLdYrWC4PLhyeE68ztvQ=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Addition operator for As</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>*this</literal>
+        </text>
+      </code>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>operator-</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>73</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>nmsbNfdtYwc961rRlS7GTlnL3ik=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Unary minus operators</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Result</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>JJtrUCsKraCMZOeI5dC8UzKCEmI=</members>
+  <members>x8gblCF18xnamr/xm7nsLiL0taU=</members>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>operator-</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>JJtrUCsKraCMZOeI5dC8UzKCEmI=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>No way to generate a brief from the operator kind because there are unary and binary operators.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Unary operator- for A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Result</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator-</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>73</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>x8gblCF18xnamr/xm7nsLiL0taU=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>No way to generate a brief from the operator kind.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Binary operator- for A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Result</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>77</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Auxiliary class</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator+</literal>
+      <id>bXeiHBnzzEhdDwJnWuc6kLHjG08=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>no_way_to_infer_this_brief</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>93</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>99</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RjY3QWFLXBVMaEm9BnT1iH8A5JU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>no_way_to_infer_this_brief</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>KZjtZopBNIQu6m7CSYtaW15nzVY=</members>
+  <members>GWvdMejp7gyak8VbJmHqkdDAIwk=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>no_way_to_infer_this_brief</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>93</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>KZjtZopBNIQu6m7CSYtaW15nzVY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function with no params</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>no_way_to_infer_this_brief</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>99</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>GWvdMejp7gyak8VbJmHqkdDAIwk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function with single param</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<overloads>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>83</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>89</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>lk5hZ+u3TPuYLv5UfIl4hOGGzjM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Unary plus operators</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Result</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>16NjhjbwoK+Vd6t1bcmM8VOHLNA=</members>
+  <members>bXeiHBnzzEhdDwJnWuc6kLHjG08=</members>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>83</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>16NjhjbwoK+Vd6t1bcmM8VOHLNA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Unary operator for A</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Result</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The operand</literal>
+      </text>
+      <name>value</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>89</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>bXeiHBnzzEhdDwJnWuc6kLHjG08=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Unary operator for B</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Result</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The operand</literal>
+      </text>
+      <name>value</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>B</literal>
+      <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+          <identifier>B</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<overloads>
+  <name>sameBrief</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>fSdp0tRtLwcb+V3z/2Nwq8IdAAU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function with same brief</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe b</literal>
+      </text>
+      <name>b</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>o9LYFrNet5gKZmsdnuPL/NS0fA8=</members>
+  <members>6KV+YRw8Uydz6Cbetqmnu2NSCNw=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>sameBrief</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>o9LYFrNet5gKZmsdnuPL/NS0fA8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function with same brief</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>sameBrief</name>
+  <source>
+    <location>
+      <short-path>overloads-brief.cpp</short-path>
+      <source-path>overloads-brief.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>6KV+YRw8Uydz6Cbetqmnu2NSCNw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function with same brief</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a again</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe b</literal>
+      </text>
+      <name>b</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>b</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

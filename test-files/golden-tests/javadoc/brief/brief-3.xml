@@ -1,60 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="5"/>
-    <param>
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Integer overload.</text>
-      </brief>
-      <para>
-        <text>More info</text>
-      </para>
-    </doc>
-  </function>
-  <function name="f" id="8HikSjplV248Xlimdc3WQFts5g8=">
-    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="14"/>
-    <param>
-      <type name="double"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Integer overload.</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f" id="dA/yAiFWSDtn+ZTCAVyKiceMjwY=">
-    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="11"/>
-    <param>
-      <type class="pointer">
-        <pointee-type name="char" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>C string overload.</text>
-      </brief>
-      <para>
-        <text>More info</text>
-      </para>
-    </doc>
-  </function>
-  <function name="f" id="u1t7CFC30SbmMkunoYuyE7paABA=">
-    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="17"/>
-    <param>
-      <type class="pointer">
-        <pointee-type name="float" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>C string overload.</text>
-      </brief>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
+  </namespace-tranche>
 </namespace>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>f</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>ackjGh57CJQLwtO8PihiSPPKIBY=</members>
+  <members>8HikSjplV248Xlimdc3WQFts5g8=</members>
+  <members>dA/yAiFWSDtn+ZTCAVyKiceMjwY=</members>
+  <members>u1t7CFC30SbmMkunoYuyE7paABA=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>More info</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Integer overload.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>8HikSjplV248Xlimdc3WQFts5g8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Integer overload.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>dA/yAiFWSDtn+ZTCAVyKiceMjwY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>More info</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>C string overload.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>u1t7CFC30SbmMkunoYuyE7paABA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>C string overload.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <identifier>float</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

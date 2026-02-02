@@ -1,39 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="7"/>
-      <type id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A&lt;T&gt;"/>
-    </namespace-alias>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="1" class="def"/>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="U" class="type"/>
-    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
-      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="4" class="def"/>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="D" id="i5oK/nki0o3BH2ZAgkGyaGib07g=">
-      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="10" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <namespace-alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
-          <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="13"/>
-          <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, U&gt;"/>
-        </namespace-alias>
-      </template>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>f75RIL8qKOwbyH6ffvrv59F0nCA=</typedefs>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+    <records>swBEqeWAJoaWVKty+1lCoYUK04A=</records>
+    <records>i5oK/nki0o3BH2ZAgkGyaGib07g=</records>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>alias-template.cpp</short-path>
+      <source-path>alias-template.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>alias-template.cpp</short-path>
+      <source-path>alias-template.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>alias-template.cpp</short-path>
+      <source-path>alias-template.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>alias-template.cpp</short-path>
+      <source-path>alias-template.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>i5oK/nki0o3BH2ZAgkGyaGib07g=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>STM3CgeaOEakPrQJdlRWWM4MMFo=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>alias-template.cpp</short-path>
+      <source-path>alias-template.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>STM3CgeaOEakPrQJdlRWWM4MMFo=</id>
+  <extraction>regular</extraction>
+  <parent>i5oK/nki0o3BH2ZAgkGyaGib07g=</parent>
+  <named>
+    <name>
+      <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
 </mrdocs>

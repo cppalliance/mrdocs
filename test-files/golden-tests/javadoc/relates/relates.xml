@@ -1,36 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="relates.cpp" source-path="relates.cpp" line="3" class="def"/>
-    <doc>
-      <brief>
-        <text>A brief for A.</text>
-      </brief>
-      <related>
-        <reference id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">f</reference>
-      </related>
-    </doc>
-  </struct>
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="relates.cpp" source-path="relates.cpp" line="7" class="def"/>
-    <doc>
-      <brief>
-        <text>A brief for B</text>
-      </brief>
-    </doc>
-  </struct>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="relates.cpp" source-path="relates.cpp" line="13"/>
-    <doc>
-      <brief>
-        <text>A brief for f.</text>
-      </brief>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>relates.cpp</short-path>
+      <source-path>relates.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A brief for A.</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>relates.cpp</short-path>
+      <source-path>relates.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A brief for B</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>relates.cpp</short-path>
+      <source-path>relates.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A brief for f.</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

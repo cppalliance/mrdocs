@@ -1,25 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="3" class="def"/>
-    <friend id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-      <befriended id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
-    </friend>
-    <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
-      <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="7"/>
-      <attr id="is-no-return"/>
-    </function>
-    <function name="f2" id="QjsWLydQujVa097RP8f2Lq3nLQ4=">
-      <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="5"/>
-      <attr id="is-no-return"/>
-      <attr id="storage-class" name="static" value="2"/>
-    </function>
-  </struct>
-  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="1"/>
-    <attr id="is-no-return"/>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
+    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>T</name>
+  <source>
+    <location>
+      <short-path>noreturn.cpp</short-path>
+      <source-path>noreturn.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</functions>
+      <static-functions>QjsWLydQujVa097RP8f2Lq3nLQ4=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  </friend>
+</record>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>noreturn.cpp</short-path>
+      <source-path>noreturn.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-no-return>1</is-no-return>
+  <is-record-method>1</is-record-method>
+  <attributes>noreturn</attributes>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>noreturn.cpp</short-path>
+      <source-path>noreturn.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>QjsWLydQujVa097RP8f2Lq3nLQ4=</id>
+  <extraction>regular</extraction>
+  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-no-return>1</is-no-return>
+  <is-record-method>1</is-record-method>
+  <attributes>noreturn</attributes>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>noreturn.cpp</short-path>
+      <source-path>noreturn.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>14</column-number>
+    </location>
+  </source>
+  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-no-return>1</is-no-return>
+  <attributes>noreturn</attributes>
+</function>
 </mrdocs>

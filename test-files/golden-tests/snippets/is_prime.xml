@@ -1,32 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="is_prime" exception-spec="noexcept" id="X6uKu3BxyFPud2u42zNKbyA0XfU=">
-    <file short-path="is_prime.cpp" source-path="is_prime.cpp" line="10"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="n">
-      <type name="unsigned long long"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Return true if a number is prime.</text>
-      </brief>
-      <head>Complexity</head>
-      <para>
-        <text>Linear in n.</text>
-      </para>
-      <returns>
-        <text>Whether </text>
-        <mono>n</mono>
-        <text> is prime.</text>
-      </returns>
-      <param name="n">
-        <text>The number to test</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>X6uKu3BxyFPud2u42zNKbyA0XfU=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>is_prime</name>
+  <source>
+    <location>
+      <short-path>is_prime.cpp</short-path>
+      <source-path>is_prime.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>X6uKu3BxyFPud2u42zNKbyA0XfU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Complexity</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Linear in n.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return true if a number is prime.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Whether </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>n</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> is prime.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number to test</literal>
+      </text>
+      <name>n</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>unsigned long long</identifier>
+      </name>
+    </named>
+    <name>n</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

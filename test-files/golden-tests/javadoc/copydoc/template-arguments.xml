@@ -1,167 +1,513 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <namespace-alias name="BInt" id="knD7LwHco1Rc3UN13fDrTDK0Fg4=">
-      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="20"/>
-      <type id="n2ekv7/9IraylJIibujZeExrML4=" name="B&lt;int&gt;"/>
-      <doc>
-        <brief>
-          <text>Specialization of B for int.</text>
-        </brief>
-      </doc>
-    </namespace-alias>
-    <namespace-alias name="BInt2" id="mAmfKzQQ8Mg78wrSV5C5vqhB38M=">
-      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="28"/>
-      <type id="zWh7HJU4uEOW6SQu1/X6/fBkFq0=" name="B&lt;int, 2&gt;"/>
-      <doc>
-        <brief>
-          <text>Specialization of B for int with value 2.</text>
-        </brief>
-      </doc>
-    </namespace-alias>
-    <template>
-      <tparam name="T" class="type"/>
-      <tparam name="I" class="constant" type="int"/>
-      <namespace-alias name="B_t" id="40FFJWRtg8LikFmMYkFhi3taM7w=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="11"/>
-        <type id="jJtr0x+P2kzEfxAlp7Hjo5akJho=" name="B&lt;T, I&gt;"/>
-        <doc>
-          <brief>
-            <text>Main class template for B.</text>
-          </brief>
-          <tparam name="T">
-            <text>The type parameter.</text>
-          </tparam>
-        </doc>
-      </namespace-alias>
-    </template>
-    <namespace-alias name="CDTrue" id="EFfBXjCvLk0J5w7aUT/GZ5D4Zww=">
-      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="60"/>
-      <type id="+AYNfv3bBiQwa6z9A60U/F7dvXE=" name="C&lt;D, true&gt;"/>
-      <doc>
-        <brief>
-          <text>Specialization of C for D with true.</text>
-        </brief>
-      </doc>
-    </namespace-alias>
-    <namespace-alias name="CIntTrue" id="9GvIXSW1TfhlI8qPuV4xPDXT5+A=">
-      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="48"/>
-      <type id="w5ssdgUOfKNpDbPFUfSYesxFAc8=" name="C&lt;int, true&gt;"/>
-      <doc>
-        <brief>
-          <text>Specialization of C for D with true.</text>
-        </brief>
-      </doc>
-    </namespace-alias>
-    <template>
-      <tparam name="T" class="type"/>
-      <tparam name="B" class="constant" type="bool"/>
-      <namespace-alias name="C_t" id="N9KZXiVz/IMBW2CcGYh+8cvUeFQ=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="39"/>
-        <type id="WjzMcZfRtncsiJEvL1/LzUes/GM=" name="C&lt;T, B&gt;"/>
-        <doc>
-          <brief>
-            <text>Main class template for C.</text>
-          </brief>
-          <tparam name="T">
-            <text>The type parameter.</text>
-          </tparam>
-        </doc>
-      </namespace-alias>
-    </template>
-    <template>
-      <tparam name="T" class="type"/>
-      <tparam class="constant" type="int" default="0"/>
-      <struct name="B" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="7"/>
-        <doc>
-          <brief>
-            <text>Main class template for B.</text>
-          </brief>
-          <tparam name="T">
-            <text>The type parameter.</text>
-          </tparam>
-          <tparam name="int">
-            <text>The integer parameter with a default value of 0.</text>
-          </tparam>
-        </doc>
-      </struct>
-    </template>
-    <template class="explicit" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
-      <targ class="type" type="int"/>
-      <struct name="B" id="n2ekv7/9IraylJIibujZeExrML4=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="17" class="def"/>
-        <doc>
-          <brief>
-            <text>Specialization of B for int.</text>
-          </brief>
-        </doc>
-      </struct>
-    </template>
-    <template class="explicit" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
-      <targ class="type" type="int"/>
-      <targ class="constant" value="2"/>
-      <struct name="B" id="zWh7HJU4uEOW6SQu1/X6/fBkFq0=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="25" class="def"/>
-        <doc>
-          <brief>
-            <text>Specialization of B for int with value 2.</text>
-          </brief>
-        </doc>
-      </struct>
-    </template>
-    <template>
-      <tparam name="T" class="type"/>
-      <tparam class="constant" type="bool" default="false"/>
-      <struct name="C" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="35"/>
-        <doc>
-          <brief>
-            <text>Main class template for C.</text>
-          </brief>
-          <tparam name="T">
-            <text>The type parameter.</text>
-          </tparam>
-          <tparam name="bool">
-            <text>The boolean parameter with a default value of false.</text>
-          </tparam>
-        </doc>
-      </struct>
-    </template>
-    <template class="explicit" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
-      <targ class="type" type="D"/>
-      <targ class="constant" value="true"/>
-      <struct name="C" id="+AYNfv3bBiQwa6z9A60U/F7dvXE=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="57" class="def"/>
-        <doc>
-          <brief>
-            <text>Specialization of C for D with true.</text>
-          </brief>
-        </doc>
-      </struct>
-    </template>
-    <template class="explicit" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
-      <targ class="type" type="int"/>
-      <targ class="constant" value="true"/>
-      <struct name="C" id="w5ssdgUOfKNpDbPFUfSYesxFAc8=">
-        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="45" class="def"/>
-        <doc>
-          <brief>
-            <text>Specialization of C for int with true.</text>
-          </brief>
-        </doc>
-      </struct>
-    </template>
-    <struct name="D" id="/TldxA72JGXtufh5RbJgxLW2mwU=">
-      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="52"/>
-      <doc>
-        <brief>
-          <text>Helper struct D.</text>
-        </brief>
-      </doc>
-    </struct>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <typedefs>knD7LwHco1Rc3UN13fDrTDK0Fg4=</typedefs>
+    <typedefs>mAmfKzQQ8Mg78wrSV5C5vqhB38M=</typedefs>
+    <typedefs>40FFJWRtg8LikFmMYkFhi3taM7w=</typedefs>
+    <typedefs>EFfBXjCvLk0J5w7aUT/GZ5D4Zww=</typedefs>
+    <typedefs>9GvIXSW1TfhlI8qPuV4xPDXT5+A=</typedefs>
+    <typedefs>N9KZXiVz/IMBW2CcGYh+8cvUeFQ=</typedefs>
+    <records>jJtr0x+P2kzEfxAlp7Hjo5akJho=</records>
+    <records>n2ekv7/9IraylJIibujZeExrML4=</records>
+    <records>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</records>
+    <records>WjzMcZfRtncsiJEvL1/LzUes/GM=</records>
+    <records>+AYNfv3bBiQwa6z9A60U/F7dvXE=</records>
+    <records>w5ssdgUOfKNpDbPFUfSYesxFAc8=</records>
+    <records>/TldxA72JGXtufh5RbJgxLW2mwU=</records>
+  </namespace-tranche>
+</namespace>
+<typedef>
+  <name>BInt</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>knD7LwHco1Rc3UN13fDrTDK0Fg4=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of B for int.</literal>
+      </text>
+      <copied-from>B&lt;int&gt;</copied-from>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <id>n2ekv7/9IraylJIibujZeExrML4=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>BInt2</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>mAmfKzQQ8Mg78wrSV5C5vqhB38M=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of B for int with value 2.</literal>
+      </text>
+      <copied-from>B&lt;int, 2&gt;</copied-from>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>B_t</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>40FFJWRtg8LikFmMYkFhi3taM7w=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Main class template for B.</literal>
+      </text>
+      <copied-from>B</copied-from>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The type parameter.</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+  </doc-comment>
+  <named>
+    <name>
+      <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
+      <identifier>B</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>CDTrue</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>60</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>EFfBXjCvLk0J5w7aUT/GZ5D4Zww=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of C for D with true.</literal>
+      </text>
+      <copied-from>C&lt;D, true&gt;</copied-from>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
+      <identifier>C</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>CIntTrue</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>48</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>9GvIXSW1TfhlI8qPuV4xPDXT5+A=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of C for D with true.</literal>
+      </text>
+      <copied-from>C&lt;int, true&gt;</copied-from>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
+      <identifier>C</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>C_t</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>N9KZXiVz/IMBW2CcGYh+8cvUeFQ=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Main class template for C.</literal>
+      </text>
+      <copied-from>C</copied-from>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The type parameter.</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+  </doc-comment>
+  <named>
+    <name>
+      <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
+      <identifier>C</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Main class template for B.</literal>
+      </text>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The type parameter.</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The integer parameter with a default value of 0.</literal>
+      </text>
+      <name>int</name>
+    </t-param>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>n2ekv7/9IraylJIibujZeExrML4=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of B for int.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of B for int with value 2.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Main class template for C.</literal>
+      </text>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The type parameter.</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The boolean parameter with a default value of false.</literal>
+      </text>
+      <name>bool</name>
+    </t-param>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>57</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of C for D with true.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>45</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization of C for int with true.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>template-arguments.cpp</short-path>
+      <source-path>template-arguments.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Helper struct D.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

@@ -1,26 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="iw+p9e4sqTWCzDSP2LoIa8mbCQI=">
-    <file short-path="auto.cpp" source-path="auto.cpp" line="7"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <param name="value">
-      <type name="auto"/>
-    </param>
-    <doc>
-      <brief>
-        <text>A function that uses auto</text>
-      </brief>
-      <returns>
-        <text>The result.</text>
-      </returns>
-      <param name="value">
-        <text>The value to use.</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>iw+p9e4sqTWCzDSP2LoIa8mbCQI=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>auto.cpp</short-path>
+      <source-path>auto.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>iw+p9e4sqTWCzDSP2LoIa8mbCQI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function that uses auto</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The result.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to use.</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>auto</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

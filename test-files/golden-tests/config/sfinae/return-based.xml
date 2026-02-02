@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f" requires="std::is_class_v&lt;T&gt;" id="DCJhD2r+8y4fkjzei4WTJAPHCaE=">
-      <file short-path="return-based.cpp" source-path="return-based.cpp" line="5"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>DCJhD2r+8y4fkjzei4WTJAPHCaE=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>return-based.cpp</short-path>
+      <source-path>return-based.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>DCJhD2r+8y4fkjzei4WTJAPHCaE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

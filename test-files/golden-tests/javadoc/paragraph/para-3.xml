@@ -1,28 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="my_function" id="jv2AC4inoS2L4+tVOPxfYiZpb3g=">
-    <file short-path="para-3.cpp" source-path="para-3.cpp" line="16"/>
-    <doc>
-      <brief>
-        <text>A function</text>
-      </brief>
-      <head>A heading.</head>
-      <para>
-        <text>Some text.</text>
-      </para>
-      <para>
-        <text>More text...</text>
-      </para>
-      <para>
-        <text>Another paragraph Next line</text>
-      </para>
-      <head>Exception safety</head>
-      <para>
-        <text>No-throw guarantee.</text>
-      </para>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>jv2AC4inoS2L4+tVOPxfYiZpb3g=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>my_function</name>
+  <source>
+    <location>
+      <short-path>para-3.cpp</short-path>
+      <source-path>para-3.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>jv2AC4inoS2L4+tVOPxfYiZpb3g=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A heading.</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Some text.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>More text...</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Another paragraph Next line</literal>
+      </text>
+    </paragraph>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Exception safety</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>No-throw guarantee.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

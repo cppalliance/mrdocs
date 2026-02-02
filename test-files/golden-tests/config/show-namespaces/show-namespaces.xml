@@ -1,19 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <namespace name="B" id="4hr3niqdAlVLoJDRDfOf4nP1zbU=">
-      <function name="c" id="DizZvG68aMTqxVPnK/zif7Uib/g=">
-        <file short-path="show-namespaces.cpp" source-path="show-namespaces.cpp" line="6"/>
-      </function>
-    </namespace>
-    <function name="b" id="mpQAkmTKteaRIVNdMC+lz4NOG1o=">
-      <file short-path="show-namespaces.cpp" source-path="show-namespaces.cpp" line="4"/>
-    </function>
-  </namespace>
-  <function name="a" id="SyGXheCn5nPav+TPUC0PuSZPmIo=">
-    <file short-path="show-namespaces.cpp" source-path="show-namespaces.cpp" line="1"/>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <functions>SyGXheCn5nPav+TPUC0PuSZPmIo=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>4hr3niqdAlVLoJDRDfOf4nP1zbU=</namespaces>
+    <functions>mpQAkmTKteaRIVNdMC+lz4NOG1o=</functions>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <namespace-tranche>
+    <functions>DizZvG68aMTqxVPnK/zif7Uib/g=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>c</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>DizZvG68aMTqxVPnK/zif7Uib/g=</id>
+  <extraction>regular</extraction>
+  <parent>4hr3niqdAlVLoJDRDfOf4nP1zbU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>b</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>mpQAkmTKteaRIVNdMC+lz4NOG1o=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>a</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>SyGXheCn5nPav+TPUC0PuSZPmIo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

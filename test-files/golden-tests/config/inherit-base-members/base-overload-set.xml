@@ -1,64 +1,283 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="Base" id="ZIHuevKEF1ZlGviVwUZq1CEFBRc=">
-    <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="6" class="def"/>
-    <base>
-      <type id="2iD5AHuu7qrCVJnAauz4We2QkKU=" name="ConstBase"/>
-    </base>
-    <function name="foo" id="pSUoXAwvwzBmhWkB1ABLnXwZdkY=">
-      <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="9"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-    <function name="foo" id="hbsgojOPl9JVh9Nb8C7b2dZ389k=">
-      <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="10"/>
-      <attr id="is-const"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-  </class>
-  <class name="C" id="BrX2oZup9qgy4SfJloKCuUYZshA=">
-    <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="13" class="def"/>
-    <base>
-      <type id="ZIHuevKEF1ZlGviVwUZq1CEFBRc=" name="Base"/>
-    </base>
-    <function name="foo" id="pSUoXAwvwzBmhWkB1ABLnXwZdkY=">
-      <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="9"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-    <function name="foo" id="hbsgojOPl9JVh9Nb8C7b2dZ389k=">
-      <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="10"/>
-      <attr id="is-const"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-  </class>
-  <class name="ConstBase" id="2iD5AHuu7qrCVJnAauz4We2QkKU=">
-    <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="1" class="def"/>
-    <function name="foo" id="Q5DcZVrEwKvh1JSM5lUHNrOvQlU=">
-      <file short-path="base-overload-set.cpp" source-path="base-overload-set.cpp" line="3"/>
-      <attr id="is-const"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</records>
+    <records>BrX2oZup9qgy4SfJloKCuUYZshA=</records>
+    <records>2iD5AHuu7qrCVJnAauz4We2QkKU=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>Base</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>2iD5AHuu7qrCVJnAauz4We2QkKU=</id>
+        <identifier>ConstBase</identifier>
+      </name>
+    </named>
+  </base>
+  <derived>BrX2oZup9qgy4SfJloKCuUYZshA=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>QHJvDmodINf8DNWem4Zc6XU8nvk=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>QHJvDmodINf8DNWem4Zc6XU8nvk=</id>
+  <extraction>regular</extraction>
+  <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
+  <func-class>normal</func-class>
+  <members>pSUoXAwvwzBmhWkB1ABLnXwZdkY=</members>
+  <members>hbsgojOPl9JVh9Nb8C7b2dZ389k=</members>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>pSUoXAwvwzBmhWkB1ABLnXwZdkY=</id>
+  <extraction>regular</extraction>
+  <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>hbsgojOPl9JVh9Nb8C7b2dZ389k=</id>
+  <extraction>regular</extraction>
+  <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</id>
+        <identifier>Base</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>QHJvDmodINf8DNWem4Zc6XU8nvk=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>QHJvDmodINf8DNWem4Zc6XU8nvk=</id>
+  <extraction>regular</extraction>
+  <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
+  <func-class>normal</func-class>
+  <members>pSUoXAwvwzBmhWkB1ABLnXwZdkY=</members>
+  <members>hbsgojOPl9JVh9Nb8C7b2dZ389k=</members>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>pSUoXAwvwzBmhWkB1ABLnXwZdkY=</id>
+  <extraction>regular</extraction>
+  <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>hbsgojOPl9JVh9Nb8C7b2dZ389k=</id>
+  <extraction>regular</extraction>
+  <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<record>
+  <name>ConstBase</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>2iD5AHuu7qrCVJnAauz4We2QkKU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <derived>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>Q5DcZVrEwKvh1JSM5lUHNrOvQlU=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>base-overload-set.cpp</short-path>
+      <source-path>base-overload-set.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Q5DcZVrEwKvh1JSM5lUHNrOvQlU=</id>
+  <extraction>regular</extraction>
+  <parent>2iD5AHuu7qrCVJnAauz4We2QkKU=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

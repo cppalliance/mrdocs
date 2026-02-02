@@ -1,26 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="C" id="BrX2oZup9qgy4SfJloKCuUYZshA=">
-    <file short-path="const-mutable.cpp" source-path="const-mutable.cpp" line="1" class="def"/>
-    <function name="foo" id="umtiZdZUSDxw3juVm+S7M40tpXQ=">
-      <file short-path="const-mutable.cpp" source-path="const-mutable.cpp" line="3"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-    <function name="foo" id="c8FMK37zKpqJXH2ZioM0tYziY1g=">
-      <file short-path="const-mutable.cpp" source-path="const-mutable.cpp" line="4"/>
-      <attr id="is-const"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type name="int"/>
-        </type>
-      </return>
-    </function>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>BrX2oZup9qgy4SfJloKCuUYZshA=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>const-mutable.cpp</short-path>
+      <source-path>const-mutable.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>4/AwllBtll8FuW0tFA3cMUpR8Sg=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>const-mutable.cpp</short-path>
+      <source-path>const-mutable.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>const-mutable.cpp</short-path>
+      <source-path>const-mutable.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4/AwllBtll8FuW0tFA3cMUpR8Sg=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <func-class>normal</func-class>
+  <members>umtiZdZUSDxw3juVm+S7M40tpXQ=</members>
+  <members>c8FMK37zKpqJXH2ZioM0tYziY1g=</members>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>const-mutable.cpp</short-path>
+      <source-path>const-mutable.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>umtiZdZUSDxw3juVm+S7M40tpXQ=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>const-mutable.cpp</short-path>
+      <source-path>const-mutable.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>c8FMK37zKpqJXH2ZioM0tYziY1g=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <l-value-reference>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

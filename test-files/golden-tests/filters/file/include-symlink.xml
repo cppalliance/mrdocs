@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="included.hpp" source-path="included.hpp" line="4"/>
-    <doc>
-      <brief>
-        <text>A brief.</text>
-      </brief>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>included.hpp</short-path>
+      <source-path>included.hpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

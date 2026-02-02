@@ -1,257 +1,682 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
-    <struct name="C" id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="14" class="def"/>
-      <doc>
-        <related>
-          <reference id="OiYqKxV5vNAeh0jqRKIygSwyW4o=">::f3</reference>
-        </related>
-      </doc>
-    </struct>
-  </namespace>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="Enable" class="type" default="void"/>
-    <class name="A" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="67" class="def"/>
-      <doc>
-        <brief>
-          <text>The partial specialization of A is enabled via a template parameter</text>
-        </brief>
-      </doc>
-    </class>
-  </template>
-  <template class="partial" requires="std::is_integral_v&lt;T&gt;" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
-    <tparam name="T" class="type"/>
-    <targ class="type" type="T"/>
-    <class name="A" id="f80OzcD5UlgQ2KOvUj+MvoJcAFE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="72" class="def"/>
-      <doc>
-        <brief>
-          <text>Specialization for integral types</text>
-        </brief>
-      </doc>
-    </class>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="Enable" class="type" default="void"/>
-    <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="75" class="def"/>
-      <doc>
-        <brief>
-          <text>SFINAE with std::void_t</text>
-        </brief>
-      </doc>
-      <function name="store" id="KmwKarrWHSv7aalrBX18hjPbEfs=">
-        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="78" class="def"/>
-        <param>
-          <type class="pointer">
-            <pointee-type name="void" cv-qualifiers="const"/>
-          </type>
-        </param>
-      </function>
-    </struct>
-  </template>
-  <template class="partial" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
-    <tparam name="T" class="type"/>
-    <targ class="type" type="T"/>
-    <targ class="type" type="std::void_t&lt;T::a::b&gt;"/>
-    <struct name="S" id="g0UNZpdodOU5mGCtcpviXd8o6Vk=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="83" class="def"/>
-      <doc>
-        <brief>
-          <text>SFINAE with std::void_t</text>
-        </brief>
-      </doc>
-      <function name="store" id="2KfuSRGlpNo9Lk/lk1bhwZqm/BY=">
-        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="85" class="def"/>
-        <param>
-          <type class="pointer">
-            <pointee-type name="void" cv-qualifiers="const"/>
-          </type>
-        </param>
-      </function>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f1" requires="std::is_integral_v&lt;T&gt;" id="1VN+nmJkLcjg6wK0C6XNq8dG1Ro=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="4"/>
-      <return>
-        <type name="T"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via return type</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template requires="std::is_integral_v&lt;T&gt;">
-    <tparam name="T" class="type"/>
-    <function name="f10" id="MX3B1GMAk3D0sirBOV2sk9C49uw=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="63"/>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via type template parameter</text>
-        </brief>
-        <para>
-          <text>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</text>
-        </para>
-        <para>
-          <text>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</text>
-        </para>
-        <para>
-          <text>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</text>
-        </para>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="7RxfINQ5PQyMFT7lVKhcQZiocmU=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="9"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabling a specified return type</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f3" requires="std::is_integral_v&lt;T&gt;" id="OiYqKxV5vNAeh0jqRKIygSwyW4o=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="18"/>
-      <return>
-        <type id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=" name="B::C"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabling a specified return type in another namespace</text>
-        </brief>
-        <relates>
-          <reference id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">C</reference>
-        </relates>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f4" requires="std::is_integral_v&lt;T&gt;" id="oQV00j0v7EfuVl9bWFumA28DNZM=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="23"/>
-      <return>
-        <type name="T"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via return type with std::enable_if</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template requires="std::is_integral_v&lt;T&gt;">
-    <tparam name="T" class="type"/>
-    <function name="f5" id="4Z8f2LwbeJzKuu95VpPC5b3UKZQ=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="28"/>
-      <return>
-        <type name="T"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via a non-type template parameter with helper</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template requires="std::is_integral_v&lt;T&gt;">
-    <tparam name="T" class="type"/>
-    <function name="f6" id="QQ+RfmlXmyvRCoT+N6iLEixOE3w=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="33"/>
-      <return>
-        <type name="T"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via a non-type template parameter without helper</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template requires="std::is_integral_v&lt;T&gt;">
-    <tparam name="T" class="type"/>
-    <function name="f7" id="5j4YKg9GCIyC/kpDPExDouNRI8E=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="38"/>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via a non-type template parameter using int instead of bool</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f8" requires="std::is_integral_v&lt;T&gt;" id="N7SAlDvKDvPlACsckMXASo+muPE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="42"/>
-      <return>
-        <type name="T"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via parameter without helper</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f9" requires="std::is_integral_v&lt;T&gt;" id="njCzIgSzvUpYyI1eg28pJ1dPwcM=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="47"/>
-      <return>
-        <type name="T"/>
-      </return>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Enabled via parameter with helper</text>
-        </brief>
-      </doc>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</namespaces>
+    <namespaces>eIvg7iueGIPcE8p1NVfngsp2ojw=</namespaces>
+    <records>m/JW900ik2XLYvUdA4MCuWZQd80=</records>
+    <records>f80OzcD5UlgQ2KOvUj+MvoJcAFE=</records>
+    <records>IZrmVBMJu1uvsP9zur5JVrwgYmE=</records>
+    <records>g0UNZpdodOU5mGCtcpviXd8o6Vk=</records>
+    <functions>1VN+nmJkLcjg6wK0C6XNq8dG1Ro=</functions>
+    <functions>MX3B1GMAk3D0sirBOV2sk9C49uw=</functions>
+    <functions>7RxfINQ5PQyMFT7lVKhcQZiocmU=</functions>
+    <functions>OiYqKxV5vNAeh0jqRKIygSwyW4o=</functions>
+    <functions>oQV00j0v7EfuVl9bWFumA28DNZM=</functions>
+    <functions>4Z8f2LwbeJzKuu95VpPC5b3UKZQ=</functions>
+    <functions>QQ+RfmlXmyvRCoT+N6iLEixOE3w=</functions>
+    <functions>5j4YKg9GCIyC/kpDPExDouNRI8E=</functions>
+    <functions>N7SAlDvKDvPlACsckMXASo+muPE=</functions>
+    <functions>njCzIgSzvUpYyI1eg28pJ1dPwcM=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
+  <extraction>regular</extraction>
+  <parent>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</parent>
+  <doc-comment>
+    <reference>
+      <kind>reference</kind>
+      <literal>::f3</literal>
+      <id>OiYqKxV5vNAeh0jqRKIygSwyW4o=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>67</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>m/JW900ik2XLYvUdA4MCuWZQd80=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The partial specialization of A is enabled via a template parameter</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>72</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>f80OzcD5UlgQ2KOvUj+MvoJcAFE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Specialization for integral types</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>S</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>75</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>IZrmVBMJu1uvsP9zur5JVrwgYmE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>SFINAE with std::void_t</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>KmwKarrWHSv7aalrBX18hjPbEfs=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>store</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>78</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>KmwKarrWHSv7aalrBX18hjPbEfs=</id>
+  <extraction>regular</extraction>
+  <parent>IZrmVBMJu1uvsP9zur5JVrwgYmE=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>S</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>83</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>g0UNZpdodOU5mGCtcpviXd8o6Vk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>SFINAE with std::void_t</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>store</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>85</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</id>
+  <extraction>regular</extraction>
+  <parent>g0UNZpdodOU5mGCtcpviXd8o6Vk=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>1VN+nmJkLcjg6wK0C6XNq8dG1Ro=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via return type</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f10</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>63</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MX3B1GMAk3D0sirBOV2sk9C49uw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via type template parameter</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>7RxfINQ5PQyMFT7lVKhcQZiocmU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabling a specified return type</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>OiYqKxV5vNAeh0jqRKIygSwyW4o=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabling a specified return type in another namespace</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>C</literal>
+      <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
+        <identifier>B</identifier>
+      </name>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>oQV00j0v7EfuVl9bWFumA28DNZM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via return type with std::enable_if</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>4Z8f2LwbeJzKuu95VpPC5b3UKZQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via a non-type template parameter with helper</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>QQ+RfmlXmyvRCoT+N6iLEixOE3w=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via a non-type template parameter without helper</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f7</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>38</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>5j4YKg9GCIyC/kpDPExDouNRI8E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via a non-type template parameter using int instead of bool</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f8</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>42</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>N7SAlDvKDvPlACsckMXASo+muPE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via parameter without helper</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f9</name>
+  <source>
+    <location>
+      <short-path>sfinae.cpp</short-path>
+      <source-path>sfinae.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>njCzIgSzvUpYyI1eg28pJ1dPwcM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enabled via parameter with helper</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

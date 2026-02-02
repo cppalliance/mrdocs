@@ -1,61 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="1" class="def"/>
-    <function name="operator()" exception-spec="noexcept" id="+yVVNLbCaXDXfZPFoKE5xv2xPZQ=">
-      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="23"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="operator" name="call" value="42"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="ch">
-        <type name="char"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Return true if ch is in the character set.</text>
-        </brief>
-        <para>
-          <text>This function returns true if the character is in the set, otherwise it returns false.</text>
-        </para>
-        <returns>
-          <text>True if ch is in the set, otherwise false.</text>
-        </returns>
-        <param name="ch">
-          <text>The signed character to test.</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator()" exception-spec="noexcept" id="tslXb2aqh8tYThe+A16a9felw5M=">
-      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="12"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="operator" name="call" value="42"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="ch">
-        <type name="unsigned char"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Return true if ch is in the character set.</text>
-        </brief>
-        <para>
-          <text>This function returns true if the character is in the set, otherwise it returns false.</text>
-        </para>
-        <returns>
-          <text>True if ch is in the set, otherwise false.</text>
-        </returns>
-        <param name="ch">
-          <text>The unsigned character to test.</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>operator-param.cpp</short-path>
+      <source-path>operator-param.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>iwz19PoDb0ZmejgAK2mR0j19c9I=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>operator-param.cpp</short-path>
+      <source-path>operator-param.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>operator-param.cpp</short-path>
+      <source-path>operator-param.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>iwz19PoDb0ZmejgAK2mR0j19c9I=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return true if ch is in the character set.</literal>
+      </text>
+      <copied-from>A::operator()(unsigned char) const</copied-from>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>True if ch is in the set, otherwise false.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The signed character to test.</literal>
+      </text>
+      <name>ch</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>+yVVNLbCaXDXfZPFoKE5xv2xPZQ=</members>
+  <members>tslXb2aqh8tYThe+A16a9felw5M=</members>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>operator-param.cpp</short-path>
+      <source-path>operator-param.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>+yVVNLbCaXDXfZPFoKE5xv2xPZQ=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function returns true if the character is in the set, otherwise it returns false.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return true if ch is in the character set.</literal>
+      </text>
+      <copied-from>A::operator()(unsigned char) const</copied-from>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>True if ch is in the set, otherwise false.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The signed character to test.</literal>
+      </text>
+      <name>ch</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+    <name>ch</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>operator-param.cpp</short-path>
+      <source-path>operator-param.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>tslXb2aqh8tYThe+A16a9felw5M=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function returns true if the character is in the set, otherwise it returns false.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return true if ch is in the character set.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>True if ch is in the set, otherwise false.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The unsigned character to test.</literal>
+      </text>
+      <name>ch</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>unsigned char</identifier>
+      </name>
+    </named>
+    <name>ch</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

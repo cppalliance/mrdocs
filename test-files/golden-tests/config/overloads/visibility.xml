@@ -1,109 +1,432 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="C" id="BrX2oZup9qgy4SfJloKCuUYZshA=">
-    <file short-path="visibility.cpp" source-path="visibility.cpp" line="1" class="def"/>
-    <function name="foo" id="umtiZdZUSDxw3juVm+S7M40tpXQ=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="3"/>
-      <return>
-        <type name="int"/>
-      </return>
-    </function>
-    <function name="foo" id="ZlzGLjjc8rseQAYYNLgCZvhC28g=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="4"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="bool"/>
-      </param>
-    </function>
-    <function name="foo" id="/FdiOdEzqaZeg+AJKJir7X+Te/U=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="5"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-    <function name="foo" id="UNX9B8tS+5rPg6IDVPCp65KU9K8=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="6"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="bool"/>
-      </param>
-    </function>
-    <function name="foo" access="protected" id="o2jTMMUUPQBbGJOrh0qwurUTaTc=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="8"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-    <function name="foo" access="protected" id="xtm3DYSrIA4dEog7ntDc3s6rKHs=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="9"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="bool"/>
-      </param>
-    </function>
-    <function name="foo" access="protected" id="B3IB3WYPg106i0ziVCj3FHkRNAE=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="10"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-    <function name="foo" access="protected" id="9QPd0C7ERvmPWPhi4ucPT1LXybM=">
-      <file short-path="visibility.cpp" source-path="visibility.cpp" line="11"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="bool"/>
-      </param>
-    </function>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>BrX2oZup9qgy4SfJloKCuUYZshA=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>4/AwllBtll8FuW0tFA3cMUpR8Sg=</functions>
+      <static-functions>NcMo7ffWjuFftsr66BskEGEgREc=</static-functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>TMteh8/S1VX9JEEHtJWh5Th1uZg=</functions>
+      <static-functions>SO7h8EG4J1fko32lzeE1EufNKsY=</static-functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4/AwllBtll8FuW0tFA3cMUpR8Sg=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <func-class>normal</func-class>
+  <members>umtiZdZUSDxw3juVm+S7M40tpXQ=</members>
+  <members>ZlzGLjjc8rseQAYYNLgCZvhC28g=</members>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>umtiZdZUSDxw3juVm+S7M40tpXQ=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ZlzGLjjc8rseQAYYNLgCZvhC28g=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>bool</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>NcMo7ffWjuFftsr66BskEGEgREc=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <func-class>normal</func-class>
+  <members>/FdiOdEzqaZeg+AJKJir7X+Te/U=</members>
+  <members>UNX9B8tS+5rPg6IDVPCp65KU9K8=</members>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>/FdiOdEzqaZeg+AJKJir7X+Te/U=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>UNX9B8tS+5rPg6IDVPCp65KU9K8=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>bool</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>TMteh8/S1VX9JEEHtJWh5Th1uZg=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <func-class>normal</func-class>
+  <members>o2jTMMUUPQBbGJOrh0qwurUTaTc=</members>
+  <members>xtm3DYSrIA4dEog7ntDc3s6rKHs=</members>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>o2jTMMUUPQBbGJOrh0qwurUTaTc=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>xtm3DYSrIA4dEog7ntDc3s6rKHs=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>bool</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<overloads>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>SO7h8EG4J1fko32lzeE1EufNKsY=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <func-class>normal</func-class>
+  <members>B3IB3WYPg106i0ziVCj3FHkRNAE=</members>
+  <members>9QPd0C7ERvmPWPhi4ucPT1LXybM=</members>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>B3IB3WYPg106i0ziVCj3FHkRNAE=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>visibility.cpp</short-path>
+      <source-path>visibility.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>9QPd0C7ERvmPWPhi4ucPT1LXybM=</id>
+  <extraction>regular</extraction>
+  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>bool</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

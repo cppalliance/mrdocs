@@ -1,90 +1,330 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="1" class="def"/>
-      <variable name="v0" id="rW6h+mCfZLROHlYzwXFIUPN6oSE=" default="0">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="21" class="def"/>
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="4"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <type name="int"/>
-      </variable>
-      <variable name="v1" id="nkB0lMmDvMsu9GDrKr3Mzwi5g6I=" default="1">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="24" class="def"/>
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="5"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="int"/>
-      </variable>
-      <variable name="v2" id="e48c97dC3AIWJHWE5T0yWVxezgg=" default="2">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="27" class="def"/>
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="6"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <attr id="is-constexpr"/>
-        <type name="int"/>
-      </variable>
-      <variable name="v3" id="Wx5S5oWv5o4nV7I+zFEKTvWl40g=" default="3">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="30" class="def"/>
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="7"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="int" cv-qualifiers="const"/>
-      </variable>
-      <variable name="v4" id="6a2wBN4mHiuAAqV0gYgYQeqFNVM=" default="4">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="33" class="def"/>
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="8"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <type name="int" cv-qualifiers="const"/>
-      </variable>
-      <variable name="v5" id="Q96okKllwtE2Tg+t7HAkms6flbk=" default="5">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="10" class="def"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="int"/>
-      </variable>
-      <variable name="v6" id="0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=" default="6">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="11" class="def"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="int" cv-qualifiers="const"/>
-      </variable>
-      <variable name="v7" id="VCnmz8Cp9RtJzQQQ7yw57uzbQAY=" default="7">
-        <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="12" class="def"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <attr id="is-constexpr"/>
-        <type name="int"/>
-      </variable>
-    </struct>
-  </template>
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="15" class="def"/>
-    <variable name="x0" id="+yhNlGuTVY4spCfBXSTBkEDzi30=" default="0">
-      <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="49" class="def"/>
-      <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="17"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <attr id="is-thread-local"/>
-      <type name="int" cv-qualifiers="const"/>
-    </variable>
-    <variable name="x1" id="vNYWHh2ovZiBP3uVEeJhMkaiF3w=" default="0">
-      <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="18" class="def"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <attr id="is-inline"/>
-      <attr id="is-constexpr"/>
-      <attr id="is-thread-local"/>
-      <type name="int"/>
-    </variable>
-  </struct>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="static-data-def.cpp" source-path="static-data-def.cpp" line="36" class="def"/>
-    <return>
-      <type class="auto" keyword="auto">
-      </type>
-    </return>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <static-variables>rW6h+mCfZLROHlYzwXFIUPN6oSE=</static-variables>
+      <static-variables>nkB0lMmDvMsu9GDrKr3Mzwi5g6I=</static-variables>
+      <static-variables>e48c97dC3AIWJHWE5T0yWVxezgg=</static-variables>
+      <static-variables>Wx5S5oWv5o4nV7I+zFEKTvWl40g=</static-variables>
+      <static-variables>6a2wBN4mHiuAAqV0gYgYQeqFNVM=</static-variables>
+      <static-variables>Q96okKllwtE2Tg+t7HAkms6flbk=</static-variables>
+      <static-variables>0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=</static-variables>
+      <static-variables>VCnmz8Cp9RtJzQQQ7yw57uzbQAY=</static-variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>v0</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>rW6h+mCfZLROHlYzwXFIUPN6oSE=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>v1</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>nkB0lMmDvMsu9GDrKr3Mzwi5g6I=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>v2</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>27</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>e48c97dC3AIWJHWE5T0yWVxezgg=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>v3</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Wx5S5oWv5o4nV7I+zFEKTvWl40g=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>v4</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6a2wBN4mHiuAAqV0gYgYQeqFNVM=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>v5</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Q96okKllwtE2Tg+t7HAkms6flbk=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>v6</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>v7</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>VCnmz8Cp9RtJzQQQ7yw57uzbQAY=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <static-variables>+yhNlGuTVY4spCfBXSTBkEDzi30=</static-variables>
+      <static-variables>vNYWHh2ovZiBP3uVEeJhMkaiF3w=</static-variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>x0</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>+yhNlGuTVY4spCfBXSTBkEDzi30=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-thread-local>1</is-thread-local>
+</variable>
+<variable>
+  <name>x1</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>vNYWHh2ovZiBP3uVEeJhMkaiF3w=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+  <is-thread-local>1</is-thread-local>
+</variable>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>static-data-def.cpp</short-path>
+      <source-path>static-data-def.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <auto>
+  </auto>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

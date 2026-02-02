@@ -1,20 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="pre-post.cpp" source-path="pre-post.cpp" line="7"/>
-    <doc>
-      <pre>
-        <text>first precondition</text>
-      </pre>
-      <pre>
-        <text>second precondition</text>
-      </pre>
-      <post>
-        <text>first postcondition</text>
-      </post>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>pre-post.cpp</short-path>
+      <source-path>pre-post.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>first precondition</literal>
+      </text>
+    </precondition>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>second precondition</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>first postcondition</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

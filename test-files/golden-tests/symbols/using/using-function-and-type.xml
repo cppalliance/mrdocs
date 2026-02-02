@@ -1,37 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <struct name="f" id="Wr+xSXa6fgvTvu1KeVe+kywbb6w=">
-      <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="7" class="def"/>
-      <doc>
-        <brief>
-          <text>A record</text>
-        </brief>
-      </doc>
-    </struct>
-    <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="4"/>
-      <param>
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>A function</text>
-        </brief>
-      </doc>
-    </function>
-  </namespace>
-  <using id="bxhJVeOdx2X1I5zWLcdGW41DCTs=" class="using" qualifier="A::f">
-    <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="11"/>
-    <doc>
-      <brief>
-        <text>A using declaration that shadows a function and the record.</text>
-      </brief>
-    </doc>
-    <named id="Wr+xSXa6fgvTvu1KeVe+kywbb6w="/>
-    <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
-  </using>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <usings>bxhJVeOdx2X1I5zWLcdGW41DCTs=</usings>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>using-function-and-type.cpp</short-path>
+      <source-path>using-function-and-type.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>Wr+xSXa6fgvTvu1KeVe+kywbb6w=</records>
+    <functions>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-and-type.cpp</short-path>
+      <source-path>using-function-and-type.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Wr+xSXa6fgvTvu1KeVe+kywbb6w=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A record</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-and-type.cpp</short-path>
+      <source-path>using-function-and-type.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<using>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-and-type.cpp</short-path>
+      <source-path>using-function-and-type.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>bxhJVeOdx2X1I5zWLcdGW41DCTs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A using declaration that shadows a function and the record.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <class>normal</class>
+  <name>
+    <identifier>f</identifier>
+    <name>
+      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+      <identifier>A</identifier>
+    </name>
+  </name>
+  <shadow-declarations>Wr+xSXa6fgvTvu1KeVe+kywbb6w=</shadow-declarations>
+  <shadow-declarations>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</shadow-declarations>
+</using>
+<record>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-and-type.cpp</short-path>
+      <source-path>using-function-and-type.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>Wr+xSXa6fgvTvu1KeVe+kywbb6w=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A record</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-and-type.cpp</short-path>
+      <source-path>using-function-and-type.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

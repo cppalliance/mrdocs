@@ -1,563 +1,1543 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="base" id="sk8HTAQHhzXfZej4IJliADonAJQ=">
-    <file short-path="reference.cpp" source-path="reference.cpp" line="30" class="def"/>
-    <base>
-      <type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-    </base>
-    <doc>
-      <brief>
-        <text>A base class to test inheritance and shadowing</text>
-      </brief>
-    </doc>
-    <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="23"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="39"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="37"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="35"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="26"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="46"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="44"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="42"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-  </class>
-  <class name="base_base" id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=">
-    <file short-path="reference.cpp" source-path="reference.cpp" line="20" class="def"/>
-    <doc>
-      <brief>
-        <text>A second-order base class to test indirect inheritance</text>
-      </brief>
-    </doc>
-    <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="23"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="26"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-  </class>
-  <class name="derived" id="ABxWcxit2TyVLv16ZxoJKAc6LKw=">
-    <file short-path="reference.cpp" source-path="reference.cpp" line="50" class="def"/>
-    <base>
-      <type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-    </base>
-    <base>
-      <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
-    </base>
-    <doc>
-      <brief>
-        <text>A class that derives from base and excluded_base</text>
-      </brief>
-    </doc>
-    <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="23"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="39"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="37"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="derived_shadowed" id="MGQhB2O6ghdJWit6wao+PsH30Ew=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="56"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="ABxWcxit2TyVLv16ZxoJKAc6LKw=" name="derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>A class that derives from base and excluded_base</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="26"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="59"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="ABxWcxit2TyVLv16ZxoJKAc6LKw=" name="derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>A class that derives from base and excluded_base</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="46"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="44"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="42"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-  </class>
-  <class name="private_derived" id="aiF6nWGZXbG8UfC75J5tNuoPMRc=">
-    <file short-path="reference.cpp" source-path="reference.cpp" line="76" class="def"/>
-    <base access="private">
-      <type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-    </base>
-    <base access="private">
-      <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
-    </base>
-    <doc>
-      <brief>
-        <text>A class that uses private inheritance only</text>
-      </brief>
-    </doc>
-    <function name="derived_shadowed" id="9wqRoOH7cwNhkz5vwpTHLeb01BY=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="82"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="aiF6nWGZXbG8UfC75J5tNuoPMRc=" name="private_derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>A class that uses private inheritance only</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="85"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="aiF6nWGZXbG8UfC75J5tNuoPMRc=" name="private_derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>A class that uses private inheritance only</text>
-        </returns>
-      </doc>
-    </function>
-  </class>
-  <class name="protected_derived" id="KpfFXd3FeSffU3rGswegSIkkCrM=">
-    <file short-path="reference.cpp" source-path="reference.cpp" line="63" class="def"/>
-    <base access="protected">
-      <type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-    </base>
-    <base access="protected">
-      <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
-    </base>
-    <doc>
-      <brief>
-        <text>A class that should inherit functions as protected.</text>
-      </brief>
-    </doc>
-    <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="69"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>A class that should inherit functions as protected.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="72"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>A class that should inherit functions as protected.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="23"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="39"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="37"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="35"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="26"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be indirectly inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A second-order base class to test indirect inheritance</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="46"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="44"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the excluded_base function.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="42"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-        <returns>
-          <text>A base class to test inheritance and shadowing</text>
-        </returns>
-      </doc>
-    </function>
-  </class>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>sk8HTAQHhzXfZej4IJliADonAJQ=</records>
+    <records>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</records>
+    <records>ABxWcxit2TyVLv16ZxoJKAc6LKw=</records>
+    <records>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</records>
+    <records>aiF6nWGZXbG8UfC75J5tNuoPMRc=</records>
+    <records>KpfFXd3FeSffU3rGswegSIkkCrM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>base</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </base>
+  <derived>ABxWcxit2TyVLv16ZxoJKAc6LKw=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>2D7yc6q3buDhuPwzpn4pWzbu8ls=</functions>
+      <functions>v0BroyWjs67MHzc1SyTlXrSxn8M=</functions>
+      <functions>ECBBLxlaKar55qA0k1BCFn6MdH8=</functions>
+      <functions>aYhSUMJkgCRo3AZmBb/rre04Ghg=</functions>
+      <functions>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>TaKAQiDmx8UXkT9p/momqiOZyHU=</functions>
+      <functions>eHxe3z0iWUXdcNyXK0PD2+6DRbs=</functions>
+      <functions>KGOrnDVJV2nPDK1hlkvBm6diYXY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>2D7yc6q3buDhuPwzpn4pWzbu8ls=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>v0BroyWjs67MHzc1SyTlXrSxn8M=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ECBBLxlaKar55qA0k1BCFn6MdH8=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the excluded_base function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>aYhSUMJkgCRo3AZmBb/rre04Ghg=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be shadowed by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>TaKAQiDmx8UXkT9p/momqiOZyHU=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>44</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>eHxe3z0iWUXdcNyXK0PD2+6DRbs=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the excluded_base function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>42</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>KGOrnDVJV2nPDK1hlkvBm6diYXY=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be shadowed by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>base_base</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <derived>sk8HTAQHhzXfZej4IJliADonAJQ=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>2D7yc6q3buDhuPwzpn4pWzbu8ls=</functions>
+      <functions>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>2D7yc6q3buDhuPwzpn4pWzbu8ls=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>derived</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>50</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that derives from base and excluded_base</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </base>
+  <base>
+    <named>
+      <name>
+        <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
+        <identifier>excluded_base</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>2D7yc6q3buDhuPwzpn4pWzbu8ls=</functions>
+      <functions>v0BroyWjs67MHzc1SyTlXrSxn8M=</functions>
+      <functions>ECBBLxlaKar55qA0k1BCFn6MdH8=</functions>
+      <functions>MGQhB2O6ghdJWit6wao+PsH30Ew=</functions>
+      <functions>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</functions>
+      <functions>rTSnS8Pv8GoWusQQE42y0pgN4cw=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>TaKAQiDmx8UXkT9p/momqiOZyHU=</functions>
+      <functions>eHxe3z0iWUXdcNyXK0PD2+6DRbs=</functions>
+      <functions>KGOrnDVJV2nPDK1hlkvBm6diYXY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>2D7yc6q3buDhuPwzpn4pWzbu8ls=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>v0BroyWjs67MHzc1SyTlXrSxn8M=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ECBBLxlaKar55qA0k1BCFn6MdH8=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the excluded_base function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>56</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MGQhB2O6ghdJWit6wao+PsH30Ew=</id>
+  <extraction>regular</extraction>
+  <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the base class function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that derives from base and excluded_base</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
+        <identifier>derived</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>59</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>rTSnS8Pv8GoWusQQE42y0pgN4cw=</id>
+  <extraction>regular</extraction>
+  <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the base class function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that derives from base and excluded_base</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
+        <identifier>derived</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>TaKAQiDmx8UXkT9p/momqiOZyHU=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>44</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>eHxe3z0iWUXdcNyXK0PD2+6DRbs=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the excluded_base function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>42</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>KGOrnDVJV2nPDK1hlkvBm6diYXY=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be shadowed by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>private_derived</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>76</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>aiF6nWGZXbG8UfC75J5tNuoPMRc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that uses private inheritance only</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </base>
+  <base>
+    <named>
+      <name>
+        <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
+        <identifier>excluded_base</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>9wqRoOH7cwNhkz5vwpTHLeb01BY=</functions>
+      <functions>NJYWKnKWmizdaSr1ldC7FGh7fD0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>82</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>9wqRoOH7cwNhkz5vwpTHLeb01BY=</id>
+  <extraction>regular</extraction>
+  <parent>aiF6nWGZXbG8UfC75J5tNuoPMRc=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the base class function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that uses private inheritance only</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>aiF6nWGZXbG8UfC75J5tNuoPMRc=</id>
+        <identifier>private_derived</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>85</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>NJYWKnKWmizdaSr1ldC7FGh7fD0=</id>
+  <extraction>regular</extraction>
+  <parent>aiF6nWGZXbG8UfC75J5tNuoPMRc=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the base class function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that uses private inheritance only</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>aiF6nWGZXbG8UfC75J5tNuoPMRc=</id>
+        <identifier>private_derived</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>protected_derived</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>63</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>KpfFXd3FeSffU3rGswegSIkkCrM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that should inherit functions as protected.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </base>
+  <base>
+    <named>
+      <name>
+        <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
+        <identifier>excluded_base</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>oVVGDloOS5F7d4VIcKLc0YpnsiE=</functions>
+      <functions>4ZJznHda5QNdk/tsMca4Psswlj0=</functions>
+    </record-tranche>
+    <record-tranche>
+      <functions>2D7yc6q3buDhuPwzpn4pWzbu8ls=</functions>
+      <functions>v0BroyWjs67MHzc1SyTlXrSxn8M=</functions>
+      <functions>ECBBLxlaKar55qA0k1BCFn6MdH8=</functions>
+      <functions>aYhSUMJkgCRo3AZmBb/rre04Ghg=</functions>
+      <functions>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</functions>
+      <functions>TaKAQiDmx8UXkT9p/momqiOZyHU=</functions>
+      <functions>eHxe3z0iWUXdcNyXK0PD2+6DRbs=</functions>
+      <functions>KGOrnDVJV2nPDK1hlkvBm6diYXY=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>69</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>oVVGDloOS5F7d4VIcKLc0YpnsiE=</id>
+  <extraction>regular</extraction>
+  <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the base class function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that should inherit functions as protected.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>KpfFXd3FeSffU3rGswegSIkkCrM=</id>
+        <identifier>protected_derived</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>72</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>4ZJznHda5QNdk/tsMca4Psswlj0=</id>
+  <extraction>regular</extraction>
+  <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the base class function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class that should inherit functions as protected.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>KpfFXd3FeSffU3rGswegSIkkCrM=</id>
+        <identifier>protected_derived</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>2D7yc6q3buDhuPwzpn4pWzbu8ls=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>39</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>v0BroyWjs67MHzc1SyTlXrSxn8M=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>base_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ECBBLxlaKar55qA0k1BCFn6MdH8=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the excluded_base function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>aYhSUMJkgCRo3AZmBb/rre04Ghg=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be shadowed by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>26</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MEPVWyGd8KdZFR1kBYlQMgPyQlo=</id>
+  <extraction>regular</extraction>
+  <parent>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be indirectly inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A second-order base class to test indirect inheritance</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
+        <identifier>base_base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_inherited</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>TaKAQiDmx8UXkT9p/momqiOZyHU=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be inherited by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_base_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>44</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>eHxe3z0iWUXdcNyXK0PD2+6DRbs=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should shadow the excluded_base function.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>do_derived_shadowed</name>
+  <source>
+    <location>
+      <short-path>reference.cpp</short-path>
+      <source-path>reference.cpp</source-path>
+      <line-number>42</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>KGOrnDVJV2nPDK1hlkvBm6diYXY=</id>
+  <extraction>regular</extraction>
+  <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function should be shadowed by derived classes.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base class to test inheritance and shadowing</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
+        <identifier>base</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

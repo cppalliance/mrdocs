@@ -1,698 +1,1957 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="2" class="def"/>
-    <doc>
-      <brief>
-        <text>A helper class</text>
-      </brief>
-      <related>
-        <reference id="yuKyBhGbND+Kyypyb9UsuC4Qe3E=">operator!</reference>
-        <reference id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">operator!=</reference>
-        <reference id="TFzwjGmsRFw8/0KXWcNJ2hjptZA=">operator&lt;</reference>
-        <reference id="PCL/yV8DLimc1O5rgMCsXr2rz7s=">operator&lt;=</reference>
-        <reference id="89EonDQZVWNcdopm5CdG3ShJQjo=">operator&lt;=&gt;</reference>
-        <reference id="kibUx6k1SXB+HsXkRXroJl9f59w=">operator==</reference>
-        <reference id="mFT9ttIGXVcpN6jtSrnEnclPRwU=">operator&gt;</reference>
-        <reference id="dl5ECjWFv+MMFzli4qz59OqD2Z4=">operator&gt;=</reference>
-      </related>
-    </doc>
-  </struct>
-  <struct name="Undoc" id="9rZb+QO/AFLNBwbIrSOzFktZiVY=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="28" class="def"/>
-  </struct>
-  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="31" class="def"/>
-    <doc>
-      <brief>
-        <text>Test class</text>
-      </brief>
-    </doc>
-    <function name="operator=" id="3QxkEc/c2ugz6330u92HdqOoDNk=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="37"/>
-      <attr id="operator" name="assign" value="14"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-        </type>
-      </return>
-      <param name="value">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Assignment operator</text>
-        </brief>
-        <returns>
-          <text>Reference to the current object</text>
-        </returns>
-        <param name="value">
-          <text>The object to copy assign from</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator=" id="fj22HhjPEq+Xg/+Qrr3suU+8qMs=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="40"/>
-      <attr id="operator" name="assign" value="14"/>
-      <return>
-        <type class="rvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-        </type>
-      </return>
-      <param name="value">
-        <type class="rvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Assignment operator</text>
-        </brief>
-        <returns>
-          <text>Rvalue reference to the current object</text>
-        </returns>
-        <param name="value">
-          <text>The object to move assign from</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator+" id="KAGpjhkArISJuf2yO8ueGRkoMRY=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="43"/>
-      <attr id="operator" name="plus" value="5"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Addition operator</text>
-        </brief>
-        <returns>
-          <text>Another instance of the object</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator-&gt;" id="nGRGOmpMUWr4ryyahs3rKCCI6w8=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="46"/>
-      <attr id="operator" name="ptr" value="41"/>
-      <return>
-        <type class="pointer">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>Member access operator</text>
-        </brief>
-        <returns>
-          <text>Pointer to the current object</text>
-        </returns>
-      </doc>
-    </function>
-    <function class="conversion" name="operator A" id="CWQgyDAMsfX65S2osLlxVceQp04=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="33"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion to </text>
-          <mono>A</mono>
-        </brief>
-        <returns>
-          <text>A helper class</text>
-        </returns>
-      </doc>
-    </function>
-    <function class="conversion" name="operator Undoc" id="OKqUHUCCTf6jNFJNn97bqGsSeaw=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="35"/>
-      <attr id="is-const"/>
-      <return>
-        <type id="9rZb+QO/AFLNBwbIrSOzFktZiVY=" name="Undoc"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Conversion to </text>
-          <mono>Undoc</mono>
-        </brief>
-        <returns>
-          <text>The object converted to </text>
-          <mono>Undoc</mono>
-        </returns>
-      </doc>
-    </function>
-    <function name="operator!" id="KWAu92L4cHasWWof4vEI3DKRMCM=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="67"/>
-      <attr id="operator" name="not" value="27"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Negation operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the object is falsy, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="operator==" id="UKmM2VstAN3S3zdmZKKvDGlIrLM=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="49"/>
-      <attr id="operator" name="eq" value="28"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Equality operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the objects are equal, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator!=" id="B4HRW82Qp1vDOpzQsxPdEsZgycs=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="52"/>
-      <attr id="operator" name="not_eq" value="29"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Inequality operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the objects are not equal, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator&lt;" id="851IpIwjxsx0O/etQzbn4pl99xE=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="55"/>
-      <attr id="operator" name="lt" value="30"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Less-than operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the left object is less than the right object, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator&lt;=" id="h8nEEe+LBIHRvU6iRGyqW04tWgU=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="58"/>
-      <attr id="operator" name="le" value="31"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Less-than-or-equal operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the left object is less than or equal to the right object, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator&gt;" id="cR6bIyYYnXQ30XTeEQusQL16eHI=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="61"/>
-      <attr id="operator" name="gt" value="32"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Greater-than operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the left object is greater than the right object, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator&gt;=" id="4tbW1aodVDD/vHYusU0xj6w4Fao=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="64"/>
-      <attr id="operator" name="ge" value="33"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Greater-than-or-equal operator</text>
-        </brief>
-        <returns>
-          <mono>true</mono>
-          <text> if the left object is greater than or equal to the right object, </text>
-          <mono>false</mono>
-          <text> otherwise</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-    <function name="operator&lt;=&gt;" id="ttkN5+GpWIElN9dfCpsZKm/wHH0=">
-      <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="70"/>
-      <attr id="operator" name="3way" value="34"/>
-      <attr id="is-const"/>
-      <return>
-        <type class="auto" keyword="auto">
-        </type>
-      </return>
-      <param name="rhs">
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <doc>
-        <brief>
-          <text>Three-way comparison operator</text>
-        </brief>
-        <returns>
-          <text>The relative order of the objects</text>
-        </returns>
-        <param name="rhs">
-          <text>The right operand</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
-  <struct name="ostream" id="S6h+1uM4q9FLs9aohvL2EV9oRbs=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="75"/>
-    <doc>
-      <brief>
-        <text>A fake output stream</text>
-      </brief>
-      <related>
-        <reference id="YufiLU3QRbcE/EbZ/1/y0UPKQxo=">operator&lt;&lt;</reference>
-      </related>
-    </doc>
-  </struct>
-  <function name="operator&lt;&lt;" id="YufiLU3QRbcE/EbZ/1/y0UPKQxo=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="77"/>
-    <attr id="operator" name="lshift" value="23"/>
-    <return>
-      <type class="lvalue-reference">
-        <pointee-type id="S6h+1uM4q9FLs9aohvL2EV9oRbs=" name="ostream"/>
-      </type>
-    </return>
-    <param name="os">
-      <type class="lvalue-reference">
-        <pointee-type id="S6h+1uM4q9FLs9aohvL2EV9oRbs=" name="ostream"/>
-      </type>
-    </param>
-    <param name="value">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Stream insertion operator</text>
-      </brief>
-      <returns>
-        <text>Reference to the current output stream</text>
-      </returns>
-      <param name="os">
-        <text>An output stream</text>
-      </param>
-      <param name="value">
-        <text>The object to output</text>
-      </param>
-      <relates>
-        <reference id="S6h+1uM4q9FLs9aohvL2EV9oRbs=">ostream</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator!" id="yuKyBhGbND+Kyypyb9UsuC4Qe3E=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="22"/>
-    <attr id="operator" name="not" value="27"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="value">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Negation operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the object is falsy, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="value">
-        <text>The operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="4"/>
-    <attr id="operator" name="eq" value="28"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Equality operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are equal, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator!=" id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="7"/>
-    <attr id="operator" name="not_eq" value="29"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Inequality operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the objects are not equal, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator&lt;" id="TFzwjGmsRFw8/0KXWcNJ2hjptZA=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="10"/>
-    <attr id="operator" name="lt" value="30"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Less-than operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the left object is less than the right object, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator&lt;=" id="PCL/yV8DLimc1O5rgMCsXr2rz7s=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="13"/>
-    <attr id="operator" name="le" value="31"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Less-than-or-equal operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the left object is less than or equal to the right object, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator&gt;" id="mFT9ttIGXVcpN6jtSrnEnclPRwU=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="16"/>
-    <attr id="operator" name="gt" value="32"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Greater-than operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the left object is greater than the right object, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator&gt;=" id="dl5ECjWFv+MMFzli4qz59OqD2Z4=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="19"/>
-    <attr id="operator" name="ge" value="33"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Greater-than-or-equal operator</text>
-      </brief>
-      <returns>
-        <mono>true</mono>
-        <text> if the left object is greater than or equal to the right object, </text>
-        <mono>false</mono>
-        <text> otherwise</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="operator&lt;=&gt;" id="89EonDQZVWNcdopm5CdG3ShJQjo=">
-    <file short-path="returns-from-special.cpp" source-path="returns-from-special.cpp" line="25"/>
-    <attr id="operator" name="3way" value="34"/>
-    <return>
-      <type class="auto" keyword="auto">
-      </type>
-    </return>
-    <param name="lhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <param name="rhs">
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Three-way comparison operator</text>
-      </brief>
-      <returns>
-        <text>The relative order of the objects</text>
-      </returns>
-      <param name="lhs">
-        <text>The left operand</text>
-      </param>
-      <param name="rhs">
-        <text>The right operand</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>9rZb+QO/AFLNBwbIrSOzFktZiVY=</records>
+    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
+    <records>S6h+1uM4q9FLs9aohvL2EV9oRbs=</records>
+    <functions>YufiLU3QRbcE/EbZ/1/y0UPKQxo=</functions>
+    <functions>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</functions>
+    <functions>kibUx6k1SXB+HsXkRXroJl9f59w=</functions>
+    <functions>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</functions>
+    <functions>TFzwjGmsRFw8/0KXWcNJ2hjptZA=</functions>
+    <functions>PCL/yV8DLimc1O5rgMCsXr2rz7s=</functions>
+    <functions>mFT9ttIGXVcpN6jtSrnEnclPRwU=</functions>
+    <functions>dl5ECjWFv+MMFzli4qz59OqD2Z4=</functions>
+    <functions>89EonDQZVWNcdopm5CdG3ShJQjo=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A helper class</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator!</literal>
+      <id>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator!=</literal>
+      <id>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&lt;</literal>
+      <id>TFzwjGmsRFw8/0KXWcNJ2hjptZA=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&lt;=</literal>
+      <id>PCL/yV8DLimc1O5rgMCsXr2rz7s=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&lt;=&gt;</literal>
+      <id>89EonDQZVWNcdopm5CdG3ShJQjo=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator==</literal>
+      <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&gt;</literal>
+      <id>mFT9ttIGXVcpN6jtSrnEnclPRwU=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&gt;=</literal>
+      <id>dl5ECjWFv+MMFzli4qz59OqD2Z4=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>Undoc</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>9rZb+QO/AFLNBwbIrSOzFktZiVY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>31</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test class</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>q7aqa6GHOpmWjES40eZPTxdQ3zE=</functions>
+      <functions>KAGpjhkArISJuf2yO8ueGRkoMRY=</functions>
+      <functions>nGRGOmpMUWr4ryyahs3rKCCI6w8=</functions>
+      <functions>CWQgyDAMsfX65S2osLlxVceQp04=</functions>
+      <functions>OKqUHUCCTf6jNFJNn97bqGsSeaw=</functions>
+      <functions>KWAu92L4cHasWWof4vEI3DKRMCM=</functions>
+      <functions>UKmM2VstAN3S3zdmZKKvDGlIrLM=</functions>
+      <functions>B4HRW82Qp1vDOpzQsxPdEsZgycs=</functions>
+      <functions>851IpIwjxsx0O/etQzbn4pl99xE=</functions>
+      <functions>h8nEEe+LBIHRvU6iRGyqW04tWgU=</functions>
+      <functions>cR6bIyYYnXQ30XTeEQusQL16eHI=</functions>
+      <functions>4tbW1aodVDD/vHYusU0xj6w4Fao=</functions>
+      <functions>ttkN5+GpWIElN9dfCpsZKm/wHH0=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>40</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>q7aqa6GHOpmWjES40eZPTxdQ3zE=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Assignment operators</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>3QxkEc/c2ugz6330u92HdqOoDNk=</members>
+  <members>fj22HhjPEq+Xg/+Qrr3suU+8qMs=</members>
+  <auto>
+  </auto>
+</overloads>
+<function>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>3QxkEc/c2ugz6330u92HdqOoDNk=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Assignment operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference to the current object</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to copy assign from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+        <identifier>X</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>40</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>fj22HhjPEq+Xg/+Qrr3suU+8qMs=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Assignment operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Rvalue reference to the current object</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to move assign from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <r-value-reference>
+    <named>
+      <name>
+        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+        <identifier>X</identifier>
+      </name>
+    </named>
+  </r-value-reference>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator+</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>KAGpjhkArISJuf2yO8ueGRkoMRY=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Addition operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Another instance of the object</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+      <identifier>X</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator-&gt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>nGRGOmpMUWr4ryyahs3rKCCI6w8=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Member access operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Pointer to the current object</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <pointer>
+    <named>
+      <name>
+        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+        <identifier>X</identifier>
+      </name>
+    </named>
+  </pointer>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator A</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>33</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>CWQgyDAMsfX65S2osLlxVceQp04=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>A</literal>
+        </text>
+      </code>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A helper class</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator Undoc</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>OKqUHUCCTf6jNFJNn97bqGsSeaw=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Conversion to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Undoc</literal>
+        </text>
+      </code>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Undoc</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <id>9rZb+QO/AFLNBwbIrSOzFktZiVY=</id>
+      <identifier>Undoc</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator!</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>67</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>KWAu92L4cHasWWof4vEI3DKRMCM=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Negation operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the object is falsy, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>UKmM2VstAN3S3zdmZKKvDGlIrLM=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator!=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>B4HRW82Qp1vDOpzQsxPdEsZgycs=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Inequality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are not equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator&lt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>55</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>851IpIwjxsx0O/etQzbn4pl99xE=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Less-than operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is less than the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator&lt;=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>58</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>h8nEEe+LBIHRvU6iRGyqW04tWgU=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Less-than-or-equal operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is less than or equal to the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator&gt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>61</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>cR6bIyYYnXQ30XTeEQusQL16eHI=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Greater-than operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is greater than the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator&gt;=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4tbW1aodVDD/vHYusU0xj6w4Fao=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Greater-than-or-equal operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is greater than or equal to the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator&lt;=&gt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>70</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ttkN5+GpWIElN9dfCpsZKm/wHH0=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Three-way comparison operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The relative order of the objects</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+  </doc-comment>
+  <auto>
+  </auto>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+          <identifier>X</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<record>
+  <name>ostream</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>75</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A fake output stream</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&lt;&lt;</literal>
+      <id>YufiLU3QRbcE/EbZ/1/y0UPKQxo=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>77</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YufiLU3QRbcE/EbZ/1/y0UPKQxo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Stream insertion operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference to the current output stream</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An output stream</literal>
+      </text>
+      <name>os</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to output</literal>
+      </text>
+      <name>value</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>ostream</literal>
+      <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
+    </reference>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
+        <identifier>ostream</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
+          <identifier>ostream</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>os</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator!</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>22</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Negation operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the object is falsy, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The operand</literal>
+      </text>
+      <name>value</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator!=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Inequality operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are not equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator&lt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>TFzwjGmsRFw8/0KXWcNJ2hjptZA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Less-than operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is less than the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator&lt;=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>PCL/yV8DLimc1O5rgMCsXr2rz7s=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Less-than-or-equal operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is less than or equal to the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator&gt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>mFT9ttIGXVcpN6jtSrnEnclPRwU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Greater-than operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is greater than the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator&gt;=</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>dl5ECjWFv+MMFzli4qz59OqD2Z4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Greater-than-or-equal operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the left object is greater than or equal to the right object, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator&lt;=&gt;</name>
+  <source>
+    <location>
+      <short-path>returns-from-special.cpp</short-path>
+      <source-path>returns-from-special.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>89EonDQZVWNcdopm5CdG3ShJQjo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Three-way comparison operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The relative order of the objects</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>lhs</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>rhs</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <auto>
+  </auto>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>lhs</name>
+  </param>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>rhs</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

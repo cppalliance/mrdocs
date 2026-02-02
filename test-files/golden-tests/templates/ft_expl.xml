@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
-      <file short-path="ft_expl.cpp" source-path="ft_expl.cpp" line="1" class="def"/>
-    </function>
-  </template>
-  <template class="explicit" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
-    <targ class="type" type="int"/>
-    <function name="f" id="ytuvwgqk+lakIfCF209MYkKEp4k=">
-      <file short-path="ft_expl.cpp" source-path="ft_expl.cpp" line="4" class="def"/>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
+  </namespace-tranche>
 </namespace>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ft_expl.cpp</short-path>
+      <source-path>ft_expl.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <func-class>normal</func-class>
+  <members>PmhXjCXUJYVnj/a7NhfjjSesyp0=</members>
+  <members>ytuvwgqk+lakIfCF209MYkKEp4k=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ft_expl.cpp</short-path>
+      <source-path>ft_expl.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>PmhXjCXUJYVnj/a7NhfjjSesyp0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>ft_expl.cpp</short-path>
+      <source-path>ft_expl.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ytuvwgqk+lakIfCF209MYkKEp4k=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

@@ -1,59 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="var-template.cpp" source-path="var-template.cpp" line="10" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <variable name="C" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=" default="0">
-        <file short-path="var-template.cpp" source-path="var-template.cpp" line="12" class="def"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="unsigned int"/>
-      </variable>
-    </template>
-    <template class="explicit">
-      <targ class="type" type="int"/>
-      <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=" default="-1">
-        <file short-path="var-template.cpp" source-path="var-template.cpp" line="15" class="def"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="unsigned int"/>
-      </variable>
-    </template>
-    <template class="partial">
-      <tparam name="T" class="type"/>
-      <targ class="type" type="T*"/>
-      <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=" default="sizeof(T)">
-        <file short-path="var-template.cpp" source-path="var-template.cpp" line="18" class="def"/>
-        <attr id="storage-class" name="static" value="2"/>
-        <attr id="is-inline"/>
-        <type name="unsigned int"/>
-      </variable>
-    </template>
-  </struct>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="A" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=" default="sizeof(T)">
-      <file short-path="var-template.cpp" source-path="var-template.cpp" line="1" class="def"/>
-      <type name="unsigned int"/>
-    </variable>
-  </template>
-  <template class="explicit">
-    <targ class="type" type="void"/>
-    <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=" default="0">
-      <file short-path="var-template.cpp" source-path="var-template.cpp" line="4" class="def"/>
-      <type name="unsigned int"/>
-    </variable>
-  </template>
-  <template class="partial">
-    <tparam name="T" class="type"/>
-    <targ class="type" type="T&amp;"/>
-    <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=" default="sizeof(T)">
-      <file short-path="var-template.cpp" source-path="var-template.cpp" line="7" class="def"/>
-      <type name="unsigned int"/>
-    </variable>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <variables>z3eMoJQlHlg0acXVyn1pwg9Ktys=</variables>
+    <variables>jrW9aLj8cqTteNoZmH97vOW7csQ=</variables>
+    <variables>FsEwA9OFNGH4A/cxXIoOOa+ZQg8=</variables>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <static-variables>kMNXdSEDYBD+T4RYbkq3ekR+jUU=</static-variables>
+      <static-variables>Wtlw7VEK38lEEBeqNoDOjTkJE+U=</static-variables>
+      <static-variables>wvoZkG3eTMaiFAf971AFdvmHCDE=</static-variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>kMNXdSEDYBD+T4RYbkq3ekR+jUU=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <name>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Wtlw7VEK38lEEBeqNoDOjTkJE+U=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <name>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>18</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>wvoZkG3eTMaiFAf971AFdvmHCDE=</id>
+  <extraction>regular</extraction>
+  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
+  <named>
+    <name>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>z3eMoJQlHlg0acXVyn1pwg9Ktys=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jrW9aLj8cqTteNoZmH97vOW7csQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>var-template.cpp</short-path>
+      <source-path>var-template.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FsEwA9OFNGH4A/cxXIoOOa+ZQg8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+</variable>
 </mrdocs>

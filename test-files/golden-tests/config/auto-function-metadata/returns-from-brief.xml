@@ -1,58 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
-    <file short-path="returns-from-brief.cpp" source-path="returns-from-brief.cpp" line="2" class="def"/>
-    <doc>
-      <brief>
-        <text>Test class</text>
-      </brief>
-    </doc>
-    <function name="empty" id="NvIeyslj/JtN1AFmvZ8Tij9uTrg=">
-      <file short-path="returns-from-brief.cpp" source-path="returns-from-brief.cpp" line="9"/>
-      <return>
-        <type name="bool"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Determines whether the range is empty.</text>
-        </brief>
-        <returns>
-          <text>whether the range is empty.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="front" id="3xIfjajRSSCEaVNizhf9qh46l4U=">
-      <file short-path="returns-from-brief.cpp" source-path="returns-from-brief.cpp" line="5"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Returns the first element of the range.</text>
-        </brief>
-        <returns>
-          <text>the first element of the range.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="size" id="4jz+tDHFk1vY3ErafzS9b537gac=">
-      <file short-path="returns-from-brief.cpp" source-path="returns-from-brief.cpp" line="13"/>
-      <attr id="is-const"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <doc>
-        <brief>
-          <text>Get the range size.</text>
-        </brief>
-        <returns>
-          <text>the range size.</text>
-        </returns>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>returns-from-brief.cpp</short-path>
+      <source-path>returns-from-brief.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test class</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>NvIeyslj/JtN1AFmvZ8Tij9uTrg=</functions>
+      <functions>3xIfjajRSSCEaVNizhf9qh46l4U=</functions>
+      <functions>4jz+tDHFk1vY3ErafzS9b537gac=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>empty</name>
+  <source>
+    <location>
+      <short-path>returns-from-brief.cpp</short-path>
+      <source-path>returns-from-brief.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>NvIeyslj/JtN1AFmvZ8Tij9uTrg=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Determines whether the range is empty.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>whether the range is empty.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>front</name>
+  <source>
+    <location>
+      <short-path>returns-from-brief.cpp</short-path>
+      <source-path>returns-from-brief.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>3xIfjajRSSCEaVNizhf9qh46l4U=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns the first element of the range.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>the first element of the range.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>size</name>
+  <source>
+    <location>
+      <short-path>returns-from-brief.cpp</short-path>
+      <source-path>returns-from-brief.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>4jz+tDHFk1vY3ErafzS9b537gac=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Get the range size.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>the range size.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
 </mrdocs>

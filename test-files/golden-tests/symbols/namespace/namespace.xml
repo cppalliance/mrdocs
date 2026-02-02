@@ -1,52 +1,349 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <namespace name="B" id="4hr3niqdAlVLoJDRDfOf4nP1zbU=">
-      <function name="f1" id="RAcSjxVkWvI/awJiHw3JE6+Sqi0=">
-        <file short-path="namespace.cpp" source-path="namespace.cpp" line="7"/>
-      </function>
-    </namespace>
-    <function name="f0" id="ORL9/51wI1T8sdK1zKvAQJvBXXE=">
-      <file short-path="namespace.cpp" source-path="namespace.cpp" line="3"/>
-    </function>
-    <function name="f2" id="HaQCsemzdIbo/5b1lSoHbiA1j68=">
-      <file short-path="namespace.cpp" source-path="namespace.cpp" line="12"/>
-    </function>
-    <function name="f3" id="0wxfCHJiD3XMfQnSI2NiRruFzmU=">
-      <file short-path="namespace.cpp" source-path="namespace.cpp" line="17"/>
-    </function>
-  </namespace>
-  <namespace name="E" id="ztz7MOWesSViYVR7u+aEiSORqG0=">
-    <function name="f6" id="Qf4PvJJjCKOCzviJDkpMntv8z48=">
-      <file short-path="namespace.cpp" source-path="namespace.cpp" line="27"/>
-    </function>
-  </namespace>
-  <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
-    <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
-      <file short-path="namespace.cpp" source-path="namespace.cpp" line="47"/>
-    </function>
-  </namespace>
-  <namespace name="I" id="+dTV+2puUwO4arfDuNZCVAzk0M0=">
-    <function name="f14" id="Wk/88w4XwQou7iSEOBQAnlcQ1ys=">
-      <file short-path="namespace.cpp" source-path="namespace.cpp" line="67"/>
-    </function>
-  </namespace>
-  <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
-    <file short-path="namespace.cpp" source-path="namespace.cpp" line="43"/>
-  </function>
-  <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
-    <file short-path="namespace.cpp" source-path="namespace.cpp" line="52"/>
-  </function>
-  <function name="f5" id="fxIH/xCm0IKZv739SRjeEnzqXCc=">
-    <file short-path="namespace.cpp" source-path="namespace.cpp" line="23"/>
-  </function>
-  <function name="f7" id="Vi90nY9KWrCv3wWIlvgWi9fs//E=">
-    <file short-path="namespace.cpp" source-path="namespace.cpp" line="32"/>
-  </function>
-  <function name="f8" id="8ddwiGlSyG3c3BJDcb/ZigMDMJU=">
-    <file short-path="namespace.cpp" source-path="namespace.cpp" line="37"/>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <namespaces>ztz7MOWesSViYVR7u+aEiSORqG0=</namespaces>
+    <namespaces>Wst/dadHi6Smk6pSpSEAkzhH8+M=</namespaces>
+    <namespaces>+dTV+2puUwO4arfDuNZCVAzk0M0=</namespaces>
+    <functions>JFdBEye4uXzw0ilTytFZ8c1sSbg=</functions>
+    <functions>emiOGg7QaKWV17XaWH2S5DJ+vL0=</functions>
+    <functions>fxIH/xCm0IKZv739SRjeEnzqXCc=</functions>
+    <functions>Vi90nY9KWrCv3wWIlvgWi9fs//E=</functions>
+    <functions>8ddwiGlSyG3c3BJDcb/ZigMDMJU=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <namespaces>4hr3niqdAlVLoJDRDfOf4nP1zbU=</namespaces>
+    <functions>ORL9/51wI1T8sdK1zKvAQJvBXXE=</functions>
+    <functions>HaQCsemzdIbo/5b1lSoHbiA1j68=</functions>
+    <functions>0wxfCHJiD3XMfQnSI2NiRruFzmU=</functions>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <namespace-tranche>
+    <functions>RAcSjxVkWvI/awJiHw3JE6+Sqi0=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>RAcSjxVkWvI/awJiHw3JE6+Sqi0=</id>
+  <extraction>regular</extraction>
+  <parent>4hr3niqdAlVLoJDRDfOf4nP1zbU=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ORL9/51wI1T8sdK1zKvAQJvBXXE=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>HaQCsemzdIbo/5b1lSoHbiA1j68=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>0wxfCHJiD3XMfQnSI2NiRruFzmU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>E</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>ztz7MOWesSViYVR7u+aEiSORqG0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>Qf4PvJJjCKOCzviJDkpMntv8z48=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>27</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>Qf4PvJJjCKOCzviJDkpMntv8z48=</id>
+  <extraction>regular</extraction>
+  <parent>ztz7MOWesSViYVR7u+aEiSORqG0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>G</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>45</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Wst/dadHi6Smk6pSpSEAkzhH8+M=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f11</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>47</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=</id>
+  <extraction>regular</extraction>
+  <parent>Wst/dadHi6Smk6pSpSEAkzhH8+M=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>I</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>63</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>+dTV+2puUwO4arfDuNZCVAzk0M0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>Wk/88w4XwQou7iSEOBQAnlcQ1ys=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f14</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>67</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>Wk/88w4XwQou7iSEOBQAnlcQ1ys=</id>
+  <extraction>regular</extraction>
+  <parent>+dTV+2puUwO4arfDuNZCVAzk0M0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f10</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>JFdBEye4uXzw0ilTytFZ8c1sSbg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f12</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>emiOGg7QaKWV17XaWH2S5DJ+vL0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>fxIH/xCm0IKZv739SRjeEnzqXCc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f7</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>Vi90nY9KWrCv3wWIlvgWi9fs//E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f8</name>
+  <source>
+    <location>
+      <short-path>namespace.cpp</short-path>
+      <source-path>namespace.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>8ddwiGlSyG3c3BJDcb/ZigMDMJU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

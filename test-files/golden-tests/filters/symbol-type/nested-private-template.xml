@@ -1,27 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <class name="range" id="sjnSu9g/42wrfWC6AbtyVuLVV6Y=">
-      <file short-path="nested-private-template.cpp" source-path="nested-private-template.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="R" class="type"/>
-        <tparam class="constant" type="bool"/>
-        <struct name="impl" access="private" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
-          <file short-path="nested-private-template.cpp" source-path="nested-private-template.cpp" line="4"/>
-        </struct>
-      </template>
-      <template class="partial" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
-        <tparam name="R" class="type"/>
-        <targ class="type" type="R"/>
-        <targ class="constant" value="false"/>
-        <struct name="impl" access="private" id="BCRU3eMBRSysyvFsjJj+0yg+Vfc=">
-          <file short-path="nested-private-template.cpp" source-path="nested-private-template.cpp" line="10" class="def"/>
-        </struct>
-      </template>
-    </class>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>range</name>
+  <source>
+    <location>
+      <short-path>nested-private-template.cpp</short-path>
+      <source-path>nested-private-template.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+      <records>7XlFKPcXRfyYPWc4WPN3PAH+m58=</records>
+      <records>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</records>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>impl</name>
+  <source>
+    <location>
+      <short-path>nested-private-template.cpp</short-path>
+      <source-path>nested-private-template.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>7XlFKPcXRfyYPWc4WPN3PAH+m58=</id>
+  <extraction>regular</extraction>
+  <parent>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>impl</name>
+  <source>
+    <location>
+      <short-path>nested-private-template.cpp</short-path>
+      <source-path>nested-private-template.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</id>
+  <extraction>regular</extraction>
+  <parent>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 </mrdocs>

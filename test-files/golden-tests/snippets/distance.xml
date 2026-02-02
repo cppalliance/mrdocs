@@ -1,47 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="distance" id="GjxEQxG2FMN3Hr0DOMnJo7wvH5Y=">
-    <file short-path="distance.cpp" source-path="distance.cpp" line="12"/>
-    <return>
-      <type name="double"/>
-    </return>
-    <param name="x0">
-      <type name="double"/>
-    </param>
-    <param name="y0">
-      <type name="double"/>
-    </param>
-    <param name="x1">
-      <type name="double"/>
-    </param>
-    <param name="y1">
-      <type name="double"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Return the distance between two points</text>
-      </brief>
-      <para>
-        <text>This function returns the distance between two points according to the Euclidean distance formula.</text>
-      </para>
-      <returns>
-        <text>The distance between the two points</text>
-      </returns>
-      <param name="x0">
-        <text>The x-coordinate of the first point</text>
-      </param>
-      <param name="y0">
-        <text>The y-coordinate of the first point</text>
-      </param>
-      <param name="x1">
-        <text>The x-coordinate of the second point</text>
-      </param>
-      <param name="y1">
-        <text>The y-coordinate of the second point</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>GjxEQxG2FMN3Hr0DOMnJo7wvH5Y=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>distance</name>
+  <source>
+    <location>
+      <short-path>distance.cpp</short-path>
+      <source-path>distance.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>GjxEQxG2FMN3Hr0DOMnJo7wvH5Y=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function returns the distance between two points according to the Euclidean distance formula.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Return the distance between two points</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The distance between the two points</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The x-coordinate of the first point</literal>
+      </text>
+      <name>x0</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The y-coordinate of the first point</literal>
+      </text>
+      <name>y0</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The x-coordinate of the second point</literal>
+      </text>
+      <name>x1</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The y-coordinate of the second point</literal>
+      </text>
+      <name>y1</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>x0</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>y0</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>x1</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>y1</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

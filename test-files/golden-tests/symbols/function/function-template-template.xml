@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="ListType" class="template">
-      <tparam class="type"/>
-    </tparam>
-    <function name="f" id="bE2iHZMP9X3RlkJcBwZ03NU57Pg=">
-      <file short-path="function-template-template.cpp" source-path="function-template-template.cpp" line="1" class="def"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <param name="param">
-        <type name="ListType&lt;int&gt;"/>
-      </param>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>bE2iHZMP9X3RlkJcBwZ03NU57Pg=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>function-template-template.cpp</short-path>
+      <source-path>function-template-template.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>bE2iHZMP9X3RlkJcBwZ03NU57Pg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>ListType</identifier>
+      </name>
+    </named>
+    <name>param</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

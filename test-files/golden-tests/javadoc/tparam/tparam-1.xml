@@ -1,36 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f0" id="zlkXfDmjJpYtp7dk60AvntW+WFM=">
-      <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="2"/>
-      <doc>
-        <tparam name="T">
-          <text>Template parameter </text>
-          <mono>T</mono>
-        </tparam>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <function name="f1" id="5Sh/JptAi+QRDezCKRenByFsQ+I=">
-      <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="6"/>
-      <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="15"/>
-      <doc>
-        <brief>
-          <text>brief</text>
-        </brief>
-        <para>
-          <text>desc</text>
-        </para>
-        <tparam name="T">
-          <text>type</text>
-        </tparam>
-      </doc>
-    </function>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>zlkXfDmjJpYtp7dk60AvntW+WFM=</functions>
+    <functions>5Sh/JptAi+QRDezCKRenByFsQ+I=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f0</name>
+  <source>
+    <location>
+      <short-path>tparam-1.cpp</short-path>
+      <source-path>tparam-1.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>zlkXfDmjJpYtp7dk60AvntW+WFM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Template parameter </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>T</literal>
+        </text>
+      </code>
+      <name>T</name>
+    </t-param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>tparam-1.cpp</short-path>
+      <source-path>tparam-1.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>tparam-1.cpp</short-path>
+      <source-path>tparam-1.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>5Sh/JptAi+QRDezCKRenByFsQ+I=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>desc</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>brief</literal>
+      </text>
+    </brief>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>type</literal>
+      </text>
+      <name>T</name>
+    </t-param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

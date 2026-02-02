@@ -1,20 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <using id="FhSdC4kR2+KOxLCiCUQ9mu1WNoY=" class="using" qualifier="A::f">
-    <file short-path="using-function-excluded.cpp" source-path="using-function-excluded.cpp" line="13"/>
-    <doc>
-      <brief>
-        <text>Using excluded function f</text>
-      </brief>
-      <para>
-        <text>No shadow should be listed because A::f is excluded.</text>
-      </para>
-      <para>
-        <text>Only included symbols are listed in the shadow list.</text>
-      </para>
-    </doc>
-  </using>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <usings>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</usings>
+  </namespace-tranche>
 </namespace>
+<using>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-excluded.cpp</short-path>
+      <source-path>using-function-excluded.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>No shadow should be listed because A::f is excluded.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Only included symbols are listed in the shadow list.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Using excluded function f</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <class>normal</class>
+  <name>
+    <identifier>f</identifier>
+    <name>
+      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+      <identifier>A</identifier>
+    </name>
+  </name>
+</using>
 </mrdocs>

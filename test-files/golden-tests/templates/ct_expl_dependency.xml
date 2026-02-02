@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template class="explicit">
-    <targ class="type" type="int"/>
-    <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
-      <file short-path="ct_expl_dependency.cpp" source-path="ct_expl_dependency.cpp" line="5" class="def"/>
-      <function name="g" id="NCn1LYKSU8X/x/ejZTTGKsJQLug=">
-        <file short-path="ct_expl_dependency.cpp" source-path="ct_expl_dependency.cpp" line="5" class="def"/>
-      </function>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>AKwlChAOi+0ttIAPsD7uitS+gk0=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>ct_expl_dependency.cpp</short-path>
+      <source-path>ct_expl_dependency.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>AKwlChAOi+0ttIAPsD7uitS+gk0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>NCn1LYKSU8X/x/ejZTTGKsJQLug=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>ct_expl_dependency.cpp</short-path>
+      <source-path>ct_expl_dependency.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>17</column-number>
+    </location>
+  </source>
+  <id>NCn1LYKSU8X/x/ejZTTGKsJQLug=</id>
+  <extraction>regular</extraction>
+  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

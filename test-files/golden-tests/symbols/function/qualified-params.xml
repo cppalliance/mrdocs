@@ -1,25 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="M" id="vrRDfj1fg+DIOkYAYqIPDg6Jfwc=">
-    <class name="D" id="/uhjNgA3CZWDrUG93dNxJ8AXNlA=">
-      <file short-path="qualified-params.cpp" source-path="qualified-params.cpp" line="6" class="def"/>
-    </class>
-  </namespace>
-  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
-    <class name="C" id="sNQWmhyaDchz7lnkqvq3y7z1HVU=">
-      <file short-path="qualified-params.cpp" source-path="qualified-params.cpp" line="2" class="def"/>
-    </class>
-  </namespace>
-  <function name="foo" id="qLZTlCC88VV9/1zxsDYwuIzL/OQ=">
-    <file short-path="qualified-params.cpp" source-path="qualified-params.cpp" line="9"/>
-    <return>
-      <type id="sNQWmhyaDchz7lnkqvq3y7z1HVU=" name="N::C"/>
-    </return>
-    <param name="v">
-      <type id="/uhjNgA3CZWDrUG93dNxJ8AXNlA=" name="M::D"/>
-    </param>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</namespaces>
+    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
+    <functions>qLZTlCC88VV9/1zxsDYwuIzL/OQ=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>M</name>
+  <source>
+    <location>
+      <short-path>qualified-params.cpp</short-path>
+      <source-path>qualified-params.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>/uhjNgA3CZWDrUG93dNxJ8AXNlA=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>qualified-params.cpp</short-path>
+      <source-path>qualified-params.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>/uhjNgA3CZWDrUG93dNxJ8AXNlA=</id>
+  <extraction>regular</extraction>
+  <parent>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<namespace>
+  <name>N</name>
+  <source>
+    <location>
+      <short-path>qualified-params.cpp</short-path>
+      <source-path>qualified-params.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>sNQWmhyaDchz7lnkqvq3y7z1HVU=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>qualified-params.cpp</short-path>
+      <source-path>qualified-params.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>sNQWmhyaDchz7lnkqvq3y7z1HVU=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>qualified-params.cpp</short-path>
+      <source-path>qualified-params.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>qLZTlCC88VV9/1zxsDYwuIzL/OQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>sNQWmhyaDchz7lnkqvq3y7z1HVU=</id>
+      <identifier>C</identifier>
+      <name>
+        <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+        <identifier>N</identifier>
+      </name>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>/uhjNgA3CZWDrUG93dNxJ8AXNlA=</id>
+        <identifier>D</identifier>
+        <name>
+          <id>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</id>
+          <identifier>M</identifier>
+        </name>
+      </name>
+    </named>
+    <name>v</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

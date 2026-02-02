@@ -11,6 +11,7 @@
 #ifndef MRDOCS_LIB_SUPPORT_REFLECTION_MAPREFLECTEDTYPE_HPP
 #define MRDOCS_LIB_SUPPORT_REFLECTION_MAPREFLECTEDTYPE_HPP
 
+#include "ReadableTypeName.hpp"
 #include <mrdocs/Dom/Array.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
@@ -41,13 +42,23 @@ struct is_vector<std::vector<T, A>> : std::true_type {};
 template <typename T>
 inline constexpr bool is_vector_v = is_vector<T>::value;
 
+template <typename T> struct is_optional : std::false_type {};
+template <typename T> struct is_optional<Optional<T>> : std::true_type {};
+
+template <typename T>
+inline constexpr bool is_optional_v = is_optional<T>::value;
+
 /** Helper to determine if a member should be mapped based on its value.
 */
 template <typename T>
 constexpr bool
 shouldMapValue(T const& value)
 {
-    if constexpr (std::is_same_v<T, std::string>)
+    if constexpr (is_optional_v<T>)
+    {
+        return value.has_value();
+    }
+    else if constexpr (std::is_same_v<T, std::string>)
     {
         return !value.empty();
     }
@@ -89,87 +100,6 @@ normalizeMemberName(std::string_view name)
         result.front() = std::tolower(result.front(), std::locale::classic());
     }
     return result;
-}
-
-/** Remove namespace qualifiers from a type name.
-
-    E.g.: "mrdocs::FunctionSymbol" -> "FunctionSymbol".
-*/
-constexpr std::string_view
-removeNamespaceQualifiers(std::string_view name)
-{
-    constexpr std::string_view scopeDelimiter = "::";
-    std::string_view::size_type const pos = name.rfind(scopeDelimiter);
-    if (pos != std::string_view::npos)
-    {
-        return name.substr(pos + scopeDelimiter.size());
-    }
-    return name;
-}
-
-/** Get the unqualified name of a type.
-
-    Extracts the name from __PRETTY_FUNCTION__ (Clang/GCC) or __FUNCSIG__ (MSVC).
-
-    E.g.: readableTypeName<mrdocs::FunctionSymbol>() -> "FunctionSymbol".
-*/
-template <typename T>
-constexpr std::string_view
-readableTypeName()
-{
-    constexpr std::string_view unknown = "Unknown";
-
-#if defined(__clang__) || defined(__GNUC__)
-    // Clang: "std::string_view mrdocs::detail::readableTypeName() [T = mrdocs::FunctionSymbol]"
-    // GCC:   "constexpr std::string_view mrdocs::detail::readableTypeName() [with T = mrdocs::FunctionSymbol; ...]"
-    constexpr std::string_view typePrefix = "T = ";
-    std::string_view const fn = __PRETTY_FUNCTION__;
-    std::string_view::size_type start = fn.find(typePrefix);
-    if (start == std::string_view::npos)
-    {
-        return unknown;
-    }
-    start += typePrefix.size();
-    std::string_view::size_type const end = fn.find_first_of(";]", start);
-    std::string_view const name = fn.substr(start, end - start);
-    return removeNamespaceQualifiers(name);
-
-#elif defined(_MSC_VER)
-    // MSVC: "... __cdecl mrdocs::detail::readableTypeName<struct mrdocs::FunctionSymbol>(void)"
-    constexpr std::string_view funcPrefix = "readableTypeName<";
-    constexpr std::string_view structPrefix = "struct ";
-    constexpr std::string_view classPrefix = "class ";
-    constexpr std::string_view enumPrefix = "enum ";
-
-    std::string_view const fn = __FUNCSIG__;
-    std::string_view::size_type start = fn.find(funcPrefix);
-    if (start == std::string_view::npos)
-    {
-        return unknown;
-    }
-    start += funcPrefix.size();
-
-    // Skip "struct ", "class ", "enum ".
-    if (fn.substr(start, structPrefix.size()) == structPrefix)
-    {
-        start += structPrefix.size();
-    }
-    else if (fn.substr(start, classPrefix.size()) == classPrefix)
-    {
-        start += classPrefix.size();
-    }
-    else if (fn.substr(start, enumPrefix.size()) == enumPrefix)
-    {
-        start += enumPrefix.size();
-    }
-
-    std::string_view::size_type const end = fn.find('>', start);
-    std::string_view const name = fn.substr(start, end - start);
-    return removeNamespaceQualifiers(name);
-
-#else
-    return unknown;
-#endif
 }
 
 /** Collect all base class names recursively.
@@ -252,7 +182,7 @@ void
 addMetaObject(IO& io)
 {
     dom::Object meta;
-    constexpr std::string_view typeName = detail::readableTypeName<T>();
+    constexpr std::string_view typeName = readableTypeName<T>();
     meta.set("type", typeName);
 
     std::vector<std::string> const baseNames = detail::collectBaseNames<T>();
@@ -312,16 +242,8 @@ mapReflectedType(
         {
             using BaseType = typename std::decay_t<decltype(descriptor)>::type;
 
-            if constexpr (boost::describe::has_describe_members<BaseType>::value)
-            {
-                // Base is described: recurse (not most-derived).
-                mapReflectedType<false>(io, static_cast<BaseType const&>(obj), domCorpus);
-            }
-            else
-            {
-                // Base is not described: map directly.
-                tag_invoke(dom::LazyObjectMapTag{}, io, static_cast<BaseType const&>(obj), domCorpus);
-            }
+            // Always use tag_invoke() - it will call mapReflectedType() internally if needed.
+            tag_invoke(dom::LazyObjectMapTag{}, io, static_cast<BaseType const&>(obj), domCorpus);
         }
     );
 

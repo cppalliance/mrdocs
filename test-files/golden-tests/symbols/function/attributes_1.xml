@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="attributes_1.cpp" source-path="attributes_1.cpp" line="2"/>
-    <attr id="nodiscard"/>
-    <return>
-      <type name="bool"/>
-    </return>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>attributes_1.cpp</short-path>
+      <source-path>attributes_1.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>15</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-nodiscard>1</is-nodiscard>
+  <attributes>nodiscard</attributes>
+</function>
 </mrdocs>

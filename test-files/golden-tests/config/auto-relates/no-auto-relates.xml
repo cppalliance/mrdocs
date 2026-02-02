@@ -1,90 +1,293 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="3" class="def"/>
-    <doc>
-      <brief>
-        <text>A class with non-member functions</text>
-      </brief>
-    </doc>
-  </class>
-  <function name="f1" id="BaEDPGJuuB/LSgDi3IbZIcI8+hQ=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="7"/>
-    <param>
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f2" id="7hoCtaKnV3q0+0LGpIwT05DsCzM=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="11"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f3" id="+u77KXnhVCt71fF6pXSP0epFvnk=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="15"/>
-    <param>
-      <type class="lvalue-reference">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f4" id="9T7aRCZADylTGfrzXLBOVh0ozys=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="19"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f5" id="qcY9nOFVFk1L3hg1utMHO4NN0EU=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="23"/>
-    <param>
-      <type class="pointer" cv-qualifiers="const">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f6" id="JhWYEhLUFLpKn1eAL3mqUhciv0s=">
-    <file short-path="no-auto-relates.cpp" source-path="no-auto-relates.cpp" line="27"/>
-    <param>
-      <type class="pointer">
-        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>A non-member function of A</text>
-      </brief>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <functions>BaEDPGJuuB/LSgDi3IbZIcI8+hQ=</functions>
+    <functions>7hoCtaKnV3q0+0LGpIwT05DsCzM=</functions>
+    <functions>+u77KXnhVCt71fF6pXSP0epFvnk=</functions>
+    <functions>9T7aRCZADylTGfrzXLBOVh0ozys=</functions>
+    <functions>qcY9nOFVFk1L3hg1utMHO4NN0EU=</functions>
+    <functions>JhWYEhLUFLpKn1eAL3mqUhciv0s=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class with non-member functions</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>BaEDPGJuuB/LSgDi3IbZIcI8+hQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>7hoCtaKnV3q0+0LGpIwT05DsCzM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>+u77KXnhVCt71fF6pXSP0epFvnk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>9T7aRCZADylTGfrzXLBOVh0ozys=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>qcY9nOFVFk1L3hg1utMHO4NN0EU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <is-const>1</is-const>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>no-auto-relates.cpp</short-path>
+      <source-path>no-auto-relates.cpp</source-path>
+      <line-number>27</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>JhWYEhLUFLpKn1eAL3mqUhciv0s=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A non-member function of A</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

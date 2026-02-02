@@ -1,120 +1,449 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="A" class="type"/>
-    <function name="f" id="hWuV0q4WEpU/yWO9pF2BMXIYNqo=">
-      <file short-path="overloads-metadata.cpp" source-path="overloads-metadata.cpp" line="14"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Test function</text>
-        </brief>
-        <returns>
-          <text>The number corresponding to a</text>
-        </returns>
-        <param name="a">
-          <text>Describe a</text>
-        </param>
-        <tparam name="A">
-          <text>Describe A</text>
-        </tparam>
-        <throws>
-          <text>Describe the exception</text>
-        </throws>
-        <see>
-          <text>Interesting information 1</text>
-        </see>
-        <pre>
-          <text>a must be greater than 0</text>
-        </pre>
-        <post>
-          <text>The return value is greater than 0</text>
-        </post>
-      </doc>
-    </function>
-  </template>
-  <function name="f" id="TdmZJwTZcT5Gr8LFdL1oe7FWI9U=">
-    <file short-path="overloads-metadata.cpp" source-path="overloads-metadata.cpp" line="43"/>
-    <return>
-      <type name="int"/>
-    </return>
-    <param name="a">
-      <type name="int"/>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
+  </namespace-tranche>
+</namespace>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads-metadata.cpp</short-path>
+      <source-path>overloads-metadata.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-metadata.cpp</short-path>
+      <source-path>overloads-metadata.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>overloads-metadata.cpp</short-path>
+      <source-path>overloads-metadata.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number corresponding to a</literal>
+      </text>
+    </returns>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number corresponding to a and b</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
     </param>
     <param>
-      <type class="pointer">
-        <pointee-type name="void"/>
-      </type>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe b</literal>
+      </text>
+      <name>b</name>
     </param>
-    <doc>
-      <brief>
-        <text>Test function</text>
-      </brief>
-      <returns>
-        <text>The number corresponding to a</text>
-      </returns>
-      <param name="a">
-        <text>Describe a again</text>
-      </param>
-      <see>
-        <text>Interesting information 2</text>
-      </see>
-    </doc>
-  </function>
-  <template>
-    <tparam name="A" class="type"/>
-    <tparam name="B" class="type"/>
-    <function name="f" id="KJUWs9wVpQtebRzMne9/RDEOV2I=">
-      <file short-path="overloads-metadata.cpp" source-path="overloads-metadata.cpp" line="32"/>
-      <return>
-        <type name="int"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <param name="b">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Test function</text>
-        </brief>
-        <returns>
-          <text>The number corresponding to a and b</text>
-        </returns>
-        <param name="a">
-          <text>Describe a again</text>
-        </param>
-        <param name="b">
-          <text>Describe b</text>
-        </param>
-        <tparam name="A">
-          <text>Describe A again</text>
-        </tparam>
-        <tparam name="B">
-          <text>Describe B</text>
-        </tparam>
-        <throws>
-          <text>Describe the exception</text>
-        </throws>
-        <pre>
-          <text>a must be greater than 0</text>
-        </pre>
-        <pre>
-          <text>b must be greater than 0</text>
-        </pre>
-        <post>
-          <text>The return value is greater than 10</text>
-        </post>
-      </doc>
-    </function>
-  </template>
-</namespace>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe A</literal>
+      </text>
+      <name>A</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe B</literal>
+      </text>
+      <name>B</name>
+    </t-param>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe the exception</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::runtime_error</literal>
+      </reference>
+    </throws>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe the exception</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::logic_error</literal>
+      </reference>
+    </throws>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Interesting information 1</literal>
+      </text>
+    </see>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Interesting information 2</literal>
+      </text>
+    </see>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>a must be greater than 0</literal>
+      </text>
+    </precondition>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>b must be greater than 0</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value is greater than 0</literal>
+      </text>
+    </postcondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value is greater than 10</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>hWuV0q4WEpU/yWO9pF2BMXIYNqo=</members>
+  <members>TdmZJwTZcT5Gr8LFdL1oe7FWI9U=</members>
+  <members>KJUWs9wVpQtebRzMne9/RDEOV2I=</members>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads-metadata.cpp</short-path>
+      <source-path>overloads-metadata.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>hWuV0q4WEpU/yWO9pF2BMXIYNqo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number corresponding to a</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe A</literal>
+      </text>
+      <name>A</name>
+    </t-param>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe the exception</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::runtime_error</literal>
+      </reference>
+    </throws>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Interesting information 1</literal>
+      </text>
+    </see>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>a must be greater than 0</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value is greater than 0</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads-metadata.cpp</short-path>
+      <source-path>overloads-metadata.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>TdmZJwTZcT5Gr8LFdL1oe7FWI9U=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number corresponding to a</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a again</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <see>
+      <kind>see</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Interesting information 2</literal>
+      </text>
+    </see>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </pointer>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>overloads-metadata.cpp</short-path>
+      <source-path>overloads-metadata.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>KJUWs9wVpQtebRzMne9/RDEOV2I=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Test function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number corresponding to a and b</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe a again</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe b</literal>
+      </text>
+      <name>b</name>
+    </param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe A again</literal>
+      </text>
+      <name>A</name>
+    </t-param>
+    <t-param>
+      <kind>t-param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe B</literal>
+      </text>
+      <name>B</name>
+    </t-param>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Describe the exception</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::logic_error</literal>
+      </reference>
+    </throws>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>a must be greater than 0</literal>
+      </text>
+    </precondition>
+    <precondition>
+      <kind>precondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>b must be greater than 0</literal>
+      </text>
+    </precondition>
+    <postcondition>
+      <kind>postcondition</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The return value is greater than 10</literal>
+      </text>
+    </postcondition>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>b</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

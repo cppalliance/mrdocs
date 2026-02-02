@@ -1,22 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="friend-duplicate.cpp" source-path="friend-duplicate.cpp" line="1" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
-    </friend>
-    <friend id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-      <befriended id="3JsK1DO0O+wZhv+0meptQrbs3fY="/>
-    </friend>
-  </class>
-  <class name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="friend-duplicate.cpp" source-path="friend-duplicate.cpp" line="12" class="def"/>
-  </class>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="friend-duplicate.cpp" source-path="friend-duplicate.cpp" line="7"/>
-    <file short-path="friend-duplicate.cpp" source-path="friend-duplicate.cpp" line="14"/>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>friend-duplicate.cpp</short-path>
+      <source-path>friend-duplicate.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  </friend>
+  <friend>
+    <named>
+      <name>
+        <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+    <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  </friend>
+</record>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>friend-duplicate.cpp</short-path>
+      <source-path>friend-duplicate.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>friend-duplicate.cpp</short-path>
+      <source-path>friend-duplicate.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>friend-duplicate.cpp</short-path>
+      <source-path>friend-duplicate.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

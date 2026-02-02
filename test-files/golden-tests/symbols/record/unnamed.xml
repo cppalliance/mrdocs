@@ -1,56 +1,203 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="" id="F1Jq7+g4G9C/ONGL1uiGY4NNso4=">
-    <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="1" class="def"/>
-    <function name="operator()" id="yiR+Q9T0kIzuR5+cO8MjyUGxhD4=">
-      <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="3"/>
-      <attr id="operator" name="call" value="42"/>
-      <attr id="is-const"/>
-    </function>
-  </struct>
-  <struct name="" id="8AwuUPjsLEReggyF5UohZMvrh8k=">
-    <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="7" class="def"/>
-    <doc>
-      <brief>
-        <text>A test unnamed class.</text>
-      </brief>
-    </doc>
-    <variable name="a" id="4Sy+GbRmqI4igByqQo0hAnRUahY=">
-      <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="9"/>
-      <type name="int"/>
-      <doc>
-        <brief>
-          <text>A test field.</text>
-        </brief>
-      </doc>
-    </variable>
-  </struct>
-  <variable name="F" id="BGjARRRB5KxbD8yjAiXJFTuHZdc=" default="{}">
-    <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="1" class="def"/>
-    <attr id="is-constexpr"/>
-    <type id="F1Jq7+g4G9C/ONGL1uiGY4NNso4=" name=""/>
-  </variable>
-  <variable name="x" id="O3vj5ch+AFTAIMnsaVF06Ms3nc0=">
-    <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="7"/>
-    <attr id="storage-class" name="extern" value="1"/>
-    <type id="8AwuUPjsLEReggyF5UohZMvrh8k=" name=""/>
-    <doc>
-      <brief>
-        <text>A test variable named &apos;x&apos;</text>
-      </brief>
-    </doc>
-  </variable>
-  <variable name="y" id="SEYEjN6YLJp3VM0ue8amNlWQiTU=">
-    <file short-path="unnamed.cpp" source-path="unnamed.cpp" line="7"/>
-    <attr id="storage-class" name="extern" value="1"/>
-    <type id="8AwuUPjsLEReggyF5UohZMvrh8k=" name=""/>
-    <doc>
-      <brief>
-        <text>A test variable named &apos;y&apos;</text>
-      </brief>
-    </doc>
-  </variable>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</records>
+    <records>8AwuUPjsLEReggyF5UohZMvrh8k=</records>
+    <variables>BGjARRRB5KxbD8yjAiXJFTuHZdc=</variables>
+    <variables>O3vj5ch+AFTAIMnsaVF06Ms3nc0=</variables>
+    <variables>SEYEjN6YLJp3VM0ue8amNlWQiTU=</variables>
+  </namespace-tranche>
 </namespace>
+<record>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>11</column-number>
+    </location>
+  </source>
+  <id>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</id>
+  <extraction>regular</extraction>
+  <parent>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<record>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>8</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A test unnamed class.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>4Sy+GbRmqI4igByqQo0hAnRUahY=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>a</name>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>3</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>4Sy+GbRmqI4igByqQo0hAnRUahY=</id>
+  <extraction>regular</extraction>
+  <parent>8AwuUPjsLEReggyF5UohZMvrh8k=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A test field.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>F</name>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BGjARRRB5KxbD8yjAiXJFTuHZdc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</id>
+    </name>
+  </named>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>O3vj5ch+AFTAIMnsaVF06Ms3nc0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A test variable named &apos;x&apos;</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>y</name>
+  <source>
+    <location>
+      <short-path>unnamed.cpp</short-path>
+      <source-path>unnamed.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>SEYEjN6YLJp3VM0ue8amNlWQiTU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A test variable named &apos;y&apos;</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
+    </name>
+  </named>
+</variable>
 </mrdocs>

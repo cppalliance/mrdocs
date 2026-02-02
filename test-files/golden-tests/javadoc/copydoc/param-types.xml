@@ -1,496 +1,1789 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
-    <doc>
-      <brief>
-        <text>Namespace to test qualified identifier parameters.</text>
-      </brief>
-    </doc>
-    <namespace name="M" id="/zZYK9RwdepvVZXQEMRgSV41SYM=">
-      <doc>
-        <brief>
-          <text>Namespace to test qualified identifier parameters.</text>
-        </brief>
-      </doc>
-      <struct name="Q" id="E7FjuWJfQv+1+p7aLfssrWXRlVU=">
-        <file short-path="param-types.cpp" source-path="param-types.cpp" line="156" class="def"/>
-        <doc>
-          <brief>
-            <text>Struct to test qualified identifier parameters.</text>
-          </brief>
-          <related>
-            <reference id="nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=">::g</reference>
-          </related>
-        </doc>
-      </struct>
-    </namespace>
-  </namespace>
-  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="64" class="def"/>
-    <doc>
-      <brief>
-        <text>Struct to test explicit object member functions.</text>
-      </brief>
-      <related>
-        <reference id="XTMt2BS2W4VehIStEJr0wkPasWc=">g</reference>
-      </related>
-    </doc>
-    <function name="f" id="ZtNDo4tS35tJKrXxGM1LJZVrCwA=">
-      <file short-path="param-types.cpp" source-path="param-types.cpp" line="80"/>
-      <param name="a">
-        <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;4&gt;"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Reference member function.</text>
-        </brief>
-        <para>
-          <text>Documentation for a function with an explicit object parameter.</text>
-        </para>
-        <para>
-          <text>This reference uses the </text>
-          <mono>this</mono>
-          <text> keyword.</text>
-        </para>
-        <param name="a">
-          <text>The first parameter of g</text>
-        </param>
-      </doc>
-    </function>
-    <function name="g" id="c2hExG7/ditEkntdYONY88sivsA=">
-      <file short-path="param-types.cpp" source-path="param-types.cpp" line="73"/>
-      <attr id="is-explicit-object-member-function"/>
-      <param name="self">
-        <type class="lvalue-reference">
-          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-        </type>
-      </param>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Reference member function.</text>
-        </brief>
-        <para>
-          <text>Documentation for a function with an explicit object parameter.</text>
-        </para>
-        <param name="self">
-          <text>The object to operate on</text>
-        </param>
-        <param name="a">
-          <text>The first parameter of g</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
-  <template>
-    <tparam name="Idx" class="constant" type="int"/>
-    <struct name="paramType" id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">
-      <file short-path="param-types.cpp" source-path="param-types.cpp" line="2" class="def"/>
-      <doc>
-        <brief>
-          <text>Struct used to vary the parameter type.</text>
-        </brief>
-        <related>
-          <reference id="DU72uK07T2VUA0/zFlSD5xYsNXI=">f</reference>
-          <reference id="EKpcuXzkjOnv8ZyC3Gh0a79SSs4=">f</reference>
-          <reference id="EnCYlDIJiAucNZ8lyKbGxiUjKJI=">f</reference>
-          <reference id="PfAXYt2bWhT47nnpR0gbsP8sVmM=">f</reference>
-          <reference id="RQlRhXU+F7TPvDQClE1vHm3vyzo=">f</reference>
-          <reference id="gWNKk2me9Z+SnL0juCZ31BSqXZQ=">f</reference>
-          <reference id="jDU+LoIgfrcRan+T7yNnme6xG2g=">f</reference>
-          <reference id="tQHT08jpEiAKaxbXFhRLIW9Wlcc=">f</reference>
-          <reference id="wUBitX6O3yYx6++hHwwo2BmUuhY=">f</reference>
-        </related>
-      </doc>
-    </struct>
-  </template>
-  <enum name="testEnum" id="pUJEk/x997P8q+ILVKlwge3u5Ag=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="133" class="def"/>
-    <doc>
-      <related>
-        <reference id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">g</reference>
-      </related>
-    </doc>
-  </enum>
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="9"/>
-    <doc>
-      <brief>
-        <text>Reference function.</text>
-      </brief>
-      <para>
-        <text>Documentation for the reference function.</text>
-      </para>
-    </doc>
-  </function>
-  <function name="f" id="DU72uK07T2VUA0/zFlSD5xYsNXI=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="19"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;0&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Reference function.</text>
-      </brief>
-      <para>
-        <text>Documentation for the reference function.</text>
-      </para>
-      <para>
-        <text>This function uses a reference with no parameters.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of f</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="jDU+LoIgfrcRan+T7yNnme6xG2g=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="28"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;1&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Reference function.</text>
-      </brief>
-      <para>
-        <text>Documentation for the reference function.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>void</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of f</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="EnCYlDIJiAucNZ8lyKbGxiUjKJI=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="53"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;2&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Variadic function</text>
-      </brief>
-      <para>
-        <text>Documentation for the variadic function.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>...</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="wUBitX6O3yYx6++hHwwo2BmUuhY=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="60"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;3&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Non-variadic function</text>
-      </brief>
-      <para>
-        <text>Documentation for the non-variadic function.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>int</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="PfAXYt2bWhT47nnpR0gbsP8sVmM=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="97"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;5&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>struct param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a struct parameter.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>auto</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="RQlRhXU+F7TPvDQClE1vHm3vyzo=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="114"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;6&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Decltype function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a </text>
-        <mono>decltype</mono>
-        <text> parameter.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>decltype</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="tQHT08jpEiAKaxbXFhRLIW9Wlcc=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="130"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;7&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>struct param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a struct parameter.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>struct</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="EKpcuXzkjOnv8ZyC3Gh0a79SSs4=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="148"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;8&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Enum param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with an enum parameter.</text>
-      </para>
-      <para>
-        <text>This reference uses the </text>
-        <mono>enum</mono>
-        <text> keyword.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="f" id="gWNKk2me9Z+SnL0juCZ31BSqXZQ=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="173"/>
-    <param name="a">
-      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;9&gt;"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Qualified identifier param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a qualified identifier parameter.</text>
-      </para>
-      <para>
-        <text>This reference uses the qualified identifier </text>
-        <mono>N::M::Q</mono>
-        <text>.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="g" id="XTMt2BS2W4VehIStEJr0wkPasWc=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="123"/>
-    <param name="a">
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <doc>
-      <brief>
-        <text>struct param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a struct parameter.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="g" id="nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="166"/>
-    <param name="a">
-      <type id="E7FjuWJfQv+1+p7aLfssrWXRlVU=" name="N::M::Q"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Qualified identifier param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a qualified identifier parameter.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="E7FjuWJfQv+1+p7aLfssrWXRlVU=">Q</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="g" id="tWSGybFaxNKcropoGJaIH9niqLg=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="91"/>
-    <param name="a">
-      <type name="auto"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Auto function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with an </text>
-        <mono>auto</mono>
-        <text> parameter.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="141"/>
-    <param name="a">
-      <type id="pUJEk/x997P8q+ILVKlwge3u5Ag=" name="testEnum"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Enum param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with an enum parameter.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <relates>
-        <reference id="pUJEk/x997P8q+ILVKlwge3u5Ag=">testEnum</reference>
-      </relates>
-    </doc>
-  </function>
-  <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="37"/>
-    <attr id="is-variadic"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Variadic function</text>
-      </brief>
-      <para>
-        <text>Documentation for the variadic function.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="SvF6a1ZP8sdIXexPrrRDIA1OHus=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="46"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Non-variadic function</text>
-      </brief>
-      <para>
-        <text>Documentation for the non-variadic function.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="107"/>
-    <param name="a">
-      <type name="int"/>
-    </param>
-    <param name="b">
-      <type class="decltype" operand="a">
-      </type>
-    </param>
-    <doc>
-      <brief>
-        <text>Decltype function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with a </text>
-        <mono>decltype</mono>
-        <text> parameter.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-      <param name="b">
-        <text>The second parameter of g</text>
-      </param>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
+    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
+    <records>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</records>
+    <enums>pUJEk/x997P8q+ILVKlwge3u5Ag=</enums>
+    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
+    <functions>9JfSlZfEThLXiWTez3b8eT/AbZU=</functions>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>N</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>152</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Namespace to test qualified identifier parameters.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <namespace-tranche>
+    <namespaces>/zZYK9RwdepvVZXQEMRgSV41SYM=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>M</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>154</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>/zZYK9RwdepvVZXQEMRgSV41SYM=</id>
+  <extraction>regular</extraction>
+  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Namespace to test qualified identifier parameters.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <namespace-tranche>
+    <records>E7FjuWJfQv+1+p7aLfssrWXRlVU=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>Q</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>156</line-number>
+      <column-number>9</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>E7FjuWJfQv+1+p7aLfssrWXRlVU=</id>
+  <extraction>regular</extraction>
+  <parent>/zZYK9RwdepvVZXQEMRgSV41SYM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Struct to test qualified identifier parameters.</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>::g</literal>
+      <id>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>64</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Struct to test explicit object member functions.</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>g</literal>
+      <id>XTMt2BS2W4VehIStEJr0wkPasWc=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>ZtNDo4tS35tJKrXxGM1LJZVrCwA=</functions>
+      <functions>c2hExG7/ditEkntdYONY88sivsA=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>80</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>ZtNDo4tS35tJKrXxGM1LJZVrCwA=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with an explicit object parameter.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>this</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference member function.</literal>
+      </text>
+      <copied-from>g(this A&amp; self, int a)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>73</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>c2hExG7/ditEkntdYONY88sivsA=</id>
+  <extraction>regular</extraction>
+  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with an explicit object parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference member function.</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to operate on</literal>
+      </text>
+      <name>self</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>self</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-explicit-object-member-function>1</is-explicit-object-member-function>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>paramType</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Struct used to vary the parameter type.</literal>
+      </text>
+    </brief>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>DU72uK07T2VUA0/zFlSD5xYsNXI=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>EKpcuXzkjOnv8ZyC3Gh0a79SSs4=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>EnCYlDIJiAucNZ8lyKbGxiUjKJI=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>PfAXYt2bWhT47nnpR0gbsP8sVmM=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>RQlRhXU+F7TPvDQClE1vHm3vyzo=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>gWNKk2me9Z+SnL0juCZ31BSqXZQ=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>jDU+LoIgfrcRan+T7yNnme6xG2g=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>tQHT08jpEiAKaxbXFhRLIW9Wlcc=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>f</literal>
+      <id>wUBitX6O3yYx6++hHwwo2BmUuhY=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<enum>
+  <name>testEnum</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>133</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <reference>
+      <kind>reference</kind>
+      <literal>g</literal>
+      <id>TF0l7iZI1k70e/PY/mnOvc0hoyI=</id>
+    </reference>
+  </doc-comment>
+</enum>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>53</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>60</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>97</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>114</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>130</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>148</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>173</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>f</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of f</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</members>
+  <members>DU72uK07T2VUA0/zFlSD5xYsNXI=</members>
+  <members>jDU+LoIgfrcRan+T7yNnme6xG2g=</members>
+  <members>EnCYlDIJiAucNZ8lyKbGxiUjKJI=</members>
+  <members>wUBitX6O3yYx6++hHwwo2BmUuhY=</members>
+  <members>PfAXYt2bWhT47nnpR0gbsP8sVmM=</members>
+  <members>RQlRhXU+F7TPvDQClE1vHm3vyzo=</members>
+  <members>tQHT08jpEiAKaxbXFhRLIW9Wlcc=</members>
+  <members>EKpcuXzkjOnv8ZyC3Gh0a79SSs4=</members>
+  <members>gWNKk2me9Z+SnL0juCZ31BSqXZQ=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the reference function.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference function.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>DU72uK07T2VUA0/zFlSD5xYsNXI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the reference function.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This function uses a reference with no parameters.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference function.</literal>
+      </text>
+      <copied-from>f()</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of f</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>28</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>jDU+LoIgfrcRan+T7yNnme6xG2g=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the reference function.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>void</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference function.</literal>
+      </text>
+      <copied-from>f(void)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of f</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>53</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>EnCYlDIJiAucNZ8lyKbGxiUjKJI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the variadic function.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>...</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Variadic function</literal>
+      </text>
+      <copied-from>g(int a, ...)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>60</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wUBitX6O3yYx6++hHwwo2BmUuhY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the non-variadic function.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Non-variadic function</literal>
+      </text>
+      <copied-from>g(int a)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>97</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>PfAXYt2bWhT47nnpR0gbsP8sVmM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a struct parameter.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>auto</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>struct param function</literal>
+      </text>
+      <copied-from>g(auto a)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>114</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RQlRhXU+F7TPvDQClE1vHm3vyzo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>decltype</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> parameter.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>decltype</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Decltype function</literal>
+      </text>
+      <copied-from>g(int a, decltype(a) b)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>130</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>tQHT08jpEiAKaxbXFhRLIW9Wlcc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a struct parameter.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>struct</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>struct param function</literal>
+      </text>
+      <copied-from>g(struct A a)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>148</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>EKpcuXzkjOnv8ZyC3Gh0a79SSs4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with an enum parameter.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>enum</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> keyword.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enum param function</literal>
+      </text>
+      <copied-from>g(enum testEnum a)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>173</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>gWNKk2me9Z+SnL0juCZ31BSqXZQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a qualified identifier parameter.</literal>
+      </text>
+    </paragraph>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>This reference uses the qualified identifier </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>N::M::Q</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Qualified identifier param function</literal>
+      </text>
+      <copied-from>g(N::M::Q a)</copied-from>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>paramType</literal>
+      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+        <identifier>paramType</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<overloads>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>91</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>107</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>123</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>141</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>166</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>9JfSlZfEThLXiWTez3b8eT/AbZU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>g</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The second parameter of g</literal>
+      </text>
+      <name>b</name>
+    </param>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>XTMt2BS2W4VehIStEJr0wkPasWc=</members>
+  <members>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</members>
+  <members>tWSGybFaxNKcropoGJaIH9niqLg=</members>
+  <members>TF0l7iZI1k70e/PY/mnOvc0hoyI=</members>
+  <members>lldWvRg9y+NwRnDpK3x2NF9+e08=</members>
+  <members>SvF6a1ZP8sdIXexPrrRDIA1OHus=</members>
+  <members>wOc7mtwXPodKdeWFmSfib8PaSww=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>123</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>XTMt2BS2W4VehIStEJr0wkPasWc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a struct parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>struct param function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>A</literal>
+      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>166</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a qualified identifier parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Qualified identifier param function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>Q</literal>
+      <id>E7FjuWJfQv+1+p7aLfssrWXRlVU=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>E7FjuWJfQv+1+p7aLfssrWXRlVU=</id>
+        <identifier>Q</identifier>
+        <name>
+          <id>/zZYK9RwdepvVZXQEMRgSV41SYM=</id>
+          <identifier>M</identifier>
+          <name>
+            <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+            <identifier>N</identifier>
+          </name>
+        </name>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>91</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>tWSGybFaxNKcropoGJaIH9niqLg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with an </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>auto</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Auto function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>auto</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>141</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>TF0l7iZI1k70e/PY/mnOvc0hoyI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with an enum parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enum param function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>testEnum</literal>
+      <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
+        <identifier>testEnum</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>37</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>lldWvRg9y+NwRnDpK3x2NF9+e08=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the variadic function.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Variadic function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-variadic>1</is-variadic>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>SvF6a1ZP8sdIXexPrrRDIA1OHus=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for the non-variadic function.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Non-variadic function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>107</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wOc7mtwXPodKdeWFmSfib8PaSww=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with a </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>decltype</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Decltype function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The second parameter of g</literal>
+      </text>
+      <name>b</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <decltype>
+    </decltype>
+    <name>b</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

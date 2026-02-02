@@ -1,59 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="11" class="def"/>
-    <friend id="wZtQh+QR5vgNZmk34MnRmnKO5MI=">
-      <befriended id="wZtQh+QR5vgNZmk34MnRmnKO5MI="/>
-    </friend>
-    <friend id="HK6hbp0kJrHWxbYoHddN1v/GCWc=">
-      <befriended id="HK6hbp0kJrHWxbYoHddN1v/GCWc="/>
-    </friend>
-    <friend id="6Jx2eK9l4C46QIRucTvox+6PH2k=">
-      <befriended id="6Jx2eK9l4C46QIRucTvox+6PH2k="/>
-    </friend>
-  </struct>
-  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
-    <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="1" class="def"/>
-    <function class="constructor" name="X" id="6Jx2eK9l4C46QIRucTvox+6PH2k=">
-      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="3"/>
-      <doc>
-        <brief>
-          <text>Default constructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function class="destructor" name="~X" id="HK6hbp0kJrHWxbYoHddN1v/GCWc=">
-      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="4"/>
-      <doc>
-        <brief>
-          <text>Destructor</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="foo" id="wZtQh+QR5vgNZmk34MnRmnKO5MI=">
-      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="8"/>
-      <return>
-        <type class="pointer">
-          <pointee-type name="char"/>
-        </type>
-      </return>
-      <param name="i">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Friend member-function</text>
-        </brief>
-        <returns>
-          <text>char*</text>
-        </returns>
-        <param name="i">
-          <text>Description of i</text>
-        </param>
-      </doc>
-    </function>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
+    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>U</name>
+  <source>
+    <location>
+      <short-path>friend-fn-member.cpp</short-path>
+      <source-path>friend-fn-member.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>wZtQh+QR5vgNZmk34MnRmnKO5MI=</id>
+  </friend>
+  <friend>
+    <id>HK6hbp0kJrHWxbYoHddN1v/GCWc=</id>
+  </friend>
+  <friend>
+    <id>6Jx2eK9l4C46QIRucTvox+6PH2k=</id>
+  </friend>
+</record>
+<record>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>friend-fn-member.cpp</short-path>
+      <source-path>friend-fn-member.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>6Jx2eK9l4C46QIRucTvox+6PH2k=</functions>
+      <functions>HK6hbp0kJrHWxbYoHddN1v/GCWc=</functions>
+      <functions>wZtQh+QR5vgNZmk34MnRmnKO5MI=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>friend-fn-member.cpp</short-path>
+      <source-path>friend-fn-member.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>6Jx2eK9l4C46QIRucTvox+6PH2k=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Default constructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>~X</name>
+  <source>
+    <location>
+      <short-path>friend-fn-member.cpp</short-path>
+      <source-path>friend-fn-member.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>HK6hbp0kJrHWxbYoHddN1v/GCWc=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Destructor</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>destructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>foo</name>
+  <source>
+    <location>
+      <short-path>friend-fn-member.cpp</short-path>
+      <source-path>friend-fn-member.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>wZtQh+QR5vgNZmk34MnRmnKO5MI=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Friend member-function</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>char*</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Description of i</literal>
+      </text>
+      <name>i</name>
+    </param>
+  </doc-comment>
+  <pointer>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </pointer>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>i</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

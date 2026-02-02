@@ -1,46 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <tparam name="V" class="type"/>
-        <variable name="x" id="XzfcXqh7M7tQVHWKvlB891KIC/0=" default="0">
-          <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="4" class="def"/>
-          <attr id="storage-class" name="static" value="2"/>
-          <attr id="is-inline"/>
-          <attr id="is-constexpr"/>
-          <type name="T"/>
-        </variable>
-      </template>
-      <template class="explicit">
-        <targ class="type" type="T"/>
-        <targ class="type" type="long"/>
-        <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=" default="2">
-          <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="10" class="def"/>
-          <attr id="storage-class" name="static" value="2"/>
-          <attr id="is-inline"/>
-          <attr id="is-constexpr"/>
-          <type name="bool"/>
-        </variable>
-      </template>
-      <template class="partial">
-        <tparam name="U" class="type"/>
-        <targ class="type" type="U*"/>
-        <targ class="type" type="T"/>
-        <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=" default="1">
-          <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="7" class="def"/>
-          <attr id="storage-class" name="static" value="2"/>
-          <attr id="is-inline"/>
-          <attr id="is-constexpr"/>
-          <type name="T"/>
-        </variable>
-      </template>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>static-data-template.cpp</short-path>
+      <source-path>static-data-template.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <static-variables>XzfcXqh7M7tQVHWKvlB891KIC/0=</static-variables>
+      <static-variables>eKdgKT44WwfN7UkQXGEqVJssIPM=</static-variables>
+      <static-variables>odTOUblgmooUozrBqW3qKzPWSO4=</static-variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>static-data-template.cpp</short-path>
+      <source-path>static-data-template.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>XzfcXqh7M7tQVHWKvlB891KIC/0=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>static-data-template.cpp</short-path>
+      <source-path>static-data-template.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>eKdgKT44WwfN7UkQXGEqVJssIPM=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>static-data-template.cpp</short-path>
+      <source-path>static-data-template.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>odTOUblgmooUozrBqW3qKzPWSO4=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
 </mrdocs>

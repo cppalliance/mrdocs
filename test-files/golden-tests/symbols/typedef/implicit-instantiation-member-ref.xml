@@ -1,66 +1,278 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace-alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
-    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="14"/>
-    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
-  </namespace-alias>
-  <namespace-alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
-    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="15"/>
-    <type id="KI+cz9NSHQSZN2PnUoAaBtILqNQ=" name="A5::S2&lt;char&gt;::M3&lt;int&gt;::M3&lt;unsigned int&gt;::M2"/>
-  </namespace-alias>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="S0" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-      <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="1" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="S2" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=">
-          <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="4" class="def"/>
-          <namespace-alias name="M2" id="NnkA706kKqg/azveB/lExZwRfFI=">
-            <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="7"/>
-            <type name="U"/>
-          </namespace-alias>
-          <template>
-            <tparam name="V" class="type"/>
-            <namespace-alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
-              <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="9"/>
-              <type id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S2&lt;U&gt;"/>
-            </namespace-alias>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
-  <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-    <targ class="type" type="void"/>
-    <struct name="S0" id="BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=">
-      <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="S2" id="3bDJlUJg+Wg63OKbCChN7xs/THg=">
-          <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="4"/>
-        </struct>
-      </template>
-      <template class="explicit" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=">
-        <targ class="type" type="char"/>
-        <struct name="S2" id="LQDMND21bNwDyy/hE3qQoQzFLXY=">
-          <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="5" class="def"/>
-          <namespace-alias name="M2" id="KI+cz9NSHQSZN2PnUoAaBtILqNQ=">
-            <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="7"/>
-            <type name="char"/>
-          </namespace-alias>
-          <template>
-            <tparam name="V" class="type"/>
-            <namespace-alias name="M3" id="xu84aTnEsoVB4EugJR5m2weQzUE=">
-              <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="9"/>
-              <type id="3bDJlUJg+Wg63OKbCChN7xs/THg=" name="S2&lt;char&gt;"/>
-            </namespace-alias>
-          </template>
-        </struct>
-      </template>
-    </struct>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>1Z8U4eFyt2XClP+7afzwsuyeXAI=</typedefs>
+    <typedefs>r6hRllvikhxyJUBT7eKH8Z13wfw=</typedefs>
+    <records>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</records>
+    <records>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</records>
+  </namespace-tranche>
 </namespace>
+<typedef>
+  <name>A5</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>1Z8U4eFyt2XClP+7afzwsuyeXAI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+      <identifier>S0</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>A9</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>r6hRllvikhxyJUBT7eKH8Z13wfw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</id>
+      <identifier>M2</identifier>
+      <name>
+        <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
+        <identifier>M3</identifier>
+        <name>
+          <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
+          <identifier>M3</identifier>
+          <name>
+            <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
+            <identifier>S2</identifier>
+            <name>
+              <id>1Z8U4eFyt2XClP+7afzwsuyeXAI=</id>
+              <identifier>A5</identifier>
+            </name>
+          </name>
+        </name>
+      </name>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>S2</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</id>
+  <extraction>regular</extraction>
+  <parent>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>NnkA706kKqg/azveB/lExZwRfFI=</typedefs>
+      <typedefs>TBl15ml95lYP4APzAuH1VpGgjgs=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>M2</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>NnkA706kKqg/azveB/lExZwRfFI=</id>
+  <extraction>regular</extraction>
+  <parent>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</parent>
+  <named>
+    <name>
+      <identifier>U</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>M3</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>TBl15ml95lYP4APzAuH1VpGgjgs=</id>
+  <extraction>regular</extraction>
+  <parent>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</parent>
+  <named>
+    <name>
+      <id>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</id>
+      <identifier>S2</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <records>3bDJlUJg+Wg63OKbCChN7xs/THg=</records>
+      <records>LQDMND21bNwDyy/hE3qQoQzFLXY=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>S2</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
+  <extraction>regular</extraction>
+  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>S2</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>LQDMND21bNwDyy/hE3qQoQzFLXY=</id>
+  <extraction>regular</extraction>
+  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <typedefs>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</typedefs>
+      <typedefs>xu84aTnEsoVB4EugJR5m2weQzUE=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>M2</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</id>
+  <extraction>regular</extraction>
+  <parent>LQDMND21bNwDyy/hE3qQoQzFLXY=</parent>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>M3</name>
+  <source>
+    <location>
+      <short-path>implicit-instantiation-member-ref.cpp</short-path>
+      <source-path>implicit-instantiation-member-ref.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
+  <extraction>regular</extraction>
+  <parent>LQDMND21bNwDyy/hE3qQoQzFLXY=</parent>
+  <named>
+    <name>
+      <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
+      <identifier>S2</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
 </mrdocs>

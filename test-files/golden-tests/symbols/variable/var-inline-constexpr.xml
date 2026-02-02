@@ -1,69 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <variable name="var" id="9s8AEcaO/PYLDINeClULQZuqcls=" default="5">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="9" class="def"/>
-    <type name="int"/>
-  </variable>
-  <variable name="var_const" id="zUgw7RZYhWQ0Wdr483M4dEkcXFU=" default="4">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="7" class="def"/>
-    <type name="int" cv-qualifiers="const"/>
-  </variable>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_const_t" id="23TCuxWNlj84e/NoEZJsI1rADQA=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="20" class="def"/>
-      <type name="T" cv-qualifiers="const"/>
-    </variable>
-  </template>
-  <variable name="var_constexpr" id="fWXHXBdM9s2COMhYT0j3aWad+0I=" default="2">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="3" class="def"/>
-    <attr id="is-constexpr"/>
-    <type name="int"/>
-  </variable>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_constexpr_t" id="+c5FvmsSJNn7o5ii4DyReMV38C4=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="14" class="def"/>
-      <attr id="is-constexpr"/>
-      <type name="T"/>
-    </variable>
-  </template>
-  <variable name="var_inline_const" id="pn99V2QzcOsMfIXOuUkZkX5qPxM=" default="3">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="5" class="def"/>
-    <attr id="is-inline"/>
-    <type name="int" cv-qualifiers="const"/>
-  </variable>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_inline_const_t" id="eeYDvHDDTr7yHd4hDvbGxxhRsdg=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="17" class="def"/>
-      <attr id="is-inline"/>
-      <type name="T" cv-qualifiers="const"/>
-    </variable>
-  </template>
-  <variable name="var_inline_constexpr" id="/HfsnrPPmN325zi27Blg78dY0HE=" default="1">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="1" class="def"/>
-    <attr id="is-inline"/>
-    <attr id="is-constexpr"/>
-    <type name="int"/>
-  </variable>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_inline_constexpr_t" id="Ix017ZAiVi07tMCvlM1DJ9AE5sk=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="11" class="def"/>
-      <attr id="is-inline"/>
-      <attr id="is-constexpr"/>
-      <type name="T"/>
-    </variable>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_t" id="NeARXC6JJzwenZWHvmtX1WP6Y4E=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="23" class="def"/>
-      <type name="T"/>
-    </variable>
-  </template>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <variables>9s8AEcaO/PYLDINeClULQZuqcls=</variables>
+    <variables>zUgw7RZYhWQ0Wdr483M4dEkcXFU=</variables>
+    <variables>23TCuxWNlj84e/NoEZJsI1rADQA=</variables>
+    <variables>fWXHXBdM9s2COMhYT0j3aWad+0I=</variables>
+    <variables>+c5FvmsSJNn7o5ii4DyReMV38C4=</variables>
+    <variables>pn99V2QzcOsMfIXOuUkZkX5qPxM=</variables>
+    <variables>eeYDvHDDTr7yHd4hDvbGxxhRsdg=</variables>
+    <variables>/HfsnrPPmN325zi27Blg78dY0HE=</variables>
+    <variables>Ix017ZAiVi07tMCvlM1DJ9AE5sk=</variables>
+    <variables>NeARXC6JJzwenZWHvmtX1WP6Y4E=</variables>
+  </namespace-tranche>
 </namespace>
+<variable>
+  <name>var</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>9s8AEcaO/PYLDINeClULQZuqcls=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>var_const</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>zUgw7RZYhWQ0Wdr483M4dEkcXFU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>var_const_t</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>20</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>23TCuxWNlj84e/NoEZJsI1rADQA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>var_constexpr</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>fWXHXBdM9s2COMhYT0j3aWad+0I=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>var_constexpr_t</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>+c5FvmsSJNn7o5ii4DyReMV38C4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>var_inline_const</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>pn99V2QzcOsMfIXOuUkZkX5qPxM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>var_inline_const_t</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>eeYDvHDDTr7yHd4hDvbGxxhRsdg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <is-const>1</is-const>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+</variable>
+<variable>
+  <name>var_inline_constexpr</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>/HfsnrPPmN325zi27Blg78dY0HE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>var_inline_constexpr_t</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>Ix017ZAiVi07tMCvlM1DJ9AE5sk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+  <is-inline>1</is-inline>
+  <is-constexpr>1</is-constexpr>
+</variable>
+<variable>
+  <name>var_t</name>
+  <source>
+    <location>
+      <short-path>var-inline-constexpr.cpp</short-path>
+      <source-path>var-inline-constexpr.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>NeARXC6JJzwenZWHvmtX1WP6Y4E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>T</identifier>
+    </name>
+  </named>
+</variable>
 </mrdocs>

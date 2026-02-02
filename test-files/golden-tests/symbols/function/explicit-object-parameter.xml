@@ -1,50 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <struct name="Optional" id="/TAtWMuvF+kz/B0ChmDlGQtnkaA=">
-    <file short-path="explicit-object-parameter.cpp" source-path="explicit-object-parameter.cpp" line="1" class="def"/>
-    <template>
-      <tparam name="Self" class="type"/>
-      <function name="value" id="XLLL4h9bZlRyA4AQMlfVPCuwMoU=">
-        <file short-path="explicit-object-parameter.cpp" source-path="explicit-object-parameter.cpp" line="3"/>
-        <attr id="constexpr-kind" name="constexpr" value="1"/>
-        <attr id="is-explicit-object-member-function"/>
-        <return>
-          <type class="rvalue-reference">
-            <pointee-type class="auto" keyword="auto">
-            </pointee-type>
-          </type>
-        </return>
-        <param name="self">
-          <type class="rvalue-reference">
-            <pointee-type name="Self"/>
-          </type>
-        </param>
-      </function>
-    </template>
-    <template>
-      <tparam name="Self" class="type"/>
-      <function name="value" id="aOpxAmSvyM7g6X3lLAJG5i3CTZA=">
-        <file short-path="explicit-object-parameter.cpp" source-path="explicit-object-parameter.cpp" line="6"/>
-        <attr id="constexpr-kind" name="constexpr" value="1"/>
-        <attr id="is-explicit-object-member-function"/>
-        <return>
-          <type class="rvalue-reference">
-            <pointee-type class="auto" keyword="auto">
-            </pointee-type>
-          </type>
-        </return>
-        <param name="self">
-          <type class="rvalue-reference">
-            <pointee-type name="Self"/>
-          </type>
-        </param>
-        <param name="x">
-          <type name="int"/>
-        </param>
-      </function>
-    </template>
-  </struct>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</records>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>Optional</name>
+  <source>
+    <location>
+      <short-path>explicit-object-parameter.cpp</short-path>
+      <source-path>explicit-object-parameter.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>yAoBkmRqQkJsKfweNOdQt2SnUkc=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>explicit-object-parameter.cpp</short-path>
+      <source-path>explicit-object-parameter.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>explicit-object-parameter.cpp</short-path>
+      <source-path>explicit-object-parameter.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>yAoBkmRqQkJsKfweNOdQt2SnUkc=</id>
+  <extraction>regular</extraction>
+  <parent>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</parent>
+  <func-class>normal</func-class>
+  <members>XLLL4h9bZlRyA4AQMlfVPCuwMoU=</members>
+  <members>aOpxAmSvyM7g6X3lLAJG5i3CTZA=</members>
+  <r-value-reference>
+    <auto>
+    </auto>
+  </r-value-reference>
+</overloads>
+<function>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>explicit-object-parameter.cpp</short-path>
+      <source-path>explicit-object-parameter.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>XLLL4h9bZlRyA4AQMlfVPCuwMoU=</id>
+  <extraction>regular</extraction>
+  <parent>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</parent>
+  <r-value-reference>
+    <auto>
+    </auto>
+  </r-value-reference>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <identifier>Self</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>self</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-explicit-object-member-function>1</is-explicit-object-member-function>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>explicit-object-parameter.cpp</short-path>
+      <source-path>explicit-object-parameter.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>aOpxAmSvyM7g6X3lLAJG5i3CTZA=</id>
+  <extraction>regular</extraction>
+  <parent>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</parent>
+  <r-value-reference>
+    <auto>
+    </auto>
+  </r-value-reference>
+  <param>
+    <r-value-reference>
+      <named>
+        <name>
+          <identifier>Self</identifier>
+        </name>
+      </named>
+    </r-value-reference>
+    <name>self</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-explicit-object-member-function>1</is-explicit-object-member-function>
+  <is-record-method>1</is-record-method>
+</function>
 </mrdocs>

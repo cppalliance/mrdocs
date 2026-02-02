@@ -1,18 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="main.cpp" source-path="main.cpp" line="4"/>
-    <return>
-      <type id="KJQiUzqS/DyA8gVUV+KMxND3bns=" name="unknown_type"/>
-    </return>
-  </function>
-  <function name="g" id="43ASI/aC9fCLy8T+1gn7pUdis+g=">
-    <file short-path="main.cpp" source-path="main.cpp" line="7"/>
-    <return>
-      <type id="crCUrZiBv5bX9bGLig2c8iHIQTw=" name="unknown_ns::unknown_type"/>
-    </return>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>FSD/uKhIsgLLMoCQGwUzTPIPF6s=</namespaces>
+    <records>KJQiUzqS/DyA8gVUV+KMxND3bns=</records>
+    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
+    <functions>43ASI/aC9fCLy8T+1gn7pUdis+g=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>main.cpp</short-path>
+      <source-path>main.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>KJQiUzqS/DyA8gVUV+KMxND3bns=</id>
+      <identifier>unknown_type</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>main.cpp</short-path>
+      <source-path>main.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <id>crCUrZiBv5bX9bGLig2c8iHIQTw=</id>
+      <identifier>unknown_type</identifier>
+      <name>
+        <id>FSD/uKhIsgLLMoCQGwUzTPIPF6s=</id>
+        <identifier>unknown_ns</identifier>
+      </name>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

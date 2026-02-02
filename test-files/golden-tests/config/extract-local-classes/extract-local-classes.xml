@@ -1,15 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <class name="local_class" id="qbmV5XYyPyjd0VRKzDp7fghXifw=">
-    <file short-path="extract-local-classes.cpp" source-path="extract-local-classes.cpp" line="3" class="def"/>
-  </class>
-  <struct name="local_struct" id="WcflY1aoR4DWbE5trOYKvtGVEKw=">
-    <file short-path="extract-local-classes.cpp" source-path="extract-local-classes.cpp" line="2" class="def"/>
-  </struct>
-  <function name="local_function" id="4N1JFtP3y7voqQo6aiZzzTWLj84=">
-    <file short-path="extract-local-classes.cpp" source-path="extract-local-classes.cpp" line="4"/>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>qbmV5XYyPyjd0VRKzDp7fghXifw=</records>
+    <records>WcflY1aoR4DWbE5trOYKvtGVEKw=</records>
+    <functions>4N1JFtP3y7voqQo6aiZzzTWLj84=</functions>
+  </namespace-tranche>
 </namespace>
+<record>
+  <name>local_class</name>
+  <source>
+    <location>
+      <short-path>extract-local-classes.cpp</short-path>
+      <source-path>extract-local-classes.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>qbmV5XYyPyjd0VRKzDp7fghXifw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>local_struct</name>
+  <source>
+    <location>
+      <short-path>extract-local-classes.cpp</short-path>
+      <source-path>extract-local-classes.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>WcflY1aoR4DWbE5trOYKvtGVEKw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>local_function</name>
+  <source>
+    <location>
+      <short-path>extract-local-classes.cpp</short-path>
+      <source-path>extract-local-classes.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>4N1JFtP3y7voqQo6aiZzzTWLj84=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

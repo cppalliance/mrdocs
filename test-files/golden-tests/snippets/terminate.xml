@@ -1,21 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <function name="terminate" exception-spec="noexcept" id="HJGSj0okQR/JSIlbm5chSNvd9c8=">
-    <file short-path="terminate.cpp" source-path="terminate.cpp" line="8"/>
-    <attr id="is-no-return"/>
-    <doc>
-      <brief>
-        <text>Exit the program.</text>
-      </brief>
-      <para>
-        <text>The program will end immediately.</text>
-      </para>
-      <para class="note">
-        <text>This function does not return.</text>
-      </para>
-    </doc>
-  </function>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>HJGSj0okQR/JSIlbm5chSNvd9c8=</functions>
+  </namespace-tranche>
 </namespace>
+<function>
+  <name>terminate</name>
+  <source>
+    <location>
+      <short-path>terminate.cpp</short-path>
+      <source-path>terminate.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>HJGSj0okQR/JSIlbm5chSNvd9c8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The program will end immediately.</literal>
+      </text>
+    </paragraph>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>This function does not return.</literal>
+        </text>
+      </paragraph>
+    </admonition>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Exit the program.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-no-return>1</is-no-return>
+  <attributes>noreturn</attributes>
+</function>
 </mrdocs>

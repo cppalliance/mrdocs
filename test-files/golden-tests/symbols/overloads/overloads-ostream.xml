@@ -1,160 +1,553 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="left_shift" id="QelU2GDLOEeJSbLfOayOweDPxeI=">
-    <class name="A" id="mPR5L0+aXmfmkEAliRYGzCDx/No=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="3" class="def"/>
-      <function name="operator&lt;&lt;" id="933XchiQ+t56rbxrI6xHFc4VHpg=">
-        <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="7"/>
-        <attr id="operator" name="lshift" value="23"/>
-        <return>
-          <type class="lvalue-reference">
-            <pointee-type id="mPR5L0+aXmfmkEAliRYGzCDx/No=" name="A"/>
-          </type>
-        </return>
-        <param name="shift">
-          <type name="unsigned int"/>
-        </param>
-        <doc>
-          <brief>
-            <text>Left shift operator</text>
-          </brief>
-          <returns>
-            <text>Reference to the current object</text>
-          </returns>
-          <param name="shift">
-            <text>The right operand</text>
-          </param>
-        </doc>
-      </function>
-      <function name="operator&lt;&lt;" id="uV72HdBWsWZ4EwLG0yd905Rczwc=">
-        <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="10"/>
-        <attr id="operator" name="lshift" value="23"/>
-        <return>
-          <type class="lvalue-reference">
-            <pointee-type id="mPR5L0+aXmfmkEAliRYGzCDx/No=" name="A"/>
-          </type>
-        </return>
-        <param name="shift">
-          <type name="char"/>
-        </param>
-        <doc>
-          <brief>
-            <text>Left shift operator</text>
-          </brief>
-          <returns>
-            <text>Reference to the current object</text>
-          </returns>
-          <param name="shift">
-            <text>The right operand</text>
-          </param>
-        </doc>
-      </function>
-    </class>
-    <function name="operator&lt;&lt;" id="1FD8aMER9duNWqJoLOsrCr53cJY=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="14"/>
-      <attr id="operator" name="lshift" value="23"/>
-      <return>
-        <type id="mPR5L0+aXmfmkEAliRYGzCDx/No=" name="A"/>
-      </return>
-      <param name="obj">
-        <type class="lvalue-reference">
-          <pointee-type id="mPR5L0+aXmfmkEAliRYGzCDx/No=" name="A" cv-qualifiers="const"/>
-        </type>
-      </param>
-      <param name="shift">
-        <type name="double"/>
-      </param>
-    </function>
-  </namespace>
-  <namespace name="ostream" id="S5XtDqY96X0u1hXzl3cx6YoVW8A=">
-    <class name="B" id="VFtzIPiiZVDB77znFM+ODgLmKOw=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="23" class="def"/>
-      <friend id="1fuMcZHDrARpZPSclbAk4IYVnps=">
-        <befriended id="1fuMcZHDrARpZPSclbAk4IYVnps="/>
-      </friend>
-    </class>
-    <class name="C" id="QiJ36sJ5iTYFjV9O2r8TuROMu6Y=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="30" class="def"/>
-    </class>
-    <class name="OStream" id="A6n++lhHK0l+ailOmBfa/TZCXd8=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="21" class="def"/>
-      <doc>
-        <related>
-          <reference id="ojxr+36qVG3RcL9uyYCrmeMtpKQ=">operator&lt;&lt;</reference>
-          <reference id="1fuMcZHDrARpZPSclbAk4IYVnps=">operator&lt;&lt;</reference>
-        </related>
-      </doc>
-    </class>
-    <function name="operator&lt;&lt;" id="1fuMcZHDrARpZPSclbAk4IYVnps=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="25"/>
-      <attr id="operator" name="lshift" value="23"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
-        </type>
-      </return>
-      <param name="os">
-        <type class="lvalue-reference">
-          <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
-        </type>
-      </param>
-      <param name="value">
-        <type id="VFtzIPiiZVDB77znFM+ODgLmKOw=" name="B"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Stream insertion operator</text>
-        </brief>
-        <returns>
-          <text>Reference to the current output stream</text>
-        </returns>
-        <param name="os">
-          <text>An output stream</text>
-        </param>
-        <param name="value">
-          <text>The object to output</text>
-        </param>
-        <relates>
-          <reference id="A6n++lhHK0l+ailOmBfa/TZCXd8=">OStream</reference>
-        </relates>
-      </doc>
-    </function>
-    <function name="operator&lt;&lt;" id="ojxr+36qVG3RcL9uyYCrmeMtpKQ=">
-      <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="32"/>
-      <attr id="operator" name="lshift" value="23"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
-        </type>
-      </return>
-      <param name="os">
-        <type class="lvalue-reference">
-          <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
-        </type>
-      </param>
-      <param name="value">
-        <type id="QiJ36sJ5iTYFjV9O2r8TuROMu6Y=" name="C"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Stream insertion operator</text>
-        </brief>
-        <returns>
-          <text>Reference to the current output stream</text>
-        </returns>
-        <param name="os">
-          <text>An output stream</text>
-        </param>
-        <param name="value">
-          <text>The object to output</text>
-        </param>
-        <relates>
-          <reference id="A6n++lhHK0l+ailOmBfa/TZCXd8=">OStream</reference>
-        </relates>
-      </doc>
-    </function>
-  </namespace>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>QelU2GDLOEeJSbLfOayOweDPxeI=</namespaces>
+    <namespaces>S5XtDqY96X0u1hXzl3cx6YoVW8A=</namespaces>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>left_shift</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>QelU2GDLOEeJSbLfOayOweDPxeI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>mPR5L0+aXmfmkEAliRYGzCDx/No=</records>
+    <functions>1FD8aMER9duNWqJoLOsrCr53cJY=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
+  <extraction>regular</extraction>
+  <parent>QelU2GDLOEeJSbLfOayOweDPxeI=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>CHEdD6V2JZOWqrKOrzrAFB01ag4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>CHEdD6V2JZOWqrKOrzrAFB01ag4=</id>
+  <extraction>regular</extraction>
+  <parent>mPR5L0+aXmfmkEAliRYGzCDx/No=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Left shift operators</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>933XchiQ+t56rbxrI6xHFc4VHpg=</members>
+  <members>uV72HdBWsWZ4EwLG0yd905Rczwc=</members>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+</overloads>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>933XchiQ+t56rbxrI6xHFc4VHpg=</id>
+  <extraction>regular</extraction>
+  <parent>mPR5L0+aXmfmkEAliRYGzCDx/No=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Left shift operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference to the current object</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>shift</name>
+    </param>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <named>
+      <name>
+        <identifier>unsigned int</identifier>
+      </name>
+    </named>
+    <name>shift</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>uV72HdBWsWZ4EwLG0yd905Rczwc=</id>
+  <extraction>regular</extraction>
+  <parent>mPR5L0+aXmfmkEAliRYGzCDx/No=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Left shift operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference to the current object</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>shift</name>
+    </param>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
+        <identifier>A</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+    <name>shift</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>1FD8aMER9duNWqJoLOsrCr53cJY=</id>
+  <extraction>regular</extraction>
+  <parent>QelU2GDLOEeJSbLfOayOweDPxeI=</parent>
+  <named>
+    <name>
+      <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
+      <identifier>A</identifier>
+    </name>
+  </named>
+  <param>
+    <l-value-reference>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>obj</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>shift</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<namespace>
+  <name>ostream</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>S5XtDqY96X0u1hXzl3cx6YoVW8A=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>VFtzIPiiZVDB77znFM+ODgLmKOw=</records>
+    <records>QiJ36sJ5iTYFjV9O2r8TuROMu6Y=</records>
+    <records>A6n++lhHK0l+ailOmBfa/TZCXd8=</records>
+    <functions>/s4tLGsRLchmoXSCfp1huP12grE=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>B</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>23</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>VFtzIPiiZVDB77znFM+ODgLmKOw=</id>
+  <extraction>regular</extraction>
+  <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>1fuMcZHDrARpZPSclbAk4IYVnps=</id>
+  </friend>
+</record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>30</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>QiJ36sJ5iTYFjV9O2r8TuROMu6Y=</id>
+  <extraction>regular</extraction>
+  <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>OStream</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+  <extraction>regular</extraction>
+  <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
+  <doc-comment>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&lt;&lt;</literal>
+      <id>ojxr+36qVG3RcL9uyYCrmeMtpKQ=</id>
+    </reference>
+    <reference>
+      <kind>reference</kind>
+      <literal>operator&lt;&lt;</literal>
+      <id>1fuMcZHDrARpZPSclbAk4IYVnps=</id>
+    </reference>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<overloads>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>/s4tLGsRLchmoXSCfp1huP12grE=</id>
+  <extraction>regular</extraction>
+  <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Stream insertion operators</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>1fuMcZHDrARpZPSclbAk4IYVnps=</members>
+  <members>ojxr+36qVG3RcL9uyYCrmeMtpKQ=</members>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+        <identifier>OStream</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+</overloads>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>1fuMcZHDrARpZPSclbAk4IYVnps=</id>
+  <extraction>regular</extraction>
+  <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Stream insertion operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference to the current output stream</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An output stream</literal>
+      </text>
+      <name>os</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to output</literal>
+      </text>
+      <name>value</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>OStream</literal>
+      <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+    </reference>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+        <identifier>OStream</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+          <identifier>OStream</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>os</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <id>VFtzIPiiZVDB77znFM+ODgLmKOw=</id>
+        <identifier>B</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>operator&lt;&lt;</name>
+  <source>
+    <location>
+      <short-path>overloads-ostream.cpp</short-path>
+      <source-path>overloads-ostream.cpp</source-path>
+      <line-number>32</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>ojxr+36qVG3RcL9uyYCrmeMtpKQ=</id>
+  <extraction>regular</extraction>
+  <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Stream insertion operator</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Reference to the current output stream</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An output stream</literal>
+      </text>
+      <name>os</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object to output</literal>
+      </text>
+      <name>value</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>OStream</literal>
+      <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+    </reference>
+  </doc-comment>
+  <l-value-reference>
+    <named>
+      <name>
+        <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+        <identifier>OStream</identifier>
+      </name>
+    </named>
+  </l-value-reference>
+  <param>
+    <l-value-reference>
+      <named>
+        <name>
+          <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
+          <identifier>OStream</identifier>
+        </name>
+      </named>
+    </l-value-reference>
+    <name>os</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <id>QiJ36sJ5iTYFjV9O2r8TuROMu6Y=</id>
+        <identifier>C</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

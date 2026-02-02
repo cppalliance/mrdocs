@@ -1,56 +1,422 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <function name="f" id="OdPJWl984rpJN717Abrgnrwq2Kw=">
-      <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="6"/>
-      <doc>
-        <brief>
-          <text>Second overload</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="4"/>
-      <param>
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>First overload</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="f" id="N0+WoYktWiHOeI6T/zCKyjtVjUU=">
-      <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="8"/>
-      <param>
-        <type name="char"/>
-      </param>
-      <param>
-        <type name="char"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Third overload</text>
-        </brief>
-      </doc>
-    </function>
-  </namespace>
-  <function name="f" id="8HikSjplV248Xlimdc3WQFts5g8=">
-    <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="12"/>
-    <param>
-      <type name="double"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Local overload</text>
-      </brief>
-    </doc>
-  </function>
-  <using id="IuDUO+ZKmtIXi1gNBEIaZu4+a/E=" class="using" qualifier="A::f">
-    <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="16"/>
-    <named id="gAFZ/q+ghQPrWK8SOl+US+U0jTU="/>
-  </using>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
+    <functions>8HikSjplV248Xlimdc3WQFts5g8=</functions>
+    <usings>IuDUO+ZKmtIXi1gNBEIaZu4+a/E=</usings>
+  </namespace-tranche>
 </namespace>
+<namespace>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>gAFZ/q+ghQPrWK8SOl+US+U0jTU=</functions>
+  </namespace-tranche>
+</namespace>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>gAFZ/q+ghQPrWK8SOl+US+U0jTU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>f</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>OdPJWl984rpJN717Abrgnrwq2Kw=</members>
+  <members>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</members>
+  <members>N0+WoYktWiHOeI6T/zCKyjtVjUU=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>OdPJWl984rpJN717Abrgnrwq2Kw=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Second overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>First overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>N0+WoYktWiHOeI6T/zCKyjtVjUU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Third overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>8HikSjplV248Xlimdc3WQFts5g8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Local overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<using>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>IuDUO+ZKmtIXi1gNBEIaZu4+a/E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <class>normal</class>
+  <name>
+    <identifier>f</identifier>
+    <name>
+      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+      <identifier>A</identifier>
+    </name>
+  </name>
+  <shadow-declarations>gAFZ/q+ghQPrWK8SOl+US+U0jTU=</shadow-declarations>
+</using>
+<overloads>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>gAFZ/q+ghQPrWK8SOl+US+U0jTU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>f</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> overloads</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <func-class>normal</func-class>
+  <members>OdPJWl984rpJN717Abrgnrwq2Kw=</members>
+  <members>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</members>
+  <members>N0+WoYktWiHOeI6T/zCKyjtVjUU=</members>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+</overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>OdPJWl984rpJN717Abrgnrwq2Kw=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Second overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>First overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>int</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>using-function-local-overloads.cpp</short-path>
+      <source-path>using-function-local-overloads.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>N0+WoYktWiHOeI6T/zCKyjtVjUU=</id>
+  <extraction>regular</extraction>
+  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Third overload</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </param>
+  <param>
+    <named>
+      <name>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
 </mrdocs>

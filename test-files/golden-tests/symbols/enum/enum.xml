@@ -1,99 +1,311 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace id="//////////////////////////8=">
-  <enum name="E0" id="pmVtLf5hBBPEGDMBiRb6W7pOgbU=">
-    <file short-path="enum.cpp" source-path="enum.cpp" line="5" class="def"/>
-    <doc>
-      <brief>
-        <text>E0 brief.</text>
-      </brief>
-      <para>
-        <text>E0 description.</text>
-      </para>
-    </doc>
-    <enum-constant name="e0" initializer="1" id="PKsKOtl3cLUHJP4nEw+EKQK4fUE=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="11"/>
-      <doc>
-        <brief>
-          <text>e0 brief.</text>
-        </brief>
-        <para>
-          <text>e0 description.</text>
-        </para>
-      </doc>
-    </enum-constant>
-    <enum-constant name="e1" initializer="2" id="AXLqFIJBEk7eAdup5AR/wvnrMzc=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="16"/>
-      <doc>
-        <brief>
-          <text>e1 brief.</text>
-        </brief>
-        <para>
-          <text>e1 description.</text>
-        </para>
-      </doc>
-    </enum-constant>
-  </enum>
-  <enum name="E1" id="YVlrwdT9xevSZZOb/TqEFyXYRzs=">
-    <base>
-      <type name="char"/>
-    </base>
-    <file short-path="enum.cpp" source-path="enum.cpp" line="19" class="def"/>
-    <enum-constant name="e2" initializer="0" id="WhHxTXqItGXwZujc82O1Xfzbaz4=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="21"/>
-    </enum-constant>
-    <enum-constant name="e3" initializer="1" id="Rifzp55QTXd/noKg5TyWoEJWlpE=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="22"/>
-    </enum-constant>
-  </enum>
-  <enum name="E2" class="scoped" id="pjF+x6gHHvGroB7+mumMEpLLPDw=">
-    <base>
-      <type name="int"/>
-    </base>
-    <file short-path="enum.cpp" source-path="enum.cpp" line="29" class="def"/>
-    <doc>
-      <brief>
-        <text>E2 brief.</text>
-      </brief>
-      <para>
-        <text>E2 description.</text>
-      </para>
-    </doc>
-    <enum-constant name="e4" initializer="0" id="RyRlkoU0rHCqW5D5O8YXfJrvfaw=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="35"/>
-      <doc>
-        <brief>
-          <text>e4 brief.</text>
-        </brief>
-        <para>
-          <text>e4 description.</text>
-        </para>
-      </doc>
-    </enum-constant>
-    <enum-constant name="e5" initializer="1" id="xFkU6j7yjwyQB2aStQjCIF9O+sQ=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="40"/>
-      <doc>
-        <brief>
-          <text>e5 brief.</text>
-        </brief>
-        <para>
-          <text>e5 description.</text>
-        </para>
-      </doc>
-    </enum-constant>
-  </enum>
-  <enum name="E3" class="scoped" id="sSur7Z1606gfBcxeK64ws2daEXI=">
-    <base>
-      <type name="char"/>
-    </base>
-    <file short-path="enum.cpp" source-path="enum.cpp" line="43" class="def"/>
-    <enum-constant name="e6" initializer="0" id="m/aInWQVfzBhSp/BbwL1S6HYfgI=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="45"/>
-    </enum-constant>
-    <enum-constant name="e7" initializer="1" id="s6xZcC+IxMf8dGaSjBuD4CkmAuU=">
-      <file short-path="enum.cpp" source-path="enum.cpp" line="46"/>
-    </enum-constant>
-  </enum>
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <enums>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</enums>
+    <enums>YVlrwdT9xevSZZOb/TqEFyXYRzs=</enums>
+    <enums>pjF+x6gHHvGroB7+mumMEpLLPDw=</enums>
+    <enums>sSur7Z1606gfBcxeK64ws2daEXI=</enums>
+  </namespace-tranche>
 </namespace>
+<enum>
+  <name>E0</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>E0 description.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>E0 brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <constants>PKsKOtl3cLUHJP4nEw+EKQK4fUE=</constants>
+  <constants>AXLqFIJBEk7eAdup5AR/wvnrMzc=</constants>
+</enum>
+<enum-constant>
+  <name>e0</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>PKsKOtl3cLUHJP4nEw+EKQK4fUE=</id>
+  <extraction>regular</extraction>
+  <parent>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e0 description.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e0 brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+</enum-constant>
+<enum-constant>
+  <name>e1</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>AXLqFIJBEk7eAdup5AR/wvnrMzc=</id>
+  <extraction>regular</extraction>
+  <parent>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e1 description.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e1 brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+</enum-constant>
+<enum>
+  <name>E1</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>YVlrwdT9xevSZZOb/TqEFyXYRzs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <constants>WhHxTXqItGXwZujc82O1Xfzbaz4=</constants>
+  <constants>Rifzp55QTXd/noKg5TyWoEJWlpE=</constants>
+</enum>
+<enum-constant>
+  <name>e2</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>21</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>WhHxTXqItGXwZujc82O1Xfzbaz4=</id>
+  <extraction>regular</extraction>
+  <parent>YVlrwdT9xevSZZOb/TqEFyXYRzs=</parent>
+</enum-constant>
+<enum-constant>
+  <name>e3</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>22</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Rifzp55QTXd/noKg5TyWoEJWlpE=</id>
+  <extraction>regular</extraction>
+  <parent>YVlrwdT9xevSZZOb/TqEFyXYRzs=</parent>
+</enum-constant>
+<enum>
+  <name>E2</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>29</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>pjF+x6gHHvGroB7+mumMEpLLPDw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>E2 description.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>E2 brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <scoped>1</scoped>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <constants>RyRlkoU0rHCqW5D5O8YXfJrvfaw=</constants>
+  <constants>xFkU6j7yjwyQB2aStQjCIF9O+sQ=</constants>
+</enum>
+<enum-constant>
+  <name>e4</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>35</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>RyRlkoU0rHCqW5D5O8YXfJrvfaw=</id>
+  <extraction>regular</extraction>
+  <parent>pjF+x6gHHvGroB7+mumMEpLLPDw=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e4 description.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e4 brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+</enum-constant>
+<enum-constant>
+  <name>e5</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>40</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>xFkU6j7yjwyQB2aStQjCIF9O+sQ=</id>
+  <extraction>regular</extraction>
+  <parent>pjF+x6gHHvGroB7+mumMEpLLPDw=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e5 description.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>e5 brief.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+</enum-constant>
+<enum>
+  <name>E3</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>43</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>sSur7Z1606gfBcxeK64ws2daEXI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <scoped>1</scoped>
+  <named>
+    <name>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <constants>m/aInWQVfzBhSp/BbwL1S6HYfgI=</constants>
+  <constants>s6xZcC+IxMf8dGaSjBuD4CkmAuU=</constants>
+</enum>
+<enum-constant>
+  <name>e6</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>45</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>m/aInWQVfzBhSp/BbwL1S6HYfgI=</id>
+  <extraction>regular</extraction>
+  <parent>sSur7Z1606gfBcxeK64ws2daEXI=</parent>
+</enum-constant>
+<enum-constant>
+  <name>e7</name>
+  <source>
+    <location>
+      <short-path>enum.cpp</short-path>
+      <source-path>enum.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>s6xZcC+IxMf8dGaSjBuD4CkmAuU=</id>
+  <extraction>regular</extraction>
+  <parent>sSur7Z1606gfBcxeK64ws2daEXI=</parent>
+</enum-constant>
 </mrdocs>
