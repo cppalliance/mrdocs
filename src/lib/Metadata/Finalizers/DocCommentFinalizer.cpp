@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -23,6 +24,223 @@
 #include <format>
 
 namespace mrdocs {
+
+namespace {
+
+using InlineIter = std::vector<Polymorphic<doc::Inline>>::iterator;
+using BlockVec   = std::vector<Polymorphic<doc::Block>>;
+using BlockIter  = BlockVec::iterator;
+
+// Check if an inline starts with a Markdown "- " list marker.
+bool
+isMarkdownListMarker(doc::Inline const& inl)
+{
+    if (!inl.isText())
+    {
+        return false;
+    }
+    std::string_view const sv = ltrim(inl.asText().literal);
+    return sv.starts_with("- ");
+}
+
+// Return the text content after stripping the "- " prefix.
+std::string
+textAfterListMarker(std::string_view literal)
+{
+    std::string_view const sv = ltrim(literal);
+    MRDOCS_ASSERT(sv.starts_with("- "));
+    return std::string(sv.substr(2));
+}
+
+// Move non-marker continuation inlines into a paragraph.
+void
+gatherContinuation(
+    doc::ParagraphBlock& para,
+    InlineIter& it,
+    InlineIter end)
+{
+    while (it != end && !isMarkdownListMarker(**it))
+    {
+        para.children.push_back(std::move(*it));
+        ++it;
+    }
+}
+
+// Build one ListItem from a "- " marker and its continuation.
+doc::ListItem
+buildListItem(InlineIter& it, InlineIter end)
+{
+    doc::ParagraphBlock para;
+    std::string const content = textAfterListMarker(
+        (*it)->asText().literal);
+    if (!content.empty())
+    {
+        para.emplace_back<doc::TextInline>(content);
+    }
+    ++it;
+    gatherContinuation(para, it, end);
+    doc::ListItem item;
+    item.blocks.emplace_back(std::move(para));
+    return item;
+}
+
+// Build a ListBlock from all "- " items in [first, last).
+doc::ListBlock
+buildListFromRange(InlineIter first, InlineIter last)
+{
+    doc::ListBlock list;
+    while (first != last)
+    {
+        if (isMarkdownListMarker(**first))
+        {
+            list.items.push_back(buildListItem(first, last));
+        }
+        else
+        {
+            ++first;
+        }
+    }
+    return list;
+}
+
+// Find the first "- " marker among a paragraph's children.
+InlineIter
+findFirstMarker(doc::ParagraphBlock& para)
+{
+    return std::find_if(
+        para.children.begin(),
+        para.children.end(),
+        [](Polymorphic<doc::Inline> const& el) {
+            return isMarkdownListMarker(*el);
+        });
+}
+
+// Trim trailing whitespace and remove empty inlines.
+void
+cleanupParagraph(doc::ParagraphBlock& para)
+{
+    doc::rtrim(para.asInlineContainer());
+    std::erase_if(
+        para.children,
+        [](Polymorphic<doc::Inline> const& el) {
+            return doc::isEmpty(el);
+        });
+}
+
+// Extract a ListBlock from a paragraph's "- " markers.
+// Returns std::nullopt if no markers are found.
+Optional<doc::ListBlock>
+extractList(doc::ParagraphBlock& para)
+{
+    InlineIter const marker = findFirstMarker(para);
+    if (marker == para.children.end())
+    {
+        return std::nullopt;
+    }
+    doc::ListBlock list = buildListFromRange(
+        marker, para.children.end());
+    para.children.erase(marker, para.children.end());
+    cleanupParagraph(para);
+    return list;
+}
+
+// Insert a list block, replacing or following the paragraph.
+// Returns an iterator past the inserted list.
+BlockIter
+insertList(BlockVec& blocks, BlockIter it, doc::ListBlock&& list)
+{
+    if ((*it)->asParagraph().empty())
+    {
+        it = blocks.erase(it);
+    }
+    else
+    {
+        ++it;
+    }
+    it = blocks.emplace(it, std::move(list));
+    return ++it;
+}
+
+// Scan paragraphs in a block vector and split any that
+// contain "- " markers into a prefix paragraph and a ListBlock.
+void
+splitParagraphsAtMarkers(BlockVec& blocks)
+{
+    for (BlockIter it = blocks.begin(); it != blocks.end(); )
+    {
+        if (!(*it)->isParagraph())
+        {
+            ++it;
+            continue;
+        }
+        Optional<doc::ListBlock> list = extractList(
+            (*it)->asParagraph());
+        if (!list)
+        {
+            ++it;
+            continue;
+        }
+        it = insertList(blocks, it, std::move(*list));
+    }
+}
+
+// Parse inline Markdown (bold, italic, code, etc.) in a
+// single InlineContainer's immediate text children.
+// Does *not* recurse: topDownTraverse() already visits every
+// InlineContainer in the tree, so each node is processed
+// exactly once.
+void
+parseInlinesInContainer(doc::InlineContainer& node)
+{
+    // Reserve enough capacity so child inserts during parsing
+    // cannot reallocate and invalidate pointers held by the
+    // parser state.
+    std::size_t extra = 0;
+    for (auto const& child : node.children)
+    {
+        if (child->isText())
+        {
+            extra += child->asText().literal.size();
+        }
+    }
+    if (extra > 0)
+    {
+        node.children.reserve(
+            node.children.size() + 2 * extra + 16);
+    }
+
+    auto it = node.children.begin();
+    while (it != node.children.end())
+    {
+        Polymorphic<doc::Inline>& el = *it;
+
+        if (!el->isText())
+        {
+            ++it;
+            continue;
+        }
+
+        auto& textEl = el->asText();
+        doc::InlineContainer v;
+        ParseResult r = parse(textEl.literal, v);
+
+        if (!r)
+        {
+            ++it;
+            continue;
+        }
+
+        it = node.children.erase(it);
+
+        for (auto& child : v.children)
+        {
+            it = node.children.insert(it, std::move(child));
+            ++it;
+        }
+    }
+}
+
+}
 
 void
 DocCommentFinalizer::
@@ -107,6 +325,12 @@ build()
         processRelates(I);
     }
 
+    // Parse inlines in terminal text nodes
+    for (auto& I : infos)
+    {
+        parseInlines(I);
+    }
+
     // Normalize siblings
     for (auto& I : infos)
     {
@@ -117,12 +341,6 @@ build()
     for (auto& I : infos)
     {
         tidyUp(I);
-    }
-
-    // Parse inlines in terminal text nodes
-    for (auto& I : infos)
-    {
-        parseInlines(I);
     }
 
     // Remove invalid references
@@ -1327,73 +1545,55 @@ void
 DocCommentFinalizer::
 parseInlines(DocComment& doc)
 {
-    bottomUpTraverse(doc, []<std::derived_from<doc::InlineContainer> NodeTy>(NodeTy& node) {
-        if constexpr (requires { { node.children } -> range_of<Polymorphic<doc::Inline>>; })
+    // Single top-down traversal of the entire DocComment tree.
+    //
+    // At each node the visitor does two things in order:
+    //   (1) Split paragraphs at "- " markers (block restructure).
+    //   (2) Parse inline Markdown (bold, italic, code, etc.).
+    //
+    // Top-down ordering is essential: list splitting must run
+    // on raw text *before* inline parsing, because parse() merges
+    // text across line boundaries, burying "- " markers inside
+    // TextInline nodes where isMarkdownListMarker() cannot find
+    // them.
+    //
+    // topDownTraverse() calls the visitor before iterating
+    // children, so the range-for loops see the already-modified
+    // vectors. This is safe because the visitor returns before
+    // the loops capture begin()/end().
+    topDownTraverse(doc, []<class NodeTy>(NodeTy& node) {
+        // (1) Block restructure: split paragraphs containing
+        //     "- " markers into a prefix paragraph + ListBlock.
+        if constexpr (
+            requires {
+                { node.Document } ->
+                    range_of<Polymorphic<doc::Block>>;
+            })
         {
-            // Reserve enough capacity up-front so child inserts during parsing
-            // cannot reallocate and invalidate InlineContainer pointers held
-            // by the parser state.
-            std::size_t extra = 0;
-            for (auto const& child : node.children)
+            splitParagraphsAtMarkers(node.Document);
+        }
+        if constexpr (
+            requires {
+                { node.blocks } ->
+                    range_of<Polymorphic<doc::Block>>;
+            })
+        {
+            splitParagraphsAtMarkers(node.blocks);
+        }
+        if constexpr (std::same_as<NodeTy, doc::ListBlock>)
+        {
+            for (doc::ListItem& item : node.items)
             {
-                if (child->isText())
-                {
-                    extra += child->asText().literal.size();
-                }
+                splitParagraphsAtMarkers(item.blocks);
             }
-            if (extra > 0)
-            {
-                // Over-reserve generously to avoid any reallocation while the
-                // parser keeps pointers into these containers.
-                node.children.reserve(
-                    node.children.size() + 2 * extra + 16);
-            }
+        }
 
-            auto it = node.children.begin();
-            while (it != node.children.end())
-            {
-                Polymorphic<doc::Inline>& el = *it;
-
-                // Advance when doesn't text
-                if (!el->isText()) {
-                    ++it;
-                    continue;
-                }
-
-                auto& textEl = el->asText();
-                doc::InlineContainer v;
-                ParseResult r;
-                try
-                {
-                    r = parse(textEl.literal, v);
-                }
-                catch (std::bad_alloc const&)
-                {
-                    // Skip parsing this text node if it explodes memory;
-                    // leave the raw text in place.
-                    ++it;
-                    continue;
-                }
-
-                // advance on parse failure
-                if (!r)
-                {
-                    ++it;
-                    continue;
-                }
-
-                // Remove the original text node; 'it' becomes the
-                // insertion position.
-                it = node.children.erase(it);
-
-                // Move-insert each parsed child;
-                // advance using returned iterators.
-                for (auto& child : v.children)
-                {
-                    it = node.children.insert(it, std::move(child));
-                    ++it;
-                }
-            }
+        // (2) Inline parsing: parse bold, italic, code,
+        //     links, etc. in text nodes.
+        if constexpr (
+            std::derived_from<NodeTy, doc::InlineContainer>)
+        {
+            parseInlinesInContainer(node);
         }
     });
 }
