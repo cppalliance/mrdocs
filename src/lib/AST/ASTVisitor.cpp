@@ -95,16 +95,44 @@ traverse(DeclTy const* D)
 
     if constexpr (std::same_as<DeclTy, clang::Decl>)
     {
-        // Convert to the most derived type of the Decl
-        // and call the appropriate traverse function
-        return visit(D, [&]<typename DeclTyU>(DeclTyU* U) -> Symbol*
+        switch (D->getKind())
         {
-            if constexpr (!std::same_as<DeclTyU, clang::Decl>)
-            {
-                return traverse(U);
-            }
-            return nullptr;
-        });
+#define X(V)             \
+    case clang::Decl::V: \
+        return traverse(llvm::cast<clang::V##Decl>(D))
+            X(FunctionTemplate);
+            X(UsingDirective);
+            X(IndirectField);
+
+            X(TranslationUnit);
+            X(Namespace);
+            X(CXXRecord);
+            X(ClassTemplateSpecialization);
+            X(ClassTemplatePartialSpecialization);
+            X(ClassTemplate);
+            X(Function);
+            X(CXXMethod);
+            X(CXXConstructor);
+            X(CXXDestructor);
+            X(CXXConversion);
+            X(Enum);
+            X(EnumConstant);
+            X(Typedef);
+            X(TypeAlias);
+            X(TypeAliasTemplate);
+            X(Var);
+            X(VarTemplateSpecialization);
+            X(VarTemplatePartialSpecialization);
+            X(VarTemplate);
+            X(Field);
+            X(CXXDeductionGuide);
+            X(NamespaceAlias);
+            X(Using);
+            X(Concept);
+#undef X
+        default:
+            break;
+        }
     }
     else if constexpr (HasInfoTypeFor<DeclTy> || std::derived_from<InfoTy, Symbol>)
     {
@@ -1510,88 +1538,80 @@ populate(
     clang::NamedDecl const* N)
 {
     MRDOCS_ASSERT(!I.valueless_after_move());
-    visit(N, [&]<typename DeclTy>(DeclTy const* P)
+    switch (N->getKind())
     {
-        constexpr clang::Decl::Kind kind =
-            DeclToKind<DeclTy>();
-
-        if constexpr(kind == clang::Decl::TemplateTypeParm)
+    case clang::Decl::TemplateTypeParm:
+    {
+        auto* P = llvm::cast<clang::TemplateTypeParmDecl>(N);
+        if (I->Kind != TParamKind::Type)
         {
-            if (I->Kind != TParamKind::Type)
-            {
-                I = Polymorphic<TParam>(std::in_place_type<TypeTParam>);
-            }
-            auto* R = (I.operator->())->asTypePtr();
-            if (P->wasDeclaredWithTypename())
-            {
-                R->KeyKind = TParamKeyKind::Typename;
-            }
-            if (P->hasDefaultArgument() && !R->Default)
-            {
-                R->Default = toTArg(
-                    P->getDefaultArgument().getArgument());
-            }
-            if (clang::TypeConstraint const* TC = P->getTypeConstraint())
-            {
-                clang::NestedNameSpecifier NNS =
-                    TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
-                Optional<clang::ASTTemplateArgumentListInfo const*> TArgs;
-                if (TC->hasExplicitTemplateArgs())
-                {
-                    TArgs.emplace(TC->getTemplateArgsAsWritten());
-                }
-                R->Constraint = toName(TC->getNamedConcept(), TArgs, NNS);
-            }
-            return;
+            I = Polymorphic<TParam>(std::in_place_type<TypeTParam>);
         }
-        else if constexpr(kind == clang::Decl::NonTypeTemplateParm)
+        auto* R = (I.operator->())->asTypePtr();
+        if (P->wasDeclaredWithTypename())
         {
-            if (I->Kind != TParamKind::Constant)
-            {
-                I = Polymorphic<TParam>(std::in_place_type<ConstantTParam>);
-            }
-            auto* R = (I.operator->())->asConstantPtr();
-            R->Type = toType(P->getType());
-            if (P->hasDefaultArgument() && !R->Default)
-            {
-                R->Default = toTArg(
-                    P->getDefaultArgument().getArgument());
-            }
-            return;
+            R->KeyKind = TParamKeyKind::Typename;
         }
-        else if constexpr(kind == clang::Decl::TemplateTemplateParm)
+        if (P->hasDefaultArgument() && !R->Default)
         {
-            if (I->Kind != TParamKind::Template)
-            {
-                I = Polymorphic<TParam>(std::in_place_type<TemplateTParam>);
-            }
-            auto const* TTPD = cast<clang::TemplateTemplateParmDecl>(P);
-            MRDOCS_CHECK_OR(TTPD);
-            clang::TemplateParameterList const* TPL = TTPD->getTemplateParameters();
-            MRDOCS_CHECK_OR(TPL);
-            auto* Result = (I.operator->())->asTemplatePtr();
-            Result->Params.reserve(TPL->size());
-            for (std::size_t i = 0; i < TPL->size(); ++i)
-            {
-                clang::NamedDecl const* TP = TPL->getParam(i);
-                auto& Param
-                    = i < Result->Params.size() ?
-                          Result->Params[i] :
-                          Result->Params.emplace_back(std::in_place_type<TypeTParam>);
-                populate(Param, TP);
-            }
-            if (TTPD->hasDefaultArgument() && !Result->Default)
-            {
-                clang::TemplateArgumentLoc const& TAL = TTPD->getDefaultArgument();
-                clang::TemplateArgument const& TA = TAL.getArgument();
-                Result->Default = toTArg(TA);
-            }
-            return;
+            R->Default = toTArg(P->getDefaultArgument().getArgument());
         }
+        if (clang::TypeConstraint const* TC = P->getTypeConstraint())
+        {
+            clang::NestedNameSpecifier NNS = TC->getNestedNameSpecifierLoc()
+                                                 .getNestedNameSpecifier();
+            Optional<clang::ASTTemplateArgumentListInfo const*> TArgs;
+            if (TC->hasExplicitTemplateArgs())
+            {
+                TArgs.emplace(TC->getTemplateArgsAsWritten());
+            }
+            R->Constraint = toName(TC->getNamedConcept(), TArgs, NNS);
+        }
+        break;
+    }
+    case clang::Decl::NonTypeTemplateParm:
+    {
+        auto* P = llvm::cast<clang::NonTypeTemplateParmDecl>(N);
+        if (I->Kind != TParamKind::Constant)
+        {
+            I = Polymorphic<TParam>(std::in_place_type<ConstantTParam>);
+        }
+        auto* R = (I.operator->())->asConstantPtr();
+        R->Type = toType(P->getType());
+        if (P->hasDefaultArgument() && !R->Default)
+        {
+            R->Default = toTArg(P->getDefaultArgument().getArgument());
+        }
+        break;
+    }
+    case clang::Decl::TemplateTemplateParm:
+    {
+        auto* P = llvm::cast<clang::TemplateTemplateParmDecl>(N);
+        if (I->Kind != TParamKind::Template)
+        {
+            I = Polymorphic<TParam>(std::in_place_type<TemplateTParam>);
+        }
+        auto const* TTPD = cast<clang::TemplateTemplateParmDecl>(P);
+        clang::TemplateParameterList const* TPL = TTPD->getTemplateParameters();
+        auto* Result = (I.operator->())->asTemplatePtr();
+        Result->Params.reserve(TPL->size());
+        for (std::size_t i = 0; i < TPL->size(); ++i)
+        {
+            auto& Param = Result->Params.emplace_back(std::in_place_type<TypeTParam>);
+            populate(Param, TPL->getParam(i));
+        }
+        if (TTPD->hasDefaultArgument() && !Result->Default)
+        {
+            clang::TemplateArgumentLoc const& TAL = TTPD->getDefaultArgument();
+            clang::TemplateArgument const& TA = TAL.getArgument();
+            Result->Default = toTArg(TA);
+        }
+        break;
+    }
+    default:
         MRDOCS_UNREACHABLE();
-    });
+    }
 
-    MRDOCS_ASSERT(!I.valueless_after_move());
     if (I->Name.empty())
     {
         I->Name = extractName(N);
