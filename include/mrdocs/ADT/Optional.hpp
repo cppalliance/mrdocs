@@ -962,6 +962,8 @@ public:
     constexpr
     bool
     /** Return true because Optional<T&> never allocates storage.
+
+        @return `true` always.
     */
     is_inlined() noexcept
     {
