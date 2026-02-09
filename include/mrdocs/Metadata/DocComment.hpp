@@ -227,6 +227,16 @@ requires std::same_as<T, doc::Block> || std::same_as<T, doc::Inline>
 void
 traverseImpl(T& baseNode, F&& func);
 
+template <bool bottomUp, class F>
+void
+traverseImpl(doc::ListItem& item, F&& func)
+{
+    for (auto& block : item.blocks)
+    {
+        traverseImpl<bottomUp>(block, func);
+    }
+}
+
 // Traverse a derived node
 template <bool bottomUp, DocCommentNode NodeTy, class F>
 requires(!std::same_as<NodeTy, doc::Block> && !std::same_as<NodeTy, doc::Inline>)
@@ -255,6 +265,15 @@ traverseImpl(NodeTy& N, F&& func)
     {
         traverseImpl<bottomUp>(N.exception, func);
     }
+
+    if constexpr (std::same_as<NodeTy, doc::ListBlock>)
+    {
+        for (auto& item: N.items)
+        {
+            traverseImpl<bottomUp>(item, func);
+        }
+    }
+
     if constexpr (bottomUp && std::invocable<F, NodeTy&>)
     {
         func(N);
