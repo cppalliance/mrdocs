@@ -40,18 +40,32 @@
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <strong>
+            <kind>strong</kind>
+            <text>
+              <kind>text</kind>
+              <literal>Bold text</literal>
+            </text>
+          </strong>
           <text>
             <kind>text</kind>
-            <literal>**Bold text**: Description 1.</literal>
+            <literal>: Description 1.</literal>
           </text>
         </paragraph>
       </list-item>
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <strong>
+            <kind>strong</kind>
+            <text>
+              <kind>text</kind>
+              <literal>Bold text</literal>
+            </text>
+          </strong>
           <text>
             <kind>text</kind>
-            <literal>**Bold text**: Description 2.</literal>
+            <literal>: Description 2.</literal>
           </text>
         </paragraph>
       </list-item>
@@ -112,36 +126,75 @@
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>foo()</literal>
+            </text>
+          </code>
           <text>
             <kind>text</kind>
-            <literal>`foo()` - A dummy function.</literal>
+            <literal> - A dummy function.</literal>
           </text>
         </paragraph>
       </list-item>
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>bar()</literal>
+            </text>
+          </code>
           <text>
             <kind>text</kind>
-            <literal>`bar()` / `baz()` - Other two functions.</literal>
+            <literal> / </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>baz()</literal>
+            </text>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> - Other two functions.</literal>
           </text>
         </paragraph>
       </list-item>
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>qux()</literal>
+            </text>
+          </code>
           <text>
             <kind>text</kind>
-            <literal>`qux()` - Yet another function.</literal>
+            <literal> - Yet another function.</literal>
           </text>
         </paragraph>
       </list-item>
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>quux()</literal>
+            </text>
+          </code>
           <text>
             <kind>text</kind>
-            <literal>`quux()` - Guess what?</literal>
+            <literal> - Guess what?</literal>
           </text>
         </paragraph>
       </list-item>
@@ -191,18 +244,43 @@
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <strong>
+            <kind>strong</kind>
+            <text>
+              <kind>text</kind>
+              <literal>Bold</literal>
+            </text>
+          </strong>
           <text>
             <kind>text</kind>
-            <literal>**Bold** blah blah blah.</literal>
+            <literal> blah blah blah.</literal>
           </text>
         </paragraph>
       </list-item>
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <strong>
+            <kind>strong</kind>
+            <text>
+              <kind>text</kind>
+              <literal>Bold</literal>
+            </text>
+          </strong>
           <text>
             <kind>text</kind>
-            <literal>**Bold** and `code`.</literal>
+            <literal> and </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>code</literal>
+            </text>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
           </text>
         </paragraph>
       </list-item>
@@ -250,9 +328,16 @@
       <list-item>
         <paragraph>
           <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>code</literal>
+            </text>
+          </code>
           <text>
             <kind>text</kind>
-            <literal>`code` followed by normal text:</literal>
+            <literal> followed by normal text:</literal>
           </text>
         </paragraph>
         <list>
@@ -262,7 +347,29 @@
               <kind>paragraph</kind>
               <text>
                 <kind>text</kind>
-                <literal>This is a `nested` list with `code`.</literal>
+                <literal>This is a </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <text>
+                  <kind>text</kind>
+                  <literal>nested</literal>
+                </text>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal> list with </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <text>
+                  <kind>text</kind>
+                  <literal>code</literal>
+                </text>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal>.</literal>
               </text>
             </paragraph>
           </list-item>
@@ -271,7 +378,18 @@
               <kind>paragraph</kind>
               <text>
                 <kind>text</kind>
-                <literal>This `is` another list item.</literal>
+                <literal>This </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <text>
+                  <kind>text</kind>
+                  <literal>is</literal>
+                </text>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal> another list item.</literal>
               </text>
             </paragraph>
           </list-item>
