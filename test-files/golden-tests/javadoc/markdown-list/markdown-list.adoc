@@ -13,6 +13,8 @@
 | A simple list with Markdown bold&period;
 | link:#B[`B`] 
 | A list with inline code and list items containing &quot;&hyphen; &quot;&period;
+| link:#C[`C`] 
+| A list with no preceding text&period;
 |===
 
 === Functions
@@ -24,6 +26,12 @@
 | A list with Markdown bold and code&period;
 | link:#g[`g`] 
 | A list with Markdown code and a nested list&period;
+| link:#h[`h`] 
+| A function with a list inside a note&period;
+| link:#i[`i`] 
+| Marker with styled continuation only&period;
+| link:#j[`j`] 
+| Brief text&period;
 |===
 
 [#A]
@@ -69,6 +77,25 @@ A sentence with `inline code`&period; Now a list&colon;
 * `bar()` &sol; `baz()` &hyphen; Other two functions&period;
 * `qux()` &hyphen; Yet another function&period;
 * `quux()` &hyphen; Guess what?
+
+[#C]
+== C
+
+A list with no preceding text&period;
+
+=== Synopsis
+
+Declared in `&lt;markdown&hyphen;list&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class C;
+----
+
+=== Description
+
+* First item&period;
+* Second item&period;
 
 [#f]
 == f
@@ -117,6 +144,72 @@ g();
 ** This `is` another list item&period;
 
 
+
+[#h]
+== h
+
+A function with a list inside a note&period;
+
+=== Synopsis
+
+Declared in `&lt;markdown&hyphen;list&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h();
+----
+
+=== Description
+
+[NOTE]
+====
+Important points&colon;
+
+* First point&period;
+* Second point&period;
+
+====
+
+[#i]
+== i
+
+Marker with styled continuation only&period;
+
+=== Synopsis
+
+Declared in `&lt;markdown&hyphen;list&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+i();
+----
+
+=== Description
+
+* *All bold item&period;*
+* `All code item&period;`
+
+[#j]
+== j
+
+Brief text&period;
+
+=== Synopsis
+
+Declared in `&lt;markdown&hyphen;list&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+j();
+----
+
+=== Description
+
+* `foo` does something&period;
+* `bar` does something else&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

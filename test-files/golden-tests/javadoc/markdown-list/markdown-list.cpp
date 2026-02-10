@@ -16,6 +16,13 @@ class A;
 */
 class B;
 
+/** A list with no preceding text.
+
+    - First item.
+    - Second item.
+*/
+class C;
+
 /** A list with Markdown bold and code.
 
     This is a list:
@@ -32,3 +39,25 @@ void f();
        - This `is` another list item.
 */
 void g();
+
+/** A function with a list inside a note.
+
+    @note Important points:
+    - First point.
+    - Second point.
+*/
+void h();
+
+/** Marker with styled continuation only.
+
+    - **All bold item.**
+    - `All code item.`
+*/
+void i();
+
+/** Brief text.
+
+    - @c foo does something.
+    - @c bar does something else.
+*/
+void j();

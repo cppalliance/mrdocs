@@ -91,14 +91,8 @@ buildListFromRange(InlineIter first, InlineIter last)
     doc::ListBlock list;
     while (first != last)
     {
-        if (isMarkdownListMarker(**first))
-        {
-            list.items.push_back(buildListItem(first, last));
-        }
-        else
-        {
-            ++first;
-        }
+        MRDOCS_ASSERT(isMarkdownListMarker(**first));
+        list.items.push_back(buildListItem(first, last));
     }
     return list;
 }

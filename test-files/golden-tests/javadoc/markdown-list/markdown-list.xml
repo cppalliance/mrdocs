@@ -9,8 +9,12 @@
   <namespace-tranche>
     <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
     <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
+    <records>BrX2oZup9qgy4SfJloKCuUYZshA=</records>
     <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
     <functions>43ASI/aC9fCLy8T+1gn7pUdis+g=</functions>
+    <functions>rvT6OxIrrSI0KxJ2nkfEgBz/Lz4=</functions>
+    <functions>MHBBKAqB60b5SalK1SWHxln9gBw=</functions>
+    <functions>z6+WhUUlKbViODzMahmqRooQOm8=</functions>
   </namespace-tranche>
 </namespace>
 <record>
@@ -217,13 +221,67 @@
     </record-tranche>
   </record-interface>
 </record>
+<record>
+  <name>C</name>
+  <source>
+    <location>
+      <short-path>markdown-list.cpp</short-path>
+      <source-path>markdown-list.cpp</source-path>
+      <line-number>24</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <list>
+      <kind>list</kind>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <text>
+            <kind>text</kind>
+            <literal>First item.</literal>
+          </text>
+        </paragraph>
+      </list-item>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <text>
+            <kind>text</kind>
+            <literal>Second item.</literal>
+          </text>
+        </paragraph>
+      </list-item>
+    </list>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A list with no preceding text.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
 <function>
   <name>f</name>
   <source>
     <location>
       <short-path>markdown-list.cpp</short-path>
       <source-path>markdown-list.cpp</source-path>
-      <line-number>25</line-number>
+      <line-number>32</line-number>
       <column-number>1</column-number>
       <documented>1</documented>
     </location>
@@ -306,7 +364,7 @@
     <location>
       <short-path>markdown-list.cpp</short-path>
       <source-path>markdown-list.cpp</source-path>
-      <line-number>34</line-number>
+      <line-number>41</line-number>
       <column-number>1</column-number>
       <documented>1</documented>
     </location>
@@ -401,6 +459,190 @@
       <text>
         <kind>text</kind>
         <literal>A list with Markdown code and a nested list.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>h</name>
+  <source>
+    <location>
+      <short-path>markdown-list.cpp</short-path>
+      <source-path>markdown-list.cpp</source-path>
+      <line-number>49</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>rvT6OxIrrSI0KxJ2nkfEgBz/Lz4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Important points:</literal>
+        </text>
+      </paragraph>
+      <list>
+        <kind>list</kind>
+        <list-item>
+          <paragraph>
+            <kind>paragraph</kind>
+            <text>
+              <kind>text</kind>
+              <literal>First point.</literal>
+            </text>
+          </paragraph>
+        </list-item>
+        <list-item>
+          <paragraph>
+            <kind>paragraph</kind>
+            <text>
+              <kind>text</kind>
+              <literal>Second point.</literal>
+            </text>
+          </paragraph>
+        </list-item>
+      </list>
+      <admonish>note</admonish>
+    </admonition>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function with a list inside a note.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>i</name>
+  <source>
+    <location>
+      <short-path>markdown-list.cpp</short-path>
+      <source-path>markdown-list.cpp</source-path>
+      <line-number>56</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>MHBBKAqB60b5SalK1SWHxln9gBw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <list>
+      <kind>list</kind>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <strong>
+            <kind>strong</kind>
+            <text>
+              <kind>text</kind>
+              <literal>All bold item.</literal>
+            </text>
+          </strong>
+        </paragraph>
+      </list-item>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>All code item.</literal>
+            </text>
+          </code>
+        </paragraph>
+      </list-item>
+    </list>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Marker with styled continuation only.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>j</name>
+  <source>
+    <location>
+      <short-path>markdown-list.cpp</short-path>
+      <source-path>markdown-list.cpp</source-path>
+      <line-number>63</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>z6+WhUUlKbViODzMahmqRooQOm8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <list>
+      <kind>list</kind>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>foo</literal>
+            </text>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> does something.</literal>
+          </text>
+        </paragraph>
+      </list-item>
+      <list-item>
+        <paragraph>
+          <kind>paragraph</kind>
+          <code>
+            <kind>code</kind>
+            <text>
+              <kind>text</kind>
+              <literal>bar</literal>
+            </text>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> does something else.</literal>
+          </text>
+        </paragraph>
+      </list-item>
+    </list>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Brief text.</literal>
       </text>
     </brief>
   </doc-comment>
