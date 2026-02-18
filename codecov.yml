@@ -59,3 +59,9 @@ coverage:
     patch:
       default:
         target: 90%
+
+ignore:
+  # This file contains a bunch of Boost.Describe macro invocations
+  # which are not executable code and produce false positives in
+  # coverage reports.
+  - "src/lib/Support/Reflection/Reflection.hpp"
