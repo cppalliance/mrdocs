@@ -41,6 +41,7 @@
           <literal>This function does not return.</literal>
         </text>
       </paragraph>
+      <admonish>note</admonish>
     </admonition>
     <brief>
       <kind>brief</kind>

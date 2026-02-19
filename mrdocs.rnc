@@ -211,6 +211,13 @@ grammar
             AnyType?
         }
 
+    MemberPointerType =
+        element member-pointer
+        {
+            TypeBase,
+            AnyType?
+        }
+
     NamedType =
         element named
         {
@@ -221,7 +228,8 @@ grammar
 
     AnyType =
         ArrayType | AutoType | DecltypeType | FunctionType |
-        LValueReferenceType | RValueReferenceType | PointerType | NamedType
+        LValueReferenceType | RValueReferenceType | PointerType |
+        MemberPointerType | NamedType
 
     #---------------------------------------------
     # Template parameters (polymorphic)

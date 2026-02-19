@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">
+Global Namespace</h2>
+</div>
+<h2>
+Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#S"><code>S</code></a> </td><td>A struct.</td></tr>
+</tbody>
+</table>
+
+<h2>
+Variables</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#mp_double"><code>mp_double</code></a> </td><td>Pointer to a double member of S.</td></tr><tr>
+<td><a href="#mp_int"><code>mp_int</code></a> </td><td>Pointer to an int member of S.</td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="S">
+S</h2>
+<div>
+<p>A struct.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;member-pointer.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct S;</code></pre>
+</div>
+<h2>
+Data Members</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#S-x"><code>x</code></a> </td></tr><tr>
+<td><a href="#S-y"><code>y</code></a> </td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="S-x">
+S::x</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;member-pointer.cpp&gt;</code></div>
+<pre><code class="source-code cpp">int x;</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="S-y">
+S::y</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;member-pointer.cpp&gt;</code></div>
+<pre><code class="source-code cpp">double y;</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="mp_double">
+mp_double</h2>
+<div>
+<p>Pointer to a double member of S.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;member-pointer.cpp&gt;</code></div>
+<pre><code class="source-code cpp">double<a href="#S">S</a>::* mp_double = &amp;S::y;</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="mp_int">
+mp_int</h2>
+<div>
+<p>Pointer to an int member of S.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;member-pointer.cpp&gt;</code></div>
+<pre><code class="source-code cpp">int<a href="#S">S</a>::* mp_int = &amp;S::x;</code></pre>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>
