@@ -113,7 +113,7 @@ XMLWriter::write(T const& value)
     // Primitives: write as text content
     if constexpr (std::is_same_v<Type, bool>)
     {
-        if (value) os_ << '1';
+        os_ << '1';
     }
     else if constexpr (std::is_same_v<Type, std::string> || 
                        std::is_same_v<Type, dom::String> ||
@@ -127,7 +127,7 @@ XMLWriter::write(T const& value)
     }
     else if constexpr (std::is_same_v<Type, SymbolID>)
     {
-        if (value) os_ << toBase64Str(value);
+        os_ << toBase64Str(value);
     }
     else if constexpr (boost::describe::has_describe_enumerators<Type>::value)
     {
@@ -178,8 +178,6 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         { if (!value) return; }
     else if constexpr (is_optional<Type>::value)
         { if (!value) return; }
-    else if constexpr (is_polymorphic<Type>::value)
-        { if (value.valueless_after_move()) return; }
     else if constexpr (is_vector<Type>::value)
         { if (value.empty()) return; }
 
@@ -201,7 +199,10 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
     }
     else if constexpr (is_polymorphic<Type>::value)
     {
-        writePolymorphic(*value);
+        if (!value.valueless_after_move())
+        {
+            writePolymorphic(*value);
+        }
     }
     else if constexpr (is_vector<Type>::value)
     {

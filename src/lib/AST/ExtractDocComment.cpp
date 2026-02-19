@@ -1004,6 +1004,24 @@ class DocCommentVisitor
             MRDOCS_UNREACHABLE();
 
         default:
+            // Check if it's a custom command we registered (e.g. "tip", "important").
+            // These don't have KCI_ constants, since they are registered at runtime via
+            // initCustomCommentCommands().
+            llvm::StringRef name = cmd->Name;
+            if (name == "tip" || name == "important" || name == "caution")
+            {
+                doc::ParagraphBlock p = parseBlock(std::in_place_type<doc::ParagraphBlock>);
+                doc::AdmonitionKind k = name == "tip"
+                                        ? doc::AdmonitionKind::tip
+                                        : name == "important"
+                                        ? doc::AdmonitionKind::important
+                                        : doc::AdmonitionKind::caution;
+                doc::AdmonitionBlock adm(k);
+                adm.blocks.emplace_back(std::move(p));
+                jd_.Document.emplace_back(std::move(adm));
+                return;
+            }
+
             // unsupported → ignore
             return;
         }
@@ -1157,8 +1175,10 @@ public:
 void
 initCustomCommentCommands(clang::ASTContext& context)
 {
-    (void) context;
-    // Reserved for future custom commands registration.
+    clang::comments::CommandTraits& traits = context.getCommentCommandTraits();
+    traits.registerBlockCommand("tip");
+    traits.registerBlockCommand("important");
+    traits.registerBlockCommand("caution");
 }
 
 void

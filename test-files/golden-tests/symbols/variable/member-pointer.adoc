@@ -1,0 +1,103 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#S[`S`] 
+| A struct&period;
+|===
+
+=== Variables
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#mp_double[`mp&lowbar;double`] 
+| Pointer to a double member of S&period;
+| link:#mp_int[`mp&lowbar;int`] 
+| Pointer to an int member of S&period;
+|===
+
+[#S]
+== S
+
+A struct&period;
+
+=== Synopsis
+
+Declared in `&lt;member&hyphen;pointer&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct S;
+----
+
+=== Data Members
+
+[cols=1]
+|===
+| Name
+| link:#S-x[`x`] 
+| link:#S-y[`y`] 
+|===
+
+[#S-x]
+== link:#S[S]::x
+
+=== Synopsis
+
+Declared in `&lt;member&hyphen;pointer&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int x;
+----
+
+[#S-y]
+== link:#S[S]::y
+
+=== Synopsis
+
+Declared in `&lt;member&hyphen;pointer&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double y;
+----
+
+[#mp_double]
+== mp&lowbar;double
+
+Pointer to a double member of S&period;
+
+=== Synopsis
+
+Declared in `&lt;member&hyphen;pointer&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+doublelink:#S[S]::* mp&lowbar;double = &amp;S&colon;&colon;y;
+----
+
+[#mp_int]
+== mp&lowbar;int
+
+Pointer to an int member of S&period;
+
+=== Synopsis
+
+Declared in `&lt;member&hyphen;pointer&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+intlink:#S[S]::* mp&lowbar;int = &amp;S&colon;&colon;x;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

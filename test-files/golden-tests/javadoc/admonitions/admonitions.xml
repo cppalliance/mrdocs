@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>NeMs9Qpqlt/baij2ijbXagnblE8=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>allAdmonitions</name>
+  <source>
+    <location>
+      <short-path>admonitions.cpp</short-path>
+      <source-path>admonitions.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>NeMs9Qpqlt/baij2ijbXagnblE8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>General description.</literal>
+      </text>
+    </paragraph>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Be careful.</literal>
+        </text>
+      </paragraph>
+      <admonish>caution</admonish>
+    </admonition>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>This is important.</literal>
+        </text>
+      </paragraph>
+      <admonish>important</admonish>
+    </admonition>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>This is a note.</literal>
+        </text>
+      </paragraph>
+      <admonish>note</admonish>
+    </admonition>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>This is a tip.</literal>
+        </text>
+      </paragraph>
+      <admonish>tip</admonish>
+    </admonition>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>This is a warning.</literal>
+        </text>
+      </paragraph>
+      <admonish>warning</admonish>
+    </admonition>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function with all admonition types</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

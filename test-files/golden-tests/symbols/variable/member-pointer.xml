@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>pOYGF6pLJlICuiGO0Xj0daDb/to=</records>
+    <variables>rxLgE4jstVt2wGgHzDH3yzniyjs=</variables>
+    <variables>YS1M8HrBXVDzcrBiPpJJ987blqE=</variables>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>S</name>
+  <source>
+    <location>
+      <short-path>member-pointer.cpp</short-path>
+      <source-path>member-pointer.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A struct.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>DXJlc6wJoMqdyInhGyTWrnqPjXQ=</variables>
+      <variables>Nf9nw1tdylSujfxB7RZlc/qmkeM=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>member-pointer.cpp</short-path>
+      <source-path>member-pointer.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>DXJlc6wJoMqdyInhGyTWrnqPjXQ=</id>
+  <extraction>regular</extraction>
+  <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
+  <named>
+    <name>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>y</name>
+  <source>
+    <location>
+      <short-path>member-pointer.cpp</short-path>
+      <source-path>member-pointer.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <id>Nf9nw1tdylSujfxB7RZlc/qmkeM=</id>
+  <extraction>regular</extraction>
+  <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>mp_double</name>
+  <source>
+    <location>
+      <short-path>member-pointer.cpp</short-path>
+      <source-path>member-pointer.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>rxLgE4jstVt2wGgHzDH3yzniyjs=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Pointer to a double member of S.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <member-pointer>
+  </member-pointer>
+</variable>
+<variable>
+  <name>mp_int</name>
+  <source>
+    <location>
+      <short-path>member-pointer.cpp</short-path>
+      <source-path>member-pointer.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>YS1M8HrBXVDzcrBiPpJJ987blqE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Pointer to an int member of S.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <member-pointer>
+  </member-pointer>
+</variable>
+</mrdocs>

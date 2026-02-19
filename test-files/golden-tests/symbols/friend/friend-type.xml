@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>FKq9Eqf4/TSH5THy8HQZ8ZjI+gY=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>Container</name>
+  <source>
+    <location>
+      <short-path>friend-type.cpp</short-path>
+      <source-path>friend-type.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>FKq9Eqf4/TSH5THy8HQZ8ZjI+gY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class template that befriends a template parameter.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <named>
+      <name>
+        <identifier>T</identifier>
+      </name>
+    </named>
+  </friend>
+</record>
+</mrdocs>
