@@ -30,6 +30,7 @@ option(MRDOCS_PACKAGE "Build install package" ON)
 option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOCS_BUILD_STRICT_TESTS "Enable strict tests" ON)
+option(MRDOCS_EXPENSIVE_TESTS "Register expensive tests (adoc/html golden, self-doc)" ON)
 option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
 if (MRDOCS_BUILD_TESTS OR MRDOCS_INSTALL)
     option(MRDOCS_BUILD_DOCS "Build documentation" ON)
@@ -480,7 +481,8 @@ if (MRDOCS_BUILD_TESTS)
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
     foreach (testgenerator IN ITEMS xml adoc html)
-        add_test(NAME mrdocs-golden-tests-${testgenerator}
+        if (MRDOCS_EXPENSIVE_TESTS OR testgenerator STREQUAL "xml")
+            add_test(NAME mrdocs-golden-tests-${testgenerator}
             COMMAND
                 mrdocs-test
                 --unit=false
@@ -492,6 +494,7 @@ if (MRDOCS_BUILD_TESTS)
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                 --log-level=warn
         )
+        endif()
         foreach (action IN ITEMS test create update)
             add_custom_target(
                 mrdocs-${action}-test-fixtures-${testgenerator}
@@ -519,28 +522,30 @@ if (MRDOCS_BUILD_TESTS)
     endforeach ()
 
     #-------------------------------------------------
-    # Self-documentation test (always run; warn-as-error toggled by strict flag)
+    # Self-documentation test (warn-as-error toggled by strict flag)
     #-------------------------------------------------
     set(MRDOCS_SELF_DOC_OUTPUT "${CMAKE_BINARY_DIR}/docs/self-reference")
     set(MRDOCS_SELF_DOC_TAGFILE "${MRDOCS_SELF_DOC_OUTPUT}/reference.tag.xml")
 
-    add_test(NAME mrdocs-self-doc
-        COMMAND
-            mrdocs
-            "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
-                "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
-                "--output=${MRDOCS_SELF_DOC_OUTPUT}"
-                --generator=adoc
-                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                "--stdlib-includes=${LIBCXX_DIR}"
-                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                "--tagfile=${MRDOCS_SELF_DOC_TAGFILE}"
-                --multipage=true
-                --concurrency=16
-                --log-level=debug
-                $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
-        )
+    if (MRDOCS_EXPENSIVE_TESTS)
+        add_test(NAME mrdocs-self-doc
+            COMMAND
+                mrdocs
+                "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
+                    "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
+                    "--output=${MRDOCS_SELF_DOC_OUTPUT}"
+                    --generator=adoc
+                    "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                    "--stdlib-includes=${LIBCXX_DIR}"
+                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+                    "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+                    "--tagfile=${MRDOCS_SELF_DOC_TAGFILE}"
+                    --multipage=true
+                    --concurrency=16
+                    --log-level=debug
+                    $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
+            )
+    endif()
 
     #-------------------------------------------------
     # XML lint

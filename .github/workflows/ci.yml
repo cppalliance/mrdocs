@@ -93,6 +93,7 @@ jobs:
             mrdocs-ccflags: {{{ common-ccflags }}} {{{ mrdocs-flags }}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
+            is-bottleneck: {{#if (or msan (and (ieq compiler 'apple-clang') (or asan ubsan))) }}true{{/if}}
           output-file: matrix.json
           trace-commands: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -599,6 +600,7 @@ jobs:
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
+            -D MRDOCS_EXPENSIVE_TESTS=${{ matrix.is-bottleneck && 'OFF' || 'ON' }}
             -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
             -D LLVM_ROOT="${{ steps.rmatrix.outputs.llvm-path }}"
             -D jerryscript_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/jerryscript/install"
