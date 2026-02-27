@@ -996,6 +996,10 @@ jobs:
             '+refs/tags/*:refs/tags/*'
 
       - name: Generate Remote Documentation
+        # This step fetches and builds develop, master and all tags. That's
+        # unrelated to a PR, and is only needed for website publishing. So, skip
+        # it for a PR.
+        if: github.event_name != 'pull_request'
         working-directory: docs
         run: |
           # This playbook renders the documentation 
@@ -1026,6 +1030,7 @@ jobs:
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           export GH_TOKEN
           set -x
+          npm ci
           npx antora antora-playbook.yml --attribute branchesarray=HEAD --stacktrace --log-level=debug
           mkdir -p ../build/docs-local
           cp -vr build/site/* ../build/docs-local
