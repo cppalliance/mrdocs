@@ -1086,24 +1086,30 @@ jobs:
             "html"' || '' }}
           )
           
+          demo_failures=""
+
           # Generate the demos for each variant and generator
           for variant in single multi; do
             for generator in "${generators[@]}"; do
               [[ $generator = xml && $variant = multi ]] && continue
               [[ $variant = multi ]] && multipage="true" || multipage="false"
-              # boost.url demo
-              mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
-              echo "Number of files in demos/boost-url/$variant/$generator: $(find demos/boost-url/$variant/$generator -type f | wc -l)"
-              # beman.optional demo
-              mrdocs --config="$(pwd)/beman-optional/docs/mrdocs.yml" --output="$(pwd)/demos/beman-optional/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
-              # nlohmann-json demo
-              mrdocs --config="$(pwd)/nlohmann-json/docs/mrdocs.yml" --output="$(pwd)/demos/nlohmann-json/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
-              # mp-units demo
-              mrdocs --config="$(pwd)/mp-units/docs/mrdocs.yml" --output="$(pwd)/demos/mp-units/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
-              # fmt demo
-              mrdocs --config="$(pwd)/fmt/doc/mrdocs.yml" --output="$(pwd)/demos/fmt/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
-              # mrdocs documenting mrdocs demo
-              mrdocs --config="$(pwd)/docs/mrdocs.yml" "$(pwd)/CMakeLists.txt" --output="$(pwd)/demos/mrdocs/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
+              for project_args in \
+                "boost-url|$(pwd)/boost/libs/url/doc/mrdocs.yml|../CMakeLists.txt" \
+                "beman-optional|$(pwd)/beman-optional/docs/mrdocs.yml|" \
+                "nlohmann-json|$(pwd)/nlohmann-json/docs/mrdocs.yml|" \
+                "mp-units|$(pwd)/mp-units/docs/mrdocs.yml|" \
+                "fmt|$(pwd)/fmt/doc/mrdocs.yml|" \
+                "mrdocs|$(pwd)/docs/mrdocs.yml|$(pwd)/CMakeLists.txt" \
+              ; do
+                IFS='|' read -r project config extra <<< "$project_args"
+                outdir="$(pwd)/demos/$project/$variant/$generator"
+                cmd=(mrdocs --config="$config" $extra --output="$outdir" --multipage=$multipage --generator="$generator" --log-level=debug)
+                if ! "${cmd[@]}"; then
+                  echo "FAILED: $project/$variant/$generator"
+                  demo_failures="$demo_failures  $project/$variant/$generator\n    ${cmd[*]}\n"
+                  rm -rf "$outdir"
+                fi
+              done
             done
           
             # Render the asciidoc files to html using asciidoctor
@@ -1114,6 +1120,9 @@ jobs:
                 dst="$root/adoc-asciidoc"
                 stylesheet="$(pwd)/share/mrdocs/addons/generator/common/layouts/style.css"
           
+                # Skip if adoc generation failed for this project
+                [[ -d "$src" ]] || continue
+
                 # Create the top-level output dir
                 mkdir -p "$dst"
           
@@ -1132,6 +1141,12 @@ jobs:
           # Compress demos for the artifact
           tar -cjf $(pwd)/demos.tar.gz -C $(pwd)/demos --strip-components 1 .
           echo "demos_path=$(pwd)/demos.tar.gz" >> $GITHUB_ENV
+
+          if [[ -n "$demo_failures" ]]; then
+            echo "The following demos failed:"
+            printf "$demo_failures"
+            exit 1
+          fi
 
       - name: Upload Demos as Artifacts
         uses: actions/upload-artifact@v4
