@@ -1082,8 +1082,8 @@ jobs:
 
           declare -a generators=(
             "adoc"
-            "xml"
-            "html"
+            ${{ github.event_name != 'pull_request' && '"xml"
+            "html"' || '' }}
           )
           
           # Generate the demos for each variant and generator
