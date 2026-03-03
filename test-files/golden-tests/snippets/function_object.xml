@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>7X78dvKaHCvXfNokuB9sZf6Fq4o=</records>
+    <functions>1t6K/RDMbTFvHf8EN8B6PkzpVI8=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>abs_fn</name>
+  <source>
+    <location>
+      <short-path>function_object.cpp</short-path>
+      <source-path>function_object.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <id>7X78dvKaHCvXfNokuB9sZf6Fq4o=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>0fCnNSyclgzOiis0FFRJ3fBSGtM=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>function_object.cpp</short-path>
+      <source-path>function_object.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>0fCnNSyclgzOiis0FFRJ3fBSGtM=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>7X78dvKaHCvXfNokuB9sZf6Fq4o=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Compute the absolute value.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The absolute value of x.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The input value.</literal>
+      </text>
+      <name>x</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>abs</name>
+  <source>
+    <location>
+      <short-path>function_object.cpp</short-path>
+      <source-path>function_object.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <id>1t6K/RDMbTFvHf8EN8B6PkzpVI8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Compute the absolute value.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The absolute value of x.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The input value.</literal>
+      </text>
+      <name>x</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+  <function-object-impl>7X78dvKaHCvXfNokuB9sZf6Fq4o=</function-object-impl>
+</function>
+</mrdocs>

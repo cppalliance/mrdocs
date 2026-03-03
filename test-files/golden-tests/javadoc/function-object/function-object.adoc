@@ -1,0 +1,99 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#auto_detected[`auto&lowbar;detected`] 
+| Call operator&period;
+| link:#doc_on_struct[`doc&lowbar;on&lowbar;struct`] 
+| Call operator&period;
+| link:#doc_on_variable[`doc&lowbar;on&lowbar;variable`] 
+| Call operator&period;
+| link:#forced[`forced`] 
+| Call operator&period;
+|===
+
+[#auto_detected]
+== auto&lowbar;detected
+
+Call operator&period;
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;object&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+auto&lowbar;detected();
+----
+
+=== Return Value
+
+A value&period;
+
+[#doc_on_struct]
+== doc&lowbar;on&lowbar;struct
+
+Call operator&period;
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;object&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+doc&lowbar;on&lowbar;struct();
+----
+
+=== Return Value
+
+A value&period;
+
+[#doc_on_variable]
+== doc&lowbar;on&lowbar;variable
+
+Call operator&period;
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;object&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+doc&lowbar;on&lowbar;variable();
+----
+
+=== Return Value
+
+A value&period;
+
+[#forced]
+== forced
+
+Call operator&period;
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;object&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+forced();
+----
+
+=== Return Value
+
+A value&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

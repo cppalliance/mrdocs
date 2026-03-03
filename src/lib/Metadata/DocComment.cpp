@@ -114,6 +114,8 @@ void
 DocComment::
 append(DocComment&& other)
 {
+    IsFunctionObject |= other.IsFunctionObject;
+
     using std::ranges::find;
     using std::ranges::copy_if;
     using std::views::transform;

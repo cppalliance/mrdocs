@@ -156,6 +156,13 @@
         "details": "Symbols that match one of these filters are tagged as \"implementation-defined\" in the documentation, and so do symbols in scopes tagged as \"implementation-defined\". This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\". See the documentation for \"include-symbol\" for the pattern syntax.",
         "type": "list<symbol-glob>",
         "default": []
+      },
+      {
+        "name": "auto-function-objects",
+        "brief": "Automatically detect function objects",
+        "details": "When true, Mr.Docs automatically detects function objects: variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members). When a variable is treated as a function object, only the operator() documentation is used; any doc comment (other than a @functionobject/@functor command) on the variable or the record is ignored.",
+        "type": "bool",
+        "default": true
       }
     ]
   },

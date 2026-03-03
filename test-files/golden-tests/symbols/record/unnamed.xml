@@ -9,7 +9,7 @@
   <namespace-tranche>
     <records>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</records>
     <records>8AwuUPjsLEReggyF5UohZMvrh8k=</records>
-    <variables>BGjARRRB5KxbD8yjAiXJFTuHZdc=</variables>
+    <functions>wcU0I2BxBC0WE0uUZ6ypPRqFoxE=</functions>
     <variables>O3vj5ch+AFTAIMnsaVF06Ms3nc0=</variables>
     <variables>SEYEjN6YLJp3VM0ue8amNlWQiTU=</variables>
   </namespace-tranche>
@@ -24,7 +24,7 @@
     </location>
   </source>
   <id>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</id>
-  <extraction>regular</extraction>
+  <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
   <record-interface>
@@ -48,7 +48,7 @@
     </location>
   </source>
   <id>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</id>
-  <extraction>regular</extraction>
+  <extraction>implementation-defined</extraction>
   <parent>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</parent>
   <named>
     <name>
@@ -122,26 +122,27 @@
   </named>
   <is-record-field>1</is-record-field>
 </variable>
-<variable>
+<function>
   <name>F</name>
   <source>
     <location>
       <short-path>unnamed.cpp</short-path>
       <source-path>unnamed.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
     </location>
   </source>
-  <id>BGjARRRB5KxbD8yjAiXJFTuHZdc=</id>
+  <id>wcU0I2BxBC0WE0uUZ6ypPRqFoxE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
-      <id>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</id>
+      <identifier>void</identifier>
     </name>
   </named>
-  <is-constexpr>1</is-constexpr>
-</variable>
+  <func-class>normal</func-class>
+  <function-object-impl>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</function-object-impl>
+</function>
 <variable>
   <name>x</name>
   <source>

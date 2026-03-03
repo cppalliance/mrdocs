@@ -63,6 +63,7 @@ class CorpusImpl final : public Corpus
     friend class DocCommentFinalizer;
     friend class NamespacesFinalizer;
     friend class DerivedFinalizer;
+    friend class FunctionObjectFinalizer;
 
 public:
     /** Constructor.

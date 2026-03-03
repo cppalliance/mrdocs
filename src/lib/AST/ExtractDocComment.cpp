@@ -98,6 +98,29 @@ dumpCommentContent(
 namespace mrdocs {
 namespace {
 
+// -------- Custom doc commands that set a boolean flag
+
+/** Entry for a custom block command that sets a boolean flag
+    on DocComment and processes its paragraph content.
+
+    To add a new custom flag command, add an entry to the
+    customFlagCommands array below: both registration and
+    handling are driven from this single table.
+*/
+struct CustomFlagCommand
+{
+    char const* name;
+    bool DocComment::* flag;
+};
+
+constexpr CustomFlagCommand customFlagCommands[] = {
+    {"functionobject", &DocComment::IsFunctionObject},
+    // For consistency, the name of the command must be "functionobject"
+    // and not "function_object"; but that's not very readable, so we
+    // provide "functor" as an alternative.
+    {"functor",        &DocComment::IsFunctionObject},
+};
+
 // -------- Small helpers
 
 static std::string
@@ -1022,6 +1045,23 @@ class DocCommentVisitor
                 return;
             }
 
+            // Custom flag commands registered at runtime:
+            // set the corresponding flag and preserve any
+            // paragraph text in the doc comment.
+            for (auto const& custom : customFlagCommands)
+            {
+                if (llvm::StringRef(cmd->Name) == custom.name)
+                {
+                    jd_.*(custom.flag) = true;
+                    auto p = parseBlock(
+                        std::in_place_type<doc::ParagraphBlock>);
+                    if (!p.children.empty())
+                    {
+                        jd_.Document.emplace_back(std::move(p));
+                    }
+                    return;
+                }
+            }
             // unsupported → ignore
             return;
         }
@@ -1179,6 +1219,10 @@ initCustomCommentCommands(clang::ASTContext& context)
     traits.registerBlockCommand("tip");
     traits.registerBlockCommand("important");
     traits.registerBlockCommand("caution");
+    for (auto const& cmd : customFlagCommands)
+    {
+        traits.registerBlockCommand(cmd.name);
+    }
 }
 
 void

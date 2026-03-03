@@ -39,16 +39,26 @@
 </div>
 {{/unless}}
 {{! Description }}
-{{#if symbol.doc.description}}
 {{#unless traversing-global-namespace}}
+{{#if (or symbol.doc.description symbol.functionObjectImpl)}}
 <div>
-{{#unless (eq (lookup (first symbol.doc.description) "kind") "heading") }}
+{{#unless (and symbol.doc.description (eq (lookup (first symbol.doc.description) "kind") "heading")) }}
 {{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
 {{~/unless}}
-{{> doc/block/document symbol.doc.description }}
+{{#if symbol.functionObjectImpl}}
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>{{> symbol/function-object-disclaimer}}</p>
 </div>
-{{/unless}}
+</div>
 {{/if}}
+{{#if symbol.doc.description}}
+{{> doc/block/document symbol.doc.description }}
+{{/if}}
+</div>
+{{/if}}
+{{/unless}}
 {{! Base classes }}
 {{#if (any_of_by symbol.bases "isPublic")}}
 <div>

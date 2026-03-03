@@ -18,6 +18,7 @@
 #include <lib/Metadata/Finalizers/BaseMembersFinalizer.hpp>
 #include <lib/Metadata/Finalizers/DerivedFinalizer.hpp>
 #include <lib/Metadata/Finalizers/DocCommentFinalizer.hpp>
+#include <lib/Metadata/Finalizers/FunctionObjectFinalizer.hpp>
 #include <lib/Metadata/Finalizers/NamespacesFinalizer.hpp>
 #include <lib/Metadata/Finalizers/OverloadsFinalizer.hpp>
 #include <lib/Metadata/Finalizers/SortMembersFinalizer.hpp>
@@ -1048,6 +1049,12 @@ CorpusImpl::finalize()
     {
         report::debug("  - Finalizing namespaces");
         NamespacesFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    {
+        report::debug("  - Finalizing function objects");
+        FunctionObjectFinalizer finalizer(*this);
         finalizer.build();
     }
 

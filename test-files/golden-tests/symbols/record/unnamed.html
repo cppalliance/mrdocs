@@ -21,8 +21,21 @@ Types</h2>
 </thead>
 <tbody>
 <tr>
-<td><a href="#_01record-01"><code>Unnamed struct</code></a> </td><td></td></tr><tr>
 <td><a href="#_01record-0f"><code>Unnamed struct</code></a> </td><td>A test unnamed class.</td></tr>
+</tbody>
+</table>
+
+<h2>
+Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#F"><code>F</code></a> </td></tr>
 </tbody>
 </table>
 
@@ -36,55 +49,11 @@ Variables</h2>
 </thead>
 <tbody>
 <tr>
-<td><a href="#F"><code>F</code></a> </td><td></td></tr><tr>
 <td><a href="#x"><code>x</code></a> </td><td>A test variable named &#x27;x&#x27;</td></tr><tr>
 <td><a href="#y"><code>y</code></a> </td><td>A test variable named &#x27;y&#x27;</td></tr>
 </tbody>
 </table>
 
-</div>
-<div>
-<div>
-<h2 id="_01record-01">
-Index</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;unnamed.cpp&gt;</code></div>
-<pre><code class="source-code cpp">struct Unnamed struct;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#_01record-01-operator_call"><code>operator()</code></a> </td></tr>
-</tbody>
-</table>
-
-
-
-</div>
-<div>
-<div>
-<h2 id="_01record-01-operator_call">
-Index::operator()</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;unnamed.cpp&gt;</code></div>
-<pre><code class="source-code cpp">void
-operator()() const;</code></pre>
-</div>
 </div>
 <div>
 <div>
@@ -144,7 +113,18 @@ F</h2>
 Synopsis</h3>
 <div>
 Declared in <code>&lt;unnamed.cpp&gt;</code></div>
-<pre><code class="source-code cpp">constexpr <a href="#_01record-01"></a> F = {};</code></pre>
+<pre><code class="source-code cpp">void
+F();</code></pre>
+</div>
+<div>
+<h3>
+Description</h3>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>This function object does not participate in argument-dependent lookup. Taking the address of this function object is undefined behavior.</p>
+</div>
+</div>
 </div>
 </div>
 <div>

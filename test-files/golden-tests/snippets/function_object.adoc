@@ -1,0 +1,34 @@
+= Reference
+:mrdocs:
+
+[#abs]
+== abs
+
+Compute the absolute value&period;
+
+=== Synopsis
+
+Declared in `&lt;function&lowbar;object&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+abs(double x) noexcept;
+----
+
+=== Return Value
+
+The absolute value of x&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *x*
+| The input value&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
