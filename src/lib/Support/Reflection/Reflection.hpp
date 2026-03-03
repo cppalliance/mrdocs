@@ -468,7 +468,7 @@ BOOST_DESCRIBE_STRUCT(
      IsNodiscard, IsExplicitObjectMemberFunction, Constexpr,
      OverloadedOperator, StorageClass, IsRecordMethod, IsVirtual,
      IsVirtualAsWritten, IsPure, IsConst, IsVolatile, IsFinal,
-     RefQualifier, Explicit, Attributes)
+     RefQualifier, Explicit, Attributes, FunctionObjectImpl)
 )
 
 BOOST_DESCRIBE_STRUCT(

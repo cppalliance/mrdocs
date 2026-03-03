@@ -29,14 +29,24 @@
 {{> symbol/signatures symbol }}
 {{/unless}}
 {{! Description }}
-{{#if symbol.doc.description}}
 {{#unless traversing-global-namespace}}
-{{#unless (eq (lookup (first symbol.doc.description) "kind") "heading") }}
+{{#if (or symbol.doc.description symbol.functionObjectImpl)}}
+{{#unless (and symbol.doc.description (eq (lookup (first symbol.doc.description) "kind") "heading")) }}
 {{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h~}}
 {{~/unless}}
-{{> doc/block/document symbol.doc.description }}
-{{/unless}}
+{{#if symbol.functionObjectImpl}}
+[NOTE]
+====
+{{> symbol/function-object-disclaimer}}
+
+====
+
 {{/if}}
+{{#if symbol.doc.description}}
+{{> doc/block/document symbol.doc.description }}
+{{/if}}
+{{/if}}
+{{/unless}}
 {{! Base classes }}
 {{#if (any_of_by symbol.bases "isPublic")}}
 {{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h~}}

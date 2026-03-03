@@ -207,6 +207,26 @@ tag_invoke(
     SymbolID const& id,
     DomCorpus const* domCorpus);
 
+/** Convert an optional SymbolID to dom::Value or null.
+*/
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Optional<SymbolID> const& id,
+    DomCorpus const* domCorpus)
+{
+    if (!id)
+    {
+        v = nullptr;
+    }
+    else
+    {
+        tag_invoke(dom::ValueFromTag{}, v, *id, domCorpus);
+    }
+}
+
 /** Convert SymbolID pointers to dom::Value or null.
 
     @param v The output parameter to receive the dom::Value.

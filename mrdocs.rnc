@@ -432,7 +432,8 @@ grammar
             element is-final { Bool }?,
             element ref-qualifier { text }?,
             element explicit { text }?,
-            element attributes { text }*
+            element attributes { text }*,
+            element function-object-impl { SymbolID }?
         }
 
     #---------------------------------------------

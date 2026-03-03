@@ -9,10 +9,16 @@
 [cols="1,4"]
 |===
 | Name| Description
-| link:#_01record-01[`Unnamed struct`] 
-| 
 | link:#_01record-0f[`Unnamed struct`] 
 | A test unnamed class&period;
+|===
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#F[`F`] 
 |===
 
 === Variables
@@ -20,46 +26,11 @@
 [cols="1,4"]
 |===
 | Name| Description
-| link:#F[`F`] 
-| 
 | link:#x[`x`] 
 | A test variable named &apos;x&apos;
 | link:#y[`y`] 
 | A test variable named &apos;y&apos;
 |===
-
-[#_01record-01]
-== Unnamed struct
-
-=== Synopsis
-
-Declared in `&lt;unnamed&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct Unnamed struct;
-----
-
-=== Member Functions
-
-[cols=1]
-|===
-| Name
-| link:#_01record-01-operator_call[`operator()`] 
-|===
-
-[#_01record-01-operator_call]
-== operator()
-
-=== Synopsis
-
-Declared in `&lt;unnamed&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-operator()() const;
-----
 
 [#_01record-0f]
 == Unnamed struct
@@ -107,8 +78,16 @@ Declared in `&lt;unnamed&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr link:#_01record-01[] F = &lcub;&rcub;;
+void
+F();
 ----
+
+=== Description
+
+[NOTE]
+====
+This function object does not participate in argument-dependent lookup. Taking the address of this function object is undefined behavior.
+====
 
 [#x]
 == x

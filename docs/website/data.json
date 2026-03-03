@@ -106,6 +106,12 @@
       "source": "sqrt.cpp",
       "imageClass": "writing",
       "boxClass": "box3 box-shape3 box270"
+    },
+    {
+      "description": "Function objects are documented as callable entities—operator() parameter list and return type appear directly on the variable.",
+      "source": "function_object.cpp",
+      "imageClass": "pointing",
+      "boxClass": "box3 box-shape1 box0"
     }
   ]
 }

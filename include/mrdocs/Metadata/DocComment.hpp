@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -106,6 +107,9 @@ struct MRDOCS_DECL DocComment {
     */
     std::vector<doc::ReferenceInline> related;
 
+    /// True if the @functionobject (or @functor) command was used on this symbol.
+    bool IsFunctionObject = false;
+
     /** Constructor.
     */
     MRDOCS_DECL
@@ -171,6 +175,10 @@ struct MRDOCS_DECL DocComment {
 inline
 void merge(DocComment& I, DocComment&& other)
 {
+    // Merge the function-object flag before comparing so
+    // the flag alone doesn't cause spurious inequality.
+    I.IsFunctionObject |= other.IsFunctionObject;
+
     // FIXME: this doesn't merge parameter information;
     // parameters with the same name but different directions
     // or descriptions end up being duplicated

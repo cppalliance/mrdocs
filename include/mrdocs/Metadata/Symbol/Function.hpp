@@ -128,6 +128,14 @@ struct FunctionSymbol final
     */
     ExplicitInfo Explicit;
 
+    /** Back-reference to the function object implementation type.
+
+        When set, this function was synthesized from a function
+        object variable: the function does not participate in ADL
+        and taking its address is undefined behavior.
+    */
+    Optional<SymbolID> FunctionObjectImpl;
+
     //--------------------------------------------
 
     /** Construct a function symbol with its ID.

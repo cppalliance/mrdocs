@@ -36,6 +36,16 @@
       "title": "Automatically provide missing documentation for special functions and trivial metadata",
       "type": "boolean"
     },
+    "auto-function-objects": {
+      "default": true,
+      "description": "When true, Mr.Docs automatically detects function objects: variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members). When a variable is treated as a function object, only the operator() documentation is used; any doc comment (other than a @functionobject/@functor command) on the variable or the record is ignored.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Automatically detect function objects",
+      "type": "boolean"
+    },
     "auto-relates": {
       "default": true,
       "description": "When set to `true`, Mr.Docs automatically finds non-member functions that are related to the current class.",
