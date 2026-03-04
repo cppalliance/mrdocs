@@ -6,13 +6,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
+#include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
+#include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
+#include <algorithm>
+#include <span>
 #include <utility>
 
 namespace mrdocs {
@@ -89,6 +94,44 @@ static constinit Item const Table[] = {
     // { "",          "ct",  FunctionKind::Constructor },
     // { "",          "cv",  FunctionKind::Conversion }
 };
+
+bool
+isLValueReferenceToRecord(
+    Param const& param,
+    SymbolID recordId)
+{
+    Type const& ptype = *param.Type;
+    if (!ptype.isLValueReference())
+    {
+        return false;
+    }
+    auto const& pointee = ptype.asLValueReference().PointeeType;
+    return (*pointee).isNamed()
+        && (*pointee).namedSymbol() == recordId;
+}
+
+bool
+isRValueReferenceToRecord(
+    Param const& param,
+    SymbolID recordId)
+{
+    Type const& ptype = *param.Type;
+    if (!ptype.isRValueReference())
+    {
+        return false;
+    }
+    auto const& pointee = ptype.asRValueReference().PointeeType;
+    return (*pointee).isNamed()
+        && (*pointee).namedSymbol() == recordId;
+}
+
+bool
+hasAllDefaults(
+    std::span<Param const> params)
+{
+    return std::ranges::all_of(params,
+        [](Param const& p) { return p.Default.has_value(); });
+}
 
 } // (anon)
 
@@ -435,6 +478,84 @@ merge(FunctionSymbol& I, FunctionSymbol&& Other)
     {
         I.OverloadedOperator = Other.OverloadedOperator;
     }
+}
+
+bool
+isDefaultConstructor(FunctionSymbol const& func)
+{
+    return func.FuncClass == FunctionClass::Constructor
+        && (func.Params.empty() ||
+            std::ranges::all_of(func.Params,
+                [](Param const& p) {
+                    return p.Default.has_value()
+                        || p.Type->IsPackExpansion;
+                }));
+}
+
+bool
+isCopyConstructor(FunctionSymbol const& func)
+{
+    if (func.FuncClass != FunctionClass::Constructor
+        || func.Template
+        || func.Params.empty())
+    {
+        return false;
+    }
+    return isLValueReferenceToRecord(func.Params[0], func.Parent)
+        && hasAllDefaults(std::span(func.Params).subspan(1));
+}
+
+bool
+isMoveConstructor(FunctionSymbol const& func)
+{
+    if (func.FuncClass != FunctionClass::Constructor
+        || func.Template
+        || func.Params.empty())
+    {
+        return false;
+    }
+    return isRValueReferenceToRecord(func.Params[0], func.Parent)
+        && hasAllDefaults(std::span(func.Params).subspan(1));
+}
+
+bool
+isCopyAssignment(FunctionSymbol const& func)
+{
+    if (func.Template
+        || func.OverloadedOperator != OperatorKind::Equal)
+    {
+        return false;
+    }
+    if (isLValueReferenceToRecord(func.Params[0], func.Parent))
+    {
+        return true;
+    }
+    // Copy assignment by value: operator=(X).
+    Type const& ptype = *func.Params[0].Type;
+    return ptype.isNamed()
+        && ptype.namedSymbol() == func.Parent;
+}
+
+bool
+isMoveAssignment(FunctionSymbol const& func)
+{
+    if (func.Template
+        || func.OverloadedOperator != OperatorKind::Equal)
+    {
+        return false;
+    }
+    return isRValueReferenceToRecord(func.Params[0], func.Parent);
+}
+
+bool
+isSpecialMemberFunction(FunctionSymbol const& func)
+{
+    return func.FuncClass == FunctionClass::Destructor
+        || isDefaultConstructor(func)
+        || isCopyConstructor(func)
+        || isMoveConstructor(func)
+        || isCopyAssignment(func)
+        || isMoveAssignment(func);
 }
 
 MRDOCS_DECL

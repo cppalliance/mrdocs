@@ -843,7 +843,7 @@
       <kind>brief</kind>
       <text>
         <kind>text</kind>
-        <literal>Assignment operator</literal>
+        <literal>Copy assignment operator</literal>
       </text>
     </brief>
     <returns>
@@ -1092,7 +1092,7 @@
       <kind>brief</kind>
       <text>
         <kind>text</kind>
-        <literal>Constructor</literal>
+        <literal>Default constructor</literal>
       </text>
     </brief>
   </doc-comment>

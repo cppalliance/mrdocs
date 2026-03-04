@@ -19,8 +19,6 @@
 #include <mrdocs/Metadata/Symbol/RecordTranche.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolBase.hpp>
 #include <mrdocs/Metadata/Symbol/Variable.hpp>
-#include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
-#include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <algorithm>
@@ -29,98 +27,6 @@
 namespace mrdocs {
 
 namespace {
-
-// Check whether a parameter's type is a (possibly cv-qualified)
-// lvalue or rvalue reference to the given record type.
-bool
-isReferenceToRecord(
-    Param const& param,
-    SymbolID recordId)
-{
-    Type const& ptype = *param.Type;
-    Polymorphic<Type> const* pointee = nullptr;
-    if (ptype.isLValueReference())
-    {
-        pointee = &ptype.asLValueReference().PointeeType;
-    }
-    else if (ptype.isRValueReference())
-    {
-        pointee = &ptype.asRValueReference().PointeeType;
-    }
-    else
-    {
-        return false;
-    }
-    return (**pointee).isNamed()
-        && (**pointee).namedSymbol() == recordId;
-}
-
-// A special member function is a default constructor, copy/move
-// constructor, copy/move assignment operator, or destructor
-// ([special]).
-bool
-isSpecialMemberFunction(
-    FunctionSymbol const& func,
-    SymbolID recordId)
-{
-    if (func.FuncClass == FunctionClass::Destructor)
-    {
-        return true;
-    }
-
-    if (func.FuncClass == FunctionClass::Constructor)
-    {
-        // Default constructor: callable with no arguments.
-        // TODO: the standard also allows a function parameter
-        // pack ([class.default.ctor]), but Param has no way to
-        // represent that, so we miss that case.
-        if (func.Params.empty() ||
-            std::ranges::all_of(func.Params,
-                [](Param const& p) { return p.Default.has_value(); }))
-        {
-            return true;
-        }
-
-        // Copy/move constructors are non-template
-        // ([class.copy.ctor]).
-        if (func.Template)
-        {
-            return false;
-        }
-
-        // Copy/move constructor: first param is reference to the
-        // record type, remaining params (if any) have defaults
-        // ([class.copy.ctor]).
-        return isReferenceToRecord(func.Params[0], recordId)
-            && std::ranges::all_of(
-                func.Params | std::views::drop(1),
-                [](Param const& p) { return p.Default.has_value(); });
-    }
-
-    // Copy/move assignment operators are non-template
-    // ([class.copy.assign]).
-    if (func.Template)
-    {
-        return false;
-    }
-
-    // Copy/move assignment operator: operator= with exactly one
-    // non-object parameter ([class.copy.assign]).
-    if (func.OverloadedOperator == OperatorKind::Equal &&
-        func.Params.size() == 1)
-    {
-        if (isReferenceToRecord(func.Params[0], recordId))
-        {
-            return true;
-        }
-        // Copy assignment by value: operator=(X).
-        Type const& ptype = *func.Params[0].Type;
-        return ptype.isNamed()
-            && ptype.namedSymbol() == recordId;
-    }
-
-    return false;
-}
 
 // Reset the CXXMethodDecl-specific fields that do not apply
 // to a free function synthesized from an operator() overload.
@@ -204,7 +110,7 @@ isFunctionObjectType(
             return false;
         }
 
-        if (!isSpecialMemberFunction(*func, R.id))
+        if (!isSpecialMemberFunction(*func))
         {
             if (func->OverloadedOperator != OperatorKind::Call)
             {
