@@ -208,6 +208,87 @@ tag_invoke(
     v = dom::LazyArray(params, domCorpus);
 }
 
+/** Check whether a function is a default constructor.
+
+    A default constructor is a constructor for which each
+    parameter that is not a function parameter pack has a
+    default argument (including the case of a constructor
+    with no parameters) ([class.default.ctor]).
+
+    @param func The function to check.
+    @return Whether @p func is a default constructor.
+*/
+MRDOCS_DECL
+bool
+isDefaultConstructor(FunctionSymbol const& func);
+
+/** Check whether a function is a copy constructor.
+
+    A copy constructor is a non-template constructor whose
+    first parameter is an lvalue reference to the possibly
+    cv-qualified record type, with all remaining parameters
+    having defaults ([class.copy.ctor]).
+
+    @param func The function to check.
+    @return Whether @p func is a copy constructor.
+*/
+MRDOCS_DECL
+bool
+isCopyConstructor(FunctionSymbol const& func);
+
+/** Check whether a function is a move constructor.
+
+    A move constructor is a non-template constructor whose
+    first parameter is an rvalue reference to the possibly
+    cv-qualified record type, with all remaining parameters
+    having defaults ([class.copy.ctor]).
+
+    @param func The function to check.
+    @return Whether @p func is a move constructor.
+*/
+MRDOCS_DECL
+bool
+isMoveConstructor(FunctionSymbol const& func);
+
+/** Check whether a function is a copy assignment operator.
+
+    A copy assignment operator is a non-template operator=
+    whose parameter is of type X, X&, const X&, volatile X&,
+    or const volatile X& ([class.copy.assign]).
+
+    @param func The function to check.
+    @return Whether @p func is a copy assignment operator.
+*/
+MRDOCS_DECL
+bool
+isCopyAssignment(FunctionSymbol const& func);
+
+/** Check whether a function is a move assignment operator.
+
+    A move assignment operator is a non-template operator=
+    whose parameter is an rvalue reference to the possibly
+    cv-qualified record type ([class.copy.assign]).
+
+    @param func The function to check.
+    @return Whether @p func is a move assignment operator.
+*/
+MRDOCS_DECL
+bool
+isMoveAssignment(FunctionSymbol const& func);
+
+/** Check whether a function is a special member function.
+
+    A special member function is a default constructor,
+    copy/move constructor, copy/move assignment operator,
+    or destructor ([special]).
+
+    @param func The function to check.
+    @return Whether @p func is a special member function.
+*/
+MRDOCS_DECL
+bool
+isSpecialMemberFunction(FunctionSymbol const& func);
+
 /** Determine if one function would override the other
 
     @param base The base function
