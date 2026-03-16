@@ -15,6 +15,7 @@
 #
 #-------------------------------------------------
 cmake_minimum_required(VERSION 3.13)
+cmake_policy(SET CMP0144 NEW)
 project(
     MrDocs
     VERSION 0.8.0
