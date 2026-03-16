@@ -551,11 +551,15 @@ if (MRDOCS_BUILD_TESTS)
     #-------------------------------------------------
     # XML lint
     #-------------------------------------------------
-    if (MRDOCS_BUILD_STRICT_TESTS)
-        # Strict mode expects xml-lint to run; require LibXml2.
-        find_package(LibXml2 REQUIRED)
-    else()
-        find_package(LibXml2)
+    # Try config mode first (e.g. libxml2 installed by bootstrap.py),
+    # then fall back to module mode (e.g. system libxml2-dev on Linux).
+    find_package(LibXml2 CONFIG)
+    if (NOT LibXml2_FOUND)
+        if (MRDOCS_BUILD_STRICT_TESTS)
+            find_package(LibXml2 REQUIRED)
+        else()
+            find_package(LibXml2)
+        endif()
     endif()
     if (LibXml2_FOUND)
         find_package(Java REQUIRED Runtime)
