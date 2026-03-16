@@ -47,7 +47,7 @@ def recipe_placeholders(
     Returns:
         Dictionary mapping placeholder names to values.
     """
-    host_suffix = "windows" if is_windows() else "unix"
+    host_suffix = "win" if is_windows() else "unix"
     return {
         "BOOTSTRAP_BUILD_TYPE": recipe.build_type,
         "BOOTSTRAP_BUILD_TYPE_LOWER": recipe.build_type.lower(),
