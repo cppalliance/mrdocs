@@ -9,49 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <lib/Support/Reflection/Reflection.hpp>
 #include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol/Record.hpp>
-#include <ranges>
 
 namespace mrdocs {
-
-namespace {
-void
-reduceSymbolIDs(
-    std::vector<SymbolID>& list,
-    std::vector<SymbolID>&& otherList)
-{
-    for(auto const& id : otherList)
-    {
-        if (auto it = std::ranges::find(list, id); it != list.end())
-        {
-            continue;
-        }
-        list.push_back(id);
-    }
-}
-
-void
-reduceSymbolIDs(
-    std::vector<FriendInfo>& list,
-    std::vector<FriendInfo>&& otherList)
-{
-    for(auto const& F : otherList)
-    {
-        auto it = std::ranges::find_if(list, [&F](auto const& other) {
-            return F.id == other.id;
-        });
-        if (it != list.end())
-        {
-            continue;
-        }
-        list.push_back(F);
-    }
-}
-} // (anon)
 
 std::strong_ordering
 RecordSymbol::
@@ -99,48 +64,19 @@ operator<=>(RecordSymbol const& other) const
 void
 merge(RecordTranche& I, RecordTranche&& Other)
 {
-    reduceSymbolIDs(I.NamespaceAliases, std::move(Other.NamespaceAliases));
-    reduceSymbolIDs(I.Typedefs, std::move(Other.Typedefs));
-    reduceSymbolIDs(I.Records, std::move(Other.Records));
-    reduceSymbolIDs(I.Enums, std::move(Other.Enums));
-    reduceSymbolIDs(I.Functions, std::move(Other.Functions));
-    reduceSymbolIDs(I.StaticFunctions, std::move(Other.StaticFunctions));
-    reduceSymbolIDs(I.Variables, std::move(Other.Variables));
-    reduceSymbolIDs(I.StaticVariables, std::move(Other.StaticVariables));
-    reduceSymbolIDs(I.Concepts, std::move(Other.Concepts));
-    reduceSymbolIDs(I.Guides, std::move(Other.Guides));
+    mergeReflected(I, Other);
 }
 
 void
 merge(RecordInterface& I, RecordInterface&& Other)
 {
-    merge(I.Public, std::move(Other.Public));
-    merge(I.Protected, std::move(Other.Protected));
-    merge(I.Private, std::move(Other.Private));
+    mergeReflected(I, Other);
 }
 
 void
 merge(RecordSymbol& I, RecordSymbol&& Other)
 {
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    if (Other.KeyKind != RecordKeyKind::Struct &&
-        I.KeyKind != Other.KeyKind)
-    {
-        I.KeyKind = Other.KeyKind;
-    }
-    I.IsTypeDef |= Other.IsTypeDef;
-    I.IsFinal |= Other.IsFinal;
-    I.IsFinalDestructor |= Other.IsFinalDestructor;
-    if (I.Bases.empty())
-    {
-        I.Bases = std::move(Other.Bases);
-    }
-    merge(I.Interface, std::move(Other.Interface));
-    if (!I.Template)
-    {
-        I.Template = std::move(Other.Template);
-    }
-    reduceSymbolIDs(I.Friends, std::move(Other.Friends));
+    mergeReflected(I, Other);
 }
 
 template <class IO>

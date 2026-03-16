@@ -9,9 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/EnumConstant.hpp>
-#include <llvm/ADT/STLExtras.h>
 
 namespace mrdocs {
 
@@ -19,11 +20,7 @@ void
 merge(EnumConstantSymbol& I, EnumConstantSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.Initializer.Written.empty())
-    {
-        I.Initializer = std::move(Other.Initializer);
-    }
+    mergeReflected(I, Other);
 }
 
 } // mrdocs

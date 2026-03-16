@@ -89,6 +89,11 @@ tag_invoke(
     tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
+/** Merge two Name metadata objects.
+*/
+void
+merge(Name& I, Name&& Other);
+
 } // mrdocs
 
 #endif

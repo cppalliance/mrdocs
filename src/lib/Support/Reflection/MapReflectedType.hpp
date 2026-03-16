@@ -12,6 +12,7 @@
 #define MRDOCS_LIB_SUPPORT_REFLECTION_MAPREFLECTEDTYPE_HPP
 
 #include "ReadableTypeName.hpp"
+#include "ReflectionTypeTraits.hpp"
 #include <mrdocs/Dom/Array.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
@@ -30,23 +31,6 @@ namespace mrdocs {
 class DomCorpus;
 
 namespace detail {
-
-/** Type traits to identify special types that need custom handling.
-*/
-template <typename T>
-struct is_vector : std::false_type {};
-
-template <typename T, typename A>
-struct is_vector<std::vector<T, A>> : std::true_type {};
-
-template <typename T>
-inline constexpr bool is_vector_v = is_vector<T>::value;
-
-template <typename T> struct is_optional : std::false_type {};
-template <typename T> struct is_optional<Optional<T>> : std::true_type {};
-
-template <typename T>
-inline constexpr bool is_optional_v = is_optional<T>::value;
 
 /** Helper to determine if a member should be mapped based on its value.
 */
@@ -147,7 +131,7 @@ mapMember(
 
     if constexpr (detail::is_vector_v<T>)
     {
-        // Vectors become lazy arrays — the decision is encapsulated here.
+        // Vectors become lazy arrays â€” the decision is encapsulated here.
         MRDOCS_ASSERT(domCorpus != nullptr);
         io.map(domName, dom::LazyArray(value, domCorpus));
     }

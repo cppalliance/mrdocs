@@ -9,9 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Concept.hpp>
-#include <llvm/ADT/STLExtras.h>
 
 namespace mrdocs {
 
@@ -62,15 +63,7 @@ void
 merge(ConceptSymbol& I, ConceptSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.Constraint.Written.empty())
-    {
-        I.Constraint = std::move(Other.Constraint);
-    }
-    if (!I.Template)
-    {
-        I.Template = std::move(Other.Template);
-    }
+    mergeReflected(I, Other);
 }
 
 } // mrdocs

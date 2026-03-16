@@ -18,6 +18,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <vector>
 #include <string>
 
 namespace mrdocs {
@@ -67,6 +68,15 @@ struct Param final
 MRDOCS_DECL
 void
 merge(Param& I, Param&& Other);
+
+/** Merge parameters element-wise, appending extras from `src`.
+
+    @param dst The destination.
+    @param src The source (moved from).
+*/
+MRDOCS_DECL
+void
+merge(std::vector<Param>& dst, std::vector<Param>&& src);
 
 /** Return the Param as a @ref dom::Value object.
 */

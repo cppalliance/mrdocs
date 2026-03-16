@@ -96,6 +96,17 @@ mostSpecific(ExtractionMode const a, ExtractionMode const b) noexcept
             std::max(static_cast<IT>(a), static_cast<IT>(b)));
 }
 
+/** Merge two ExtractionMode values.
+
+    Takes the least specific (most conservative) of the two,
+    so that a symbol demoted in any TU stays demoted.
+*/
+inline void
+merge(ExtractionMode& dst, ExtractionMode&& src) noexcept
+{
+    dst = leastSpecific(dst, src);
+}
+
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_EXTRACTIONMODE_HPP

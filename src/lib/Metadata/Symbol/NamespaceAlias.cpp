@@ -9,9 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/NamespaceAlias.hpp>
-#include <llvm/ADT/STLExtras.h>
 
 namespace mrdocs {
 
@@ -19,15 +20,7 @@ void
 merge(NamespaceAliasSymbol& I, NamespaceAliasSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.AliasedSymbol.Identifier.empty())
-    {
-        I.AliasedSymbol.Identifier = std::move(Other.AliasedSymbol.Identifier);
-    }
-    if (!I.AliasedSymbol.id)
-    {
-        I.AliasedSymbol.id = Other.AliasedSymbol.id;
-    }
+    mergeReflected(I, Other);
 }
 
 } // mrdocs

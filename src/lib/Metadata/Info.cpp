@@ -11,6 +11,8 @@
 //
 
 #include <lib/Support/Radix.hpp>
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata.hpp>
@@ -41,30 +43,7 @@ void
 merge(Symbol& I, Symbol&& Other)
 {
     MRDOCS_ASSERT(I.id);
-    merge(I.Loc, std::move(Other.Loc));
-    if (I.Name == "")
-    {
-        I.Name = Other.Name;
-    }
-    if (I.Parent)
-    {
-        I.Parent = Other.Parent;
-    }
-    if (I.Access == AccessKind::None)
-    {
-        I.Access = Other.Access;
-    }
-    I.Extraction = leastSpecific(I.Extraction, Other.Extraction);
-
-    // Append docs
-    if (!I.doc)
-    {
-        I.doc = std::move(Other.doc);
-    }
-    else if (Other.doc)
-    {
-        merge(*I.doc, std::move(*Other.doc));
-    }
+    mergeReflected(I, Other);
 }
 
 } // mrdocs

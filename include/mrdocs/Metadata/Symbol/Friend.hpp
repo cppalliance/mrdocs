@@ -14,6 +14,7 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <vector>
 
 namespace mrdocs {
 
@@ -42,11 +43,20 @@ struct FriendInfo final
     Optional<Polymorphic<struct Type>> Type = std::nullopt;
 };
 
-MRDOCS_DECL
 /** Merge another FriendInfo into this one.
 */
+MRDOCS_DECL
 void
 merge(FriendInfo& I, FriendInfo&& Other);
+
+/** Merge friend declarations, deduplicating by symbol ID.
+
+    @param dst The destination.
+    @param src The source (moved from).
+*/
+MRDOCS_DECL
+void
+merge(std::vector<FriendInfo>& dst, std::vector<FriendInfo>&& src);
 
 /** Map a FriendInfo to a dom::Object.
 

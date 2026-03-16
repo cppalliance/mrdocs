@@ -8,10 +8,24 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include "MergeReflectedType.hpp"
 #include "Reflection.hpp"
 #include "MapReflectedType.hpp"
+#include <mrdocs/Metadata/Type/NamedType.hpp>
 
 namespace mrdocs {
+
+namespace detail {
+
+bool
+isPlaceholderType(Polymorphic<Type> const& t)
+{
+    return t->isAuto() ||
+        (t->isNamed() &&
+         t->asNamed().Name->Identifier.empty());
+}
+
+} // namespace detail
 
 //------------------------------------------------------
 // Symbol.
