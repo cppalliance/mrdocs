@@ -9,6 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -55,62 +57,17 @@ operator<=>(NamespaceSymbol const& other) const
     return std::strong_ordering::equal;
 }
 
-namespace {
-void
-reduceSymbolIDs(
-    std::vector<SymbolID>& list,
-    std::vector<SymbolID>&& otherList)
-{
-    for(auto const& id : otherList)
-    {
-        if (auto it = llvm::find(list, id); it != list.end())
-        {
-            continue;
-        }
-        list.push_back(id);
-    }
-}
-
-void
-reduceNames(
-    std::vector<Name>& list,
-    std::vector<Name>&& otherList)
-{
-    for(auto const& id : otherList)
-    {
-        if (auto it = llvm::find(list, id); it != list.end())
-        {
-            continue;
-        }
-        list.push_back(id);
-    }
-}
-} // (anon)
-
 void
 merge(NamespaceTranche& I, NamespaceTranche&& Other)
 {
-    reduceSymbolIDs(I.Namespaces, std::move(Other.Namespaces));
-    reduceSymbolIDs(I.NamespaceAliases, std::move(Other.NamespaceAliases));
-    reduceSymbolIDs(I.Typedefs, std::move(Other.Typedefs));
-    reduceSymbolIDs(I.Records, std::move(Other.Records));
-    reduceSymbolIDs(I.Enums, std::move(Other.Enums));
-    reduceSymbolIDs(I.Functions, std::move(Other.Functions));
-    reduceSymbolIDs(I.Variables, std::move(Other.Variables));
-    reduceSymbolIDs(I.Concepts, std::move(Other.Concepts));
-    reduceSymbolIDs(I.Guides, std::move(Other.Guides));
-    reduceSymbolIDs(I.Usings, std::move(Other.Usings));
+    mergeReflected(I, Other);
 }
 
 void
 merge(NamespaceSymbol& I, NamespaceSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    merge(I.Members, std::move(Other.Members));
-    reduceNames(I.UsingDirectives, std::move(Other.UsingDirectives));
-    I.IsInline |= Other.IsInline;
-    I.IsAnonymous |= Other.IsAnonymous;
+    mergeReflected(I, Other);
 }
 } // mrdocs
 

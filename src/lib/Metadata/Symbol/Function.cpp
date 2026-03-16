@@ -11,14 +11,18 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <algorithm>
+#include <iterator>
 #include <span>
 #include <utility>
+#include <vector>
 
 namespace mrdocs {
 
@@ -317,17 +321,23 @@ getOperatorReadableName(
 void
 merge(Param& I, Param&& Other)
 {
-    if (I.Type->isAuto())
+    mergeReflected(I, Other);
+}
+
+void
+merge(std::vector<Param>& dst, std::vector<Param>&& src)
+{
+    std::size_t const n = std::min(dst.size(), src.size());
+    for (std::size_t i = 0; i < n; ++i)
     {
-        I.Type = std::move(Other.Type);
+        merge(dst[i], std::move(src[i]));
     }
-    if (!I.Name)
+    if (src.size() > n)
     {
-        I.Name = std::move(Other.Name);
-    }
-    if (!I.Default)
-    {
-        I.Default = std::move(Other.Default);
+        dst.insert(
+            dst.end(),
+            std::make_move_iterator(src.begin() + n),
+            std::make_move_iterator(src.end()));
     }
 }
 
@@ -411,73 +421,7 @@ void
 merge(FunctionSymbol& I, FunctionSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.FuncClass == FunctionClass::Normal)
-    {
-        I.FuncClass = Other.FuncClass;
-    }
-    I.ReturnType = std::move(Other.ReturnType);
-    std::size_t const n = std::min(I.Params.size(), Other.Params.size());
-    for (std::size_t i = 0; i < n; ++i)
-    {
-        merge(I.Params[i], std::move(Other.Params[i]));
-    }
-    if (Other.Params.size() > n)
-    {
-        I.Params.insert(
-            I.Params.end(),
-            std::make_move_iterator(Other.Params.begin() + n),
-            std::make_move_iterator(Other.Params.end()));
-    }
-    if (!I.Template)
-    {
-        I.Template = std::move(Other.Template);
-    }
-    else if (Other.Template)
-    {
-        merge(*I.Template, std::move(*Other.Template));
-    }
-    if (I.Noexcept.Implicit)
-    {
-        I.Noexcept = std::move(Other.Noexcept);
-    }
-    if (I.Explicit.Implicit)
-    {
-        I.Explicit = std::move(Other.Explicit);
-    }
-    merge(I.Requires, std::move(Other.Requires));
-    I.IsVariadic |= Other.IsVariadic;
-    I.IsVirtual |= Other.IsVirtual;
-    I.IsVirtualAsWritten |= Other.IsVirtualAsWritten;
-    I.IsPure |= Other.IsPure;
-    I.IsDefaulted |= Other.IsDefaulted;
-    I.IsExplicitlyDefaulted |= Other.IsExplicitlyDefaulted;
-    I.IsDeleted |= Other.IsDeleted;
-    I.IsDeletedAsWritten |= Other.IsDeletedAsWritten;
-    I.IsNoReturn |= Other.IsNoReturn;
-    I.HasOverrideAttr |= Other.HasOverrideAttr;
-    I.HasTrailingReturn |= Other.HasTrailingReturn;
-    I.IsConst |= Other.IsConst;
-    I.IsVolatile |= Other.IsVolatile;
-    I.IsFinal |= Other.IsFinal;
-    I.IsNodiscard |= Other.IsNodiscard;
-    I.IsExplicitObjectMemberFunction |= Other.IsExplicitObjectMemberFunction;
-    if (I.Constexpr == ConstexprKind::None)
-    {
-        I.Constexpr = Other.Constexpr;
-    }
-    if (I.StorageClass == StorageClassKind::None)
-    {
-        I.StorageClass = Other.StorageClass;
-    }
-    if (I.RefQualifier == ReferenceKind::None)
-    {
-        I.RefQualifier = Other.RefQualifier;
-    }
-    if (I.OverloadedOperator == OperatorKind::None)
-    {
-        I.OverloadedOperator = Other.OverloadedOperator;
-    }
+    mergeReflected(I, Other);
 }
 
 bool

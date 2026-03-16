@@ -9,13 +9,14 @@
 //
 
 #include <lib/Support/Radix.hpp>
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Metadata/Symbol/Overloads.hpp>
-#include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringRef.h>
 #include <format>
 
@@ -31,13 +32,7 @@ OverloadsSymbol::OverloadsSymbol(SymbolID const &Parent, std::string_view Name,
 void
 merge(OverloadsSymbol& I, OverloadsSymbol&& Other)
 {
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    namespace stdr = std::ranges;
-    namespace stdv = std::ranges::views;
-    auto newMembers = stdv::filter(Other.Members, [&](auto const& Member) {
-        return stdr::find(I.Members, Member) == I.Members.end();
-    });
-    I.Members.insert(I.Members.end(), newMembers.begin(), newMembers.end());
+    mergeReflected(I, Other);
 }
 
 void

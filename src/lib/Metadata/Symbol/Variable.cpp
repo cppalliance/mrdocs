@@ -9,6 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
+#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Variable.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -62,43 +64,7 @@ void
 merge(VariableSymbol& I, VariableSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    MRDOCS_ASSERT(!I.Type.valueless_after_move());
-    if (I.Type->isNamed() &&
-        I.Type->asNamed().Name->Identifier.empty())
-    {
-        I.Type = std::move(Other.Type);
-    }
-    if (!I.Template)
-    {
-        I.Template = std::move(Other.Template);
-    }
-    if (I.Initializer.Written.empty())
-    {
-        I.Initializer = std::move(Other.Initializer);
-    }
-    I.IsConstinit |= Other.IsConstinit;
-    I.IsThreadLocal |= Other.IsThreadLocal;
-    I.IsConstexpr |= Other.IsConstexpr;
-    I.IsInline |= Other.IsInline;
-    if (I.StorageClass == StorageClassKind::None)
-    {
-        I.StorageClass = Other.StorageClass;
-    }
-    for (auto& otherAttr: Other.Attributes)
-    {
-        if (std::ranges::find(I.Attributes, otherAttr) == I.Attributes.end())
-        {
-            I.Attributes.push_back(otherAttr);
-        }
-    }
-    I.IsBitfield |= Other.IsBitfield;
-    merge(I.BitfieldWidth, std::move(Other.BitfieldWidth));
-    I.IsVariant |= Other.IsVariant;
-    I.IsMutable |= Other.IsMutable;
-    I.IsMaybeUnused |= Other.IsMaybeUnused;
-    I.IsDeprecated |= Other.IsDeprecated;
-    I.HasNoUniqueAddress |= Other.HasNoUniqueAddress;
+    mergeReflected(I, Other);
 }
 
 } // mrdocs
