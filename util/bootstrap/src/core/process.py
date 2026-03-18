@@ -26,6 +26,10 @@ from typing import Optional, List, Dict, Union
 
 from .ui import TextUI, get_default_ui
 
+# Track env vars already exported during a dry-run session so each
+# unique key=value pair is printed only once (at its first occurrence).
+_dry_run_exported: set = set()
+
 
 def run_cmd(
     cmd: Union[str, List[str]],
@@ -67,12 +71,31 @@ def run_cmd(
     else:
         cmd_str = cmd
 
+    if dry_run:
+        # Print export statements for env vars that differ from the current
+        # environment so the dry-run script is self-contained.
+        # Each unique key=value pair is printed only once.
+        if env:
+            current_env = os.environ
+            for key in sorted(env):
+                if env[key] != current_env.get(key):
+                    pair = (key, env[key])
+                    if pair not in _dry_run_exported:
+                        _dry_run_exported.add(pair)
+                        value = env[key]
+                        quoted = shlex.quote(value) if value else "''"
+                        if not quoted.startswith("'"):
+                            quoted = f"'{value}'"
+                        print(f"export {key}={quoted}")
+        # Print a copy-pasteable shell command
+        if cwd and os.path.abspath(cwd) != os.path.abspath(os.getcwd()):
+            print(f"cd {shlex.quote(cwd)} && {cmd_str}")
+        else:
+            print(cmd_str)
+        return
+
     # Always show the command with cwd for transparency
     ui.command(f"{display_cwd}> {cmd_str}", icon="\U0001f4bb")
-
-    if dry_run:
-        ui.info("dry-run: command not executed")
-        return
 
     # Favor parallel builds unless user already set it
     effective_env = (env or os.environ).copy()

@@ -17,6 +17,8 @@ export type ScopeKey =
     | "docs"
     | "ci"
     | "build"
+    | "toolchain"
+    | "toolchain-tests"
     | "tooling"
     | "third-party"
     | "other";
@@ -115,6 +117,8 @@ export const scopeDisplayOrder: ScopeKey[] = [
     "docs",
     "ci",
     "build",
+    "toolchain",
+    "toolchain-tests",
     "tooling",
     "third-party",
     "other",
@@ -197,10 +201,16 @@ const scopeRules: ScopeRule[] = [
             /^CMakeUserPresets\.json/i,
             /^CMakeUserPresets\.json\.example/i,
             /^install\//i,
-            /^bootstrap\.py$/i,
-            /^util\/bootstrap\//i,
             /^mrdocs\.rnc$/i,
             /^mrdocs-config\.cmake\.in$/i,
+        ],
+    },
+    { scope: "toolchain-tests", patterns: [/^util\/bootstrap\/tests\//i] },
+    {
+        scope: "toolchain",
+        patterns: [
+            /^bootstrap\.py$/i,
+            /^util\/bootstrap\//i,
         ],
     },
     { scope: "tooling", patterns: [/^tools\//i, /^util\/(?!danger\/)/i] },
@@ -278,6 +288,20 @@ export function summarizeScopes(files: FileChange[]): ScopeReport {
         },
         build: {
             scope: "build",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        toolchain: {
+            scope: "toolchain",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        "toolchain-tests": {
+            scope: "toolchain-tests",
             files: 0,
             additions: 0,
             deletions: 0,

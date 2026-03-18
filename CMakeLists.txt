@@ -24,6 +24,7 @@ project(
 )
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 
 option(MRDOCS_INSTALL "Configure install target" ON)
 option(MRDOCS_PACKAGE "Build install package" ON)
@@ -31,6 +32,13 @@ option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOCS_BUILD_STRICT_TESTS "Enable strict tests" ON)
 option(MRDOCS_EXPENSIVE_TESTS "Register expensive tests (adoc/html golden, self-doc)" ON)
+
+# When strict tests are on, optional test dependencies become required
+if (MRDOCS_BUILD_STRICT_TESTS)
+    set(REQUIRED_IF_STRICT REQUIRED)
+else()
+    set(REQUIRED_IF_STRICT "")
+endif()
 option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
 if (MRDOCS_BUILD_TESTS OR MRDOCS_INSTALL)
     option(MRDOCS_BUILD_DOCS "Build documentation" ON)
@@ -550,12 +558,7 @@ if (MRDOCS_BUILD_TESTS)
     #-------------------------------------------------
     # XML lint
     #-------------------------------------------------
-    if (MRDOCS_BUILD_STRICT_TESTS)
-        # Strict mode expects xml-lint to run; require LibXml2.
-        find_package(LibXml2 REQUIRED)
-    else()
-        find_package(LibXml2)
-    endif()
+    find_package(LibXml2 ${REQUIRED_IF_STRICT})
     if (LibXml2_FOUND)
         find_package(Java REQUIRED Runtime)
         # FindJava

@@ -19,7 +19,13 @@ all aspects of setting up the MrDocs development environment.
 import dataclasses
 import os
 import re
+import shlex
 from typing import Optional, Dict, Any, Set
+
+
+def _shquote(s: str) -> str:
+    """Shell-quote a string, returning it unquoted if safe."""
+    return shlex.quote(s)
 
 from .core import (
     TextUI,
@@ -37,6 +43,7 @@ from .core import (
     SANITIZERS,
 )
 from .tools import find_tool, probe_compilers, install_ninja, is_tool_executable, probe_msvc_dev_env
+from .tools.prerequisites import check_prerequisites, report_missing_prerequisites, try_install_system_deps
 from .recipes import (
     Recipe,
     load_recipe_files,
@@ -44,8 +51,13 @@ from .recipes import (
     fetch_recipe_source,
     apply_recipe_patches,
     build_recipe,
+    build_libcxx_runtimes,
+    needs_libcxx_runtimes,
+    libcxx_runtime_flags,
     write_recipe_stamp,
     is_recipe_up_to_date,
+    generate_cache_key,
+    detect_compiler_for_cache_key,
 )
 from .presets import create_cmake_presets
 from .configs import generate_run_configs, generate_pretty_printer_configs
@@ -63,12 +75,13 @@ class MrDocsInstaller:
     - IDE run configuration generation
     """
 
-    def __init__(self, cmd_line_args: Optional[Dict[str, Any]] = None):
+    def __init__(self, cmd_line_args: Optional[Dict[str, Any]] = None, source_dir: Optional[str] = None):
         """
         Initialize the installer with command-line arguments.
 
         Args:
             cmd_line_args: Dictionary of command-line arguments.
+            source_dir: Override source directory (useful for tests).
         """
         self.cmd_line_args = cmd_line_args or {}
         self.default_options = InstallOptions()
@@ -80,8 +93,8 @@ class MrDocsInstaller:
                 setattr(self.options, field.name, '')
 
         # Seed critical defaults
-        self.options.source_dir = get_source_dir()
-        self.options.third_party_src_dir = self.default_options.third_party_src_dir
+        self.options.source_dir = source_dir or get_source_dir()
+        self.options.third_party_src_dir = os.path.join(self.options.source_dir, "build", "third-party")
 
         # Paths
         self.recipes_dir = os.path.join(self.options.source_dir, "third-party", "recipes")
@@ -100,13 +113,20 @@ class MrDocsInstaller:
         self.compiler_info: Dict[str, str] = {}
         self.package_roots: Dict[str, str] = {}
         self.recipe_info: Dict[str, Recipe] = {}
+        self._libcxx_cxxflags: str = ""
+        self._libcxx_ldflags: str = ""
         self.env = os.environ.copy()
         self.env["PKG_CONFIG"] = "false"  # Avoid CMake regex issues
+
+        # Dry-run implies non-interactive (prompts would block script generation)
+        if self.options.dry_run:
+            self.options.non_interactive = True
 
         # UI setup
         plain_ui = bool(self.cmd_line_args.get("plain_ui", False))
         self.ui = TextUI(enable_color=not plain_ui, enable_emoji=not plain_ui)
         self.ui.set_base_path(self.options.source_dir)
+        self.ui.dry_run = self.options.dry_run
         set_default_ui(self.ui)
 
     def prompt_option(self, name: str, prompt_text: str, force_prompt: bool = False):
@@ -251,7 +271,7 @@ class MrDocsInstaller:
                 elif transform_fn == "upper":
                     val = val.upper() if val else ""
                 elif transform_fn == "basename":
-                    val = os.path.basename(val) if val else ""
+                    val = os.path.splitext(os.path.basename(val))[0] if val else ""
                 elif transform_fn.startswith("if(") and transform_fn.endswith(")"):
                     var_name = transform_fn[3:-1]
                     if getattr(self.options, var_name, None):
@@ -275,6 +295,12 @@ class MrDocsInstaller:
         default_value = find_tool(tool) or tool
         setattr(self.default_options, f"{tool}_path", default_value)
 
+        # In dry-run mode, accept the default/CLI path without validation so
+        # the script can be generated even when tools aren't installed locally.
+        if self.options.dry_run:
+            tool_path = self.prompt_option(f"{tool}_path", tool)
+            return tool_path
+
         for attempt in range(3):
             if attempt == 0:
                 tool_path = self.prompt_option(f"{tool}_path", tool)
@@ -288,6 +314,53 @@ class MrDocsInstaller:
 
         raise FileNotFoundError(f"{tool} executable not found after multiple attempts.")
 
+    def check_system_prerequisites(self):
+        """Check system prerequisites and report/install missing ones."""
+        # In dry-run mode, skip actual checks so the script can be generated
+        # even when prerequisites aren't installed locally.  The generated
+        # script lists what the user needs in a comment.
+        if self.options.dry_run:
+            prereqs = ["cmake", "git", "python3", "a C/C++ compiler"]
+            if self.options.build_tests:
+                prereqs.append("java")
+            print(f"# Verify prerequisites: {', '.join(prereqs)}")
+            return
+
+        missing = check_prerequisites(
+            build_tests=self.options.build_tests,
+            cc=self.options.cc,
+            cxx=self.options.cxx,
+            ui=self.ui,
+        )
+
+        if not missing:
+            self.ui.ok("All system prerequisites found.")
+            return
+
+        if self.options.install_system_deps:
+            still_missing = try_install_system_deps(
+                missing,
+                non_interactive=self.options.non_interactive,
+                ui=self.ui,
+            )
+            if still_missing:
+                report_missing_prerequisites(still_missing, self.ui)
+                required_missing = [p for p in still_missing if p.required]
+                if required_missing:
+                    raise RuntimeError(
+                        "Required system tools are missing. "
+                        "Install them and re-run bootstrap."
+                    )
+        else:
+            report_missing_prerequisites(missing, self.ui)
+            required_missing = [p for p in missing if p.required]
+            if required_missing:
+                raise RuntimeError(
+                    "Required system tools are missing. "
+                    "Install them and re-run bootstrap, "
+                    "or use --install-system-deps to install automatically."
+                )
+
     def check_tools(self):
         """Check all required tools."""
         for tool in ["git", "cmake", "python"]:
@@ -295,6 +368,11 @@ class MrDocsInstaller:
 
     def prompt_compiler_option(self, name: str, prompt_text: str):
         """Prompt for a compiler path with validation and re-prompting."""
+        # In dry-run mode, accept the path without validation so the script
+        # can be generated even when the compiler isn't installed locally.
+        if self.options.dry_run:
+            return self.prompt_option(name, prompt_text)
+
         for attempt in range(3):
             if attempt == 0:
                 compiler_path = self.prompt_option(name, prompt_text)
@@ -341,6 +419,18 @@ class MrDocsInstaller:
         if not recipes:
             raise RuntimeError(f"No recipes found in {self.recipes_dir}")
 
+        # Override install dirs when --cache-dir is specified
+        if self.options.cache_dir:
+            cache_dir = os.path.abspath(self.options.cache_dir)
+            for recipe in recipes:
+                recipe.install_dir = os.path.join(cache_dir, recipe.name)
+
+        # Collect valid package root variable names from all recipes
+        # (before filtering) so stale roots can be cleaned from presets
+        self.valid_package_root_vars = [
+            r.package_root_var for r in recipes if r.package_root_var
+        ]
+
         if self.options.recipe_filter:
             wanted = {n.strip().lower() for n in self.options.recipe_filter.split(",") if n.strip()}
             recipes = [r for r in recipes if r.name.lower() in wanted]
@@ -349,13 +439,41 @@ class MrDocsInstaller:
 
         for recipe in ordered:
             self.ui.section(f"Installing {recipe.name}")
+            self._dry_comment(f"=== Install dependency: {recipe.name} {recipe.version} ===")
+            self._dry_comment(f"  source: {recipe.source_dir}")
+            self._dry_comment(f"  install: {recipe.install_dir}")
 
             # Check resolved ref for up-to-date check
             src = recipe.source
             resolved_ref = src.commit or src.tag or src.branch or src.ref or ""
 
-            # Skip build if already up to date (unless force or clean)
-            if not self.options.force and not self.options.clean and is_recipe_up_to_date(recipe, resolved_ref):
+            # Only pass sanitizer to dependency builds for clang.
+            # GCC doesn't support LLVM's sanitizer infrastructure flags.
+            compiler_id = self.compiler_info.get("CMAKE_CXX_COMPILER_ID", "")
+            recipe_sanitizer = self.options.sanitizer if compiler_id.lower() == "clang" else ""
+
+            # Parameters that affect the build output, used for stamp hashing
+            stamp_args = dict(
+                sanitizer=recipe_sanitizer,
+                cc=self.options.cc, cxx=self.options.cxx,
+                cflags=self.options.cflags, cxxflags=self.options.cxxflags,
+                ldflags=self.options.ldflags,
+            )
+
+            # For LLVM with sanitizers: always compute libc++ flags
+            # even on cache hit, since downstream builds need them.
+            if recipe.name == "llvm":
+                if needs_libcxx_runtimes(self.options.sanitizer, compiler_id):
+                    rt_flags = libcxx_runtime_flags(recipe.install_dir)
+                    self._libcxx_cxxflags = rt_flags["cxxflags"]
+                    self._libcxx_ldflags = rt_flags["ldflags"]
+                    self.options.cxxflags = (self.options.cxxflags + " " + rt_flags["cxxflags"]).strip()
+                    self.options.ldflags = (self.options.ldflags + " " + rt_flags["ldflags"]).strip()
+
+            # Skip build if already up to date (unless force, clean, or dry-run)
+            # In dry-run mode, always show all commands so the output is a
+            # complete manual reference regardless of local cache state.
+            if not self.options.dry_run and not self.options.force and not self.options.clean and is_recipe_up_to_date(recipe, resolved_ref, **stamp_args):
                 self.ui.ok(f"[{recipe.name}] already up to date ({resolved_ref or 'HEAD'}). Skipping build.")
                 self.print_recipe_summary(recipe)
                 self.recipe_info[recipe.name] = recipe
@@ -363,6 +481,7 @@ class MrDocsInstaller:
                     self.package_roots[recipe.package_root_var] = recipe.install_dir
                 continue
 
+            self._dry_comment(f"Fetch {recipe.name} source")
             fetch_recipe_source(
                 recipe,
                 self.options.source_dir,
@@ -376,6 +495,7 @@ class MrDocsInstaller:
                 ui=self.ui,
             )
 
+            self._dry_comment(f"Apply patches for {recipe.name}")
             apply_recipe_patches(
                 recipe,
                 self.patches_dir,
@@ -386,6 +506,29 @@ class MrDocsInstaller:
                 ui=self.ui,
             )
 
+            # Build libc++ runtimes if needed (LLVM + clang + asan/msan)
+            if recipe.name == "llvm":
+                compiler_id = self.compiler_info.get("CMAKE_CXX_COMPILER_ID", "")
+                if needs_libcxx_runtimes(self.options.sanitizer, compiler_id):
+                    self.ui.subsection("Building libc++ runtimes")
+                    build_libcxx_runtimes(
+                        recipe,
+                        self.options.cc,
+                        self.options.cxx,
+                        self.options.sanitizer,
+                        self.options.dry_run,
+                        self.options.verbose,
+                        self.options.debug,
+                        self.env,
+                        self.ui,
+                    )
+                    # Disable runtimes in the main LLVM build so it doesn't
+                    # overwrite the instrumented ones we just built
+                    for step in recipe.build:
+                        if step.get("type", "").lower() == "cmake":
+                            step.setdefault("options", []).append("-DLLVM_ENABLE_RUNTIMES=")
+
+            self._dry_comment(f"Build and install {recipe.name}")
             build_recipe(
                 recipe,
                 self.options.source_dir,
@@ -395,7 +538,10 @@ class MrDocsInstaller:
                 self.options.cxx,
                 self.options.build_dir,
                 self.options.install_dir,
-                self.options.sanitizer,
+                recipe_sanitizer,
+                self.options.cflags,
+                self.options.cxxflags,
+                self.options.ldflags,
                 self.options.force,
                 self.options.dry_run,
                 self.options.verbose,
@@ -404,7 +550,7 @@ class MrDocsInstaller:
                 self.ui,
             )
 
-            write_recipe_stamp(recipe, resolved_ref, self.options.dry_run, self.ui)
+            write_recipe_stamp(recipe, resolved_ref, **stamp_args, dry_run=self.options.dry_run, ui=self.ui)
 
             self.ui.ok(f"[{recipe.name}] installed successfully.")
             self.print_recipe_summary(recipe)
@@ -439,8 +585,12 @@ class MrDocsInstaller:
             self.options.sanitizer,
             self.package_roots,
             self.compiler_info,
-            self.options.dry_run,
-            self.ui,
+            valid_package_root_vars=getattr(self, 'valid_package_root_vars', None),
+            cflags=self.options.cflags,
+            cxxflags=self.options.cxxflags,
+            ldflags=self.options.ldflags,
+            dry_run=self.options.dry_run,
+            ui=self.ui,
         )
 
     def generate_configs(self):
@@ -485,6 +635,111 @@ class MrDocsInstaller:
             print(f"  - {recipe.name} ({recipe.version})")
             if recipe.dependencies:
                 print(f"    Dependencies: {', '.join(recipe.dependencies)}")
+
+    def get_cache_key(self, recipe_name: str) -> str:
+        """
+        Generate a CI-compatible cache key for a recipe.
+
+        Loads the recipe, determines compiler info, and returns the key.
+
+        Args:
+            recipe_name: Name of the recipe (e.g. "llvm").
+
+        Returns:
+            Cache key string.
+        """
+        recipes = load_recipe_files(
+            self.recipes_dir,
+            self.options.source_dir,
+            self.options.preset or "default",
+            self.options.build_type or "Release",
+            ui=self.ui,
+        )
+
+        recipe = None
+        for r in recipes:
+            if r.name.lower() == recipe_name.lower():
+                recipe = r
+                break
+
+        if not recipe:
+            available = [r.name for r in recipes]
+            raise RuntimeError(
+                f"Recipe '{recipe_name}' not found. Available: {', '.join(available)}"
+            )
+
+        recipe_hash = recipe.source.commit or recipe.version or ""
+
+        compiler, compiler_version = detect_compiler_for_cache_key(self.options.cc)
+
+        os_key = self.options.os_key
+        if not os_key:
+            raise RuntimeError(
+                "--os-key is required for cache key generation "
+                "(e.g. --os-key ubuntu:24.04)"
+            )
+
+        return generate_cache_key(
+            recipe_name=recipe.name,
+            recipe_hash=recipe_hash,
+            build_type=self.options.build_type or "Release",
+            os_key=os_key,
+            compiler=compiler,
+            compiler_version=compiler_version,
+            sanitizer=self.options.sanitizer,
+        )
+
+    def write_env_file(self):
+        """
+        Write computed _ROOT paths and flags to a file in key=value format.
+
+        This is intended for CI integration: the CI can source this file
+        into GITHUB_ENV so downstream steps (e.g. cmake-workflow) get the
+        correct dependency paths and compiler flags without manual computation.
+
+        Only bootstrap-computed flags are written (libc++ paths, sanitizer
+        linker flag), NOT user-passed --cflags/--cxxflags/--ldflags which
+        the CI already knows.  This avoids flag duplication when the CI
+        combines its own matrix flags with bootstrap output.
+        """
+        env_path = self.options.env_file
+        if not env_path:
+            return
+
+        from .tools.compilers import sanitizer_flag_name
+
+        lines = []
+
+        # Write _ROOT paths for each installed recipe
+        for var_name, path in sorted(self.package_roots.items()):
+            lines.append(f"{var_name}={path}")
+
+        # Write bootstrap-computed CXX flags (libc++ include paths only)
+        if self._libcxx_cxxflags:
+            lines.append(f"BOOTSTRAP_CXXFLAGS={self._libcxx_cxxflags}")
+
+        # Write bootstrap-computed LD flags (libc++ link paths + sanitizer)
+        bootstrap_ldflags = self._libcxx_ldflags
+        if self.options.sanitizer:
+            flag_name = sanitizer_flag_name(self.options.sanitizer)
+            if flag_name:
+                san_flag = f"-fsanitize={flag_name}"
+                bootstrap_ldflags = (bootstrap_ldflags + " " + san_flag).strip()
+        if bootstrap_ldflags:
+            lines.append(f"BOOTSTRAP_LDFLAGS={bootstrap_ldflags}")
+
+        content = "\n".join(lines) + "\n" if lines else ""
+
+        if self.options.dry_run:
+            self._dry_comment("Write bootstrap env file for CI")
+            print(f"cat > {_shquote(env_path)} <<'BOOTSTRAP_ENV_EOF'")
+            print(content.rstrip())
+            print("BOOTSTRAP_ENV_EOF")
+        else:
+            os.makedirs(os.path.dirname(os.path.abspath(env_path)), exist_ok=True) if os.path.dirname(env_path) else None
+            with open(env_path, 'w') as f:
+                f.write(content)
+            self.ui.ok(f"Environment file written to {env_path}")
 
     def print_recipe_summary(self, recipe: Recipe):
         """Print a summary of where a dependency was installed."""
@@ -576,6 +831,7 @@ class MrDocsInstaller:
         extra_args: list = None,
         cc_flags: str = "",
         cxx_flags: str = "",
+        ld_flags: str = "",
         force_rebuild: bool = False,
         remove_build_dir: bool = True,
         allow_skip: bool = True,
@@ -591,6 +847,7 @@ class MrDocsInstaller:
             extra_args: Extra CMake arguments.
             cc_flags: Extra C compiler flags.
             cxx_flags: Extra C++ compiler flags.
+            ld_flags: Extra linker flags.
             force_rebuild: Force rebuild even if install_dir exists.
             remove_build_dir: Remove build_dir after install.
             allow_skip: Allow skipping if install_dir exists.
@@ -600,7 +857,8 @@ class MrDocsInstaller:
         extra_args = extra_args or []
 
         # Check if we can skip the build
-        if allow_skip and self.is_non_empty_dir(install_dir):
+        # In dry-run mode, always show all commands for a complete manual reference.
+        if not self.options.dry_run and allow_skip and self.is_non_empty_dir(install_dir):
             if force_rebuild or self.options.force:
                 self.ui.info(f"Force rebuild requested. Removing {self.ui.maybe_shorten(install_dir)}.")
                 remove_dir(install_dir, dry_run=self.options.dry_run, ui=self.ui)
@@ -679,6 +937,9 @@ class MrDocsInstaller:
             config_args.append(f"-DCMAKE_C_FLAGS={cc_flags.strip()}")
         if cxx_flags.strip():
             config_args.append(f"-DCMAKE_CXX_FLAGS={cxx_flags.strip()}")
+        if ld_flags.strip():
+            config_args.append(f"-DCMAKE_EXE_LINKER_FLAGS={ld_flags.strip()}")
+            config_args.append(f"-DCMAKE_SHARED_LINKER_FLAGS={ld_flags.strip()}")
 
         # Configure
         self.ui.info("Configuring...")
@@ -766,6 +1027,9 @@ class MrDocsInstaller:
             self.options.build_dir,
             self.options.install_dir,
             extra_args,
+            cc_flags=self.options.cflags,
+            cxx_flags=self.options.cxxflags,
+            ld_flags=self.options.ldflags,
             force_rebuild=False,
             remove_build_dir=False,
             allow_skip=False,
@@ -880,15 +1144,81 @@ class MrDocsInstaller:
             else:
                 subprocess.run([current_python_interpreter_path, "-m", "util.bootstrap"] + args, check=True)
 
+    def _dry_comment(self, text: str):
+        """Print a shell comment to stdout when in dry-run mode.
+
+        These comments appear inline with the copy-pasteable commands,
+        giving users context about what each block of commands does.
+        """
+        if self.options.dry_run:
+            print(f"\n# {text}")
+
+    def _dry_preamble(self):
+        """Print a shell script preamble in dry-run mode."""
+        if not self.options.dry_run:
+            return
+        print("#!/usr/bin/env bash")
+        print("set -euo pipefail")
+        print()
+        print("# MrDocs bootstrap — equivalent manual steps")
+        print(f"# Generated for: {get_os_name()}")
+        print(f"# Source directory: {self.options.source_dir}")
+
+    def _dry_config_summary(self):
+        """Print resolved configuration as exported shell variables.
+
+        Called after all prompts/tool detection are done so values are final.
+        Variables are exported so the script is self-contained and users can
+        reference them (e.g. $CC, $CMAKE) when adapting commands.
+        """
+        if not self.options.dry_run:
+            return
+        print()
+        print("# --- Resolved configuration ---")
+        if self.options.cc:
+            print(f"export CC={_shquote(self.options.cc)}")
+        if self.options.cxx:
+            print(f"export CXX={_shquote(self.options.cxx)}")
+        if self.options.cmake_path:
+            print(f"export CMAKE={_shquote(self.options.cmake_path)}")
+        if self.options.ninja_path:
+            print(f"export NINJA={_shquote(self.options.ninja_path)}")
+        if self.options.git_path:
+            print(f"export GIT={_shquote(self.options.git_path)}")
+        print(f"export BUILD_TYPE={_shquote(self.options.build_type or 'Release')}")
+        print(f"export PRESET={_shquote(self.options.preset or 'default')}")
+        if self.options.sanitizer:
+            print(f"export SANITIZER={_shquote(self.options.sanitizer)}")
+        if self.options.cflags:
+            print(f"export CFLAGS={_shquote(self.options.cflags)}")
+        if self.options.cxxflags:
+            print(f"export CXXFLAGS={_shquote(self.options.cxxflags)}")
+        if self.options.ldflags:
+            print(f"export LDFLAGS={_shquote(self.options.ldflags)}")
+        print("# --- End configuration ---")
+
     def run(self):
         """Run the complete bootstrap process."""
         self.ui.section("MrDocs Bootstrap")
+        self._dry_preamble()
 
         # On Windows, probe MSVC development environment first
         if is_windows():
             msvc_env = probe_msvc_dev_env()
             if msvc_env:
                 self.env.update(msvc_env)
+
+        # Print environment variable exports for dry-run
+        self._dry_comment("Environment setup")
+        if self.options.dry_run:
+            print("export PKG_CONFIG=false")
+            cpu_count = max(1, os.cpu_count() or 1)
+            print(f"export CMAKE_BUILD_PARALLEL_LEVEL={cpu_count}")
+
+        # Phase 0: Check system prerequisites
+        self.ui.subsection("Checking system prerequisites")
+        self._dry_comment("Phase 0: Check system prerequisites (cmake, git, python3, cc, java)")
+        self.check_system_prerequisites()
 
         # Phase 1: Check tools
         self.ui.subsection("Checking tools")
@@ -906,6 +1236,7 @@ class MrDocsInstaller:
         # Phase 4: Probe compilers
         if self.options.cc or self.options.cxx:
             self.ui.subsection("Probing compilers")
+            self._dry_comment(f"Probe compilers: cc={self.options.cc or 'default'} cxx={self.options.cxx or 'default'}")
             probe_dir = os.path.join(self.options.third_party_src_dir, "cmake-probe")
             self.compiler_info = probe_compilers(
                 self.options.cmake_path,
@@ -918,24 +1249,35 @@ class MrDocsInstaller:
 
         # Phase 5: Setup Ninja
         self.ui.subsection("Setting up Ninja")
+        self._dry_comment("Setup Ninja build system")
         self.setup_ninja()
 
+        # Print resolved configuration summary for dry-run
+        self._dry_config_summary()
+
         # Phase 6: Install dependencies (each dependency gets its own section header)
+        self._dry_comment("Install third-party dependencies")
         self.install_dependencies()
+
+        # Write CI env file (after deps are installed, before MrDocs build)
+        self.write_env_file()
 
         # Phase 7: MrDocs configuration and build
         self.ui.section("MrDocs")
 
         # Create presets
         self.ui.subsection("Creating CMake presets")
+        self._dry_comment("Generate CMakeUserPresets.json")
         self.create_presets()
         presets_path = os.path.join(self.options.source_dir, "CMakeUserPresets.json")
         self.ui.ok(f"CMake presets written to {self.ui.maybe_shorten(presets_path)}")
-        self.show_preset_summary()
+        if not self.options.dry_run:
+            self.show_preset_summary()
 
         # Generate IDE configs
         if self.options.generate_run_configs:
             self.ui.subsection("Generating IDE configurations")
+            self._dry_comment("Generate IDE run configurations")
             self.generate_configs()
             configs_generated = []
             if self.options.generate_clion_run_configs:
@@ -952,11 +1294,13 @@ class MrDocsInstaller:
 
         # Build and install MrDocs
         self.ui.subsection("Building MrDocs")
+        self._dry_comment("Configure, build, and install MrDocs")
         self.install_mrdocs()
 
         # Run tests
         if self.options.run_tests:
             self.ui.subsection("Running tests")
+            self._dry_comment("Run MrDocs tests")
             self.run_mrdocs_tests()
 
         self.ui.ok("Bootstrap complete!")

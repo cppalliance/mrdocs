@@ -58,10 +58,15 @@
         "CLANG_INCLUDE_DOCS": false,
         "CLANG_BUILD_EXAMPLES": false,
 
+        "LLVM_OPTIMIZED_TABLEGEN": true,
+        "LLVM_COMPILER_CHECKED": true,
+        "CLANG_BUILD_TOOLS": false,
+
         "LIBCXX_ENABLE_SHARED": false,
         "LIBCXX_ENABLE_STATIC": true,
         "LIBCXX_INCLUDE_TESTS": false,
-        "LIBCXX_INCLUDE_BENCHMARKS": false
+        "LIBCXX_INCLUDE_BENCHMARKS": false,
+        "LIBCXXABI_USE_LLVM_UNWINDER": false
       },
       "warnings": {
         "unusedCli": false

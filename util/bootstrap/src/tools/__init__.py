@@ -21,3 +21,4 @@ from .compilers import *
 from .ninja import *
 from .visual_studio import *
 from .java import *
+from .prerequisites import *

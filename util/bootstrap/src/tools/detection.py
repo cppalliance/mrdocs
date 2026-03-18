@@ -107,28 +107,3 @@ def find_tool(tool: str) -> Optional[str]:
 
     return None
 
-
-def resolve_tool_path(tool_path: str) -> Optional[str]:
-    """
-    Resolve a tool path, handling relative paths and PATH lookup.
-
-    Args:
-        tool_path: Path to resolve (can be relative, absolute, or just a name).
-
-    Returns:
-        Absolute path to the tool, or None if not found.
-    """
-    if not tool_path:
-        return None
-
-    if os.path.isabs(tool_path):
-        if is_tool_executable(tool_path):
-            return tool_path
-        return None
-
-    # Try to find in PATH
-    resolved = shutil.which(tool_path)
-    if resolved:
-        return resolved
-
-    return None

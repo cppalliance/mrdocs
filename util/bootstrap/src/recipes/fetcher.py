@@ -18,6 +18,7 @@ git repositories and archives.
 
 import json
 import os
+import shlex
 import shutil
 import urllib.request
 from typing import Optional
@@ -59,13 +60,28 @@ def recipe_stamp_path(recipe: Recipe) -> str:
     return os.path.join(recipe.install_dir, ".bootstrap-stamp.json")
 
 
-def is_recipe_up_to_date(recipe: Recipe, resolved_ref: str) -> bool:
+def is_recipe_up_to_date(
+    recipe: Recipe,
+    resolved_ref: str,
+    sanitizer: str = "",
+    cc: str = "",
+    cxx: str = "",
+    cflags: str = "",
+    cxxflags: str = "",
+    ldflags: str = "",
+) -> bool:
     """
     Check if a recipe is already built and up to date.
 
     Args:
         recipe: The recipe to check.
         resolved_ref: The resolved git reference.
+        sanitizer: Sanitizer used for the build.
+        cc: C compiler path.
+        cxx: C++ compiler path.
+        cflags: Extra C flags.
+        cxxflags: Extra C++ flags.
+        ldflags: Extra linker flags.
 
     Returns:
         True if the recipe is up to date.
@@ -78,12 +94,63 @@ def is_recipe_up_to_date(recipe: Recipe, resolved_ref: str) -> bool:
             data = json.load(f)
     except Exception:
         return False
-    return data.get("version") == recipe.version and data.get("ref") == resolved_ref
+    if data.get("version") != recipe.version or data.get("ref") != resolved_ref:
+        return False
+    # If the stamp has a content hash, verify it matches the current
+    # recipe and runtime parameters. Stamps without a hash (from older
+    # bootstrap versions) pass this check.
+    stored_hash = data.get("content_hash")
+    if stored_hash is not None:
+        current_hash = _recipe_content_hash(
+            recipe, sanitizer, cc, cxx, cflags, cxxflags, ldflags
+        )
+        if stored_hash != current_hash:
+            return False
+    return True
+
+
+def _recipe_content_hash(
+    recipe: Recipe,
+    sanitizer: str = "",
+    cc: str = "",
+    cxx: str = "",
+    cflags: str = "",
+    cxxflags: str = "",
+    ldflags: str = "",
+) -> str:
+    """
+    Compute a hash of everything that affects the build output.
+
+    Covers both the recipe definition and runtime parameters like
+    sanitizer, compiler, and flags. Any change invalidates the stamp.
+    """
+    import hashlib
+    content = json.dumps({
+        "version": recipe.version,
+        "source_url": recipe.source.url,
+        "source_ref": recipe.source.commit or recipe.source.tag or recipe.source.branch or recipe.source.ref or "",
+        "build": recipe.build,
+        "build_type": recipe.build_type,
+        "tags": recipe.tags,
+        "sanitizer": sanitizer,
+        "cc": cc,
+        "cxx": cxx,
+        "cflags": cflags,
+        "cxxflags": cxxflags,
+        "ldflags": ldflags,
+    }, sort_keys=True)
+    return hashlib.sha256(content.encode()).hexdigest()[:16]
 
 
 def write_recipe_stamp(
     recipe: Recipe,
     resolved_ref: str,
+    sanitizer: str = "",
+    cc: str = "",
+    cxx: str = "",
+    cflags: str = "",
+    cxxflags: str = "",
+    ldflags: str = "",
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ):
@@ -93,6 +160,12 @@ def write_recipe_stamp(
     Args:
         recipe: The recipe that was built.
         resolved_ref: The resolved git reference.
+        sanitizer: Sanitizer used for the build.
+        cc: C compiler path.
+        cxx: C++ compiler path.
+        cflags: Extra C flags.
+        cxxflags: Extra C++ flags.
+        ldflags: Extra linker flags.
         dry_run: If True, only print what would be done.
         ui: TextUI instance for output.
     """
@@ -100,17 +173,16 @@ def write_recipe_stamp(
         ui = get_default_ui()
 
     stamp = recipe_stamp_path(recipe)
-    if dry_run:
-        ui.info(f"dry-run: would write stamp for {recipe.name} at {stamp}")
-        return
-
     payload = {
         "name": recipe.name,
         "version": recipe.version,
         "ref": resolved_ref,
+        "content_hash": _recipe_content_hash(
+            recipe, sanitizer, cc, cxx, cflags, cxxflags, ldflags
+        ),
     }
-    ensure_dir(recipe.install_dir, dry_run=False, ui=ui)
-    write_text(stamp, json.dumps(payload, indent=2), dry_run=False, ui=ui)
+    ensure_dir(recipe.install_dir, dry_run=dry_run, ui=ui)
+    write_text(stamp, json.dumps(payload, indent=2), dry_run=dry_run, ui=ui)
 
 
 def download_file(
@@ -132,7 +204,7 @@ def download_file(
         ui = get_default_ui()
 
     if dry_run:
-        ui.info(f"dry-run: would download {url} -> {dest}")
+        print(f"curl -L -o {shlex.quote(dest)} {shlex.quote(url)}")
         return
 
     parent = os.path.dirname(dest)
@@ -183,12 +255,13 @@ def fetch_recipe_source(
     if clean and os.path.exists(dest):
         remove_dir(dest, dry_run=dry_run, ui=ui)
 
-    if not force and is_recipe_up_to_date(recipe, resolved_ref):
+    if not dry_run and not force and is_recipe_up_to_date(recipe, resolved_ref):
         ui.ok(f"[{recipe.name}] already up to date ({resolved_ref or 'HEAD'}).")
         return resolved_ref
 
     # If source already exists and we're not forcing or cleaning, skip re-download
-    if os.path.isdir(dest) and not clean and not force:
+    # In dry-run mode, always show the fetch commands for a complete manual reference.
+    if not dry_run and os.path.isdir(dest) and not clean and not force:
         ui.info(f"{recipe.name}: source already present at {ui.shorten_path(dest)}; skipping download.")
         return resolved_ref or "HEAD"
 
@@ -204,16 +277,18 @@ def fetch_recipe_source(
         tmp_archive = os.path.join(source_dir, "build", "third-party", "source", filename)
         download_file(archive_url, tmp_archive, dry_run=dry_run, ui=ui)
 
-        if not dry_run and os.path.exists(dest):
-            remove_dir(dest, dry_run=False, ui=ui)
+        if dry_run or os.path.exists(dest):
+            remove_dir(dest, dry_run=dry_run, ui=ui)
         ensure_dir(dest, dry_run=dry_run, ui=ui)
 
+        if archive_url.endswith(".zip"):
+            extract_zip_flatten(tmp_archive, dest, dry_run=dry_run, ui=ui)
+        else:
+            extract_tar_flatten(tmp_archive, dest, dry_run=dry_run, ui=ui)
         if not dry_run:
-            if archive_url.endswith(".zip"):
-                extract_zip_flatten(tmp_archive, dest, dry_run=False, ui=ui)
-            else:
-                extract_tar_flatten(tmp_archive, dest, dry_run=False, ui=ui)
             os.remove(tmp_archive)
+        else:
+            print(f"rm {shlex.quote(tmp_archive)}")
     else:
         # Fallback to git clone
         depth_args = ["--depth", str(src.depth)] if src.depth else []
@@ -279,12 +354,12 @@ def apply_recipe_patches(
             target = os.path.join(recipe.source_dir, entry)
             if os.path.isdir(path):
                 if dry_run:
-                    ui.info(f"dry-run: would copy directory {path} -> {target}")
+                    print(f"cp -r {shlex.quote(path)} {shlex.quote(target)}")
                 else:
                     shutil.copytree(path, target, dirs_exist_ok=True)
             else:
                 if dry_run:
-                    ui.info(f"dry-run: would copy file {path} -> {target}")
+                    print(f"cp {shlex.quote(path)} {shlex.quote(target)}")
                 else:
                     ensure_dir(os.path.dirname(target), dry_run=False, ui=ui)
                     shutil.copy(path, target)

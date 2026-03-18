@@ -13,6 +13,7 @@
   "build": [
     {
       "type": "cmake",
+      "generator": "Ninja",
       "options": ["--preset=${BOOTSTRAP_BUILD_TYPE_LOWER}-${BOOTSTRAP_HOST_PRESET_SUFFIX}"],
       "source_subdir": "llvm",
       "sanitizers": {

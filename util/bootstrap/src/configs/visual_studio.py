@@ -24,6 +24,29 @@ from ..core.filesystem import ensure_dir, write_text, load_json_file
 from ..core.ui import TextUI, get_default_ui
 
 
+def vs_config_type(config: Dict[str, Any]) -> Optional[str]:
+    """Determine Visual Studio config type based on script or target."""
+    if "script" in config:
+        if config["script"].endswith(".py"):
+            return "python"
+        elif config["script"].endswith(".js"):
+            return "nodejs"
+        else:
+            return "shell"
+    elif "target" in config:
+        return "default"
+    return None
+
+
+def rel_to_mrdocs_dir(script_path: str, source_dir: str) -> str:
+    """Convert absolute path to relative path from source_dir."""
+    is_subdir_of_source_dir = script_path.replace('\\', '/').rstrip('/').startswith(
+        source_dir.replace('\\', '/').rstrip('/'))
+    if is_subdir_of_source_dir:
+        return os.path.relpath(script_path, source_dir)
+    return script_path
+
+
 def generate_visual_studio_run_configs(
     configs: List[Dict[str, Any]],
     source_dir: str,
@@ -53,16 +76,12 @@ def generate_visual_studio_run_configs(
 
     vs_dir = os.path.join(source_dir, ".vs")
 
-    if dry_run:
-        ui.info(f"dry-run: would generate Visual Studio configs in {vs_dir}")
-        return
-
-    ensure_dir(vs_dir, dry_run=False, ui=ui)
+    ensure_dir(vs_dir, dry_run=dry_run, ui=ui)
 
     launch_path = os.path.join(vs_dir, "launch.vs.json")
     tasks_path = os.path.join(vs_dir, "tasks.vs.json")
 
-    # Load existing configs if present
+    # Load existing configs if present (empty defaults for dry-run when files don't exist)
     launch_data = load_json_file(launch_path) or {"version": "0.2.1", "defaults": {}, "configurations": []}
     tasks_data = load_json_file(tasks_path) or {"version": "0.2.1", "tasks": []}
 
@@ -70,33 +89,12 @@ def generate_visual_studio_run_configs(
     vs_configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
     vs_tasks_by_name = {task.get("taskLabel"): task for task in tasks_data.get("tasks", [])}
 
-    def vs_config_type(config):
-        """Determine Visual Studio config type based on script or target."""
-        if "script" in config:
-            if config["script"].endswith(".py"):
-                return "python"
-            elif config["script"].endswith(".js"):
-                return "nodejs"
-            else:
-                return "shell"
-        elif "target" in config:
-            return "default"
-        return None
-
-    def rel_to_mrdocs_dir(script_path):
-        """Convert absolute path to relative path from source_dir."""
-        is_subdir_of_source_dir = script_path.replace('\\', '/').rstrip('/').startswith(
-            source_dir.replace('\\', '/').rstrip('/'))
-        if is_subdir_of_source_dir:
-            return os.path.relpath(script_path, source_dir)
-        return script_path
-
     def vs_config_project(config):
         """Determine project file for the configuration."""
         if "target" in config:
             return "CMakeLists.txt"
         elif "script" in config:
-            return rel_to_mrdocs_dir(config["script"])
+            return rel_to_mrdocs_dir(config["script"], source_dir)
         return None
 
     def vs_config_project_target(config):
@@ -162,7 +160,7 @@ def generate_visual_studio_run_configs(
                 new_task["command"] = "node"
             elif new_task["command"] == "npm" and "workingDirectory" in new_task:
                 new_task["appliesTo"] = os.path.join(new_task["workingDirectory"], "package.json")
-                new_task["appliesTo"] = rel_to_mrdocs_dir(new_task["appliesTo"])
+                new_task["appliesTo"] = rel_to_mrdocs_dir(new_task["appliesTo"], source_dir)
             elif new_task["taskLabel"] == "MrDocs Generate RelaxNG Schema":
                 new_task["appliesTo"] = "mrdocs.rnc"
             elif new_task["taskLabel"] == "MrDocs XML Lint with RelaxNG Schema":
@@ -172,7 +170,7 @@ def generate_visual_studio_run_configs(
 
     # Write back all configs
     launch_data["configurations"] = list(vs_configs_by_name.values())
-    write_text(launch_path, json.dumps(launch_data, indent=4), dry_run=False, ui=ui)
+    write_text(launch_path, json.dumps(launch_data, indent=4) + "\n", dry_run=dry_run, ui=ui)
 
     tasks_data["tasks"] = list(vs_tasks_by_name.values())
-    write_text(tasks_path, json.dumps(tasks_data, indent=4), dry_run=False, ui=ui)
+    write_text(tasks_path, json.dumps(tasks_data, indent=4) + "\n", dry_run=dry_run, ui=ui)

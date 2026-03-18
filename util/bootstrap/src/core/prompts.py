@@ -16,20 +16,15 @@ Provides functions for prompting users for input during the
 bootstrap process.
 """
 
-import sys
 from typing import Optional, List
 
+from .platform import supports_ansi
 from .ui import TextUI, get_default_ui
 
 
 # ANSI color codes
 BLUE = "\033[94m"
 RESET = "\033[0m"
-
-
-def supports_ansi() -> bool:
-    """Check if the terminal supports ANSI escape codes."""
-    return sys.stdout.isatty()
 
 
 def prompt_string(
@@ -54,8 +49,10 @@ def prompt_string(
         ui = get_default_ui()
 
     indent = "    "
-    if non_interactive and default is not None:
-        return default
+    if non_interactive:
+        if default is not None:
+            return default
+        raise RuntimeError(f"No default for prompt '{prompt}' in non-interactive mode")
 
     prompt = prompt.strip()
     if prompt.endswith('.'):
@@ -68,7 +65,7 @@ def prompt_string(
         except Exception:
             display_default = default
 
-    if supports_ansi():
+    if supports_ansi() and (ui is None or ui.color_enabled):
         prompt = f"{BLUE}{prompt}{RESET}"
     if display_default not in (None, ""):
         prompt += f" ({display_default})"
@@ -100,14 +97,16 @@ def prompt_boolean(
         ui = get_default_ui()
 
     indent = "    "
-    if non_interactive and default is not None:
-        return default
+    if non_interactive:
+        if default is not None:
+            return default
+        raise RuntimeError(f"No default for prompt '{prompt}' in non-interactive mode")
 
     prompt = prompt.strip()
     if prompt.endswith('.'):
         prompt = prompt[:-1].strip()
 
-    if supports_ansi():
+    if supports_ansi() and (ui is None or ui.color_enabled):
         prompt = f"{BLUE}{prompt}{RESET}"
 
     while True:
@@ -144,8 +143,10 @@ def prompt_choice(
         The selected choice.
     """
     indent = "    "
-    if non_interactive and default is not None:
-        return default
+    if non_interactive:
+        if default is not None:
+            return default
+        raise RuntimeError(f"No default for prompt '{prompt}' in non-interactive mode")
 
     prompt = prompt.strip()
     if prompt.endswith('.'):

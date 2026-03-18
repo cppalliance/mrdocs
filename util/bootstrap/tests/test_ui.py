@@ -92,11 +92,11 @@ class TestTextUIOutput(unittest.TestCase):
         self.ui.warn("test warning")
         self.assertIn("test warning", mock_stdout.getvalue())
 
-    @patch('sys.stdout', new_callable=io.StringIO)
-    def test_error_prints(self, mock_stdout):
-        """error() should print message."""
+    @patch('sys.stderr', new_callable=io.StringIO)
+    def test_error_prints_to_stderr(self, mock_stderr):
+        """error() should print message to stderr."""
         self.ui.error("test error")
-        self.assertIn("test error", mock_stdout.getvalue())
+        self.assertIn("test error", mock_stderr.getvalue())
 
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_ok_prints(self, mock_stdout):
@@ -149,6 +149,75 @@ class TestTextUIPathHandling(unittest.TestCase):
         ui = TextUI()
         result = ui.maybe_shorten(f"{home}/some/file.txt")
         self.assertTrue(result.startswith("~") or result.startswith(home))
+
+
+class TestPlainMode(unittest.TestCase):
+    """Test plain mode (no color, no emoji) output for CI compatibility."""
+
+    def setUp(self):
+        self.ui = TextUI(enable_color=False, enable_emoji=False)
+
+    def test_plain_property(self):
+        """plain should be True when both color and emoji are disabled."""
+        self.assertTrue(self.ui.plain)
+
+    def test_not_plain_with_color(self):
+        """plain should be False when color is enabled."""
+        ui = TextUI.__new__(TextUI)
+        ui.color_enabled = True
+        ui.emoji_enabled = False
+        ui.max_path = 50
+        ui.base_path = None
+        ui.base_token = "."
+        self.assertFalse(ui.plain)
+
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_section_uses_ascii_in_plain(self, mock_stdout):
+        """section() should use '=' dividers in plain mode."""
+        self.ui.section("Test")
+        output = mock_stdout.getvalue()
+        self.assertIn("=", output)
+        self.assertNotIn("\u2501", output)
+
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_subsection_plain_format(self, mock_stdout):
+        """subsection() should use '---' prefix in plain mode."""
+        self.ui.subsection("Test Sub")
+        output = mock_stdout.getvalue()
+        self.assertIn("--- Test Sub", output)
+
+    @patch('sys.stderr', new_callable=io.StringIO)
+    def test_error_goes_to_stderr(self, mock_stderr):
+        """error() should write to stderr, not stdout."""
+        self.ui.error("fail message")
+        self.assertIn("fail message", mock_stderr.getvalue())
+
+    @patch('sys.stderr', new_callable=io.StringIO)
+    def test_error_block_goes_to_stderr(self, mock_stderr):
+        """error_block() should write to stderr."""
+        self.ui.error_block("header", ["tip1"])
+        output = mock_stderr.getvalue()
+        self.assertIn("header", output)
+        self.assertIn("tip1", output)
+
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_no_ansi_in_plain(self, mock_stdout):
+        """Plain output should contain no ANSI escape sequences."""
+        self.ui.info("info msg")
+        self.ui.ok("ok msg")
+        self.ui.warn("warn msg")
+        self.ui.section("section")
+        self.ui.subsection("sub")
+        output = mock_stdout.getvalue()
+        self.assertNotIn("\033[", output)
+
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_checklist_uses_ascii_in_plain(self, mock_stdout):
+        """checklist() should use [x]/[ ] in plain mode."""
+        self.ui.checklist("", [("done", True), ("todo", False)])
+        output = mock_stdout.getvalue()
+        self.assertIn("[x]", output)
+        self.assertIn("[ ]", output)
 
 
 class TestDefaultUI(unittest.TestCase):

@@ -17,6 +17,7 @@ using CMake.
 """
 
 import os
+import shlex
 import shutil
 import subprocess
 from typing import Optional, Dict
@@ -94,7 +95,7 @@ def probe_compilers(
     if ui is None:
         ui = get_default_ui()
 
-    print("Probing default system compilers...")
+    ui.info("Probing default system compilers...")
 
     variables = []
     for lang in ["C", "CXX"]:
@@ -106,8 +107,27 @@ def probe_compilers(
             variables.append(f"CMAKE_{lang}_{suffix}")
     variables.append("CMAKE_GENERATOR")
 
+    # Build the CMakeLists.txt content for probing
+    cmake_lines = [
+        "cmake_minimum_required(VERSION 3.10)",
+        "project(probe C CXX)"
+    ]
+    for var in variables:
+        cmake_lines.append(f'message(STATUS "{var}=${{{var}}}")')
+    cmake_content = "\n".join(cmake_lines)
+
     if dry_run:
-        ui.info("dry-run: would probe compilers via CMake")
+        ensure_dir(probe_dir, dry_run=True, ui=ui)
+        write_text(os.path.join(probe_dir, "CMakeLists.txt"), cmake_content, dry_run=True, ui=ui)
+        from ..core.process import run_cmd as _run_cmd
+        cmd = [cmake_path, "-S", probe_dir]
+        if cc:
+            cmd.append(f"-DCMAKE_C_COMPILER={cc}")
+        if cxx:
+            cmd.append(f"-DCMAKE_CXX_COMPILER={cxx}")
+        cmd.extend(["-B", os.path.join(probe_dir, "build")])
+        _run_cmd(cmd, dry_run=True, ui=ui)
+        remove_dir(probe_dir, dry_run=True, ui=ui)
         return {}
 
     # Clean up any existing probe directory
@@ -116,16 +136,9 @@ def probe_compilers(
     ensure_dir(probe_dir, dry_run=False, ui=ui)
 
     # Create minimal CMakeLists.txt
-    cmake_lines = [
-        "cmake_minimum_required(VERSION 3.10)",
-        "project(probe C CXX)"
-    ]
-    for var in variables:
-        cmake_lines.append(f'message(STATUS "{var}=${{{var}}}")')
-
     write_text(
         os.path.join(probe_dir, "CMakeLists.txt"),
-        "\n".join(cmake_lines),
+        cmake_content,
         dry_run=False,
         ui=ui
     )
@@ -159,7 +172,7 @@ def probe_compilers(
     # Print default C++ compiler info
     compiler_id = values.get('CMAKE_CXX_COMPILER_ID', 'unknown')
     compiler_path = values.get('CMAKE_CXX_COMPILER', 'unknown')
-    print(f"Default C++ compiler: {compiler_id} ({compiler_path})")
+    ui.info(f"Default C++ compiler: {compiler_id} ({compiler_path})")
 
     return values
 

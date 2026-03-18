@@ -52,7 +52,7 @@ jobs:
             clang >=18
             msvc >=14.40
             apple-clang *
-          standards: '20'
+          standards: '23'
           latest-factors: |
             gcc UBSan
             clang UBSan ASan MSan Coverage
@@ -68,32 +68,58 @@ jobs:
             apple-clang: Release
             msvc: RelWithDebInfo
           install: |
-            gcc: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
-            clang: git build-essential pkg-config python3 curl unzip openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14 elfutils
+            gcc: git cmake ninja-build build-essential pkg-config python3 curl unzip openjdk-11-jdk-headless libncurses-dev libxml2-utils libxml2-dev
+            clang: git cmake ninja-build build-essential pkg-config python3 curl unzip openjdk-11-jdk-headless libncurses-dev libxml2-utils libxml2-dev libstdc++-14-dev
+            clang Coverage: git cmake ninja-build build-essential pkg-config python3 curl unzip openjdk-11-jdk-headless libncurses-dev libxml2-utils libxml2-dev libstdc++-14-dev elfutils llvm-21-tools
             msvc: ''
           extra-values: |
+            # libc++ runtimes: clang + (ASan or MSan) needs instrumented libc++
+            # built separately from the main LLVM build
             use-libcxx: {{#if (and (ieq compiler 'clang') (or msan asan)) }}true{{else}}false{{/if}}
             libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
             llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
+
+            # LLVM build configuration
             llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
             llvm-build-preset-prefix: {{{lowercase build-type}}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
-            llvm-os-key: {{#if container}}{{{ container }}}{{else}}{{{ runs-on }}}{{/if}}
-            llvm-archive-sanitizer-str: {{#if (ieq compiler 'clang')}}{{#if ubsan}}UBSan{{else if asan}}ASan{{/if}}{{/if}}
+
+            # LLVM cache key: encodes hash, build type, OS, and sanitizer
+            # so each distinct LLVM configuration gets its own cache entry.
+            # Clang + (ASan or MSan) appends compiler version and sanitizer
+            # because those builds include instrumented libc++ runtimes.
+            llvm-os-key: {{#if container}}{{{ replace (replace (lowercase container) ":" "-") "." "-" }}}{{else}}{{{ replace (lowercase runs-on) "." "-" }}}{{/if}}
+            llvm-archive-sanitizer-str: {{#if (ieq compiler 'clang')}}{{#if ubsan}}ubsan{{else if asan}}asan{{else if msan}}msan{{/if}}{{/if}}
             llvm-archive-basename: llvm-{{{ substr llvm-hash 0 7 }}}-{{{ llvm-build-preset-prefix }}}-{{{ llvm-os-key }}}{{#if (and (ieq compiler 'clang') (or msan asan)) }}-{{{ compiler }}}-{{{ version }}}-{{{ llvm-archive-sanitizer-str }}}{{/if}}
+
+            # LLVM archive (for the llvm-releases job that uploads pre-built LLVM)
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
+
+            # Maps sanitizer factor to LLVM_USE_SANITIZER cmake value
             llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+
+            # Compiler and linker flags passed to the MrDocs build (not deps).
+            # common-flags-base: clang-specific flags (e.g. -gz=zstd for compression)
+            # common-flags: adds MSan origin tracking on top of base
+            # mrdocs-flags: warnings-as-errors, static linking (gcc), coverage (clang)
             warning-flags: {{#if (eq compiler 'msvc') }}/WX /W4 {{else}}-Werror -Wall {{/if}}
             common-flags-base: {{#if (ieq compiler 'clang')}}-gz=zstd {{/if}}
             common-flags: {{{ common-flags-base }}}{{#if msan }}-fsanitize-memory-track-origins {{/if}}
             common-ccflags: {{{ ccflags }}} {{{ common-flags }}}
             mrdocs-flags: {{{ warning-flags }}}{{#if (and (eq compiler 'gcc') (not asan)) }}-static {{/if}}{{#if (and (ieq compiler 'clang') coverage)}}-fprofile-instr-generate -fcoverage-mapping {{/if}}
             mrdocs-ccflags: {{{ common-ccflags }}} {{{ mrdocs-flags }}}
+
+            # Packaging and release configuration
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
+
+            # Bottleneck builds: skip expensive tests to save CI time
             is-bottleneck: {{#if (or msan (and (ieq compiler 'apple-clang') (or asan ubsan))) }}true{{/if}}
+
+            # Sanitizer name for bootstrap's --sanitizer flag
+            bootstrap-sanitizer: {{#if asan}}address{{else if msan}}memory{{else if ubsan}}undefined{{else if tsan}}thread{{/if}}
           output-file: matrix.json
           trace-commands: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -142,48 +168,30 @@ jobs:
       contents: write
 
     steps:
-      - name: Ensure Node
-        if: matrix.container != '' && env.ACT == 'true'
+      - name: Add LLVM apt repository
+        if: matrix.coverage
         run: |
-          set -e
-          apt-get update
-          apt-get install -y nodejs npm
-          if ! command -v node >/dev/null 2>&1 && command -v nodejs >/dev/null 2>&1; then
-            ln -s /usr/bin/nodejs /usr/bin/node
-          fi
+          apt-get update && apt-get install -y --no-install-recommends ca-certificates wget gnupg lsb-release
+          wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
+          codename=$(lsb_release -cs)
+          echo "deb http://apt.llvm.org/$codename/ llvm-toolchain-$codename-21 main" >> /etc/apt/sources.list
 
-      # We install git if we are using a container because
-      # containers don't always include git.
-      # We need git to ensure actions/checkout@v4 will use git and
-      # for the next steps that need to clone repositories
-      - name: Install Git
+      - name: Install System Packages
         uses: alandefreitas/cpp-actions/package-install@v1.9.2
-        if: matrix.container != ''
+        if: matrix.install != ''
+        id: package-install
         env:
           DEBIAN_FRONTEND: 'noninteractive'
           TZ: 'Etc/UTC'
         with:
-          apt-get: git
-
-      # Set up the repository ownership to avoid issues with git commands
-      - name: Configure Git Safe Directory
-        if: matrix.container != ''
-        run: git config --global --add safe.directory "$(pwd)"
+          apt-get: ${{ matrix.install }}
 
       - name: Clone MrDocs
         uses: actions/checkout@v4
 
-      - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@v1.9.2
-        id: setup-cmake
-        with:
-          version: '>=3.26'
-          check-latest: 'true'
-          update-environment: 'true'
-          trace-commands: 'true'
-
-      - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v5
+      - name: Configure Git Safe Directory
+        if: matrix.container != ''
+        run: git config --global --add safe.directory "$(pwd)"
 
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.9.2
@@ -241,48 +249,23 @@ jobs:
             echo "Warning: llvm-symbolizer not found; ASan stacks may be unsymbolized." >&2
           fi
 
-      # If apple-clang on macos, select the newest Xcode.
       - name: Select Xcode 16.4
         if: matrix.compiler == 'apple-clang'
         run: |
+          set -x
           sudo ls -1 /Applications | grep Xcode
-          xcode-select --version
           sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
           ${{ steps.setup-cpp.outputs.cxx }} -v
-
-      # If apple-clang on macos, we run `clang -print-targets` to
-      # get the list of targets supported by the compiler.
-      - name: Print Clang Targets
-        if: matrix.compiler == 'apple-clang'
-        run: |
-          set -x
           ${{ steps.setup-cpp.outputs.cxx }} --print-targets
           ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
-      - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.9.2
-        if: matrix.compiler != 'msvc'
-        id: package-install
-        env:
-          DEBIAN_FRONTEND: 'noninteractive'
-          TZ: 'Etc/UTC'
-        with:
-          apt-get: ${{ matrix.install }}
-
-      - name: Install LLVM packages
-        if: matrix.compiler == 'clang'
-        env:
-          DEBIAN_FRONTEND: 'noninteractive'
-          TZ: 'Etc/UTC'
-        run: |
-          echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-21 main" >> /etc/apt/sources.list
-          apt-get update
-          apt-get install -y libclang-${{ matrix.major }}-dev llvm-${{ matrix.major }}-tools
-
-      # This calculates a bunch of variables, which would normally go in to the regular matrix extra-values
-      # section, but which depend on paths not known at that point.
-      - name: Resolved Matrix
-        id: rmatrix
+      # Compute absolute paths and the LLVM cache key.
+      # Paths depend on the runner's working directory, so they can't be
+      # set in the matrix template.  The cache key is generated by
+      # bootstrap so the recipe file is the single source of truth for
+      # the LLVM revision.
+      - name: Resolve absolute paths
+        id: paths
         run: |
           set -euvx
 
@@ -291,298 +274,77 @@ jobs:
               third_party_dir="$(echo "$third_party_dir" | sed 's/\\/\//g; s|^/d/|D:/|')"
           fi
           echo "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
-
-          llvm_path="$third_party_dir/llvm"
-          echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
-
-          common_cxxflags_base=""
-          if [[ "${{ matrix.use-libcxx }}" == 'true' ]]; then
-            common_cxxflags_base="-nostdinc++ -nostdlib++ -isystem$llvm_path/include/c++/v1"
-          fi
-          echo "common-cxxflags-base=$common_cxxflags_base" >> $GITHUB_OUTPUT
-
-          common_cxxflags="$common_cxxflags_base ${{ matrix.cxxflags }} ${{ matrix.common-flags }}"
-          echo "common-cxxflags=$common_cxxflags" >> $GITHUB_OUTPUT
-
-          echo "mrdocs-cxxflags=$common_cxxflags ${{ matrix.mrdocs-flags }}" >> $GITHUB_OUTPUT
-
-          common_ldflags="${{ matrix.ldflags }}"
-          if [[ "${{ matrix.use-libcxx }}" == 'true' ]]; then
-            common_ldflags="$common_ldflags -L$llvm_path/lib -lc++abi -lc++ -Wl,-rpath,$llvm_path/lib"
-          fi
-          if [[ "${{ matrix.ubsan }}" == 'true' ]]; then
-            common_ldflags="$common_ldflags -fsanitize=undefined"
-          fi
-          if [[ "${{ matrix.asan }}" == 'true' ]]; then
-            common_ldflags="$common_ldflags -fsanitize=address"
-          fi
-          if [[ "${{ matrix.msan }}" == 'true' ]]; then
-            common_ldflags="$common_ldflags -fsanitize=memory"
-          fi
-          echo "common-ldflags=$common_ldflags" >> $GITHUB_OUTPUT
-
-          llvm_cache_key="${{ matrix.llvm-archive-basename }}"
-          llvm_cache_key="${llvm_cache_key//:/-}"
-          echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
+          echo "llvm-path=$third_party_dir/llvm" >> $GITHUB_OUTPUT
 
       - name: Cached LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.rmatrix.outputs.llvm-path }}
-          key: ${{ steps.rmatrix.outputs.llvm-cache-key }}
+          path: ${{ steps.paths.outputs.llvm-path }}
+          key: ${{ matrix.llvm-archive-basename }}
 
-      # Installs libc++ separately, using the LLVM standalone runtimes build.
-      # The libc++ built here will be built using the host compiler, so this is
-      # limited by what libc++ at the current LLVM revision supports.
-      # This will be only built for configurations where 'use-libcxx' is true,
-      # and in which case libc++ will **not** be built again later using the
-      # bootstrapping runtimes build.
-      # This should be built at least for all of the sanitizer builds, as it
-      # is required for some, and increases their effectiveness otherwise.
-      # This should not be built for any of the release builds, as they wouldn't
-      # otherwise be independent of this particular libc++.
-      # FIXME: Build this for the GCC and MacOS sanitizer jobs.
-      # Currently GCC fails linking it, and for MacOS there are compiler-rt
-      # requirements not satisfied.
-      - name: Fetch LLVM source archive
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
+      # Bootstrap handles all dependency installation: LLVM, libc++,
+      # JerryScript, Lua, Boost.Mp11, Boost.Describe, and libxml2 (MSVC only).
+      # When LLVM is restored from cache, bootstrap detects the existing
+      # install directory and skips rebuilding it.
+      # The --env-file flag writes computed _ROOT paths and flags (libc++,
+      # sanitizer ldflags) to a file that is sourced into GITHUB_ENV so
+      # downstream steps use bootstrap as the single source of truth.
+      - name: Install Dependencies via Bootstrap
+        env:
+          PYTHONIOENCODING: utf-8
         run: |
           set -eux
-          mkdir -p ../third-party
-          cd ../third-party
-          archive="llvm-${{ matrix.llvm-hash }}.zip"
-          if [ ! -d llvm-project ]; then
-            curl -L -o "$archive" "https://github.com/llvm/llvm-project/archive/${{ matrix.llvm-hash }}.zip"
-            unzip -q "$archive"
-            mv "llvm-project-${{ matrix.llvm-hash }}" llvm-project
-            rm "$archive"
+
+          python=$(command -v python3 || command -v python)
+
+          args=(
+            --yes
+            --skip-build --no-build-tests --no-run-configs
+            --build-type "${{ matrix.build-type }}"
+            --cc "${{ steps.setup-cpp.outputs.cc || matrix.cc }}"
+            --cxx "${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}"
+            # Install deps to the CI cache path so actions/cache can save/restore them
+            --cache-dir "${{ steps.paths.outputs.third-party-dir }}"
+            # Write _ROOT paths and flags for GITHUB_ENV injection
+            --env-file bootstrap-env.txt
+          )
+
+          # Pass sanitizer flag when a sanitizer is active
+          if [[ -n "${{ matrix.bootstrap-sanitizer }}" ]]; then
+            args+=(--sanitizer "${{ matrix.bootstrap-sanitizer }}")
           fi
 
-      - name: Install libc++
-        id: install_libcxx
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
-        if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true'
-        with:
-          cmake-version: '>=3.26'
-          source-dir: ../third-party/llvm-project/runtimes
-          build-dir: ${sourceDir}/build
-          build-type: ${{ matrix.build-type }}
-          extra-args: |
-            -D LLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
-            -D LLVM_OPTIMIZED_TABLEGEN=ON
-            -D LLVM_ENABLE_LIBCXX=OFF
-            -D LLVM_ENABLE_PROJECT=""
-            -D LLVM_ENABLE_RUNTIMES="${{ matrix.libcxx-runtimes }}"
-            -D LIBCXXABI_USE_LLVM_UNWINDER=OFF
-            -D CMAKE_C_FLAGS="${{ matrix.common-flags-base }}"
-            -D CMAKE_CXX_FLAGS="${{ matrix.common-flags-base }}"
+          # Pass through common compiler flags for dependency builds
+          # (e.g. -gz=zstd for clang, -fsanitize-memory-track-origins for msan)
+          common_flags="${{ matrix.common-flags }}"
+          if [[ -n "$common_flags" ]]; then
+            args+=(--cflags "$common_flags" --cxxflags "$common_flags")
+          fi
 
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          generator: Ninja
-          install: true
-          install-prefix: ${{ steps.rmatrix.outputs.llvm-path }}
-          run-tests: false
-          trace-commands: true
+          # On non-Windows, exclude libxml2 (system libxml2-dev is used instead)
+          if [[ "${{ runner.os }}" != 'Windows' ]]; then
+            args+=(--recipe-filter llvm,boost_mp11,boost_describe,jerryscript,lua)
+          fi
 
-      - name: Remove libcxx build-dir
-        if: steps.install_libcxx.outcome == 'success'
-        run: |
-          rm -r ../third-party/llvm-project/runtimes/build
+          "$python" bootstrap.py "${args[@]}"
 
-      # If libc++ was built in the steps above, we won't build it again here.
-      # This is controlled by the llvm-runtimes matrix variable.
-      - name: Install LLVM
-        id: install_llvm
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
-        with:
-          cmake-version: '>=3.26'
-          source-dir: ../third-party/llvm-project/llvm
-          patches: |
-            ./third-party/patches/llvm/llvm/CMakePresets.json
-            ./third-party/patches/llvm/llvm/CMakeUserPresets.json
-          build-dir: ${sourceDir}/build
-          preset: ${{ matrix.llvm-build-preset }}
-          build-type: ${{ matrix.build-type }}
-          extra-args: |
-            -D LLVM_ENABLE_ASSERTIONS=ON
-            -D LLVM_USE_SANITIZER="${{ matrix.llvm-sanitizer-config }}"
-            -D LLVM_OPTIMIZED_TABLEGEN=ON
-            -D LLVM_COMPILER_CHECKED=ON
-            -D LLVM_BUILD_TOOLS=OFF
-            -D CLANG_BUILD_TOOLS=OFF
-            -D LLVM_ENABLE_RUNTIMES="${{ matrix.llvm-runtimes }}"
-            -D LIBCXXABI_USE_LLVM_UNWINDER=OFF
-            -D CMAKE_C_FLAGS="${{ matrix.common-flags-base }}"
-            -D CMAKE_CXX_FLAGS="${{ matrix.common-flags-base }} ${{ steps.rmatrix.outputs.common-cxxflags-base }}"
-            -D CMAKE_SHARED_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
-            -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          generator: Ninja
-          install: true
-          install-prefix: ${{ steps.rmatrix.outputs.llvm-path }}
-          run-tests: false
-          trace-commands: true
-
-      - name: Remove LLVM build-dir
-        if: steps.install_llvm.outcome == 'success'
-        run: |
-          rm -r ../third-party/llvm-project
-
-      - name: Install Boost.Mp11
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        with:
-          source-dir: ../third-party/boost_mp11
-          git-repository: https://github.com/boostorg/mp11
-          git-tag: boost-1.90.0
-          patches: |
-            ./third-party/patches/boost_mp11/CMakeLists.txt
-            ./third-party/patches/boost_mp11/boost_mp11-config.cmake.in
-          build-dir: ${sourceDir}/build
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          build-type: Release
-          shared: false
-          install: true
-          install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
-
-      - name: Install Boost.Describe
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
-        with:
-          source-dir: ../third-party/boost_describe
-          git-repository: https://github.com/boostorg/describe
-          git-tag: boost-1.90.0
-          patches: |
-            ./third-party/patches/boost_describe/CMakeLists.txt
-            ./third-party/patches/boost_describe/boost_describe-config.cmake.in
-          build-dir: ${sourceDir}/build
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          build-type: Release
-          shared: false
-          install: true
-          install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
-
-      - name: Install JerryScript
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
-        with:
-          source-dir: ../third-party/jerryscript
-          url: https://github.com/jerryscript-project/jerryscript/archive/refs/tags/v3.0.0.tar.gz
-          patches: |
-            ./third-party/patches/jerryscript/CMakeLists.txt
-            ./third-party/patches/jerryscript/jerryscriptConfig.cmake.in
-          build-dir: ${sourceDir}/build
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: ${{ matrix.common-ccflags }}
-          cxxflags: ${{ steps.rmatrix.outputs.common-cxxflags }}
-          build-type: ${{ matrix.build-type }}
-          shared: false
-          install: true
-          install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
-          extra-args: |
-            -D JERRY_PROFILE=es.next
-            -D JERRY_EXTERNAL_CONTEXT=ON
-            -D JERRY_PORT=ON
-            -D JERRY_DEBUGGER=OFF
-            -D JERRY_SNAPSHOT_SAVE=OFF
-            -D JERRY_SNAPSHOT_EXEC=OFF
-            -D JERRY_CMDLINE=OFF
-            -D JERRY_TESTS=OFF
-            -D JERRY_MEM_STATS=OFF
-            -D JERRY_PARSER_STATS=OFF
-            -D JERRY_LINE_INFO=OFF
-            -D JERRY_LTO=OFF
-            -D JERRY_LIBC=OFF
-
-      - name: Install Lua
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
-        with:
-          source-dir: ../third-party/lua
-          url: https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz
-          patches: |
-            ./third-party/patches/lua/CMakeLists.txt
-            ./third-party/patches/lua/LuaConfig.cmake.in
-          build-dir: ${sourceDir}/build
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: ${{ matrix.common-ccflags }}
-          cxxflags: ${{ steps.rmatrix.outputs.common-cxxflags }}
-          build-type: ${{ matrix.build-type }}
-          shared: false
-          install: true
-          install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
-
-      - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
-        if: matrix.compiler == 'msvc'
-        with:
-          source-dir: ../third-party/libxml2
-          git-repository: https://github.com/GNOME/libxml2
-          git-tag: v2.12.6
-          build-dir: ${sourceDir}/build
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: ${{ matrix.common-ccflags }}
-          cxxflags: ${{ steps.rmatrix.outputs.common-cxxflags }}
-          build-type: Release
-          shared: false
-          extra-args: |
-            -D CMAKE_SHARED_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
-            -D LIBXML2_WITH_PROGRAMS=ON
-            -D LIBXML2_WITH_FTP=OFF 
-            -D LIBXML2_WITH_HTTP=OFF
-            -D LIBXML2_WITH_ICONV=OFF 
-            -D LIBXML2_WITH_LEGACY=OFF
-            -D LIBXML2_WITH_LZMA=OFF 
-            -D LIBXML2_WITH_ZLIB=OFF 
-            -D LIBXML2_WITH_ICU=OFF
-            -D LIBXML2_WITH_TESTS=OFF 
-            -D LIBXML2_WITH_HTML=ON 
-            -D LIBXML2_WITH_C14N=ON
-            -D LIBXML2_WITH_CATALOG=ON 
-            -D LIBXML2_WITH_DEBUG=ON 
-            -D LIBXML2_WITH_ISO8859X=ON 
-            -D LIBXML2_WITH_MEM_DEBUG=OFF
-            -D LIBXML2_WITH_MODULES=ON
-            -D LIBXML2_WITH_OUTPUT=ON
-            -D LIBXML2_WITH_PATTERN=ON
-            -D LIBXML2_WITH_PUSH=ON
-            -D LIBXML2_WITH_PYTHON=OFF
-            -D LIBXML2_WITH_READER=ON
-            -D LIBXML2_WITH_REGEXPS=ON
-            -D LIBXML2_WITH_SAX1=ON
-            -D LIBXML2_WITH_SCHEMAS=ON
-            -D LIBXML2_WITH_SCHEMATRON=ON
-            -D LIBXML2_WITH_THREADS=ON
-            -D LIBXML2_WITH_THREAD_ALLOC=OFF
-            -D LIBXML2_WITH_TREE=ON
-            -D LIBXML2_WITH_VALID=ON
-            -D LIBXML2_WITH_WRITER=ON
-            -D LIBXML2_WITH_XINCLUDE=ON
-            -D LIBXML2_WITH_XPATH=ON
-            -D LIBXML2_WITH_XPTR=ON
-          install: true
-          install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
+          # Source bootstrap-computed paths and flags into GITHUB_ENV
+          if [[ -f bootstrap-env.txt ]]; then
+            cat bootstrap-env.txt >> "$GITHUB_ENV"
+            echo "--- bootstrap-env.txt ---"
+            cat bootstrap-env.txt
+          fi
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # Bootstrap's --env-file writes _ROOT paths and computed flags
+      # (libc++, sanitizer) into GITHUB_ENV.  The cmake-workflow step
+      # references them via ${{ env.* }} so bootstrap is the single
+      # source of truth for dependency locations and link flags.
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.2
         env:
@@ -593,7 +355,7 @@ jobs:
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.mrdocs-ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ steps.rmatrix.outputs.mrdocs-cxxflags }}
+          cxxflags: ${{ matrix.mrdocs-ccflags }} ${{ env.BOOTSTRAP_CXXFLAGS }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
           build-type: ${{ matrix.build-type }}
@@ -601,15 +363,15 @@ jobs:
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
             -D MRDOCS_EXPENSIVE_TESTS=${{ matrix.is-bottleneck && 'OFF' || 'ON' }}
-            -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
-            -D LLVM_ROOT="${{ steps.rmatrix.outputs.llvm-path }}"
-            -D jerryscript_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/jerryscript/install"
-            -D LUA_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
-            -D Lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
-            -D lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
-            -D boost_mp11_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/boost_mp11/install"
-            -D boost_describe_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/boost_describe/install"
-            ${{ runner.os == 'Windows' && '-D LibXml2_ROOT=../third-party/libxml2/install' || '' }}
+            -D CMAKE_EXE_LINKER_FLAGS="${{ env.BOOTSTRAP_LDFLAGS }}"
+            -D LLVM_ROOT="${{ env.LLVM_ROOT }}"
+            -D jerryscript_ROOT="${{ env.jerryscript_ROOT }}"
+            -D LUA_ROOT="${{ env.Lua_ROOT }}"
+            -D Lua_ROOT="${{ env.Lua_ROOT }}"
+            -D lua_ROOT="${{ env.Lua_ROOT }}"
+            -D boost_mp11_ROOT="${{ env.boost_mp11_ROOT }}"
+            -D boost_describe_ROOT="${{ env.boost_describe_ROOT }}"
+            ${{ env.LibXml2_ROOT && format('-D LibXml2_ROOT="{0}"', env.LibXml2_ROOT) || '' }}
           export-compile-commands: true
           run-tests: true
           install: true
@@ -618,80 +380,6 @@ jobs:
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
           ctest-timeout: 9000
-
-      - name: Check YAML schema
-        run: |
-          # Find python
-          python=$(command -v python3 || command -v python)
-          # The schema in this branch is up to date 
-          "$python" ./util/generate-yaml-schema.py --check
-          # The schema in the docs folder is valid
-          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
-
-      - name: Verify snippet .cpp files match golden tests (bash)
-        shell: bash
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          
-          SRC="docs/website/snippets"
-          DST="test-files/golden-tests/snippets"
-          
-          [[ -d "$SRC" ]] || { echo "Source directory not found: $SRC"; exit 2; }
-          [[ -d "$DST" ]] || { echo "Destination directory not found: $DST"; exit 2; }
-          
-          missing=()
-          mismatched=()
-          
-          # Walk all .cpp files under SRC
-          while IFS= read -r -d '' src; do
-            rel="${src#$SRC/}"
-            dst="$DST/$rel"
-          
-            if [[ ! -f "$dst" ]]; then
-              missing+=("$rel")
-              continue
-            fi
-          
-            if [[ "${STRICT_EOL:-0}" == "1" ]]; then
-              # strict byte-for-byte comparison
-              if ! cmp -s -- "$src" "$dst"; then
-                mismatched+=("$rel")
-              fi
-            else
-              # ignore CRLF/LF differences using git diff (available on all runners)
-              if ! git diff --no-index --ignore-cr-at-eol --quiet -- "$src" "$dst"; then
-                mismatched+=("$rel")
-              fi
-            fi
-          done < <(find "$SRC" -type f -name '*.cpp' -print0)
-          
-          if (( ${#missing[@]} || ${#mismatched[@]} )); then
-            if (( ${#missing[@]} )); then
-              echo "Missing corresponding golden files:"
-              printf '  %s\n' "${missing[@]}"
-            fi
-            if (( ${#mismatched[@]} )); then
-              echo "Content mismatches:"
-              printf '  %s\n' "${mismatched[@]}"
-            fi
-            exit 1
-          fi
-          
-          echo "All snippet .cpp files are present and match."
-        env:
-          # Set to "1" to enforce byte-for-byte equality (do not ignore CRLF/LF)
-          STRICT_EOL: "0"
-
-
-      - name: Check landing page snippets
-        run: |
-          # Find python
-          python=$(command -v python3 || command -v python)
-          # The schema in this branch is up to date 
-          "$python" ./util/generate-yaml-schema.py --check
-          # The schema in the docs folder is valid
-          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
 
       - name: Upload GitHub Release Artifacts
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
@@ -719,7 +407,41 @@ jobs:
           cd build
           build_id=$(eu-readelf -n bin/mrdocs-test | awk '/Build ID:/{print $NF}')
           llvm-profdata-${{ matrix.major }} merge -sparse mrdocs-${build_id}-*.profraw -o default.profdata
-          llvm-cov-${{ matrix.major }} export -format=lcov -instr-profile=default.profdata bin/mrdocs-test > "mrdocs-test.info"
+          llvm-cov-${{ matrix.major }} export -format=lcov -instr-profile=default.profdata bin/mrdocs-test > "mrdocs-test.raw.info"
+
+          # Strip lines annotated with LCOV_EXCL_LINE / LCOV_EXCL_START..STOP
+          # from the LCOV data, since llvm-cov doesn't process these markers.
+          python3 -c "
+          import re, sys
+          excl_lines = {}
+          for path in set(re.findall(r'^SF:(.+)$', open('mrdocs-test.raw.info', errors='replace').read(), re.M)):
+              try:
+                  src = open(path, errors='replace').readlines()
+              except OSError:
+                  continue
+              skip = False
+              for i, line in enumerate(src, 1):
+                  if 'LCOV_EXCL_STOP' in line:
+                      skip = False
+                  if skip or 'LCOV_EXCL_LINE' in line:
+                      excl_lines.setdefault(path, set()).add(i)
+                  if 'LCOV_EXCL_START' in line:
+                      skip = True
+          cur_sf = None
+          for line in open('mrdocs-test.raw.info', errors='replace'):
+              if line.startswith('SF:'):
+                  cur_sf = line[3:].strip()
+              if line.startswith('DA:'):
+                  lineno = int(line.split(',')[0][3:])
+                  if cur_sf in excl_lines and lineno in excl_lines[cur_sf]:
+                      continue
+              if line.startswith('BRDA:'):
+                  lineno = int(line.split(',')[0][5:])
+                  if cur_sf in excl_lines and lineno in excl_lines[cur_sf]:
+                      continue
+              sys.stdout.write(line)
+          " > "mrdocs-test.info"
+
           echo "file=$(realpath "mrdocs-test.info")" >> $GITHUB_OUTPUT
 
       - name: Upload Coverage as Artifact
@@ -736,9 +458,95 @@ jobs:
         with:
           fail_ci_if_error: true
           files: ${{ steps.codecov.outputs.file }}
+          flags: cpp
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
+
+
+  # Utility checks that only need to run once, not per compiler.
+  # Tests bootstrap Python code, Danger.js rules, and YAML schema.
+  utility-tests:
+    runs-on: ubuntu-24.04
+    name: Utility Tests
+
+    steps:
+      - name: Clone MrDocs
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Bootstrap Python Tests
+        run: |
+          set -eux
+          pip install --quiet coverage
+          python3 -m coverage run -m unittest discover -s util/bootstrap/tests/
+          python3 -m coverage report
+          python3 -m coverage report --fail-under=84
+          python3 -m coverage xml -o bootstrap-coverage.xml
+
+      - name: Upload Bootstrap Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: bootstrap-coverage.xml
+          flags: bootstrap
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
+
+      - name: Danger.js Tests
+        working-directory: util/danger
+        run: |
+          npm ci --ignore-scripts
+          npx vitest run
+
+      - name: Check YAML schema
+        run: |
+          python3 ./util/generate-yaml-schema.py --check
+          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
+
+      - name: Verify snippet .cpp files match golden tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          SRC="docs/website/snippets"
+          DST="test-files/golden-tests/snippets"
+
+          [[ -d "$SRC" ]] || { echo "Source directory not found: $SRC"; exit 2; }
+          [[ -d "$DST" ]] || { echo "Destination directory not found: $DST"; exit 2; }
+
+          missing=()
+          mismatched=()
+
+          while IFS= read -r -d '' src; do
+            rel="${src#$SRC/}"
+            dst="$DST/$rel"
+            if [[ ! -f "$dst" ]]; then
+              missing+=("$rel")
+              continue
+            fi
+            if ! git diff --no-index --ignore-cr-at-eol --quiet -- "$src" "$dst"; then
+              mismatched+=("$rel")
+            fi
+          done < <(find "$SRC" -type f -name '*.cpp' -print0)
+
+          if (( ${#missing[@]} || ${#mismatched[@]} )); then
+            if (( ${#missing[@]} )); then
+              echo "Missing corresponding golden files:"
+              printf '  %s\n' "${missing[@]}"
+            fi
+            if (( ${#mismatched[@]} )); then
+              echo "Content mismatches:"
+              printf '  %s\n' "${mismatched[@]}"
+            fi
+            exit 1
+          fi
+          echo "All snippet .cpp files are present and match."
 
 
   releases:
@@ -760,10 +568,8 @@ jobs:
       contents: write
 
     steps:
-      # This calculates a bunch of variables, which would normally go in to the regular matrix extra-values
-      # section, but which depend on paths not known at that point.
-      - name: Resolved Matrix
-        id: rmatrix
+      - name: Resolve absolute paths and cache key
+        id: paths
         run: |
           set -euvx
 
@@ -772,13 +578,7 @@ jobs:
               third_party_dir="$(echo "$third_party_dir" | sed 's/\\/\//g; s|^/d/|D:/|')"
           fi
           echo "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
-
-          llvm_path="$third_party_dir/llvm"
-          echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
-
-          llvm_cache_key="${{ matrix.llvm-archive-basename }}"
-          llvm_cache_key="${llvm_cache_key//:/-}"
-          echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
+          echo "llvm-path=$third_party_dir/llvm" >> $GITHUB_OUTPUT
 
       - name: Ensure Node
         if: matrix.container != '' && env.ACT == 'true'
@@ -826,8 +626,8 @@ jobs:
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.rmatrix.outputs.llvm-path }}
-          key: ${{ steps.rmatrix.outputs.llvm-cache-key }}
+          path: ${{ steps.paths.outputs.llvm-path }}
+          key: ${{ matrix.llvm-archive-basename }}
           fail-on-cache-miss: true
 
       - name: Download MrDocs package
@@ -846,7 +646,7 @@ jobs:
           # Print tree structure
           find packages -print | sed 's;[^/]*/;|____;g;s;____|; |;g'
 
-          dest_dir="${{ steps.rmatrix.outputs.llvm-path }}"
+          dest_dir="${{ steps.paths.outputs.llvm-path }}"
 
           if [[ ${{ runner.os }} != 'Windows' ]]; then
               find packages -maxdepth 1 -name 'MrDocs-*.tar.gz' -exec tar -vxzf {} -C $dest_dir --strip-components=1 \;              
@@ -1325,10 +1125,8 @@ jobs:
             ln -s /usr/bin/nodejs /usr/bin/node
           fi
 
-      # This calculates a couple of variables, which would normally go in to the regular matrix extra-values
-      # section, but which depend on paths not known at that point.
-      - name: Resolved Matrix
-        id: rmatrix
+      - name: Resolve absolute paths and cache key
+        id: paths
         run: |
           set -euvx
 
@@ -1337,13 +1135,7 @@ jobs:
               third_party_dir=$(echo "$third_party_dir" | sed 's/\\/\//g; s|^/d/|D:/|')
           fi
           echo "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
-
-          llvm_path=$third_party_dir/llvm
-          echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
-
-          llvm_cache_key="${{ matrix.llvm-archive-basename }}"
-          llvm_cache_key="${llvm_cache_key//:/-}"
-          echo "llvm-cache-key=$llvm_cache_key" >> $GITHUB_OUTPUT
+          echo "llvm-path=$third_party_dir/llvm" >> $GITHUB_OUTPUT
 
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.9.2
@@ -1355,5 +1147,5 @@ jobs:
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.rmatrix.outputs.llvm-path }}
-          key: ${{ steps.rmatrix.outputs.llvm-cache-key }}
+          path: ${{ steps.paths.outputs.llvm-path }}
+          key: ${{ matrix.llvm-archive-basename }}

@@ -17,6 +17,7 @@ repair for Windows systems where core.symlinks=false.
 """
 
 import os
+import shlex
 import shutil
 import subprocess
 from typing import List, Tuple, Optional
@@ -130,7 +131,7 @@ def make_symlink_or_fallback(
         ui = get_default_ui()
 
     if dry_run:
-        ui.info(f"dry-run: would ensure symlink {file_path} -> {intended_target}")
+        print(f"ln -sf {intended_target} {file_path}")
         return "dry-run"
 
     parent = os.path.dirname(file_path)
@@ -198,6 +199,14 @@ def check_git_symlinks(
         ui = get_default_ui()
 
     repo_dir = os.path.abspath(repo_dir)
+
+    if dry_run:
+        # In dry-run mode, print the equivalent shell commands instead of
+        # running git operations that require the repo to be present.
+        print(f"# Repair git symlinks (Windows core.symlinks=false workaround)")
+        print(f"# Skipped in dry-run: checks {shlex.quote(repo_dir)} for broken symlinks")
+        return
+
     if not is_git_repo(repo_dir, git_path):
         return
 
