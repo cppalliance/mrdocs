@@ -236,14 +236,22 @@ jerry_port_context_alloc(jerry_size_t context_size)
 }
 
 // Frees context memory. Called internally by jerry_cleanup().
+// JerryScript declares this as jerry_port_context_free(void) — no parameters.
+// The implementation must retrieve the context pointer itself (via TLS).
 extern "C" void
-jerry_port_context_free(void* context_p, [[maybe_unused]] jerry_size_t context_size)
+jerry_port_context_free(void)
 {
+    void* ctx = get_tls_jerry_context();
+    if (!ctx) // LCOV_EXCL_LINE
+        return; // LCOV_EXCL_LINE
+    // MSVC's jerry_port_context_alloc uses _aligned_malloc,
+    // which requires _aligned_free (std::free is undefined behavior).
 #if defined(_MSC_VER)
-    _aligned_free(context_p);
+    _aligned_free(ctx);
 #else
-    std::free(context_p);
+    std::free(ctx);
 #endif
+    set_tls_jerry_context(nullptr);
 }
 
 // Returns the currently active context for this thread.
@@ -553,13 +561,9 @@ struct Context::Impl {
         // collected here but will be handled by the manual cleanup loop below.
         jerry_heap_gc(JERRY_GC_PRESSURE_HIGH);
 
-        // jerry_cleanup() cleans up JS objects but with JERRY_EXTERNAL_CONTEXT=ON,
-        // it does NOT free the context memory - the host must do that.
+        // jerry_cleanup() tears down JS objects and, with JERRY_EXTERNAL_CONTEXT=ON,
+        // calls jerry_port_context_free() to release the context memory.
         jerry_cleanup();
-
-        // With external context, we must free the context memory ourselves.
-        // jerry_port_context_free is our implementation that calls std::free().
-        jerry_port_context_free(jerry_ctx, 0);
 
         // Delete any remaining native holders that weren't garbage collected.
         // This handles objects still referenced from globals at cleanup time.
