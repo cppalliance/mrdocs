@@ -55,6 +55,21 @@ describe("summarizeScopes", () => {
         expect(report.totals.ci.files).toBe(2);
         expect(report.overall.files).toBe(8);
     });
+
+    it("separates toolchain source from toolchain tests", () => {
+        const report = summarizeScopes([
+            { filename: "util/bootstrap/src/installer.py", additions: 50, deletions: 10 },
+            { filename: "util/bootstrap/tests/test_installer.py", additions: 200, deletions: 0 },
+            { filename: "util/bootstrap/main.py", additions: 5, deletions: 2 },
+            { filename: "CMakeLists.txt", additions: 3, deletions: 1 },
+        ]);
+
+        expect(report.totals.toolchain.files).toBe(2);
+        expect(report.totals["toolchain-tests"].files).toBe(1);
+        expect(report.totals.build.files).toBe(1);
+        expect(report.totals.toolchain.additions).toBe(55);
+        expect(report.totals["toolchain-tests"].additions).toBe(200);
+    });
 });
 
 describe("commitSizeInfos", () => {

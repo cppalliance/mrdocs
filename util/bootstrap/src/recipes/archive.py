@@ -17,6 +17,7 @@ the top-level directory.
 """
 
 import os
+import shlex
 import shutil
 import tarfile
 import zipfile
@@ -48,7 +49,12 @@ def extract_zip_flatten(
         ui = get_default_ui()
 
     if dry_run:
-        ui.info(f"dry-run: would extract {zip_path} into {dest_dir}")
+        # GitHub archives contain a single top-level directory that must be
+        # flattened (stripped) during extraction — mirror what the Python code does.
+        print(f"_ztmp=$(mktemp -d)")
+        print(f"unzip -o {shlex.quote(zip_path)} -d \"$_ztmp\"")
+        print(f"cp -a \"$_ztmp\"/*/* {shlex.quote(dest_dir)}/")
+        print(f"rm -rf \"$_ztmp\"")
         return
 
     with zipfile.ZipFile(zip_path, 'r') as zf:
@@ -100,7 +106,7 @@ def extract_tar_flatten(
         ui = get_default_ui()
 
     if dry_run:
-        ui.info(f"dry-run: would extract {tar_path} into {dest_dir}")
+        print(f"tar xf {shlex.quote(tar_path)} -C {shlex.quote(dest_dir)} --strip-components=1")
         return
 
     mode = "r:*"

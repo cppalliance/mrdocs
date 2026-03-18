@@ -56,6 +56,7 @@ class TextUI:
         self.max_path = 50
         self.base_path: Optional[str] = None
         self.base_token: str = "."
+        self.dry_run: bool = False
 
     @staticmethod
     def _supports_color() -> bool:
@@ -82,43 +83,63 @@ class TextUI:
         reset = self.COLOR["reset"]
         return f"{color}{prefix}{text}{reset}"
 
+    @property
+    def _out(self):
+        """Output stream for informational messages.
+
+        In dry-run mode, informational messages go to stderr so that
+        stdout contains only copy-pasteable shell commands.
+        """
+        return sys.stderr if self.dry_run else sys.stdout
+
     def info(self, msg: str, icon: Optional[str] = None):
-        print(self._fmt(msg, "info", icon))
+        print(self._fmt(msg, "info", icon), file=self._out)
 
     def warn(self, msg: str, icon: Optional[str] = None):
-        print(self._fmt(msg, "warn", icon))
+        print(self._fmt(msg, "warn", icon), file=self._out)
 
     def error(self, msg: str, icon: Optional[str] = None):
-        print(self._fmt(msg, "error", icon))
+        print(self._fmt(msg, "error", icon), file=sys.stderr)
 
     def error_block(self, header: str, tips: Optional[List[str]] = None):
-        print(self._fmt(f"!! {header}", "error"))
+        print(self._fmt(f"!! {header}", "error"), file=sys.stderr)
         if tips:
             for tip in tips:
-                print(self._fmt(f"   \u2022 {tip}", "warn"))
+                print(self._fmt(f"   \u2022 {tip}", "warn"), file=sys.stderr)
 
     def ok(self, msg: str, icon: Optional[str] = None):
-        print(self._fmt(msg, "ok", icon))
+        print(self._fmt(msg, "ok", icon), file=self._out)
+
+    @property
+    def plain(self) -> bool:
+        """True when both color and emoji are disabled (CI / --plain mode)."""
+        return not self.color_enabled and not self.emoji_enabled
 
     def section(self, title: str, icon: Optional[str] = None):
         prefix = (icon + " ") if (self.emoji_enabled and icon) else ""
-        line = "\u2501" * 60
-        print()
-        print(self._fmt(line, "section", ""))
-        print(self._fmt(f"{prefix}{title}", "section", ""))
-        print(self._fmt(line, "section", ""))
+        line = ("=" if self.plain else "\u2501") * 60
+        out = self._out
+        print(file=out)
+        print(self._fmt(line, "section", ""), file=out)
+        print(self._fmt(f"{prefix}{title}", "section", ""), file=out)
+        print(self._fmt(line, "section", ""), file=out)
 
     def command(self, cmd: str, icon: Optional[str] = None):
-        print(self._fmt(cmd, "command", icon))
+        print(self._fmt(cmd, "command", icon), file=self._out)
 
     def subsection(self, title: str, icon: Optional[str] = None):
         prefix = (icon + " ") if (self.emoji_enabled and icon) else ""
-        banner = f"  {prefix}{title}"
-        print()  # blank line for breathing room
-        print(self._fmt(banner, "subsection", ""))
-        # underline matches text length (indent + title) plus a small cushion
-        underline_len = max(15, len(banner.strip()) + 4)
-        print(self._fmt("-" * underline_len, "subsection", ""))
+        if self.plain:
+            banner = f"--- {prefix}{title}"
+        else:
+            banner = f"  {prefix}{title}"
+        out = self._out
+        print(file=out)  # blank line for breathing room
+        print(self._fmt(banner, "subsection", ""), file=out)
+        if not self.plain:
+            # underline matches text length (indent + title) plus a small cushion
+            underline_len = max(15, len(banner.strip()) + 4)
+            print(self._fmt("-" * underline_len, "subsection", ""), file=out)
 
     def shorten_path(self, path: str) -> str:
         if not path:
@@ -189,7 +210,7 @@ class TextUI:
     def kv(self, key: str, value: str, key_width: int = 18):
         key_fmt = key.rjust(key_width)
         display_value = self.maybe_shorten(value) if isinstance(value, str) else value
-        print(self._fmt(f"{key_fmt}: ", "dim") + self._fmt(display_value, "info"))
+        print(self._fmt(f"{key_fmt}: ", "dim") + self._fmt(display_value, "info"), file=self._out)
 
     def kv_block(self, title: Optional[str], items: List[tuple], icon: Optional[str] = None, indent: int = 2):
         """
@@ -201,25 +222,30 @@ class TextUI:
             return
         key_width = max(len(k) for k, _ in items) + 2
         pad = " " * indent
+        out = self._out
         for k, v in items:
             key_fmt = k.rjust(key_width)
             display_value = self.maybe_shorten(v) if isinstance(v, str) else v
             line = f"{pad}{key_fmt}: "
             if self.color_enabled:
                 line = f"{self.COLOR['dim']}{line}{self.COLOR['reset']}"
-            print(line + self._fmt(str(display_value), "info"))
+            print(line + self._fmt(str(display_value), "info"), file=out)
 
     def checklist(self, title: str, items):
         if title:
             self.section(title)
+        out = self._out
         for label, done in items:
-            mark = "\u2713" if done else "\u2717"
+            if self.plain:
+                mark = "[x]" if done else "[ ]"
+            else:
+                mark = "\u2713" if done else "\u2717"
             style = "ok" if done else "warn"
-            print(self._fmt(f"  {mark} {label}", style))
+            print(self._fmt(f"  {mark} {label}", style), file=out)
 
     def step(self, current: int, total: int, title: str):
         prefix = f"[{current}/{total}] "
-        print(self._fmt(f"{prefix}{title}", "subsection"))
+        print(self._fmt(f"{prefix}{title}", "subsection"), file=self._out)
 
 
 # Default UI instance; may be replaced once options are parsed

@@ -20,7 +20,7 @@ import shlex
 import xml.etree.ElementTree as ET
 from typing import Optional, List, Dict, Any
 
-from ..core.filesystem import ensure_dir
+from ..core.filesystem import ensure_dir, write_text
 from ..core.ui import TextUI, get_default_ui
 
 
@@ -222,6 +222,7 @@ def generate_clion_run_configs(
 
         tree = ET.ElementTree(root)
         if dry_run:
-            ui.info(f"dry-run: would write CLion run configuration {run_config_path}")
+            xml_content = ET.tostring(root, encoding="unicode")
+            write_text(run_config_path, xml_content + "\n", dry_run=True, ui=ui)
         else:
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)

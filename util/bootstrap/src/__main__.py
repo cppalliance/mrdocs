@@ -20,7 +20,7 @@ Usage:
 import argparse
 import sys
 
-from . import __version__, TRANSITION_BANNER
+from . import __version__
 from .core import (
     TextUI,
     InstallOptions,
@@ -43,8 +43,6 @@ Examples:
     python bootstrap.py --yes               # Non-interactive with defaults
     python bootstrap.py --build-type Debug  # Debug build
     python bootstrap.py --clean             # Clean and rebuild dependencies
-
-{TRANSITION_BANNER}
 """,
     )
 
@@ -97,6 +95,21 @@ Examples:
         "--cxx",
         default=None,
         help="C++ compiler path",
+    )
+    compiler_group.add_argument(
+        "--cflags",
+        default=None,
+        help="Extra C compiler flags (e.g. -gz=zstd)",
+    )
+    compiler_group.add_argument(
+        "--cxxflags",
+        default=None,
+        help="Extra C++ compiler flags (e.g. -gz=zstd)",
+    )
+    compiler_group.add_argument(
+        "--ldflags",
+        default=None,
+        help="Extra linker flags",
     )
 
     # Tool paths
@@ -174,6 +187,11 @@ Examples:
         dest="plain_ui",
         help="Plain output (no colors or emojis)",
     )
+    behavior_group.add_argument(
+        "--install-system-deps",
+        action="store_true",
+        help="Attempt to install missing system prerequisites via package manager",
+    )
 
     # Dependency options
     dep_group = parser.add_argument_group("Dependency Options")
@@ -201,6 +219,27 @@ Examples:
         "--list-recipes",
         action="store_true",
         help="List available recipes and exit",
+    )
+    dep_group.add_argument(
+        "--cache-dir",
+        default=None,
+        help="Override install prefix for all dependencies. Each recipe installs to <cache-dir>/<recipe-name> instead of the default build/third-party/install/<preset>/<recipe-name>. Useful for CI caching.",
+    )
+    dep_group.add_argument(
+        "--cache-key",
+        default=None,
+        metavar="RECIPE",
+        help="Print cache key for a recipe and exit (e.g. --cache-key llvm)",
+    )
+    dep_group.add_argument(
+        "--os-key",
+        default=None,
+        help="OS/container identifier for cache keys (e.g. ubuntu:24.04, macos-15)",
+    )
+    dep_group.add_argument(
+        "--env-file",
+        default=None,
+        help="Write computed _ROOT paths and flags to a file (key=value format, CI-friendly)",
     )
     dep_group.add_argument(
         "--refresh-all",
@@ -249,8 +288,11 @@ def main() -> int:
 
         installer = MrDocsInstaller(cmd_args)
 
-        # Show transition warning
-        installer.ui.warn(TRANSITION_BANNER)
+        # Early-exit commands that must produce clean stdout
+        if cmd_args.get("cache_key"):
+            key = installer.get_cache_key(cmd_args["cache_key"])
+            print(key)
+            return 0
 
         if cmd_args.get("list_recipes"):
             installer.list_recipes()

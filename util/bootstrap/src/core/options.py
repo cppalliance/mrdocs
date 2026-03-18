@@ -36,6 +36,11 @@ class InstallOptions:
     cxx: str = ''
     sanitizer: str = ''
 
+    # Extra compiler/linker flags
+    cflags: str = ''
+    cxxflags: str = ''
+    ldflags: str = ''
+
     # Required tools
     git_path: str = ''
     cmake_path: str = ''
@@ -51,7 +56,7 @@ class InstallOptions:
     source_dir: str = field(default_factory=get_source_dir)
     build_type: str = "Release"
     preset: str = "<build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
-    build_dir: str = "<source-dir>/build/<build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower><\"-\":if(sanitizer)><sanitizer:lower>"
+    build_dir: str = "<source-dir>/build/<build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
     build_tests: bool = True
     system_install: bool = False
     install_dir: str = "<source-dir>/install/<build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
@@ -71,9 +76,11 @@ class InstallOptions:
     # Information to create pretty printer configs
     generate_pretty_printer_configs: bool = True
 
+    # System prerequisites
+    install_system_deps: bool = False
+
     # Command line arguments
     non_interactive: bool = False
-    refresh_all: bool = False
     force_rebuild: bool = False
     remove_build_dir: bool = True
     plain_ui: bool = False
@@ -86,6 +93,10 @@ class InstallOptions:
     clean: bool = False
     force: bool = False
     refresh_all: bool = False
+    cache_key: str = ""
+    os_key: str = ""
+    cache_dir: str = ""
+    env_file: str = ""
 
 
 # Valid build types (user-facing; OptimizedDebug is internal-only for MSVC + DebugFast)

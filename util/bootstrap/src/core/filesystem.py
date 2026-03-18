@@ -17,6 +17,7 @@ dry-run support.
 """
 
 import os
+import shlex
 import shutil
 from typing import Optional
 
@@ -36,7 +37,7 @@ def ensure_dir(path: str, exist_ok: bool = True, dry_run: bool = False, ui: Opti
     if ui is None:
         ui = get_default_ui()
     if dry_run:
-        ui.info(f"dry-run: would create directory {path}")
+        print(f"mkdir -p {shlex.quote(path)}")
         return
     os.makedirs(path, exist_ok=exist_ok)
 
@@ -52,10 +53,12 @@ def remove_dir(path: str, dry_run: bool = False, ui: Optional[TextUI] = None):
     """
     if ui is None:
         ui = get_default_ui()
-    if not os.path.exists(path):
-        return
     if dry_run:
-        ui.info(f"dry-run: would remove directory {path}")
+        # Always print in dry-run: the path may not exist locally but
+        # earlier dry-run commands would have created it.
+        print(f"rm -rf {shlex.quote(path)}")
+        return
+    if not os.path.exists(path):
         return
     shutil.rmtree(path, ignore_errors=True)
 
@@ -74,7 +77,12 @@ def write_text(path: str, content: str, encoding: str = "utf-8", dry_run: bool =
     if ui is None:
         ui = get_default_ui()
     if dry_run:
-        ui.info(f"dry-run: would write file {path}")
+        parent = os.path.dirname(path)
+        if parent:
+            print(f"mkdir -p {shlex.quote(parent)}")
+        print(f"cat <<'BOOTSTRAP_EOF' > {shlex.quote(path)}")
+        print(content, end="" if content.endswith("\n") else "\n")
+        print("BOOTSTRAP_EOF")
         return
     parent = os.path.dirname(path)
     if parent:

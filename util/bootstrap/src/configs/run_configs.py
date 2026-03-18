@@ -25,6 +25,28 @@ from ..core.filesystem import load_json_file
 from ..core.ui import TextUI, get_default_ui
 from ..core.options import InstallOptions
 
+# Variable expansion pattern for $var and ${var} syntax
+_VAR_PATTERN = re.compile(r"\$(\w+)|\${([^}]+)}")
+
+
+def expand_with(s: str, mapping: Dict[str, Any]) -> str:
+    """Replace $var and ${var} placeholders in a string using mapping."""
+    def repl(m):
+        key = m.group(1) or m.group(2)
+        return str(mapping.get(key, m.group(0)))
+    return _VAR_PATTERN.sub(repl, s)
+
+
+def format_values(obj, tokens: Dict[str, Any]):
+    """Recursively expand $var placeholders in strings, lists, and dicts."""
+    if isinstance(obj, str):
+        return expand_with(obj, tokens)
+    if isinstance(obj, list):
+        return [format_values(x, tokens) for x in obj]
+    if isinstance(obj, dict):
+        return {k: format_values(v, tokens) for k, v in obj.items()}
+    return obj
+
 
 def get_dynamic_run_configs(
     options: InstallOptions,
@@ -257,28 +279,6 @@ def generate_run_configs(
 
     if compiler_info is None:
         compiler_info = {}
-
-    if dry_run:
-        ui.info("dry-run: skipping IDE run configuration generation")
-        return
-
-    # Variable expansion pattern
-    var_pattern = re.compile(r"\$(\w+)|\${([^}]+)}")
-
-    def expand_with(s: str, mapping: Dict[str, Any]) -> str:
-        def repl(m):
-            key = m.group(1) or m.group(2)
-            return str(mapping.get(key, m.group(0)))
-        return var_pattern.sub(repl, s)
-
-    def format_values(obj, tokens):
-        if isinstance(obj, str):
-            return expand_with(obj, tokens)
-        if isinstance(obj, list):
-            return [format_values(x, tokens) for x in obj]
-        if isinstance(obj, dict):
-            return {k: format_values(v, tokens) for k, v in obj.items()}
-        return obj
 
     # Load defaults from share/run_configs.json
     defaults_path = os.path.join(options.source_dir, "share", "run_configs.json")

@@ -47,7 +47,7 @@ def recipe_placeholders(
     Returns:
         Dictionary mapping placeholder names to values.
     """
-    host_suffix = "windows" if is_windows() else "unix"
+    host_suffix = "win" if is_windows() else "unix"
     return {
         "BOOTSTRAP_BUILD_TYPE": recipe.build_type,
         "BOOTSTRAP_BUILD_TYPE_LOWER": recipe.build_type.lower(),
@@ -222,11 +222,11 @@ def load_recipe_files(
         if recipe.install_scope == "global":
             recipe.source_dir = os.path.join(tp_root, "source", recipe.name)
             recipe.build_dir = os.path.join(tp_root, "build", recipe.name)
-            recipe.install_dir = install_dir  # Use the same install prefix as MrDocs
+            recipe.install_dir = os.path.join(tp_root, "install", recipe.name)
         else:
             recipe.source_dir = os.path.join(tp_root, "source", recipe.name)
             recipe.build_dir = os.path.join(tp_root, "build", dep_preset, recipe.name)
-            recipe.install_dir = install_dir  # Use the same install prefix as MrDocs
+            recipe.install_dir = os.path.join(tp_root, "install", dep_preset, recipe.name)
 
         recipes.append(recipe)
 

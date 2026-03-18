@@ -18,6 +18,7 @@ Provides functions to download and install Ninja if not available.
 import json
 import os
 import platform
+import shlex
 import urllib.request
 import zipfile
 from typing import Optional
@@ -124,7 +125,12 @@ def install_ninja(
     api_url = 'https://api.github.com/repos/ninja-build/ninja/releases/latest'
 
     if dry_run:
-        ui.info(f"dry-run: would fetch {api_url} and download {asset_name} -> {download_dir}")
+        zip_path = os.path.join(download_dir, asset_name)
+        print(f"curl -L -o {shlex.quote(zip_path)} https://github.com/ninja-build/ninja/releases/latest/download/{asset_name}")
+        print(f"unzip -o {shlex.quote(zip_path)} -d {shlex.quote(install_dir)}")
+        print(f"rm -f {shlex.quote(zip_path)}")
+        if not is_windows():
+            print(f"chmod +x {shlex.quote(ninja_exe_path)}")
         return ninja_exe_path
 
     print(f"Fetching Ninja release info...")

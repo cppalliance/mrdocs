@@ -81,6 +81,36 @@ class TestInstallOptions(unittest.TestCase):
         opts2 = InstallOptions(build_type="Release")
         self.assertNotEqual(opts1, opts2)
 
+    def test_default_cflags_empty(self):
+        """Default cflags should be empty."""
+        opts = InstallOptions()
+        self.assertEqual(opts.cflags, '')
+
+    def test_default_cxxflags_empty(self):
+        """Default cxxflags should be empty."""
+        opts = InstallOptions()
+        self.assertEqual(opts.cxxflags, '')
+
+    def test_default_ldflags_empty(self):
+        """Default ldflags should be empty."""
+        opts = InstallOptions()
+        self.assertEqual(opts.ldflags, '')
+
+    def test_override_cflags(self):
+        """Should be able to set cflags."""
+        opts = InstallOptions(cflags="-gz=zstd")
+        self.assertEqual(opts.cflags, "-gz=zstd")
+
+    def test_override_cxxflags(self):
+        """Should be able to set cxxflags."""
+        opts = InstallOptions(cxxflags="-gz=zstd -O2")
+        self.assertEqual(opts.cxxflags, "-gz=zstd -O2")
+
+    def test_override_ldflags(self):
+        """Should be able to set ldflags."""
+        opts = InstallOptions(ldflags="-fuse-ld=lld")
+        self.assertEqual(opts.ldflags, "-fuse-ld=lld")
+
 
 class TestBuildTypes(unittest.TestCase):
     """Test BUILD_TYPES constant."""
@@ -128,6 +158,58 @@ class TestSanitizers(unittest.TestCase):
     def test_contains_empty(self):
         """SANITIZERS should contain empty string (no sanitizer)."""
         self.assertIn("", SANITIZERS)
+
+
+class TestCLIFlagParsing(unittest.TestCase):
+    """Test that --cflags, --cxxflags, --ldflags are parsed from CLI."""
+
+    @classmethod
+    def setUpClass(cls):
+        # Import here to avoid polluting other tests
+        from src.__main__ import get_command_line_args
+        cls.get_command_line_args = staticmethod(get_command_line_args)
+
+    def test_cflags_parsed(self):
+        """--cflags should be captured in parsed args."""
+        args = self.get_command_line_args(["--cflags=-gz=zstd"])
+        self.assertEqual(args["cflags"], "-gz=zstd")
+
+    def test_cxxflags_parsed(self):
+        """--cxxflags should be captured in parsed args."""
+        args = self.get_command_line_args(["--cxxflags=-gz=zstd -O2"])
+        self.assertEqual(args["cxxflags"], "-gz=zstd -O2")
+
+    def test_ldflags_parsed(self):
+        """--ldflags should be captured in parsed args."""
+        args = self.get_command_line_args(["--ldflags=-fuse-ld=lld"])
+        self.assertEqual(args["ldflags"], "-fuse-ld=lld")
+
+    def test_flags_not_present_when_omitted(self):
+        """Flag options should not appear in args dict when omitted."""
+        args = self.get_command_line_args(["--build-type", "Debug"])
+        self.assertNotIn("cflags", args)
+        self.assertNotIn("cxxflags", args)
+        self.assertNotIn("ldflags", args)
+
+    def test_all_flags_together(self):
+        """All three flag options should work together."""
+        args = self.get_command_line_args([
+            "--cflags=-Wall",
+            "--cxxflags=-std=c++20",
+            "--ldflags=-Wl,-rpath,/usr/lib",
+        ])
+        self.assertEqual(args["cflags"], "-Wall")
+        self.assertEqual(args["cxxflags"], "-std=c++20")
+        self.assertEqual(args["ldflags"], "-Wl,-rpath,/usr/lib")
+
+    def test_flags_with_sanitizer(self):
+        """Flag options should coexist with --sanitizer."""
+        args = self.get_command_line_args([
+            "--sanitizer", "address",
+            "--cxxflags=-gz=zstd",
+        ])
+        self.assertEqual(args["sanitizer"], "address")
+        self.assertEqual(args["cxxflags"], "-gz=zstd")
 
 
 if __name__ == "__main__":

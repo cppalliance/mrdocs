@@ -20,11 +20,164 @@ import shutil
 from typing import Optional, Dict, Any
 
 from ..core.platform import is_windows
-from ..core.filesystem import ensure_dir
+from ..core.filesystem import ensure_dir, remove_dir
 from ..core.process import run_cmd
 from ..core.ui import TextUI, get_default_ui
+from ..tools.compilers import sanitizer_flag_name
 from .schema import Recipe
 from .loader import recipe_placeholders, apply_placeholders, expand_path
+
+
+def needs_libcxx_runtimes(sanitizer: str, compiler_id: str) -> bool:
+    """
+    Check if libc++ runtimes need to be built with sanitizer instrumentation.
+
+    Only needed for clang (not apple-clang, gcc, msvc) with address or memory
+    sanitizers. UBSan and TSan do not require instrumented runtimes.
+
+    Args:
+        sanitizer: Sanitizer name (e.g., "address", "asan", "memory", "msan").
+        compiler_id: CMake compiler ID (e.g., "Clang", "AppleClang", "GNU").
+
+    Returns:
+        True if instrumented libc++ runtimes should be built.
+    """
+    if not sanitizer:
+        return False
+    san = sanitizer_flag_name(sanitizer.lower())
+    if san not in ("address", "memory"):
+        return False
+    if compiler_id.lower() != "clang":
+        return False
+    return True
+
+
+def build_libcxx_runtimes(
+    recipe: Recipe,
+    cc: str = "",
+    cxx: str = "",
+    sanitizer: str = "",
+    dry_run: bool = False,
+    verbose: bool = False,
+    debug: bool = False,
+    env: Optional[dict] = None,
+    ui: Optional[TextUI] = None,
+):
+    """
+    Build libc++/libc++abi runtimes with sanitizer instrumentation.
+
+    This builds instrumented runtimes before the main LLVM build so that
+    downstream builds use sanitizer-instrumented standard libraries.
+
+    The runtimes are built from <llvm-source>/runtimes and installed into
+    the LLVM install prefix. The runtimes build directory is cleaned up
+    after installation.
+
+    Args:
+        recipe: The LLVM recipe (provides source_dir, build_dir, install_dir).
+        cc: C compiler path.
+        cxx: C++ compiler path.
+        sanitizer: Sanitizer name (address or memory).
+        dry_run: If True, only print what would be done.
+        verbose: If True, show verbose output.
+        debug: If True, show debug output.
+        env: Environment variables for commands.
+        ui: TextUI instance for output.
+    """
+    if ui is None:
+        ui = get_default_ui()
+
+    cmake_exe = shutil.which("cmake")
+    if not cmake_exe:
+        raise RuntimeError("cmake executable not found in PATH.")
+
+    san = sanitizer_flag_name(sanitizer.lower())
+
+    # Map to LLVM_USE_SANITIZER values
+    llvm_san_map = {
+        "address": "Address",
+        "memory": "MemoryWithOrigins",
+    }
+    llvm_sanitizer = llvm_san_map.get(san)
+    if not llvm_sanitizer:
+        raise ValueError(f"Unsupported sanitizer '{sanitizer}' for libc++ runtimes build")
+
+    runtimes_src = os.path.join(recipe.source_dir, "runtimes")
+    runtimes_build = recipe.build_dir + "-runtimes"
+    install_prefix = recipe.install_dir
+
+    # Determine runtimes to build
+    runtimes = "libcxx;libcxxabi"
+    if is_windows():
+        runtimes = "libcxx"
+
+    ui.info(f"Building libc++ runtimes with {llvm_sanitizer} sanitizer instrumentation...")
+
+    ensure_dir(runtimes_build, dry_run=dry_run, ui=ui)
+
+    # Configure
+    cfg_cmd = [
+        cmake_exe, "-S", runtimes_src, "-B", runtimes_build,
+        f"-DLLVM_ENABLE_RUNTIMES={runtimes}",
+        f"-DLLVM_USE_SANITIZER={llvm_sanitizer}",
+        "-DLIBCXXABI_USE_LLVM_UNWINDER=OFF",
+        "-DLIBCXX_INCLUDE_TESTS=OFF",
+        "-DLIBCXXABI_INCLUDE_TESTS=OFF",
+        "-DCMAKE_BUILD_TYPE=Release",
+        f"-DCMAKE_INSTALL_PREFIX={install_prefix}",
+    ]
+    if cc:
+        cfg_cmd.append(f"-DCMAKE_C_COMPILER={cc}")
+    if cxx:
+        cfg_cmd.append(f"-DCMAKE_CXX_COMPILER={cxx}")
+
+    run_cmd(cfg_cmd, tail=True, dry_run=dry_run, verbose=verbose, debug=debug, env=env, ui=ui)
+
+    # Build
+    build_cmd = [cmake_exe, "--build", runtimes_build]
+    try:
+        parallel_level = max(1, os.cpu_count() or 1)
+        build_cmd.extend(["--parallel", str(parallel_level)])
+    except Exception:
+        pass
+
+    run_cmd(build_cmd, tail=True, dry_run=dry_run, verbose=verbose, debug=debug, env=env, ui=ui)
+
+    # Install
+    inst_cmd = [cmake_exe, "--install", runtimes_build]
+    run_cmd(inst_cmd, tail=True, dry_run=dry_run, verbose=verbose, debug=debug, env=env, ui=ui)
+
+    # Clean up runtimes build directory
+    ui.info("Cleaning up runtimes build directory...")
+    remove_dir(runtimes_build, dry_run=dry_run, ui=ui)
+
+    ui.ok("libc++ runtimes built and installed successfully.")
+
+
+def libcxx_runtime_flags(install_prefix: str) -> dict:
+    """
+    Compute downstream compiler/linker flags for using instrumented libc++ runtimes.
+
+    After building libc++ with sanitizer instrumentation, downstream builds need
+    these flags to use the instrumented standard library instead of the system one.
+
+    Args:
+        install_prefix: The LLVM install prefix where libc++ was installed.
+
+    Returns:
+        Dict with 'cxxflags' and 'ldflags' strings to merge into downstream builds.
+    """
+    include_dir = os.path.join(install_prefix, "include", "c++", "v1")
+    lib_dir = os.path.join(install_prefix, "lib")
+
+    cxxflags = f"-nostdinc++ -nostdlib++ -isystem {include_dir}"
+
+    if is_windows():
+        ldflags = f"-L{lib_dir} -lc++"
+    else:
+        ldflags = f"-L{lib_dir} -lc++abi -lc++ -Wl,-rpath,{lib_dir}"
+
+    return {"cxxflags": cxxflags, "ldflags": ldflags}
 
 
 def run_cmake_recipe_step(
@@ -38,6 +191,9 @@ def run_cmake_recipe_step(
     build_dir_opt: str = "",
     install_dir_opt: str = "",
     sanitizer: str = "",
+    cflags: str = "",
+    cxxflags: str = "",
+    ldflags: str = "",
     force: bool = False,
     dry_run: bool = False,
     verbose: bool = False,
@@ -59,6 +215,9 @@ def run_cmake_recipe_step(
         build_dir_opt: Project build directory.
         install_dir_opt: Project install directory.
         sanitizer: Sanitizer to use.
+        cflags: Extra C compiler flags.
+        cxxflags: Extra C++ compiler flags.
+        ldflags: Extra linker flags.
         force: If True, clean before building.
         dry_run: If True, only print what would be done.
         verbose: If True, show verbose output.
@@ -97,10 +256,30 @@ def run_cmake_recipe_step(
 
     # Handle sanitizer-specific options
     san_map = step.get("sanitizers", {})
+    san_c_flags = ""
+    san_cxx_flags = ""
+    san_ld_flags = ""
     if sanitizer:
         san = sanitizer.lower()
+
+        # Always set the -fsanitize= compiler/linker flags
+        flag_name = sanitizer_flag_name(san)
+        if is_windows():
+            flag = f"/fsanitize={flag_name}" if flag_name == "address" else None
+        else:
+            flag = f"-fsanitize={flag_name}" if flag_name else None
+        if flag:
+            san_c_flags = flag
+            san_cxx_flags = flag
+            san_ld_flags = flag
+
+        # Add recipe-specific CMake options from the sanitizer map
         if san_map:
-            extra = san_map.get(san)
+            reverse_alias = {
+                "address": "asan", "undefined": "ubsan",
+                "memory": "msan", "thread": "tsan",
+            }
+            extra = san_map.get(san) or san_map.get(reverse_alias.get(san, ""))
             if extra is None:
                 raise ValueError(f"Unknown sanitizer '{sanitizer}' for recipe '{recipe.name}'.")
             extra_opts = apply_placeholders(extra, placeholders)
@@ -108,29 +287,19 @@ def run_cmake_recipe_step(
                 opts.extend(extra_opts)
             else:
                 opts.append(extra_opts)
-        else:
-            # Fallback: apply typical compiler sanitizer flags
-            if is_windows():
-                msvc_flags = {
-                    "asan": "/fsanitize=address",
-                }
-                flag = msvc_flags.get(san)
-            else:
-                posix_flags = {
-                    "asan": "-fsanitize=address",
-                    "ubsan": "-fsanitize=undefined",
-                    "msan": "-fsanitize=memory",
-                    "tsan": "-fsanitize=thread",
-                }
-                flag = posix_flags.get(san)
 
-            if flag:
-                opts.extend([
-                    f"-DCMAKE_C_FLAGS_INIT={flag}",
-                    f"-DCMAKE_CXX_FLAGS_INIT={flag}",
-                    f"-DCMAKE_EXE_LINKER_FLAGS_INIT={flag}",
-                    f"-DCMAKE_SHARED_LINKER_FLAGS_INIT={flag}",
-                ])
+    # Merge sanitizer flags with user-provided flags
+    merged_c_flags = (san_c_flags + " " + cflags).strip()
+    merged_cxx_flags = (san_cxx_flags + " " + cxxflags).strip()
+    merged_ld_flags = (san_ld_flags + " " + ldflags).strip()
+
+    if merged_c_flags:
+        opts.append(f"-DCMAKE_C_FLAGS_INIT={merged_c_flags}")
+    if merged_cxx_flags:
+        opts.append(f"-DCMAKE_CXX_FLAGS_INIT={merged_cxx_flags}")
+    if merged_ld_flags:
+        opts.append(f"-DCMAKE_EXE_LINKER_FLAGS_INIT={merged_ld_flags}")
+        opts.append(f"-DCMAKE_SHARED_LINKER_FLAGS_INIT={merged_ld_flags}")
 
     ensure_dir(build_dir, dry_run=dry_run, ui=ui)
 
@@ -246,6 +415,9 @@ def build_recipe(
     build_dir_opt: str = "",
     install_dir_opt: str = "",
     sanitizer: str = "",
+    cflags: str = "",
+    cxxflags: str = "",
+    ldflags: str = "",
     force: bool = False,
     dry_run: bool = False,
     verbose: bool = False,
@@ -266,6 +438,9 @@ def build_recipe(
         build_dir_opt: Project build directory.
         install_dir_opt: Project install directory.
         sanitizer: Sanitizer to use.
+        cflags: Extra C compiler flags.
+        cxxflags: Extra C++ compiler flags.
+        ldflags: Extra linker flags.
         force: If True, clean before building.
         dry_run: If True, only print what would be done.
         verbose: If True, show verbose output.
@@ -282,7 +457,8 @@ def build_recipe(
             run_cmake_recipe_step(
                 recipe, raw_step, source_dir, third_party_src_dir,
                 preset, cc, cxx, build_dir_opt, install_dir_opt,
-                sanitizer, force, dry_run, verbose, debug, env, ui
+                sanitizer, cflags, cxxflags, ldflags,
+                force, dry_run, verbose, debug, env, ui
             )
         elif step_type == "command":
             run_command_recipe_step(

@@ -17,7 +17,9 @@ const scopeLabels: Record<string, string> = {
     "golden-tests": "Golden Tests",
     docs: "Docs",
     ci: "CI",
-    build: "Build / Toolchain",
+    build: "Build",
+    toolchain: "Toolchain",
+    "toolchain-tests": "Toolchain Tests",
     tooling: "Tooling",
     "third-party": "Third-party",
     other: "Other",
@@ -30,6 +32,8 @@ const scopeEmojis: Record<string, string> = {
     docs: "📄",
     ci: "⚙️",
     build: "🏗️",
+    toolchain: "🔧",
+    "toolchain-tests": "🔧",
     tooling: "🧰",
     "third-party": "🤝",
     other: "📦",
@@ -113,8 +117,8 @@ function countFileChanges(status: ScopeTotals["status"]): number {
  * Render a single table combining change summary and per-scope breakdown.
  */
 function renderChangeTable(summary: ScopeReport): string {
-    const headers = ["Scope", "Lines Δ", "Lines +", "Lines -", "Files Δ", "Files +", "Files ~", "Files ↔", "Files -"];
-    const alignRight = [false, true, true, true, true, true, true, true, true];
+    const headers = ["Scope", "Lines Δ%", "Lines Δ", "Lines +", "Lines -", "Files Δ", "Files +", "Files ~", "Files ↔", "Files -"];
+    const alignRight = [false, true, true, true, true, true, true, true, true, true];
 
     const sortedScopes = [...scopeDisplayOrder].sort((a, b) => {
         const ta = summary.totals[a];
@@ -133,19 +137,27 @@ function renderChangeTable(summary: ScopeReport): string {
         return churn !== 0 || fileDelta !== 0;
     };
 
+    const totalChurn = summary.overall.additions + summary.overall.deletions;
+
+    const formatPercent = (churn: number): string => {
+        if (totalChurn === 0 || churn === 0) return "-";
+        const pct = Math.round((churn / totalChurn) * 100);
+        return pct === 0 ? "<1%" : `${pct}%`;
+    };
+
     const scopeRows = sortedScopes.filter((scope) => scopeHasChange(summary.totals[scope])).map((scope) => {
         const scoped: ScopeTotals = summary.totals[scope];
         const s = scoped.status;
         const fileDelta = countFileChanges(s);
         const churn = scoped.additions + scoped.deletions;
-        const fileDeltaBold = formatCount(fileDelta); // bold delta
         const label = emojiLabelForScope(scope);
         return [
             label,
+            formatPercent(churn),
             formatCount(churn),
             formatCount(scoped.additions, false),
             formatCount(scoped.deletions, false),
-            fileDeltaBold,
+            formatCount(fileDelta),
             formatCount(s.added, false),
             formatCount(s.modified, false),
             formatCount(s.renamed, false),
@@ -155,10 +167,10 @@ function renderChangeTable(summary: ScopeReport): string {
 
     const total = summary.overall;
     const totalStatus = total.status;
-    const totalChurn = total.additions + total.deletions;
     const totalFileDelta = countFileChanges(totalStatus);
     const totalRow = [
         "**Total**",
+        "100%",
         formatCount(totalChurn),
         formatCount(total.additions, false),
         formatCount(total.deletions, false),
@@ -169,7 +181,8 @@ function renderChangeTable(summary: ScopeReport): string {
         formatCount(totalStatus.removed, false),
     ];
 
-    const rows = scopeRows.length > 0 ? scopeRows.concat([totalRow]) : [["(no changes)", "-", "-", "-", "-", "-", "-", "-", "-"]];
+    const emptyRow = ["(no changes)", "-", "-", "-", "-", "-", "-", "-", "-", "-"];
+    const rows = scopeRows.length > 0 ? scopeRows.concat([totalRow]) : [emptyRow];
 
     const table = renderAlignedTable(headers, alignRight, rows);
     const legend = "Legend: Files + (added), Files ~ (modified), Files ↔ (renamed), Files - (removed)";

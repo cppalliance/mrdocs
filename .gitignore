@@ -31,3 +31,4 @@
 # Ignore hidden OS files under golden fixtures
 /test-files/golden-tests/**/.*
 /.code
+__pycache__/

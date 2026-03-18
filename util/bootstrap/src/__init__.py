@@ -18,10 +18,5 @@ dependencies, and configuring build presets.
 
 __version__ = "1.0.0"
 
-TRANSITION_BANNER = (
-    "Heads up: bootstrap.py is mid-move to replace the process in ci.yml; presets can differ. "
-    "If it fails, try a clean build dir or run the preset yourself."
-)
-
 from .installer import MrDocsInstaller
 from .core import InstallOptions

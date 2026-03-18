@@ -148,8 +148,15 @@ def inject_clang_toolchain_flags(
     libunwind = os.path.join(tool_root, "lib", "unwind")
 
     if os.path.exists(libcxx_include) and os.path.exists(libcxx_lib):
-        cxx_flags += f" -stdlib=libc++ -I{libcxx_include}"
-        ld_flags = f"-L{libcxx_lib}"
+        san_name = sanitizer_flag_name(sanitizer) if sanitizer else ""
+        if san_name in ("address", "memory"):
+            # Sanitizer builds: use explicit flags to ensure the instrumented
+            # libc++ is used instead of the system default.
+            cxx_flags += f" -nostdinc++ -nostdlib++ -isystem {libcxx_include}"
+            ld_flags = f"-L{libcxx_lib} -lc++ -lc++abi -Wl,-rpath,{libcxx_lib}"
+        else:
+            cxx_flags += f" -stdlib=libc++ -I{libcxx_include}"
+            ld_flags = f"-L{libcxx_lib}"
         if os.path.exists(libunwind):
             ld_flags += f" -L{libunwind} -lunwind"
         if sanitizer:
@@ -208,6 +215,10 @@ def create_cmake_presets(
     sanitizer: str = "",
     package_roots: Optional[Dict[str, str]] = None,
     compiler_info: Optional[Dict[str, str]] = None,
+    valid_package_root_vars: Optional[List[str]] = None,
+    cflags: str = "",
+    cxxflags: str = "",
+    ldflags: str = "",
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ) -> Dict[str, Any]:
@@ -226,6 +237,12 @@ def create_cmake_presets(
         sanitizer: Sanitizer to use.
         package_roots: Dictionary of package root variables.
         compiler_info: Dictionary of compiler information.
+        valid_package_root_vars: List of valid package root variable names from
+            current recipes. When provided, stale _ROOT variables not in this
+            list are removed from all presets.
+        cflags: Extra C compiler flags.
+        cxxflags: Extra C++ compiler flags.
+        ldflags: Extra linker flags.
         dry_run: If True, only return the preset without writing.
         ui: TextUI instance for output.
 
@@ -303,21 +320,35 @@ def create_cmake_presets(
     # Handle sanitizer flags
     cc_flags = ''
     cxx_flags = ''
+    ld_flags = ''
     if sanitizer:
         flag_name = sanitizer_flag_name(sanitizer)
         cc_flags = f"-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer"
         cxx_flags = f"-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer"
 
+    # Append user-provided flags
+    if cflags:
+        cc_flags = (cc_flags + " " + cflags).strip()
+    if cxxflags:
+        cxx_flags = (cxx_flags + " " + cxxflags).strip()
+    if ldflags:
+        ld_flags = (ld_flags + " " + ldflags).strip()
+
     # Inject clang toolchain flags if using clang/LLVM
     extra_cache_vars, extra_cc_flags, extra_cxx_flags = inject_clang_toolchain_flags(
         cxx, compiler_info, sanitizer
     )
-    for var, val in extra_cache_vars.items():
-        new_preset["cacheVariables"][var] = val
     if extra_cc_flags:
         cc_flags = (cc_flags + " " + extra_cc_flags).strip()
     if extra_cxx_flags:
         cxx_flags = (cxx_flags + " " + extra_cxx_flags).strip()
+    # Merge user ldflags with injected toolchain linker flags
+    for ld_var in ["CMAKE_EXE_LINKER_FLAGS", "CMAKE_SHARED_LINKER_FLAGS", "CMAKE_MODULE_LINKER_FLAGS"]:
+        injected = extra_cache_vars.pop(ld_var, "")
+        if injected or ld_flags:
+            new_preset["cacheVariables"][ld_var] = (injected + " " + ld_flags).strip()
+    for var, val in extra_cache_vars.items():
+        new_preset["cacheVariables"][var] = val
 
     if cc_flags:
         new_preset["cacheVariables"]["CMAKE_C_FLAGS"] = cc_flags.strip()
@@ -364,23 +395,40 @@ def create_cmake_presets(
                 value, source_dir, source_dir_parent, home_dir
             )
 
-    # Upsert preset
+    # Replace or append preset (full replacement, not merge, so stale
+    # keys from a previous run are never carried over).
     preset_exists = False
-    for preset in user_presets.get("configurePresets", []):
+    for i, preset in enumerate(user_presets.get("configurePresets", [])):
         if preset.get("name") == preset_name:
             preset_exists = True
-            preset.update(new_preset)
+            user_presets["configurePresets"][i] = new_preset
             break
     if not preset_exists:
         user_presets.setdefault("configurePresets", []).append(new_preset)
 
+    # Clean stale package root variables from all presets.
+    # Tool-path roots (GIT_ROOT) are preserved; only dependency roots are cleaned.
+    _TOOL_ROOT_VARS = {"GIT_ROOT"}
+    if valid_package_root_vars is not None:
+        valid_roots = set(valid_package_root_vars)
+        # Only clean stale _ROOT vars from the preset we just created,
+        # not from other user-managed presets in the same file.
+        cache = new_preset.get("cacheVariables", {})
+        stale_keys = [
+            k for k in cache
+            if k.endswith("_ROOT")
+            and k not in valid_roots
+            and k not in _TOOL_ROOT_VARS
+        ]
+        for k in stale_keys:
+            del cache[k]
+
     # Write file
-    if not dry_run:
-        write_text(
-            user_presets_path,
-            json.dumps(user_presets, indent=2),
-            dry_run=False,
-            ui=ui
-        )
+    write_text(
+        user_presets_path,
+        json.dumps(user_presets, indent=2),
+        dry_run=dry_run,
+        ui=ui
+    )
 
     return new_preset

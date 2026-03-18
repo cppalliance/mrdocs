@@ -24,6 +24,28 @@ from ..core.filesystem import ensure_dir, write_text, load_json_file
 from ..core.ui import TextUI, get_default_ui
 
 
+def replace_with_placeholders(config: Dict[str, Any], source_dir: str) -> None:
+    """Replace source_dir paths with ${workspaceFolder} in a config dict (in-place)."""
+    for key, value in config.items():
+        if isinstance(value, str):
+            config[key] = value.replace(source_dir, "${workspaceFolder}")
+        elif isinstance(value, list):
+            for i in range(len(value)):
+                if isinstance(value[i], str):
+                    value[i] = value[i].replace(source_dir, "${workspaceFolder}")
+        elif isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                if isinstance(sub_value, str):
+                    value[sub_key] = sub_value.replace(source_dir, "${workspaceFolder}")
+
+
+def to_task_args(cfg: Dict[str, Any]) -> List:
+    """Extract args list from a config dict, returning a copy or empty list."""
+    if 'args' in cfg and isinstance(cfg['args'], list):
+        return cfg['args'].copy()
+    return []
+
+
 def generate_vscode_run_configs(
     configs: List[Dict[str, Any]],
     source_dir: str,
@@ -55,36 +77,18 @@ def generate_vscode_run_configs(
 
     vscode_dir = os.path.join(source_dir, ".vscode")
 
-    if dry_run:
-        ui.info(f"dry-run: would generate VSCode configs in {vscode_dir}")
-        return
-
-    ensure_dir(vscode_dir, dry_run=False, ui=ui)
+    ensure_dir(vscode_dir, dry_run=dry_run, ui=ui)
 
     launch_path = os.path.join(vscode_dir, "launch.json")
     tasks_path = os.path.join(vscode_dir, "tasks.json")
 
-    # Load existing configs if present
+    # Load existing configs if present (empty defaults for dry-run when files don't exist)
     launch_data = load_json_file(launch_path) or {"version": "0.2.0", "configurations": []}
     tasks_data = load_json_file(tasks_path) or {"version": "2.0.0", "tasks": []}
 
     # Build a dict for quick lookup by name
     vs_configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
     vs_tasks_by_name = {task.get("label"): task for task in tasks_data.get("tasks", [])}
-
-    def replace_with_placeholders(new_config):
-        """Replace source_dir paths with ${workspaceFolder}."""
-        for key, value in new_config.items():
-            if isinstance(value, str):
-                new_config[key] = value.replace(source_dir, "${workspaceFolder}")
-            elif isinstance(value, list):
-                for i in range(len(value)):
-                    if isinstance(value[i], str):
-                        value[i] = value[i].replace(source_dir, "${workspaceFolder}")
-            elif isinstance(value, dict):
-                for sub_key, sub_value in value.items():
-                    if isinstance(sub_value, str):
-                        value[sub_key] = sub_value.replace(source_dir, "${workspaceFolder}")
 
     bootstrap_refresh_config_name = preset or "debug"
 
@@ -117,26 +121,28 @@ def generate_vscode_run_configs(
 
                 # Determine MIMode based on compiler
                 compiler_id = compiler_info.get("CMAKE_CXX_COMPILER_ID", "").lower()
-                if compiler_id != "clang":
+                if compiler_id in ("clang", "appleclang"):
                     lldb_path = shutil.which("lldb")
-                    if lldb_path:
-                        new_cfg["MIMode"] = "lldb"
-                    else:
+                    if not lldb_path:
                         clang_path = compiler_info.get("CMAKE_CXX_COMPILER", "")
                         if clang_path and os.path.exists(clang_path):
-                            lldb_path = os.path.join(os.path.dirname(clang_path), "lldb")
-                            if os.path.exists(lldb_path):
-                                new_cfg["MIMode"] = "lldb"
-                elif compiler_id == "gcc":
+                            candidate = os.path.join(os.path.dirname(clang_path), "lldb")
+                            if os.path.exists(candidate):
+                                lldb_path = candidate
+                    if lldb_path:
+                        new_cfg["MIMode"] = "lldb"
+                        new_cfg["miDebuggerPath"] = lldb_path
+                else:
                     gdb_path = shutil.which("gdb")
+                    if not gdb_path:
+                        compiler_path = compiler_info.get("CMAKE_CXX_COMPILER", "")
+                        if compiler_path and os.path.exists(compiler_path):
+                            candidate = os.path.join(os.path.dirname(compiler_path), "gdb")
+                            if os.path.exists(candidate):
+                                gdb_path = candidate
                     if gdb_path:
                         new_cfg["MIMode"] = "gdb"
-                    else:
-                        gcc_path = compiler_info.get("CMAKE_CXX_COMPILER", "")
-                        if gcc_path and os.path.exists(gcc_path):
-                            gdb_path = os.path.join(os.path.dirname(gcc_path), "gdb")
-                            if os.path.exists(gdb_path):
-                                new_cfg["MIMode"] = "gdb"
+                        new_cfg["miDebuggerPath"] = gdb_path
 
             if 'script' in config:
                 new_cfg["program"] = config["script"]
@@ -161,16 +167,11 @@ def generate_vscode_run_configs(
                         "Only Python (.py) and JavaScript (.js) scripts are supported."
                     )
 
-            replace_with_placeholders(new_cfg)
+            replace_with_placeholders(new_cfg, source_dir)
             vs_configs_by_name[new_cfg["name"]] = new_cfg
 
         else:
             # This is a script configuration, we will create a task for it
-            def to_task_args(cfg):
-                if 'args' in cfg and isinstance(cfg['args'], list):
-                    return cfg['args'].copy()
-                return []
-
             new_task = {
                 "label": config["name"],
                 "type": "shell",
@@ -182,7 +183,7 @@ def generate_vscode_run_configs(
             if 'cwd' in config and config["cwd"] != source_dir:
                 new_task["options"]["cwd"] = config["cwd"]
 
-            replace_with_placeholders(new_task)
+            replace_with_placeholders(new_task, source_dir)
             vs_tasks_by_name[new_task["label"]] = new_task
 
     # Create tasks for the cmake config and build steps
@@ -201,7 +202,7 @@ def generate_vscode_run_configs(
         "args": cmake_config_args,
         "options": {"cwd": "${workspaceFolder}"}
     }
-    replace_with_placeholders(cmake_config_task)
+    replace_with_placeholders(cmake_config_task, source_dir)
     vs_tasks_by_name[cmake_config_task["label"]] = cmake_config_task
 
     # Create build tasks for unique targets
@@ -222,12 +223,12 @@ def generate_vscode_run_configs(
             "dependsOrder": "sequence",
             "group": "build"
         }
-        replace_with_placeholders(cmake_build_task)
+        replace_with_placeholders(cmake_build_task, source_dir)
         vs_tasks_by_name[cmake_build_task["label"]] = cmake_build_task
 
     # Write back all configs
     launch_data["configurations"] = list(vs_configs_by_name.values())
-    write_text(launch_path, json.dumps(launch_data, indent=4), dry_run=False, ui=ui)
+    write_text(launch_path, json.dumps(launch_data, indent=4) + "\n", dry_run=dry_run, ui=ui)
 
     tasks_data["tasks"] = list(vs_tasks_by_name.values())
-    write_text(tasks_path, json.dumps(tasks_data, indent=4), dry_run=False, ui=ui)
+    write_text(tasks_path, json.dumps(tasks_data, indent=4) + "\n", dry_run=dry_run, ui=ui)
