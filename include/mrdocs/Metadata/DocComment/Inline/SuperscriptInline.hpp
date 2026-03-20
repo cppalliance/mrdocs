@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -38,6 +39,12 @@ struct SuperscriptInline final
     */
     bool operator==(SuperscriptInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    SuperscriptInline,
+    (Inline, InlineContainer),
+    ()
+)
 
 /** Map the @ref SuperscriptInline to a @ref dom::Object.
 

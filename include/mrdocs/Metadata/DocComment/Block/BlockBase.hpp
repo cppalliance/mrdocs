@@ -21,6 +21,7 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockKind.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <algorithm>
 #include <string>
 
@@ -156,6 +157,12 @@ protected:
     {}
 };
 
+MRDOCS_DESCRIBE_STRUCT(
+    Block,
+    (),
+    (Kind)
+)
+
 /** Map the @ref Block to a @ref dom::Object.
 
     @param io The output object.
@@ -257,6 +264,12 @@ struct MRDOCS_DECL BlockContainer
     bool
     operator==(BlockContainer const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    BlockContainer,
+    (),
+    (blocks)
+)
 
 /** Convert a polymorphic block storage into a DOM value.
     @param io Destination value to fill.

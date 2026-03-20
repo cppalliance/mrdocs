@@ -17,6 +17,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Symbol/Location.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs {
@@ -53,6 +54,12 @@ struct MRDOCS_DECL
     */
     auto operator<=>(SourceInfo const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    SourceInfo,
+    (),
+    (DefLoc, Loc)
+)
 
 /** Merge the location sets, preferring existing def/primary.
 */

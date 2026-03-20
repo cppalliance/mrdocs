@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -32,6 +33,12 @@ struct ListItem final
     */
     bool operator==(ListItem const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ListItem,
+    (BlockContainer),
+    ()
+)
 
 /** Map the @ref ListItem to a @ref dom::Object.
 

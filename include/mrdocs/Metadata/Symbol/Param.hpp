@@ -18,6 +18,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 #include <string>
 
@@ -62,6 +63,12 @@ struct Param final
     auto
     operator<=>(Param const&) const  = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    Param,
+    (),
+    (Type, Name, Default)
+)
 
 /** Merge two parameters, filling missing pieces from `Other`.
 */

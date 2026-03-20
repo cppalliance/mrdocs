@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolKind.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -173,6 +174,13 @@ protected:
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    Symbol,
+    (),
+    (Name, Loc, Kind, id, Access,
+     Extraction, IsCopyFromInherited, Parent, doc)
+)
 
 //------------------------------------------------
 

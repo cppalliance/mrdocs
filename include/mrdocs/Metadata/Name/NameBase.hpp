@@ -15,6 +15,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Name/NameKind.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -146,6 +147,12 @@ protected:
         Name(NameKind const kind) noexcept
         : Kind(kind) {}
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    Name,
+    (),
+    (Kind, id, Identifier, Prefix)
+)
 
 /** Convert the name to a human-readable string.
     @return The textual form of the name.

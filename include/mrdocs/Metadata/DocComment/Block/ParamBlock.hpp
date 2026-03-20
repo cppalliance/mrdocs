@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParamDirection.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -80,6 +81,12 @@ struct ParamBlock final
     bool operator==(ParamBlock const&)
         const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ParamBlock,
+    (Block, InlineContainer),
+    (name, direction)
+)
 
 /** Map the @ref Param to a @ref dom::Object.
 

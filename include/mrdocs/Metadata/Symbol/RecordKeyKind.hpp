@@ -15,6 +15,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs {
@@ -30,6 +31,10 @@ enum class RecordKeyKind
     /// A C-style Union
     Union
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    RecordKeyKind,
+    Struct, Class, Union)
 
 /** Serialize the record key kind into a DOM value.
 */

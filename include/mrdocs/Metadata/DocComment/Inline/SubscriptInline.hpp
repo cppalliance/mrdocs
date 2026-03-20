@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -38,6 +39,12 @@ struct SubscriptInline final
     */
     bool operator==(SubscriptInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    SubscriptInline,
+    (Inline, InlineContainer),
+    ()
+)
 
 /** Map the @ref SubscriptInline to a @ref dom::Object.
 

@@ -16,6 +16,7 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -61,6 +62,12 @@ struct BriefBlock final
     */
     auto operator<=>(BriefBlock const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    BriefBlock,
+    (Block, InlineContainer),
+    (copiedFrom)
+)
 
 /** Map the @ref BriefBlock to a @ref dom::Object.
 

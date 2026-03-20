@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -115,6 +116,15 @@ struct VariableSymbol final
     std::strong_ordering
     operator<=>(VariableSymbol const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    VariableSymbol,
+    (Symbol),
+    (Type, Template, Initializer, StorageClass, IsInline,
+     IsConstexpr, IsConstinit, IsThreadLocal, Attributes, IsMaybeUnused,
+     IsDeprecated, HasNoUniqueAddress, IsRecordField, IsMutable, IsVariant,
+     IsBitfield, BitfieldWidth)
+)
 
 /** Merge variable metadata, preserving existing values when set.
 */

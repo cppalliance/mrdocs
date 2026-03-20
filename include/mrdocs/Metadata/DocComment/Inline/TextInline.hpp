@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -76,6 +77,12 @@ struct TextInline
     */
     bool operator==(TextInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    TextInline,
+    (Inline),
+    (literal)
+)
 
 /** Map the @ref TextInline to a @ref dom::Object.
 

@@ -17,6 +17,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -33,6 +34,10 @@ enum class FunctionClass
     /// The function is a destructor.
     Destructor
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    FunctionClass,
+    Normal, Constructor, Conversion, Destructor)
 
 /** Return the FunctionClass from a @ref dom::Value string.
 */

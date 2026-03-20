@@ -14,6 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -57,6 +58,12 @@ struct OverloadsSymbol final
     explicit
     OverloadsSymbol(SymbolID const& Parent, std::string_view Name, AccessKind Access, bool isStatic) noexcept;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    OverloadsSymbol,
+    (Symbol),
+    (FuncClass, OverloadedOperator, Members, ReturnType)
+)
 
 /** Merge overload sets, preserving ordering in `Members`.
 */

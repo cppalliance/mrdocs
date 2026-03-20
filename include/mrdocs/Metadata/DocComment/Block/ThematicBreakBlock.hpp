@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -65,6 +66,12 @@ struct ThematicBreakBlock final
     */
     auto operator<=>(ThematicBreakBlock const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ThematicBreakBlock,
+    (Block),
+    ()
+)
 
 /** Map the @ref ThematicBreakBlock to a @ref dom::Object.
 

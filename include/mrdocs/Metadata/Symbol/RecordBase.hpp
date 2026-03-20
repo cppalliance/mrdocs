@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -57,6 +58,12 @@ struct BaseInfo
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    BaseInfo,
+    (),
+    (Type, Access, IsVirtual)
+)
 
 /** Serialize a base description into a DOM value.
 */

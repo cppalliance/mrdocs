@@ -15,6 +15,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -32,6 +33,12 @@ struct PointerType final
     std::strong_ordering
     operator<=>(PointerType const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    PointerType,
+    (Type),
+    (PointeeType)
+)
 
 } // mrdocs
 

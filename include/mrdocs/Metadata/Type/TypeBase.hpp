@@ -16,6 +16,7 @@
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Type/TypeKind.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -134,6 +135,12 @@ protected:
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    Type,
+    (),
+    (Kind, IsPackExpansion, IsConst, IsVolatile, Constraints)
+)
 
 /** Serialize a Type into a DOM value.
 */

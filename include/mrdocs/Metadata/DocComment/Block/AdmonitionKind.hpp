@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 
@@ -36,6 +37,10 @@ enum class AdmonitionKind
     /// A warning admonishment
     warning
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    AdmonitionKind,
+    none, note, tip, important, caution, warning)
 
 /** Return the name of the Admonish as a string.
 */

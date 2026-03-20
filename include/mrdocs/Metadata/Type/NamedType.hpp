@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/Type/FundamentalTypeKind.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 #include <mrdocs/Metadata/Type/TypeKind.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <optional>
 
 namespace mrdocs {
@@ -40,6 +41,12 @@ struct NamedType final
     std::strong_ordering
     operator<=>(NamedType const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    NamedType,
+    (Type),
+    (Name, FundamentalType)
+)
 
 } // mrdocs
 

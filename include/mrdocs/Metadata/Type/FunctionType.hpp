@@ -17,6 +17,7 @@
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Type/AutoType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -46,6 +47,12 @@ struct FunctionType final
     std::strong_ordering
     operator<=>(FunctionType const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    FunctionType,
+    (Type),
+    (ReturnType, ParamTypes, RefQualifier, ExceptionSpec, IsVariadic)
+)
 
 } // mrdocs
 

@@ -16,6 +16,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type/AutoType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -37,6 +38,12 @@ struct ArrayType final
     std::strong_ordering
     operator<=>(ArrayType const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ArrayType,
+    (Type),
+    (ElementType, Bounds)
+)
 
 } // mrdocs
 

@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -43,6 +44,12 @@ struct EmphInline final
     */
     bool operator==(EmphInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    EmphInline,
+    (Inline, InlineContainer),
+    ()
+)
 
 /** Map the @ref EmphInline to a @ref dom::Object.
 

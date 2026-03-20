@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -64,6 +65,12 @@ struct TypedefSymbol final
     operator<=>(TypedefSymbol const& other) const;
 
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    TypedefSymbol,
+    (Symbol),
+    (Type, IsUsing, Template)
+)
 
 /** Merge typedef symbols, keeping existing info when present.
 */

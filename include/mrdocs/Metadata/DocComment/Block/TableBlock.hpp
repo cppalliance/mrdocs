@@ -17,6 +17,7 @@
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/TableAlignmentKind.hpp>
 #include <mrdocs/Metadata/DocComment/Block/TableRow.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 #include <vector>
 
@@ -67,6 +68,12 @@ struct TableBlock final: BlockCommonBase<BlockKind::Table>
     bool
     operator==(TableBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    TableBlock,
+    (Block),
+    (Alignments, items)
+)
 
 /** Map the @ref TableBlock to a @ref dom::Object.
 

@@ -16,6 +16,7 @@
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -65,6 +66,13 @@ struct RecordTranche
     */
     std::vector<SymbolID> Usings;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    RecordTranche,
+    (),
+    (NamespaceAliases, Typedefs, Records, Enums, Functions,
+     StaticFunctions, Variables, StaticVariables, Concepts, Guides, Usings)
+)
 
 /** Merge two tranches with the same access level.
 */

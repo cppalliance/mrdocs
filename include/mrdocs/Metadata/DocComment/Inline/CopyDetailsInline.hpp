@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/ReferenceInline.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -51,6 +52,12 @@ struct CopyDetailsInline final
     */
     bool operator==(CopyDetailsInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    CopyDetailsInline,
+    (Inline),
+    (string, id)
+)
 
 /** Map the @ref CopyDetailsInline to a @ref dom::Object.
 

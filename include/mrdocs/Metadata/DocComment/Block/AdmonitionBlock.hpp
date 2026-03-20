@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/DocComment/Block/AdmonitionKind.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -63,6 +64,12 @@ struct AdmonitionBlock final
     */
     bool operator==(AdmonitionBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    AdmonitionBlock,
+    (Block, BlockContainer),
+    (admonish)
+)
 
 /** Map the @ref AdmonitionBlock to a @ref dom::Object.
 

@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -29,6 +30,12 @@ struct DecltypeType final
     */
     auto operator<=>(DecltypeType const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    DecltypeType,
+    (Type),
+    (Operand)
+)
 
 } // mrdocs
 

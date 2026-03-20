@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -47,6 +48,12 @@ struct ParagraphBlock
     */
     auto operator<=>(ParagraphBlock const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ParagraphBlock,
+    (Block, InlineContainer),
+    ()
+)
 
 /** Map the @ref ParagraphBlock to a @ref dom::Object.
 

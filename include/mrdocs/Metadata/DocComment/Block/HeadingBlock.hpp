@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -57,6 +58,12 @@ struct HeadingBlock final
     */
     bool operator==(HeadingBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    HeadingBlock,
+    (Block, InlineContainer),
+    (level)
+)
 
 /** Map the @ref HeadingBlock to a @ref dom::Object.
 

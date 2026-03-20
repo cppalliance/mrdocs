@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Block.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -169,6 +170,14 @@ struct MRDOCS_DECL DocComment {
     void
     append(DocComment&& other);
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    DocComment,
+    (),
+    (Document, brief, returns, params, tparams,
+     exceptions, sees, preconditions, postconditions,
+     relates, related)
+)
 
 /** Append blocks from `other` into `I`, preserving order.
 */

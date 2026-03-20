@@ -16,6 +16,7 @@
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/Type/AutoKind.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -37,6 +38,12 @@ struct AutoType final
     std::strong_ordering
     operator<=>(AutoType const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    AutoType,
+    (Type),
+    (Keyword, Constraint)
+)
 
 } // mrdocs
 

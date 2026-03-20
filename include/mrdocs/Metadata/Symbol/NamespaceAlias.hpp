@@ -15,6 +15,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -39,6 +40,12 @@ struct NamespaceAliasSymbol final
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    NamespaceAliasSymbol,
+    (Symbol),
+    (AliasedSymbol)
+)
 
 /** Merge two alias symbols, preferring existing fields when present.
 */

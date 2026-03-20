@@ -14,6 +14,7 @@
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -35,6 +36,12 @@ struct EnumConstantSymbol final
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    EnumConstantSymbol,
+    (Symbol),
+    (Initializer)
+)
 
 /** Merge another EnumConstantSymbol into this one.
     @param I Destination symbol to update.

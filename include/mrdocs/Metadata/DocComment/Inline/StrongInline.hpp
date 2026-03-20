@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -41,6 +42,12 @@ struct StrongInline final
     */
     bool operator==(StrongInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    StrongInline,
+    (Inline, InlineContainer),
+    ()
+)
 
 /** Map the @ref StrongInline to a @ref dom::Object.
 

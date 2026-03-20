@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -32,6 +33,12 @@ struct TableCell final
     */
     bool operator==(TableCell const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    TableCell,
+    (InlineContainer),
+    ()
+)
 
 /** Map the @ref TableCell to a @ref dom::Object.
 

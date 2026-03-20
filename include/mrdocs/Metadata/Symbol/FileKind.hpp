@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Nullable.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs {
@@ -32,6 +33,10 @@ enum class FileKind
     /// File outside the source directory
     Other
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    FileKind,
+    Source, System, Other)
 
 /** Map a FileKind into a DOM value.
     @param v Destination value to populate.

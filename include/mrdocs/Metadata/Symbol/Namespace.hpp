@@ -15,6 +15,7 @@
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <ranges>
 #include <vector>
 
@@ -58,6 +59,13 @@ struct NamespaceTranche {
     */
     auto operator<=>(NamespaceTranche const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    NamespaceTranche,
+    (),
+    (Namespaces, NamespaceAliases, Typedefs, Records, Enums,
+     Functions, Variables, Concepts, Guides, Usings)
+)
 
 /** Merge two tranches, appending members from the right-hand side.
 */
@@ -153,6 +161,12 @@ struct NamespaceSymbol final
     std::strong_ordering
     operator<=>(NamespaceSymbol const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    NamespaceSymbol,
+    (Symbol),
+    (IsInline, IsAnonymous, UsingDirectives, Members)
+)
 
 /** Merge two namespaces, keeping existing members stable.
 */

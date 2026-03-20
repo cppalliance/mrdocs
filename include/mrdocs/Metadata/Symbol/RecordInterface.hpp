@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/RecordTranche.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -60,6 +61,12 @@ public:
     */
     RecordTranche Private;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    RecordInterface,
+    (),
+    (Public, Protected, Private)
+)
 
 /** Merge two interfaces, combining matching tranches.
 */
