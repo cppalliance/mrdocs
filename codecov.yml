@@ -44,7 +44,3 @@ flags:
     paths:
       - util/bootstrap/
     carryforward: true
-
-ignore:
-  # Boost.Describe macro invocations produce false positives
-  - "src/lib/Support/Reflection/Reflection.hpp"

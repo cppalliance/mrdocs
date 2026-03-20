@@ -11,27 +11,26 @@
 #ifndef MRDOCS_LIB_SUPPORT_REFLECTION_ENUMTOSTRING_HPP
 #define MRDOCS_LIB_SUPPORT_REFLECTION_ENUMTOSTRING_HPP
 
-#include "Reflection.hpp"
 #include <mrdocs/Support/Assert.hpp>
-#include <boost/describe/enumerators.hpp>
-#include <boost/mp11.hpp>
+#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/String.hpp>
 #include <string>
 
 namespace mrdocs {
 
-/** Convert a Boost.Describe'd enumerator to string form.
+/** Convert a described enumerator to string form.
 
     @param e The enumerator to convert.
     @return The string form of the enumerator.
 */
 template <typename Enum>
-    requires boost::describe::has_describe_enumerators<Enum>::value
+    requires describe::has_describe_enumerators<Enum>::value
 std::string
 toString(Enum e)
 {
     std::string result;
-    boost::mp11::mp_for_each<
-        boost::describe::describe_enumerators<Enum>>(
+    describe::for_each(
+        describe::describe_enumerators<Enum>{},
         [&](auto const& D)
         {
             if (D.value == e)

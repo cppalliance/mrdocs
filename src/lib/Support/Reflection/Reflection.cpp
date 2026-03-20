@@ -9,11 +9,84 @@
 //
 
 #include "MergeReflectedType.hpp"
-#include "Reflection.hpp"
 #include "MapReflectedType.hpp"
+
+#include <mrdocs/Metadata/DocComment.hpp>
+
+#include <mrdocs/Metadata/DocComment/Block/AdmonitionBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/BriefBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/CodeBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/DefinitionListBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/DefinitionListItem.hpp>
+#include <mrdocs/Metadata/DocComment/Block/FootnoteDefinitionBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/HeadingBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ListBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ListItem.hpp>
+#include <mrdocs/Metadata/DocComment/Block/MathBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ParamBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/PostconditionBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/PreconditionBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/QuoteBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ReturnsBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/SeeBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/TableBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/TableCell.hpp>
+#include <mrdocs/Metadata/DocComment/Block/TableRow.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ThematicBreakBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ThrowsBlock.hpp>
+#include <mrdocs/Metadata/DocComment/Block/TParamBlock.hpp>
+
+#include <mrdocs/Metadata/DocComment/Inline/CodeInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/CopyDetailsInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/EmphInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/FootnoteReferenceInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/HighlightInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/ImageInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/LineBreakInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/LinkInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/MathInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/ReferenceInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/SoftBreakInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/StrikethroughInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/StrongInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/SubscriptInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/SuperscriptInline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
+
+#include <mrdocs/Metadata/Symbol/Concept.hpp>
+#include <mrdocs/Metadata/Symbol/Enum.hpp>
+#include <mrdocs/Metadata/Symbol/EnumConstant.hpp>
+#include <mrdocs/Metadata/Symbol/Friend.hpp>
+#include <mrdocs/Metadata/Symbol/Function.hpp>
+#include <mrdocs/Metadata/Symbol/Guide.hpp>
+#include <mrdocs/Metadata/Symbol/Namespace.hpp>
+#include <mrdocs/Metadata/Symbol/NamespaceAlias.hpp>
+#include <mrdocs/Metadata/Symbol/Overloads.hpp>
+#include <mrdocs/Metadata/Symbol/Record.hpp>
+#include <mrdocs/Metadata/Symbol/RecordBase.hpp>
+#include <mrdocs/Metadata/Symbol/RecordInterface.hpp>
+#include <mrdocs/Metadata/Symbol/RecordTranche.hpp>
+#include <mrdocs/Metadata/Symbol/Typedef.hpp>
+#include <mrdocs/Metadata/Symbol/Using.hpp>
+#include <mrdocs/Metadata/Symbol/Variable.hpp>
+
 #include <mrdocs/Metadata/Type/NamedType.hpp>
 
 namespace mrdocs {
+
+/** ValueFrom() support for Optional<DocComment>.
+    Required for reflection-based serialization of Symbol::doc.
+*/
+inline void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Optional<DocComment> const& opt,
+    DomCorpus const* domCorpus)
+{
+    v = opt ? dom::Value(dom::LazyObject(*opt, domCorpus)) : nullptr;
+}
 
 namespace detail {
 
@@ -118,8 +191,7 @@ tag_invoke(
 {
     addMetaObject<DocComment>(io);
 
-    boost::mp11::mp_for_each<boost::describe::describe_members<
-        DocComment, boost::describe::mod_public>>([&](auto D)
+    describe::for_each(describe::describe_members<DocComment>{}, [&](auto D)
         {
             constexpr std::string_view name = D.name;
 

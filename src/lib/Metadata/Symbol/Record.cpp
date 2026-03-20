@@ -10,7 +10,6 @@
 //
 
 #include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <lib/Support/Reflection/Reflection.hpp>
 #include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>

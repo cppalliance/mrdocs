@@ -12,7 +12,6 @@
 
 #include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>

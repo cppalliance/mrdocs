@@ -18,9 +18,6 @@
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <lib/Support/Reflection/EnumToString.hpp>
 #include <lib/Support/Reflection/ReadableTypeName.hpp>
-#include <lib/Support/Reflection/Reflection.hpp>
-#include <boost/describe.hpp>
-#include <boost/mp11.hpp>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -129,7 +126,7 @@ XMLWriter::write(T const& value)
     {
         os_ << toBase64Str(value);
     }
-    else if constexpr (boost::describe::has_describe_enumerators<Type>::value)
+    else if constexpr (describe::has_describe_enumerators<Type>::value)
     {
         os_ << toString(value);
     }
@@ -157,7 +154,7 @@ XMLWriter::write(T const& value)
         }
     }
     // Described types: recurse.
-    else // if constexpr (boost::describe::has_describe_members<Type>::value)
+    else // if constexpr (describe::has_describe_members<Type>::value)
     {
         writeMembers(value);
     }
@@ -187,7 +184,7 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
                   std::is_same_v<Type, dom::String> ||
                   std::is_integral_v<Type> ||
                   std::is_same_v<Type, SymbolID> ||
-                  boost::describe::has_describe_enumerators<Type>::value)
+                  describe::has_describe_enumerators<Type>::value)
     {
         tags_.indent() << "<" << tag << ">";
         write(value);
@@ -209,7 +206,7 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         for (auto const& item : value)
             writeElement(tag, item);
     }
-    else if constexpr (boost::describe::has_describe_members<Type>::value)
+    else if constexpr (describe::has_describe_members<Type>::value)
     {
         tags_.open(tagName<Type>());
         writeMembers(value);
@@ -222,13 +219,13 @@ void
 XMLWriter::writeMembers(T const& obj)
 {
     // Write base class members first.
-    if constexpr (boost::describe::has_describe_bases<T>::value)
+    if constexpr (describe::has_describe_bases<T>::value)
     {
-        boost::mp11::mp_for_each<
-            boost::describe::describe_bases<T, boost::describe::mod_any_access>>(
+        describe::for_each(
+            describe::describe_bases<T>{},
             [&](auto D) {
                 using Base = typename std::decay_t<decltype(D)>::type;
-                if constexpr (boost::describe::has_describe_members<Base>::value)
+                if constexpr (describe::has_describe_members<Base>::value)
                 {
                     writeMembers(static_cast<Base const&>(obj));
                 }
@@ -236,10 +233,10 @@ XMLWriter::writeMembers(T const& obj)
     }
 
     // Write direct members.
-    if constexpr (boost::describe::has_describe_members<T>::value)
+    if constexpr (describe::has_describe_members<T>::value)
     {
-        boost::mp11::mp_for_each<
-            boost::describe::describe_members<T, boost::describe::mod_public>>(
+        describe::for_each(
+            describe::describe_members<T>{},
             [&](auto D) {
                 writeElement(toKebabCase(D.name), obj.*D.pointer);
             });
@@ -319,7 +316,7 @@ XMLWriter::writePolymorphic(T const& value)
         default: MRDOCS_UNREACHABLE();
         }
     }
-    else if constexpr (boost::describe::has_describe_members<T>::value)
+    else if constexpr (describe::has_describe_members<T>::value)
     {
         tags_.open(toKebabCase(readableTypeName<T>()));
         writeMembers(value);
