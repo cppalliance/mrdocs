@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -44,6 +45,12 @@ struct PreconditionBlock final
     */
     bool operator==(PreconditionBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    PreconditionBlock,
+    (Block, InlineContainer),
+    ()
+)
 
 /** Map the @ref PreconditionBlock to a @ref dom::Object.
 

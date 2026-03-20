@@ -16,6 +16,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Nullable.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs {
@@ -80,6 +81,12 @@ struct MRDOCS_DECL
     */
     auto operator<=>(Location const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    Location,
+    (),
+    (ShortPath, SourcePath, LineNumber, ColumnNumber, Documented)
+)
 
 /** Serialize a location into a DOM value.
 */

@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -52,6 +53,12 @@ struct LineBreakInline
     */
     bool operator==(LineBreakInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    LineBreakInline,
+    (Inline),
+    ()
+)
 
 /** Map the @ref LineBreakInline to a @ref dom::Object.
 

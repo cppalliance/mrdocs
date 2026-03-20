@@ -17,6 +17,7 @@
 #include <mrdocs/Metadata/DocComment/Block/ListItem.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ListKind.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 #include <vector>
 
@@ -106,6 +107,12 @@ struct ListBlock final
     bool
     operator==(ListBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ListBlock,
+    (Block),
+    (items, listKind)
+)
 
 /** Map the @ref ListBlock to a @ref dom::Object.
 

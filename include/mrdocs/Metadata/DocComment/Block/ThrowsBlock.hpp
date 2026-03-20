@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -49,6 +50,12 @@ struct ThrowsBlock final
     */
     bool operator==(ThrowsBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ThrowsBlock,
+    (Block, InlineContainer),
+    (exception)
+)
 
 /** Map the @ref ThrowsBlock to a @ref dom::Object.
 

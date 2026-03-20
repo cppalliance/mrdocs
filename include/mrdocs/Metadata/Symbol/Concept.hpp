@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -48,6 +49,12 @@ struct ConceptSymbol final
     std::strong_ordering
     operator<=>(ConceptSymbol const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ConceptSymbol,
+    (Symbol),
+    (Template, Constraint)
+)
 
 /** Merge another ConceptSymbol into this one.
 */

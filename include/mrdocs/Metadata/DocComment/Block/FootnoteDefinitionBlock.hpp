@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -48,6 +49,12 @@ struct FootnoteDefinitionBlock final
     */
     bool operator==(FootnoteDefinitionBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    FootnoteDefinitionBlock,
+    (Block, BlockContainer),
+    (label)
+)
 
 /** Map the @ref FootnoteDefinitionBlock to a @ref dom::Object.
 

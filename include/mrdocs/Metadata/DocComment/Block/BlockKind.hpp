@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 
@@ -22,6 +23,12 @@ enum class BlockKind {
     #define INFO(Type) Type,
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    BlockKind,
+    Admonition, Brief, Code, Heading, Paragraph, List,
+    DefinitionList, Quote, ThematicBreak, FootnoteDefinition, Table, Math,
+    Param, Postcondition, Precondition, Returns, See, Throws, TParam)
 
 /** Convert a block kind to its kebab-case string name.
 */

@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/Symbol/RecordInterface.hpp>
 #include <mrdocs/Metadata/Symbol/RecordKeyKind.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -86,6 +87,13 @@ struct RecordSymbol final
     std::strong_ordering
     operator<=>(RecordSymbol const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    RecordSymbol,
+    (Symbol),
+    (KeyKind, Template, IsTypeDef, IsFinal, IsFinalDestructor,
+     Bases, Derived, Interface, Friends)
+)
 
 /** Return the default accessibility for a record key kind.
 */

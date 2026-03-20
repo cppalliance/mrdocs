@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -47,6 +48,12 @@ struct TParamBlock final
     */
     bool operator==(TParamBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    TParamBlock,
+    (Block, InlineContainer),
+    (name)
+)
 
 /** Map the @ref TParam to a @ref dom::Object.
 

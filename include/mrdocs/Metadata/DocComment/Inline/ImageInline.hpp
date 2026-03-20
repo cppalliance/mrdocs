@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -51,6 +52,12 @@ struct ImageInline final
     */
     bool operator==(ImageInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ImageInline,
+    (Inline, InlineContainer),
+    (src, alt)
+)
 
 /** Map the @ref ImageInline to a @ref dom::Object.
 

@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -53,6 +54,12 @@ struct SoftBreakInline
     */
     bool operator==(SoftBreakInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    SoftBreakInline,
+    (Inline),
+    ()
+)
 
 /** Map the @ref SoftBreakInline to a @ref dom::Object.
 

@@ -16,6 +16,7 @@
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ListItem.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 #include <vector>
 
@@ -70,6 +71,12 @@ struct QuoteBlock final
     */
     bool operator==(QuoteBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    QuoteBlock,
+    (Block, BlockContainer),
+    ()
+)
 
 /** Map the @ref QuoteBlock to a @ref dom::Object.
 

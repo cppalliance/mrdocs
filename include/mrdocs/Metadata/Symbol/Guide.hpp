@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -59,6 +60,12 @@ struct GuideSymbol final
     std::strong_ordering
     operator<=>(GuideSymbol const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    GuideSymbol,
+    (Symbol),
+    (Deduced, Template, Params, Explicit)
+)
 
 /** Merge another GuideSymbol into this one.
     @param I Destination symbol to update.

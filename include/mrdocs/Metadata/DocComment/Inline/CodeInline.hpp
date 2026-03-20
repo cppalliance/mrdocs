@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -47,6 +48,12 @@ struct CodeInline final
     */
     bool operator==(CodeInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    CodeInline,
+    (Inline, InlineContainer),
+    ()
+)
 
 /** Map the @ref CodeInline to a @ref dom::Object.
 

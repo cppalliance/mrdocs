@@ -14,6 +14,7 @@
 #define MRDOCS_API_METADATA_SYMBOL_EXTRACTIONMODE_HPP
 
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -54,6 +55,10 @@ enum class ExtractionMode
     /// the information we wanted from it in post-processing steps.
     Dependency,
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    ExtractionMode,
+    Regular, SeeBelow, ImplementationDefined, Dependency)
 
 /** Return the SymbolKind from a @ref dom::Value string.
 */

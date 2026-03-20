@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 
@@ -22,6 +23,12 @@ enum class InlineKind {
 #define INFO(Type) Type,
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    InlineKind,
+    Reference, CopyDetails, Link, Text, SoftBreak, LineBreak,
+    Code, Emph, Strong, Image, FootnoteReference, Strikethrough,
+    Math, Superscript, Subscript, Highlight)
 
 /** Convert an inline kind to its kebab-case string.
 */

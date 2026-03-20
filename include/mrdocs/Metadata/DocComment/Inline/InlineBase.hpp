@@ -19,6 +19,7 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineKind.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -154,6 +155,12 @@ protected:
     {}
 };
 
+
+MRDOCS_DESCRIBE_STRUCT(
+    Inline,
+    (),
+    (Kind)
+)
 
 /** Map the @ref Inline to a @ref dom::Object.
 
@@ -447,6 +454,12 @@ struct MRDOCS_DECL InlineContainer
     operator==(InlineContainer const&) const = default;
 };
 
+MRDOCS_DESCRIBE_STRUCT(
+    InlineContainer,
+    (),
+    (children)
+)
+
 /** Serialize a polymorphic inline node into a DOM value.
     @param io Destination value.
     @param I Inline storage to convert.
@@ -587,6 +600,12 @@ struct MRDOCS_DECL InlineTextLeaf
     bool operator==(InlineTextLeaf const&) const noexcept = default;
 };
 
+
+MRDOCS_DESCRIBE_STRUCT(
+    InlineTextLeaf,
+    (),
+    (literal)
+)
 
 } // mrdocs::doc
 

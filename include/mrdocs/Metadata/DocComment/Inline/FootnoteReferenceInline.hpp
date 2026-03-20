@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -43,6 +44,12 @@ struct FootnoteReferenceInline
     */
     bool operator==(FootnoteReferenceInline const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    FootnoteReferenceInline,
+    (Inline),
+    (label)
+)
 
 /** Map the @ref FootnoteReferenceInline to a @ref dom::Object.
 

@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
@@ -37,6 +38,10 @@ enum class UsingClass
     /// Using enum declaration class.
     Enum            // using enum
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    UsingClass,
+    Normal, Typename, Enum)
 
 /** Return the UsingClass as a @ref dom::Value string.
 
@@ -121,6 +126,12 @@ struct UsingSymbol final
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    UsingSymbol,
+    (Symbol),
+    (Class, IntroducedName, ShadowDeclarations)
+)
 
 /** Merge two using-declarations with the same identity.
 */

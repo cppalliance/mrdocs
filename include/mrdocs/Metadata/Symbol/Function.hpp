@@ -21,6 +21,7 @@
 #include <mrdocs/Metadata/Symbol/Param.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolBase.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 #include <vector>
 
@@ -150,6 +151,18 @@ struct FunctionSymbol final
     std::strong_ordering
     operator<=>(FunctionSymbol const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    FunctionSymbol,
+    (Symbol),
+    (ReturnType, Params, Template, FuncClass, Noexcept, Requires,
+     IsVariadic, IsDefaulted, IsExplicitlyDefaulted, IsDeleted,
+     IsDeletedAsWritten, IsNoReturn, HasOverrideAttr, HasTrailingReturn,
+     IsNodiscard, IsExplicitObjectMemberFunction, Constexpr,
+     OverloadedOperator, StorageClass, IsRecordMethod, IsVirtual,
+     IsVirtualAsWritten, IsPure, IsConst, IsVolatile, IsFinal,
+     RefQualifier, Explicit, Attributes, FunctionObjectImpl)
+)
 
 /** Merge metadata from another function symbol.
     @param I Destination symbol to update.

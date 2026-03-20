@@ -14,6 +14,7 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -42,6 +43,12 @@ struct FriendInfo final
     */
     Optional<Polymorphic<struct Type>> Type = std::nullopt;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    FriendInfo,
+    (),
+    (Type, id)
+)
 
 /** Merge another FriendInfo into this one.
 */

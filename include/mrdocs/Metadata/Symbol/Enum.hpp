@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -64,6 +65,12 @@ struct EnumSymbol final
     {
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    EnumSymbol,
+    (Symbol),
+    (Scoped, UnderlyingType, Constants)
+)
 
 /** Return the list of enum constants for this symbol.
 */

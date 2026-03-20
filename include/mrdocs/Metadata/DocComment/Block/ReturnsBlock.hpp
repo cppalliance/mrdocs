@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockBase.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -65,6 +66,12 @@ struct ReturnsBlock final
     */
     bool operator==(ReturnsBlock const&) const noexcept = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(
+    ReturnsBlock,
+    (Block, InlineContainer),
+    ()
+)
 
 /** Map the @ref ReturnsBlock to a @ref dom::Object.
 
