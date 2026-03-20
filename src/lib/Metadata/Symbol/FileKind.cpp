@@ -10,7 +10,7 @@
 //
 
 #include <lib/Support/Reflection/EnumToString.hpp>
-#include <mrdocs/Metadata/Symbol/ExtractionMode.hpp>
+#include <mrdocs/Metadata/Symbol/FileKind.hpp>
 
 namespace mrdocs {
 

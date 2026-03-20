@@ -13,8 +13,7 @@
 
 #include "ReflectionTypeTraits.hpp"
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <boost/describe.hpp>
-#include <boost/mp11.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <algorithm>
 #include <concepts>
 #include <string>
@@ -226,7 +225,7 @@ mergeByType(T& dst, T&& src)
 
 } // namespace detail
 
-/** Merge all Boost.Describe'd members of a type.
+/** Merge all described members of a type.
 
     Iterates base classes (via `describe_bases`) and own members
     (via `describe_members`).
@@ -238,21 +237,21 @@ mergeByType(T& dst, T&& src)
     based on the member type (see `mergeByType` for the full
     list of strategies).
 
-    @tparam T    The type to merge (must have BOOST_DESCRIBE_STRUCT).
+    @tparam T    The type to merge (must have MRDOCS_DESCRIBE_STRUCT).
     @param  dst  The destination object.
     @param  src  The source object. Members are moved from
                  individually.
 */
 template <typename T>
-    requires boost::describe::has_describe_members<T>::value
+    requires describe::has_describe_members<T>::value
 void
 mergeReflected(
     T& dst,
     T& src)
 {
     // First, merge all base classes.
-    boost::mp11::mp_for_each<
-        boost::describe::describe_bases<T, boost::describe::mod_any_access>>(
+    describe::for_each(
+        describe::describe_bases<T>{},
         [&](auto const& descriptor)
         {
             using BaseType = typename std::decay_t<decltype(descriptor)>::type;
@@ -263,8 +262,8 @@ mergeReflected(
     );
 
     // Then, merge all own members.
-    boost::mp11::mp_for_each<
-        boost::describe::describe_members<T, boost::describe::mod_any_access>>(
+    describe::for_each(
+        describe::describe_members<T>{},
         [&](auto const& descriptor)
         {
             using Descriptor = std::decay_t<decltype(descriptor)>;

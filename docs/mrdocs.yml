@@ -14,13 +14,13 @@ implementation-defined:
   - 'mrdocs::report::detail'
   - 'mrdocs::dom::detail'
 exclude-symbols:
-    # Symbols defined when using the Boost.Describe macros.
-  - 'mrdocs::**::boost_base_descriptor_fn'
-  - 'mrdocs::**::boost_public_member_descriptor_fn'
-  - 'mrdocs::**::boost_protected_member_descriptor_fn'
-  - 'mrdocs::**::boost_private_member_descriptor_fn'
-  - 'mrdocs::**::boost_enum_descriptor_fn'
-  - 'mrdocs::**::should_use_BOOST_DESCRIBE_NESTED_ENUM'
+    # Reflection facilities.
+  - 'mrdocs::describe'
+  - 'mrdocs::describe::**'
+    # Symbols injected by MRDOCS_DESCRIBE_STRUCT/ENUM.
+  - '**mrdocs_base_descriptor_fn'
+  - '**mrdocs_member_descriptor_fn'
+  - '**mrdocs_enum_descriptor_fn'
 multipage: true
 generator: adoc
 cmake: '-D MRDOCS_DOCUMENTATION_BUILD=ON'

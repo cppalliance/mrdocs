@@ -19,8 +19,7 @@
 #include <mrdocs/Metadata/Specifiers/ConstexprKind.hpp>
 #include <mrdocs/Metadata/Specifiers/ReferenceKind.hpp>
 #include <mrdocs/Metadata/Specifiers/StorageClassKind.hpp>
-#include <boost/describe.hpp>
-#include <boost/mp11.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <locale>
 #include <string_view>
 #include <type_traits>
@@ -88,7 +87,7 @@ normalizeMemberName(std::string_view name)
 
 /** Collect all base class names recursively.
 
-    Traverses the class hierarchy using Boost.Describe and collects
+    Traverses the class hierarchy using reflection and collects
     the names of all base classes. This enables templates to check
     inheritance relationships (e.g., whether a type is derived from
     Symbol or Name).
@@ -98,9 +97,10 @@ std::vector<std::string>
 collectBaseNames()
 {
     std::vector<std::string> names;
-    if constexpr (boost::describe::has_describe_bases<T>::value)
+    if constexpr (describe::has_describe_bases<T>::value)
     {
-        boost::mp11::mp_for_each<boost::describe::describe_bases<T, boost::describe::mod_any_access>>(
+        describe::for_each(
+            describe::describe_bases<T>{},
             [&](auto const& descriptor)
             {
                 using BaseType = typename std::decay_t<decltype(descriptor)>::type;
@@ -180,7 +180,7 @@ addMetaObject(IO& io)
     io.map("$meta", meta);
 }
 
-/** Automatically map all Boost.Describe'd members of a type to the DOM.
+/** Automatically map all described members of a type to the DOM.
 
     This replaces the manual `tag_invoke()` implementations with a single
     call that handles all member mappings via reflection.
@@ -208,7 +208,7 @@ addMetaObject(IO& io)
     @endcode
 */
 template <bool isMostDerived, typename IO, typename T>
-    requires boost::describe::has_describe_members<T>::value
+    requires describe::has_describe_members<T>::value
 void
 mapReflectedType(
     IO& io,
@@ -221,7 +221,8 @@ mapReflectedType(
     }
 
     // First, map all bases.
-    boost::mp11::mp_for_each<boost::describe::describe_bases<T, boost::describe::mod_any_access>>(
+    describe::for_each(
+        describe::describe_bases<T>{},
         [&](auto const& descriptor)
         {
             using BaseType = typename std::decay_t<decltype(descriptor)>::type;
@@ -232,7 +233,8 @@ mapReflectedType(
     );
 
     // Then, map all members.
-    boost::mp11::mp_for_each<boost::describe::describe_members<T, boost::describe::mod_any_access>>(
+    describe::for_each(
+        describe::describe_members<T>{},
         [&](auto const& descriptor) {
             using Descriptor = std::decay_t<decltype(descriptor)>;
             using MemberType = std::decay_t<decltype(obj.*Descriptor::pointer)>;
@@ -252,7 +254,7 @@ mapReflectedType(
         });
 }
 
-/** Map all Boost.Describe'd members without converting values.
+/** Map all described members without converting values.
 
     This version passes raw member values to `io.map()`, letting
     the IO object handle conversion with its stored context.
@@ -262,7 +264,7 @@ mapReflectedType(
     @param obj The object to be mapped.
 */
 template <bool isMostDerived, typename IO, typename T>
-    requires boost::describe::has_describe_members<T>::value
+    requires describe::has_describe_members<T>::value
 void
 mapReflectedType(
     IO& io,
@@ -273,7 +275,8 @@ mapReflectedType(
         addMetaObject<T>(io);
     }
 
-    boost::mp11::mp_for_each<boost::describe::describe_members<T, boost::describe::mod_any_access>>(
+    describe::for_each(
+        describe::describe_members<T>{},
         [&](auto const& descriptor)
         {
             using Descriptor = std::decay_t<decltype(descriptor)>;

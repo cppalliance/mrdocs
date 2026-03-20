@@ -10,7 +10,6 @@
 //
 
 #include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Typedef.hpp>

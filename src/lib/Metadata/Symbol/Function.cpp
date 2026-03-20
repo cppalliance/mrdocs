@@ -12,7 +12,6 @@
 //
 
 #include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <lib/Support/Reflection/Reflection.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
