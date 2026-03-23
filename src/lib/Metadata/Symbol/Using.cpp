@@ -10,18 +10,9 @@
 //
 
 #include <lib/Support/Reflection/EnumToString.hpp>
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Using.hpp>
 
 namespace mrdocs {
-
-void
-merge(UsingSymbol& I, UsingSymbol&& Other)
-{
-    MRDOCS_ASSERT(canMerge(I, Other));
-    mergeReflected(I, Other);
-}
 
 void
 tag_invoke(

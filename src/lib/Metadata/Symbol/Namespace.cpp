@@ -9,8 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <llvm/ADT/STLExtras.h>
 
@@ -56,17 +54,5 @@ operator<=>(NamespaceSymbol const& other) const
     return std::strong_ordering::equal;
 }
 
-void
-merge(NamespaceTranche& I, NamespaceTranche&& Other)
-{
-    mergeReflected(I, Other);
-}
-
-void
-merge(NamespaceSymbol& I, NamespaceSymbol&& Other)
-{
-    MRDOCS_ASSERT(canMerge(I, Other));
-    mergeReflected(I, Other);
-}
 } // mrdocs
 

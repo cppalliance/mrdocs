@@ -225,7 +225,12 @@ mergeByType(T& dst, T&& src)
 
 } // namespace detail
 
-/** Merge all described members of a type.
+/** Generic merge for any described type.
+
+    Found via ADL for any type with MRDOCS_DESCRIBE_STRUCT.
+    Non-template overloads (custom merge functions) are
+    preferred by overload resolution, so types with special
+    merge semantics are unaffected.
 
     Iterates base classes (via `describe_bases`) and own members
     (via `describe_members`).
@@ -245,9 +250,9 @@ mergeByType(T& dst, T&& src)
 template <typename T>
     requires describe::has_describe_members<T>::value
 void
-mergeReflected(
+merge(
     T& dst,
-    T& src)
+    T&& src)
 {
     // First, merge all base classes.
     describe::for_each(
