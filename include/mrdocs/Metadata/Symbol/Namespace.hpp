@@ -67,12 +67,6 @@ MRDOCS_DESCRIBE_STRUCT(
      Functions, Variables, Concepts, Guides, Usings)
 )
 
-/** Merge two tranches, appending members from the right-hand side.
-*/
-MRDOCS_DECL
-void
-merge(NamespaceTranche& I, NamespaceTranche&& Other);
-
 /** Join all tranche member lists into a single view.
     @return Lazy view spanning every category stored in the tranche.
 */
@@ -167,12 +161,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Symbol),
     (IsInline, IsAnonymous, UsingDirectives, Members)
 )
-
-/** Merge two namespaces, keeping existing members stable.
-*/
-MRDOCS_DECL
-void
-merge(NamespaceSymbol& I, NamespaceSymbol&& Other);
 
 /** View all members of the namespace across tranches.
     @return Lazy view across every member bucket.

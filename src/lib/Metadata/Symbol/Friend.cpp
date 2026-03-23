@@ -11,18 +11,11 @@
 //
 
 #include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Friend.hpp>
 #include <algorithm>
 #include <vector>
 
 namespace mrdocs {
-
-void
-merge(FriendInfo& I, FriendInfo&& Other)
-{
-    mergeReflected(I, Other);
-}
 
 void
 merge(

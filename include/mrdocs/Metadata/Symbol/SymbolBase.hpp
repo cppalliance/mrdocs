@@ -221,19 +221,6 @@ protected:
     }
 };
 
-/** Merges two Symbol objects.
-
-    This function is used to merge two Symbol objects with the same SymbolID.
-    The function assumes that the two Symbol objects are of the same type.
-    If they are not, the function will fail.
-
-    @param I The Symbol object to merge into.
-    @param Other The Symbol object to merge from.
-*/
-MRDOCS_DECL
-void
-merge(Symbol& I, Symbol&& Other);
-
 /** Check whether two symbols may be merged.
     @return True when kinds and IDs match.
 */

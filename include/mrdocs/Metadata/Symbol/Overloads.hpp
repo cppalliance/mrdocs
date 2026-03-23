@@ -65,11 +65,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (FuncClass, OverloadedOperator, Members, ReturnType)
 )
 
-/** Merge overload sets, preserving ordering in `Members`.
-*/
-MRDOCS_DECL
-void merge(OverloadsSymbol& I, OverloadsSymbol&& Other);
-
 /** Access the list of overload members.
     @return Reference to the ID list backing this set.
 */

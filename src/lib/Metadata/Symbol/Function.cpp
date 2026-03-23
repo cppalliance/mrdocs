@@ -318,12 +318,6 @@ getOperatorReadableName(
 }
 
 void
-merge(Param& I, Param&& Other)
-{
-    mergeReflected(I, Other);
-}
-
-void
 merge(std::vector<Param>& dst, std::vector<Param>&& src)
 {
     std::size_t const n = std::min(dst.size(), src.size());
@@ -414,13 +408,6 @@ operator<=>(FunctionSymbol const& other) const
         }
     }
     return this->asInfo() <=> other.asInfo();
-}
-
-void
-merge(FunctionSymbol& I, FunctionSymbol&& Other)
-{
-    MRDOCS_ASSERT(canMerge(I, Other));
-    mergeReflected(I, Other);
 }
 
 bool

@@ -56,12 +56,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Template, Constraint)
 )
 
-/** Merge another ConceptSymbol into this one.
-*/
-MRDOCS_DECL
-void
-merge(ConceptSymbol& I, ConceptSymbol&& Other);
-
 /** Map a ConceptSymbol to a dom::Object.
 
     @param t The tag type.

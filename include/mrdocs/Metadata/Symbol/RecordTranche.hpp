@@ -74,12 +74,6 @@ MRDOCS_DESCRIBE_STRUCT(
      StaticFunctions, Variables, StaticVariables, Concepts, Guides, Usings)
 )
 
-/** Merge two tranches with the same access level.
-*/
-MRDOCS_DECL
-void
-merge(RecordTranche& I, RecordTranche&& Other);
-
 /** Join every member list into a single view.
     @return Lazy view spanning all member categories.
 */

@@ -43,14 +43,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Initializer)
 )
 
-/** Merge another EnumConstantSymbol into this one.
-    @param I Destination symbol to update.
-    @param Other Source symbol providing data.
-*/
-MRDOCS_DECL
-void
-merge(EnumConstantSymbol& I, EnumConstantSymbol&& Other);
-
 /** Map a EnumConstantSymbol to a dom::Object.
 
     @param t The tag type.

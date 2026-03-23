@@ -72,12 +72,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type, IsUsing, Template)
 )
 
-/** Merge typedef symbols, keeping existing info when present.
-*/
-MRDOCS_DECL
-void
-merge(TypedefSymbol& I, TypedefSymbol&& Other);
-
 /** Map a TypedefSymbol to a dom::Object.
 
     @param t The tag type.

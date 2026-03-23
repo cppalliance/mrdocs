@@ -164,14 +164,6 @@ MRDOCS_DESCRIBE_STRUCT(
      RefQualifier, Explicit, Attributes, FunctionObjectImpl)
 )
 
-/** Merge metadata from another function symbol.
-    @param I Destination symbol to update.
-    @param Other Source symbol providing additional data.
-*/
-MRDOCS_DECL
-void
-merge(FunctionSymbol& I, FunctionSymbol&& Other);
-
 /** Map a FunctionSymbol to a dom::Object.
 
     @param t The tag type.

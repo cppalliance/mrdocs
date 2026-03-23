@@ -9,7 +9,6 @@
 //
 
 #include <lib/Support/Radix.hpp>
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
@@ -26,12 +25,6 @@ OverloadsSymbol::OverloadsSymbol(SymbolID const &Parent, std::string_view Name,
     : SymbolCommonBase(SymbolID::createFromString(std::format(
           "{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic))) {
   this->Parent = Parent;
-}
-
-void
-merge(OverloadsSymbol& I, OverloadsSymbol&& Other)
-{
-    mergeReflected(I, Other);
 }
 
 void

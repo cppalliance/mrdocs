@@ -9,8 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Guide.hpp>
 #include <mrdocs/Metadata/Symbol/Param.hpp>
 #include <vector>
@@ -78,11 +76,5 @@ operator<=>(GuideSymbol const& other) const
     return this->asInfo() <=> other.asInfo();
 }
 
-
-void merge(GuideSymbol& I, GuideSymbol&& Other)
-{
-    MRDOCS_ASSERT(canMerge(I, Other));
-    mergeReflected(I, Other);
-}
 
 } // mrdocs

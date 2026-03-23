@@ -68,12 +68,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Public, Protected, Private)
 )
 
-/** Merge two interfaces, combining matching tranches.
-*/
-MRDOCS_DECL
-void
-merge(RecordInterface& I, RecordInterface&& Other);
-
 /** Map a RecordInterface to a dom::Object.
 
     @param io The output parameter to receive the dom::Object.

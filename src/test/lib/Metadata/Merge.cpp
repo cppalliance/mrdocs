@@ -8,6 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Metadata/Symbol/Enum.hpp>
 #include <mrdocs/Metadata/Symbol/Friend.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>

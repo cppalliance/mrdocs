@@ -9,7 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
@@ -58,24 +57,6 @@ operator<=>(RecordSymbol const& other) const
         }
     }
     return this->asInfo() <=> other.asInfo();
-}
-
-void
-merge(RecordTranche& I, RecordTranche&& Other)
-{
-    mergeReflected(I, Other);
-}
-
-void
-merge(RecordInterface& I, RecordInterface&& Other)
-{
-    mergeReflected(I, Other);
-}
-
-void
-merge(RecordSymbol& I, RecordSymbol&& Other)
-{
-    mergeReflected(I, Other);
 }
 
 template <class IO>

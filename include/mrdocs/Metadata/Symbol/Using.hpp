@@ -133,11 +133,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Class, IntroducedName, ShadowDeclarations)
 )
 
-/** Merge two using-declarations with the same identity.
-*/
-MRDOCS_DECL
-void merge(UsingSymbol& I, UsingSymbol&& Other);
-
 /** Map a UsingSymbol to a dom::Object.
 
     @param t The tag type.

@@ -81,14 +81,6 @@ allMembers(EnumSymbol const& T)
     return T.Constants;
 }
 
-/** Merge another EnumSymbol into this one.
-    @param I Destination symbol to update.
-    @param Other Source symbol providing data.
-*/
-MRDOCS_DECL
-void
-merge(EnumSymbol& I, EnumSymbol&& Other);
-
 /** Map a EnumSymbol to a dom::Object.
 
     @param t The tag type.

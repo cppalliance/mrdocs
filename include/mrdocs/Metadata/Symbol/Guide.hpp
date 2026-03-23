@@ -67,14 +67,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Deduced, Template, Params, Explicit)
 )
 
-/** Merge another GuideSymbol into this one.
-    @param I Destination symbol to update.
-    @param Other Source symbol providing data.
-*/
-MRDOCS_DECL
-void
-merge(GuideSymbol& I, GuideSymbol&& Other);
-
 /** Map a GuideSymbol to a dom::Object.
 
     @param t The tag type.

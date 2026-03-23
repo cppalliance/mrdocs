@@ -70,12 +70,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type, Name, Default)
 )
 
-/** Merge two parameters, filling missing pieces from `Other`.
-*/
-MRDOCS_DECL
-void
-merge(Param& I, Param&& Other);
-
 /** Merge parameters element-wise, appending extras from `src`.
 
     @param dst The destination.

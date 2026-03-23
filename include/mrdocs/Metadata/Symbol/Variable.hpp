@@ -126,12 +126,6 @@ MRDOCS_DESCRIBE_STRUCT(
      IsBitfield, BitfieldWidth)
 )
 
-/** Merge variable metadata, preserving existing values when set.
-*/
-MRDOCS_DECL
-void
-merge(VariableSymbol& I, VariableSymbol&& Other);
-
 /** Map a VariableSymbol to a dom::Object.
 
     @param t The tag type.

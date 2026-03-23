@@ -20,6 +20,7 @@
 #include <lib/Diagnostics.hpp>
 #include <lib/Support/Path.hpp>
 #include <lib/Support/Radix.hpp>
+#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>

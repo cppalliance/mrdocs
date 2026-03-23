@@ -11,7 +11,6 @@
 //
 
 #include <lib/Support/Radix.hpp>
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata.hpp>
@@ -36,13 +35,6 @@ toString(SymbolKind const kind) noexcept
     default:
         MRDOCS_UNREACHABLE();
     }
-}
-
-void
-merge(Symbol& I, Symbol&& Other)
-{
-    MRDOCS_ASSERT(I.id);
-    mergeReflected(I, Other);
 }
 
 } // mrdocs

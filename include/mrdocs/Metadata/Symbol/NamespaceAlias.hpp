@@ -47,12 +47,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (AliasedSymbol)
 )
 
-/** Merge two alias symbols, preferring existing fields when present.
-*/
-MRDOCS_DECL
-void
-merge(NamespaceAliasSymbol& I, NamespaceAliasSymbol&& Other);
-
 /** Map a NamespaceAliasSymbol to a dom::Object.
 
     @param t The tag type.

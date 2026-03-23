@@ -9,8 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Typedef.hpp>
 
@@ -57,12 +55,6 @@ operator<=>(TypedefSymbol const& other) const
         }
     }
     return this->asInfo() <=> other.asInfo();
-}
-
-void merge(TypedefSymbol& I, TypedefSymbol&& Other)
-{
-    MRDOCS_ASSERT(canMerge(I, Other));
-    mergeReflected(I, Other);
 }
 
 } // mrdocs

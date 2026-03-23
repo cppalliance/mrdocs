@@ -124,12 +124,6 @@ allMembers(RecordSymbol const& T)
     return allMembers(T.Interface);
 }
 
-/** Merge metadata from another record of the same identity.
-*/
-MRDOCS_DECL
-void
-merge(RecordSymbol& I, RecordSymbol&& Other);
-
 /** Map a RecordSymbol to a dom::Object.
 
     @param t The tag type.

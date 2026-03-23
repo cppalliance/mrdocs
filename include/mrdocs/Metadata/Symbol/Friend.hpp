@@ -50,12 +50,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type, id)
 )
 
-/** Merge another FriendInfo into this one.
-*/
-MRDOCS_DECL
-void
-merge(FriendInfo& I, FriendInfo&& Other);
-
 /** Merge friend declarations, deduplicating by symbol ID.
 
     @param dst The destination.

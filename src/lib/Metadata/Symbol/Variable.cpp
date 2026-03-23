@@ -9,8 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbol/Variable.hpp>
 #include <llvm/ADT/STLExtras.h>
 
@@ -57,13 +55,6 @@ operator<=>(VariableSymbol const& other) const
         }
     }
     return this->asInfo() <=> other.asInfo();
-}
-
-void
-merge(VariableSymbol& I, VariableSymbol&& Other)
-{
-    MRDOCS_ASSERT(canMerge(I, Other));
-    mergeReflected(I, Other);
 }
 
 } // mrdocs
