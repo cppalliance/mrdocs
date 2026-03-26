@@ -1,0 +1,120 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+name: Generate Test Matrix
+
+on:
+  workflow_call:
+    outputs:
+      matrix:
+        description: 'JSON-encoded build matrix'
+        value: ${{ jobs.generate.outputs.matrix }}
+      submatrices:
+        description: 'JSON-encoded sub-matrices object'
+        value: ${{ jobs.generate.outputs.submatrices }}
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    container:
+      image: ubuntu:24.04
+    name: Generate Test Matrix
+    outputs:
+      matrix: ${{ steps.cpp-matrix.outputs.matrix }}
+      submatrices: ${{ steps.cpp-matrix.outputs.submatrices }}
+    steps:
+      - name: Generate Test Matrix
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.9.4
+        id: cpp-matrix
+        with:
+          compilers: |
+            gcc >=14
+            clang >=18
+            msvc >=14.40
+            apple-clang >=17
+          standards: '23'
+          main-entry-factors: |
+            clang Coverage
+          latest-factors: |
+            clang UBSan
+          factors: |
+            gcc UBSan
+            clang ASan MSan
+            apple-clang UBSan ASan
+          build-types: |
+            gcc: Release
+            clang: Release
+            apple-clang: Release
+            msvc: RelWithDebInfo
+          append-install: |
+            gcc: cmake ninja-build unzip openjdk-11-jdk-headless libncurses-dev nodejs npm
+            clang: cmake ninja-build unzip openjdk-11-jdk-headless libncurses-dev libstdc++-14-dev nodejs npm
+          append-ccflags: |
+            gcc: -Werror -Wall
+            gcc is-main: -static
+            clang: -Werror -Wall
+            apple-clang: -Werror -Wall
+            msvc: /WX /W4
+          append-cxxflags: |
+            gcc: -Werror -Wall
+            gcc is-main: -static
+            clang: -Werror -Wall
+            apple-clang: -Werror -Wall
+            msvc: /WX /W4
+          # Flags shared between dep builds (bootstrap.py) and the main MrDocs
+          # build. -gz=zstd compresses debug info and must be applied to both.
+          append-common-ccflags: |
+            clang: -gz=zstd
+          append-common-cxxflags: |
+            clang: -gz=zstd
+          extra-values: |
+            # libc++ runtimes: clang + (ASan or MSan) needs instrumented libc++
+            # built separately from the main LLVM build
+            use-libcxx: {{and (ieq compiler 'clang') (or msan asan)}}
+            libcxx-runtimes: {{select (ne compiler 'msvc') "libcxx;libcxxabi" "libcxx"}}
+            llvm-runtimes: {{{select (ine use-libcxx 'true') libcxx-runtimes ""}}}
+
+            # LLVM build configuration
+            llvm-hash: dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae
+            llvm-short-hash: {{{substr llvm-hash 0 7}}}
+            llvm-preset-build-type: {{{lowercase build-type}}}
+            llvm-preset-os: {{select (ieq os 'windows') "win" "unix"}}
+            llvm-preset: {{{ llvm-preset-build-type }}}-{{{ llvm-preset-os }}}
+
+            # LLVM cache key: encodes hash, build type, OS, and sanitizer
+            # so each distinct LLVM configuration gets its own cache entry.
+            # Clang + (ASan or MSan) appends compiler version and sanitizer
+            # because those builds include instrumented libc++ runtimes.
+            llvm-os-key: {{{replace (lowercase (default container runs-on)) ":" "-" "." "-"}}}
+            # ASan, MSan, and TSan need different LLVM builds (instrumented deps).
+            # UBSan shares the plain LLVM cache (compile-time checks only).
+            llvm-cache-sanitizer: {{select asan "asan" msan "msan" tsan "tsan"}}
+            llvm-cache-sanitizer-suffix: {{#if llvm-cache-sanitizer}}-{{{compiler}}}-{{{version}}}-{{{llvm-cache-sanitizer}}}{{/if}}
+            llvm-cache-key: llvm-{{{llvm-short-hash}}}-{{{llvm-preset-build-type}}}-{{{llvm-os-key}}}{{{llvm-cache-sanitizer-suffix}}}
+
+            # Maps sanitizer factor to LLVM_USE_SANITIZER cmake value
+            llvm-sanitizer-config: {{#if (includes (list "clang" "apple-clang") compiler)}}{{select asan "Address" msan "MemoryWithOrigins"}}{{/if}}
+
+            # Sanitizer name for bootstrap's --sanitizer flag
+            bootstrap-sanitizer: {{select asan "address" msan "memory" ubsan "undefined" tsan "thread"}}
+
+            # Packaging and release configuration
+            is-release-build: {{and is-main (includes (list "gcc" "msvc" "apple-clang") compiler)}}
+            mrdocs-package-generators: {{select (ieq os 'windows') "7Z ZIP WIX" "TGZ TXZ"}}
+            mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
+
+            # Bottleneck builds: skip expensive tests that ended up being redundant to save CI time
+            is-bottleneck: {{#if (or msan (and (ieq compiler 'apple-clang') (or asan ubsan))) }}true{{/if}}
+
+          submatrices: |
+            releases: {{ieq is-release-build 'true'}}
+          trace-commands: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+

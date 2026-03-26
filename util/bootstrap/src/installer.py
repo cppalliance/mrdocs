@@ -20,7 +20,7 @@ import dataclasses
 import os
 import re
 import shlex
-from typing import Optional, Dict, Any, Set
+from typing import Optional, Dict, Any, List, Set
 
 
 def _shquote(s: str) -> str:
@@ -115,6 +115,7 @@ class MrDocsInstaller:
         self.compiler_info: Dict[str, str] = {}
         self.package_roots: Dict[str, str] = {}
         self.recipe_info: Dict[str, Recipe] = {}
+        self.rebuilt_recipes: List[str] = []
         self._libcxx_cxxflags: str = ""
         self._libcxx_ldflags: str = ""
         self.env = os.environ.copy()
@@ -533,7 +534,8 @@ class MrDocsInstaller:
                 ui=self.ui,
             )
 
-            # Build libc++ runtimes if needed (LLVM + clang + asan/msan)
+            # Build libc++ runtimes if needed (LLVM + clang + asan/msan/tsan)
+            extra_cmake_options = None
             if recipe.name == "llvm":
                 compiler_id = self.compiler_info.get("CMAKE_CXX_COMPILER_ID", "")
                 if needs_libcxx_runtimes(self.options.sanitizer, compiler_id):
@@ -551,9 +553,7 @@ class MrDocsInstaller:
                     )
                     # Disable runtimes in the main LLVM build so it doesn't
                     # overwrite the instrumented ones we just built
-                    for step in recipe.build:
-                        if step.get("type", "").lower() == "cmake":
-                            step.setdefault("options", []).append("-DLLVM_ENABLE_RUNTIMES=")
+                    extra_cmake_options = ["-DLLVM_ENABLE_RUNTIMES="]
 
             self._dry_comment(f"Build and install {recipe.name}")
             build_recipe(
@@ -569,6 +569,7 @@ class MrDocsInstaller:
                 self.options.cflags,
                 self.options.cxxflags,
                 self.options.ldflags,
+                extra_cmake_options,
                 self.options.force,
                 self.options.dry_run,
                 self.options.verbose,
@@ -578,6 +579,7 @@ class MrDocsInstaller:
             )
 
             write_recipe_stamp(recipe, resolved_ref, **stamp_args, dry_run=self.options.dry_run, ui=self.ui)
+            self.rebuilt_recipes.append(recipe.name)
 
             self.ui.ok(f"[{recipe.name}] installed successfully.")
             self.print_recipe_summary(recipe)
@@ -754,6 +756,10 @@ class MrDocsInstaller:
                 bootstrap_ldflags = (bootstrap_ldflags + " " + san_flag).strip()
         if bootstrap_ldflags:
             lines.append(f"BOOTSTRAP_LDFLAGS={bootstrap_ldflags}")
+
+        # Write which recipes were rebuilt (empty if all were cached)
+        if self.rebuilt_recipes:
+            lines.append(f"BOOTSTRAP_REBUILT={','.join(self.rebuilt_recipes)}")
 
         content = "\n".join(lines) + "\n" if lines else ""
 

@@ -135,7 +135,7 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
             // Try common fallback compilers to discover system
             // include paths.
             static constexpr std::string_view fallbackCompilers[] = {
-                "g++", "gcc", "clang++", "clang", "c++"
+                "g++", "clang++", "c++", "gcc", "clang"
             };
             std::vector<std::string> includePaths;
             for (auto const& fallback : fallbackCompilers)

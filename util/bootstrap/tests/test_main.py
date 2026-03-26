@@ -342,6 +342,39 @@ class TestTextUISupportChecks(unittest.TestCase):
         with patch.dict(os.environ, env, clear=True):
             self.assertTrue(TextUI._supports_emoji())
 
+    def test_supports_emoji_ascii_encoding_disabled(self):
+        """ASCII (and similar narrow) stdout encodings should disable emoji."""
+        env = os.environ.copy()
+        env.pop("BOOTSTRAP_PLAIN", None)
+        for encoding in ("ascii", "ASCII", "charmap", "cp1252", "latin-1", "iso-8859-1"):
+            mock_stdout = MagicMock()
+            mock_stdout.encoding = encoding
+            with patch.dict(os.environ, env, clear=True), \
+                 patch("src.core.ui.sys.stdout", mock_stdout):
+                self.assertFalse(
+                    TextUI._supports_emoji(),
+                    f"expected emoji disabled for encoding {encoding!r}"
+                )
+
+    def test_supports_emoji_utf8_encoding_enabled(self):
+        """UTF-8 stdout encoding should keep emoji enabled."""
+        env = os.environ.copy()
+        env.pop("BOOTSTRAP_PLAIN", None)
+        mock_stdout = MagicMock()
+        mock_stdout.encoding = "utf-8"
+        with patch.dict(os.environ, env, clear=True), \
+             patch("src.core.ui.sys.stdout", mock_stdout):
+            self.assertTrue(TextUI._supports_emoji())
+
+    def test_supports_emoji_no_encoding_attribute(self):
+        """Missing encoding attribute should not crash; default to enabled."""
+        env = os.environ.copy()
+        env.pop("BOOTSTRAP_PLAIN", None)
+        mock_stdout = object()  # no .encoding attribute
+        with patch.dict(os.environ, env, clear=True), \
+             patch("src.core.ui.sys.stdout", mock_stdout):
+            self.assertTrue(TextUI._supports_emoji())
+
 
 class TestTextUIFmtColor(unittest.TestCase):
     """Test _fmt with color enabled."""
@@ -354,6 +387,10 @@ class TestTextUIFmtColor(unittest.TestCase):
         self.ui.base_path = None
         self.ui.base_token = "."
         self.ui.dry_run = False
+        self.ui._ci = False
+        self.ui._ci_group_open = False
+        self.ui._ci_group_title = ""
+        self.ui._ci_group_start = 0.0
 
     def test_fmt_with_color(self):
         """_fmt with color should wrap text in ANSI codes."""
@@ -414,6 +451,10 @@ class TestTextUISubsectionNonPlain(unittest.TestCase):
         self.ui.base_path = None
         self.ui.base_token = "."
         self.ui.dry_run = False
+        self.ui._ci = False
+        self.ui._ci_group_open = False
+        self.ui._ci_group_title = ""
+        self.ui._ci_group_start = 0.0
 
     @patch("sys.stdout", new_callable=io.StringIO)
     def test_subsection_non_plain_has_underline(self, mock_out):
@@ -661,6 +702,10 @@ class TestTextUIChecklistNonPlain(unittest.TestCase):
         self.ui.base_path = None
         self.ui.base_token = "."
         self.ui.dry_run = False
+        self.ui._ci = False
+        self.ui._ci_group_open = False
+        self.ui._ci_group_title = ""
+        self.ui._ci_group_start = 0.0
 
     @patch("sys.stdout", new_callable=io.StringIO)
     def test_checklist_unicode_marks(self, mock_out):
@@ -753,6 +798,79 @@ class TestTextUIErrorBlock(unittest.TestCase):
         self.assertIn("tip1", output)
         self.assertIn("tip2", output)
         self.assertIn("tip3", output)
+
+
+class TestTextUICIGroups(unittest.TestCase):
+    """Test CI group emission."""
+
+    def _make_ci_ui(self):
+        ui = TextUI.__new__(TextUI)
+        ui.color_enabled = False
+        ui.emoji_enabled = False
+        ui.max_path = 50
+        ui.base_path = None
+        ui.base_token = "."
+        ui.dry_run = False
+        ui._ci = True
+        ui._ci_group_open = False
+        ui._ci_group_title = ""
+        ui._ci_group_start = 0.0
+        return ui
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_start_group_emits_group_command(self, mock_out):
+        ui = self._make_ci_ui()
+        ui.start_group("My Group")
+        self.assertIn("::group::My Group", mock_out.getvalue())
+        self.assertTrue(ui._ci_group_open)
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_end_group_emits_endgroup(self, mock_out):
+        ui = self._make_ci_ui()
+        ui.start_group("Test")
+        mock_out.truncate(0)
+        mock_out.seek(0)
+        ui.end_group()
+        output = mock_out.getvalue()
+        self.assertIn("::endgroup::", output)
+        self.assertIn("completed in", output)
+        self.assertFalse(ui._ci_group_open)
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_end_group_noop_when_no_group(self, mock_out):
+        ui = self._make_ci_ui()
+        ui.end_group()
+        self.assertEqual(mock_out.getvalue(), "")
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_start_group_closes_previous(self, mock_out):
+        ui = self._make_ci_ui()
+        ui.start_group("First")
+        ui.start_group("Second")
+        output = mock_out.getvalue()
+        self.assertIn("::group::First", output)
+        self.assertIn("::endgroup::", output)
+        self.assertIn("::group::Second", output)
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_no_groups_outside_ci(self, mock_out):
+        ui = self._make_ci_ui()
+        ui._ci = False
+        ui.start_group("Should Not Appear")
+        self.assertNotIn("::group::", mock_out.getvalue())
+        self.assertFalse(ui._ci_group_open)
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_section_starts_group_in_ci(self, mock_out):
+        ui = self._make_ci_ui()
+        ui.section("My Section")
+        self.assertIn("::group::My Section", mock_out.getvalue())
+
+    @patch("sys.stdout", new_callable=io.StringIO)
+    def test_subsection_starts_group_in_ci(self, mock_out):
+        ui = self._make_ci_ui()
+        ui.subsection("My Sub")
+        self.assertIn("::group::My Sub", mock_out.getvalue())
 
 
 if __name__ == "__main__":

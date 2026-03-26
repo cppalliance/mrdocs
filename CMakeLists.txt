@@ -40,11 +40,7 @@ else()
     set(REQUIRED_IF_STRICT "")
 endif()
 option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
-if (MRDOCS_BUILD_TESTS OR MRDOCS_INSTALL)
-    option(MRDOCS_BUILD_DOCS "Build documentation" ON)
-else()
-    option(MRDOCS_BUILD_DOCS "Build documentation" OFF)
-endif()
+option(MRDOCS_BUILD_DOCS "Build documentation" OFF)
 option(MRDOCS_GENERATE_REFERENCE "Generate MrDocs reference" ${MRDOCS_BUILD_DOCS})
 option(MRDOCS_GENERATE_ANTORA_REFERENCE "Generate MrDocs reference in Antora module pages" OFF)
 
@@ -233,6 +229,13 @@ endif()
 set(CMAKE_FOLDER Dependencies)
 
 # LLVM + Clang
+# Import LLVM_ROOT from environment if not set as a CMake variable.
+# CMP0074 makes find_package() search <PackageName>_ROOT env vars
+# automatically, but the validation and Clang_ROOT derivation below
+# need the CMake variable to be set explicitly.
+if (NOT LLVM_ROOT AND DEFINED ENV{LLVM_ROOT})
+    set(LLVM_ROOT "$ENV{LLVM_ROOT}")
+endif()
 if (LLVM_ROOT)
     # LLVM_ROOT is absolute
     get_filename_component(LLVM_ROOT "${LLVM_ROOT}" ABSOLUTE)

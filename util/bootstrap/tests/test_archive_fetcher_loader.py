@@ -31,7 +31,9 @@ from src.recipes.fetcher import (
     recipe_stamp_path,
     is_recipe_up_to_date,
     _build_params,
+    _field_diff,
     _recipe_fields,
+    _recipe_hash,
     _platform_info,
     write_recipe_stamp,
     download_file,
@@ -214,7 +216,7 @@ class TestIsRecipeUpToDate(unittest.TestCase):
         self.assertNotEqual(is_recipe_up_to_date(r, "abc"), "")
 
     def test_matching_stamp(self):
-        """Stamp with matching version and ref should be up to date."""
+        """Stamp with matching fields should be up to date."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
             stamp = recipe_stamp_path(r)
@@ -295,16 +297,28 @@ class TestIsRecipeUpToDate(unittest.TestCase):
                            "build_params": {}}, f)
             self.assertIn("recipe build_type changed", is_recipe_up_to_date(r, "abc"))
 
-    def test_old_recipe_hash_format(self):
-        """Stamp with old recipe_hash should trigger rebuild."""
+    def test_old_recipe_hash_matching(self):
+        """Stamp with old recipe_hash format should pass if hash matches."""
+        with tempfile.TemporaryDirectory() as td:
+            r = _make_recipe(install_dir=td)
+            h = _recipe_hash(r)
+            stamp = recipe_stamp_path(r)
+            with open(stamp, "w") as f:
+                json.dump({"version": "1.0", "ref": "abc",
+                           "recipe_hash": h,
+                           "build_params": {}}, f)
+            self.assertEqual(is_recipe_up_to_date(r, "abc"), "")
+
+    def test_old_recipe_hash_mismatch(self):
+        """Stamp with old recipe_hash format should report change if hash differs."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
                 json.dump({"version": "1.0", "ref": "abc",
-                           "recipe_hash": "old_hash",
+                           "recipe_hash": "stale_hash",
                            "build_params": {}}, f)
-            self.assertIn("old recipe_hash format", is_recipe_up_to_date(r, "abc"))
+            self.assertIn("recipe changed", is_recipe_up_to_date(r, "abc"))
 
     def test_platform_mismatch(self):
         """Stamp from a different platform should trigger rebuild."""
@@ -343,6 +357,152 @@ class TestBuildParams(unittest.TestCase):
 
     def test_empty_when_no_params(self):
         self.assertEqual(_build_params(), {})
+
+
+class TestFieldDiff(unittest.TestCase):
+    def test_simple_change(self):
+        result = _field_diff("old", "new")
+        self.assertIn("old", result)
+        self.assertIn("new", result)
+
+    def test_added(self):
+        result = _field_diff(None, "value")
+        self.assertIn("added", result)
+
+    def test_removed(self):
+        result = _field_diff("value", None)
+        self.assertIn("removed", result)
+
+    def test_dict_diff(self):
+        old = json.dumps({"a": 1, "b": 2})
+        new = json.dumps({"a": 1, "b": 3})
+        result = _field_diff(old, new)
+        self.assertIn("b", result)
+        self.assertNotIn("a:", result)
+
+    def test_list_same_length_diff(self):
+        old = json.dumps([{"x": 1, "y": 2}])
+        new = json.dumps([{"x": 1, "y": 3}])
+        result = _field_diff(old, new)
+        self.assertIn("y", result)
+        self.assertNotIn("x:", result)
+
+    def test_list_different_length(self):
+        old = json.dumps(["a", "b", "c"])
+        new = json.dumps(["a", "b"])
+        result = _field_diff(old, new)
+        self.assertIn("removed", result)
+        self.assertIn("c", result)
+
+    def test_non_json_fallback(self):
+        result = _field_diff("plain old", "plain new")
+        self.assertIn("plain old", result)
+        self.assertIn("plain new", result)
+
+
+class TestValueDiff(unittest.TestCase):
+    """Direct tests for _value_diff covering recursion and edge cases."""
+
+    def test_equal_values_unchanged(self):
+        """Equal values should report unchanged."""
+        from src.recipes.fetcher import _value_diff
+        result = _value_diff({"a": 1}, {"a": 1})
+        self.assertIn("unchanged", result)
+
+    def test_dict_added_key(self):
+        """A key only in 'new' should appear as added."""
+        from src.recipes.fetcher import _value_diff
+        result = _value_diff({"a": 1}, {"a": 1, "b": 2})
+        self.assertIn("added", result)
+        self.assertIn("b", result)
+
+    def test_dict_removed_key(self):
+        """A key only in 'old' should appear as removed."""
+        from src.recipes.fetcher import _value_diff
+        result = _value_diff({"a": 1, "b": 2}, {"a": 1})
+        self.assertIn("removed", result)
+        self.assertIn("b", result)
+
+    def test_nested_dict_recursion(self):
+        """Nested dict diffs should recurse and indent."""
+        from src.recipes.fetcher import _value_diff
+        old = {"outer": {"inner": "old_val"}}
+        new = {"outer": {"inner": "new_val"}}
+        result = _value_diff(old, new)
+        self.assertIn("outer", result)
+        self.assertIn("inner", result)
+        self.assertIn("old_val", result)
+        self.assertIn("new_val", result)
+
+    def test_nested_list_in_dict(self):
+        """A list-valued key changing should recurse into list diff."""
+        from src.recipes.fetcher import _value_diff
+        old = {"items": [1, 2, 3]}
+        new = {"items": [1, 2, 4]}
+        result = _value_diff(old, new)
+        self.assertIn("items", result)
+        self.assertIn("3", result)
+        self.assertIn("4", result)
+
+    def test_list_added_only(self):
+        """List that only grows should report only the added entries."""
+        from src.recipes.fetcher import _value_diff
+        result = _value_diff([1, 2], [1, 2, 3])
+        self.assertIn("added", result)
+        self.assertIn("3", result)
+
+    def test_list_same_length_all_unchanged(self):
+        """Same-length lists with all elements equal should report unchanged."""
+        from src.recipes.fetcher import _value_diff
+        result = _value_diff([1, 2, 3], [1, 2, 3])
+        self.assertIn("unchanged", result)
+
+    def test_mixed_types_fall_through(self):
+        """Mismatched container types should fall through to scalar diff."""
+        from src.recipes.fetcher import _value_diff
+        result = _value_diff({"a": 1}, [1, 2])
+        self.assertIn("->", result)
+
+
+class TestRecipeFields(unittest.TestCase):
+    def test_fields_from_recipe(self):
+        r = _make_recipe()
+        fields = _recipe_fields(r)
+        self.assertEqual(fields["name"], "test-lib")
+        self.assertEqual(fields["version"], "1.0")
+        self.assertEqual(fields["build_type"], "Release")
+        self.assertIn("source", fields)
+        self.assertIn("build", fields)
+
+    def test_deterministic(self):
+        r = _make_recipe()
+        f1 = _recipe_fields(r)
+        f2 = _recipe_fields(r)
+        self.assertEqual(f1, f2)
+
+
+class TestPlatformInfo(unittest.TestCase):
+    def test_has_required_keys(self):
+        info = _platform_info()
+        self.assertIn("os", info)
+        self.assertIn("arch", info)
+
+    def test_os_is_known(self):
+        info = _platform_info()
+        self.assertIn(info["os"], ("Linux", "Darwin", "Windows"))
+
+
+class TestRecipeHash(unittest.TestCase):
+    def test_deterministic(self):
+        r = _make_recipe()
+        h1 = _recipe_hash(r)
+        h2 = _recipe_hash(r)
+        self.assertEqual(h1, h2)
+
+    def test_different_recipe(self):
+        r1 = _make_recipe(version="1.0")
+        r2 = _make_recipe(version="2.0")
+        self.assertNotEqual(_recipe_hash(r1), _recipe_hash(r2))
 
 
 class TestWriteRecipeStamp(unittest.TestCase):

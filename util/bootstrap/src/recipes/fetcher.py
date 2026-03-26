@@ -97,7 +97,9 @@ def is_recipe_up_to_date(
         return "stamp file is corrupt or unreadable"
     if data.get("ref") != resolved_ref:
         return f"ref changed: {data.get('ref')!r} -> {resolved_ref!r}"
-    # Check if the recipe definition changed (the JSON file contents).
+    # Check if the recipe definition changed.
+    # New format stores individual fields ("recipe" dict); old format
+    # stores an opaque hash ("recipe_hash" string).  Both are accepted.
     stored_recipe = data.get("recipe")
     if stored_recipe is not None:
         current_recipe = _recipe_fields(recipe)
@@ -108,8 +110,10 @@ def is_recipe_up_to_date(
                 diff = _field_diff(old_val, new_val)
                 return f"recipe {key} changed: {diff}"
     elif data.get("recipe_hash") is not None:
-        # Old stamp with opaque hash — can't compare fields, treat as stale
-        return "stamp uses old recipe_hash format (re-run to update)"
+        # Old format with opaque hash — verify it still matches
+        current_hash = _recipe_hash(recipe)
+        if data["recipe_hash"] != current_hash:
+            return f"recipe changed (hash {data['recipe_hash']!r} -> {current_hash!r})"
     # Check if the platform changed (OS, version, architecture).
     stored_platform = data.get("platform")
     if stored_platform is not None:
@@ -124,9 +128,11 @@ def is_recipe_up_to_date(
     # "build_params" with recipe fields mixed in -- treat as stale.
     stored_params = data.get("build_params")
     if stored_params is None:
-        if data.get("content_hash") is not None:
-            return "stamp uses old format (re-run to update)"
-        return ""
+        # Old-format stamps (with content_hash instead of build_params)
+        # can't be compared field-by-field. Treat as stale so the stamp
+        # gets rewritten in the new format.
+        has_keys = [k for k in data if k not in ("name", "version", "ref")]
+        return f"stamp uses old format (has: {has_keys})"
     current_params = _build_params(sanitizer, cc, cxx, cflags, cxxflags, ldflags)
     for key in set(list(stored_params.keys()) + list(current_params.keys())):
         old_val = stored_params.get(key)
@@ -150,26 +156,53 @@ def _field_diff(old_val, new_val) -> str:
     try:
         old_parsed = json.loads(old_val) if isinstance(old_val, str) else old_val
         new_parsed = json.loads(new_val) if isinstance(new_val, str) else new_val
-        if isinstance(old_parsed, dict) and isinstance(new_parsed, dict):
-            diffs = []
-            for k in set(list(old_parsed.keys()) + list(new_parsed.keys())):
-                ov = old_parsed.get(k)
-                nv = new_parsed.get(k)
-                if ov != nv:
-                    diffs.append(f"  {k}: {ov!r} -> {nv!r}")
-            return "\n".join(diffs) if diffs else f"{old_val!r} -> {new_val!r}"
-        if isinstance(old_parsed, list) and isinstance(new_parsed, list):
-            removed = [x for x in old_parsed if x not in new_parsed]
-            added = [x for x in new_parsed if x not in old_parsed]
-            parts = []
-            if removed:
-                parts.append(f"  removed: {removed!r}")
-            if added:
-                parts.append(f"  added: {added!r}")
-            return "\n".join(parts) if parts else f"{old_val!r} -> {new_val!r}"
+        return _value_diff(old_parsed, new_parsed)
     except (json.JSONDecodeError, TypeError):
         pass
     return f"{old_val!r} -> {new_val!r}"
+
+
+def _value_diff(old, new, indent=2) -> str:
+    """Recursively diff two parsed values, showing only what changed."""
+    pad = " " * indent
+    if old == new:
+        return f"{pad}(unchanged)"
+    if isinstance(old, dict) and isinstance(new, dict):
+        diffs = []
+        for k in sorted(set(list(old.keys()) + list(new.keys()))):
+            ov = old.get(k)
+            nv = new.get(k)
+            if ov == nv:
+                continue
+            if ov is None:
+                diffs.append(f"{pad}{k}: added {nv!r}")
+            elif nv is None:
+                diffs.append(f"{pad}{k}: removed {ov!r}")
+            elif isinstance(ov, (dict, list)) and isinstance(nv, (dict, list)):
+                diffs.append(f"{pad}{k}:")
+                diffs.append(_value_diff(ov, nv, indent + 2))
+            else:
+                diffs.append(f"{pad}{k}: {ov!r} -> {nv!r}")
+        return "\n".join(diffs)
+    if isinstance(old, list) and isinstance(new, list):
+        if len(old) == len(new):
+            # Same-length lists: diff element by element
+            diffs = []
+            for i, (ov, nv) in enumerate(zip(old, new)):
+                if ov != nv:
+                    diffs.append(f"{pad}[{i}]:")
+                    diffs.append(_value_diff(ov, nv, indent + 2))
+            return "\n".join(diffs) if diffs else f"{pad}(unchanged)"
+        # Different-length lists: show added/removed
+        only_old = [x for x in old if x not in new]
+        only_new = [x for x in new if x not in old]
+        parts = []
+        if only_old:
+            parts.append(f"{pad}removed: {only_old!r}")
+        if only_new:
+            parts.append(f"{pad}added: {only_new!r}")
+        return "\n".join(parts) if parts else f"{pad}{old!r} -> {new!r}"
+    return f"{pad}{old!r} -> {new!r}"
 
 
 def _recipe_fields(recipe: Recipe) -> dict:
@@ -193,6 +226,14 @@ def _recipe_fields(recipe: Recipe) -> dict:
         "install_scope": recipe.install_scope,
         "package_root_var": recipe.package_root_var,
     }
+
+
+def _recipe_hash(recipe: Recipe) -> str:
+    """Compute a hash of the recipe fields for backward compatibility
+    with old-format stamps that stored 'recipe_hash'."""
+    import hashlib
+    content = json.dumps(_recipe_fields(recipe), sort_keys=True)
+    return hashlib.sha256(content.encode()).hexdigest()[:16]
 
 
 def _platform_info() -> dict:

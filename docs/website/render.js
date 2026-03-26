@@ -1,3 +1,13 @@
+//
+// Licensed under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+//
+// Official repository: https://github.com/cppalliance/mrdocs
+//
+
 const Handlebars = require('handlebars');
 const hljs = require('highlight.js/lib/core');
 hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
@@ -38,6 +48,16 @@ if (!mrdocsRoot) {
 const mrdocsExecutable = path.join(mrdocsRoot, 'bin', 'mrdocs') + (process.platform === 'win32' ? '.exe' : '');
 if (!fs.existsSync(mrdocsExecutable)) {
     console.log(`mrdocs executable not found at ${mrdocsExecutable}`);
+    // Walk up the path to find the first directory that exists
+    let dir = path.dirname(mrdocsExecutable);
+    while (dir && dir !== path.dirname(dir)) {
+        if (fs.existsSync(dir)) {
+            console.log(`Nearest existing directory: ${dir}`);
+            console.log(`Contents: ${fs.readdirSync(dir).join(', ')}`);
+            break;
+        }
+        dir = path.dirname(dir);
+    }
     process.exit(1);
 }
 

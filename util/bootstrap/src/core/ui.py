@@ -72,6 +72,9 @@ class TextUI:
     def _supports_emoji() -> bool:
         if os.environ.get("BOOTSTRAP_PLAIN"):
             return False
+        encoding = getattr(sys.stdout, 'encoding', '') or ''
+        if encoding.lower().replace('-', '') in ('ascii', 'charmap', 'cp1252', 'latin1', 'iso88591'):
+            return False
         return True
 
     def _fmt(self, text: str, kind: str, icon: Optional[str] = None) -> str:

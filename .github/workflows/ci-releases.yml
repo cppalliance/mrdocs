@@ -1,0 +1,350 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+name: Releases
+
+on:
+  workflow_call:
+    inputs:
+      submatrices:
+        description: 'JSON-encoded sub-matrices object from cpp-matrix'
+        type: string
+        required: true
+
+jobs:
+  releases:
+    # `fromJSON(...).releases` deserialises to an array, so comparing it
+    # to the literal string '[]' never matches.  Re-serialise with toJSON
+    # so the emptiness check actually triggers and the job is skipped
+    # cleanly on non-release runs (PRs, sanitizer-only matrices, etc.).
+    if: ${{ toJSON(fromJSON(inputs.submatrices).releases) != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.submatrices).releases }}
+
+    defaults:
+      run:
+        shell: bash
+
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+    permissions:
+      contents: write
+
+    steps:
+      - name: Container Bootstrap
+        uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.4
+
+      - name: Install packages
+        uses: alandefreitas/cpp-actions/package-install@v1.9.4
+        id: package-install
+        with:
+          apt-get: build-essential asciidoctor cmake bzip2 git rsync
+
+      - name: Clone MrDocs
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+        if: ${{ runner.os == 'Windows' }}
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.4
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
+      - name: Download MrDocs package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.mrdocs-release-package-artifact }}
+          path: packages
+
+      - name: Install MrDocs from Package
+        run: .github/scripts/install-mrdocs-package.sh
+
+      - name: Clone Boost.URL
+        uses: alandefreitas/cpp-actions/boost-clone@v1.9.4
+        id: boost-url-clone
+        with:
+          branch: develop
+          modules: url
+          boost-dir: boost
+          modules-scan-paths: '"test example"'
+          modules-exclude-paths: ''
+          trace-commands: true
+
+      - name: Generate Landing Page
+        working-directory: docs/website
+        run: |
+          npm ci
+          node render.js
+          mkdir -p ../../build/website
+          cp index.html ../../build/website/index.html
+          cp robots.txt ../../build/website/robots.txt
+          cp styles.css ../../build/website/styles.css
+          cp -r assets ../../build/website/assets
+
+      - name: Generate Antora UI
+        working-directory: docs/ui
+        run: |
+          # This playbook renders the documentation
+          # content for the website. It includes
+          # master, develop, and tags.
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
+          npm ci
+          npx gulp lint
+          npx gulp
+
+      # Website publishing gate:
+      # - Only publish on pushes to master/develop and on tags
+      # - Only on Linux runners (the publish steps assume GNU tooling)
+      #
+      # Use `if: env.PUBLISH_WEBSITE == 'true'` for all steps that
+      # write into `build/website/` and get deployed to the website.
+      - name: Set website publish gate
+        run: |
+          is_publish_ref='false'
+          if [[ "${{ github.event_name }}" == 'push' ]]; then
+            if [[ "${{ github.ref_name }}" == 'master' || "${{ github.ref_name }}" == 'develop' ]]; then
+              is_publish_ref='true'
+            fi
+            if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+              is_publish_ref='true'
+            fi
+          fi
+
+          publish_website="$is_publish_ref"
+          if [[ "${{ runner.os }}" != 'Linux' ]]; then
+            publish_website='false'
+          fi
+
+          {
+            echo "IS_PUBLISH_REF=$is_publish_ref"
+            echo "PUBLISH_WEBSITE=$publish_website"
+          } >> "$GITHUB_ENV"
+
+      - name: Ensure all refs for Antora
+        if: env.PUBLISH_WEBSITE == 'true'
+        run: |
+          set -euo pipefail
+          # Make sure Antora sees every branch and tag from the upstream repo,
+          # regardless of who triggered the workflow.
+          git remote set-url origin https://github.com/cppalliance/mrdocs.git
+          git fetch --prune --prune-tags origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/tags/*:refs/tags/*'
+
+      - name: Generate Remote Documentation
+        # This step fetches and builds develop, master and all tags. That's
+        # unrelated to a PR, and is only needed for website publishing. So, skip
+        # it for a PR.
+        if: github.event_name != 'pull_request'
+        working-directory: docs
+        run: |
+          # This playbook renders the documentation
+          # content for the website. It includes
+          # master, develop, and tags.
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
+          set -x
+          npm ci
+          npx antora --clean --fetch antora-playbook.yml --log-level=debug
+          mkdir -p ../build/website/docs
+          cp -vr build/site/* ../build/website/docs
+
+      - name: Upload Website as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Website ${{ runner.os }}
+          path: build/website
+          retention-days: 30
+
+      - name: Generate Local Documentation
+        working-directory: docs
+        run: |
+          # This playbook allows us to render the
+          # documentation content and visualize it
+          # before a workflow that pushes to the
+          # website is triggered.
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
+          set -x
+          npm ci
+          npx antora antora-playbook.yml --attribute branchesarray=HEAD --stacktrace --log-level=debug
+          mkdir -p ../build/docs-local
+          cp -vr build/site/* ../build/docs-local
+
+      - name: Clone Beman.Optional
+        uses: actions/checkout@v4
+        with:
+          repository: steve-downey/optional
+          ref: main
+          path: beman-optional
+
+      - name: Clone Fmt
+        uses: actions/checkout@v4
+        with:
+          repository: fmtlib/fmt
+          ref: main
+          path: fmt
+
+      - name: Clone Nlohmann.Json
+        uses: actions/checkout@v4
+        with:
+          repository: nlohmann/json
+          ref: develop
+          path: nlohmann-json
+
+      - name: Clone MpUnits
+        uses: actions/checkout@v4
+        with:
+          repository: mpusz/mp-units
+          ref: master
+          path: mp-units
+
+      - name: Patch Demo Projects
+        shell: bash
+        run: |
+          set -euo pipefail
+          set -x
+
+          for project in beman-optional fmt nlohmann-json mp-units; do
+            src="./examples/third-party/$project"
+            dst="./$project"
+
+            [ -d "$src" ] || { echo "Source not found: $src" >&2; exit 1; }
+            mkdir -p "$dst"
+
+            # Mirror contents of $src into $dst, overwriting existing files
+            tar -C "$src" -cf - . | tar -C "$dst" -xpf -
+          done
+
+
+      - name: Generate Demos
+        run: .github/scripts/generate-demos.sh
+
+      - name: Upload Demos as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name ) && format('-{0}', github.ref_name)) || '' }}-${{ runner.os }}
+          path: demos.tar.gz
+          # develop and master are retained for longer so that they can be compared
+          retention-days: ${{ contains(fromJSON('["master", "develop"]'), github.ref_name) && '30' || '1' }}
+
+      - name: Download Previous Demos
+        if: startsWith(github.ref, 'refs/tags/') && runner.os == 'Linux'
+        id: download-prev-demos
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: demos-develop-${{ runner.os }}
+          path: demos-previous
+
+      - name: Compare demos
+        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true' && runner.os == 'Linux'
+        id: compare-demos
+        run: .github/scripts/compare-demos.sh
+
+      - name: Upload Demo Diff as Artifacts
+        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true' && steps.compare-demos.outputs.diff == 'true' && runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: demos-diff
+          path: demos-diff
+          retention-days: 30
+
+      - name: Publish Website to GitHub Pages
+        if: env.PUBLISH_WEBSITE == 'true'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/website
+          force_orphan: true
+
+      - name: Publish website
+        if: env.PUBLISH_WEBSITE == 'true'
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          set -euvx
+          # Add SSH key
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          chmod 600 /home/runner/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+
+          rsyncopts=(--recursive --delete --links --times --chmod=D0755,F0755 --compress --compress-choice=zstd --rsh="ssh -o StrictHostKeyChecking=no" --human-readable)
+          website_dir="ubuntu@dev-websites.cpp.al:/var/www/mrdox.com"
+          demo_dir="$website_dir/demos/${{ github.ref_name }}"
+
+          # Copy files: This step will copy the landing page and the documentation to www.mrdocs.com
+          time rsync "${rsyncopts[@]}" --exclude=demos/ --exclude=roadmap/ $(pwd)/build/website/ "$website_dir"/
+
+          # Copy demos: This step will copy the demos to www.mrdocs.com/demos
+          time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
+
+      - name: Create changelog
+        uses: alandefreitas/cpp-actions/create-changelog@v1.9.4
+        with:
+          output-path: CHANGELOG.md
+          thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          limit: 150
+          update-summary: ${{ runner.os == 'Linux' && 'true' || 'false' }}
+
+      # For non-tag publishes (the develop-release and master-release
+      # rolling releases), strip the project version out of the package
+      # filenames and insert the branch name instead. Subsequent pushes
+      # to the same branch then overwrite the existing GitHub-release
+      # assets cleanly; without this, a version bump would leave the
+      # previous version's files behind as stale assets. Tag releases
+      # keep their versioned filenames.
+      - name: Rebrand branch packages with the ref name
+        if: env.IS_PUBLISH_REF == 'true' && !startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euxo pipefail
+          cd packages
+          for f in MrDocs-*.*.*-*.*; do
+            [ -e "$f" ] || continue
+            new=$(echo "$f" | sed -E 's|^MrDocs-[0-9]+\.[0-9]+\.[0-9]+-|MrDocs-${{ github.ref_name }}-|')
+            mv -- "$f" "$new"
+          done
+
+      - name: Create GitHub Package Release
+        if: env.IS_PUBLISH_REF == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          # After the rebrand step, branch packages have the form
+          # MrDocs-<ref>-<platform>.<ext> (no semver), so the glob
+          # is broader than the historical MrDocs-*.*.*-*.*.
+          files: packages/MrDocs-*-*.*
+          fail_on_unmatched_files: true
+          name: ${{ github.ref_name || github.ref }}
+          tag_name: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
+          body_path: CHANGELOG.md
+          prerelease: false
+          draft: false
+          token: ${{ github.token }}
