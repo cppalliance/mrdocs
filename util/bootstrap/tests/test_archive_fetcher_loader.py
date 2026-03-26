@@ -30,7 +30,9 @@ from src.recipes.fetcher import (
     build_archive_url,
     recipe_stamp_path,
     is_recipe_up_to_date,
-    _recipe_content_hash,
+    _build_params,
+    _recipe_fields,
+    _platform_info,
     write_recipe_stamp,
     download_file,
     fetch_recipe_source,
@@ -209,25 +211,35 @@ class TestIsRecipeUpToDate(unittest.TestCase):
     def test_no_stamp_file(self):
         """Missing stamp file means not up to date."""
         r = _make_recipe(install_dir="/nonexistent")
-        self.assertFalse(is_recipe_up_to_date(r, "abc"))
+        self.assertNotEqual(is_recipe_up_to_date(r, "abc"), "")
 
     def test_matching_stamp(self):
         """Stamp with matching version and ref should be up to date."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
             stamp = recipe_stamp_path(r)
-            payload = {"version": "1.0", "ref": "abc123"}
+            payload = {
+                "version": "1.0", "ref": "abc123",
+                "recipe": _recipe_fields(r),
+                "platform": _platform_info(),
+                "build_params": {},
+            }
             with open(stamp, "w") as f:
                 json.dump(payload, f)
-            self.assertTrue(is_recipe_up_to_date(r, "abc123"))
+            self.assertEqual(is_recipe_up_to_date(r, "abc123"), "")
 
     def test_version_mismatch(self):
+        """Version change is caught by recipe field comparison."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
+            old_recipe = _recipe_fields(r)
+            old_recipe["version"] = "2.0"
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
-                json.dump({"version": "2.0", "ref": "abc"}, f)
-            self.assertFalse(is_recipe_up_to_date(r, "abc"))
+                json.dump({"version": "2.0", "ref": "abc",
+                           "recipe": old_recipe,
+                           "build_params": {}}, f)
+            self.assertIn("recipe version changed", is_recipe_up_to_date(r, "abc"))
 
     def test_ref_mismatch(self):
         with tempfile.TemporaryDirectory() as td:
@@ -235,7 +247,7 @@ class TestIsRecipeUpToDate(unittest.TestCase):
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
                 json.dump({"version": "1.0", "ref": "old"}, f)
-            self.assertFalse(is_recipe_up_to_date(r, "new"))
+            self.assertIn("ref changed", is_recipe_up_to_date(r, "new"))
 
     def test_corrupt_stamp(self):
         with tempfile.TemporaryDirectory() as td:
@@ -243,40 +255,94 @@ class TestIsRecipeUpToDate(unittest.TestCase):
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
                 f.write("not json")
-            self.assertFalse(is_recipe_up_to_date(r, "abc"))
+            self.assertIn("corrupt", is_recipe_up_to_date(r, "abc"))
 
-    def test_content_hash_match(self):
-        """Stamp with valid content_hash should be up to date."""
+    def test_build_params_match(self):
+        """Stamp with matching build_params should be up to date."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
-            h = _recipe_content_hash(r, sanitizer="", cc="/usr/bin/gcc")
+            params = _build_params(sanitizer="", cc="/usr/bin/gcc")
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
-                json.dump({"version": "1.0", "ref": "abc", "content_hash": h}, f)
-            self.assertTrue(is_recipe_up_to_date(r, "abc", cc="/usr/bin/gcc"))
+                json.dump({"version": "1.0", "ref": "abc",
+                           "recipe": _recipe_fields(r),
+                           "platform": _platform_info(),
+                           "build_params": params}, f)
+            self.assertEqual(is_recipe_up_to_date(r, "abc", cc="/usr/bin/gcc"), "")
 
-    def test_content_hash_mismatch(self):
-        """Stamp with wrong content_hash should not be up to date."""
+    def test_build_params_mismatch(self):
+        """Stamp with different build_params should report which field changed."""
+        with tempfile.TemporaryDirectory() as td:
+            r = _make_recipe(install_dir=td)
+            params = _build_params(cc="old-gcc")
+            stamp = recipe_stamp_path(r)
+            with open(stamp, "w") as f:
+                json.dump({"version": "1.0", "ref": "abc",
+                           "recipe": _recipe_fields(r),
+                           "build_params": params}, f)
+            self.assertIn("cc changed", is_recipe_up_to_date(r, "abc", cc="new-gcc"))
+
+    def test_recipe_changed(self):
+        """Stamp with different recipe fields should report which field changed."""
+        with tempfile.TemporaryDirectory() as td:
+            r = _make_recipe(install_dir=td)
+            old_recipe = _recipe_fields(r)
+            old_recipe["build_type"] = "Debug"
+            stamp = recipe_stamp_path(r)
+            with open(stamp, "w") as f:
+                json.dump({"version": "1.0", "ref": "abc",
+                           "recipe": old_recipe,
+                           "build_params": {}}, f)
+            self.assertIn("recipe build_type changed", is_recipe_up_to_date(r, "abc"))
+
+    def test_old_recipe_hash_format(self):
+        """Stamp with old recipe_hash should trigger rebuild."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
-                json.dump({"version": "1.0", "ref": "abc", "content_hash": "wrong"}, f)
-            self.assertFalse(is_recipe_up_to_date(r, "abc"))
+                json.dump({"version": "1.0", "ref": "abc",
+                           "recipe_hash": "old_hash",
+                           "build_params": {}}, f)
+            self.assertIn("old recipe_hash format", is_recipe_up_to_date(r, "abc"))
+
+    def test_platform_mismatch(self):
+        """Stamp from a different platform should trigger rebuild."""
+        with tempfile.TemporaryDirectory() as td:
+            r = _make_recipe(install_dir=td)
+            stamp = recipe_stamp_path(r)
+            with open(stamp, "w") as f:
+                json.dump({"version": "1.0", "ref": "abc",
+                           "recipe": _recipe_fields(r),
+                           "platform": {"os": "FakeOS", "arch": "z80", "os_version": "1.0"},
+                           "build_params": {}}, f)
+            result = is_recipe_up_to_date(r, "abc")
+            self.assertIn("platform", result)
+            self.assertIn("changed", result)
+
+    def test_old_content_hash_triggers_rebuild(self):
+        """Stamp with old content_hash format should trigger rebuild."""
+        with tempfile.TemporaryDirectory() as td:
+            r = _make_recipe(install_dir=td)
+            stamp = recipe_stamp_path(r)
+            with open(stamp, "w") as f:
+                json.dump({"version": "1.0", "ref": "abc", "content_hash": "old"}, f)
+            self.assertIn("old format", is_recipe_up_to_date(r, "abc"))
 
 
-class TestRecipeContentHash(unittest.TestCase):
+class TestBuildParams(unittest.TestCase):
     def test_deterministic(self):
-        r = _make_recipe()
-        h1 = _recipe_content_hash(r, cc="gcc")
-        h2 = _recipe_content_hash(r, cc="gcc")
-        self.assertEqual(h1, h2)
+        p1 = _build_params(cc="gcc")
+        p2 = _build_params(cc="gcc")
+        self.assertEqual(p1, p2)
 
     def test_different_params(self):
-        r = _make_recipe()
-        h1 = _recipe_content_hash(r, cc="gcc")
-        h2 = _recipe_content_hash(r, cc="clang")
-        self.assertNotEqual(h1, h2)
+        p1 = _build_params(cc="gcc")
+        p2 = _build_params(cc="clang")
+        self.assertNotEqual(p1, p2)
+
+    def test_empty_when_no_params(self):
+        self.assertEqual(_build_params(), {})
 
 
 class TestWriteRecipeStamp(unittest.TestCase):
@@ -291,7 +357,8 @@ class TestWriteRecipeStamp(unittest.TestCase):
                 data = json.load(f)
             self.assertEqual(data["name"], "test-lib")
             self.assertEqual(data["ref"], "abc123")
-            self.assertIn("content_hash", data)
+            self.assertIn("recipe", data)
+            self.assertIn("build_params", data)
 
     def test_dry_run_does_not_write(self):
         """Dry-run should not create stamp file."""
@@ -339,7 +406,7 @@ class TestFetchRecipeSource(unittest.TestCase):
             source_dir="/tmp/src",
         )
         ui = TextUI()
-        with patch("src.recipes.fetcher.is_recipe_up_to_date", return_value=True):
+        with patch("src.recipes.fetcher.is_recipe_up_to_date", return_value=""):
             ref = fetch_recipe_source(r, "/tmp", ui=ui)
         self.assertEqual(ref, "abc")
 
@@ -353,7 +420,7 @@ class TestFetchRecipeSource(unittest.TestCase):
                 source_dir=src_dir,
             )
             ui = TextUI()
-            with patch("src.recipes.fetcher.is_recipe_up_to_date", return_value=False):
+            with patch("src.recipes.fetcher.is_recipe_up_to_date", return_value="stale"):
                 ref = fetch_recipe_source(r, td, ui=ui)
             self.assertEqual(ref, "abc")
 
@@ -361,7 +428,7 @@ class TestFetchRecipeSource(unittest.TestCase):
     @patch("src.recipes.fetcher.download_file")
     @patch("src.recipes.fetcher.remove_dir")
     @patch("src.recipes.fetcher.ensure_dir")
-    @patch("src.recipes.fetcher.is_recipe_up_to_date", return_value=False)
+    @patch("src.recipes.fetcher.is_recipe_up_to_date", return_value="stale")
     def test_archive_fetch_zip(self, mock_uptodate, mock_ensure, mock_remove, mock_dl, mock_extract):
         """GitHub archive should use download + extract_zip_flatten."""
         with tempfile.TemporaryDirectory() as td:
@@ -379,7 +446,7 @@ class TestFetchRecipeSource(unittest.TestCase):
 
     @patch("src.recipes.fetcher.run_cmd")
     @patch("src.recipes.fetcher.ensure_dir")
-    @patch("src.recipes.fetcher.is_recipe_up_to_date", return_value=False)
+    @patch("src.recipes.fetcher.is_recipe_up_to_date", return_value="stale")
     def test_git_clone_fallback(self, mock_uptodate, mock_ensure, mock_run):
         """Non-GitHub URL should fall back to git clone."""
         with tempfile.TemporaryDirectory() as td:

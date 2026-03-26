@@ -69,7 +69,7 @@ def is_recipe_up_to_date(
     cflags: str = "",
     cxxflags: str = "",
     ldflags: str = "",
-) -> bool:
+) -> str:
     """
     Check if a recipe is already built and up to date.
 
@@ -84,62 +84,179 @@ def is_recipe_up_to_date(
         ldflags: Extra linker flags.
 
     Returns:
-        True if the recipe is up to date.
+        Empty string if the recipe is up to date, otherwise a reason
+        explaining why the stamp doesn't match.
     """
     stamp_path = recipe_stamp_path(recipe)
     if not os.path.exists(stamp_path):
-        return False
+        return "no stamp file found"
     try:
         with open(stamp_path, "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception:
-        return False
-    if data.get("version") != recipe.version or data.get("ref") != resolved_ref:
-        return False
-    # If the stamp has a content hash, verify it matches the current
-    # recipe and runtime parameters. Stamps without a hash (from older
-    # bootstrap versions) pass this check.
-    stored_hash = data.get("content_hash")
-    if stored_hash is not None:
-        current_hash = _recipe_content_hash(
-            recipe, sanitizer, cc, cxx, cflags, cxxflags, ldflags
-        )
-        if stored_hash != current_hash:
-            return False
-    return True
+        return "stamp file is corrupt or unreadable"
+    if data.get("ref") != resolved_ref:
+        return f"ref changed: {data.get('ref')!r} -> {resolved_ref!r}"
+    # Check if the recipe definition changed (the JSON file contents).
+    stored_recipe = data.get("recipe")
+    if stored_recipe is not None:
+        current_recipe = _recipe_fields(recipe)
+        for key in set(list(stored_recipe.keys()) + list(current_recipe.keys())):
+            old_val = stored_recipe.get(key)
+            new_val = current_recipe.get(key)
+            if old_val != new_val:
+                diff = _field_diff(old_val, new_val)
+                return f"recipe {key} changed: {diff}"
+    elif data.get("recipe_hash") is not None:
+        # Old stamp with opaque hash — can't compare fields, treat as stale
+        return "stamp uses old recipe_hash format (re-run to update)"
+    # Check if the platform changed (OS, version, architecture).
+    stored_platform = data.get("platform")
+    if stored_platform is not None:
+        current_platform = _platform_info()
+        for key in set(list(stored_platform.keys()) + list(current_platform.keys())):
+            old_val = stored_platform.get(key)
+            new_val = current_platform.get(key)
+            if old_val != new_val:
+                return f"platform {key} changed: {old_val!r} -> {new_val!r}"
+    # Check runtime build parameters (sanitizer, compiler, flags).
+    # Stamps from older versions may have "content_hash" or
+    # "build_params" with recipe fields mixed in -- treat as stale.
+    stored_params = data.get("build_params")
+    if stored_params is None:
+        if data.get("content_hash") is not None:
+            return "stamp uses old format (re-run to update)"
+        return ""
+    current_params = _build_params(sanitizer, cc, cxx, cflags, cxxflags, ldflags)
+    for key in set(list(stored_params.keys()) + list(current_params.keys())):
+        old_val = stored_params.get(key)
+        new_val = current_params.get(key)
+        if old_val != new_val:
+            return f"{key} changed: {_field_diff(old_val, new_val)}"
+    return ""
 
 
-def _recipe_content_hash(
-    recipe: Recipe,
+def _field_diff(old_val, new_val) -> str:
+    """Produce a human-readable diff between two field values.
+
+    For JSON-encoded strings, parse them and show only the parts
+    that differ.  For simple values, show old -> new.
+    """
+    if old_val is None:
+        return f"added: {new_val!r}"
+    if new_val is None:
+        return f"removed: {old_val!r}"
+    # Try parsing as JSON for a deeper diff
+    try:
+        old_parsed = json.loads(old_val) if isinstance(old_val, str) else old_val
+        new_parsed = json.loads(new_val) if isinstance(new_val, str) else new_val
+        if isinstance(old_parsed, dict) and isinstance(new_parsed, dict):
+            diffs = []
+            for k in set(list(old_parsed.keys()) + list(new_parsed.keys())):
+                ov = old_parsed.get(k)
+                nv = new_parsed.get(k)
+                if ov != nv:
+                    diffs.append(f"  {k}: {ov!r} -> {nv!r}")
+            return "\n".join(diffs) if diffs else f"{old_val!r} -> {new_val!r}"
+        if isinstance(old_parsed, list) and isinstance(new_parsed, list):
+            removed = [x for x in old_parsed if x not in new_parsed]
+            added = [x for x in new_parsed if x not in old_parsed]
+            parts = []
+            if removed:
+                parts.append(f"  removed: {removed!r}")
+            if added:
+                parts.append(f"  added: {added!r}")
+            return "\n".join(parts) if parts else f"{old_val!r} -> {new_val!r}"
+    except (json.JSONDecodeError, TypeError):
+        pass
+    return f"{old_val!r} -> {new_val!r}"
+
+
+def _recipe_fields(recipe: Recipe) -> dict:
+    """
+    Collect the recipe definition fields that affect the build.
+
+    Covers every field from the recipe file.  Computed fields
+    (source_dir, build_dir, install_dir) are excluded since they
+    depend on the environment.  Values are JSON-serialized so
+    complex types (lists, dicts) can be compared as strings.
+    """
+    import dataclasses
+    return {
+        "name": recipe.name,
+        "version": recipe.version,
+        "source": json.dumps(dataclasses.asdict(recipe.source), sort_keys=True),
+        "dependencies": json.dumps(recipe.dependencies, sort_keys=True),
+        "build": json.dumps(recipe.build, sort_keys=True),
+        "build_type": recipe.build_type,
+        "tags": json.dumps(recipe.tags, sort_keys=True) if recipe.tags else "[]",
+        "install_scope": recipe.install_scope,
+        "package_root_var": recipe.package_root_var,
+    }
+
+
+def _platform_info() -> dict:
+    """
+    Collect platform information that affects binary compatibility.
+
+    A change in OS, OS version, or architecture means cached binaries
+    may not work.
+    """
+    import platform
+    info = {
+        "os": platform.system(),
+        "arch": platform.machine(),
+    }
+    # Get OS version where available
+    if platform.system() == "Linux":
+        try:
+            import distro
+            info["os_version"] = distro.version()
+        except ImportError:
+            # Fall back to reading /etc/os-release directly
+            try:
+                with open("/etc/os-release") as f:
+                    for line in f:
+                        if line.startswith("VERSION_ID="):
+                            info["os_version"] = line.split("=", 1)[1].strip().strip('"')
+                            break
+            except OSError:
+                pass
+    elif platform.system() == "Darwin":
+        info["os_version"] = platform.mac_ver()[0]
+    elif platform.system() == "Windows":
+        info["os_version"] = platform.version()
+    return info
+
+
+def _build_params(
     sanitizer: str = "",
     cc: str = "",
     cxx: str = "",
     cflags: str = "",
     cxxflags: str = "",
     ldflags: str = "",
-) -> str:
+) -> dict:
     """
-    Compute a hash of everything that affects the build output.
+    Collect runtime build parameters that affect the build output.
 
-    Covers both the recipe definition and runtime parameters like
-    sanitizer, compiler, and flags. Any change invalidates the stamp.
+    Only includes non-empty values.  These are compared field by field
+    so the mismatch reason identifies exactly what changed.
     """
-    import hashlib
-    content = json.dumps({
-        "version": recipe.version,
-        "source_url": recipe.source.url,
-        "source_ref": recipe.source.commit or recipe.source.tag or recipe.source.branch or recipe.source.ref or "",
-        "build": recipe.build,
-        "build_type": recipe.build_type,
-        "tags": recipe.tags,
-        "sanitizer": sanitizer,
-        "cc": cc,
-        "cxx": cxx,
-        "cflags": cflags,
-        "cxxflags": cxxflags,
-        "ldflags": ldflags,
-    }, sort_keys=True)
-    return hashlib.sha256(content.encode()).hexdigest()[:16]
+    params = {}
+    if sanitizer:
+        params["sanitizer"] = sanitizer
+    if cc:
+        params["cc"] = cc
+    if cxx:
+        params["cxx"] = cxx
+    if cflags:
+        params["cflags"] = cflags
+    if cxxflags:
+        params["cxxflags"] = cxxflags
+    if ldflags:
+        params["ldflags"] = ldflags
+    return params
 
 
 def write_recipe_stamp(
@@ -177,12 +294,16 @@ def write_recipe_stamp(
         "name": recipe.name,
         "version": recipe.version,
         "ref": resolved_ref,
-        "content_hash": _recipe_content_hash(
-            recipe, sanitizer, cc, cxx, cflags, cxxflags, ldflags
-        ),
+        "recipe": _recipe_fields(recipe),
+        "platform": _platform_info(),
+        "build_params": _build_params(sanitizer, cc, cxx, cflags, cxxflags, ldflags),
     }
     ensure_dir(recipe.install_dir, dry_run=dry_run, ui=ui)
-    write_text(stamp, json.dumps(payload, indent=2), dry_run=dry_run, ui=ui)
+    content = json.dumps(payload, indent=2)
+    write_text(stamp, content, dry_run=dry_run, ui=ui)
+    if not dry_run:
+        ui.info(f"Stamp written to {stamp}")
+        ui.info(f"Stamp contents:\n{content}")
 
 
 def download_file(
@@ -255,7 +376,7 @@ def fetch_recipe_source(
     if clean and os.path.exists(dest):
         remove_dir(dest, dry_run=dry_run, ui=ui)
 
-    if not dry_run and not force and is_recipe_up_to_date(recipe, resolved_ref):
+    if not dry_run and not force and not is_recipe_up_to_date(recipe, resolved_ref):
         ui.ok(f"[{recipe.name}] already up to date ({resolved_ref or 'HEAD'}).")
         return resolved_ref
 

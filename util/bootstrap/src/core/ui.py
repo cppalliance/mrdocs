@@ -57,6 +57,10 @@ class TextUI:
         self.base_path: Optional[str] = None
         self.base_token: str = "."
         self.dry_run: bool = False
+        self._ci = bool(os.environ.get("GITHUB_ACTIONS"))
+        self._ci_group_open = False
+        self._ci_group_title = ""
+        self._ci_group_start = 0.0
 
     @staticmethod
     def _supports_color() -> bool:
@@ -117,6 +121,7 @@ class TextUI:
 
     def section(self, title: str, icon: Optional[str] = None):
         prefix = (icon + " ") if (self.emoji_enabled and icon) else ""
+        self.start_group(f"{prefix}{title}")
         line = ("=" if self.plain else "\u2501") * 60
         out = self._out
         print(file=out)
@@ -129,6 +134,7 @@ class TextUI:
 
     def subsection(self, title: str, icon: Optional[str] = None):
         prefix = (icon + " ") if (self.emoji_enabled and icon) else ""
+        self.start_group(f"{prefix}{title}")
         if self.plain:
             banner = f"--- {prefix}{title}"
         else:
@@ -140,6 +146,31 @@ class TextUI:
             # underline matches text length (indent + title) plus a small cushion
             underline_len = max(15, len(banner.strip()) + 4)
             print(self._fmt("-" * underline_len, "subsection", ""), file=out)
+
+    def start_group(self, title: str):
+        """Start a CI group. Closes any already-open group first."""
+        if self._ci:
+            import time
+            self.end_group()
+            print(f"::group::{title}", file=self._out)
+            self._ci_group_open = True
+            self._ci_group_title = title
+            self._ci_group_start = time.monotonic()
+
+    def end_group(self):
+        """Close the current CI group if one is open. No-op otherwise."""
+        if self._ci_group_open:
+            import time
+            elapsed = time.monotonic() - self._ci_group_start
+            if elapsed >= 60:
+                mins = int(elapsed) // 60
+                secs = int(elapsed) % 60
+                duration = f"{mins}m {secs}s"
+            else:
+                duration = f"{elapsed:.1f}s"
+            print(f"{self._ci_group_title} completed in {duration}", file=self._out)
+            print("::endgroup::", file=self._out)
+            self._ci_group_open = False
 
     def shorten_path(self, path: str) -> str:
         if not path:

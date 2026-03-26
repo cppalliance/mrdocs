@@ -507,7 +507,7 @@ class TestInstallDependencies(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             inst.install_dependencies()
 
-    @patch("src.installer.is_recipe_up_to_date", return_value=True)
+    @patch("src.installer.is_recipe_up_to_date", return_value="")
     @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
     @patch("src.installer.load_recipe_files")
     def test_install_dependencies_skips_up_to_date(self, mock_load, mock_topo, mock_uptodate):
