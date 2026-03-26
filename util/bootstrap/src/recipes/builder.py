@@ -17,7 +17,7 @@ Provides functions to execute build steps defined in recipe files.
 
 import os
 import shutil
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, List, Any
 
 from ..core.platform import is_windows
 from ..core.filesystem import ensure_dir, remove_dir
@@ -194,6 +194,7 @@ def run_cmake_recipe_step(
     cflags: str = "",
     cxxflags: str = "",
     ldflags: str = "",
+    extra_cmake_options: Optional[List[str]] = None,
     force: bool = False,
     dry_run: bool = False,
     verbose: bool = False,
@@ -306,6 +307,11 @@ def run_cmake_recipe_step(
     if merged_ld_flags:
         opts.append(f"-DCMAKE_EXE_LINKER_FLAGS_INIT={merged_ld_flags}")
         opts.append(f"-DCMAKE_SHARED_LINKER_FLAGS_INIT={merged_ld_flags}")
+
+    # Append extra CMake options (e.g. -DLLVM_ENABLE_RUNTIMES=)
+    # without modifying the recipe definition
+    if extra_cmake_options:
+        opts.extend(extra_cmake_options)
 
     ensure_dir(build_dir, dry_run=dry_run, ui=ui)
 
@@ -424,6 +430,7 @@ def build_recipe(
     cflags: str = "",
     cxxflags: str = "",
     ldflags: str = "",
+    extra_cmake_options: Optional[List[str]] = None,
     force: bool = False,
     dry_run: bool = False,
     verbose: bool = False,
@@ -447,6 +454,8 @@ def build_recipe(
         cflags: Extra C compiler flags.
         cxxflags: Extra C++ compiler flags.
         ldflags: Extra linker flags.
+        extra_cmake_options: Additional CMake options appended at build
+            time without modifying the recipe definition.
         force: If True, clean before building.
         dry_run: If True, only print what would be done.
         verbose: If True, show verbose output.
@@ -464,6 +473,7 @@ def build_recipe(
                 recipe, raw_step, source_dir, third_party_src_dir,
                 preset, cc, cxx, build_dir_opt, install_dir_opt,
                 sanitizer, cflags, cxxflags, ldflags,
+                extra_cmake_options,
                 force, dry_run, verbose, debug, env, ui
             )
         elif step_type == "command":

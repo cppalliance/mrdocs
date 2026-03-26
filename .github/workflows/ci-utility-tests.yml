@@ -1,0 +1,60 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+name: Utility Tests
+
+on:
+  workflow_call:
+
+jobs:
+  utility-tests:
+    runs-on: ubuntu-24.04
+    name: Utility Tests
+
+    steps:
+      - name: Clone MrDocs
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Bootstrap Python Tests
+        run: |
+          set -eux
+          pip install --quiet coverage
+          python3 -m coverage run -m unittest discover -s util/bootstrap/tests/
+          python3 -m coverage report
+          python3 -m coverage report --fail-under=84
+          python3 -m coverage xml -o bootstrap-coverage.xml
+
+      - name: Upload Bootstrap Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: bootstrap-coverage.xml
+          flags: bootstrap
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
+
+      - name: Danger.js Tests
+        working-directory: util/danger
+        run: |
+          npm ci --ignore-scripts
+          npx vitest run
+
+      - name: Check YAML schema
+        run: |
+          python3 ./util/generate-yaml-schema.py --check
+          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
+
+      - name: Verify snippet .cpp files match golden tests
+        run: .github/scripts/verify-snippets.sh

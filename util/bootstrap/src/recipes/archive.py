@@ -50,7 +50,7 @@ def extract_zip_flatten(
 
     if dry_run:
         # GitHub archives contain a single top-level directory that must be
-        # flattened (stripped) during extraction — mirror what the Python code does.
+        # flattened (stripped) during extraction - mirror what the Python code does.
         print(f"_ztmp=$(mktemp -d)")
         print(f"unzip -o {shlex.quote(zip_path)} -d \"$_ztmp\"")
         print(f"cp -a \"$_ztmp\"/*/* {shlex.quote(dest_dir)}/")

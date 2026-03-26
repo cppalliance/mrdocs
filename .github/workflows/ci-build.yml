@@ -35,22 +35,22 @@ jobs:
     env: ${{ matrix.env }}
     steps:
       - name: Container Bootstrap
-        uses: alandefreitas/cpp-actions/container-bootstrap@develop
+        uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.4
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@develop
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.4
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@develop
+        uses: alandefreitas/cpp-actions/package-install@v1.9.4
         id: package-install
         with:
           packages: ${{ matrix.install }}
-          apt-get-source-keys: ${{ matrix.coverage && 'https://apt.llvm.org/llvm-snapshot.gpg.key' || '' }}
-          apt-get-sources: ${{ matrix.coverage && 'deb https://apt.llvm.org/noble/ llvm-toolchain-noble-21 main' || '' }}
+          apt-get-source-keys: ${{ matrix.coverage == 'true' && 'https://apt.llvm.org/llvm-snapshot.gpg.key' || '' }}
+          apt-get-sources: ${{ matrix.coverage == 'true' && 'deb https://apt.llvm.org/noble/ llvm-toolchain-noble-21 main' || '' }}
 
       - name: Clone MrDocs
         uses: actions/checkout@v4
@@ -77,44 +77,54 @@ jobs:
             --cache-dir build/third-party/install \
             --env-file "$RUNNER_TEMP/bootstrap-env.txt" \
             ${{ matrix.bootstrap-sanitizer && format('--sanitizer {0}', matrix.bootstrap-sanitizer) || '' }} \
-            ${{ matrix.common-ccflags && format('--cflags "{0}" --cxxflags "{0}"', matrix.common-ccflags) || '' }}
+            ${{ matrix.common-ccflags && format('--cflags="{0}" --cxxflags="{0}"', matrix.common-ccflags) || '' }}
           cat "$RUNNER_TEMP/bootstrap-env.txt" >> "$GITHUB_ENV"
 
       # Save the LLVM cache when bootstrap rebuilt it (cache miss or
       # stale stamp). BOOTSTRAP_REBUILT lists rebuilt recipes.
+      #
+      # `actions:write` (needed for the DELETE call below) is only granted
+      # to workflows on the base repo, so fork PRs get a read-only token
+      # and can't delete or overwrite the base-branch cache anyway.  Skip
+      # the whole save path on fork PRs.
       - name: Delete Stale LLVM Cache
-        if: contains(env.BOOTSTRAP_REBUILT, 'llvm') && steps.llvm-cache.outputs.cache-hit == 'true'
+        if: |
+          contains(env.BOOTSTRAP_REBUILT, 'llvm')
+          && steps.llvm-cache.outputs.cache-hit == 'true'
+          && (github.event_name != 'pull_request'
+              || github.event.pull_request.head.repo.full_name == github.repository)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: Bearer $GH_TOKEN" \
             "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches?key=${{ matrix.llvm-cache-key }}")
-          if [ "$code" = "200" ]; then
-            echo "Deleted old cache for key ${{ matrix.llvm-cache-key }}"
-          elif [ "$code" = "404" ]; then
-            echo "No existing cache for key ${{ matrix.llvm-cache-key }}"
-          else
-            echo "::error::Failed to delete cache (HTTP $code)"
-            exit 1
-          fi
+          case "$code" in
+            200) echo "Deleted old cache for key ${{ matrix.llvm-cache-key }}" ;;
+            404) echo "No existing cache for key ${{ matrix.llvm-cache-key }}" ;;
+            403) echo "::warning::Skipping cache delete: token lacks actions:write (HTTP 403)" ;;
+            *)   echo "::error::Failed to delete cache (HTTP $code)"; exit 1 ;;
+          esac
 
       - name: Save Updated LLVM Cache
-        if: contains(env.BOOTSTRAP_REBUILT, 'llvm')
+        if: |
+          contains(env.BOOTSTRAP_REBUILT, 'llvm')
+          && (github.event_name != 'pull_request'
+              || github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/cache/save@v4
         with:
           path: build/third-party/install/llvm
           key: ${{ matrix.llvm-cache-key }}
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@develop
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.4
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.mrdocs-ccflags }}
+          ccflags: ${{ matrix.ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.mrdocs-ccflags }} ${{ env.BOOTSTRAP_CXXFLAGS }}
+          cxxflags: ${{ matrix.cxxflags }} ${{ env.BOOTSTRAP_CXXFLAGS }}
           ldflags: ${{ env.BOOTSTRAP_LDFLAGS }}
           generator: Ninja
           build-type: ${{ matrix.build-type }}
@@ -141,34 +151,18 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@develop
+        uses: alandefreitas/cpp-actions/flamegraph@v1.9.4
         if: matrix.time-trace
         with:
           build-dir: build
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Codecov
-        id: codecov
-        if: matrix.coverage
-        env:
-          COMPILER_MAJOR: ${{ matrix.major }}
-        run: .github/scripts/codecov.sh
-
-      - name: Upload Coverage as Artifact
-        if: matrix.coverage
-        uses: actions/upload-artifact@v4
+      - name: Process Coverage
+        if: matrix.coverage == 'true'
+        uses: alandefreitas/cpp-actions/process-coverage@v1.9.4
         with:
-          name: Coverage
-          path: ${{ steps.codecov.outputs.file }}
-          retention-days: 30
-
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v5
-        if: matrix.coverage
-        with:
-          fail_ci_if_error: true
-          files: ${{ steps.codecov.outputs.file }}
-          flags: cpp
-          disable_search: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          build-dir: build
+          html-report: true
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
+          codecov-flags: cpp

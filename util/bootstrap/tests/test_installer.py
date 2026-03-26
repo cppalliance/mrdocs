@@ -273,6 +273,33 @@ class TestWriteEnvFile(unittest.TestCase):
                 content = f.read()
             self.assertIn("BOOTSTRAP_LDFLAGS=-fsanitize=address", content)
 
+    def test_writes_bootstrap_rebuilt(self):
+        """When recipes are rebuilt, BOOTSTRAP_REBUILT lists them."""
+        with tempfile.TemporaryDirectory() as tmp:
+            env_path = os.path.join(tmp, "env.txt")
+            inst = _make_installer()
+            inst.options.env_file = env_path
+            inst.options.dry_run = False
+            inst.rebuilt_recipes = ["llvm", "lua"]
+            inst.write_env_file()
+            with open(env_path) as f:
+                content = f.read()
+            self.assertIn("BOOTSTRAP_REBUILT=llvm,lua", content)
+
+    def test_omits_bootstrap_rebuilt_when_empty(self):
+        """No rebuilds means no BOOTSTRAP_REBUILT line."""
+        with tempfile.TemporaryDirectory() as tmp:
+            env_path = os.path.join(tmp, "env.txt")
+            inst = _make_installer()
+            inst.options.env_file = env_path
+            inst.options.dry_run = False
+            inst.package_roots = {"FOO": "bar"}
+            # rebuilt_recipes is empty by default
+            inst.write_env_file()
+            with open(env_path) as f:
+                content = f.read()
+            self.assertNotIn("BOOTSTRAP_REBUILT", content)
+
     def test_dry_run_prints_to_stdout(self):
         inst = _make_installer()
         inst.options.env_file = "/tmp/test_env.txt"
@@ -554,6 +581,77 @@ class TestInstallDependencies(unittest.TestCase):
         inst.install_dependencies()
 
         self.assertEqual(recipe.install_dir, "/cache/llvm")
+
+    @patch("src.installer.write_recipe_stamp")
+    @patch("src.installer.build_recipe")
+    @patch("src.installer.apply_recipe_patches")
+    @patch("src.installer.fetch_recipe_source")
+    @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
+    @patch("src.installer.load_recipe_files")
+    def test_install_dependencies_tracks_rebuilt_recipes(
+        self, mock_load, mock_topo, mock_fetch, mock_patch, mock_build, mock_stamp
+    ):
+        """Rebuilt recipes should be appended to inst.rebuilt_recipes."""
+        r1 = self._make_recipe("llvm")
+        r2 = self._make_recipe("lua", "5.4")
+        mock_load.return_value = [r1, r2]
+
+        inst = _make_installer()
+        inst.install_dependencies()
+
+        self.assertEqual(inst.rebuilt_recipes, ["llvm", "lua"])
+
+    @patch("src.installer.build_libcxx_runtimes")
+    @patch("src.installer.needs_libcxx_runtimes", return_value=True)
+    @patch("src.installer.libcxx_runtime_flags",
+           return_value={"cxxflags": "-isystem /opt/llvm/include/c++/v1",
+                         "ldflags": "-L/opt/llvm/lib -lc++"})
+    @patch("src.installer.write_recipe_stamp")
+    @patch("src.installer.build_recipe")
+    @patch("src.installer.apply_recipe_patches")
+    @patch("src.installer.fetch_recipe_source")
+    @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
+    @patch("src.installer.load_recipe_files")
+    def test_install_dependencies_disables_main_llvm_runtimes_when_libcxx_built(
+        self, mock_load, mock_topo, mock_fetch, mock_patch, mock_build, mock_stamp,
+        mock_flags, mock_needs, mock_libcxx
+    ):
+        """LLVM + clang + ASan/MSan should pass -DLLVM_ENABLE_RUNTIMES= to the
+        main LLVM build via extra_cmake_options, so the instrumented libc++
+        we just built isn't overwritten."""
+        recipe = self._make_recipe("llvm")
+        mock_load.return_value = [recipe]
+
+        inst = _make_installer(sanitizer="address")
+        inst.compiler_info = {"CMAKE_CXX_COMPILER_ID": "Clang"}
+        inst.install_dependencies()
+
+        mock_libcxx.assert_called_once()
+        # Find the extra_cmake_options arg in the build_recipe call
+        # (positional, between ldflags and force).
+        build_args = mock_build.call_args[0]
+        self.assertIn(["-DLLVM_ENABLE_RUNTIMES="], build_args)
+
+    @patch("src.installer.needs_libcxx_runtimes", return_value=False)
+    @patch("src.installer.write_recipe_stamp")
+    @patch("src.installer.build_recipe")
+    @patch("src.installer.apply_recipe_patches")
+    @patch("src.installer.fetch_recipe_source")
+    @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
+    @patch("src.installer.load_recipe_files")
+    def test_install_dependencies_no_extra_cmake_options_without_libcxx(
+        self, mock_load, mock_topo, mock_fetch, mock_patch, mock_build, mock_stamp,
+        mock_needs
+    ):
+        """Without libc++ runtimes, build_recipe receives None for extra_cmake_options."""
+        recipe = self._make_recipe("llvm")
+        mock_load.return_value = [recipe]
+
+        inst = _make_installer()
+        inst.install_dependencies()
+
+        build_args = mock_build.call_args[0]
+        self.assertIn(None, build_args)
 
 
 class TestCreatePresets(unittest.TestCase):

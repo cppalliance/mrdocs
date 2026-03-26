@@ -389,5 +389,51 @@ class TestBuildRecipeFlagPassthrough(unittest.TestCase):
         self.assertIn("-fuse-ld=lld", all_args, "ldflags not passed through")
 
 
+class TestExtraCmakeOptions(unittest.TestCase):
+    """Test that extra_cmake_options are appended to the configure command."""
+
+    @patch("src.recipes.builder.run_cmd")
+    @patch("src.recipes.builder.ensure_dir")
+    @patch("shutil.which", return_value="/usr/bin/cmake")
+    def test_extra_options_appended_to_configure(self, mock_which, mock_ensure, mock_run):
+        """extra_cmake_options should appear in the configure command."""
+        recipe = _make_recipe()
+        step = {"type": "cmake"}
+        run_cmake_recipe_step(
+            recipe, step, "/src", "/third-party", "preset",
+            extra_cmake_options=["-DLLVM_ENABLE_RUNTIMES=", "-DFOO=bar"],
+        )
+        configure_call = mock_run.call_args_list[0]
+        cmd = configure_call[0][0]
+        self.assertIn("-DLLVM_ENABLE_RUNTIMES=", cmd)
+        self.assertIn("-DFOO=bar", cmd)
+
+    @patch("src.recipes.builder.run_cmd")
+    @patch("src.recipes.builder.ensure_dir")
+    @patch("shutil.which", return_value="/usr/bin/cmake")
+    def test_no_extra_options_means_no_extra_flags(self, mock_which, mock_ensure, mock_run):
+        """No extra_cmake_options should leave the command untouched."""
+        recipe = _make_recipe()
+        step = {"type": "cmake"}
+        run_cmake_recipe_step(
+            recipe, step, "/src", "/third-party", "preset",
+        )
+        configure_call = mock_run.call_args_list[0]
+        cmd = configure_call[0][0]
+        self.assertFalse(any("LLVM_ENABLE_RUNTIMES" in arg for arg in cmd))
+
+    @patch("src.recipes.builder.run_cmake_recipe_step")
+    def test_extra_options_passed_through_build_recipe(self, mock_step):
+        """build_recipe should forward extra_cmake_options to the cmake step."""
+        recipe = _make_recipe()
+        build_recipe(
+            recipe, "/src", "/third-party", "preset",
+            extra_cmake_options=["-DLLVM_ENABLE_RUNTIMES="],
+        )
+        mock_step.assert_called_once()
+        all_args = list(mock_step.call_args[0]) + list(mock_step.call_args[1].values())
+        self.assertIn(["-DLLVM_ENABLE_RUNTIMES="], all_args)
+
+
 if __name__ == "__main__":
     unittest.main()
