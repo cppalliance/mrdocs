@@ -288,9 +288,15 @@ def run_cmake_recipe_step(
             else:
                 opts.append(extra_opts)
 
-    # Merge sanitizer flags with user-provided flags
-    merged_c_flags = (san_c_flags + " " + cflags).strip()
-    merged_cxx_flags = (san_cxx_flags + " " + cxxflags).strip()
+    # Suppress warnings for dependency builds (not our code).
+    # Prepend so user-provided flags can override (last flag wins).
+    # We use is_windows() as a proxy for MSVC because MrDocs only
+    # builds with MSVC on Windows (no MinGW/Clang-CL support).
+    suppress_warnings = "/w" if is_windows() else "-w"
+
+    # Merge: suppress-warnings + sanitizer flags + user-provided flags
+    merged_c_flags = (suppress_warnings + " " + san_c_flags + " " + cflags).strip()
+    merged_cxx_flags = (suppress_warnings + " " + san_cxx_flags + " " + cxxflags).strip()
     merged_ld_flags = (san_ld_flags + " " + ldflags).strip()
 
     if merged_c_flags:

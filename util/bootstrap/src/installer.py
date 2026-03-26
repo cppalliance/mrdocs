@@ -43,6 +43,7 @@ from .core import (
     SANITIZERS,
 )
 from .tools import find_tool, probe_compilers, install_ninja, is_tool_executable, probe_msvc_dev_env
+from .tools.compilers import sanitizer_flag_name
 from .tools.prerequisites import check_prerequisites, report_missing_prerequisites, try_install_system_deps
 from .recipes import (
     Recipe,
@@ -55,6 +56,7 @@ from .recipes import (
     needs_libcxx_runtimes,
     libcxx_runtime_flags,
     write_recipe_stamp,
+    recipe_stamp_path,
     is_recipe_up_to_date,
     generate_cache_key,
     detect_compiler_for_cache_key,
@@ -447,18 +449,35 @@ class MrDocsInstaller:
             src = recipe.source
             resolved_ref = src.commit or src.tag or src.branch or src.ref or ""
 
-            # Only pass sanitizer to dependency builds for clang.
-            # GCC doesn't support LLVM's sanitizer infrastructure flags.
+            # Only pass sanitizer to dependency builds when the sanitizer
+            # actually requires instrumented dependencies.  ASan, MSan, and
+            # TSan need instrumented deps (ASan/MSan for libc++, TSan for
+            # correct race detection across library boundaries).  UBSan
+            # only checks the project's own code at compile time, so passing
+            # it to deps would cause unnecessary rebuilds.
             compiler_id = self.compiler_info.get("CMAKE_CXX_COMPILER_ID", "")
-            recipe_sanitizer = self.options.sanitizer if compiler_id.lower() == "clang" else ""
-
-            # Parameters that affect the build output, used for stamp hashing
-            stamp_args = dict(
-                sanitizer=recipe_sanitizer,
-                cc=self.options.cc, cxx=self.options.cxx,
-                cflags=self.options.cflags, cxxflags=self.options.cxxflags,
-                ldflags=self.options.ldflags,
+            san = sanitizer_flag_name(self.options.sanitizer.lower()) if self.options.sanitizer else ""
+            deps_need_sanitizer = (
+                compiler_id.lower() == "clang"
+                and san in ("address", "memory", "thread")
             )
+            recipe_sanitizer = self.options.sanitizer if deps_need_sanitizer else ""
+
+            # Parameters that affect the build output, used for stamp
+            # hashing.  Only include build parameters when the sanitizer
+            # actually requires instrumented deps (ASan/MSan/TSan + Clang).
+            # For all other builds, the only flag reaching deps is -gz=zstd
+            # (debug info compression), which doesn't change library
+            # behavior, so the stamp just checks version and ref.
+            if deps_need_sanitizer:
+                stamp_args = dict(
+                    sanitizer=recipe_sanitizer,
+                    cc=self.options.cc, cxx=self.options.cxx,
+                    cflags=self.options.cflags, cxxflags=self.options.cxxflags,
+                    ldflags=self.options.ldflags,
+                )
+            else:
+                stamp_args = dict()
 
             # For LLVM with sanitizers: always compute libc++ flags
             # even on cache hit, since downstream builds need them.
@@ -473,13 +492,21 @@ class MrDocsInstaller:
             # Skip build if already up to date (unless force, clean, or dry-run)
             # In dry-run mode, always show all commands so the output is a
             # complete manual reference regardless of local cache state.
-            if not self.options.dry_run and not self.options.force and not self.options.clean and is_recipe_up_to_date(recipe, resolved_ref, **stamp_args):
+            stale_reason = is_recipe_up_to_date(recipe, resolved_ref, **stamp_args) if not self.options.dry_run else "dry-run"
+            if not stale_reason and not self.options.force and not self.options.clean:
                 self.ui.ok(f"[{recipe.name}] already up to date ({resolved_ref or 'HEAD'}). Skipping build.")
                 self.print_recipe_summary(recipe)
                 self.recipe_info[recipe.name] = recipe
                 if recipe.package_root_var:
                     self.package_roots[recipe.package_root_var] = recipe.install_dir
                 continue
+
+            if stale_reason:
+                self.ui.info(f"[{recipe.name}] rebuilding: {stale_reason}")
+                stamp_path = recipe_stamp_path(recipe)
+                if os.path.exists(stamp_path):
+                    with open(stamp_path, "r", encoding="utf-8") as f:
+                        self.ui.info(f"[{recipe.name}] existing stamp ({stamp_path}):\n{f.read()}")
 
             self._dry_comment(f"Fetch {recipe.name} source")
             fetch_recipe_source(
@@ -1160,7 +1187,7 @@ class MrDocsInstaller:
         print("#!/usr/bin/env bash")
         print("set -euo pipefail")
         print()
-        print("# MrDocs bootstrap — equivalent manual steps")
+        print("# MrDocs bootstrap - equivalent manual steps")
         print(f"# Generated for: {get_os_name()}")
         print(f"# Source directory: {self.options.source_dir}")
 
@@ -1304,3 +1331,4 @@ class MrDocsInstaller:
             self.run_mrdocs_tests()
 
         self.ui.ok("Bootstrap complete!")
+        self.ui.end_group()

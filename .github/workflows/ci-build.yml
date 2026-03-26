@@ -1,0 +1,174 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+name: Build & Test
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        description: 'JSON-encoded build matrix from cpp-matrix'
+        type: string
+        required: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.matrix) }}
+
+    defaults:
+      run:
+        shell: bash
+
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+    env: ${{ matrix.env }}
+    steps:
+      - name: Container Bootstrap
+        uses: alandefreitas/cpp-actions/container-bootstrap@develop
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@develop
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
+      - name: Install System Packages
+        uses: alandefreitas/cpp-actions/package-install@develop
+        id: package-install
+        with:
+          packages: ${{ matrix.install }}
+          apt-get-source-keys: ${{ matrix.coverage && 'https://apt.llvm.org/llvm-snapshot.gpg.key' || '' }}
+          apt-get-sources: ${{ matrix.coverage && 'deb https://apt.llvm.org/noble/ llvm-toolchain-noble-21 main' || '' }}
+
+      - name: Clone MrDocs
+        uses: actions/checkout@v4
+
+      - name: Restore LLVM Cache
+        id: llvm-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: build/third-party/install/llvm
+          key: ${{ matrix.llvm-cache-key }}
+
+      # Install third-party deps (LLVM, JerryScript, Lua, Boost, libxml2).
+      # --skip-build: only install deps, the MrDocs build is done by cmake-workflow.
+      # --cache-dir: flatten install paths to <dir>/<lib> for stable cache keys.
+      # --env-file: write _ROOT paths so we can inject them into GITHUB_ENV.
+      # Bootstrap writes BOOTSTRAP_REBUILT=<list> when it rebuilds any recipe.
+      - name: Bootstrap Dependencies
+        run: |
+          python3 bootstrap.py --yes \
+            --skip-build --no-run-configs \
+            --build-type "${{ matrix.build-type }}" \
+            --cc "${{ steps.setup-cpp.outputs.cc || matrix.cc }}" \
+            --cxx "${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}" \
+            --cache-dir build/third-party/install \
+            --env-file "$RUNNER_TEMP/bootstrap-env.txt" \
+            ${{ matrix.bootstrap-sanitizer && format('--sanitizer {0}', matrix.bootstrap-sanitizer) || '' }} \
+            ${{ matrix.common-ccflags && format('--cflags "{0}" --cxxflags "{0}"', matrix.common-ccflags) || '' }}
+          cat "$RUNNER_TEMP/bootstrap-env.txt" >> "$GITHUB_ENV"
+
+      # Save the LLVM cache when bootstrap rebuilt it (cache miss or
+      # stale stamp). BOOTSTRAP_REBUILT lists rebuilt recipes.
+      - name: Delete Stale LLVM Cache
+        if: contains(env.BOOTSTRAP_REBUILT, 'llvm') && steps.llvm-cache.outputs.cache-hit == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches?key=${{ matrix.llvm-cache-key }}")
+          if [ "$code" = "200" ]; then
+            echo "Deleted old cache for key ${{ matrix.llvm-cache-key }}"
+          elif [ "$code" = "404" ]; then
+            echo "No existing cache for key ${{ matrix.llvm-cache-key }}"
+          else
+            echo "::error::Failed to delete cache (HTTP $code)"
+            exit 1
+          fi
+
+      - name: Save Updated LLVM Cache
+        if: contains(env.BOOTSTRAP_REBUILT, 'llvm')
+        uses: actions/cache/save@v4
+        with:
+          path: build/third-party/install/llvm
+          key: ${{ matrix.llvm-cache-key }}
+
+      - name: CMake Workflow
+        uses: alandefreitas/cpp-actions/cmake-workflow@develop
+        with:
+          cmake-version: '>=3.26'
+          cxxstd: ${{ matrix.cxxstd }}
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          ccflags: ${{ matrix.mrdocs-ccflags }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          cxxflags: ${{ matrix.mrdocs-ccflags }} ${{ env.BOOTSTRAP_CXXFLAGS }}
+          ldflags: ${{ env.BOOTSTRAP_LDFLAGS }}
+          generator: Ninja
+          build-type: ${{ matrix.build-type }}
+          install-prefix: .local
+          extra-args: -D MRDOCS_EXPENSIVE_TESTS=${{ matrix.is-bottleneck && 'OFF' || 'ON' }}
+          export-compile-commands: true
+          run-tests: true
+          install: true
+          package: ${{ matrix.is-main }}
+          package-dir: packages
+          package-generators: ${{ matrix.mrdocs-package-generators }}
+          package-artifact: false
+          ctest-timeout: 9000
+
+      # Upload packages for ci-releases.yml to pick up
+      - name: Upload GitHub Release Artifacts
+        if: matrix.is-release-build == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.mrdocs-release-package-artifact }}
+          path: |
+            build/packages
+            !build/packages/_CPack_Packages
+          retention-days: 1
+
+      - name: FlameGraph
+        uses: alandefreitas/cpp-actions/flamegraph@develop
+        if: matrix.time-trace
+        with:
+          build-dir: build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Codecov
+        id: codecov
+        if: matrix.coverage
+        env:
+          COMPILER_MAJOR: ${{ matrix.major }}
+        run: .github/scripts/codecov.sh
+
+      - name: Upload Coverage as Artifact
+        if: matrix.coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: Coverage
+          path: ${{ steps.codecov.outputs.file }}
+          retention-days: 30
+
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v5
+        if: matrix.coverage
+        with:
+          fail_ci_if_error: true
+          files: ${{ steps.codecov.outputs.file }}
+          flags: cpp
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true

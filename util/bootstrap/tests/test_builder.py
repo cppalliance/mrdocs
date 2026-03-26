@@ -53,10 +53,10 @@ class TestCMakeStepFlagPropagation(unittest.TestCase):
         )
         configure_call = mock_run.call_args_list[0]
         cmd = configure_call[0][0]
-        self.assertTrue(
-            any("-DCMAKE_C_FLAGS_INIT=-gz=zstd" in arg for arg in cmd),
-            f"CMAKE_C_FLAGS_INIT not found in configure command: {cmd}"
-        )
+        c_flags = [a for a in cmd if "CMAKE_C_FLAGS_INIT" in a]
+        self.assertTrue(len(c_flags) > 0, f"CMAKE_C_FLAGS_INIT not found: {cmd}")
+        self.assertIn("-gz=zstd", c_flags[0], f"User cflags missing: {c_flags[0]}")
+        self.assertIn("-w", c_flags[0], f"Warning suppression missing: {c_flags[0]}")
 
     @patch("src.recipes.builder.run_cmd")
     @patch("src.recipes.builder.ensure_dir")
@@ -71,10 +71,10 @@ class TestCMakeStepFlagPropagation(unittest.TestCase):
         )
         configure_call = mock_run.call_args_list[0]
         cmd = configure_call[0][0]
-        self.assertTrue(
-            any("-DCMAKE_CXX_FLAGS_INIT=-gz=zstd -O2" in arg for arg in cmd),
-            f"CMAKE_CXX_FLAGS_INIT not found in configure command: {cmd}"
-        )
+        cxx_flags = [a for a in cmd if "CMAKE_CXX_FLAGS_INIT" in a]
+        self.assertTrue(len(cxx_flags) > 0, f"CMAKE_CXX_FLAGS_INIT not found: {cmd}")
+        self.assertIn("-gz=zstd -O2", cxx_flags[0], f"User cxxflags missing: {cxx_flags[0]}")
+        self.assertIn("-w", cxx_flags[0], f"Warning suppression missing: {cxx_flags[0]}")
 
     @patch("src.recipes.builder.run_cmd")
     @patch("src.recipes.builder.ensure_dir")
@@ -101,8 +101,8 @@ class TestCMakeStepFlagPropagation(unittest.TestCase):
     @patch("src.recipes.builder.run_cmd")
     @patch("src.recipes.builder.ensure_dir")
     @patch("shutil.which", return_value="/usr/bin/cmake")
-    def test_no_flags_when_empty(self, mock_which, mock_ensure, mock_run):
-        """No FLAGS_INIT args when no user flags or sanitizer."""
+    def test_only_warning_suppression_when_no_user_flags(self, mock_which, mock_ensure, mock_run):
+        """Only -w warning suppression in FLAGS_INIT when no user flags or sanitizer."""
         recipe = _make_recipe()
         step = {"type": "cmake"}
         run_cmake_recipe_step(
@@ -110,9 +110,16 @@ class TestCMakeStepFlagPropagation(unittest.TestCase):
         )
         configure_call = mock_run.call_args_list[0]
         cmd = configure_call[0][0]
+        c_flags = [a for a in cmd if "CMAKE_C_FLAGS_INIT" in a]
+        cxx_flags = [a for a in cmd if "CMAKE_CXX_FLAGS_INIT" in a]
+        self.assertTrue(len(c_flags) > 0, f"CMAKE_C_FLAGS_INIT expected with -w: {cmd}")
+        self.assertEqual(c_flags[0], "-DCMAKE_C_FLAGS_INIT=-w")
+        self.assertTrue(len(cxx_flags) > 0, f"CMAKE_CXX_FLAGS_INIT expected with -w: {cmd}")
+        self.assertEqual(cxx_flags[0], "-DCMAKE_CXX_FLAGS_INIT=-w")
+        # No linker flags when no user ldflags
         self.assertFalse(
-            any("FLAGS_INIT" in arg for arg in cmd),
-            f"Unexpected FLAGS_INIT in command: {cmd}"
+            any("LINKER_FLAGS_INIT" in arg for arg in cmd),
+            f"Unexpected LINKER_FLAGS_INIT: {cmd}"
         )
 
     @patch("src.recipes.builder.run_cmd")

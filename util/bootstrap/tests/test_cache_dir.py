@@ -155,9 +155,9 @@ class TestStampFileInCacheDir(unittest.TestCase):
         recipe = make_recipe(name="llvm", version="abc123", install_dir=install_dir)
         resolved_ref = "abc123def456"
 
-        self.assertFalse(is_recipe_up_to_date(recipe, resolved_ref))
+        self.assertNotEqual(is_recipe_up_to_date(recipe, resolved_ref), "")
         write_recipe_stamp(recipe, resolved_ref)
-        self.assertTrue(is_recipe_up_to_date(recipe, resolved_ref))
+        self.assertEqual(is_recipe_up_to_date(recipe, resolved_ref), "")
 
     def test_stamp_version_mismatch(self):
         """Stamp with different version should not be up to date."""
@@ -165,7 +165,7 @@ class TestStampFileInCacheDir(unittest.TestCase):
         recipe = make_recipe(name="llvm", version="abc123", install_dir=install_dir)
         write_recipe_stamp(recipe, "old_ref")
 
-        self.assertFalse(is_recipe_up_to_date(recipe, "new_ref"))
+        self.assertNotEqual(is_recipe_up_to_date(recipe, "new_ref"), "")
 
 
 class TestLegacyCacheDetection(unittest.TestCase):
@@ -197,7 +197,7 @@ class TestLegacyCacheDetection(unittest.TestCase):
         resolved_ref = "abc123"
 
         # Should NOT be up to date (no stamp)
-        self.assertFalse(is_recipe_up_to_date(recipe, resolved_ref))
+        self.assertNotEqual(is_recipe_up_to_date(recipe, resolved_ref), "")
         # But directory is non-empty
         self.assertTrue(os.path.isdir(install_dir))
         self.assertTrue(len(os.listdir(install_dir)) > 0)
@@ -213,13 +213,13 @@ class TestLegacyCacheDetection(unittest.TestCase):
         resolved_ref = "abc123def456"
 
         # Initially no stamp
-        self.assertFalse(is_recipe_up_to_date(recipe, resolved_ref))
+        self.assertNotEqual(is_recipe_up_to_date(recipe, resolved_ref), "")
 
         # Write stamp (simulating what installer does for legacy caches)
         write_recipe_stamp(recipe, resolved_ref)
 
         # Now it should be up to date
-        self.assertTrue(is_recipe_up_to_date(recipe, resolved_ref))
+        self.assertEqual(is_recipe_up_to_date(recipe, resolved_ref), "")
 
     def test_ci_compatible_cache_path(self):
         """Cache dir structure matches CI: <cache-dir>/<recipe-name>/."""
