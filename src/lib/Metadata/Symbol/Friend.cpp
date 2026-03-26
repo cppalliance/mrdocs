@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Metadata/Symbol/Friend.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <algorithm>
 #include <vector>
 
@@ -33,6 +33,30 @@ merge(
         }
     }
 }
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    FriendInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    if (I.id)
+    {
+        io.defer("name", [&I, domCorpus]{ return dom::ValueFrom(I.id, domCorpus).get("name"); });
+        io.map("symbol", I.id);
+    }
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    FriendInfo const&,
+    DomCorpus const*);
 
 } // mrdocs
 

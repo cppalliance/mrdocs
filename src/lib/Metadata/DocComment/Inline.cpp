@@ -11,7 +11,9 @@
 //
 
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
+#include <mrdocs/Metadata/DocComment/Inline/ImageInline.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 
 namespace mrdocs::doc {
 
@@ -83,5 +85,23 @@ isEmpty(Polymorphic<Inline> const& el)
     });
 }
 
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    ImageInline const& I,
+    DomCorpus const* domCorpus)
+{
+    mrdocs::mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<mrdocs::LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    mrdocs::LazyObjectIOType&,
+    ImageInline const&,
+    mrdocs::DomCorpus const*);
 
 } // mrdocs::doc

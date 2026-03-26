@@ -8,7 +8,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Metadata/Symbol/Enum.hpp>
 #include <mrdocs/Metadata/Symbol/Friend.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
@@ -17,6 +16,7 @@
 #include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Type/NamedType.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <test_suite/test_suite.hpp>
 
 namespace mrdocs {

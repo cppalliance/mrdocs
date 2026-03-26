@@ -11,11 +11,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <algorithm>
 #include <iterator>
@@ -504,6 +504,25 @@ overrides(FunctionSymbol const& base, FunctionSymbol const& derived)
     };
     return toOverrideTuple(base) == toOverrideTuple(derived);
 }
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    FunctionSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    FunctionSymbol const&,
+    DomCorpus const*);
 
 } // mrdocs
 

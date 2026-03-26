@@ -10,11 +10,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <span>
 
 namespace mrdocs {

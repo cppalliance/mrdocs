@@ -22,12 +22,12 @@
 #include <lib/Metadata/Finalizers/NamespacesFinalizer.hpp>
 #include <lib/Metadata/Finalizers/OverloadsFinalizer.hpp>
 #include <lib/Metadata/Finalizers/SortMembersFinalizer.hpp>
-#include <lib/Support/Reflection/EnumToString.hpp>
 #include <lib/Support/Chrono.hpp>
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <chrono>
 

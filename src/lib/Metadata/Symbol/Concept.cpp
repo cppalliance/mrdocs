@@ -10,6 +10,7 @@
 //
 
 #include <mrdocs/Metadata/Symbol/Concept.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 
 namespace mrdocs {
 
@@ -55,6 +56,25 @@ operator<=>(ConceptSymbol const& other) const
     }
     return this->asInfo() <=> other.asInfo();
 }
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    ConceptSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    ConceptSymbol const&,
+    DomCorpus const*);
 
 } // mrdocs
 

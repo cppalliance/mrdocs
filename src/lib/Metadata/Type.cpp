@@ -9,14 +9,27 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Metadata/Type/NamedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 
 namespace mrdocs {
+
+namespace detail {
+
+bool
+isPlaceholderType(Polymorphic<Type> const& t)
+{
+    return t->isAuto() ||
+        (t->isNamed() &&
+         t->asNamed().Name->Identifier.empty());
+}
+
+} // namespace detail
 
 dom::String
 toString(

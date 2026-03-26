@@ -10,12 +10,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/FileKind.hpp>
 #include <mrdocs/Metadata/Symbol/Location.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <ranges>
 

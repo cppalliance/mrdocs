@@ -12,10 +12,34 @@
 #ifndef MRDOCS_API_SUPPORT_TYPETRAITS_HPP
 #define MRDOCS_API_SUPPORT_TYPETRAITS_HPP
 
+#include <mrdocs/ADT/Optional.hpp>
 #include <type_traits>
+#include <vector>
 
 
 namespace mrdocs {
+
+namespace detail {
+
+template <typename T>
+struct is_optional : std::false_type {};
+
+template <typename T>
+struct is_optional<Optional<T>> : std::true_type {};
+
+template <typename T>
+inline constexpr bool is_optional_v = is_optional<T>::value;
+
+template <typename T>
+struct is_vector : std::false_type {};
+
+template <typename T, typename A>
+struct is_vector<std::vector<T, A>> : std::true_type {};
+
+template <typename T>
+inline constexpr bool is_vector_v = is_vector<T>::value;
+
+} // namespace detail
 
 /** Return the value as its underlying type.
 
