@@ -11,6 +11,7 @@
 
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Typedef.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 
 namespace mrdocs {
 
@@ -56,6 +57,25 @@ operator<=>(TypedefSymbol const& other) const
     }
     return this->asInfo() <=> other.asInfo();
 }
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    TypedefSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    TypedefSymbol const&,
+    DomCorpus const*);
 
 } // mrdocs
 

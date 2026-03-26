@@ -16,8 +16,7 @@
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
-#include <lib/Support/Reflection/EnumToString.hpp>
-#include <lib/Support/Reflection/ReadableTypeName.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <string>
 #include <string_view>
 #include <type_traits>

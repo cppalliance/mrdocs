@@ -15,6 +15,7 @@
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Metadata/Symbol/Overloads.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <format>
 
@@ -51,5 +52,24 @@ addMember(OverloadsSymbol& I, FunctionSymbol const& Member)
     merge(I.Loc, Member.Loc);
     I.Members.push_back(Member.id);
 }
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    OverloadsSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    OverloadsSymbol const&,
+    DomCorpus const*);
 
 } // mrdocs

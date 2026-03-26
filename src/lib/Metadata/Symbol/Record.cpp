@@ -9,10 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/Reflection/MapReflectedType.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol/Record.hpp>
+#include <mrdocs/Metadata/Symbol/RecordTranche.hpp>
+#include <mrdocs/Metadata/Symbol/RecordInterface.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 
 namespace mrdocs {
 
@@ -82,5 +84,64 @@ tag_invoke(
 {
     v = dom::LazyObject(I, domCorpus);
 }
+
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    RecordInterface const& I,
+    DomCorpus const*)
+{
+    mapReflectedType<true>(io, I);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    RecordInterface const&,
+    DomCorpus const*);
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    RecordSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+    io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
+}
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    RecordTranche const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    RecordTranche const&,
+    DomCorpus const*);
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    RecordSymbol const&,
+    DomCorpus const*);
 
 } // mrdocs

@@ -10,6 +10,7 @@
 //
 
 #include <mrdocs/Metadata/Symbol/Variable.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace mrdocs {
@@ -56,6 +57,25 @@ operator<=>(VariableSymbol const& other) const
     }
     return this->asInfo() <=> other.asInfo();
 }
+
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    VariableSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+}
+
+template
+void
+tag_invoke<LazyObjectIOType>(
+    dom::LazyObjectMapTag,
+    LazyObjectIOType&,
+    VariableSymbol const&,
+    DomCorpus const*);
 
 } // mrdocs
 

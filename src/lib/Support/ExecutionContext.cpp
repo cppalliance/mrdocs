@@ -13,10 +13,10 @@
 
 #include "ExecutionContext.hpp"
 #include <lib/Metadata/Reduce.hpp>
-#include <lib/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Support/Assert.hpp>
+#include <mrdocs/Support/Reflection.hpp>
 #include <ranges>
 
 

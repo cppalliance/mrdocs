@@ -1,5 +1,4 @@
 //
-// This is a derivative work. originally part of the LLVM Project.
 // Licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
@@ -9,25 +8,17 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Symbol/Using.hpp>
 #include <mrdocs/Support/Reflection.hpp>
-namespace mrdocs {
+#include <mrdocs/Metadata/Symbol/NamespaceAlias.hpp>
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    UsingClass kind)
-{
-    v = toString(kind);
-}
+namespace mrdocs {
 
 template <typename IO>
 void
 tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
-    UsingSymbol const& I,
+    NamespaceAliasSymbol const& I,
     DomCorpus const* domCorpus)
 {
     mapReflectedType<true>(io, I, domCorpus);
@@ -38,8 +29,7 @@ void
 tag_invoke<LazyObjectIOType>(
     dom::LazyObjectMapTag,
     LazyObjectIOType&,
-    UsingSymbol const&,
+    NamespaceAliasSymbol const&,
     DomCorpus const*);
 
 } // mrdocs
-
