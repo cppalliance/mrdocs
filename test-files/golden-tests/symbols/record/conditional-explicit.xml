@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,10 +21,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>90LmpTUv2mRF4c7fOK5KY82aqfg=</functions>
@@ -70,6 +79,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>90LmpTUv2mRF4c7fOK5KY82aqfg=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -89,6 +99,7 @@
   <members>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -104,6 +115,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -126,12 +138,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -151,6 +165,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>F4U5PyaDoe8VKg41ubwK8aze9QE=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -173,12 +188,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -198,6 +215,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>AXLv33SreHARdqogAHAgfhC3lFA=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -220,12 +238,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>double</identifier>
       </name>
     </named>
@@ -245,6 +265,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -267,17 +288,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>U</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>constructor</func-class>
   <is-record-method>1</is-record-method>
 </function>
@@ -292,6 +322,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>8QQvac4UAEj232hkdEvLmrs4iXo=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -320,9 +351,17 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>U</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
@@ -338,6 +377,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>BQIWwUrUqUCA8gEZNkinmhykZiw=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -366,6 +406,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -384,6 +425,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>RoN1eWo04RrcRuREabBhJcBRP9g=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -412,6 +454,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
@@ -430,6 +473,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -458,6 +502,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>double</identifier>
     </name>
   </named>

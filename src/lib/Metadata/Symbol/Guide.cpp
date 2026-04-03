@@ -11,7 +11,6 @@
 
 #include <mrdocs/Metadata/Symbol/Guide.hpp>
 #include <mrdocs/Metadata/Symbol/Param.hpp>
-#include <mrdocs/Support/Reflection.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -77,24 +76,5 @@ operator<=>(GuideSymbol const& other) const
     return this->asInfo() <=> other.asInfo();
 }
 
-
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    GuideSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    GuideSymbol const&,
-    DomCorpus const*);
 
 } // mrdocs

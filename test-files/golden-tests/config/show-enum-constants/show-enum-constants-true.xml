@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum</kind>
   <id>8ys5YHCZzogRGq/E/f61InZlmOE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -36,6 +38,7 @@
   <scoped>1</scoped>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -54,6 +57,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>BBOAF6yhnTvCHkG9Jr5y9fvtD58=</id>
   <extraction>regular</extraction>
   <parent>8ys5YHCZzogRGq/E/f61InZlmOE=</parent>
@@ -78,6 +82,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>Lx0D7a81JkdDRHL9+a9QPTM4Np0=</id>
   <extraction>regular</extraction>
   <parent>8ys5YHCZzogRGq/E/f61InZlmOE=</parent>
@@ -102,6 +107,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>kd2nnOQJJwznL3PIvdJxDbGUmr4=</id>
   <extraction>regular</extraction>
   <parent>8ys5YHCZzogRGq/E/f61InZlmOE=</parent>

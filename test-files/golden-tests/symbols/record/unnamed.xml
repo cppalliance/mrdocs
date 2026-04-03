@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,6 +24,7 @@
       <column-number>11</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -47,11 +49,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</id>
   <extraction>implementation-defined</extraction>
   <parent>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -69,6 +73,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -103,6 +108,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>variable</kind>
   <id>4Sy+GbRmqI4igByqQo0hAnRUahY=</id>
   <extraction>regular</extraction>
   <parent>8AwuUPjsLEReggyF5UohZMvrh8k=</parent>
@@ -117,6 +123,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -132,11 +139,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>wcU0I2BxBC0WE0uUZ6ypPRqFoxE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -154,6 +163,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>variable</kind>
   <id>O3vj5ch+AFTAIMnsaVF06Ms3nc0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -168,6 +178,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
     </name>
   </named>
@@ -183,6 +194,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>variable</kind>
   <id>SEYEjN6YLJp3VM0ue8amNlWQiTU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -197,6 +209,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
     </name>
   </named>

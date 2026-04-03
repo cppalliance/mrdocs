@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -45,10 +47,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</id>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=</functions>
@@ -69,11 +79,13 @@
       <column-number>16</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=</id>
   <extraction>regular</extraction>
   <parent>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -90,10 +102,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>FxMFFVpoV2/LOOndnkQ2gu3w69U=</id>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>nxkAf/oNulEWX8A/IPUHkew79Y4=</functions>
@@ -114,11 +139,13 @@
       <column-number>20</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>nxkAf/oNulEWX8A/IPUHkew79Y4=</id>
   <extraction>regular</extraction>
   <parent>FxMFFVpoV2/LOOndnkQ2gu3w69U=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

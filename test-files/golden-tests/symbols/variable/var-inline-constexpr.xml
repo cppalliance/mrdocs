@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -29,11 +30,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>9s8AEcaO/PYLDINeClULQZuqcls=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -48,12 +51,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>zUgw7RZYhWQ0Wdr483M4dEkcXFU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -68,15 +73,24 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>23TCuxWNlj84e/NoEZJsI1rADQA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
 </variable>
 <variable>
   <name>var_constexpr</name>
@@ -88,11 +102,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>fWXHXBdM9s2COMhYT0j3aWad+0I=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -108,14 +124,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>+c5FvmsSJNn7o5ii4DyReMV38C4=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -128,12 +153,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>pn99V2QzcOsMfIXOuUkZkX5qPxM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -149,15 +176,24 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>eeYDvHDDTr7yHd4hDvbGxxhRsdg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -170,11 +206,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>/HfsnrPPmN325zi27Blg78dY0HE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -191,14 +229,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>Ix017ZAiVi07tMCvlM1DJ9AE5sk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -212,13 +259,22 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>NeARXC6JJzwenZWHvmtX1WP6Y4E=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
 </variable>
 </mrdocs>

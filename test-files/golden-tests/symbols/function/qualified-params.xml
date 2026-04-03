@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -22,6 +23,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -39,6 +41,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>/uhjNgA3CZWDrUG93dNxJ8AXNlA=</id>
   <extraction>regular</extraction>
   <parent>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</parent>
@@ -62,6 +65,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -79,6 +83,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>sNQWmhyaDchz7lnkqvq3y7z1HVU=</id>
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
@@ -102,14 +107,17 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>qLZTlCC88VV9/1zxsDYwuIzL/OQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>sNQWmhyaDchz7lnkqvq3y7z1HVU=</id>
       <identifier>C</identifier>
       <name>
+        <kind>identifier</kind>
         <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
         <identifier>N</identifier>
       </name>
@@ -118,9 +126,11 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>/uhjNgA3CZWDrUG93dNxJ8AXNlA=</id>
         <identifier>D</identifier>
         <name>
+          <kind>identifier</kind>
           <id>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</id>
           <identifier>M</identifier>
         </name>

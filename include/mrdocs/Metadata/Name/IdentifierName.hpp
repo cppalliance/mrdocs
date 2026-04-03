@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -46,6 +47,8 @@ struct IdentifierName final
         return asName() <=> other.asName();
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(IdentifierName, (Name), ())
 
 } // mrdocs
 

@@ -22,7 +22,7 @@
 #include <lib/Support/Radix.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MergeReflectedType.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>

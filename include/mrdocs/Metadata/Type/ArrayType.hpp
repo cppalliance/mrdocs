@@ -17,6 +17,7 @@
 #include <mrdocs/Metadata/Type/AutoType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -44,6 +45,30 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type),
     (ElementType, Bounds)
 )
+
+/** Map an ArrayType to a dom::Object with split bounds properties.
+    @param io The IO object to map into.
+    @param I The ArrayType to map.
+    @param domCorpus The DomCorpus context.
+*/
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    ArrayType const& I,
+    DomCorpus const* domCorpus)
+{
+    addMetaObject<ArrayType>(io);
+    tag_invoke(dom::LazyObjectMapTag{}, io,
+        static_cast<Type const&>(I), domCorpus);
+    io.map("elementType", I.ElementType);
+    if (I.Bounds.Value)
+    {
+        io.map("boundsValue", *I.Bounds.Value);
+    }
+    io.map("boundsExpr", I.Bounds.Written);
+}
 
 } // mrdocs
 

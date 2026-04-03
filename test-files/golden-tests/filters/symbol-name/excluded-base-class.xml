@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -39,6 +41,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -46,9 +49,11 @@
   <base>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>9QgUJNKn+WNP3bawIZL9jzTlEGc=</id>
         <identifier>C</identifier>
         <name>
+          <kind>identifier</kind>
           <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
           <identifier>B</identifier>
         </name>
@@ -78,12 +83,14 @@
       <column-number>17</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>BcIYmKdVh0f6TsMPCA/M0Cmr9VI=</id>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -100,11 +107,13 @@
       <column-number>13</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>o+85JO3Sv4bIWiG3+bfyUw5gJWI=</id>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -123,11 +132,13 @@
       <column-number>13</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>NiHV825xQJhfQDhKCeAex3UuHGY=</id>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -146,11 +157,13 @@
       <column-number>13</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>d5/JtPJCrP6OG8ToxUKNR5xqJ4I=</id>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -167,6 +180,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -174,9 +188,11 @@
   <base>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>9QgUJNKn+WNP3bawIZL9jzTlEGc=</id>
         <identifier>C</identifier>
         <name>
+          <kind>identifier</kind>
           <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
           <identifier>B</identifier>
         </name>
@@ -206,12 +222,14 @@
       <column-number>17</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>e7VYD0d5BKg0c6yEn8zt92t304s=</id>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -228,12 +246,14 @@
       <column-number>17</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>JgPp0cAF/suYYKB1RQalvRP+hjk=</id>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -252,11 +272,13 @@
       <column-number>13</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>KiY+7o+uUp3h7bndNOpI2AuCrAE=</id>
   <extraction>regular</extraction>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -275,11 +297,13 @@
       <column-number>13</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>0wO8aZwuOLvF7/RooHUZJ5SyKzk=</id>
   <extraction>regular</extraction>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,10 +24,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>kkH6jADpFuYV65W9qUpVvq20Cgs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -46,10 +55,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>EBNjyD4nMb0o/Bpkztrno/0a+tA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -81,14 +98,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>PmhXjCXUJYVnj/a7NhfjjSesyp0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <overloads>
@@ -113,6 +139,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>9JfSlZfEThLXiWTez3b8eT/AbZU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -122,6 +149,7 @@
   <members>vT2JiCSXaImfhLVMvGYQZ34RgLQ=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -136,14 +164,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>3F1b/mMBJYuoAGH+KuNmPxsA7RI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -156,14 +193,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>9NLZvQibBhjkBj1mm77OINck29I=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -176,14 +222,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>vT2JiCSXaImfhLVMvGYQZ34RgLQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

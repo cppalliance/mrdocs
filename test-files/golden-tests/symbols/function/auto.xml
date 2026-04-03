@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>iw+p9e4sqTWCzDSP2LoIa8mbCQI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -50,12 +52,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>auto</identifier>
       </name>
     </named>

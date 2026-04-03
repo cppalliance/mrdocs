@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -22,6 +23,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>mHoykrvnCPrloD8rIG6+dIga8dM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -66,6 +68,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -73,6 +76,7 @@
     <pointer>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>int</identifier>
         </name>
       </named>
@@ -106,6 +110,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>IPZj2cmKd30EV/ztyuacllbdZcg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -158,6 +163,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>yi6+RKHXbSoVR9R7xtUev7R+tpA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -186,6 +192,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -202,6 +209,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>HS4sKOwEsAJwIGrfX/wfr/SW0/c=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -238,12 +246,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -262,6 +272,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>72bbA46XC/75Vpdubu57UmYSBBk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -305,6 +316,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -312,6 +324,7 @@
     <array>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>int</identifier>
         </name>
       </named>

@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -25,35 +26,7 @@ enum class ListKind {
     Ordered
 };
 
-/** Convert a list kind enum to its string name.
-*/
-inline
-dom::String
-toString(ListKind kind) noexcept
-{
-    switch (kind)
-    {
-        case ListKind::Unordered:
-            return "unordered";
-        case ListKind::Ordered:
-            return "ordered";
-    }
-    return "Unknown";
-}
-
-/** Serialize a list kind into a DOM value.
-    @param v Destination value.
-    @param kind List kind to serialize.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ListKind const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(ListKind, Unordered, Ordered)
 
 } // mrdocs
 

@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamKeyKind.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -40,6 +41,8 @@ struct TypeTParam final
     */
     std::strong_ordering operator<=>(TypeTParam const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(TypeTParam, (TParamCommonBase<TParamKind::Type>), (KeyKind, Constraint))
 
 } // mrdocs
 

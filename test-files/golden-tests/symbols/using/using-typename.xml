@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,10 +22,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>pOlR4JvM07kjg0dk5WSjWZiChpc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>class</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <typedefs>GJwWDf/H5L0HhOr2GLrume6MtVg=</typedefs>
@@ -45,11 +54,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>GJwWDf/H5L0HhOr2GLrume6MtVg=</id>
   <extraction>regular</extraction>
   <parent>pOlR4JvM07kjg0dk5WSjWZiChpc=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
@@ -65,10 +76,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>jGFAabkrVv9Glu0e6ensMu9FByY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>class</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>

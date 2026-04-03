@@ -68,33 +68,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Public, Protected, Private)
 )
 
-/** Map a RecordInterface to a dom::Object.
-
-    @param io The output parameter to receive the dom::Object.
-    @param I The RecordInterface to convert.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    RecordInterface const& I,
-    DomCorpus const*);
-
-/** Map the RecordInterface to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    RecordInterface const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
-
 /** Flatten all public/protected/private members.
     @return View concatenating the three access tranches.
 */

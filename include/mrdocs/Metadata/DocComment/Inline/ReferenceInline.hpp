@@ -56,42 +56,9 @@ struct ReferenceInline
 
 MRDOCS_DESCRIBE_STRUCT(
     ReferenceInline,
-    (Inline),
+    (InlineCommonBase<InlineKind::Reference>),
     (literal, id)
 )
-
-/** Map the @ref ReferenceInline to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    ReferenceInline const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
-    io.map("literal", I.literal);
-    io.map("symbol", I.id);
-}
-
-/** Return the @ref ReferenceInline as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ReferenceInline const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

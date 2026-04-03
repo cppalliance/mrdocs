@@ -104,34 +104,6 @@ allMembers(RecordTranche const& T)
     ) | std::ranges::views::join;
 }
 
-/** Map a RecordTranche to a dom::Object.
-
-    @param io The output parameter to receive the dom::Object.
-    @param I The RecordTranche to convert.
-    @param domCorpus The DomCorpus used to resolve references.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    RecordTranche const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the RecordTranche to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    RecordTranche const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
-
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_RECORDTRANCHE_HPP

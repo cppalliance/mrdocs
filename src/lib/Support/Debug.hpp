@@ -38,7 +38,7 @@ struct std::formatter<mrdocs::SymbolKind> : std::formatter<std::string> {
   template <class FmtContext>
   std::format_context::iterator format(mrdocs::SymbolKind t,
                                        FmtContext &ctx) const {
-    return std::formatter<std::string>::format(toString(t).str(), ctx);
+    return std::formatter<std::string>::format(toString(t), ctx);
   }
 };
 

@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string_view>
 
 namespace mrdocs {
@@ -27,24 +28,7 @@ enum class TArgKind : int {
 #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 };
 
-/** Convert a template-argument kind to a string.
-    @return String view naming the argument kind.
-*/
-MRDOCS_DECL
-std::string_view
-toString(TArgKind kind) noexcept;
-
-/** Serialize a template-argument kind into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TArgKind kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(TArgKind, Type, Constant, Template)
 
 } // mrdocs
 

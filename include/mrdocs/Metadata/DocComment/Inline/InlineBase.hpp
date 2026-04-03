@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/DocComment/Inline/InlineKind.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -147,6 +148,8 @@ struct InlineCommonBase : Inline
     */
     auto operator<=>(InlineCommonBase const&) const = default;
 
+    MRDOCS_DESCRIBE_CLASS(InlineCommonBase, (Inline), ())
+
 protected:
     /** Default-construct with the fixed inline kind.
     */
@@ -161,37 +164,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (),
     (Kind)
 )
-
-/** Map the @ref Inline to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    Inline const& I,
-    DomCorpus const* domCorpus)
-{
-    io.map("kind", toString(I.Kind));
-}
-
-/** Return the @ref Inline as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Inline const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 /** Get the plain text representation of an inline element tree.
 
@@ -472,39 +444,6 @@ tag_invoke(
     IO& io,
     InlineTy const& I,
     DomCorpus const* domCorpus);
-
-/** Map an InlineContainer into a DOM object.
-
-    @param t The mapping tag.
-    @param io Output object receiving serialized fields.
-    @param I Inline container to serialize.
-    @param domCorpus Optional corpus for lazy lookups.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    InlineContainer const& I,
-    DomCorpus const* domCorpus)
-{
-    io.defer("children", [&I, domCorpus] {
-        return dom::LazyArray(I.children, domCorpus);
-    });
-}
-
-inline
-/** Convert an InlineContainer to a DOM value.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    InlineContainer const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 /** Removes leading whitespace from the first text element in the given InlineContainer.
 

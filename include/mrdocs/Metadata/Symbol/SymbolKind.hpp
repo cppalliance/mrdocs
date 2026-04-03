@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -26,22 +27,10 @@ enum class SymbolKind {
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 };
 
-/** Return the name of the SymbolKind as a string.
-*/
-MRDOCS_DECL
-dom::String
-toString(SymbolKind kind) noexcept;
-
-/** Return the SymbolKind from a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v, SymbolKind const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(SymbolKind,
+    Namespace, Record, Function, Overloads, Enum,
+    EnumConstant, Typedef, Variable, Guide,
+    NamespaceAlias, Using, Concept)
 
 /** Count the number of SymbolKind enumerators.
     @return Number of `SymbolKind` values generated from SymbolNodes.inc.

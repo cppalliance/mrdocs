@@ -12,6 +12,7 @@
 #define MRDOCS_API_METADATA_TYPE_FUNDAMENTALTYPEKIND_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <string_view>
 
 namespace mrdocs {
@@ -190,6 +191,18 @@ makeUnsigned(FundamentalTypeKind& kind) noexcept;
 MRDOCS_DECL
 bool
 makeChar(FundamentalTypeKind& kind) noexcept;
+
+/** Serialize a FundamentalTypeKind into a DOM value.
+*/
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    FundamentalTypeKind kind)
+{
+    v = toString(kind);
+}
 
 } // mrdocs
 

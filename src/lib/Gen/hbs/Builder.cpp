@@ -210,13 +210,15 @@ registerDefaultHelpers(Handlebars& hbs)
             if (!sourceInfo)
                 return nullptr;
 
-            dom::Value decls = sourceInfo.get("decl");
-            if (dom::Value def = sourceInfo.get("def"))
+            dom::Value decls = sourceInfo.get("loc");
+            if (dom::Value def = sourceInfo.get("defLoc"))
             {
                 if (dom::Value const kind = v.get("kind");
                     kind == "record" || kind == "enum")
                     return def;
-                if (!decls)
+                if (!decls ||
+                    !decls.isArray() ||
+                    decls.getArray().empty())
                     return def;
             }
             if (!decls.isArray() || decls.getArray().empty())

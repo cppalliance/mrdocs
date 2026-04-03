@@ -42,41 +42,9 @@ struct SuperscriptInline final
 
 MRDOCS_DESCRIBE_STRUCT(
     SuperscriptInline,
-    (Inline, InlineContainer),
+    (InlineCommonBase<InlineKind::Superscript>, InlineContainer),
     ()
 )
-
-/** Map the @ref SuperscriptInline to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    SuperscriptInline const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
-    tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
-}
-
-/** Return the @ref SuperscriptInline as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    SuperscriptInline const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

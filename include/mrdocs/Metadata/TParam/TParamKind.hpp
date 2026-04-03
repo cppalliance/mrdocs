@@ -15,6 +15,8 @@
 #define MRDOCS_API_METADATA_TPARAM_TPARAMKIND_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string_view>
 
 namespace mrdocs {
@@ -27,12 +29,7 @@ enum class TParamKind : int
 #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 };
 
-/** Convert a parameter kind to a readable string.
-    @return String view naming the parameter category.
-*/
-MRDOCS_DECL
-std::string_view
-toString(TParamKind kind) noexcept;
+MRDOCS_DESCRIBE_ENUM(TParamKind, Type, Constant, Template)
 
 } // mrdocs
 

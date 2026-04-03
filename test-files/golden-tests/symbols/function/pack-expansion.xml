@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -25,11 +26,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>48I+DPPjc7oVgnOqvRHnCnFIMRA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -39,12 +42,21 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <identifier>Ts</identifier>
         </name>
       </named>
     </l-value-reference>
     <name>args</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Ts</name>
+      <is-parameter-pack>1</is-parameter-pack>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -57,11 +69,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>1uVKKR0qH3jqJg3vUUY+gN0nO6o=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -70,12 +84,21 @@
       <is-pack-expansion>1</is-pack-expansion>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Ts</identifier>
         </name>
       </named>
     </pointer>
     <name>args</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Ts</name>
+      <is-parameter-pack>1</is-parameter-pack>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -88,11 +111,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>/W/y4BHD5QC3h6HiQc2zHFs9XZM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -101,12 +126,21 @@
       <is-pack-expansion>1</is-pack-expansion>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Ts</identifier>
         </name>
       </named>
     </l-value-reference>
     <name>args</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Ts</name>
+      <is-parameter-pack>1</is-parameter-pack>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -119,11 +153,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>2dPhCCrvmoBHZ2V3zGebTIf1GJw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -131,11 +167,20 @@
     <named>
       <is-pack-expansion>1</is-pack-expansion>
       <name>
+        <kind>identifier</kind>
         <identifier>Ts</identifier>
       </name>
     </named>
     <name>args</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Ts</name>
+      <is-parameter-pack>1</is-parameter-pack>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -148,11 +193,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>s1dIpJCzH1qM6C834Cm+Cj1mh9M=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -161,12 +208,21 @@
       <is-pack-expansion>1</is-pack-expansion>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Args</identifier>
         </name>
       </named>
     </r-value-reference>
     <name>args</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Args</name>
+      <is-parameter-pack>1</is-parameter-pack>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -179,12 +235,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>8RneSjP7y4RoThh/UAa4tw8/cC0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <pointer>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
@@ -194,12 +252,26 @@
       <is-pack-expansion>1</is-pack-expansion>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Args</identifier>
         </name>
       </named>
     </r-value-reference>
     <name>args</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Args</name>
+      <is-parameter-pack>1</is-parameter-pack>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

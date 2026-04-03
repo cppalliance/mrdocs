@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,6 +25,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -46,12 +48,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -70,6 +74,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>wOc7mtwXPodKdeWFmSfib8PaSww=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -107,12 +112,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -121,6 +128,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -139,6 +147,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>rxzCccrw6I3QTAhGPnAfCKLwzTA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -191,12 +200,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -205,6 +216,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -213,6 +225,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -231,6 +244,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>owRiLpD5mLW5E/kfLQC0oOzxkDM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -298,12 +312,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -312,6 +328,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -320,6 +337,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -328,6 +346,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>

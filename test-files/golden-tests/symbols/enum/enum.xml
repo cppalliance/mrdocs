@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,6 +25,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum</kind>
   <id>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -57,6 +59,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>PKsKOtl3cLUHJP4nEw+EKQK4fUE=</id>
   <extraction>regular</extraction>
   <parent>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</parent>
@@ -88,6 +91,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>AXLqFIJBEk7eAdup5AR/wvnrMzc=</id>
   <extraction>regular</extraction>
   <parent>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</parent>
@@ -118,11 +122,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>enum</kind>
   <id>YVlrwdT9xevSZZOb/TqEFyXYRzs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
@@ -139,6 +145,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>WhHxTXqItGXwZujc82O1Xfzbaz4=</id>
   <extraction>regular</extraction>
   <parent>YVlrwdT9xevSZZOb/TqEFyXYRzs=</parent>
@@ -153,6 +160,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>Rifzp55QTXd/noKg5TyWoEJWlpE=</id>
   <extraction>regular</extraction>
   <parent>YVlrwdT9xevSZZOb/TqEFyXYRzs=</parent>
@@ -168,6 +176,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum</kind>
   <id>pjF+x6gHHvGroB7+mumMEpLLPDw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -190,6 +199,7 @@
   <scoped>1</scoped>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -207,6 +217,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>RyRlkoU0rHCqW5D5O8YXfJrvfaw=</id>
   <extraction>regular</extraction>
   <parent>pjF+x6gHHvGroB7+mumMEpLLPDw=</parent>
@@ -238,6 +249,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>xFkU6j7yjwyQB2aStQjCIF9O+sQ=</id>
   <extraction>regular</extraction>
   <parent>pjF+x6gHHvGroB7+mumMEpLLPDw=</parent>
@@ -268,12 +280,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>enum</kind>
   <id>sSur7Z1606gfBcxeK64ws2daEXI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <scoped>1</scoped>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
@@ -290,6 +304,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>m/aInWQVfzBhSp/BbwL1S6HYfgI=</id>
   <extraction>regular</extraction>
   <parent>sSur7Z1606gfBcxeK64ws2daEXI=</parent>
@@ -304,6 +319,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>enum-constant</kind>
   <id>s6xZcC+IxMf8dGaSjBuD4CkmAuU=</id>
   <extraction>regular</extraction>
   <parent>sSur7Z1606gfBcxeK64ws2daEXI=</parent>

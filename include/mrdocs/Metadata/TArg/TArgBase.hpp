@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/TArg/TArgKind.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -108,6 +109,8 @@ protected:
     }
 };
 
+MRDOCS_DESCRIBE_STRUCT(TArg, (), (Kind, IsPackExpansion))
+
 /** CRTP base that fixes the argument kind.
 */
 template<TArgKind K>
@@ -129,6 +132,8 @@ struct TArgCommonBase : TArg
         @return `true` if `kind_id` equals `TypeKind::Template`.
     */
     static constexpr bool isTemplate() noexcept { return K == TArgKind::Template; }
+
+    MRDOCS_DESCRIBE_CLASS(TArgCommonBase, (TArg), ())
 
 protected:
     /** Construct with the fixed kind.

@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Symbol/RecordKeyKind.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -90,7 +91,7 @@ struct RecordSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     RecordSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Record>),
     (KeyKind, Template, IsTypeDef, IsFinal, IsFinalDestructor,
      Bases, Derived, Interface, Friends)
 )
@@ -114,6 +115,23 @@ getDefaultAccessString(
     }
 }
 
+/** Map a RecordSymbol to a dom::Object with computed defaultAccess.
+    @param io The IO object to map into.
+    @param I The RecordSymbol to map.
+    @param domCorpus The DomCorpus context.
+*/
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    RecordSymbol const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+    io.map("defaultAccess", std::string(getDefaultAccessString(I.KeyKind)));
+}
+
 /** View all record members across access levels.
     @return Lazy view traversing every tranche.
 */
@@ -122,34 +140,6 @@ auto
 allMembers(RecordSymbol const& T)
 {
     return allMembers(T.Interface);
-}
-
-/** Map a RecordSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The RecordSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    RecordSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the RecordSymbol to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    RecordSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
 }
 
 } // mrdocs

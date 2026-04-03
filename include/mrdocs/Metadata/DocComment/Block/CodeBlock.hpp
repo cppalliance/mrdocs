@@ -45,45 +45,9 @@ struct CodeBlock final
 
 MRDOCS_DESCRIBE_STRUCT(
     CodeBlock,
-    (Block),
+    (BlockCommonBase<BlockKind::Code>),
     (literal, info)
 )
-
-/** Map the @ref CodeBlock to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    CodeBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
-    io.map("literal", I.literal);
-    if (!I.info.empty())
-    {
-        io.map("info", I.info);
-    }
-}
-
-/** Return the @ref CodeBlock as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    CodeBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

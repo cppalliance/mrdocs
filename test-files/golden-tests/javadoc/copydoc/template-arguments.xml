@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -50,6 +52,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>knD7LwHco1Rc3UN13fDrTDK0Fg4=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -65,6 +68,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>n2ekv7/9IraylJIibujZeExrML4=</id>
       <identifier>B</identifier>
     </name>
@@ -82,6 +86,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>mAmfKzQQ8Mg78wrSV5C5vqhB38M=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -97,6 +102,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
       <identifier>B</identifier>
     </name>
@@ -114,6 +120,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>40FFJWRtg8LikFmMYkFhi3taM7w=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -137,11 +144,29 @@
   </doc-comment>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
       <identifier>B</identifier>
     </name>
   </named>
   <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <constant-tparam>
+      <kind>constant</kind>
+      <name>I</name>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
 </typedef>
 <typedef>
   <name>CDTrue</name>
@@ -154,6 +179,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>EFfBXjCvLk0J5w7aUT/GZ5D4Zww=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -169,6 +195,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
       <identifier>C</identifier>
     </name>
@@ -186,6 +213,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>9GvIXSW1TfhlI8qPuV4xPDXT5+A=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -201,6 +229,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
       <identifier>C</identifier>
     </name>
@@ -218,6 +247,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>N9KZXiVz/IMBW2CcGYh+8cvUeFQ=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -241,11 +271,29 @@
   </doc-comment>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
       <identifier>C</identifier>
     </name>
   </named>
   <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <constant-tparam>
+      <kind>constant</kind>
+      <name>B</name>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
 </typedef>
 <record>
   <name>B</name>
@@ -258,6 +306,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -287,6 +336,25 @@
     </t-param>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <constant-tparam>
+      <kind>constant</kind>
+      <constant-targ>
+        <kind>constant</kind>
+      </constant-targ>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -307,6 +375,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>n2ekv7/9IraylJIibujZeExrML4=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -320,6 +389,18 @@
     </brief>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>jJtr0x+P2kzEfxAlp7Hjo5akJho=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -340,6 +421,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -353,6 +435,21 @@
     </brief>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <constant-targ>
+      <kind>constant</kind>
+    </constant-targ>
+    <primary>jJtr0x+P2kzEfxAlp7Hjo5akJho=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -373,6 +470,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -402,6 +500,25 @@
     </t-param>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <constant-tparam>
+      <kind>constant</kind>
+      <constant-targ>
+        <kind>constant</kind>
+      </constant-targ>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -422,6 +539,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -435,6 +553,22 @@
     </brief>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
+          <identifier>D</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <constant-targ>
+      <kind>constant</kind>
+    </constant-targ>
+    <primary>WjzMcZfRtncsiJEvL1/LzUes/GM=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -455,6 +589,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -468,6 +603,21 @@
     </brief>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <constant-targ>
+      <kind>constant</kind>
+    </constant-targ>
+    <primary>WjzMcZfRtncsiJEvL1/LzUes/GM=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -488,6 +638,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>

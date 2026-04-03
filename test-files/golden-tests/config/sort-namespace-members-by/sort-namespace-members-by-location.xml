@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -34,6 +35,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -57,10 +59,32 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>8nYw0KA23eAszqSOs0wOXAD1DYQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>void</identifier>
+          </name>
+        </named>
+      </type-targ>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -80,10 +104,32 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>1gG5jFtdo9Wauh4eNKJFnssDpFU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>8nYw0KA23eAszqSOs0wOXAD1DYQ=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -103,10 +149,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>NLoLTepRVq6Wm8kqUGSEoM03TKg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>8nYw0KA23eAszqSOs0wOXAD1DYQ=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -126,10 +185,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -149,10 +221,32 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>S+FvHbXPEwSCkNHoe9TC9L5a4Yk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>swBEqeWAJoaWVKty+1lCoYUK04A=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -172,10 +266,37 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>VwFE3CILPejPf11zTv20aat7w8Q=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>U</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>swBEqeWAJoaWVKty+1lCoYUK04A=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -195,6 +316,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -235,6 +357,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -272,6 +395,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>Cnsc4OfzqGbrnICr/PmPGh6bkZc=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -289,6 +413,7 @@
   <members>aQWtFVa4Xa+eceLXiLW74q44JRk=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -303,6 +428,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>WltomC+2IcmzMN0COGL0OWWmbZk=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -317,6 +443,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -333,6 +460,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>aQWtFVa4Xa+eceLXiLW74q44JRk=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -362,12 +490,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -386,6 +516,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>HMG56OCQ5OpB2E9hu4bG3/hoOho=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -400,6 +531,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -416,11 +548,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>lBA1besl9J3wAZAcEn9C+K05hf4=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -438,6 +572,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -473,6 +608,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -490,6 +626,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>rjPdhFxUkaC43tWXi+kka78JQxI=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -529,6 +666,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -546,6 +684,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>atwUGLD+QHVhH3x1+8qzINNxzMY=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -593,6 +732,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -601,6 +741,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
           <identifier>Z</identifier>
         </name>
@@ -622,6 +763,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>CB0pXrzU8BKZ2LF0BSpclxIfgrs=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -669,6 +811,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -677,6 +820,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
           <identifier>Z</identifier>
         </name>
@@ -698,6 +842,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>6/NYLeQdPqWrbu5kHnTpE3u6Yg4=</id>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
@@ -732,6 +877,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
           <identifier>Z</identifier>
         </name>
@@ -753,11 +899,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>rvT6OxIrrSI0KxJ2nkfEgBz/Lz4=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -815,6 +963,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>9JfSlZfEThLXiWTez3b8eT/AbZU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -839,17 +988,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>PEedgXj8uxMWKd/yZk6yqAz6boU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
@@ -857,6 +1009,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
@@ -864,10 +1017,18 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -880,17 +1041,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>5LjM4cXZ7IywLIZW1RtfpP7tNNk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -898,6 +1062,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -905,10 +1070,23 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
   </param>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>PEedgXj8uxMWKd/yZk6yqAz6boU=</primary>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -921,17 +1099,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>rs6F2A6K2Qvx34WDTz9fCKP4+HE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -939,6 +1120,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -946,6 +1128,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -962,17 +1145,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>OqSPxlq/89fBNIHVGkd2KTtgheY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>double</identifier>
       </name>
     </named>
@@ -980,6 +1166,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -996,17 +1183,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ZYC+YG/hWLHomKHwEAfoO4TO2cw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>double</identifier>
       </name>
     </named>
@@ -1029,17 +1219,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>SvF6a1ZP8sdIXexPrrRDIA1OHus=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -1056,11 +1249,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -1076,11 +1271,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -1096,6 +1293,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1148,6 +1346,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -1156,6 +1355,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>
@@ -1175,6 +1375,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1235,6 +1436,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -1243,6 +1445,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>
@@ -1255,6 +1458,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>
@@ -1274,6 +1478,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1334,6 +1539,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -1342,6 +1548,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>
@@ -1354,6 +1561,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>

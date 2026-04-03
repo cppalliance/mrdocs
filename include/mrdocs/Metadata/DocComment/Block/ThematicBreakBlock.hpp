@@ -69,40 +69,9 @@ struct ThematicBreakBlock final
 
 MRDOCS_DESCRIBE_STRUCT(
     ThematicBreakBlock,
-    (Block),
+    (BlockCommonBase<BlockKind::ThematicBreak>),
     ()
 )
-
-/** Map the @ref ThematicBreakBlock to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    ThematicBreakBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
-}
-
-/** Return the @ref ThematicBreakBlock as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ThematicBreakBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

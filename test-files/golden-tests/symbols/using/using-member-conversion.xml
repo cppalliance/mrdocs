@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,6 +24,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -39,6 +41,7 @@
     <function>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>void</identifier>
         </name>
       </named>
@@ -57,6 +60,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -92,6 +96,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -113,6 +118,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
       <identifier>fun_ptr</identifier>
     </name>
@@ -132,6 +138,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -148,6 +155,7 @@
   <base>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
       </name>
@@ -175,6 +183,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -196,6 +205,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
       <identifier>fun_ptr</identifier>
     </name>
@@ -215,6 +225,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>using</kind>
   <id>EFiZJ7JGhYhYwHH32s8HA+C+gns=</id>
   <extraction>regular</extraction>
   <parent>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</parent>
@@ -229,8 +240,10 @@
   </doc-comment>
   <class>normal</class>
   <name>
+    <kind>identifier</kind>
     <identifier>operator void(*)()</identifier>
     <name>
+      <kind>identifier</kind>
       <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
       <identifier>X</identifier>
     </name>
@@ -248,6 +261,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -269,6 +283,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
       <identifier>fun_ptr</identifier>
     </name>

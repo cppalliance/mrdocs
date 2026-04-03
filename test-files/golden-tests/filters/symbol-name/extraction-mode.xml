@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -34,6 +35,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>ZYn+worzOdzCMW6yaZC9jAkpVTk=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -67,6 +69,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -101,6 +104,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>4SJRVLqyXsDWvcWXoyjLUtLXROw=</id>
   <extraction>implementation-defined</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -141,6 +145,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</id>
   <extraction>regular</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -187,6 +192,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>HIH1h4hOIdF5+btaX+gwmErtATY=</id>
   <extraction>regular</extraction>
   <parent>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</parent>
@@ -221,6 +227,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>ZZiAG+2jvp211xfxhzPQi3p+JQU=</id>
   <extraction>regular</extraction>
   <parent>HIH1h4hOIdF5+btaX+gwmErtATY=</parent>
@@ -254,6 +261,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>TSJP5hkEf4wSQVuTwVCP1Zs/mBU=</id>
   <extraction>see-below</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -294,6 +302,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>JsA4nL3r830aRrxkYOJehKibEWE=</id>
   <extraction>regular</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -315,6 +324,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>1L0CXReBnwnJJ+QMfbufLsSVX8Q=</id>
       <identifier>dependency</identifier>
     </name>
@@ -332,6 +342,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>ZrA7FcVREiRMaG484junagM1Snc=</id>
   <extraction>regular</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -367,6 +378,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>4SJRVLqyXsDWvcWXoyjLUtLXROw=</id>
       <identifier>implementation_defined</identifier>
     </name>
@@ -384,6 +396,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>GmX35W90ijAwMEpaZZqAbeG5UmU=</id>
   <extraction>regular</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -417,6 +430,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</id>
       <identifier>regular</identifier>
     </name>
@@ -434,6 +448,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>M7TOn0G63CtYGRm2THtNEEEdpLY=</id>
   <extraction>regular</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -462,6 +477,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>TSJP5hkEf4wSQVuTwVCP1Zs/mBU=</id>
       <identifier>see_below</identifier>
     </name>
@@ -479,6 +495,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
   <extraction>see-below</extraction>
   <parent>//////////////////////////8=</parent>
@@ -525,6 +542,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>V7X9PJ4pWsN52pFdrtqL2hmhnp8=</id>
   <extraction>implementation-defined</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -572,6 +590,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>oCi9GhACSlMlNqMEp/8CzrcvYUc=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -612,6 +631,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>VpoO3YTaskouQspzjnerGL/r84w=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -652,6 +672,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>a9NW/0+lwniKyNoc79ktu9ydz9Q=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -680,6 +701,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>CyWO4Tsh/ybq2vl/ylZdyGSc20U=</id>
       <identifier>dependency</identifier>
     </name>
@@ -697,6 +719,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>Cte3a6dkPj265m1BZHW+q+5RYx4=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -732,6 +755,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>V7X9PJ4pWsN52pFdrtqL2hmhnp8=</id>
       <identifier>implementation_defined</identifier>
     </name>
@@ -749,6 +773,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace-alias</kind>
   <id>iz2edsTj1BrHatwuxuBXSOfqpDE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -761,6 +786,10 @@
       </text>
     </brief>
   </doc-comment>
+  <identifier-name>
+    <kind>identifier</kind>
+    <identifier>dependency_ns</identifier>
+  </identifier-name>
 </namespace-alias>
 <namespace-alias>
   <name>implementation_defined_ns_alias</name>
@@ -773,6 +802,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace-alias</kind>
   <id>CzgfGPX1nw65BdnXgQsTa12LA2Y=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -785,6 +815,11 @@
       </text>
     </brief>
   </doc-comment>
+  <identifier-name>
+    <kind>identifier</kind>
+    <id>ZYn+worzOdzCMW6yaZC9jAkpVTk=</id>
+    <identifier>implementation_defined_ns</identifier>
+  </identifier-name>
 </namespace-alias>
 <namespace-alias>
   <name>see_below_ns_alias</name>
@@ -797,6 +832,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace-alias</kind>
   <id>ZOLXb+PiKO6aTHMnfr3P9Mgop24=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -816,6 +852,11 @@
       </text>
     </brief>
   </doc-comment>
+  <identifier-name>
+    <kind>identifier</kind>
+    <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
+    <identifier>see_below_ns</identifier>
+  </identifier-name>
 </namespace-alias>
 <record>
   <name>implementation_defined</name>
@@ -828,6 +869,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>rl76spVysmpVYgBTOlxoh5Z9fk8=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -868,6 +910,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>cw0xJkxH12xMAqMkCi84zr2R6nQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -914,6 +957,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</id>
   <extraction>regular</extraction>
   <parent>cw0xJkxH12xMAqMkCi84zr2R6nQ=</parent>
@@ -948,6 +992,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>cF5hGQlXVxQ9lU9qT768m47j5fE=</id>
   <extraction>regular</extraction>
   <parent>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</parent>
@@ -981,6 +1026,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>1gqUCUm5v18bVRIAohOhUsenH0o=</id>
   <extraction>see-below</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1028,6 +1074,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>TDPbPaUgAt15wH9Aq054dH6qByE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1049,6 +1096,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>t1gs2ps85mDDF3gcK68GCS5x23g=</id>
       <identifier>dependency</identifier>
     </name>
@@ -1066,6 +1114,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>65ri7AMHwO5ME919iJQNbXl0TVE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1101,6 +1150,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>rl76spVysmpVYgBTOlxoh5Z9fk8=</id>
       <identifier>implementation_defined</identifier>
     </name>
@@ -1118,6 +1168,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>ja9KgZ+gKpeRL1CK/1+wSZ41F18=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1151,6 +1202,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>cw0xJkxH12xMAqMkCi84zr2R6nQ=</id>
       <identifier>regular</identifier>
     </name>
@@ -1168,6 +1220,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>eg89BLjqgCjN8fLjTLnl5lhYTE0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -1196,6 +1249,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>1gqUCUm5v18bVRIAohOhUsenH0o=</id>
       <identifier>see_below</identifier>
     </name>

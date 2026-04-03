@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,6 +24,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -49,14 +51,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>kMNXdSEDYBD+T4RYbkq3ekR+jUU=</id>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned int</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -69,14 +80,27 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>Wtlw7VEK38lEEBeqNoDOjTkJE+U=</id>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned int</identifier>
     </name>
   </named>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+  </template>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -89,14 +113,34 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>wvoZkG3eTMaiFAf971AFdvmHCDE=</id>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned int</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <pointer>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </name>
+        </named>
+      </pointer>
+    </type-targ>
+  </template>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -109,14 +153,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>z3eMoJQlHlg0acXVyn1pwg9Ktys=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned int</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
 </variable>
 <variable>
   <name>A</name>
@@ -128,14 +181,27 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>jrW9aLj8cqTteNoZmH97vOW7csQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned int</identifier>
     </name>
   </named>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </type-targ>
+  </template>
 </variable>
 <variable>
   <name>A</name>
@@ -147,13 +213,33 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>FsEwA9OFNGH4A/cxXIoOOa+ZQg8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned int</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <l-value-reference>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </name>
+        </named>
+      </l-value-reference>
+    </type-targ>
+  </template>
 </variable>
 </mrdocs>

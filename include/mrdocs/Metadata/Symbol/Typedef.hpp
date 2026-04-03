@@ -68,41 +68,9 @@ struct TypedefSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     TypedefSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Typedef>),
     (Type, IsUsing, Template)
 )
-
-/** Map a TypedefSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The TypedefSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    TypedefSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the TypedefSymbol to a @ref dom::Value object.
-
-    @param v The output parameter to receive the dom::Value.
-    @param I The TypedefSymbol to convert.
-    @param domCorpus The DomCorpus used to resolve references.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TypedefSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs
 

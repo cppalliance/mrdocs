@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,10 +25,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <records>dKDSVrZun8skBV/NUCmJyCUOvJA=</records>
@@ -50,10 +59,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>dKDSVrZun8skBV/NUCmJyCUOvJA=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>P0HRKTdcNYA5qjhIXTqtJIxYItQ=</functions>
@@ -74,11 +91,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>P0HRKTdcNYA5qjhIXTqtJIxYItQ=</id>
   <extraction>regular</extraction>
   <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -95,10 +114,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>5XAhWGI1AQuRh2DnECuhvkGU0qs=</functions>
@@ -119,11 +146,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>5XAhWGI1AQuRh2DnECuhvkGU0qs=</id>
   <extraction>regular</extraction>
   <parent>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -140,11 +169,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>c4jAAYDw9qnOxUCpXquNT7fALUY=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -161,10 +192,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>/vjeowK9rbOfBZNuMjVMRn2iGMo=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <records>6QY0PJXWe/WbREWJNqGWAxKfjl8=</records>
@@ -189,10 +233,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>6QY0PJXWe/WbREWJNqGWAxKfjl8=</id>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -212,10 +264,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>CmGU1i/sBhCN4qrHoR7Et/3vN18=</id>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -235,10 +295,25 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>EyperGIiZ7cSv/PB2BApKjPRQVA=</id>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <pointer>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>double</identifier>
+          </name>
+        </named>
+      </pointer>
+    </type-targ>
+    <primary>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>4hePn1dLCqLal3xld/sSlBvpu6U=</functions>
@@ -265,11 +340,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>4hePn1dLCqLal3xld/sSlBvpu6U=</id>
   <extraction>regular</extraction>
   <parent>EyperGIiZ7cSv/PB2BApKjPRQVA=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -286,10 +363,30 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>xYK8qpEgWzczUMGnNUx+ozeBle0=</id>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <pointer>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>U</identifier>
+          </name>
+        </named>
+      </pointer>
+    </type-targ>
+    <primary>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>ks7mzzkRLaNXkyZ4CdZPO75g8js=</functions>
@@ -310,11 +407,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ks7mzzkRLaNXkyZ4CdZPO75g8js=</id>
   <extraction>regular</extraction>
   <parent>xYK8qpEgWzczUMGnNUx+ozeBle0=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -331,11 +430,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>MXnrYOauCPqySxkgtxhqKGFRX5w=</id>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -352,10 +453,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>C6fFmGgpPJ7jgwKJA98mfx5cxts=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>short</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <records>7YGPyrC+yNaV349G+Ofic+lrQQ0=</records>
@@ -378,10 +492,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>7YGPyrC+yNaV349G+Ofic+lrQQ0=</id>
   <extraction>regular</extraction>
   <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -407,10 +529,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</id>
   <extraction>regular</extraction>
   <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>FnUXB08e7tKDcXA1I7E6hiu2/i0=</functions>
@@ -431,11 +561,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>FnUXB08e7tKDcXA1I7E6hiu2/i0=</id>
   <extraction>regular</extraction>
   <parent>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -452,11 +584,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>Bkfxhhw3rhTX4AsAahIpOZcNmmo=</id>
   <extraction>regular</extraction>
   <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -473,10 +607,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>AKwlChAOi+0ttIAPsD7uitS+gk0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <records>O0cvG3FLegojxWfTpLGLrtCaiDg=</records>
@@ -500,10 +647,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>O0cvG3FLegojxWfTpLGLrtCaiDg=</id>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -523,10 +678,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</id>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>long</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>dKDSVrZun8skBV/NUCmJyCUOvJA=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>7fGykhsl+TDnhidf/wArzvaeUXY=</functions>
@@ -553,11 +721,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>7fGykhsl+TDnhidf/wArzvaeUXY=</id>
   <extraction>regular</extraction>
   <parent>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -574,10 +744,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>TIHR+/r3scoX8MpUnGX9TnhdTMw=</id>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -603,11 +781,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>5vQMmBbKdcjmr6fZ5KE/+hqkRD0=</id>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -624,6 +804,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -649,10 +830,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</id>
   <extraction>regular</extraction>
   <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>cJsLsaJ126sgoCXsFOa+lMSNEVI=</functions>
@@ -673,11 +862,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>cJsLsaJ126sgoCXsFOa+lMSNEVI=</id>
   <extraction>regular</extraction>
   <parent>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -694,10 +885,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>27+9TQyh1Vcx+C3POBLdyXJP8bo=</id>
   <extraction>regular</extraction>
   <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>ePyn5n+volZWM9Xn5rQhbb07Yn8=</functions>
@@ -724,11 +928,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ePyn5n+volZWM9Xn5rQhbb07Yn8=</id>
   <extraction>regular</extraction>
   <parent>27+9TQyh1Vcx+C3POBLdyXJP8bo=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

@@ -154,7 +154,7 @@ struct FunctionSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     FunctionSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Function>),
     (ReturnType, Params, Template, FuncClass, Noexcept, Requires,
      IsVariadic, IsDefaulted, IsExplicitlyDefaulted, IsDeleted,
      IsDeletedAsWritten, IsNoReturn, HasOverrideAttr, HasTrailingReturn,
@@ -163,38 +163,6 @@ MRDOCS_DESCRIBE_STRUCT(
      IsVirtualAsWritten, IsPure, IsConst, IsVolatile, IsFinal,
      RefQualifier, Explicit, Attributes, FunctionObjectImpl)
 )
-
-/** Map a FunctionSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The FunctionSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    FunctionSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the FunctionSymbol to a @ref dom::Value object.
-
-    @param v The output parameter to receive the dom::Value.
-    @param I The FunctionSymbol to convert.
-    @param domCorpus The DomCorpus used to resolve references.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FunctionSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 /** Map a vector of parameters to a @ref dom::Value object.
 

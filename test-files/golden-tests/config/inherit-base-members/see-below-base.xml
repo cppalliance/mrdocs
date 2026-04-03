@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
   <extraction>see-below</extraction>
   <parent>//////////////////////////8=</parent>
@@ -38,6 +40,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>ZFLr7GRQIMnYkYf3EtAsQX/ibQE=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -62,6 +65,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>J1syoWzn2cGgGxt+fceKEo2Jpzc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -69,9 +73,11 @@
   <base>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ZFLr7GRQIMnYkYf3EtAsQX/ibQE=</id>
         <identifier>base_see</identifier>
         <name>
+          <kind>identifier</kind>
           <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
           <identifier>see_below_ns</identifier>
         </name>
@@ -100,6 +106,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>nOVGo4vrMcebHm4Ap0P9O3FPudg=</id>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
@@ -115,6 +122,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -131,11 +139,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>fm0dS2I7h8XX4MVUXEdDThuOKWg=</id>
   <extraction>regular</extraction>
   <parent>J1syoWzn2cGgGxt+fceKEo2Jpzc=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

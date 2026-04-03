@@ -16,7 +16,7 @@
 #include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Type/NamedType.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MergeReflectedType.hpp>
 #include <test_suite/test_suite.hpp>
 
 namespace mrdocs {

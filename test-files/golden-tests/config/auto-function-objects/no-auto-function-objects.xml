@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -41,6 +43,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</id>
   <extraction>regular</extraction>
   <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
@@ -75,6 +78,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>11lTy9LCvZbcyORLiyJVo85H/ZE=</id>
   <extraction>regular</extraction>
   <parent>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</parent>
@@ -96,6 +100,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -114,6 +119,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</id>
   <extraction>implementation-defined</extraction>
   <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
@@ -155,6 +161,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>7NEMEfqJ2qq9ya8mcW1t7V5K0DA=</id>
   <extraction>implementation-defined</extraction>
   <parent>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</parent>
@@ -176,6 +183,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -194,6 +202,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>K/gF5rpXkFJJYDun6PDmCeQcFT8=</id>
   <extraction>regular</extraction>
   <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
@@ -215,6 +224,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -231,11 +241,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>zK8gWyWtxQjNc0x9PWS1qQDbceI=</id>
   <extraction>regular</extraction>
   <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</id>
       <identifier>auto_fn</identifier>
     </name>

@@ -136,6 +136,7 @@ grammar
     (
         element name { text }?,
         SourceInfo,
+        element kind { text }?,
         element id { SymbolID }?,
         element access { AccessSpecifier }?,
         element extraction { ExtractionMode }?,
@@ -215,7 +216,7 @@ grammar
         element member-pointer
         {
             TypeBase,
-            AnyType?
+            AnyType*
         }
 
     NamedType =
@@ -237,16 +238,18 @@ grammar
 
     TParamBase =
     (
+        element kind { text }?,
         element name { text }?,
-        element is-pack { Bool }?,
-        element default { text }?
+        element is-parameter-pack { Bool }?,
+        AnyTArg?
     )
 
     TypeTParam =
         element type-tparam
         {
             TParamBase,
-            element constraint { text }?
+            element key-kind { text }?,
+            Name?
         }
 
     ConstantTParam =
@@ -269,21 +272,30 @@ grammar
     # Template arguments (polymorphic)
     #---------------------------------------------
 
+    TArgBase =
+    (
+        element kind { text }?,
+        element is-pack-expansion { Bool }?
+    )
+
     TypeTArg =
         element type-targ
         {
+            TArgBase,
             AnyType?
         }
 
     ConstantTArg =
         element constant-targ
         {
+            TArgBase,
             element value { text }?
         }
 
     TemplateTArg =
         element template-targ
         {
+            TArgBase,
             element name { text }?,
             element template { text }?
         }
@@ -508,7 +520,16 @@ grammar
         element namespace-alias
         {
             SymbolBase,
-            element aliased-symbol { SymbolID }?
+            IdentifierName?
+        }
+
+    IdentifierName =
+        element identifier-name
+        {
+            element kind { text }?,
+            element id { SymbolID }?,
+            element identifier { text }?,
+            Name?
         }
 
     #---------------------------------------------

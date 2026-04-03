@@ -18,57 +18,9 @@
 
 namespace mrdocs {
 
-std::string_view
-toString(TArgKind kind) noexcept
-{
-    switch(kind)
-    {
-    case TArgKind::Type:
-        return "type";
-    case TArgKind::Constant:
-        return "constant";
-    case TArgKind::Template:
-        return "template";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-std::string_view
-toString(
-    TParamKind kind) noexcept
-{
-    switch(kind)
-    {
-    case TParamKind::Type:
-        return "type";
-    case TParamKind::Constant:
-        return "constant";
-    case TParamKind::Template:
-        return "template";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
 std::strong_ordering
 TParam::
 operator<=>(TParam const&) const = default;
-
-std::string_view
-toString(
-    TParamKeyKind kind) noexcept
-{
-    switch(kind)
-    {
-    case TParamKeyKind::Class:
-        return "class";
-    case TParamKeyKind::Typename:
-        return "typename";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
 
 std::strong_ordering
 operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
@@ -139,34 +91,6 @@ toString(
     });
 }
 
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    TArg const& I,
-    DomCorpus const*)
-{
-    io.map("kind", toString(I.Kind));
-    io.map("is-pack", I.IsPackExpansion);
-    visit(I, [&io]<typename T>(T const& t) {
-        if constexpr(T::isType())
-        {
-            io.map("type", t.Type);
-        }
-        if constexpr(T::isConstant())
-        {
-            io.map("value", t.Value.Written);
-        }
-        if constexpr(T::isTemplate())
-        {
-            io.map("name", t.Name);
-            io.map("template", t.Template);
-        }
-    });
-}
-
-
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -174,7 +98,9 @@ tag_invoke(
     TArg const& I,
     DomCorpus const* domCorpus)
 {
-    v = dom::LazyObject(I, domCorpus);
+    visit(I, [&]<typename T>(T const& t) {
+        v = dom::LazyObject(t, domCorpus);
+    });
 }
 
 std::strong_ordering
@@ -205,41 +131,6 @@ operator<=>(TemplateTParam const& other) const
     return std::strong_ordering::equal;
 }
 
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    TParam const& I,
-    DomCorpus const* domCorpus)
-{
-    io.map("kind", toString(I.Kind));
-    io.map("name", dom::stringOrNull(I.Name));
-    io.map("is-pack", I.IsParameterPack);
-    visit(I, [domCorpus, &io]<typename T>(T const& t) {
-        if(t.Default)
-        {
-            io.map("default", **t.Default);
-        }
-        if constexpr(T::isType())
-        {
-            io.map("key", t.KeyKind);
-            if (t.Constraint)
-            {
-                io.map("constraint", t.Constraint);
-            }
-        }
-        if constexpr(T::isConstant())
-        {
-            io.map("type", t.Type);
-        }
-        if constexpr(T::isTemplate())
-        {
-            io.map("params", dom::LazyArray(t.Params, domCorpus));
-        }
-    });
-}
-
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -247,7 +138,9 @@ tag_invoke(
     TParam const& I,
     DomCorpus const* domCorpus)
 {
-    v = dom::LazyObject(I, domCorpus);
+    visit(I, [&]<typename T>(T const& t) {
+        v = dom::LazyObject(t, domCorpus);
+    });
 }
 
 std::strong_ordering
@@ -324,26 +217,6 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     {
         I.Primary = Other.Primary;
     }
-}
-
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    TemplateInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    io.defer("kind", [&] {
-        return toString(I.specializationKind());
-    });
-    if (I.Primary != SymbolID::invalid)
-    {
-        io.map("primary", I.Primary);
-    }
-    io.map("params", dom::LazyArray(I.Params, domCorpus));
-    io.map("args", dom::LazyArray(I.Args, domCorpus));
-    io.map("requires", dom::stringOrNull(I.Requires.Written));
 }
 
 void

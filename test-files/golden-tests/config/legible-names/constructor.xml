@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -68,6 +70,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>iRe6Tyv0qU6vIHNyvLHuISP/Fw4=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -88,6 +91,7 @@
   <members>bzCqmNJXWfd3zGOkytPkJL6K6VQ=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -102,6 +106,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>6Jx2eK9l4C46QIRucTvox+6PH2k=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -116,6 +121,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -132,6 +138,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>4C2UEs8la3Eghf4mLyeViCJNOwY=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -154,6 +161,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -162,6 +170,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
           <identifier>X</identifier>
         </name>
@@ -182,6 +191,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ad/AzbLEE6b8dNnnX2OLy1+HxDQ=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -204,6 +214,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -211,6 +222,7 @@
     <r-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
           <identifier>X</identifier>
         </name>
@@ -231,6 +243,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>d9h3reyOyp3JT3kwQOTPOI9tmzg=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -260,12 +273,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -284,6 +299,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>bzCqmNJXWfd3zGOkytPkJL6K6VQ=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -313,12 +329,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>double</identifier>
       </name>
     </named>

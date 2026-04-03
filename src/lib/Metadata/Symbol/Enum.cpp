@@ -8,34 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Support/Reflection.hpp>
 #include <mrdocs/Metadata/Symbol/Enum.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
 
 namespace mrdocs {
 
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    EnumSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    addMetaObject<EnumSymbol>(io);
-
-    tag_invoke(dom::LazyObjectMapTag{}, io, I.asInfo(), domCorpus);
-    io.map("type", I.UnderlyingType);
-    io.map("isScoped", I.Scoped);
-    io.map("constants", dom::LazyArray(I.Constants, domCorpus));
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    EnumSymbol const&,
-    DomCorpus const*);
 
 } // mrdocs

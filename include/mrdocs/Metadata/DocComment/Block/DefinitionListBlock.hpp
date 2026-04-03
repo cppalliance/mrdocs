@@ -83,45 +83,9 @@ struct DefinitionListBlock final
 
 MRDOCS_DESCRIBE_STRUCT(
     DefinitionListBlock,
-    (Block),
+    (BlockCommonBase<BlockKind::List>),
     (items)
 )
-
-/** Map a definition list block into a DOM object.
-    @param t Conversion tag.
-    @param io Destination object.
-    @param I Block to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    DefinitionListBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
-    io.defer("items", [&I, domCorpus] {
-        return dom::LazyArray(I.items, domCorpus);
-    });
-}
-
-/** Convert a definition list block to a DOM value.
-    @param v Destination value.
-    @param I Block to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    DefinitionListBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

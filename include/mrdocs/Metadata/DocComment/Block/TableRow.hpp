@@ -47,40 +47,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (is_header, Cells)
 )
 
-/** Map the @ref TableRow to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    TableRow const& I,
-    DomCorpus const* domCorpus)
-{
-    io.map("is_header", I.is_header);
-    io.defer("cells", [&] {
-        return dom::LazyArray(I.Cells, domCorpus);
-    });
-}
-
-/** Return the @ref TableRow as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TableRow const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
 } // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_DOCCOMMENT_BLOCK_TABLEROW_HPP

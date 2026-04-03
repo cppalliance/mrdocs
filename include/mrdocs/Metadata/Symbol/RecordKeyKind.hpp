@@ -36,14 +36,6 @@ MRDOCS_DESCRIBE_ENUM(
     RecordKeyKind,
     Struct, Class, Union)
 
-/** Serialize the record key kind into a DOM value.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    RecordKeyKind kind);
-
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_RECORDKEYKIND_HPP

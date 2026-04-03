@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -22,6 +23,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>using</kind>
   <id>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -50,8 +52,10 @@
   </doc-comment>
   <class>normal</class>
   <name>
+    <kind>identifier</kind>
     <identifier>f</identifier>
     <name>
+      <kind>identifier</kind>
       <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
       <identifier>A</identifier>
     </name>

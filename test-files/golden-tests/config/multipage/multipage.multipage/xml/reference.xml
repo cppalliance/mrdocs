@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -38,6 +40,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>MbmED4YNhsRB+AYY214QbcHBQX4=</id>
   <extraction>regular</extraction>
   <parent>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</parent>
@@ -57,6 +60,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
   <extraction>regular</extraction>
   <parent>MbmED4YNhsRB+AYY214QbcHBQX4=</parent>
@@ -100,6 +104,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>auJ5R2FaQbaa9BwmEUUWMVJLc7w=</id>
   <extraction>regular</extraction>
   <parent>MbmED4YNhsRB+AYY214QbcHBQX4=</parent>
@@ -126,6 +131,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
       <identifier>Widget</identifier>
     </name>
@@ -143,6 +149,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>l0+/XcMJPcoSehJrMSl1Zo+3knU=</id>
   <extraction>regular</extraction>
   <parent>zgrZYRcj7JuNKGpVFGLPo0bnk9I=</parent>
@@ -169,9 +176,11 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
       <identifier>Widget</identifier>
       <name>
+        <kind>identifier</kind>
         <id>MbmED4YNhsRB+AYY214QbcHBQX4=</id>
         <identifier>beta</identifier>
       </name>
@@ -180,9 +189,11 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>i31wa/i4U5vydhdzOh4d2calhOI=</id>
         <identifier>Widget</identifier>
         <name>
+          <kind>identifier</kind>
           <id>MbmED4YNhsRB+AYY214QbcHBQX4=</id>
           <identifier>beta</identifier>
         </name>

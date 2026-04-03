@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>X6uKu3BxyFPud2u42zNKbyA0XfU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -76,12 +78,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>unsigned long long</identifier>
       </name>
     </named>

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -33,6 +34,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>heJcpXgra+N7RTWsFHYAmUw+P14=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -63,9 +65,22 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

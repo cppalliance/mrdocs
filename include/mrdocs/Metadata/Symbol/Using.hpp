@@ -129,37 +129,9 @@ struct UsingSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     UsingSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Using>),
     (Class, IntroducedName, ShadowDeclarations)
 )
-
-/** Map a UsingSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The UsingSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    UsingSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the UsingSymbol to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    UsingSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 /** Access declarations introduced by this using-declaration.
     @return Reference to the underlying shadow list.

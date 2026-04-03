@@ -15,7 +15,7 @@
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -426,65 +426,6 @@ toString(Type const& T,
     return write();
 }
 
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Type const& I,
-    DomCorpus const* domCorpus)
-{
-    addMetaObject<Type>(io);
-    io.map("kind", I.Kind);
-    io.map("is-pack", I.IsPackExpansion);
-    visit(I, [&io, domCorpus]<typename T>(T const& t)
-    {
-        if constexpr(T::isNamed())
-        {
-            io.map("name", t.Name);
-        }
-        if constexpr(T::isDecltype())
-        {
-            io.map("operand", t.Operand.Written);
-        }
-        if constexpr(T::isAuto())
-        {
-            io.map("keyword", t.Keyword);
-            if (t.Constraint)
-            {
-                io.map("constraint", t.Constraint);
-            }
-        }
-        io.map("is-const", t.IsConst);
-        io.map("is-volatile", t.IsVolatile);
-        if constexpr(requires { t.ParentType; })
-        {
-            io.map("parent-type", t.ParentType);
-        }
-        if constexpr(requires { t.PointeeType; })
-        {
-            io.map("pointee-type", t.PointeeType);
-        }
-        if constexpr(T::isArray())
-        {
-            io.map("element-type", t.ElementType);
-            if(t.Bounds.Value)
-            {
-                io.map("bounds-value", *t.Bounds.Value);
-            }
-            io.map("bounds-expr", t.Bounds.Written);
-        }
-        if constexpr(T::isFunction())
-        {
-            io.map("return-type", t.ReturnType);
-            io.map("param-types", dom::LazyArray(t.ParamTypes, domCorpus));
-            io.map("exception-spec", t.ExceptionSpec);
-            io.map("ref-qualifier", t.RefQualifier);
-            io.map("is-variadic", t.IsVariadic);
-        }
-    });
-}
-
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -492,7 +433,9 @@ tag_invoke(
     Type const& I,
     DomCorpus const* domCorpus)
 {
-    v = dom::LazyObject(I, domCorpus);
+    visit(I, [&]<typename T>(T const& t) {
+        v = dom::LazyObject(t, domCorpus);
+    });
 }
 
 std::string_view

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,22 +21,36 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>bE2iHZMP9X3RlkJcBwZ03NU57Pg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>specialization</kind>
         <identifier>ListType</identifier>
       </name>
     </named>
     <name>param</name>
   </param>
+  <template>
+    <template-tparam>
+      <kind>template</kind>
+      <name>ListType</name>
+      <type-tparam>
+        <kind>type</kind>
+        <is-parameter-pack>1</is-parameter-pack>
+        <key-kind>class</key-kind>
+      </type-tparam>
+    </template-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

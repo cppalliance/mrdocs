@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolKind.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -182,6 +183,28 @@ MRDOCS_DESCRIBE_STRUCT(
      Extraction, IsCopyFromInherited, Parent, doc)
 )
 
+/** Map a Symbol to a dom::Object with computed extraction properties.
+    @param io The IO object to map into.
+    @param I The Symbol to map.
+    @param domCorpus The DomCorpus context.
+*/
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    Symbol const& I,
+    DomCorpus const* domCorpus)
+{
+    MRDOCS_ASSERT(domCorpus);
+    mapReflectedType<false>(io, I, domCorpus);
+    io.map("class", std::string("symbol"));
+    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
+    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
+    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
+    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
+}
+
 //------------------------------------------------
 
 /** Base class for providing variant discriminator functions.
@@ -208,6 +231,8 @@ struct SymbolCommonBase : Symbol
     */
     auto operator<=>(SymbolCommonBase const&) const = default;
 
+    MRDOCS_DESCRIBE_CLASS(SymbolCommonBase, (Symbol), ())
+
 protected:
     /** Default constructor.
     */
@@ -231,33 +256,6 @@ canMerge(Symbol const& I, Symbol const& Other)
     return
         I.Kind == Other.Kind &&
         I.id == Other.id;
-}
-
-/** Map the Symbol to a @ref dom::Object.
-
-    @param io The output parameter to receive the dom::Object.
-    @param I The Symbol to convert.
-    @param domCorpus The DomCorpus used to resolve references.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Symbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Return the Symbol as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Symbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
 }
 
 /** Determine a location to use when none is explicitly chosen.

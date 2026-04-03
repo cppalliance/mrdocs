@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -22,6 +23,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -40,6 +42,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=</id>
   <extraction>regular</extraction>
   <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
@@ -63,6 +66,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>AsUl1L5PkCm5NvYpI3F7g6rfMlw=</id>
   <extraction>regular</extraction>
   <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
@@ -86,13 +90,16 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>using</kind>
   <id>G92XaEqIwVs05hrwdNXMhpeFqkU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <class>normal</class>
   <name>
+    <kind>identifier</kind>
     <identifier>S1</identifier>
     <name>
+      <kind>identifier</kind>
       <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
       <identifier>LongName</identifier>
     </name>
@@ -109,6 +116,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=</id>
   <extraction>regular</extraction>
   <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
@@ -132,13 +140,16 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>using</kind>
   <id>0Ljxy8EQ03btL9wIVt4SqbP1U2M=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <class>normal</class>
   <name>
+    <kind>identifier</kind>
     <identifier>S2</identifier>
     <name>
+      <kind>identifier</kind>
       <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
       <identifier>LongName</identifier>
     </name>
@@ -155,6 +166,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>AsUl1L5PkCm5NvYpI3F7g6rfMlw=</id>
   <extraction>regular</extraction>
   <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>

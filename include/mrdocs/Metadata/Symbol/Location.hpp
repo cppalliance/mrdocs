@@ -16,10 +16,14 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Nullable.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <string>
 
 namespace mrdocs {
+
+class DomCorpus;
 
 /** Source location of a symbol or entity.
 */
@@ -87,15 +91,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (),
     (ShortPath, SourcePath, LineNumber, ColumnNumber, Documented)
 )
-
-/** Serialize a location into a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Location const& loc);
 
 /** nullable_traits specialization for Location.
 

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,6 +25,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -48,6 +50,7 @@
   <friend>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
         <identifier>Z</identifier>
       </name>
@@ -66,6 +69,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -90,6 +94,7 @@
   <friend>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
         <identifier>T</identifier>
       </name>
@@ -108,6 +113,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>9kzYwt0WPztMEDUaFxul1Jvqqs8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -132,6 +138,7 @@
   <friend>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
         <identifier>U</identifier>
       </name>
@@ -149,6 +156,7 @@
       <column-number>12</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>

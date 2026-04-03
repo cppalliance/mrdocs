@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,11 +24,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>1Z8U4eFyt2XClP+7afzwsuyeXAI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
       <identifier>S0</identifier>
     </name>
@@ -44,23 +47,29 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>r6hRllvikhxyJUBT7eKH8Z13wfw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</id>
       <identifier>M2</identifier>
       <name>
+        <kind>specialization</kind>
         <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
         <identifier>M3</identifier>
         <name>
+          <kind>specialization</kind>
           <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
           <identifier>M3</identifier>
           <name>
+            <kind>specialization</kind>
             <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
             <identifier>S2</identifier>
             <name>
+              <kind>identifier</kind>
               <id>1Z8U4eFyt2XClP+7afzwsuyeXAI=</id>
               <identifier>A5</identifier>
             </name>
@@ -81,10 +90,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <records>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</records>
@@ -105,10 +122,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</id>
   <extraction>regular</extraction>
   <parent>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <typedefs>NnkA706kKqg/azveB/lExZwRfFI=</typedefs>
@@ -130,11 +155,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>NnkA706kKqg/azveB/lExZwRfFI=</id>
   <extraction>regular</extraction>
   <parent>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>U</identifier>
     </name>
   </named>
@@ -150,16 +177,25 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>TBl15ml95lYP4APzAuH1VpGgjgs=</id>
   <extraction>regular</extraction>
   <parent>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</id>
       <identifier>S2</identifier>
     </name>
   </named>
   <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>V</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
 </typedef>
 <record>
   <name>S0</name>
@@ -171,10 +207,23 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <records>3bDJlUJg+Wg63OKbCChN7xs/THg=</records>
@@ -196,10 +245,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
   <extraction>regular</extraction>
   <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -219,10 +276,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>LQDMND21bNwDyy/hE3qQoQzFLXY=</id>
   <extraction>regular</extraction>
   <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <typedefs>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</typedefs>
@@ -244,11 +314,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</id>
   <extraction>regular</extraction>
   <parent>LQDMND21bNwDyy/hE3qQoQzFLXY=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>char</identifier>
     </name>
   </named>
@@ -264,15 +336,24 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
   <extraction>regular</extraction>
   <parent>LQDMND21bNwDyy/hE3qQoQzFLXY=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
       <identifier>S2</identifier>
     </name>
   </named>
   <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>V</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
 </typedef>
 </mrdocs>

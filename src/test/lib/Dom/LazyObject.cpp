@@ -249,6 +249,7 @@ TEST_SUITE(
     LazyObject_test,
     "clang.mrdocs.dom.LazyObject");
 
+
 } // dom
 } // mrdocs
 

@@ -47,41 +47,9 @@ struct FootnoteReferenceInline
 
 MRDOCS_DESCRIBE_STRUCT(
     FootnoteReferenceInline,
-    (Inline),
+    (InlineCommonBase<InlineKind::FootnoteReference>),
     (label)
 )
-
-/** Map the @ref FootnoteReferenceInline to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    FootnoteReferenceInline const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
-    io.map("label", I.label);
-}
-
-/** Return the @ref FootnoteReferenceInline as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FootnoteReferenceInline const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

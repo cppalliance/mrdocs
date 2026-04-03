@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -25,11 +26,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>PvNOREc+JWxdkVgvSz+jC45IbGQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -45,12 +48,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>h6hupdyuT6SfsCGFl6UUFGtvrcc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -84,14 +89,28 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>eqMdBnxdb22zO3kokXFKlz9ktqg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <constant-tparam>
+      <kind>constant</kind>
+      <name>x</name>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -122,14 +141,30 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>WsEgNgLbqe3a0eM5Bqsuf58XoH0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <constant-tparam>
+      <kind>constant</kind>
+      <name>x</name>
+      <array>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>int</identifier>
+          </name>
+        </named>
+      </array>
+    </constant-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -160,14 +195,39 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>TjNHTu8/auH8QPVcgjW7FUo2dFM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <constant-tparam>
+      <kind>constant</kind>
+      <name>x</name>
+      <pointer>
+        <function>
+          <named>
+            <name>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </name>
+          </named>
+          <named>
+            <is-const>1</is-const>
+            <name>
+              <kind>identifier</kind>
+              <identifier>bool</identifier>
+            </name>
+          </named>
+        </function>
+      </pointer>
+    </constant-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -198,14 +258,27 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>2woLp3PdyOT/I0DFMkY8OAli5YM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <constant-tparam>
+      <kind>constant</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

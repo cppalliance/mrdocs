@@ -60,14 +60,6 @@ MRDOCS_DESCRIBE_ENUM(
     ExtractionMode,
     Regular, SeeBelow, ImplementationDefined, Dependency)
 
-/** Return the SymbolKind from a @ref dom::Value string.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ExtractionMode kind);
-
 /** Compare ExtractionModes and returns the least specific
 
     This function returns the least specific of the two

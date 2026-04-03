@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -30,6 +31,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -62,6 +64,7 @@
   <members>RX9GLABxvm5/ekXBz4J4QOCw/z0=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -77,6 +80,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -99,12 +103,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -123,6 +129,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>RX9GLABxvm5/ekXBz4J4QOCw/z0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -152,12 +159,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>long</identifier>
       </name>
     </named>
@@ -176,6 +185,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>YeUN6nJ9c4mQKDbDWPlXFODDK1Y=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -206,12 +216,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>long</identifier>
       </name>
     </named>
@@ -230,6 +242,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>AF4Au7CviDbKZx+hVBlelmlAwJ0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -260,12 +273,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>long</identifier>
       </name>
     </named>

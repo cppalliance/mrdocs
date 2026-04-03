@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -42,16 +44,25 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
       <identifier>A</identifier>
     </name>
   </named>
   <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
 </typedef>
 <typedef>
   <name>C</name>
@@ -63,16 +74,25 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
       <identifier>B</identifier>
     </name>
   </named>
   <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
 </typedef>
 <record>
   <name>A</name>
@@ -84,10 +104,18 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -107,6 +135,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=</id>
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
@@ -130,6 +159,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -137,9 +167,11 @@
   <base>
     <named>
       <name>
+        <kind>specialization</kind>
         <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
         <identifier>C</identifier>
         <name>
+          <kind>identifier</kind>
           <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
           <identifier>N</identifier>
         </name>

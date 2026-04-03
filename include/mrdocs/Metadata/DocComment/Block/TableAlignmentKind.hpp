@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -29,39 +30,7 @@ enum class TableAlignmentKind {
     Right,
 };
 
-/** Convert an alignment enum to its string representation.
-*/
-inline
-dom::String
-toString(TableAlignmentKind kind) noexcept
-{
-    switch (kind)
-    {
-        case TableAlignmentKind::None:
-            return "none";
-        case TableAlignmentKind::Left:
-            return "left";
-        case TableAlignmentKind::Center:
-            return "center";
-        case TableAlignmentKind::Right:
-            return "right";
-    }
-    return "unknown";
-}
-
-/** Serialize an alignment enum into a DOM value.
-    @param v Destination value.
-    @param kind Alignment to serialize.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TableAlignmentKind const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(TableAlignmentKind, None, Left, Center, Right)
 
 } // mrdocs
 
