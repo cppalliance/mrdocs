@@ -65,46 +65,9 @@ struct BriefBlock final
 
 MRDOCS_DESCRIBE_STRUCT(
     BriefBlock,
-    (Block, InlineContainer),
+    (BlockCommonBase<BlockKind::Brief>, InlineContainer),
     (copiedFrom)
 )
-
-/** Map the @ref BriefBlock to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    BriefBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
-    tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
-    io.defer("copiedFrom", [&I] {
-        return dom::LazyArray(I.copiedFrom);
-    });
-}
-
-/** Return the @ref BriefBlock as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    BriefBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-
-    Optional<BriefBlock> o;
-}
 
 /** Map an optional brief block to a DOM value, yielding null when absent.
     @param v Destination value.

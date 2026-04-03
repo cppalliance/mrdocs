@@ -15,6 +15,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -36,6 +37,8 @@ struct MemberPointerType final
     std::strong_ordering
     operator<=>(MemberPointerType const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(MemberPointerType, (TypeCommonBase<TypeKind::MemberPointer>), (ParentType, PointeeType))
 
 } // mrdocs
 

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -57,6 +59,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>NvIeyslj/JtN1AFmvZ8Tij9uTrg=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -78,6 +81,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>bool</identifier>
     </name>
   </named>
@@ -95,6 +99,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>3xIfjajRSSCEaVNizhf9qh46l4U=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -116,6 +121,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -134,6 +140,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>4jz+tDHFk1vY3ErafzS9b537gac=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -155,6 +162,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>

@@ -44,38 +44,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (term)
 )
 
-/** Map the @ref DefinitionListItem to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    DefinitionListItem const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, static_cast<BlockContainer const&>(I), domCorpus);
-    io.map("term", I.term);
-}
-
-/** Return the @ref DefinitionListItem as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    DefinitionListItem const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
 } // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_DOCCOMMENT_BLOCK_DEFINITIONLISTITEM_HPP

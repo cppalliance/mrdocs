@@ -12,33 +12,33 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if pointee-type~}}
+{{#if pointeeType~}}
     {{! Pointee type is array or function ~}}
-    {{#if (contains (arr "array" "function") pointee-type.kind)~}}
+    {{#if (contains (arr "array" "function") pointeeType.kind)~}}
         {{! Close the function parenthesis from the declarator prefix ~}}
         {{! The symbol name will be rendered between the prefix and suffix ~}}
         )
     {{~/if~}}
     {{! Declarator suffix of the pointee type ~}}
-    {{~>type/declarator-suffix pointee-type link-components-impl=link-components-impl~}}
+    {{~>type/declarator-suffix pointeeType link-components-impl=link-components-impl~}}
 {{else if (eq kind "array")~}}
     {{! Array declarator suffix includes bounds and array element suffix ~}}
-    [{{bounds-value}}]
-    {{~>type/declarator-suffix element-type link-components-impl=link-components-impl~}}
+    [{{boundsValue}}]
+    {{~>type/declarator-suffix elementType link-components-impl=link-components-impl~}}
 {{else if (eq kind "function")~}}
     {{! Function declarator suffix includes parameter types and cv-qualifiers ~}}
-    ({{#each param-types~}}
+    ({{#each paramTypes~}}
         {{~>type/declarator link-components-impl=link-components-impl~}}
         {{~#unless @last}}, {{/unless~}}
     {{/each~}}
     {{! Include final "..." for variadic functions ~}}
-    {{#if is-variadic}}{{#if param-types}}, {{/if}}{{ str "..." }}{{/if}}){{!~}}
+    {{#if isVariadic}}{{#if paramTypes}}, {{/if}}{{ str "..." }}{{/if}}){{!~}}
     {{! cv-qualifiers as literal strings ~}}
     {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
     {{! Refqualifiers as "&" or "&&" ~}}
-    {{#if (eq ref-qualifier "lvalue")}} &{{else if (eq ref-qualifier "rvalue")}} &&{{/if~}}
+    {{#if (eq refQualifier "lvalue")}} &{{else if (eq refQualifier "rvalue")}} &&{{/if~}}
     {{! Exception spec as literal string ~}}
-    {{#if exception-spec}} {{exception-spec}}{{/if~}}
+    {{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
     {{! Declarator suffix of the return type ~}}
-    {{~>type/declarator-suffix return-type link-components-impl=link-components-impl~}}
+    {{~>type/declarator-suffix returnType link-components-impl=link-components-impl~}}
 {{/if}}

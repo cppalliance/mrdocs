@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/TArg/ConstantTArg.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -38,6 +39,8 @@ struct TemplateTArg final
     */
     auto operator<=>(TemplateTArg const&) const = default;
 };
+
+MRDOCS_DESCRIBE_STRUCT(TemplateTArg, (TArgCommonBase<TArgKind::Template>), (Template, Name))
 
 } // mrdocs
 

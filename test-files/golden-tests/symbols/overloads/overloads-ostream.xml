@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>QelU2GDLOEeJSbLfOayOweDPxeI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -39,6 +41,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
   <extraction>regular</extraction>
   <parent>QelU2GDLOEeJSbLfOayOweDPxeI=</parent>
@@ -69,6 +72,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>CHEdD6V2JZOWqrKOrzrAFB01ag4=</id>
   <extraction>regular</extraction>
   <parent>mPR5L0+aXmfmkEAliRYGzCDx/No=</parent>
@@ -87,6 +91,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
         <identifier>A</identifier>
       </name>
@@ -103,6 +108,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>933XchiQ+t56rbxrI6xHFc4VHpg=</id>
   <extraction>regular</extraction>
   <parent>mPR5L0+aXmfmkEAliRYGzCDx/No=</parent>
@@ -133,6 +139,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
         <identifier>A</identifier>
       </name>
@@ -141,6 +148,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>unsigned int</identifier>
       </name>
     </named>
@@ -159,6 +167,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>uV72HdBWsWZ4EwLG0yd905Rczwc=</id>
   <extraction>regular</extraction>
   <parent>mPR5L0+aXmfmkEAliRYGzCDx/No=</parent>
@@ -189,6 +198,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
         <identifier>A</identifier>
       </name>
@@ -197,6 +207,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -215,11 +226,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>1FD8aMER9duNWqJoLOsrCr53cJY=</id>
   <extraction>regular</extraction>
   <parent>QelU2GDLOEeJSbLfOayOweDPxeI=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
       <identifier>A</identifier>
     </name>
@@ -229,6 +242,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
           <identifier>A</identifier>
         </name>
@@ -239,6 +253,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>double</identifier>
       </name>
     </named>
@@ -256,6 +271,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>S5XtDqY96X0u1hXzl3cx6YoVW8A=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -276,6 +292,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>VFtzIPiiZVDB77znFM+ODgLmKOw=</id>
   <extraction>regular</extraction>
   <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
@@ -302,6 +319,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>QiJ36sJ5iTYFjV9O2r8TuROMu6Y=</id>
   <extraction>regular</extraction>
   <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
@@ -325,6 +343,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
   <extraction>regular</extraction>
   <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
@@ -366,6 +385,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>/s4tLGsRLchmoXSCfp1huP12grE=</id>
   <extraction>regular</extraction>
   <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
@@ -384,6 +404,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
         <identifier>OStream</identifier>
       </name>
@@ -400,6 +421,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>1fuMcZHDrARpZPSclbAk4IYVnps=</id>
   <extraction>regular</extraction>
   <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
@@ -443,6 +465,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
         <identifier>OStream</identifier>
       </name>
@@ -452,6 +475,7 @@
     <l-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
           <identifier>OStream</identifier>
         </name>
@@ -462,6 +486,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>VFtzIPiiZVDB77znFM+ODgLmKOw=</id>
         <identifier>B</identifier>
       </name>
@@ -480,6 +505,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ojxr+36qVG3RcL9uyYCrmeMtpKQ=</id>
   <extraction>regular</extraction>
   <parent>S5XtDqY96X0u1hXzl3cx6YoVW8A=</parent>
@@ -523,6 +549,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
         <identifier>OStream</identifier>
       </name>
@@ -532,6 +559,7 @@
     <l-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
           <identifier>OStream</identifier>
         </name>
@@ -542,6 +570,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>QiJ36sJ5iTYFjV9O2r8TuROMu6Y=</id>
         <identifier>C</identifier>
       </name>

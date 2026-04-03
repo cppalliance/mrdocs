@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -35,6 +36,8 @@ struct TemplateTParam final
     std::strong_ordering
     operator<=>(TemplateTParam const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(TemplateTParam, (TParamCommonBase<TParamKind::Template>), (Params))
 
 } // mrdocs
 

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,10 +21,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>AvAESYZFVvK3PiO4+x9D9ee81UQ=</functions>
@@ -44,6 +53,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>AvAESYZFVvK3PiO4+x9D9ee81UQ=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
@@ -52,6 +62,7 @@
   <members>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -66,14 +77,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>fycIFVnUjGsczEihLemEC7pcV4w=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
 </function>
@@ -87,14 +107,28 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>fycIFVnUjGsczEihLemEC7pcV4w=</primary>
+  </template>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
 </function>

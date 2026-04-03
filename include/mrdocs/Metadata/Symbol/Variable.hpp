@@ -119,40 +119,12 @@ struct VariableSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     VariableSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Variable>),
     (Type, Template, Initializer, StorageClass, IsInline,
      IsConstexpr, IsConstinit, IsThreadLocal, Attributes, IsMaybeUnused,
      IsDeprecated, HasNoUniqueAddress, IsRecordField, IsMutable, IsVariant,
      IsBitfield, BitfieldWidth)
 )
-
-/** Map a VariableSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The VariableSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    VariableSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the VariableSymbol to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    VariableSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs
 

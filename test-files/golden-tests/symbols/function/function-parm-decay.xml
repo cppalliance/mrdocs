@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -25,11 +26,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>PvNOREc+JWxdkVgvSz+jC45IbGQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -45,12 +48,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>h6hupdyuT6SfsCGFl6UUFGtvrcc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -84,11 +89,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -96,6 +103,7 @@
     <named>
       <is-const>1</is-const>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -131,11 +139,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>CJhykN8TDmEo0Pl8UC2D9+rotIs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -143,6 +153,7 @@
     <pointer>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>int</identifier>
         </name>
       </named>
@@ -179,11 +190,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>O4TonOdK6PIf6z1nHqJsqg7QfBw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -191,11 +204,13 @@
     <function>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>int</identifier>
         </name>
       </named>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>bool</identifier>
         </name>
       </named>
@@ -232,17 +247,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>UTOfie03KjmJww3mduHOqLZB5aI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>PvNOREc+JWxdkVgvSz+jC45IbGQ=</id>
         <identifier>T</identifier>
       </name>

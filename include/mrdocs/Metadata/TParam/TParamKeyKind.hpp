@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string_view>
 
 namespace mrdocs {
@@ -30,24 +31,7 @@ enum class TParamKeyKind : int
     Typename
 };
 
-/** Convert the keyword kind to its string form.
-    @return String view naming the keyword.
-*/
-MRDOCS_DECL
-std::string_view
-toString(TParamKeyKind kind) noexcept;
-
-/** Serialize the keyword kind into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TParamKeyKind kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(TParamKeyKind, Class, Typename)
 
 } // mrdocs
 

@@ -15,7 +15,7 @@
 #include <mrdocs/Metadata/Symbol/FileKind.hpp>
 #include <mrdocs/Metadata/Symbol/Location.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MergeReflectedType.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <ranges>
 
@@ -84,51 +84,6 @@ getPrimaryLocation(SourceInfo const& I, bool const preferDefinition)
         return Optional<Location>(*documentedIt);
     }
     return Optional<Location>(I.Loc.front());
-}
-
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Location const& loc)
-{
-    mapReflectedType<true>(io, loc);
-}
-
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Location const& loc)
-{
-    v = dom::LazyObject(loc);
-}
-
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    SourceInfo const& I)
-{
-    if (I.DefLoc)
-    {
-        io.map("def", *I.DefLoc);
-    }
-    if (!I.Loc.empty())
-    {
-        io.map("decl", dom::LazyArray(I.Loc));
-    }
-}
-
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    SourceInfo const& I)
-{
-    v = dom::LazyObject(I);
 }
 
 } // mrdocs

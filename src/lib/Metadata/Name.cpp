@@ -14,23 +14,10 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <span>
 
 namespace mrdocs {
-
-dom::String toString(NameKind kind) noexcept
-{
-    switch(kind)
-    {
-    case NameKind::Identifier:
-        return "identifier";
-    case NameKind::Specialization:
-        return "specialization";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
 
 static
 void
@@ -142,28 +129,6 @@ toString(Name const& N)
     std::string result;
     toStringImpl(result, N);
     return result;
-}
-
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Name const& I,
-    DomCorpus const* domCorpus)
-{
-    addMetaObject<Name>(io);
-    io.map("kind", I.Kind);
-    visit(I, [domCorpus, &io]<typename T>(T const& t)
-    {
-        io.map("name", t.Identifier);
-        io.map("symbol", t.id);
-        if constexpr(requires { t.TemplateArgs; })
-        {
-            io.map("args", dom::LazyArray(t.TemplateArgs, domCorpus));
-        }
-        io.map("prefix", t.Prefix);
-    });
 }
 
 void

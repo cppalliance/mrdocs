@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -23,22 +24,7 @@ enum class NameKind {
 #include <mrdocs/Metadata/Name/NameNodes.inc>
 };
 
-/** Convert a NameKind to its string form.
-*/
-MRDOCS_DECL
-dom::String
-toString(NameKind kind) noexcept;
-
-/** Map a NameKind into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v, NameKind const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(NameKind, Identifier, Specialization)
 
 } // mrdocs
 

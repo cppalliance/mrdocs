@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,6 +25,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -57,6 +59,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -103,6 +106,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>q7aqa6GHOpmWjES40eZPTxdQ3zE=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -122,6 +126,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
       </name>
@@ -138,6 +143,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>YI7e/5S7mfio0SdtBRI7qUu9Q98=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -168,6 +174,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
       </name>
@@ -178,6 +185,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
           <identifier>X</identifier>
         </name>
@@ -198,6 +206,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>48zVzrvQYghIK1XcLQx4pbTPMI4=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -228,6 +237,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
       </name>
@@ -237,6 +247,7 @@
     <r-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
           <identifier>X</identifier>
         </name>
@@ -257,6 +268,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>3QxkEc/c2ugz6330u92HdqOoDNk=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -287,6 +299,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
       </name>
@@ -297,6 +310,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>
@@ -317,6 +331,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>fQntJewamOFvdUijvGwzsqA4V+E=</id>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
@@ -347,6 +362,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
       </name>
@@ -357,6 +373,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
           <identifier>X</identifier>
         </name>
@@ -378,6 +395,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -415,6 +433,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>G/x48jnXaICOdnZlZThSByV21NY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -458,6 +477,7 @@
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
         <identifier>ostream</identifier>
       </name>
@@ -467,6 +487,7 @@
     <l-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
           <identifier>ostream</identifier>
         </name>
@@ -479,6 +500,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
           <identifier>X</identifier>
         </name>

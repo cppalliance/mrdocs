@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -28,6 +29,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -73,6 +75,7 @@
           </text>
         </paragraph>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -103,6 +106,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -202,6 +206,7 @@
           </text>
         </paragraph>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -232,6 +237,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -256,6 +262,7 @@
           </text>
         </paragraph>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -286,6 +293,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -342,6 +350,7 @@
           </text>
         </paragraph>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -353,6 +362,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -369,6 +379,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -451,8 +462,10 @@
               </text>
             </paragraph>
           </list-item>
+          <list-kind>unordered</list-kind>
         </list>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -464,6 +477,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -480,6 +494,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>rvT6OxIrrSI0KxJ2nkfEgBz/Lz4=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -513,6 +528,7 @@
             </text>
           </paragraph>
         </list-item>
+        <list-kind>unordered</list-kind>
       </list>
       <admonish>note</admonish>
     </admonition>
@@ -526,6 +542,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -542,6 +559,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>MHBBKAqB60b5SalK1SWHxln9gBw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -572,6 +590,7 @@
           </code>
         </paragraph>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -583,6 +602,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -599,6 +619,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>z6+WhUUlKbViODzMahmqRooQOm8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -637,6 +658,7 @@
           </text>
         </paragraph>
       </list-item>
+      <list-kind>unordered</list-kind>
     </list>
     <brief>
       <kind>brief</kind>
@@ -648,6 +670,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

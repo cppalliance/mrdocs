@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,10 +25,22 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <constant-tparam>
+      <kind>constant</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -47,11 +60,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>guide</kind>
   <id>2IF4pOfGcA57GQDlE3PJgs7yeUs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
     </name>
@@ -59,6 +74,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>bool</identifier>
       </name>
     </named>
@@ -74,11 +90,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>guide</kind>
   <id>AtQyLakD3CjcM24GabAbHMNgVU4=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
     </name>
@@ -86,6 +104,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -101,11 +120,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>guide</kind>
   <id>tkYkUU6H8cbFpCU7yBuvBLkT6dg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
     </name>
@@ -113,6 +134,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -128,18 +150,36 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>guide</kind>
   <id>YS/v8XQ/9ShQ2spNAh5EY33PN7s=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
     </name>
   </named>
+  <template>
+    <constant-tparam>
+      <kind>constant</kind>
+      <name>B</name>
+      <constant-targ>
+        <kind>constant</kind>
+      </constant-targ>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </name>
+      </named>
+    </constant-tparam>
+  </template>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>long</identifier>
       </name>
     </named>

@@ -22,6 +22,7 @@
 #include <mrdocs/Metadata/DocComment/Block/BlockKind.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <algorithm>
 #include <string>
 
@@ -149,6 +150,8 @@ struct BlockCommonBase : Block
     */
     auto operator<=>(BlockCommonBase const&) const = default;
 
+    MRDOCS_DESCRIBE_CLASS(BlockCommonBase, (Block), ())
+
 protected:
     /** Construct with the fixed block kind.
     */
@@ -162,35 +165,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (),
     (Kind)
 )
-
-/** Map the @ref Block to a @ref dom::Object.
-
-    @param io The output object.
-    @param I The input object.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Block const& I,
-    DomCorpus const*)
-{
-    io.map("kind", doc::toString(I.Kind));
-}
-
-/** Return the @ref Block as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Block const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 /** Removes leading whitespace from the block.
 
@@ -283,40 +257,6 @@ tag_invoke(
     IO& io,
     BlockTy const& I,
     DomCorpus const* domCorpus);
-
-/** Map a block container into a lazily-evaluated DOM object.
-    @param io Destination object.
-    @param I Block container to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    BlockContainer const& I,
-    DomCorpus const* domCorpus)
-{
-    io.defer("blocks", [&I, domCorpus] {
-        return dom::LazyArray(I.blocks, domCorpus);
-    });
-}
-
-/** Return the block container as a DOM value.
-    @param v Destination value.
-    @param I Block container to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    BlockContainer const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 /** Removes leading whitespace from the first text elements
 

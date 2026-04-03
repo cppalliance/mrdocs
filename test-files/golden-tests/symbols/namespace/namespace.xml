@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -28,6 +29,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -48,6 +50,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -65,11 +68,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>RAcSjxVkWvI/awJiHw3JE6+Sqi0=</id>
   <extraction>regular</extraction>
   <parent>4hr3niqdAlVLoJDRDfOf4nP1zbU=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -85,11 +90,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>ORL9/51wI1T8sdK1zKvAQJvBXXE=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -105,11 +112,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>HaQCsemzdIbo/5b1lSoHbiA1j68=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -125,11 +134,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>0wxfCHJiD3XMfQnSI2NiRruFzmU=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -145,6 +156,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>ztz7MOWesSViYVR7u+aEiSORqG0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -162,11 +174,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>Qf4PvJJjCKOCzviJDkpMntv8z48=</id>
   <extraction>regular</extraction>
   <parent>ztz7MOWesSViYVR7u+aEiSORqG0=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -182,6 +196,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>Wst/dadHi6Smk6pSpSEAkzhH8+M=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -199,11 +214,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=</id>
   <extraction>regular</extraction>
   <parent>Wst/dadHi6Smk6pSpSEAkzhH8+M=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -219,6 +236,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>+dTV+2puUwO4arfDuNZCVAzk0M0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -236,11 +254,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>Wk/88w4XwQou7iSEOBQAnlcQ1ys=</id>
   <extraction>regular</extraction>
   <parent>+dTV+2puUwO4arfDuNZCVAzk0M0=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -256,11 +276,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>JFdBEye4uXzw0ilTytFZ8c1sSbg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -276,11 +298,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>emiOGg7QaKWV17XaWH2S5DJ+vL0=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -296,11 +320,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>fxIH/xCm0IKZv739SRjeEnzqXCc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -316,11 +342,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>Vi90nY9KWrCv3wWIlvgWi9fs//E=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -336,11 +364,13 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>8ddwiGlSyG3c3BJDcb/ZigMDMJU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

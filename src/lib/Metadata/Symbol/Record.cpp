@@ -14,7 +14,6 @@
 #include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <mrdocs/Metadata/Symbol/RecordTranche.hpp>
 #include <mrdocs/Metadata/Symbol/RecordInterface.hpp>
-#include <mrdocs/Support/Reflection.hpp>
 
 namespace mrdocs {
 
@@ -61,20 +60,6 @@ operator<=>(RecordSymbol const& other) const
     return this->asInfo() <=> other.asInfo();
 }
 
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    BaseInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-    io.map("isPublic", I.Access == AccessKind::Public);
-    io.map("isProtected", I.Access == AccessKind::Protected);
-    io.map("isPrivate", I.Access == AccessKind::Private);
-}
-
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -86,62 +71,5 @@ tag_invoke(
 }
 
 
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    RecordInterface const& I,
-    DomCorpus const*)
-{
-    mapReflectedType<true>(io, I);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    RecordInterface const&,
-    DomCorpus const*);
-
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    RecordSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-    io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
-}
-
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    RecordTranche const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    RecordTranche const&,
-    DomCorpus const*);
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    RecordSymbol const&,
-    DomCorpus const*);
 
 } // mrdocs

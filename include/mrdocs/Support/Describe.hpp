@@ -357,6 +357,43 @@ using has_describe_enumerators = detail::has_describe_enumerators_impl<E>;
     MRDOCS_DESCRIBE_BASES(C, MRDOCS_PP_UNPACK Bases)                \
     MRDOCS_DESCRIBE_MEMBERS(C, MRDOCS_PP_UNPACK Members)
 
+// --- MRDOCS_DESCRIBE_CLASS ------------------------------------------
+//
+// Like MRDOCS_DESCRIBE_STRUCT but placed INSIDE a class definition.
+// Uses friend declarations so the descriptor functions are declared
+// in the enclosing namespace. This variant supports class templates.
+
+#define MRDOCS_DESCRIBE_FRIEND_BASES(C, ...)                        \
+    friend                                                          \
+    typename ::mrdocs::describe::bases_descriptor_impl<             \
+        C, ::mrdocs::describe::list<__VA_ARGS__>>::type             \
+    mrdocs_base_descriptor_fn(C**);
+
+#define MRDOCS_DESCRIBE_FRIEND_MEMBERS(C, ...)                      \
+    friend                                                          \
+    decltype(                                                       \
+        ::mrdocs::describe::member_descriptor_fn_impl(              \
+            0 __VA_OPT__(MRDOCS_PP_FOR_EACH(                        \
+                MRDOCS_MEMBER_IMPL, C, __VA_ARGS__))))              \
+    mrdocs_member_descriptor_fn(C**);
+
+#if defined(__GNUC__) && !defined(__clang__)
+// GCC warns that each template instantiation declares a separate
+// non-template friend function (-Wnon-template-friend). That is
+// exactly the intended behaviour: every instantiation of the
+// enclosing class template gets its own descriptor overload.
+#define MRDOCS_DESCRIBE_CLASS(C, Bases, Members)                    \
+    _Pragma("GCC diagnostic push")                                  \
+    _Pragma("GCC diagnostic ignored \"-Wnon-template-friend\"")     \
+    MRDOCS_DESCRIBE_FRIEND_BASES(C, MRDOCS_PP_UNPACK Bases)         \
+    MRDOCS_DESCRIBE_FRIEND_MEMBERS(C, MRDOCS_PP_UNPACK Members)     \
+    _Pragma("GCC diagnostic pop")
+#else
+#define MRDOCS_DESCRIBE_CLASS(C, Bases, Members)                    \
+    MRDOCS_DESCRIBE_FRIEND_BASES(C, MRDOCS_PP_UNPACK Bases)         \
+    MRDOCS_DESCRIBE_FRIEND_MEMBERS(C, MRDOCS_PP_UNPACK Members)
+#endif
+
 // --- MRDOCS_DESCRIBE_ENUM ------------------------------------------
 
 #define MRDOCS_ENUM_ENTRY(E, e)                                     \

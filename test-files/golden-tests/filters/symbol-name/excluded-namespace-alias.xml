@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -37,6 +39,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>X48ZrJbrwHITObLn6vxlcgApA20=</id>
   <extraction>regular</extraction>
   <parent>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</parent>
@@ -54,8 +57,23 @@
       <column-number>9</column-number>
     </location>
   </source>
+  <kind>namespace-alias</kind>
   <id>TDj0Rc30uD7P5e+F1gsHzHoaV2U=</id>
   <extraction>regular</extraction>
   <parent>X48ZrJbrwHITObLn6vxlcgApA20=</parent>
+  <identifier-name>
+    <kind>identifier</kind>
+    <identifier>E</identifier>
+    <name>
+      <kind>identifier</kind>
+      <id>Rj2Fd5N7JujyJxCEKO4hXgEbuZE=</id>
+      <identifier>S</identifier>
+      <name>
+        <kind>identifier</kind>
+        <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
+        <identifier>B</identifier>
+      </name>
+    </name>
+  </identifier-name>
 </namespace-alias>
 </mrdocs>

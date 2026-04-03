@@ -48,18 +48,6 @@ MRDOCS_DECL
 dom::String
 toString(AdmonitionKind kind) noexcept;
 
-/** Return the Admonish from a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    AdmonitionKind const kind)
-{
-    v = toString(kind);
-}
-
 } // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_DOCCOMMENT_BLOCK_ADMONITIONKIND_HPP

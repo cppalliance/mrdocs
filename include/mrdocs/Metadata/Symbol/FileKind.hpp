@@ -38,16 +38,6 @@ MRDOCS_DESCRIBE_ENUM(
     FileKind,
     Source, System, Other)
 
-/** Map a FileKind into a DOM value.
-    @param v Destination value to populate.
-    @param kind File category to serialize.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FileKind kind);
-
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_FILEKIND_HPP

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,6 +24,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -40,6 +42,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
   <extraction>implementation-defined</extraction>
   <parent>aMJtdgJFybRcdkRG712j3iC7JeM=</parent>
@@ -63,6 +66,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -80,6 +84,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
   <extraction>regular</extraction>
   <parent>FmK1G1VDxt6WyumYC2tUbb5VjSs=</parent>
@@ -103,14 +108,17 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>/ePshzEghZYl/D7bJ6X3M2XbKEg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
       <identifier>absolute_uri_rule_t</identifier>
       <name>
+        <kind>identifier</kind>
         <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
         <identifier>detail</identifier>
       </name>
@@ -128,14 +136,17 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>ixmivDXFAcQVJd4G7XOqINAR858=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
       <identifier>absolute_uri_rule_t</identifier>
       <name>
+        <kind>identifier</kind>
         <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
         <identifier>regular</identifier>
       </name>

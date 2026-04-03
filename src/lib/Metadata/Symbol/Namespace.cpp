@@ -10,7 +10,6 @@
 //
 
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
-#include <mrdocs/Support/Reflection.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace mrdocs {
@@ -55,44 +54,6 @@ operator<=>(NamespaceSymbol const& other) const
     return std::strong_ordering::equal;
 }
 
-
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    NamespaceTranche const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    NamespaceTranche const&,
-    DomCorpus const*);
-
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    NamespaceSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    NamespaceSymbol const&,
-    DomCorpus const*);
 
 } // mrdocs
 

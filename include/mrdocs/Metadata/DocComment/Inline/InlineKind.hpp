@@ -44,20 +44,6 @@ toString(InlineKind kind) noexcept
     return "Unknown";
 }
 
-/** Serialize an inline kind into a DOM value.
-    @param v Destination DOM value.
-    @param kind Kind to serialize.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    InlineKind const kind)
-{
-    v = toString(kind);
-}
-
 } // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_DOCCOMMENT_INLINE_INLINEKIND_HPP

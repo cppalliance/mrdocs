@@ -14,6 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/TArg.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -50,6 +51,8 @@ struct SpecializationName final
         return TemplateArgs <=> other.TemplateArgs;
     }
 };
+
+MRDOCS_DESCRIBE_STRUCT(SpecializationName, (Name), (TemplateArgs))
 
 } // mrdocs
 

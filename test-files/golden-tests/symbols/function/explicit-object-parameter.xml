@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -50,6 +52,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>yAoBkmRqQkJsKfweNOdQt2SnUkc=</id>
   <extraction>regular</extraction>
   <parent>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</parent>
@@ -71,6 +74,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>XLLL4h9bZlRyA4AQMlfVPCuwMoU=</id>
   <extraction>regular</extraction>
   <parent>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</parent>
@@ -82,12 +86,20 @@
     <r-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Self</identifier>
         </name>
       </named>
     </r-value-reference>
     <name>self</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Self</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
   <is-explicit-object-member-function>1</is-explicit-object-member-function>
   <is-record-method>1</is-record-method>
@@ -102,6 +114,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>aOpxAmSvyM7g6X3lLAJG5i3CTZA=</id>
   <extraction>regular</extraction>
   <parent>/TAtWMuvF+kz/B0ChmDlGQtnkaA=</parent>
@@ -113,6 +126,7 @@
     <r-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Self</identifier>
         </name>
       </named>
@@ -122,11 +136,19 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
     <name>x</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Self</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
   <is-explicit-object-member-function>1</is-explicit-object-member-function>
   <is-record-method>1</is-record-method>

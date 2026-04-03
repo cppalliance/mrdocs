@@ -16,10 +16,13 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/TArg.hpp>
 #include <mrdocs/Metadata/TParam.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -89,6 +92,33 @@ struct TemplateInfo final
     std::strong_ordering
     operator<=>(TemplateInfo const& other) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(TemplateInfo, (), (Params, Args, Requires, Primary))
+
+/** Map a TemplateInfo to a dom::Object with computed specialization kind.
+    @param io The IO object to map into.
+    @param I The TemplateInfo to map.
+    @param domCorpus The DomCorpus context.
+*/
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    TemplateInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    io.defer("kind", [&] {
+        return std::string(toString(I.specializationKind()));
+    });
+    if (I.Primary != SymbolID::invalid)
+    {
+        io.map("primary", I.Primary);
+    }
+    io.map("params", dom::LazyArray(I.Params, domCorpus));
+    io.map("args", dom::LazyArray(I.Args, domCorpus));
+    io.map("requires", dom::stringOrNull(I.Requires.Written));
+}
 
 /** Merge partial template info, filling missing pieces.
 */

@@ -40,9 +40,9 @@
 {{/unless}}
 {{! Description }}
 {{#unless traversing-global-namespace}}
-{{#if (or symbol.doc.description symbol.functionObjectImpl)}}
+{{#if (or symbol.doc.document symbol.functionObjectImpl)}}
 <div>
-{{#unless (and symbol.doc.description (eq (lookup (first symbol.doc.description) "kind") "heading")) }}
+{{#unless (and symbol.doc.document (eq (lookup (first symbol.doc.document) "kind") "heading")) }}
 {{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
 {{~/unless}}
 {{#if symbol.functionObjectImpl}}
@@ -53,8 +53,8 @@
 </div>
 </div>
 {{/if}}
-{{#if symbol.doc.description}}
-{{> doc/block/document symbol.doc.description }}
+{{#if symbol.doc.document}}
+{{> doc/block/document symbol.doc.document }}
 {{/if}}
 </div>
 {{/if}}
@@ -72,7 +72,7 @@
 </thead>
 <tbody>
 {{#each (filter_by symbol.bases "isPublic")}}
-<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> doc/block/inline-brief type.name.symbol.doc.brief }}</td></tr>
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> doc/block/inline-brief type.name.id.doc.brief }}</td></tr>
 {{/each}}
 </tbody>
 </table>
@@ -91,7 +91,7 @@
 </thead>
 <tbody>
 {{#each (filter_by symbol.bases "isProtected")}}
-<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> doc/block/inline-brief type.name.symbol.doc.brief }}</td></tr>
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> doc/block/inline-brief type.name.id.doc.brief }}</td></tr>
 {{/each}}
 </tbody>
 </table>
@@ -128,9 +128,9 @@
 <tbody>
 {{#each symbol.friends }}
 <tr>
-{{#if symbol}}
-<td>{{#>markup/code}}{{> symbol/name symbol }}{{/markup/code}}</td>
-<td>{{> doc/block/inline-brief symbol.doc.brief }}</td>
+{{#if id}}
+<td>{{#>markup/code}}{{> symbol/name id }}{{/markup/code}}</td>
+<td>{{> doc/block/inline-brief id.doc.brief }}</td>
 {{else}}
 <td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td>
 <td></td>
@@ -163,7 +163,7 @@
 </thead>
 <tbody>
 {{#each symbol.doc.related}}
-<tr><td>{{> doc/inline/reference }}</td><td>{{> doc/block/inline-brief symbol.doc.brief }}</td></tr>
+<tr><td>{{> doc/inline/reference }}</td><td>{{> doc/block/inline-brief id.doc.brief }}</td></tr>
 {{/each}}
 </tbody>
 </table>

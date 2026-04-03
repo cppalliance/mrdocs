@@ -61,7 +61,7 @@ struct OverloadsSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     OverloadsSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Overloads>),
     (FuncClass, OverloadedOperator, Members, ReturnType)
 )
 
@@ -80,34 +80,6 @@ allMembers(OverloadsSymbol const& T)
 MRDOCS_DECL
 void
 addMember(OverloadsSymbol& I, FunctionSymbol const& Member);
-
-/** Map a OverloadsSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The OverloadsSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    OverloadsSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the OverloadsSymbol to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    OverloadsSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs
 

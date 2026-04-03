@@ -71,46 +71,9 @@ struct TableBlock final: BlockCommonBase<BlockKind::Table>
 
 MRDOCS_DESCRIBE_STRUCT(
     TableBlock,
-    (Block),
+    (BlockCommonBase<BlockKind::Table>),
     (Alignments, items)
 )
-
-/** Map the @ref TableBlock to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    TableBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
-    io.defer("alignments", [&I, domCorpus] {
-        return dom::LazyArray(I.Alignments, domCorpus);
-    });
-    io.defer("items", [&I, domCorpus] {
-        return dom::LazyArray(I.items, domCorpus);
-    });
-}
-
-/** Return the @ref TableBlock as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TableBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

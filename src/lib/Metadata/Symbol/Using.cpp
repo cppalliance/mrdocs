@@ -10,7 +10,7 @@
 //
 
 #include <mrdocs/Metadata/Symbol/Using.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MergeReflectedType.hpp>
 namespace mrdocs {
 
 void
@@ -21,25 +21,6 @@ tag_invoke(
 {
     v = toString(kind);
 }
-
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    UsingSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    UsingSymbol const&,
-    DomCorpus const*);
 
 } // mrdocs
 

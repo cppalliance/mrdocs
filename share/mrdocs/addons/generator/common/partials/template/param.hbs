@@ -13,15 +13,15 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{#if (eq kind "type")~}}
-    {{#if constraint}}{{>type/name-info constraint link-components-impl=link-components-impl }}{{else}}{{key}}{{/if~}}
-    {{#if is-pack}}{{ str "..." }}{{/if~}}
+    {{#if constraint}}{{>type/name-info constraint link-components-impl=link-components-impl }}{{else}}{{keyKind}}{{/if~}}
+    {{#if isParameterPack}}{{ str "..." }}{{/if~}}
     {{#if name}} {{name}}{{/if~}}
     {{#if default}} = {{>template/arg default link-components-impl=link-components-impl ~}}{{/if~}}
 {{else if (eq kind "constant")~}}
-    {{>type/declarator type decl-name=name link-components-impl=link-components-impl }}{{#if is-pack}}{{ str "..." }}{{/if~}}
+    {{>type/declarator type decl-name=name link-components-impl=link-components-impl }}{{#if isParameterPack}}{{ str "..." }}{{/if~}}
     {{#if default}} = {{>template/arg default link-components-impl=link-components-impl~}}{{/if~}}
 {{else if (eq kind "template")~}}
-    {{>template/head}} typename{{#if is-pack}}{{ str "..." }}{{/if~}}
+    {{>template/head}} typename{{#if isParameterPack}}{{ str "..." }}{{/if~}}
     {{#if name}} {{name}}{{/if~}}
     {{#if default}} = {{>template/arg default link-components-impl=link-components-impl~}}{{/if~}}
 {{/if}}

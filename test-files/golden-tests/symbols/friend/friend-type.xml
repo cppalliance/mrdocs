@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>FKq9Eqf4/TSH5THy8HQZ8ZjI+gY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -34,6 +36,13 @@
     </brief>
   </doc-comment>
   <key-kind>class</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -45,6 +54,7 @@
   <friend>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>

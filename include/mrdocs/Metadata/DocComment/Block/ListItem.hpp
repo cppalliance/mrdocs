@@ -40,37 +40,6 @@ MRDOCS_DESCRIBE_STRUCT(
     ()
 )
 
-/** Map the @ref ListItem to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    ListItem const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, static_cast<BlockContainer const&>(I), domCorpus);
-}
-
-/** Return the @ref ListItem as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ListItem const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
 } // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_DOCCOMMENT_BLOCK_LISTITEM_HPP

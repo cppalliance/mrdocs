@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>+jO0pmMB/RXahxtatVUYoEwUKWs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -37,6 +39,7 @@
       <column-number>16</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>8vOLQN1FS3phbXzrBx8KohfFQCw=</id>
   <extraction>regular</extraction>
   <parent>+jO0pmMB/RXahxtatVUYoEwUKWs=</parent>
@@ -55,6 +58,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</id>
   <extraction>regular</extraction>
   <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
@@ -72,6 +76,7 @@
       <column-number>23</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>TVhmFYxnwUAmcG327zb+ghem758=</id>
   <extraction>regular</extraction>
   <parent>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</parent>
@@ -90,6 +95,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>1Jkj+l8tdM+DGWC1GVMWML70iGA=</id>
   <extraction>regular</extraction>
   <parent>TVhmFYxnwUAmcG327zb+ghem758=</parent>
@@ -140,6 +146,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
   <extraction>regular</extraction>
   <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
@@ -159,6 +166,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>jq5N3pt8pWn/EcTzXTPM1Gj1O9s=</id>
   <extraction>regular</extraction>
   <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
@@ -168,12 +176,20 @@
     <r-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Arg</identifier>
         </name>
       </named>
     </r-value-reference>
     <name>obj</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Arg</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -186,6 +202,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>N+/tS2Uxf62zshI73QwQ0n3wcJg=</id>
   <extraction>regular</extraction>
   <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
@@ -195,12 +212,25 @@
     <r-value-reference>
       <named>
         <name>
+          <kind>identifier</kind>
           <identifier>Arg</identifier>
         </name>
       </named>
     </r-value-reference>
     <name>obj</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Registry</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Arg</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

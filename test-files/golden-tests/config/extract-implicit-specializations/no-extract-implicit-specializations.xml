@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -22,6 +23,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -29,6 +31,7 @@
   <base>
     <named>
       <name>
+        <kind>specialization</kind>
         <id>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</id>
         <identifier>B</identifier>
       </name>
@@ -54,12 +57,14 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</id>
   <extraction>regular</extraction>
   <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
@@ -77,10 +82,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <derived>YrPSaKAbmXgzCAX5WByx4eVoqBM=</derived>
   <record-interface>
     <record-tranche>
@@ -102,12 +115,14 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</id>
   <extraction>regular</extraction>
   <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
   <l-value-reference>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>

@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -28,6 +29,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>DBR3jN3uyfnI20zmAUSKJdd5czg=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -62,6 +64,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>SJcq0OY0c+Sn2qeErP31YsnigRE=</id>
   <extraction>implementation-defined</extraction>
   <parent>DBR3jN3uyfnI20zmAUSKJdd5czg=</parent>
@@ -83,6 +86,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -101,6 +105,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>wkfZ7hBp72uNy/H08ouKSfh83xw=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -135,6 +140,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>WetcQwZF2HLFqHvCelvdZkd3uKw=</id>
   <extraction>implementation-defined</extraction>
   <parent>wkfZ7hBp72uNy/H08ouKSfh83xw=</parent>
@@ -156,6 +162,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -174,6 +181,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>btOmu4Wi+12LN0yOtwktdItL6TI=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -216,6 +224,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>dPBhh3IXC4bo1W1R+KW7DKUhWXc=</id>
   <extraction>implementation-defined</extraction>
   <parent>btOmu4Wi+12LN0yOtwktdItL6TI=</parent>
@@ -232,6 +241,7 @@
     <named>
       <is-const>1</is-const>
       <name>
+        <kind>identifier</kind>
         <identifier>char</identifier>
       </name>
     </named>
@@ -251,6 +261,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>yzemSe6FSS2yygjwWU0fDjnApag=</id>
   <extraction>implementation-defined</extraction>
   <parent>btOmu4Wi+12LN0yOtwktdItL6TI=</parent>
@@ -272,6 +283,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -289,6 +301,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>8MtMw2t61OoqkEmw6hklgOf9YUY=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -314,6 +327,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>ADXCgWvBcGrBZsanaYhrkqsGrm0=</id>
   <extraction>implementation-defined</extraction>
   <parent>8MtMw2t61OoqkEmw6hklgOf9YUY=</parent>
@@ -335,6 +349,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -353,6 +368,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>mmReqpxt8q1qjQV7YALD0ssuF74=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -374,6 +390,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -391,6 +408,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>wH29WA5OLckgy+cshQ+CRIPopIQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -412,6 +430,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -429,6 +448,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>tPKVO6zR+8+Hvqf0IIe9r7kOOSc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -450,6 +470,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -467,6 +488,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>sILAnHKthNvXNvIcWzCGSK+n8t8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -488,6 +510,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>

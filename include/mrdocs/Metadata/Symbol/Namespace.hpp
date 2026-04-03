@@ -95,33 +95,6 @@ allMembers(NamespaceTranche const& T)
     ) | std::ranges::views::join;
 }
 
-/** Map a NamespaceTranche to a dom::Object.
-
-    @param io The IO object to use for mapping.
-    @param I The NamespaceTranche to map.
-    @param domCorpus The DomCorpus used to create the DOM values.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    NamespaceTranche const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the NamespaceTranche to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    NamespaceTranche const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
 /** Describes a namespace and its members.
 */
 struct NamespaceSymbol final
@@ -158,7 +131,7 @@ struct NamespaceSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     NamespaceSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::Namespace>),
     (IsInline, IsAnonymous, UsingDirectives, Members)
 )
 
@@ -170,34 +143,6 @@ auto
 allMembers(NamespaceSymbol const& T)
 {
     return allMembers(T.Members);
-}
-
-/** Map a NamespaceSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The NamespaceSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    NamespaceSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the NamespaceSymbol to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    NamespaceSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
 }
 
 } // mrdocs

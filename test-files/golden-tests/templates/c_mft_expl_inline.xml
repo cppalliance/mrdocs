@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,6 +21,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -44,6 +46,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>overloads</kind>
   <id>ct3b2BagsWFMKFtMRx/UVwhsQmo=</id>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
@@ -52,6 +55,7 @@
   <members>veV2posfyuimiNezTTVnomiz6tY=</members>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -66,14 +70,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=</id>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
 </function>
@@ -87,14 +100,28 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>veV2posfyuimiNezTTVnomiz6tY=</id>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=</primary>
+  </template>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
 </function>

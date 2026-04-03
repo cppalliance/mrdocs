@@ -43,37 +43,9 @@ struct NamespaceAliasSymbol final
 
 MRDOCS_DESCRIBE_STRUCT(
     NamespaceAliasSymbol,
-    (Symbol),
+    (SymbolCommonBase<SymbolKind::NamespaceAlias>),
     (AliasedSymbol)
 )
-
-/** Map a NamespaceAliasSymbol to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The NamespaceAliasSymbol to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    NamespaceAliasSymbol const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the NamespaceAliasSymbol to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    NamespaceAliasSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs
 

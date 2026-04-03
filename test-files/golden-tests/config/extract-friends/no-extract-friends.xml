@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -27,6 +28,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -45,10 +47,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>PJd7qch01fTpaC83fxeMwg+clc0=</id>
   <extraction>regular</extraction>
   <parent>eIvg7iueGIPcE8p1NVfngsp2ojw=</parent>
   <key-kind>class</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -68,10 +78,24 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</id>
   <extraction>regular</extraction>
   <parent>eIvg7iueGIPcE8p1NVfngsp2ojw=</parent>
   <key-kind>class</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+          <identifier>A</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>PJd7qch01fTpaC83fxeMwg+clc0=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>oizNQDy8La+BwcGOBpMPC63TA5U=</functions>
@@ -92,11 +116,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>oizNQDy8La+BwcGOBpMPC63TA5U=</id>
   <extraction>regular</extraction>
   <parent>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>unsigned long long</identifier>
     </name>
   </named>
@@ -105,6 +131,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
         </name>
@@ -126,6 +153,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>

@@ -15,6 +15,7 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -50,6 +51,26 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type, id)
 )
 
+/** Map a FriendInfo to a dom::Object with deferred name lookup.
+    @param io The IO object to map into.
+    @param I The FriendInfo to map.
+    @param domCorpus The DomCorpus context.
+*/
+template <typename IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    FriendInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    mapReflectedType<true>(io, I, domCorpus);
+    if (I.id)
+    {
+        io.defer("name", [&I, domCorpus]{ return dom::ValueFrom(I.id, domCorpus).get("name"); });
+    }
+}
+
 /** Merge friend declarations, deduplicating by symbol ID.
 
     @param dst The destination.
@@ -58,34 +79,6 @@ MRDOCS_DESCRIBE_STRUCT(
 MRDOCS_DECL
 void
 merge(std::vector<FriendInfo>& dst, std::vector<FriendInfo>&& src);
-
-/** Map a FriendInfo to a dom::Object.
-
-    @param t The tag type.
-    @param io The IO object to use for mapping.
-    @param I The FriendInfo to map.
-    @param domCorpus The DomCorpus used to create
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    FriendInfo const& I,
-    DomCorpus const* domCorpus);
-
-/** Map the FriendInfo to a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FriendInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs
 

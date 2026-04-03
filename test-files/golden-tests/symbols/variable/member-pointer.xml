@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,6 +24,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -57,11 +59,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>DXJlc6wJoMqdyInhGyTWrnqPjXQ=</id>
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
@@ -77,11 +81,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>variable</kind>
   <id>Nf9nw1tdylSujfxB7RZlc/qmkeM=</id>
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>double</identifier>
     </name>
   </named>
@@ -98,6 +104,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>variable</kind>
   <id>rxLgE4jstVt2wGgHzDH3yzniyjs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -111,6 +118,19 @@
     </brief>
   </doc-comment>
   <member-pointer>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
+        <identifier>S</identifier>
+      </name>
+    </named>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>double</identifier>
+      </name>
+    </named>
   </member-pointer>
 </variable>
 <variable>
@@ -124,6 +144,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>variable</kind>
   <id>YS1M8HrBXVDzcrBiPpJJ987blqE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -137,6 +158,19 @@
     </brief>
   </doc-comment>
   <member-pointer>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
+        <identifier>S</identifier>
+      </name>
+    </named>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
   </member-pointer>
 </variable>
 </mrdocs>

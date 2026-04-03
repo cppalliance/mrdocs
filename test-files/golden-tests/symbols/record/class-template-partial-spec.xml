@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -20,10 +21,18 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <records>oAtKB0INIy/QCSdQExvcQwsaZJA=</records>
@@ -46,10 +55,23 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>oAtKB0INIy/QCSdQExvcQwsaZJA=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>V</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -69,10 +91,32 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>RB9DBMAJDxjxuRQCinQOVPFSNek=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>long</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>oAtKB0INIy/QCSdQExvcQwsaZJA=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -92,10 +136,39 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <pointer>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>U</identifier>
+          </name>
+        </named>
+      </pointer>
+    </type-targ>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>oAtKB0INIy/QCSdQExvcQwsaZJA=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>

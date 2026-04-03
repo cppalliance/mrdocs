@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>csn+vnio1BK5NeCdEBf/HpD6wmY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -38,6 +40,7 @@
       <column-number>3</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>5RffQbxkZ8sUj37sDwK63dA5ptA=</id>
   <extraction>regular</extraction>
   <parent>csn+vnio1BK5NeCdEBf/HpD6wmY=</parent>
@@ -45,9 +48,11 @@
   <base>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>ufjqSG34/fsb1/dKE4dBgs8spHM=</id>
         <identifier>path</identifier>
         <name>
+          <kind>identifier</kind>
           <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
           <identifier>std</identifier>
         </name>

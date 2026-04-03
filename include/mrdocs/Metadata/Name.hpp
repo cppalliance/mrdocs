@@ -16,6 +16,8 @@
 #include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/Name/SpecializationName.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 
 namespace mrdocs {
@@ -40,6 +42,33 @@ visit(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+/** Map a Name to a dom::Object via visit-based polymorphic dispatch.
+    @param io The IO object to map into.
+    @param I The Name to map.
+    @param domCorpus The DomCorpus context.
+*/
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    Name const& I,
+    DomCorpus const* domCorpus)
+{
+    addMetaObject<Name>(io);
+    io.map("kind", I.Kind);
+    visit(I, [domCorpus, &io]<typename T>(T const& t)
+    {
+        io.map("name", t.Identifier);
+        io.map("id", t.id);
+        if constexpr(requires { t.TemplateArgs; })
+        {
+            io.map("args", dom::LazyArray(t.TemplateArgs, domCorpus));
+        }
+        io.map("prefix", t.Prefix);
+    });
 }
 
 /** Three-way comparison for polymorphic Name variants.

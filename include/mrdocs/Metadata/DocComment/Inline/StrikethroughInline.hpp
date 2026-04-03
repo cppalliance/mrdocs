@@ -52,41 +52,9 @@ struct StrikethroughInline final
 
 MRDOCS_DESCRIBE_STRUCT(
     StrikethroughInline,
-    (Inline, InlineContainer),
+    (InlineCommonBase<InlineKind::Strikethrough>, InlineContainer),
     ()
 )
-
-/** Map the @ref StrikethroughInline to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    StrikethroughInline const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Inline const&>(I), domCorpus);
-    tag_invoke(t, io, dynamic_cast<InlineContainer const&>(I), domCorpus);
-}
-
-/** Return the @ref StrikethroughInline as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    StrikethroughInline const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

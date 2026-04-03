@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -22,6 +23,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>zlkXfDmjJpYtp7dk60AvntW+WFM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -44,9 +46,17 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -67,6 +77,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>5Sh/JptAi+QRDezCKRenByFsQ+I=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -96,9 +107,17 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

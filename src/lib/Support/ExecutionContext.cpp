@@ -16,7 +16,7 @@
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Support/Assert.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MergeReflectedType.hpp>
 #include <ranges>
 
 

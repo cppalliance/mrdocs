@@ -4,9 +4,11 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <name>
+    <kind>identifier</kind>
     <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
     <identifier>LongName</identifier>
   </name>
@@ -24,6 +26,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -41,6 +44,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>F2TZRvEqYUTyFh8Xxk3AsRzOiFU=</id>
   <extraction>regular</extraction>
   <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>

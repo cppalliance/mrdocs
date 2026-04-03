@@ -18,6 +18,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/DocComment/Block.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -197,33 +198,6 @@ void merge(DocComment& I, DocComment&& other)
         // since each decl may have a comment.
         I.append(std::move(other));
     }
-}
-
-/** Map the @ref DocComment to a @ref dom::Object.
-
-    @param io The output object.
-    @param I The DocComment to map.
-    @param domCorpus The DOM corpus, or nullptr.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    DocComment const& I,
-    DomCorpus const* domCorpus);
-
-/** Return the @ref DocComment as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    DocComment const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
 }
 
 /** Concept to check if a type represents a DocComment node.

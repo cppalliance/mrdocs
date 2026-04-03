@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -38,6 +40,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
   <extraction>implementation-defined</extraction>
   <parent>aMJtdgJFybRcdkRG712j3iC7JeM=</parent>
@@ -63,6 +66,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>0k4Wdt7n3RgOCeAZcrhJ7PruWP0=</id>
   <extraction>implementation-defined</extraction>
   <parent>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</parent>
@@ -77,6 +81,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -93,6 +98,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -100,9 +106,11 @@
   <base>
     <named>
       <name>
+        <kind>identifier</kind>
         <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
         <identifier>base_detail</identifier>
         <name>
+          <kind>identifier</kind>
           <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
           <identifier>detail</identifier>
         </name>
@@ -131,6 +139,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>o0JbdzeoEgGm/tWclYdgORU0Qyw=</id>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
@@ -146,6 +155,7 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -162,11 +172,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>LsIEKTwhFIkvPhRlDXC1p7T+GPU=</id>
   <extraction>regular</extraction>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>

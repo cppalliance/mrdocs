@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -35,6 +36,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -52,6 +54,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
   <extraction>regular</extraction>
   <parent>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</parent>
@@ -83,6 +86,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>m/JW900ik2XLYvUdA4MCuWZQd80=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -96,6 +100,27 @@
     </brief>
   </doc-comment>
   <key-kind>class</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Enable</name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>void</identifier>
+          </name>
+        </named>
+      </type-targ>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -116,6 +141,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>f80OzcD5UlgQ2KOvUj+MvoJcAFE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -129,6 +155,23 @@
     </brief>
   </doc-comment>
   <key-kind>class</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>m/JW900ik2XLYvUdA4MCuWZQd80=</primary>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -149,6 +192,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>IZrmVBMJu1uvsP9zur5JVrwgYmE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -162,6 +206,27 @@
     </brief>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>Enable</name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>void</identifier>
+          </name>
+        </named>
+      </type-targ>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>KmwKarrWHSv7aalrBX18hjPbEfs=</functions>
@@ -182,11 +247,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>KmwKarrWHSv7aalrBX18hjPbEfs=</id>
   <extraction>regular</extraction>
   <parent>IZrmVBMJu1uvsP9zur5JVrwgYmE=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -195,6 +262,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <identifier>void</identifier>
         </name>
       </named>
@@ -214,6 +282,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>g0UNZpdodOU5mGCtcpviXd8o6Vk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -227,6 +296,38 @@
     </brief>
   </doc-comment>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>specialization</kind>
+          <id>Er+ynG/5PHLxm80m2f8PHWglPWY=</id>
+          <identifier>void_t</identifier>
+          <name>
+            <kind>identifier</kind>
+            <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
+            <identifier>std</identifier>
+          </name>
+        </name>
+      </named>
+    </type-targ>
+    <primary>IZrmVBMJu1uvsP9zur5JVrwgYmE=</primary>
+  </template>
   <record-interface>
     <record-tranche>
       <functions>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</functions>
@@ -247,11 +348,13 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</id>
   <extraction>regular</extraction>
   <parent>g0UNZpdodOU5mGCtcpviXd8o6Vk=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -260,6 +363,7 @@
       <named>
         <is-const>1</is-const>
         <name>
+          <kind>identifier</kind>
           <identifier>void</identifier>
         </name>
       </named>
@@ -279,6 +383,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>1VN+nmJkLcjg6wK0C6XNq8dG1Ro=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -293,17 +398,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -317,6 +431,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>MX3B1GMAk3D0sirBOV2sk9C49uw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -352,17 +467,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -376,6 +500,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>7RxfINQ5PQyMFT7lVKhcQZiocmU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -390,17 +515,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -414,6 +548,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>OiYqKxV5vNAeh0jqRKIygSwyW4o=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -433,9 +568,11 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
       <identifier>C</identifier>
       <name>
+        <kind>identifier</kind>
         <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
         <identifier>B</identifier>
       </name>
@@ -444,11 +581,19 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -462,6 +607,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>oQV00j0v7EfuVl9bWFumA28DNZM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -476,17 +622,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -500,6 +655,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>4Z8f2LwbeJzKuu95VpPC5b3UKZQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -514,17 +670,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -538,6 +703,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>QQ+RfmlXmyvRCoT+N6iLEixOE3w=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -552,17 +718,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -576,6 +751,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>5j4YKg9GCIyC/kpDPExDouNRI8E=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -590,17 +766,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -614,6 +799,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>N7SAlDvKDvPlACsckMXASo+muPE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -628,17 +814,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -652,6 +847,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>njCzIgSzvUpYyI1eg28pJ1dPwcM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -666,17 +862,26 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>T</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>T</identifier>
       </name>
     </named>
     <name>value</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

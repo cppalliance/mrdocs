@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -21,6 +22,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -40,6 +42,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>Wr+xSXa6fgvTvu1KeVe+kywbb6w=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -73,6 +76,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -87,12 +91,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -110,6 +116,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>using</kind>
   <id>bxhJVeOdx2X1I5zWLcdGW41DCTs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -124,8 +131,10 @@
   </doc-comment>
   <class>normal</class>
   <name>
+    <kind>identifier</kind>
     <identifier>f</identifier>
     <name>
+      <kind>identifier</kind>
       <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
       <identifier>A</identifier>
     </name>
@@ -144,6 +153,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>record</kind>
   <id>Wr+xSXa6fgvTvu1KeVe+kywbb6w=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -177,6 +187,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
@@ -191,12 +202,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>

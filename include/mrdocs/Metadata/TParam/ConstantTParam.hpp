@@ -19,6 +19,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -39,6 +40,8 @@ struct ConstantTParam final
     */
     std::strong_ordering operator<=>(ConstantTParam const&) const;
 };
+
+MRDOCS_DESCRIBE_STRUCT(ConstantTParam, (TParamCommonBase<TParamKind::Constant>), (Type))
 
 } // mrdocs
 

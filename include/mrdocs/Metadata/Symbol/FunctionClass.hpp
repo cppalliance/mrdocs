@@ -39,14 +39,6 @@ MRDOCS_DESCRIBE_ENUM(
     FunctionClass,
     Normal, Constructor, Conversion, Destructor)
 
-/** Return the FunctionClass from a @ref dom::Value string.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FunctionClass const kind);
-
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_FUNCTIONCLASS_HPP

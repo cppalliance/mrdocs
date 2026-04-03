@@ -30,8 +30,8 @@
 {{/unless}}
 {{! Description }}
 {{#unless traversing-global-namespace}}
-{{#if (or symbol.doc.description symbol.functionObjectImpl)}}
-{{#unless (and symbol.doc.description (eq (lookup (first symbol.doc.description) "kind") "heading")) }}
+{{#if (or symbol.doc.document symbol.functionObjectImpl)}}
+{{#unless (and symbol.doc.document (eq (lookup (first symbol.doc.document) "kind") "heading")) }}
 {{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h~}}
 {{~/unless}}
 {{#if symbol.functionObjectImpl}}
@@ -42,8 +42,8 @@
 ====
 
 {{/if}}
-{{#if symbol.doc.description}}
-{{> doc/block/document symbol.doc.description }}
+{{#if symbol.doc.document}}
+{{> doc/block/document symbol.doc.document }}
 {{/if}}
 {{/if}}
 {{/unless}}
@@ -56,7 +56,7 @@
 
 {{#each (filter_by symbol.bases "isPublic")}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
-| {{> doc/block/inline-brief type.name.symbol.doc.brief }}
+| {{> doc/block/inline-brief type.name.id.doc.brief }}
 {{/each}}
 |===
 
@@ -70,7 +70,7 @@
 
 {{#each (filter_by symbol.bases "isProtected")}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
-| {{> doc/block/inline-brief type.name.symbol.doc.brief }}
+| {{> doc/block/inline-brief type.name.id.doc.brief }}
 {{/each}}
 |===
 
@@ -98,9 +98,9 @@
 |Name|Description
 
 {{#each symbol.friends }}
-{{#if symbol}}
-| {{#>markup/code}}{{> symbol/qualified-name symbol }}{{/markup/code}}
-| {{> doc/block/inline-brief symbol.doc.brief }}
+{{#if id}}
+| {{#>markup/code}}{{> symbol/qualified-name id }}{{/markup/code}}
+| {{> doc/block/inline-brief id.doc.brief }}
 {{else}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
 |
@@ -123,7 +123,7 @@
 | Description
 {{#each symbol.doc.related}}
 | {{> doc/inline/reference }}
-| {{> doc/block/inline-brief symbol.doc.brief }}
+| {{> doc/block/inline-brief id.doc.brief }}
 {{/each}}
 |===
 

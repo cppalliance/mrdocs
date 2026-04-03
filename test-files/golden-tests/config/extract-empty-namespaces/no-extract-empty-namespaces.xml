@@ -4,9 +4,11 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <name>
+    <kind>identifier</kind>
     <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
     <identifier>regular_ns</identifier>
   </name>
@@ -32,6 +34,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>rYWSTKnSbovxJzFjzhy4tRjQbFU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -58,6 +61,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>ZYn+worzOdzCMW6yaZC9jAkpVTk=</id>
   <extraction>implementation-defined</extraction>
   <parent>//////////////////////////8=</parent>
@@ -84,6 +88,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>ealcuYmQonFb4GtSSDp117u3riE=</id>
   <extraction>see-below</extraction>
   <parent>//////////////////////////8=</parent>
@@ -111,6 +116,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>Lk6iyOPZKI46hh8WI5xjsTJwx8I=</id>
   <extraction>implementation-defined</extraction>
   <parent>ealcuYmQonFb4GtSSDp117u3riE=</parent>
@@ -134,6 +140,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>u8FBT1KsjAgBvS+Nzcrm2Kw/qSA=</id>
   <extraction>see-below</extraction>
   <parent>ealcuYmQonFb4GtSSDp117u3riE=</parent>
@@ -158,6 +165,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>IVNsaOJZhF3igZQSxicbn7zZkdY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -186,6 +194,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>tMUbPbwBrgNgJ53IA/mY/ixVyiM=</id>
   <extraction>implementation-defined</extraction>
   <parent>IVNsaOJZhF3igZQSxicbn7zZkdY=</parent>
@@ -209,6 +218,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>sGLLl7RCwa46rBvSojbUrq3KFsk=</id>
   <extraction>regular</extraction>
   <parent>IVNsaOJZhF3igZQSxicbn7zZkdY=</parent>
@@ -232,6 +242,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>dfTMjNUxKdZduX9C3w178BN5JE8=</id>
   <extraction>see-below</extraction>
   <parent>IVNsaOJZhF3igZQSxicbn7zZkdY=</parent>
@@ -256,6 +267,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -282,6 +294,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>i+0rF6rz7UYIPXUcwcMuV9+lHrU=</id>
   <extraction>regular</extraction>
   <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
@@ -306,6 +319,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace</kind>
   <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
   <extraction>see-below</extraction>
   <parent>//////////////////////////8=</parent>
@@ -333,6 +347,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>xjRa7V2UmBgj6fsrvSrjsMfWFZw=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -356,6 +371,7 @@
       <column-number>5</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>Lf/JEph64Agwf7bSm/+aDe9OknY=</id>
   <extraction>see-below</extraction>
   <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
@@ -380,6 +396,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace-alias</kind>
   <id>KJaKUXr+DfpmlZ42pCbYX9+LCew=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -392,6 +409,10 @@
       </text>
     </brief>
   </doc-comment>
+  <identifier-name>
+    <kind>identifier</kind>
+    <identifier>empty_ns</identifier>
+  </identifier-name>
 </namespace-alias>
 <namespace-alias>
   <name>regular_ns_alias</name>
@@ -404,6 +425,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>namespace-alias</kind>
   <id>tM0QAgguO9OBl0Q4P8CpFRrlBFk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -416,5 +438,10 @@
       </text>
     </brief>
   </doc-comment>
+  <identifier-name>
+    <kind>identifier</kind>
+    <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
+    <identifier>regular_ns</identifier>
+  </identifier-name>
 </namespace-alias>
 </mrdocs>

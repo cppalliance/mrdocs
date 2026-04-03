@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -27,6 +28,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -50,6 +52,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -73,6 +76,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>r32UJws/5rQHSwieW9XcY/Lu30k=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -96,6 +100,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>64sjs/NcKpvextfuwbtyP/VMOJk=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -119,6 +124,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>bJjlANSkHT9fMIOJb+7rnfl9B2Q=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -142,6 +148,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>x22+jYd1xB7rz7rTGsgmwOre390=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -165,6 +172,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>o++ChozQVnJgKoS41uCm96LOP14=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -188,6 +196,7 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>DnCAWz4yn8cUKkg886MMQcSEBhg=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>

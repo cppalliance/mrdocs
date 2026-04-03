@@ -52,42 +52,9 @@ struct FootnoteDefinitionBlock final
 
 MRDOCS_DESCRIBE_STRUCT(
     FootnoteDefinitionBlock,
-    (Block, BlockContainer),
+    (BlockCommonBase<BlockKind::FootnoteDefinition>, BlockContainer),
     (label)
 )
-
-/** Map the @ref FootnoteDefinitionBlock to a @ref dom::Object.
-
-    @param t The tag.
-    @param io The output object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    FootnoteDefinitionBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
-    tag_invoke(t, io, dynamic_cast<BlockContainer const&>(I), domCorpus);
-    io.map("label", I.label);
-}
-
-/** Return the @ref FootnoteDefinitionBlock as a @ref dom::Value object.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FootnoteDefinitionBlock const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs::doc
 

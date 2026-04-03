@@ -15,7 +15,7 @@
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/Parts.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Support/Reflection.hpp>
+#include <mrdocs/Support/MergeReflectedType.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <format>
@@ -181,52 +181,4 @@ append(DocComment&& other)
         });
 }
 
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    DocComment const& I,
-    DomCorpus const* domCorpus)
-{
-    addMetaObject<DocComment>(io);
-
-    describe::for_each(describe::describe_members<DocComment>{}, [&](auto D)
-        {
-            constexpr std::string_view name = D.name;
-
-            if constexpr (name == "Document")
-            {
-                io.defer("description", [&I, domCorpus]
-                {
-                    return dom::LazyArray(I.Document, domCorpus);
-                });
-            }
-            else if constexpr (name == "brief")
-            {
-                if (I.brief && !I.brief->children.empty())
-                {
-                    io.map("brief", I.brief);
-                }
-            }
-            else
-            {
-                io.defer(D.name, [&I, domCorpus, ptr = D.pointer]
-                {
-                    return dom::LazyArray(I.*ptr, domCorpus);
-                });
-            }
-        });
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    DocComment const&,
-    DomCorpus const*
-);
-
 } // mrdocs
-

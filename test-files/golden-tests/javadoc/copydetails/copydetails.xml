@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -23,6 +24,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>fxzw55khD3HmtxJT7y2nk1M9N08=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -118,12 +120,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -132,11 +136,24 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
     <name>b</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>A</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>B</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -150,6 +167,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>Y8nVX1yV+bSlfZbVuMtm6gUnslE=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -279,12 +297,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -293,6 +313,7 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -301,11 +322,29 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
     <name>d</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>A</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>C</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>D</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 <function>
@@ -319,6 +358,7 @@
       <documented>1</documented>
     </location>
   </source>
+  <kind>function</kind>
   <id>H3WiIjBO//83NjXtkFDPf3JvDsc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -411,12 +451,14 @@
   </doc-comment>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -425,11 +467,24 @@
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
     <name>b</name>
   </param>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>A</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>B</name>
+      <key-kind>class</key-kind>
+    </type-tparam>
+  </template>
   <func-class>normal</func-class>
 </function>
 </mrdocs>

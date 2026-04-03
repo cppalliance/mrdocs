@@ -4,6 +4,7 @@
 <namespace>
   <source>
   </source>
+  <kind>namespace</kind>
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
@@ -24,12 +25,14 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>PvNOREc+JWxdkVgvSz+jC45IbGQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <function>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>void</identifier>
       </name>
     </named>
@@ -47,17 +50,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>typedef</kind>
   <id>h6hupdyuT6SfsCGFl6UUFGtvrcc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <function>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>void</identifier>
       </name>
     </named>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>
@@ -75,10 +81,53 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>record</kind>
   <id>8nYw0KA23eAszqSOs0wOXAD1DYQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>A</name>
+      <type-targ>
+        <kind>type</kind>
+        <function>
+          <named>
+            <name>
+              <kind>identifier</kind>
+              <identifier>void</identifier>
+            </name>
+          </named>
+          <is-variadic>1</is-variadic>
+        </function>
+      </type-targ>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-tparam>
+      <kind>type</kind>
+      <name>B</name>
+      <type-targ>
+        <kind>type</kind>
+        <function>
+          <named>
+            <name>
+              <kind>identifier</kind>
+              <identifier>void</identifier>
+            </name>
+          </named>
+          <named>
+            <name>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </name>
+          </named>
+          <is-variadic>1</is-variadic>
+        </function>
+      </type-targ>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -98,11 +147,13 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>CMaAySU4txrIlGl6edqWDSabBRA=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
@@ -119,17 +170,20 @@
       <column-number>1</column-number>
     </location>
   </source>
+  <kind>function</kind>
   <id>lldWvRg9y+NwRnDpK3x2NF9+e08=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
     <name>
+      <kind>identifier</kind>
       <identifier>void</identifier>
     </name>
   </named>
   <param>
     <named>
       <name>
+        <kind>identifier</kind>
         <identifier>int</identifier>
       </name>
     </named>

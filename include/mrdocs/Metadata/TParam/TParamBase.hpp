@@ -18,6 +18,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamKind.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <string>
 
 namespace mrdocs {
@@ -122,6 +123,8 @@ protected:
     }
 };
 
+MRDOCS_DESCRIBE_STRUCT(TParam, (), (Kind, Name, IsParameterPack, Default))
+
 /** Serialize a template parameter into a DOM value.
 */
 void
@@ -158,6 +161,8 @@ struct TParamCommonBase : TParam
     /** Compare parameters by their fields.
     */
     auto operator<=>(TParamCommonBase const&) const = default;
+
+    MRDOCS_DESCRIBE_CLASS(TParamCommonBase, (TParam), ())
 
 protected:
     /** Construct with the fixed kind.

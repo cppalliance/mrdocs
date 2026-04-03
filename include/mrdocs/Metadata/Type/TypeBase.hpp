@@ -201,6 +201,8 @@ struct TypeCommonBase : Type {
     */
     auto operator<=>(TypeCommonBase const&) const = default;
 
+    MRDOCS_DESCRIBE_CLASS(TypeCommonBase, (Type), ())
+
 protected:
     /** Construct the base with the fixed kind.
     */

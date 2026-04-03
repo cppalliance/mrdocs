@@ -8,28 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Support/Reflection.hpp>
 #include <mrdocs/Metadata/Symbol/NamespaceAlias.hpp>
 
 namespace mrdocs {
 
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    NamespaceAliasSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-}
-
-template
-void
-tag_invoke<LazyObjectIOType>(
-    dom::LazyObjectMapTag,
-    LazyObjectIOType&,
-    NamespaceAliasSymbol const&,
-    DomCorpus const*);
 
 } // mrdocs
