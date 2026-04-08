@@ -68,6 +68,7 @@
       <identifier>C</identifier>
     </name>
   </auto>
+  <initializer>0</initializer>
 </variable>
 <concept>
   <name>C</name>
@@ -90,5 +91,6 @@
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
+  <constraint>sizeof(T) == sizeof(int)</constraint>
 </concept>
 </mrdocs>

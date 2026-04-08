@@ -35,6 +35,7 @@
       <name>T</name>
       <key-kind>typename</key-kind>
     </type-tparam>
+    <requires>(sizeof(T) == 2)</requires>
   </template>
   <record-interface>
     <record-tranche>
@@ -66,6 +67,7 @@
       <name>U</name>
       <key-kind>typename</key-kind>
     </type-tparam>
+    <requires>(sizeof(U) == 2)</requires>
   </template>
   <record-interface>
     <record-tranche>
@@ -116,6 +118,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>(sizeof(U) == 2)</requires>
 </function>
 <overloads>
   <name>g</name>
@@ -180,6 +183,7 @@
       <name>T</name>
       <key-kind>typename</key-kind>
     </type-tparam>
+    <requires>(sizeof(T) == 2)</requires>
   </template>
   <func-class>normal</func-class>
 </function>
@@ -209,6 +213,7 @@
       <name>T</name>
       <key-kind>typename</key-kind>
     </type-tparam>
+    <requires>(sizeof(T) == 4)</requires>
   </template>
   <func-class>normal</func-class>
 </function>
@@ -238,6 +243,7 @@
       <name>U</name>
       <key-kind>typename</key-kind>
     </type-tparam>
+    <requires>(sizeof(U) == 2)</requires>
   </template>
   <func-class>normal</func-class>
 </function>

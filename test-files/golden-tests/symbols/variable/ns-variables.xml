@@ -64,6 +64,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -86,6 +87,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-constinit>1</is-constinit>
 </variable>
 <variable>
@@ -114,6 +116,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>1</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -142,6 +145,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>1</initializer>
   <is-constinit>1</is-constinit>
 </variable>
 <variable>
@@ -164,6 +168,7 @@
       <identifier>double</identifier>
     </name>
   </named>
+  <initializer>3.14</initializer>
 </variable>
 <variable>
   <name>t</name>
@@ -207,6 +212,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-thread-local>1</is-thread-local>
 </variable>
 <variable>
@@ -229,6 +235,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-thread-local>1</is-thread-local>
 </variable>
 <variable>
@@ -251,6 +258,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-constexpr>1</is-constexpr>
   <is-thread-local>1</is-thread-local>
 </variable>

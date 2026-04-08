@@ -170,6 +170,7 @@
         </name>
       </named>
     </type-targ>
+    <requires>std::is_integral_v&lt;T&gt;</requires>
     <primary>m/JW900ik2XLYvUdA4MCuWZQd80=</primary>
   </template>
   <record-interface>
@@ -397,6 +398,7 @@
     </brief>
   </doc-comment>
   <named>
+    <constraints>std::is_integral_v&lt;T&gt;</constraints>
     <name>
       <kind>identifier</kind>
       <identifier>T</identifier>
@@ -419,6 +421,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f10</name>
@@ -486,6 +489,7 @@
       <name>T</name>
       <key-kind>class</key-kind>
     </type-tparam>
+    <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
   <func-class>normal</func-class>
 </function>
@@ -514,6 +518,7 @@
     </brief>
   </doc-comment>
   <named>
+    <constraints>std::is_integral_v&lt;T&gt;</constraints>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
@@ -536,6 +541,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f3</name>
@@ -567,6 +573,7 @@
     </reference>
   </doc-comment>
   <named>
+    <constraints>std::is_integral_v&lt;T&gt;</constraints>
     <name>
       <kind>identifier</kind>
       <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
@@ -595,6 +602,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f4</name>
@@ -621,6 +629,7 @@
     </brief>
   </doc-comment>
   <named>
+    <constraints>std::is_integral_v&lt;T&gt;</constraints>
     <name>
       <kind>identifier</kind>
       <identifier>T</identifier>
@@ -643,6 +652,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f5</name>
@@ -689,6 +699,7 @@
       <name>T</name>
       <key-kind>class</key-kind>
     </type-tparam>
+    <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
   <func-class>normal</func-class>
 </function>
@@ -737,6 +748,7 @@
       <name>T</name>
       <key-kind>class</key-kind>
     </type-tparam>
+    <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
   <func-class>normal</func-class>
 </function>
@@ -785,6 +797,7 @@
       <name>T</name>
       <key-kind>class</key-kind>
     </type-tparam>
+    <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
   <func-class>normal</func-class>
 </function>
@@ -835,6 +848,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f9</name>
@@ -883,5 +897,6 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 </mrdocs>

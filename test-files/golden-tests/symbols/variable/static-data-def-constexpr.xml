@@ -64,6 +64,7 @@
       <identifier>S</identifier>
     </name>
   </named>
+  <initializer>S{}</initializer>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -118,6 +119,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
   <is-constinit>1</is-constinit>

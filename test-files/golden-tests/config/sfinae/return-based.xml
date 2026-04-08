@@ -26,6 +26,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
+    <constraints>std::is_class_v&lt;T&gt;</constraints>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
@@ -39,5 +40,6 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_class_v&lt;T&gt;</requires>
 </function>
 </mrdocs>

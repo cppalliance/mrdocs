@@ -133,6 +133,7 @@
   </named>
   <is-record-field>1</is-record-field>
   <is-bitfield>1</is-bitfield>
+  <bitfield-width>8</bitfield-width>
 </variable>
 <variable>
   <name>m</name>
@@ -156,6 +157,7 @@
   </named>
   <is-record-field>1</is-record-field>
   <is-bitfield>1</is-bitfield>
+  <bitfield-width>4 + 4</bitfield-width>
 </variable>
 <record>
   <name>U</name>
@@ -436,6 +438,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>0</initializer>
   <is-record-field>1</is-record-field>
 </variable>
 <variable>
@@ -530,5 +533,6 @@
   </named>
   <is-record-field>1</is-record-field>
   <is-bitfield>1</is-bitfield>
+  <bitfield-width>I + 4</bitfield-width>
 </variable>
 </mrdocs>

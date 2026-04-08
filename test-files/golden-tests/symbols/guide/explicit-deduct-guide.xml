@@ -167,6 +167,7 @@
       <name>B</name>
       <constant-targ>
         <kind>constant</kind>
+        <value>true</value>
       </constant-targ>
       <named>
         <name>

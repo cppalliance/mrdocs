@@ -40,6 +40,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>5</initializer>
 </variable>
 <variable>
   <name>var_const</name>
@@ -62,6 +63,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>4</initializer>
 </variable>
 <variable>
   <name>var_const_t</name>
@@ -112,6 +114,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>2</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -164,6 +167,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>3</initializer>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -216,6 +220,7 @@
       <identifier>int</identifier>
     </name>
   </named>
+  <initializer>1</initializer>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>

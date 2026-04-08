@@ -78,6 +78,7 @@
   <key-kind>struct</key-kind>
   <base>
     <decltype>
+      <operand>f()</operand>
     </decltype>
   </base>
   <record-interface>

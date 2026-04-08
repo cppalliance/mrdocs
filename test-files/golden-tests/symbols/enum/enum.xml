@@ -79,6 +79,7 @@
       </text>
     </brief>
   </doc-comment>
+  <initializer>1</initializer>
 </enum-constant>
 <enum-constant>
   <name>e1</name>
