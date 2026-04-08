@@ -77,6 +77,7 @@
     </throws>
   </doc-comment>
   <named>
+    <constraints>std::is_integral_v&lt;T&gt;</constraints>
     <name>
       <kind>identifier</kind>
       <identifier>T</identifier>
@@ -99,5 +100,6 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 </mrdocs>

@@ -13,6 +13,7 @@
 //
 
 #include "XMLWriter.hpp"
+#include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
@@ -177,9 +178,18 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         { if (!value) return; }
     else if constexpr (is_vector<Type>::value)
         { if (value.empty()) return; }
+    else if constexpr (std::is_base_of_v<ExprInfo, Type>)
+        { if (value.Written.empty()) return; }
 
     // Primitives inline, compounds wrapped.
-    if constexpr (std::is_same_v<Type, bool> ||
+    if constexpr (std::is_base_of_v<ExprInfo, Type>)
+    {
+        // ExprInfo and ConstantExprInfo: write the Written string.
+        tags_.indent() << "<" << tag << ">";
+        os_ << xmlEscape(value.Written);
+        os_ << "</" << tag << ">\n";
+    }
+    else if constexpr (std::is_same_v<Type, bool> ||
                   std::is_same_v<Type, std::string> ||
                   std::is_same_v<Type, dom::String> ||
                   std::is_integral_v<Type> ||

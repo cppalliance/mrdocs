@@ -346,6 +346,7 @@
       <kind>constant</kind>
       <constant-targ>
         <kind>constant</kind>
+        <value>0</value>
       </constant-targ>
       <named>
         <name>
@@ -447,6 +448,7 @@
     </type-targ>
     <constant-targ>
       <kind>constant</kind>
+      <value>2</value>
     </constant-targ>
     <primary>jJtr0x+P2kzEfxAlp7Hjo5akJho=</primary>
   </template>
@@ -510,6 +512,7 @@
       <kind>constant</kind>
       <constant-targ>
         <kind>constant</kind>
+        <value>false</value>
       </constant-targ>
       <named>
         <name>
@@ -566,6 +569,7 @@
     </type-targ>
     <constant-targ>
       <kind>constant</kind>
+      <value>true</value>
     </constant-targ>
     <primary>WjzMcZfRtncsiJEvL1/LzUes/GM=</primary>
   </template>
@@ -615,6 +619,7 @@
     </type-targ>
     <constant-targ>
       <kind>constant</kind>
+      <value>true</value>
     </constant-targ>
     <primary>WjzMcZfRtncsiJEvL1/LzUes/GM=</primary>
   </template>

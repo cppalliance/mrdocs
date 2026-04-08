@@ -4489,6 +4489,7 @@
       </name>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -4512,6 +4513,7 @@
       <identifier>no_call_fn</identifier>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -4535,6 +4537,7 @@
       <identifier>not_detected_fn</identifier>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -4558,6 +4561,7 @@
       <identifier>template_assign_fn</identifier>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -4581,6 +4585,7 @@
       <identifier>template_ctor_fn</identifier>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <namespace>

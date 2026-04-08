@@ -83,6 +83,7 @@
       <identifier>Empty</identifier>
     </name>
   </named>
+  <initializer>Empty{}</initializer>
   <attributes>deprecated</attributes>
   <attributes>maybe_unused</attributes>
   <is-maybe-unused>1</is-maybe-unused>

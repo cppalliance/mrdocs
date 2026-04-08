@@ -1863,6 +1863,7 @@
   </param>
   <param>
     <decltype>
+      <operand>a</operand>
     </decltype>
     <name>b</name>
   </param>

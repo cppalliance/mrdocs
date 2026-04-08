@@ -248,6 +248,7 @@
       <name>I</name>
       <constant-targ>
         <kind>constant</kind>
+        <value>1</value>
       </constant-targ>
       <named>
         <name>
@@ -295,6 +296,7 @@
       <name>I</name>
       <constant-targ>
         <kind>constant</kind>
+        <value>1</value>
       </constant-targ>
       <named>
         <name>
@@ -416,6 +418,7 @@
       <name>I</name>
       <constant-targ>
         <kind>constant</kind>
+        <value>1</value>
       </constant-targ>
       <named>
         <name>

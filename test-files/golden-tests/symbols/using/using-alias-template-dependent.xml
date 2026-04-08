@@ -64,6 +64,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
+    <constraints>is_match&lt;_Yp&gt;::value</constraints>
     <name>
       <kind>identifier</kind>
       <identifier>_Res</identifier>
@@ -175,6 +176,7 @@
     </type-tparam>
     <constant-targ>
       <kind>constant</kind>
+      <value>false</value>
     </constant-targ>
     <type-targ>
       <kind>type</kind>
@@ -257,5 +259,6 @@
   <id>5+HaEEsX//OaezDumbrpRhUuOp0=</id>
   <extraction>regular</extraction>
   <parent>ojy2H3a1lmqWgs1IHVc6fgGwKO0=</parent>
+  <initializer>false</initializer>
 </enum-constant>
 </mrdocs>

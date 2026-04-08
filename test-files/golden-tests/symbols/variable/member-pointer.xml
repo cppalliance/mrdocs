@@ -132,6 +132,7 @@
       </name>
     </named>
   </member-pointer>
+  <initializer>&amp;S::y</initializer>
 </variable>
 <variable>
   <name>mp_int</name>
@@ -172,5 +173,6 @@
       </name>
     </named>
   </member-pointer>
+  <initializer>&amp;S::x</initializer>
 </variable>
 </mrdocs>

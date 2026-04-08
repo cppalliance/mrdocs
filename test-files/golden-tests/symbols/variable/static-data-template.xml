@@ -77,6 +77,7 @@
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
+  <initializer>0</initializer>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -120,6 +121,7 @@
       </named>
     </type-targ>
   </template>
+  <initializer>2</initializer>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -170,6 +172,7 @@
       </named>
     </type-targ>
   </template>
+  <initializer>1</initializer>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>

@@ -112,6 +112,7 @@
     </name>
   </named>
   <func-class>destructor</func-class>
+  <requires>(sizeof(T) &gt; 4)</requires>
   <is-record-method>1</is-record-method>
 </function>
 <function>
@@ -144,6 +145,7 @@
     </name>
   </named>
   <func-class>destructor</func-class>
+  <requires>(sizeof(T) &lt;= 4)</requires>
   <is-record-method>1</is-record-method>
 </function>
 </mrdocs>

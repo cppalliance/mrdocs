@@ -45,6 +45,7 @@
   </named>
   <param>
     <named>
+      <constraints>std::is_class_v&lt;T&gt;</constraints>
       <name>
         <kind>identifier</kind>
         <identifier>void</identifier>
@@ -59,5 +60,6 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <requires>std::is_class_v&lt;T&gt;</requires>
 </function>
 </mrdocs>

@@ -252,6 +252,7 @@
       <identifier>auto_fn</identifier>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 </mrdocs>

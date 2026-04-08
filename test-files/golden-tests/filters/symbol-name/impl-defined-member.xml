@@ -124,6 +124,7 @@
       </name>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 <variable>
@@ -152,6 +153,7 @@
       </name>
     </name>
   </named>
+  <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
 </variable>
 </mrdocs>
