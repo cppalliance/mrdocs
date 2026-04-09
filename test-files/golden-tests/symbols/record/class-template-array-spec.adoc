@@ -1,0 +1,52 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#A-000[`A`] 
+| Issue &num;1172&period;
+| link:#A-004[`A&lt;T[N], void, void&gt;`] 
+| 
+|===
+
+[#A-000]
+== A
+
+Issue &num;1172&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;template&hyphen;array&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    typename U = void,
+    typename V = void&gt;
+struct A;
+----
+
+[#A-004]
+== link:#A-000[A]&lt;T[N], void, void&gt;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;template&hyphen;array&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    unsigned long N&gt;
+struct link:#A-000[A]&lt;T[N], void, void&gt;;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
