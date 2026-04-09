@@ -23,7 +23,7 @@
     {{~>type/declarator-suffix pointeeType link-components-impl=link-components-impl~}}
 {{else if (eq kind "array")~}}
     {{! Array declarator suffix includes bounds and array element suffix ~}}
-    [{{or boundsValue boundsExpr}}]
+    [{{#if boundsValue}}{{boundsValue}}{{else}}{{boundsExpr}}{{/if}}]
     {{~>type/declarator-suffix elementType link-components-impl=link-components-impl~}}
 {{else if (eq kind "function")~}}
     {{! Function declarator suffix includes parameter types and cv-qualifiers ~}}
