@@ -45,13 +45,6 @@ struct LineBreakInline
     */
     constexpr LineBreakInline() noexcept = default;
 
-    /** Order line breaks (trivial).
-    */
-    auto operator<=>(LineBreakInline const&) const = default;
-
-    /** Equality compares line breaks (trivial).
-    */
-    bool operator==(LineBreakInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

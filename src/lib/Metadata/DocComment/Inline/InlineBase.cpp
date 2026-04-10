@@ -41,13 +41,6 @@ getAsPlainText(doc::Inline const& in, std::string& dst)
     }
 }
 
-std::strong_ordering
-InlineContainer::
-operator<=>(InlineContainer const& rhs) const
-{
-    return this->children <=> rhs.children;
-}
-
 InlineContainer::
 InlineContainer(std::string_view text)
 {

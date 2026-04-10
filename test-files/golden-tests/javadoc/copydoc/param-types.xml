@@ -1401,9 +1401,9 @@
   <members>XTMt2BS2W4VehIStEJr0wkPasWc=</members>
   <members>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</members>
   <members>tWSGybFaxNKcropoGJaIH9niqLg=</members>
-  <members>TF0l7iZI1k70e/PY/mnOvc0hoyI=</members>
   <members>lldWvRg9y+NwRnDpK3x2NF9+e08=</members>
   <members>SvF6a1ZP8sdIXexPrrRDIA1OHus=</members>
+  <members>TF0l7iZI1k70e/PY/mnOvc0hoyI=</members>
   <members>wOc7mtwXPodKdeWFmSfib8PaSww=</members>
   <named>
     <name>
@@ -1619,68 +1619,6 @@
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
-      <line-number>141</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>TF0l7iZI1k70e/PY/mnOvc0hoyI=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with an enum parameter.</literal>
-      </text>
-    </paragraph>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enum param function</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>testEnum</literal>
-      <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
-        <identifier>testEnum</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-</function>
-<function>
-  <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
       <line-number>37</line-number>
       <column-number>1</column-number>
       <documented>1</documented>
@@ -1782,6 +1720,68 @@
       <name>
         <kind>identifier</kind>
         <identifier>int</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>param-types.cpp</short-path>
+      <source-path>param-types.cpp</source-path>
+      <line-number>141</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>TF0l7iZI1k70e/PY/mnOvc0hoyI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Documentation for a function with an enum parameter.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Enum param function</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The first parameter of g</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <reference>
+      <kind>reference</kind>
+      <literal>testEnum</literal>
+      <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
+    </reference>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
+        <identifier>testEnum</identifier>
       </name>
     </named>
     <name>a</name>

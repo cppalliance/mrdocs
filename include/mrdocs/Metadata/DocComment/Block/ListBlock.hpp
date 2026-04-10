@@ -83,29 +83,6 @@ struct ListBlock final
     */
     ListKind listKind = ListKind::Unordered;
 
-    /** Order lists by item content and list style.
-    */
-    auto operator<=>(ListBlock const& other) const {
-        if (auto const cmp = items.size() <=> other.items.size();
-            !std::is_eq(cmp))
-        {
-            return cmp;
-        }
-        for (std::size_t i = 0; i < items.size(); ++i)
-        {
-            if (auto const cmp = items[i] <=> other.items[i];
-                !std::is_eq(cmp))
-            {
-                return cmp;
-            }
-        }
-        return std::strong_ordering::equal;
-    }
-
-    /** Equality compares the list style and items.
-    */
-    bool
-    operator==(ListBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

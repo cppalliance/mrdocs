@@ -33,12 +33,6 @@ struct TableRow final
     */
     std::vector<TableCell> Cells;
 
-    /** Order rows by header flag then cell contents.
-    */
-    auto operator<=>(TableRow const&) const = default;
-    /** Equality compares header flag and cells.
-    */
-    bool operator==(TableRow const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

@@ -56,13 +56,6 @@ struct AdmonitionBlock final
         : admonish(admonish_)
     {}
 
-    /** Compare admonitions by kind, title, and contents.
-    */
-    auto operator<=>(AdmonitionBlock const&) const = default;
-
-    /** Equality compares the admonition contents.
-    */
-    bool operator==(AdmonitionBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

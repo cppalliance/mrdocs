@@ -72,14 +72,6 @@ struct ParamBlock final
         , direction(direction)
     {}
 
-    /** Order parameter docs by name, direction, and text.
-    */
-    auto operator<=>(ParamBlock const&) const = default;
-
-    /** Equality compares name, direction, and text.
-    */
-    bool operator==(ParamBlock const&)
-        const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

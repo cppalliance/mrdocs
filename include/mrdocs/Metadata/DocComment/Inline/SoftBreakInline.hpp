@@ -47,12 +47,6 @@ struct SoftBreakInline
     /** Construct a soft line break node.
     */
     constexpr SoftBreakInline() noexcept = default;
-    /** Order soft breaks (trivial).
-    */
-    auto operator<=>(SoftBreakInline const&) const = default;
-    /** Equality compares soft breaks (trivial).
-    */
-    bool operator==(SoftBreakInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

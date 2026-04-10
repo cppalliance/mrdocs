@@ -52,9 +52,6 @@ struct MathBlock final
     */
     MathBlock& operator=(MathBlock const& other) = default;
 
-    /** Compare math blocks by literal content.
-    */
-    auto operator<=>(MathBlock const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

@@ -31,6 +31,7 @@
 #ifndef MRDOCS_SUPPORT_DESCRIBE_HPP
 #define MRDOCS_SUPPORT_DESCRIBE_HPP
 
+#include <compare>
 #include <type_traits>
 
 namespace mrdocs::describe {

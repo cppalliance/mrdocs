@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
@@ -30,9 +31,6 @@ struct ConstantTArg final
     */
     ExprInfo Value;
 
-    /** Compare constant arguments by expression.
-    */
-    auto operator<=>(ConstantTArg const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(ConstantTArg, (TArgCommonBase<TArgKind::Constant>), (Value))

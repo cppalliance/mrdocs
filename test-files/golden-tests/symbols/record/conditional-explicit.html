@@ -78,14 +78,14 @@ Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <a href="#A-2constructor-0b">A</a>(char value);</code></pre>
 <span class="small"><a href="#A-2constructor-0b"><em>» more...</em></a></span>
 
+<p>Implicit conversion from double</p>
+<pre><code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);</code></pre>
+<span class="small"><a href="#A-2constructor-00"><em>» more...</em></a></span>
+
 <p>Explicit conversion from int</p>
 <pre><code class="source-code cpp">explicit
 <a href="#A-2constructor-01">A</a>(int value);</code></pre>
 <span class="small"><a href="#A-2constructor-01"><em>» more...</em></a></span>
-
-<p>Implicit conversion from double</p>
-<pre><code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);</code></pre>
-<span class="small"><a href="#A-2constructor-00"><em>» more...</em></a></span>
 
 <p>Conditionally explicit conversion from other types</p>
 <pre><code class="source-code cpp">template&lt;typename U&gt;
@@ -132,10 +132,10 @@ Parameters</h3>
 </div>
 <div>
 <div>
-<h2 id="A-2constructor-01">
+<h2 id="A-2constructor-00">
 A::A</h2>
 <div>
-<p>Explicit conversion from int</p>
+<p>Implicit conversion from double</p>
 </div>
 </div>
 <div>
@@ -143,8 +143,7 @@ A::A</h2>
 Synopsis</h3>
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
-<pre><code class="source-code cpp">explicit
-A(int value);</code></pre>
+<pre><code class="source-code cpp">A(double value);</code></pre>
 </div>
 <div>
 <h3>
@@ -167,10 +166,10 @@ Parameters</h3>
 </div>
 <div>
 <div>
-<h2 id="A-2constructor-00">
+<h2 id="A-2constructor-01">
 A::A</h2>
 <div>
-<p>Implicit conversion from double</p>
+<p>Explicit conversion from int</p>
 </div>
 </div>
 <div>
@@ -178,7 +177,8 @@ A::A</h2>
 Synopsis</h3>
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
-<pre><code class="source-code cpp">A(double value);</code></pre>
+<pre><code class="source-code cpp">explicit
+A(int value);</code></pre>
 </div>
 <div>
 <h3>

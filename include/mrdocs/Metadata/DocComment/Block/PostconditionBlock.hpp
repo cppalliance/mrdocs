@@ -37,13 +37,6 @@ struct PostconditionBlock
     */
     using InlineContainer::InlineContainer;
 
-    /** Order postconditions by their inline text.
-    */
-    auto operator<=>(PostconditionBlock const&) const = default;
-
-    /** Equality compares the inline text.
-    */
-    bool operator==(PostconditionBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

@@ -18,6 +18,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamKind.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <string>
 
@@ -53,10 +54,6 @@ struct TParam
     /** Polymorphic base needs a virtual destructor.
     */
     constexpr virtual ~TParam() = default;
-
-    /** Compare parameters by kind, name, pack flag, and default.
-    */
-    std::strong_ordering operator<=>(TParam const&) const;
 
     /** View this object as a TParam reference.
     */
@@ -157,10 +154,6 @@ struct TParamCommonBase : TParam
         @return `true` when `kind_id` equals `TParamKind::Template`.
     */
     static constexpr bool isTemplate() noexcept { return K == TParamKind::Template; }
-
-    /** Compare parameters by their fields.
-    */
-    auto operator<=>(TParamCommonBase const&) const = default;
 
     MRDOCS_DESCRIBE_CLASS(TParamCommonBase, (TParam), ())
 

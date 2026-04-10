@@ -46,12 +46,6 @@ struct ReferenceInline
         : literal(std::move(str))
     {}
 
-    /** Order references by literal and target id.
-    */
-    auto operator<=>(ReferenceInline const&) const = default;
-    /** Equality compares literal and target id.
-    */
-    bool operator==(ReferenceInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

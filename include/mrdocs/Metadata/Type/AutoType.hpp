@@ -33,10 +33,6 @@ struct AutoType final
     */
     Optional<Polymorphic<Name>> Constraint = std::nullopt;
 
-    /** Compare auto placeholders by keyword and constraint.
-    */
-    std::strong_ordering
-    operator<=>(AutoType const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

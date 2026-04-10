@@ -29,13 +29,6 @@ struct DefinitionListItem final
     */
     InlineContainer term;
 
-    /** Compare items by term and definition blocks.
-    */
-    auto operator<=>(DefinitionListItem const&) const = default;
-
-    /** Equality compares term and definitions.
-    */
-    bool operator==(DefinitionListItem const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

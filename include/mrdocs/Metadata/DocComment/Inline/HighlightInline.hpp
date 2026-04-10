@@ -32,12 +32,6 @@ struct HighlightInline final
     : InlineCommonBase<InlineKind::Highlight>
     , InlineContainer
 {
-    /** Order highlights by their inline content.
-    */
-    auto operator<=>(HighlightInline const&) const = default;
-    /** Equality compares inline content.
-    */
-    bool operator==(HighlightInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

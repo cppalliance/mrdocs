@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
@@ -30,9 +31,6 @@ struct TypeTArg final
     */
     Polymorphic<struct Type> Type = Polymorphic<struct Type>(AutoType{});
 
-    /** Compare type arguments by referenced type.
-    */
-    auto operator<=>(TypeTArg const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(TypeTArg, (TArgCommonBase<TArgKind::Type>), (Type))

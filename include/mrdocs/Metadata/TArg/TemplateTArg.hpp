@@ -35,9 +35,6 @@ struct TemplateTArg final
     */
     std::string Name;
 
-    /** Compare template arguments by referenced template.
-    */
-    auto operator<=>(TemplateTArg const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(TemplateTArg, (TArgCommonBase<TArgKind::Template>), (Template, Name))

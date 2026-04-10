@@ -42,10 +42,6 @@ struct FunctionType final
     */
     bool IsVariadic = false;
 
-    /** Compare function types by return, params, and qualifiers.
-    */
-    std::strong_ordering
-    operator<=>(FunctionType const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

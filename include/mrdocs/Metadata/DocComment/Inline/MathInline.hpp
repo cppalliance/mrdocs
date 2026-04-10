@@ -49,12 +49,6 @@ struct MathInline
         : literal(std::move(string_))
     {}
 
-    /** Order math spans by their literal content.
-    */
-    auto operator<=>(MathInline const&) const = default;
-    /** Equality compares literal content.
-    */
-    bool operator==(MathInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

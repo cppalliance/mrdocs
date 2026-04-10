@@ -41,12 +41,6 @@ struct TParamBlock final
     /** Inherit inline container constructors.
     */
     using InlineContainer::InlineContainer;
-    /** Order template parameter docs by name and text.
-    */
-    auto operator<=>(TParamBlock const&) const = default;
-    /** Equality compares name and inline content.
-    */
-    bool operator==(TParamBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

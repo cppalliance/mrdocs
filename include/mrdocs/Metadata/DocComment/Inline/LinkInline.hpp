@@ -62,12 +62,6 @@ struct LinkInline final
         , href(href)
     {}
 
-    /** Order links by href and child content.
-    */
-    auto operator<=>(LinkInline const&) const = default;
-    /** Equality compares href and child content.
-    */
-    bool operator==(LinkInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

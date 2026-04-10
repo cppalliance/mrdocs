@@ -87,10 +87,6 @@ struct TemplateInfo final
         return TemplateSpecKind::Partial;
     }
 
-    /** Compare templates by parameters, arguments, and primary.
-    */
-    std::strong_ordering
-    operator<=>(TemplateInfo const& other) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(TemplateInfo, (), (Params, Args, Requires, Primary))
@@ -125,36 +121,6 @@ tag_invoke(
 MRDOCS_DECL
 void
 merge(TemplateInfo& I, TemplateInfo&& Other);
-
-/** Compare optional template infos, treating disengaged as ordered before engaged.
-*/
-inline
-auto
-operator<=>(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
-{
-    if (!lhs)
-    {
-        if (!rhs)
-        {
-            return std::strong_ordering::equal;
-        }
-        return std::strong_ordering::less;
-    }
-    if (!rhs)
-    {
-        return std::strong_ordering::greater;
-    }
-    return *lhs <=> *rhs;
-}
-
-/** Equality helper for optional template info.
-*/
-inline
-bool
-operator==(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
-{
-    return lhs <=> rhs == std::strong_ordering::equal;
-}
 
 /** Serialize template info into a DOM value.
 */

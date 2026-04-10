@@ -63,13 +63,6 @@ struct QuoteBlock final
     : BlockCommonBase<BlockKind::Quote>
     , BlockContainer
 {
-    /** Order quote blocks by their child content.
-    */
-    auto operator<=>(QuoteBlock const&) const = default;
-
-    /** Equality compares quoted child content.
-    */
-    bool operator==(QuoteBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

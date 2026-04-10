@@ -94,8 +94,8 @@
   </doc-comment>
   <func-class>constructor</func-class>
   <members>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</members>
-  <members>F4U5PyaDoe8VKg41ubwK8aze9QE=</members>
   <members>AXLv33SreHARdqogAHAgfhC3lFA=</members>
+  <members>F4U5PyaDoe8VKg41ubwK8aze9QE=</members>
   <members>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</members>
   <named>
     <name>
@@ -160,56 +160,6 @@
     <location>
       <short-path>conditional-explicit.cpp</short-path>
       <source-path>conditional-explicit.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>F4U5PyaDoe8VKg41ubwK8aze9QE=</id>
-  <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Explicit conversion from int</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
-      <name>value</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
-</function>
-<function>
-  <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
       <documented>1</documented>
@@ -247,6 +197,56 @@
       <name>
         <kind>identifier</kind>
         <identifier>double</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>A</name>
+  <source>
+    <location>
+      <short-path>conditional-explicit.cpp</short-path>
+      <source-path>conditional-explicit.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>F4U5PyaDoe8VKg41ubwK8aze9QE=</id>
+  <extraction>regular</extraction>
+  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Explicit conversion from int</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
       </name>
     </named>
     <name>value</name>

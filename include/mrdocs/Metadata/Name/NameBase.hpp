@@ -171,6 +171,20 @@ tag_invoke(
     Name const& I,
     DomCorpus const* domCorpus);
 
+/** Compare two polymorphic names by visitor dispatch.
+*/
+MRDOCS_DECL
+std::strong_ordering
+operator<=>(Polymorphic<Name> const&, Polymorphic<Name> const&);
+
+/** Equality for two polymorphic names.
+*/
+inline bool
+operator==(Polymorphic<Name> const& a, Polymorphic<Name> const& b)
+{
+    return std::is_eq(a <=> b);
+}
+
 } // mrdocs
 
 #endif

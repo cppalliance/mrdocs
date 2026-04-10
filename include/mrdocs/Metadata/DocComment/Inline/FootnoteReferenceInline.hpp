@@ -37,12 +37,6 @@ struct FootnoteReferenceInline
     */
     std::string label;
 
-    /** Order references by their label.
-    */
-    auto operator<=>(FootnoteReferenceInline const&) const = default;
-    /** Equality compares labels.
-    */
-    bool operator==(FootnoteReferenceInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

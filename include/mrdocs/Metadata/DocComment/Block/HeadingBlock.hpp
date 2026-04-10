@@ -50,13 +50,6 @@ struct HeadingBlock final
     */
     using InlineContainer::InlineContainer;
 
-    /** Order headings by level and inline content.
-    */
-    auto operator<=>(HeadingBlock const&) const = default;
-
-    /** Equality compares level and inline content.
-    */
-    bool operator==(HeadingBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

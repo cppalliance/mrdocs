@@ -32,10 +32,6 @@ struct MemberPointerType final
     */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
-    /** Compare member pointers by parent and pointee.
-    */
-    std::strong_ordering
-    operator<=>(MemberPointerType const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(MemberPointerType, (TypeCommonBase<TypeKind::MemberPointer>), (ParentType, PointeeType))

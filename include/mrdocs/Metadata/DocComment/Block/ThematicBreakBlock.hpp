@@ -62,9 +62,6 @@ struct ThematicBreakBlock final
     /** Copy assignment.
     */
     ThematicBreakBlock& operator=(ThematicBreakBlock const& other) = default;
-    /** Compare break blocks (trivial as they hold no data).
-    */
-    auto operator<=>(ThematicBreakBlock const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

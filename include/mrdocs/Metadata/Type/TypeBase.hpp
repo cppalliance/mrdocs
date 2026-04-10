@@ -16,6 +16,7 @@
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Type/TypeKind.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
@@ -68,10 +69,6 @@ struct Type {
     */
     SymbolID
     namedSymbol() const noexcept;
-
-    /** Three-way comparison by kind, qualifiers, and concrete data.
-    */
-    auto operator<=>(Type const&) const = default;
 
     /** View as const Type.
     */
@@ -197,10 +194,6 @@ struct TypeCommonBase : Type {
     */
     static constexpr bool isFunction()        noexcept { return K == TypeKind::Function; }
 
-    /** Compare type bases by kind-specific payload.
-    */
-    auto operator<=>(TypeCommonBase const&) const = default;
-
     MRDOCS_DESCRIBE_CLASS(TypeCommonBase, (Type), ())
 
 protected:
@@ -211,6 +204,20 @@ protected:
     {
     }
 };
+
+/** Compare two polymorphic types by visitor dispatch.
+*/
+MRDOCS_DECL
+std::strong_ordering
+operator<=>(Polymorphic<Type> const&, Polymorphic<Type> const&);
+
+/** Equality for two polymorphic types.
+*/
+inline bool
+operator==(Polymorphic<Type> const& a, Polymorphic<Type> const& b)
+{
+    return std::is_eq(a <=> b);
+}
 
 } // mrdocs
 

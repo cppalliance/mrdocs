@@ -32,12 +32,6 @@ struct SuperscriptInline final
     : InlineCommonBase<InlineKind::Superscript>
     , InlineContainer
 {
-    /** Order superscript spans by their children.
-    */
-    auto operator<=>(SuperscriptInline const&) const = default;
-    /** Equality compares contained inline children.
-    */
-    bool operator==(SuperscriptInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

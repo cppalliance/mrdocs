@@ -28,10 +28,6 @@ struct RValueReferenceType final
     */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
-    /** Compare rvalue references by pointee.
-    */
-    std::strong_ordering
-    operator<=>(RValueReferenceType const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

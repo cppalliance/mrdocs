@@ -70,12 +70,6 @@ struct TextInline
         : literal(std::move(str))
     {}
 
-    /** Order text nodes lexicographically by their literal.
-    */
-    auto operator<=>(TextInline const&) const = default;
-    /** Equality compares literal strings.
-    */
-    bool operator==(TextInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

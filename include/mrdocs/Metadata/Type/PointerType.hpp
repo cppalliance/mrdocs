@@ -28,10 +28,6 @@ struct PointerType final
     */
     Polymorphic<Type> PointeeType = Polymorphic<Type>(AutoType{});
 
-    /** Compare pointer types by pointee.
-    */
-    std::strong_ordering
-    operator<=>(PointerType const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

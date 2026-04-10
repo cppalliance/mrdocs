@@ -25,13 +25,6 @@ namespace mrdocs::doc {
 struct TableCell final
     : InlineContainer
 {
-    /** Order cells by their inline content.
-    */
-    auto operator<=>(TableCell const&) const = default;
-
-    /** Equality compares inline content.
-    */
-    bool operator==(TableCell const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

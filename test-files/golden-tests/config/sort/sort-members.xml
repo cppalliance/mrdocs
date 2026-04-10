@@ -969,8 +969,8 @@
   <parent>//////////////////////////8=</parent>
   <func-class>normal</func-class>
   <members>43ASI/aC9fCLy8T+1gn7pUdis+g=</members>
-  <members>SvF6a1ZP8sdIXexPrrRDIA1OHus=</members>
   <members>ZYC+YG/hWLHomKHwEAfoO4TO2cw=</members>
+  <members>SvF6a1ZP8sdIXexPrrRDIA1OHus=</members>
   <members>OqSPxlq/89fBNIHVGkd2KTtgheY=</members>
   <members>rs6F2A6K2Qvx34WDTz9fCKP4+HE=</members>
   <members>PEedgXj8uxMWKd/yZk6yqAz6boU=</members>
@@ -1006,6 +1006,36 @@
     <location>
       <short-path>sort-members.cpp</short-path>
       <source-path>sort-members.cpp</source-path>
+      <line-number>51</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>ZYC+YG/hWLHomKHwEAfoO4TO2cw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>char</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>double</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>g</name>
+  <source>
+    <location>
+      <short-path>sort-members.cpp</short-path>
+      <source-path>sort-members.cpp</source-path>
       <line-number>53</line-number>
       <column-number>1</column-number>
     </location>
@@ -1031,36 +1061,6 @@
       <name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>normal</func-class>
-</function>
-<function>
-  <name>g</name>
-  <source>
-    <location>
-      <short-path>sort-members.cpp</short-path>
-      <source-path>sort-members.cpp</source-path>
-      <line-number>51</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>ZYC+YG/hWLHomKHwEAfoO4TO2cw=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>char</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>double</identifier>
       </name>
     </named>
   </param>

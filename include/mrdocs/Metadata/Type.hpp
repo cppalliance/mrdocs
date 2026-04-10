@@ -89,47 +89,6 @@ visit(
     }
 }
 
-/** Compare two polymorphic types for ordering.
-*/
-MRDOCS_DECL
-std::strong_ordering
-operator<=>(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs);
-
-/** Equality helper for polymorphic types.
-*/
-inline
-bool
-operator==(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs) {
-    return lhs <=> rhs == std::strong_ordering::equal;
-}
-
-/** Compare optional polymorphic types, treating disengaged as less.
-*/
-inline std::strong_ordering
-operator<=>(
-    Optional<Polymorphic<Type>> const& lhs,
-    Optional<Polymorphic<Type>> const& rhs)
-{
-    if (lhs && rhs)
-    {
-        return *lhs <=> *rhs;
-    }
-    if (!lhs && !rhs)
-    {
-        return std::strong_ordering::equal;
-    }
-    return bool(lhs) <=> bool(rhs);
-}
-
-/** Equality helper for optional polymorphic types.
-*/
-inline bool
-operator==(
-    Optional<Polymorphic<Type>> const& lhs,
-    Optional<Polymorphic<Type>> const& rhs)
-{
-    return lhs <=> rhs == std::strong_ordering::equal;
-}
 
 /** Return the inner type.
 
