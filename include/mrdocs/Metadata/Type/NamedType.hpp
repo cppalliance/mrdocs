@@ -36,10 +36,6 @@ struct NamedType final
     */
     Optional<FundamentalTypeKind> FundamentalType;
 
-    /** Compare named types by name and fundamental kind.
-    */
-    std::strong_ordering
-    operator<=>(NamedType const& other) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

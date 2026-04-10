@@ -71,19 +71,6 @@ tag_invoke(
     });
 }
 
-/** Three-way comparison for polymorphic Name variants.
-*/
-MRDOCS_DECL
-std::strong_ordering
-operator<=>(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs);
-
-/** Equality compare two polymorphic names.
-*/
-inline bool
-operator==(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs)
-{
-    return lhs <=> rhs == std::strong_ordering::equal;
-}
 
 /** Serialize a polymorphic name into a DOM value.
 */

@@ -64,8 +64,8 @@
     </brief>
   </doc-comment>
   <func-class>normal</func-class>
-  <members>ackjGh57CJQLwtO8PihiSPPKIBY=</members>
   <members>8HikSjplV248Xlimdc3WQFts5g8=</members>
+  <members>ackjGh57CJQLwtO8PihiSPPKIBY=</members>
   <members>dA/yAiFWSDtn+ZTCAVyKiceMjwY=</members>
   <members>u1t7CFC30SbmMkunoYuyE7paABA=</members>
   <named>
@@ -75,6 +75,46 @@
     </name>
   </named>
 </overloads>
+<function>
+  <name>f</name>
+  <source>
+    <location>
+      <short-path>brief-3.cpp</short-path>
+      <source-path>brief-3.cpp</source-path>
+      <line-number>14</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>8HikSjplV248Xlimdc3WQFts5g8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Integer overload.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>double</identifier>
+      </name>
+    </named>
+  </param>
+  <func-class>normal</func-class>
+</function>
 <function>
   <name>f</name>
   <source>
@@ -117,46 +157,6 @@
       <name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>normal</func-class>
-</function>
-<function>
-  <name>f</name>
-  <source>
-    <location>
-      <short-path>brief-3.cpp</short-path>
-      <source-path>brief-3.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>8HikSjplV248Xlimdc3WQFts5g8=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Integer overload.</literal>
-      </text>
-    </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>double</identifier>
       </name>
     </named>
   </param>

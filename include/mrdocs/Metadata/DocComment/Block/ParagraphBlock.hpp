@@ -44,9 +44,6 @@ struct ParagraphBlock
     */
     ParagraphBlock() noexcept = default;
 
-    /** Compare paragraphs by their inline content.
-    */
-    auto operator<=>(ParagraphBlock const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

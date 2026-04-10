@@ -35,12 +35,6 @@ struct CodeBlock final
     /** Construct an empty code block.
     */
     CodeBlock() noexcept = default;
-    /** Compare code blocks by literal and info string.
-    */
-    auto operator<=>(CodeBlock const&) const = default;
-    /** Equality compares literal and info string.
-    */
-    bool operator==(CodeBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

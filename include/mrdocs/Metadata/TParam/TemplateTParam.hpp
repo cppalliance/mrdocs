@@ -17,6 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <vector>
 
@@ -31,10 +32,6 @@ struct TemplateTParam final
     */
     std::vector<Polymorphic<TParam>> Params;
 
-    /** Compare template parameters including inner parameter lists.
-    */
-    std::strong_ordering
-    operator<=>(TemplateTParam const& other) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(TemplateTParam, (TParamCommonBase<TParamKind::Template>), (Params))

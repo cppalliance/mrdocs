@@ -56,29 +56,6 @@ struct DefinitionListBlock final
     */
     std::vector<DefinitionListItem> items;
 
-    /** Order items and their definitions lexicographically.
-    */
-    auto operator<=>(DefinitionListBlock const& other) const {
-        if (auto const cmp = items.size() <=> other.items.size();
-            !std::is_eq(cmp))
-        {
-            return cmp;
-        }
-        for (std::size_t i = 0; i < items.size(); ++i)
-        {
-            if (auto const cmp = items[i] <=> other.items[i];
-                !std::is_eq(cmp))
-            {
-                return cmp;
-            }
-        }
-        return std::strong_ordering::equal;
-    }
-
-    /** Equality compares the contained items.
-    */
-    bool
-    operator==(DefinitionListBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

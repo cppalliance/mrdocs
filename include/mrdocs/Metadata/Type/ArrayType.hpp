@@ -34,10 +34,6 @@ struct ArrayType final
     */
     ConstantExprInfo<std::uint64_t> Bounds;
 
-    /** Compare arrays by element type and bound.
-    */
-    std::strong_ordering
-    operator<=>(ArrayType const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

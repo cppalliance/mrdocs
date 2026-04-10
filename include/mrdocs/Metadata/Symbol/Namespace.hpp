@@ -55,9 +55,6 @@ struct NamespaceTranche {
     */
     std::vector<SymbolID> Usings;
 
-    /** Compare tranches field-by-field.
-    */
-    auto operator<=>(NamespaceTranche const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

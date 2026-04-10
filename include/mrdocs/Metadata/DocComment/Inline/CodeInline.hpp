@@ -41,12 +41,6 @@ struct CodeInline final
     /** Inherit inline container constructors.
     */
     using InlineContainer::InlineContainer;
-    /** Order inline code by literal content.
-    */
-    auto operator<=>(CodeInline const&) const = default;
-    /** Equality compares inline content.
-    */
-    bool operator==(CodeInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

@@ -32,12 +32,6 @@ struct SubscriptInline final
     : InlineCommonBase<InlineKind::Subscript>
     , InlineContainer
 {
-    /** Order subscript spans by their children.
-    */
-    auto operator<=>(SubscriptInline const&) const = default;
-    /** Equality compares contained inline children.
-    */
-    bool operator==(SubscriptInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

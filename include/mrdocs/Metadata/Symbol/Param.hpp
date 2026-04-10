@@ -58,10 +58,6 @@ struct Param final
         , Default(std::move(def_arg))
     {}
 
-    /** Compare parameters by type, name, and default.
-    */
-    auto
-    operator<=>(Param const&) const  = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

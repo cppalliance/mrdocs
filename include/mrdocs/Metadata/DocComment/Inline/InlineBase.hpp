@@ -19,11 +19,17 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineKind.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
 #include <string>
 
 namespace mrdocs::doc {
+
+/// @copydoc mrdocs::operator<=>(T const&, T const&)
+using mrdocs::operator<=>;
+/// @copydoc mrdocs::operator==(T const&, T const&)
+using mrdocs::operator==;
 
 /* Forward declarations
  */
@@ -45,13 +51,6 @@ struct MRDOCS_DECL Inline
     /** Virtual destructor to enable polymorphic deletion.
     */
     virtual ~Inline() = default;
-
-    /** Three-way comparison by active inline kind and data.
-    */
-    auto operator<=>(Inline const&) const = default;
-    /** Equality compares active kind and stored data.
-    */
-    bool operator==(Inline const&) const noexcept = default;
 
     /** View as const Inline reference.
     */
@@ -143,10 +142,6 @@ struct InlineCommonBase : Inline
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == InlineKind::Kind; }
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
-
-    /** Three-way comparison forwards to the underlying inline.
-    */
-    auto operator<=>(InlineCommonBase const&) const = default;
 
     MRDOCS_DESCRIBE_CLASS(InlineCommonBase, (Inline), ())
 
@@ -415,15 +410,6 @@ struct MRDOCS_DECL InlineContainer
         return *this;
     }
 
-    /** Compare two InlineContainers.
-    */
-    std::strong_ordering
-    operator<=>(InlineContainer const&) const;
-
-    /** Equality compares child sequences.
-    */
-    bool
-    operator==(InlineContainer const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(
@@ -531,12 +517,6 @@ struct MRDOCS_DECL InlineTextLeaf
         : literal(std::move(literal_))
     {}
 
-    /** Order text leaves lexicographically by content.
-    */
-    auto operator<=>(InlineTextLeaf const&) const = default;
-    /** Equality compares literal text.
-    */
-    bool operator==(InlineTextLeaf const&) const noexcept = default;
 };
 
 

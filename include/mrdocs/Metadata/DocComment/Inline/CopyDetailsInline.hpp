@@ -45,12 +45,6 @@ struct CopyDetailsInline final
     {
     }
 
-    /** Order copy directives by text and symbol id.
-    */
-    auto operator<=>(CopyDetailsInline const&) const = default;
-    /** Equality compares text and symbol id.
-    */
-    bool operator==(CopyDetailsInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

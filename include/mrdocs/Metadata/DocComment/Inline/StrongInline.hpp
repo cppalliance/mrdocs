@@ -35,12 +35,6 @@ struct StrongInline final
     /** Inherit text container constructors.
     */
     using InlineContainer::InlineContainer;
-    /** Order strong spans by their children.
-    */
-    auto operator<=>(StrongInline const&) const = default;
-    /** Equality compares contained inline children.
-    */
-    bool operator==(StrongInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

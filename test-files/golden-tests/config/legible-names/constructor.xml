@@ -87,8 +87,8 @@
   <members>6Jx2eK9l4C46QIRucTvox+6PH2k=</members>
   <members>4C2UEs8la3Eghf4mLyeViCJNOwY=</members>
   <members>ad/AzbLEE6b8dNnnX2OLy1+HxDQ=</members>
-  <members>d9h3reyOyp3JT3kwQOTPOI9tmzg=</members>
   <members>bzCqmNJXWfd3zGOkytPkJL6K6VQ=</members>
+  <members>d9h3reyOyp3JT3kwQOTPOI9tmzg=</members>
   <named>
     <name>
       <kind>identifier</kind>
@@ -239,62 +239,6 @@
     <location>
       <short-path>constructor.cpp</short-path>
       <source-path>constructor.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>d9h3reyOyp3JT3kwQOTPOI9tmzg=</id>
-  <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Construct from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>int</literal>
-        </text>
-      </code>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
-      <name>value</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
-</function>
-<function>
-  <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
     </location>
@@ -338,6 +282,62 @@
       <name>
         <kind>identifier</kind>
         <identifier>double</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>X</name>
+  <source>
+    <location>
+      <short-path>constructor.cpp</short-path>
+      <source-path>constructor.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>d9h3reyOyp3JT3kwQOTPOI9tmzg=</id>
+  <extraction>regular</extraction>
+  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Construct from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>value</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
       </name>
     </named>
     <name>value</name>

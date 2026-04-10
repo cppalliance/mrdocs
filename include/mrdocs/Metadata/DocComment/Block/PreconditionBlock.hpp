@@ -37,13 +37,6 @@ struct PreconditionBlock final
     */
     using InlineContainer::InlineContainer;
 
-    /** Order preconditions by their inline text.
-    */
-    auto operator<=>(PreconditionBlock const&) const = default;
-
-    /** Equality compares the inline text.
-    */
-    bool operator==(PreconditionBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

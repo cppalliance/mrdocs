@@ -42,12 +42,6 @@ struct StrikethroughInline final
     : InlineCommonBase<InlineKind::Strikethrough>
     , InlineContainer
 {
-    /** Order strikethrough spans by their children.
-    */
-    auto operator<=>(StrikethroughInline const&) const = default;
-    /** Equality compares contained inline children.
-    */
-    bool operator==(StrikethroughInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

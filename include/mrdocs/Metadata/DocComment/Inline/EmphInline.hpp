@@ -35,14 +35,6 @@ struct EmphInline final
     /** Inherit inline container constructors.
     */
     using InlineContainer::InlineContainer;
-
-    /** Order emphasis spans by their contents.
-    */
-    auto operator<=>(EmphInline const&) const = default;
-
-    /** Equality compares contained text.
-    */
-    bool operator==(EmphInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

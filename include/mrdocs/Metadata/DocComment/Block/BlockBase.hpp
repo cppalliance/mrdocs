@@ -21,12 +21,18 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockKind.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
 #include <algorithm>
 #include <string>
 
 namespace mrdocs::doc {
+
+/// @copydoc mrdocs::operator<=>(T const&, T const&)
+using mrdocs::operator<=>;
+/// @copydoc mrdocs::operator==(T const&, T const&)
+using mrdocs::operator==;
 
 /* Forward declarations
  */
@@ -48,16 +54,6 @@ struct MRDOCS_DECL Block
     /** Virtual to allow deleting through a base pointer.
     */
     virtual ~Block() = default;
-
-    /** Three-way comparison on the block contents.
-    */
-    auto
-    operator<=>(Block const& other) const = default;
-
-    /** Equality compares the block contents.
-    */
-    bool
-    operator==(Block const& other) const noexcept = default;
 
     /** View this object as a `Block` reference.
     */
@@ -146,10 +142,6 @@ struct BlockCommonBase : Block
     static constexpr bool is##Kind() noexcept { return K == BlockKind::Kind; }
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 
-    /** Compare two blocks that share the same `kind_id`.
-    */
-    auto operator<=>(BlockCommonBase const&) const = default;
-
     MRDOCS_DESCRIBE_CLASS(BlockCommonBase, (Block), ())
 
 protected:
@@ -228,15 +220,6 @@ struct MRDOCS_DECL BlockContainer
         return *this;
     }
 
-    /** Order containers lexicographically by their children.
-    */
-    std::strong_ordering
-    operator<=>(BlockContainer const&) const;
-
-    /** Equality compares the stored child blocks.
-    */
-    bool
-    operator==(BlockContainer const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

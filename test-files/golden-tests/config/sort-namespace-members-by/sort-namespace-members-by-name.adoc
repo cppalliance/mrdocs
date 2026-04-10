@@ -445,19 +445,19 @@ link:#g-0e3[g]();
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
-link:#g-04[g](int);
+link:#g-06[g](double);
 ----
 
-[.small]#link:#g-04[_» more&period;&period;&period;_]#
+[.small]#link:#g-06[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
-link:#g-06[g](double);
+link:#g-04[g](int);
 ----
 
-[.small]#link:#g-06[_» more&period;&period;&period;_]#
+[.small]#link:#g-04[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -521,19 +521,6 @@ void
 g();
 ----
 
-[#g-04]
-== g
-
-=== Synopsis
-
-Declared in `&lt;sort&hyphen;namespace&hyphen;members&hyphen;by&hyphen;name&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-char
-g(int);
-----
-
 [#g-06]
 == g
 
@@ -545,6 +532,19 @@ Declared in `&lt;sort&hyphen;namespace&hyphen;members&hyphen;by&hyphen;name&peri
 ----
 char
 g(double);
+----
+
+[#g-04]
+== g
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;namespace&hyphen;members&hyphen;by&hyphen;name&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char
+g(int);
 ----
 
 [#g-03a]

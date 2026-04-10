@@ -19,10 +19,6 @@
 namespace mrdocs {
 
 std::strong_ordering
-TParam::
-operator<=>(TParam const&) const = default;
-
-std::strong_ordering
 operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
 {
     MRDOCS_ASSERT(!lhs.valueless_after_move());
@@ -103,34 +99,6 @@ tag_invoke(
     });
 }
 
-std::strong_ordering
-TypeTParam::
-operator<=>(TypeTParam const&) const = default;
-
-std::strong_ordering
-ConstantTParam::
-operator<=>(ConstantTParam const&) const = default;
-
-std::strong_ordering
-TemplateTParam::
-operator<=>(TemplateTParam const& other) const
-{
-    if (auto const r = Params.size() <=> other.Params.size();
-        !std::is_eq(r))
-    {
-        return r;
-    }
-    for (std::size_t i = 0; i < Params.size(); ++i)
-    {
-        if (auto const r = Params[i] <=> other.Params[i];
-            !std::is_eq(r))
-        {
-            return r;
-        }
-    }
-    return std::strong_ordering::equal;
-}
-
 void
 tag_invoke(
     dom::ValueFromTag,
@@ -141,23 +109,6 @@ tag_invoke(
     visit(I, [&]<typename T>(T const& t) {
         v = dom::LazyObject(t, domCorpus);
     });
-}
-
-std::strong_ordering
-TemplateInfo::
-operator<=>(TemplateInfo const& other) const {
-    if (auto const r = Args.size() <=> other.Args.size();
-        !std::is_eq(r))
-    {
-        return r;
-    }
-    if (auto const r = Params.size() <=> other.Params.size();
-        !std::is_eq(r))
-    {
-        return r;
-    }
-    return std::tie(Args, Params, Requires, Primary) <=>
-        std::tie(Args, Params, other.Requires, other.Primary);
 }
 
 void

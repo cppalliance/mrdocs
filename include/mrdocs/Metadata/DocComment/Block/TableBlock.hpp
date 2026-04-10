@@ -44,29 +44,6 @@ struct TableBlock final: BlockCommonBase<BlockKind::Table>
     */
     std::vector<TableRow> items;
 
-    /** Order tables by row contents and alignments.
-    */
-    auto operator<=>(TableBlock const& other) const {
-        if (auto const cmp = items.size() <=> other.items.size();
-            !std::is_eq(cmp))
-        {
-            return cmp;
-        }
-        for (std::size_t i = 0; i < items.size(); ++i)
-        {
-            if (auto const cmp = items[i] <=> other.items[i];
-                !std::is_eq(cmp))
-            {
-                return cmp;
-            }
-        }
-        return std::strong_ordering::equal;
-    }
-
-    /** Equality compares alignments and rows.
-    */
-    bool
-    operator==(TableBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

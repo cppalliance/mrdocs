@@ -87,13 +87,6 @@ isEmpty(Block const& el)
 }
 
 
-std::strong_ordering
-BlockContainer::
-operator<=>(BlockContainer const& rhs) const
-{
-    return this->blocks <=> rhs.blocks;
-}
-
 void
 ltrim(BlockContainer& container)
 {

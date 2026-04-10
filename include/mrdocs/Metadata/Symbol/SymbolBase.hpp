@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolKind.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
 
@@ -144,10 +145,6 @@ struct MRDOCS_VISIBLE Symbol {
     }
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
-    /** Compare symbols by structural fields.
-    */
-    auto operator<=>(Symbol const&) const = default;
-
 protected:
     /** Default constructor for derived types.
     */
@@ -226,10 +223,6 @@ struct SymbolCommonBase : Symbol
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == SymbolKind::Kind; }
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
-
-    /** Compare symbols that share the same kind.
-    */
-    auto operator<=>(SymbolCommonBase const&) const = default;
 
     MRDOCS_DESCRIBE_CLASS(SymbolCommonBase, (Symbol), ())
 

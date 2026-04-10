@@ -62,6 +62,16 @@ link:#A-2constructor-0b[A](char value);
 
 [.small]#link:#A-2constructor-0b[_» more&period;&period;&period;_]#
 
+Implicit conversion from double
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#A-2constructor-00[A](double value);
+----
+
+[.small]#link:#A-2constructor-00[_» more&period;&period;&period;_]#
+
 Explicit conversion from int
 
 
@@ -72,16 +82,6 @@ link:#A-2constructor-01[A](int value);
 ----
 
 [.small]#link:#A-2constructor-01[_» more&period;&period;&period;_]#
-
-Implicit conversion from double
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-link:#A-2constructor-00[A](double value);
-----
-
-[.small]#link:#A-2constructor-00[_» more&period;&period;&period;_]#
 
 Conditionally explicit conversion from other types
 
@@ -120,6 +120,30 @@ A(char value);
 | The value to construct from
 |===
 
+[#A-2constructor-00]
+== link:#A[A]::A
+
+Implicit conversion from double
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+A(double value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *value*
+| The value to construct from
+|===
+
 [#A-2constructor-01]
 == link:#A[A]::A
 
@@ -133,30 +157,6 @@ Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
 ----
 explicit
 A(int value);
-----
-
-=== Parameters
-
-[cols="1,4"]
-|===
-|Name|Description
-
-| *value*
-| The value to construct from
-|===
-
-[#A-2constructor-00]
-== link:#A[A]::A
-
-Implicit conversion from double
-
-=== Synopsis
-
-Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-A(double value);
 ----
 
 === Parameters

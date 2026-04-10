@@ -75,8 +75,8 @@
   <record-interface>
     <record-tranche>
       <records>t1k8CaeFknlnAWQfa52he803Mcw=</records>
-      <records>flW1A8++hJYAIoinZHMJ/EargvI=</records>
       <records>RdjbfZA0y514GFSR1pCAjUyfq24=</records>
+      <records>flW1A8++hJYAIoinZHMJ/EargvI=</records>
     </record-tranche>
     <record-tranche>
     </record-tranche>
@@ -222,6 +222,118 @@
     <location>
       <short-path>class-template-specializations-2.cpp</short-path>
       <source-path>class-template-specializations-2.cpp</source-path>
+      <line-number>34</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>RdjbfZA0y514GFSR1pCAjUyfq24=</id>
+  <extraction>regular</extraction>
+  <parent>bcCFiKKGBMnWrAf/IBu1R/sC07s=</parent>
+  <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>float</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>t1k8CaeFknlnAWQfa52he803Mcw=</primary>
+  </template>
+  <record-interface>
+    <record-tranche>
+      <records>ZbjwxkmALgjx71k6/JAk0jbwrlo=</records>
+      <records>zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=</records>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>G</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-2.cpp</short-path>
+      <source-path>class-template-specializations-2.cpp</source-path>
+      <line-number>36</line-number>
+      <column-number>9</column-number>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>ZbjwxkmALgjx71k6/JAk0jbwrlo=</id>
+  <extraction>regular</extraction>
+  <parent>RdjbfZA0y514GFSR1pCAjUyfq24=</parent>
+  <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>G</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-2.cpp</short-path>
+      <source-path>class-template-specializations-2.cpp</source-path>
+      <line-number>46</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=</id>
+  <extraction>regular</extraction>
+  <parent>RdjbfZA0y514GFSR1pCAjUyfq24=</parent>
+  <key-kind>struct</key-kind>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>T</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+    <type-targ>
+      <kind>type</kind>
+      <pointer>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </name>
+        </named>
+      </pointer>
+    </type-targ>
+    <primary>ZbjwxkmALgjx71k6/JAk0jbwrlo=</primary>
+  </template>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>D</name>
+  <source>
+    <location>
+      <short-path>class-template-specializations-2.cpp</short-path>
+      <source-path>class-template-specializations-2.cpp</source-path>
       <line-number>21</line-number>
       <column-number>5</column-number>
     </location>
@@ -345,118 +457,6 @@
   <extraction>regular</extraction>
   <parent>HzSR9lAhcaSZke6x6ggUIqnawQw=</parent>
   <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-</record>
-<record>
-  <name>D</name>
-  <source>
-    <location>
-      <short-path>class-template-specializations-2.cpp</short-path>
-      <source-path>class-template-specializations-2.cpp</source-path>
-      <line-number>34</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>record</kind>
-  <id>RdjbfZA0y514GFSR1pCAjUyfq24=</id>
-  <extraction>regular</extraction>
-  <parent>bcCFiKKGBMnWrAf/IBu1R/sC07s=</parent>
-  <key-kind>struct</key-kind>
-  <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>float</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>t1k8CaeFknlnAWQfa52he803Mcw=</primary>
-  </template>
-  <record-interface>
-    <record-tranche>
-      <records>ZbjwxkmALgjx71k6/JAk0jbwrlo=</records>
-      <records>zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-</record>
-<record>
-  <name>G</name>
-  <source>
-    <location>
-      <short-path>class-template-specializations-2.cpp</short-path>
-      <source-path>class-template-specializations-2.cpp</source-path>
-      <line-number>36</line-number>
-      <column-number>9</column-number>
-    </location>
-  </source>
-  <kind>record</kind>
-  <id>ZbjwxkmALgjx71k6/JAk0jbwrlo=</id>
-  <extraction>regular</extraction>
-  <parent>RdjbfZA0y514GFSR1pCAjUyfq24=</parent>
-  <key-kind>struct</key-kind>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-  </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-</record>
-<record>
-  <name>G</name>
-  <source>
-    <location>
-      <short-path>class-template-specializations-2.cpp</short-path>
-      <source-path>class-template-specializations-2.cpp</source-path>
-      <line-number>46</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
-  <kind>record</kind>
-  <id>zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=</id>
-  <extraction>regular</extraction>
-  <parent>RdjbfZA0y514GFSR1pCAjUyfq24=</parent>
-  <key-kind>struct</key-kind>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <pointer>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>T</identifier>
-          </name>
-        </named>
-      </pointer>
-    </type-targ>
-    <primary>ZbjwxkmALgjx71k6/JAk0jbwrlo=</primary>
-  </template>
   <record-interface>
     <record-tranche>
     </record-tranche>

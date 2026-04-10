@@ -17,6 +17,7 @@
 #include <mrdocs/ADT/Nullable.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
 #include <string>
@@ -81,9 +82,6 @@ struct MRDOCS_DECL
     {
     }
 
-    /** Compare locations by file paths and coordinates.
-    */
-    auto operator<=>(Location const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

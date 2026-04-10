@@ -25,13 +25,6 @@ namespace mrdocs::doc {
 struct ListItem final
     : BlockContainer
 {
-    /** Order list items by their child blocks.
-    */
-    auto operator<=>(ListItem const&) const = default;
-
-    /** Equality compares contained blocks.
-    */
-    bool operator==(ListItem const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

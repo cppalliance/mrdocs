@@ -48,12 +48,6 @@ struct SeeBlock final
     /** Inherit inline container constructors.
     */
     using InlineContainer::InlineContainer;
-    /** Order see-also entries by inline content.
-    */
-    auto operator<=>(SeeBlock const&) const = default;
-    /** Equality compares inline content.
-    */
-    bool operator==(SeeBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

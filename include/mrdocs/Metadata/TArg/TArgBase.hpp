@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/TArg/TArgKind.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
@@ -40,10 +41,6 @@ struct TArg
     /** Polymorphic base needs a virtual destructor.
     */
     constexpr virtual ~TArg() = default;
-
-    /** Compare arguments by stored data.
-    */
-    auto operator<=>(TArg const&) const = default;
 
     /** View this object as a TArg reference.
     */

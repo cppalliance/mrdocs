@@ -19,6 +19,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
+#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Metadata/TParam/TParamKeyKind.hpp>
 #include <mrdocs/Support/Describe.hpp>
 
@@ -37,9 +38,6 @@ struct TypeTParam final
     */
     Optional<Polymorphic<struct Name>> Constraint = std::nullopt;
 
-    /** Compare type parameters by keyword and constraint.
-    */
-    std::strong_ordering operator<=>(TypeTParam const&) const;
 };
 
 MRDOCS_DESCRIBE_STRUCT(TypeTParam, (TParamCommonBase<TParamKind::Type>), (KeyKind, Constraint))

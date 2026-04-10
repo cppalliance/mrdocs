@@ -45,12 +45,6 @@ struct ImageInline final
     */
     std::string alt;
 
-    /** Order images by source, alt text, and inline children.
-    */
-    auto operator<=>(ImageInline const&) const = default;
-    /** Equality compares source, alt text, and contents.
-    */
-    bool operator==(ImageInline const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

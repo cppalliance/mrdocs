@@ -58,9 +58,6 @@ struct BriefBlock final
     */
     using InlineContainer::operator=;
 
-    /** Compare briefs by inline content and provenance.
-    */
-    auto operator<=>(BriefBlock const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

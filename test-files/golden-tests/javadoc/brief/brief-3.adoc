@@ -28,10 +28,10 @@ Integer overload&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-link:#f-06[f](int);
+link:#f-0f[f](double);
 ----
 
-[.small]#link:#f-06[_» more&period;&period;&period;_]#
+[.small]#link:#f-0f[_» more&period;&period;&period;_]#
 
 Integer overload&period;
 
@@ -39,10 +39,10 @@ Integer overload&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-link:#f-0f[f](double);
+link:#f-06[f](int);
 ----
 
-[.small]#link:#f-0f[_» more&period;&period;&period;_]#
+[.small]#link:#f-06[_» more&period;&period;&period;_]#
 
 C string overload&period;
 
@@ -66,6 +66,21 @@ link:#f-0b[f](float const*);
 
 [.small]#link:#f-0b[_» more&period;&period;&period;_]#
 
+[#f-0f]
+== f
+
+Integer overload&period;
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(double);
+----
+
 [#f-06]
 == f
 
@@ -84,21 +99,6 @@ f(int);
 === Description
 
 More info
-
-[#f-0f]
-== f
-
-Integer overload&period;
-
-=== Synopsis
-
-Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f(double);
-----
 
 [#f-07]
 == f

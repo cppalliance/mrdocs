@@ -11,8 +11,8 @@
     <typedefs>ApI0xrWYyA88AQ9a3mi+ochJbJc=</typedefs>
     <typedefs>zbm2FwMgaOYZ1PJI3zAcR9gD1DE=</typedefs>
     <records>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</records>
-    <records>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</records>
     <records>nM49pHyBLj9V6pphxxYAxi4tXXc=</records>
+    <records>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</records>
   </namespace-tranche>
 </namespace>
 <typedef>
@@ -167,96 +167,6 @@
     </location>
   </source>
   <kind>record</kind>
-  <id>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>void</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</primary>
-  </template>
-  <record-interface>
-    <record-tranche>
-      <typedefs>xwZQjxyx34OE1PjRX/paK2bdWb0=</typedefs>
-      <typedefs>59lOx3WiBtHW8lORAEbx2R0bEwM=</typedefs>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-</record>
-<typedef>
-  <name>M0</name>
-  <source>
-    <location>
-      <short-path>decay-to-primary.cpp</short-path>
-      <source-path>decay-to-primary.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>typedef</kind>
-  <id>xwZQjxyx34OE1PjRX/paK2bdWb0=</id>
-  <extraction>regular</extraction>
-  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <is-using>1</is-using>
-</typedef>
-<typedef>
-  <name>M1</name>
-  <source>
-    <location>
-      <short-path>decay-to-primary.cpp</short-path>
-      <source-path>decay-to-primary.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>typedef</kind>
-  <id>59lOx3WiBtHW8lORAEbx2R0bEwM=</id>
-  <extraction>regular</extraction>
-  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
-      <identifier>S0</identifier>
-    </name>
-  </named>
-  <is-using>1</is-using>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-  </template>
-</typedef>
-<record>
-  <name>S0</name>
-  <source>
-    <location>
-      <short-path>decay-to-primary.cpp</short-path>
-      <source-path>decay-to-primary.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
-  <kind>record</kind>
   <id>nM49pHyBLj9V6pphxxYAxi4tXXc=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
@@ -320,6 +230,96 @@
   <id>55w2+SxFbPDR4zxtZen23YT6oyY=</id>
   <extraction>regular</extraction>
   <parent>nM49pHyBLj9V6pphxxYAxi4tXXc=</parent>
+  <named>
+    <name>
+      <kind>specialization</kind>
+      <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
+      <identifier>S0</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+  <template>
+    <type-tparam>
+      <kind>type</kind>
+      <name>U</name>
+      <key-kind>typename</key-kind>
+    </type-tparam>
+  </template>
+</typedef>
+<record>
+  <name>S0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <template>
+    <type-targ>
+      <kind>type</kind>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </name>
+      </named>
+    </type-targ>
+    <primary>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</primary>
+  </template>
+  <record-interface>
+    <record-tranche>
+      <typedefs>xwZQjxyx34OE1PjRX/paK2bdWb0=</typedefs>
+      <typedefs>59lOx3WiBtHW8lORAEbx2R0bEwM=</typedefs>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<typedef>
+  <name>M0</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>typedef</kind>
+  <id>xwZQjxyx34OE1PjRX/paK2bdWb0=</id>
+  <extraction>regular</extraction>
+  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+<typedef>
+  <name>M1</name>
+  <source>
+    <location>
+      <short-path>decay-to-primary.cpp</short-path>
+      <source-path>decay-to-primary.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>typedef</kind>
+  <id>59lOx3WiBtHW8lORAEbx2R0bEwM=</id>
+  <extraction>regular</extraction>
+  <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
   <named>
     <name>
       <kind>specialization</kind>

@@ -26,9 +26,6 @@ struct DecltypeType final
     */
     ExprInfo Operand;
 
-    /** Compare decltype operands.
-    */
-    auto operator<=>(DecltypeType const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

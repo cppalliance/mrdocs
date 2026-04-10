@@ -42,12 +42,6 @@ struct FootnoteDefinitionBlock final
     /** Construct an empty footnote definition.
     */
     FootnoteDefinitionBlock() noexcept = default;
-    /** Compare definitions by label and block content.
-    */
-    auto operator<=>(FootnoteDefinitionBlock const&) const = default;
-    /** Equality compares label and block content.
-    */
-    bool operator==(FootnoteDefinitionBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

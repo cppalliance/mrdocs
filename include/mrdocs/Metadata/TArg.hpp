@@ -60,6 +60,14 @@ MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs);
 
+/** Equality for polymorphic template arguments.
+*/
+inline bool
+operator==(Polymorphic<TArg> const& a, Polymorphic<TArg> const& b)
+{
+    return std::is_eq(a <=> b);
+}
+
 /** Serialize a polymorphic template argument into a DOM value.
 */
 inline

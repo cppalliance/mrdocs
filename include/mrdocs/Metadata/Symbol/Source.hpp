@@ -50,9 +50,6 @@ struct MRDOCS_DECL
     */
     constexpr virtual ~SourceInfo() = default;
 
-    /** Compare sources by definition and declaration locations.
-    */
-    auto operator<=>(SourceInfo const&) const = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

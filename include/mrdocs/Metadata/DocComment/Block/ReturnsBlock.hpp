@@ -59,12 +59,6 @@ struct ReturnsBlock final
     /** Move assignment.
     */
     ReturnsBlock& operator=(ReturnsBlock&&) noexcept = default;
-    /** Order return docs by inline content.
-    */
-    auto operator<=>(ReturnsBlock const&) const = default;
-    /** Equality compares inline content.
-    */
-    bool operator==(ReturnsBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

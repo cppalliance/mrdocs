@@ -42,13 +42,6 @@ struct ThrowsBlock final
     */
     using InlineContainer::InlineContainer;
 
-    /** Order throw clauses by exception and description.
-    */
-    auto operator<=>(ThrowsBlock const&) const = default;
-
-    /** Equality compares exception and description.
-    */
-    bool operator==(ThrowsBlock const&) const noexcept = default;
 };
 
 MRDOCS_DESCRIBE_STRUCT(
