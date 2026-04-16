@@ -120,18 +120,6 @@ enum class OperatorKind
     Coawait,
 };
 
-/** Map an operator kind to a DOM value (its underlying integer).
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    OperatorKind kind)
-{
-    v = static_cast<std::underlying_type_t<OperatorKind>>(kind);
-}
-
 /** Determines whether the operator is potentially unary.
 */
 MRDOCS_DECL
@@ -155,6 +143,18 @@ std::string_view
 getOperatorName(
     OperatorKind kind,
     bool include_keyword = false) noexcept;
+
+/** Map an operator kind to a DOM value.
+*/
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    OperatorKind kind)
+{
+    v = getOperatorName(kind);
+}
 
 /** Return the short name of an operator as a string.
 */

@@ -88,13 +88,7 @@ memberSchema()
             });
         schema.set("enum", std::move(values));
     }
-    // OperatorKind is the sole non-described enum that
-    // serializes as integer (via static_cast to underlying type).
-    else if constexpr (std::is_same_v<Type, OperatorKind>)
-    {
-        schema.set("type", "integer");
-    }
-    // Non-described enums with manual switch-based toString()
+    // Non-described enums with manual toString() or getOperatorName()
     // (described enums already handled above).
     else if constexpr (std::is_enum_v<Type>)
     {

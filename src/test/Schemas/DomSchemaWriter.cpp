@@ -199,9 +199,9 @@ struct DomSchemaWriterTest
         BOOST_TEST(fp.get("explicit").getObject()
                      .get("type").getString() == "string");
 
-        // OperatorKind serializes as integer.
+        // OperatorKind
         BOOST_TEST(fp.get("overloadedOperator").getObject()
-                     .get("type").getString() == "integer");
+                     .get("type").getString() == "string");
     }
 
     // -- Symbol extension fields ----------------------------------
