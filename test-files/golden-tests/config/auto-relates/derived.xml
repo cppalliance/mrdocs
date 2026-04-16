@@ -78,6 +78,7 @@
         <identifier>ABase</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -212,6 +213,7 @@
         <identifier>ABase</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <derived>uzZSeC7XnVBhNXRKG+8nlEGg+Is=</derived>
   <record-interface>
@@ -288,6 +290,7 @@
         <identifier>AView</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>

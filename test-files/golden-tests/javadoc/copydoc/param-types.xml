@@ -12,8 +12,8 @@
     <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
     <records>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</records>
     <enums>pUJEk/x997P8q+ILVKlwge3u5Ag=</enums>
-    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
-    <functions>9JfSlZfEThLXiWTez3b8eT/AbZU=</functions>
+    <functions>GDxqxKc4bkmO2HKXdEn9Zgy37O8=</functions>
+    <functions>yrBu1PLNI6d+uEC9ml1Q/9KAt4o=</functions>
   </namespace-tranche>
 </namespace>
 <namespace>
@@ -165,6 +165,7 @@
   </source>
   <kind>function</kind>
   <id>ZtNDo4tS35tJKrXxGM1LJZVrCwA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -242,6 +243,7 @@
   </source>
   <kind>function</kind>
   <id>c2hExG7/ditEkntdYONY88sivsA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -495,7 +497,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <id>GDxqxKc4bkmO2HKXdEn9Zgy37O8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>
@@ -1362,7 +1364,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>9JfSlZfEThLXiWTez3b8eT/AbZU=</id>
+  <id>yrBu1PLNI6d+uEC9ml1Q/9KAt4o=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>

@@ -118,6 +118,7 @@
   </source>
   <kind>function</kind>
   <id>UrNEyy62P/QaY1BkJmO7NDGZSj4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>w1h8sAoo8RqYTF+5WQRakdFasXg=</parent>
   <named>
@@ -168,6 +169,7 @@
   </source>
   <kind>function</kind>
   <id>zsIKv6vJxoUhHtYtugUJIB9aWMo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>DJrmic0LRMkHQmpzqYXGqAbcxAc=</parent>
   <named>
@@ -191,6 +193,7 @@
   </source>
   <kind>function</kind>
   <id>8ScA2YfwRe5KHsj/rEbtJeXWYz8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>DJrmic0LRMkHQmpzqYXGqAbcxAc=</parent>
   <named>
@@ -225,6 +228,7 @@
         <identifier>C</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -251,6 +255,7 @@
   </source>
   <kind>record</kind>
   <id>10qzjzJQhBscbAmic63bnI+Xm4g=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <doc-comment>
@@ -313,6 +318,7 @@
   </source>
   <kind>function</kind>
   <id>zsIKv6vJxoUhHtYtugUJIB9aWMo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>DJrmic0LRMkHQmpzqYXGqAbcxAc=</parent>
   <named>
@@ -336,6 +342,7 @@
   </source>
   <kind>function</kind>
   <id>BJ7/Ds7ODvX+B2GNt69Xylatb0M=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
@@ -471,6 +478,7 @@
   </source>
   <kind>function</kind>
   <id>4kEX5cyrkrbZqQhxb/7zuwJe06c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -506,6 +514,7 @@
   </source>
   <kind>function</kind>
   <id>73SLmNIvWuD1x05NFJfjN5Tw9dI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -541,6 +550,7 @@
   </source>
   <kind>function</kind>
   <id>eH/S82KH2Afa//Il8eL+eetP2oY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -576,6 +586,7 @@
   </source>
   <kind>function</kind>
   <id>Ua+I8TjggG4f6Kh9Cd4PqWl+L3c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -611,6 +622,7 @@
   </source>
   <kind>function</kind>
   <id>q1RRcpfiolN+sGlkQKFIR7zXw3Y=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -646,6 +658,7 @@
   </source>
   <kind>function</kind>
   <id>s8Sj0SHvk8ztPnOv7kqTpLOFym0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -681,6 +694,7 @@
   </source>
   <kind>function</kind>
   <id>dgeFs66S2JTHtYJ46SdfSKrTHpw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -716,6 +730,7 @@
   </source>
   <kind>function</kind>
   <id>6E9Wc51OXC1EuYFyXcfnRKyaSUQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -751,6 +766,7 @@
   </source>
   <kind>function</kind>
   <id>iRsJO4RJUDxRReCEOEGUr8z2Dog=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -786,6 +802,7 @@
   </source>
   <kind>function</kind>
   <id>uWgcvJSykruOksCy3oG6mliThTU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -821,6 +838,7 @@
   </source>
   <kind>function</kind>
   <id>ayIMyqIPvK5ooT3+6bzqvikAe2M=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -844,6 +862,7 @@
   </source>
   <kind>function</kind>
   <id>PJEPb391sh5h9UGcBsg9S+NbbOc=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -879,6 +898,7 @@
   </source>
   <kind>function</kind>
   <id>MdfknCJ8anbDNS7X0ZYzre/aWQQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -914,6 +934,7 @@
   </source>
   <kind>function</kind>
   <id>gvnFfUpiWSxAgTxhtpuiEjIoCb4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -949,6 +970,7 @@
   </source>
   <kind>function</kind>
   <id>IMTroH5DZKQ9XB1WksK3iSCShbU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -972,6 +994,7 @@
   </source>
   <kind>function</kind>
   <id>KDQr8/lEqgd8pJtSdTnd3fC66vY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1007,6 +1030,7 @@
   </source>
   <kind>function</kind>
   <id>jEkSq3UPl4dH1KNAwrVl3jY5lw4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1030,6 +1054,7 @@
   </source>
   <kind>function</kind>
   <id>O/dGYwCIdWpqL6atSM3pmq8Yk98=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1065,6 +1090,7 @@
   </source>
   <kind>function</kind>
   <id>CqAcZ21y0JP32hw7PHO31UxiviA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1100,6 +1126,7 @@
   </source>
   <kind>function</kind>
   <id>nlXVuPy3T3MP7qelm3WGXP9sxHs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1135,6 +1162,7 @@
   </source>
   <kind>function</kind>
   <id>rn2dr+lEU1Y+nZ76RvF705Amt7Y=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1170,6 +1198,7 @@
   </source>
   <kind>function</kind>
   <id>UW/rnK+Cj7mGybqf3Ftz8ov8AAk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1205,6 +1234,7 @@
   </source>
   <kind>function</kind>
   <id>P2xgjlanIonF9IWlntd4b45qHv8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1240,6 +1270,7 @@
   </source>
   <kind>function</kind>
   <id>3JThobgsU4rdNkfW2McxqHS/9CA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1275,6 +1306,7 @@
   </source>
   <kind>function</kind>
   <id>SSFNeC35i5KtYL6Tno8HnVjyX4U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1310,6 +1342,7 @@
   </source>
   <kind>function</kind>
   <id>PCZOPisEjvPudnFdMOV2Wqc+HDI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1345,6 +1378,7 @@
   </source>
   <kind>function</kind>
   <id>MJ6J65nDyFc+MnN7Jx4/DjOFJGw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1380,6 +1414,7 @@
   </source>
   <kind>function</kind>
   <id>oSeQzrs59Zd9rcweG2DRZVa6OpQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1415,6 +1450,7 @@
   </source>
   <kind>function</kind>
   <id>GKmeopHLbzp3t6uxUtanpR4Tdk4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1450,6 +1486,7 @@
   </source>
   <kind>function</kind>
   <id>i0ULCt5GV/PS0YAGQP2fValTik8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1473,6 +1510,7 @@
   </source>
   <kind>function</kind>
   <id>1pkl7XGJ2JVw7Xbm/xwSNKmflV4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1508,6 +1546,7 @@
   </source>
   <kind>function</kind>
   <id>ZoClmvCX93Yg08gfEaOD38rj0EM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1531,6 +1570,7 @@
   </source>
   <kind>function</kind>
   <id>k1TITJ9F+RdpX68VCHzCVjpumSE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1566,6 +1606,7 @@
   </source>
   <kind>function</kind>
   <id>+h1YcypZimsCxOl2AOqurQDO6/w=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1601,6 +1642,7 @@
   </source>
   <kind>function</kind>
   <id>qZqDjtbfsftj0EhxY2cdp4y5r6E=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1636,6 +1678,7 @@
   </source>
   <kind>function</kind>
   <id>0rK5iNi5hwJI0k+ajN7X/jsUDew=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1671,6 +1714,7 @@
   </source>
   <kind>function</kind>
   <id>im95jlqAf+bFSRJ6laltkGbJj38=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1706,6 +1750,7 @@
   </source>
   <kind>function</kind>
   <id>c1PYDvrte7rUAE4DaiUopjWnAWY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>
@@ -1741,6 +1786,7 @@
   </source>
   <kind>function</kind>
   <id>cqSDwRFzB3Z6A5z95/VLPQSp5GI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
   <named>

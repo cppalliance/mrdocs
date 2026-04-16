@@ -59,6 +59,7 @@
         </name>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -85,6 +86,7 @@
   </source>
   <kind>function</kind>
   <id>BcIYmKdVh0f6TsMPCA/M0Cmr9VI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
@@ -109,6 +111,7 @@
   </source>
   <kind>function</kind>
   <id>o+85JO3Sv4bIWiG3+bfyUw5gJWI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
@@ -134,6 +137,7 @@
   </source>
   <kind>function</kind>
   <id>NiHV825xQJhfQDhKCeAex3UuHGY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
@@ -159,6 +163,7 @@
   </source>
   <kind>function</kind>
   <id>d5/JtPJCrP6OG8ToxUKNR5xqJ4I=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
@@ -198,6 +203,7 @@
         </name>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -224,6 +230,7 @@
   </source>
   <kind>function</kind>
   <id>e7VYD0d5BKg0c6yEn8zt92t304s=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
@@ -248,6 +255,7 @@
   </source>
   <kind>function</kind>
   <id>JgPp0cAF/suYYKB1RQalvRP+hjk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
@@ -274,6 +282,7 @@
   </source>
   <kind>function</kind>
   <id>KiY+7o+uUp3h7bndNOpI2AuCrAE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
@@ -299,6 +308,7 @@
   </source>
   <kind>function</kind>
   <id>0wO8aZwuOLvF7/RooHUZJ5SyKzk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>

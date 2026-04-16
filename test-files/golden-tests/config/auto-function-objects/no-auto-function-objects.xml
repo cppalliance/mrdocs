@@ -80,6 +80,7 @@
   </source>
   <kind>function</kind>
   <id>11lTy9LCvZbcyORLiyJVo85H/ZE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</parent>
   <doc-comment>
@@ -163,6 +164,7 @@
   </source>
   <kind>function</kind>
   <id>7NEMEfqJ2qq9ya8mcW1t7V5K0DA=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</parent>
   <doc-comment>

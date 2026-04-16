@@ -36,6 +36,7 @@
         <identifier>B</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -59,6 +60,7 @@
   </source>
   <kind>function</kind>
   <id>i2Kh9WfDseks8Lnr/kapVaR9r4g=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
@@ -118,6 +120,7 @@
   </source>
   <kind>function</kind>
   <id>yNvFAvs6ngp6sqCFBzu5nPSIyfk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
   <l-value-reference>

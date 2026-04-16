@@ -80,6 +80,7 @@
         <literal>int</literal>
       </text>
       <name>i</name>
+      <direction>in</direction>
     </param>
   </doc-comment>
   <named>
@@ -122,6 +123,7 @@
         <literal>int</literal>
       </text>
       <name>i</name>
+      <direction>out</direction>
     </param>
   </doc-comment>
   <named>
@@ -166,6 +168,7 @@
         <literal>int</literal>
       </text>
       <name>i</name>
+      <direction>inout</direction>
     </param>
   </doc-comment>
   <named>

@@ -47,7 +47,7 @@ struct std::formatter<mrdocs::AccessKind> : std::formatter<std::string> {
   template <class FmtContext>
   std::format_context::iterator format(mrdocs::AccessKind a,
                                        FmtContext &ctx) const {
-    return std::formatter<std::string>::format(toString(a).str(), ctx);
+    return std::formatter<std::string>::format(toString(a), ctx);
   }
 };
 

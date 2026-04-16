@@ -50,6 +50,7 @@
   </source>
   <kind>function</kind>
   <id>jCCBBuUPAMKbCDHSsikdFgCuMPQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>iyPnRqvK5CeWtYJ+M257FJexgOs=</parent>
   <named>
@@ -80,6 +81,7 @@
     <decltype>
       <operand>f()</operand>
     </decltype>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>

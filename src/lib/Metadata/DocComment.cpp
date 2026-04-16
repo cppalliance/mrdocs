@@ -47,24 +47,6 @@ toString(AdmonitionKind kind) noexcept
 }
 
 dom::String
-toString(ParamDirection kind) noexcept
-{
-    switch(kind)
-    {
-    case ParamDirection::none:
-        return "";
-    case ParamDirection::in:
-        return "in";
-    case ParamDirection::out:
-        return "out";
-    case ParamDirection::inout:
-        return "inout";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String
 toString(Parts kind) noexcept
 {
     switch(kind)

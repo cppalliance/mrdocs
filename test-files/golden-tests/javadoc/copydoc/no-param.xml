@@ -10,7 +10,7 @@
   <namespace-tranche>
     <functions>w/4YwvbadDuW7Jcd/fzixfCXP54=</functions>
     <functions>3y+Rt2TVgN8SW9EozffoZoL4lCI=</functions>
-    <functions>IPZj2cmKd30EV/ztyuacllbdZcg=</functions>
+    <functions>pcjPlb94+CIWLp/GqtdwNH0kKCY=</functions>
   </namespace-tranche>
 </namespace>
 <function>
@@ -73,6 +73,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 <function>
   <name>copyfromOverloads</name>
@@ -127,6 +128,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 <overloads>
   <name>foo</name>
@@ -147,7 +149,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>IPZj2cmKd30EV/ztyuacllbdZcg=</id>
+  <id>pcjPlb94+CIWLp/GqtdwNH0kKCY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>
@@ -243,6 +245,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 <function>
   <name>foo</name>
@@ -314,5 +317,6 @@
     <name>ch</name>
   </param>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 </mrdocs>

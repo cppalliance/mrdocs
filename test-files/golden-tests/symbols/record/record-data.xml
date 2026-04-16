@@ -56,6 +56,7 @@
   </source>
   <kind>variable</kind>
   <id>91xV6rCFObgi6i1/U2uZ/GnD3WM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
@@ -78,6 +79,7 @@
   </source>
   <kind>variable</kind>
   <id>g7xcHrg43mq7PlaOEmNvMHlU+Hk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
@@ -100,6 +102,7 @@
   </source>
   <kind>variable</kind>
   <id>DDn/yzxAAKSmBASeK+/IuU+FvzM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
@@ -123,6 +126,7 @@
   </source>
   <kind>variable</kind>
   <id>wmuk99bazNMSdS8W8oD/7vIsIhQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
@@ -147,6 +151,7 @@
   </source>
   <kind>variable</kind>
   <id>8Olj7aMWgTqR7bHtl+C3EZ5wILI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
@@ -196,6 +201,7 @@
   </source>
   <kind>variable</kind>
   <id>LvEIBVXJYQQL4yraOaQv7ijMDng=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
   <named>
@@ -246,6 +252,7 @@
   </source>
   <kind>variable</kind>
   <id>VKvx+Pci4bUmtjCsXJqKb7SNYqw=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
   <named>
@@ -268,6 +275,7 @@
   </source>
   <kind>variable</kind>
   <id>EWXCzRl9erjnMQFZ8VmHC5cVkLM=</id>
+  <access>private</access>
   <extraction>regular</extraction>
   <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
   <named>
@@ -290,6 +298,7 @@
   </source>
   <kind>variable</kind>
   <id>iKr1oLycejUWY6AnSgoQnbmaCEE=</id>
+  <access>private</access>
   <extraction>regular</extraction>
   <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
   <named>
@@ -337,6 +346,7 @@
   </source>
   <kind>variable</kind>
   <id>2akJUSKKPN7IylZjqGMRlhXupds=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>6OhcFM3BV6KlrvmfpsljaMHxpdA=</parent>
   <array>
@@ -408,6 +418,7 @@
   </source>
   <kind>typedef</kind>
   <id>nkW23Ykh9wywIjUzLqEQlHf8R5k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
   <named>
@@ -430,6 +441,7 @@
   </source>
   <kind>variable</kind>
   <id>WMA7IrW+2LvVbOV8OxRgz1lZtgs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
   <named>
@@ -453,6 +465,7 @@
   </source>
   <kind>variable</kind>
   <id>9mHoUUHldwcRXKA3lf94KNCXALA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
   <named>
@@ -475,6 +488,7 @@
   </source>
   <kind>variable</kind>
   <id>BBtkYfP6w9XgHxk01Va2e1WZHo0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
   <array>
@@ -500,6 +514,7 @@
   </source>
   <kind>variable</kind>
   <id>nnQtR7SV1kLSZgMv0quXSh0M8/A=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
   <named>
@@ -523,6 +538,7 @@
   </source>
   <kind>variable</kind>
   <id>iixsM8X5M740uqb1jSRUfUuvNo0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>XSI9u4gB6ZYb6pWxN29K8+iKza4=</parent>
   <named>

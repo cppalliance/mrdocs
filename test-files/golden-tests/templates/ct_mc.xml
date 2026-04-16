@@ -55,6 +55,7 @@
   </source>
   <kind>record</kind>
   <id>fWoD36lD5WiSb4UmeWlbUQhHuXU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
@@ -80,6 +81,7 @@
   </source>
   <kind>function</kind>
   <id>FBE8MWhdRJutTkraJIXajcEr4U0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>fWoD36lD5WiSb4UmeWlbUQhHuXU=</parent>
   <named>

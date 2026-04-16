@@ -56,6 +56,24 @@ std::string tagName()
     return toKebabCase(name);
 }
 
+/** True if the described enum has an enumerator named "None" or "none". */
+template <typename E>
+constexpr bool has_none_enumerator()
+{
+    bool result = false;
+    describe::for_each(
+        describe::describe_enumerators<E>{},
+        [&](auto const& D)
+        {
+            std::string_view name(D.name);
+            if (name == "None" || name == "none")
+            {
+                result = true;
+            }
+        });
+    return result;
+}
+
 } // unnamed namespace
 
 //------------------------------------------------
@@ -176,6 +194,16 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         { if (value.empty()) return; }
     else if constexpr (std::is_base_of_v<ExprInfo, Type>)
         { if (value.Written.empty()) return; }
+    else if constexpr (describe::has_describe_enumerators<Type>::value)
+    {
+        if constexpr (has_none_enumerator<Type>())
+        {
+            if (toString(value) == "none")
+            {
+                return;
+            }
+        }
+    }
 
     // Primitives inline, compounds wrapped.
     if constexpr (std::is_base_of_v<ExprInfo, Type>)

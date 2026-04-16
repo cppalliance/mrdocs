@@ -54,6 +54,7 @@
   </source>
   <kind>overloads</kind>
   <id>4/AwllBtll8FuW0tFA3cMUpR8Sg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <func-class>normal</func-class>
@@ -80,6 +81,7 @@
   </source>
   <kind>function</kind>
   <id>umtiZdZUSDxw3juVm+S7M40tpXQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <l-value-reference>
@@ -105,6 +107,7 @@
   </source>
   <kind>function</kind>
   <id>c8FMK37zKpqJXH2ZioM0tYziY1g=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <l-value-reference>

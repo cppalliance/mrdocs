@@ -15,6 +15,8 @@
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/DocComment/Block/ParamDirection.hpp>
+#include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Specifiers/ConstexprKind.hpp>
 #include <mrdocs/Metadata/Specifiers/ReferenceKind.hpp>
 #include <mrdocs/Metadata/Specifiers/StorageClassKind.hpp>
@@ -114,6 +116,10 @@ shouldMapValue(T const& value)
     {
         return !value.empty();
     }
+    else if constexpr (std::is_same_v<T, AccessKind>)
+    {
+        return value != AccessKind::None;
+    }
     else if constexpr (std::is_same_v<T, ConstexprKind>)
     {
         return value != ConstexprKind::None;
@@ -125,6 +131,10 @@ shouldMapValue(T const& value)
     else if constexpr (std::is_same_v<T, StorageClassKind>)
     {
         return value != StorageClassKind::None;
+    }
+    else if constexpr (std::is_same_v<T, doc::ParamDirection>)
+    {
+        return value != doc::ParamDirection::none;
     }
     else if constexpr (std::is_same_v<T, ExprInfo>)
     {

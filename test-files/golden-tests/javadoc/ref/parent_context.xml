@@ -45,7 +45,7 @@
   <parent>+jO0pmMB/RXahxtatVUYoEwUKWs=</parent>
   <namespace-tranche>
     <namespaces>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</namespaces>
-    <functions>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</functions>
+    <functions>hR1icsm+sLZATXeAwQs0Rg3Bgbc=</functions>
   </namespace-tranche>
 </namespace>
 <namespace>
@@ -109,7 +109,7 @@
       <reference>
         <kind>reference</kind>
         <literal>final_virtual_ptr</literal>
-        <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
+        <id>hR1icsm+sLZATXeAwQs0Rg3Bgbc=</id>
       </reference>
     </paragraph>
     <brief>
@@ -147,7 +147,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
+  <id>hR1icsm+sLZATXeAwQs0Rg3Bgbc=</id>
   <extraction>regular</extraction>
   <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
   <func-class>normal</func-class>

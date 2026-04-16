@@ -96,6 +96,7 @@
         <identifier>B1</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <base>
     <named>
@@ -105,6 +106,7 @@
         <identifier>B2</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>

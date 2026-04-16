@@ -70,6 +70,7 @@
   </source>
   <kind>variable</kind>
   <id>rW6h+mCfZLROHlYzwXFIUPN6oSE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -79,6 +80,7 @@
     </name>
   </named>
   <initializer>0</initializer>
+  <storage-class>static</storage-class>
 </variable>
 <variable>
   <name>v1</name>
@@ -98,6 +100,7 @@
   </source>
   <kind>variable</kind>
   <id>nkB0lMmDvMsu9GDrKr3Mzwi5g6I=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -107,6 +110,7 @@
     </name>
   </named>
   <initializer>1</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -127,6 +131,7 @@
   </source>
   <kind>variable</kind>
   <id>e48c97dC3AIWJHWE5T0yWVxezgg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -136,6 +141,7 @@
     </name>
   </named>
   <initializer>2</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -157,6 +163,7 @@
   </source>
   <kind>variable</kind>
   <id>Wx5S5oWv5o4nV7I+zFEKTvWl40g=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -167,6 +174,7 @@
     </name>
   </named>
   <initializer>3</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -187,6 +195,7 @@
   </source>
   <kind>variable</kind>
   <id>6a2wBN4mHiuAAqV0gYgYQeqFNVM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -197,6 +206,7 @@
     </name>
   </named>
   <initializer>4</initializer>
+  <storage-class>static</storage-class>
 </variable>
 <variable>
   <name>v5</name>
@@ -210,6 +220,7 @@
   </source>
   <kind>variable</kind>
   <id>Q96okKllwtE2Tg+t7HAkms6flbk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -219,6 +230,7 @@
     </name>
   </named>
   <initializer>5</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -233,6 +245,7 @@
   </source>
   <kind>variable</kind>
   <id>0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -243,6 +256,7 @@
     </name>
   </named>
   <initializer>6</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -257,6 +271,7 @@
   </source>
   <kind>variable</kind>
   <id>VCnmz8Cp9RtJzQQQ7yw57uzbQAY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
@@ -266,6 +281,7 @@
     </name>
   </named>
   <initializer>7</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -313,6 +329,7 @@
   </source>
   <kind>variable</kind>
   <id>+yhNlGuTVY4spCfBXSTBkEDzi30=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
@@ -323,6 +340,7 @@
     </name>
   </named>
   <initializer>0</initializer>
+  <storage-class>static</storage-class>
   <is-thread-local>1</is-thread-local>
 </variable>
 <variable>
@@ -337,6 +355,7 @@
   </source>
   <kind>variable</kind>
   <id>vNYWHh2ovZiBP3uVEeJhMkaiF3w=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
@@ -346,6 +365,7 @@
     </name>
   </named>
   <initializer>0</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
   <is-thread-local>1</is-thread-local>

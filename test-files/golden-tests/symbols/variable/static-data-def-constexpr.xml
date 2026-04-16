@@ -55,6 +55,7 @@
   </source>
   <kind>variable</kind>
   <id>Sugb8cWjf0PRq2dN0pOEbkKY9C4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
@@ -65,6 +66,7 @@
     </name>
   </named>
   <initializer>S{}</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
 </variable>
@@ -111,6 +113,7 @@
   </source>
   <kind>variable</kind>
   <id>+nDx93NmBRbrBZ8RlBwzPk8rp8I=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
@@ -120,6 +123,7 @@
     </name>
   </named>
   <initializer>0</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
   <is-constexpr>1</is-constexpr>
   <is-constinit>1</is-constinit>

@@ -177,6 +177,7 @@
         </name>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>

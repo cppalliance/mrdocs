@@ -15,45 +15,6 @@
 
 namespace mrdocs {
 
-dom::String toString(AccessKind kind) noexcept
-{
-    switch(kind)
-    {
-    case AccessKind::Public:    return "public";
-    case AccessKind::Private:   return "private";
-    case AccessKind::Protected: return "protected";
-    case AccessKind::None:      return "";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String toString(StorageClassKind kind) noexcept
-{
-    switch(kind)
-    {
-    case StorageClassKind::None:     return "";
-    case StorageClassKind::Extern:   return "extern";
-    case StorageClassKind::Static:   return "static";
-    case StorageClassKind::Auto:     return "auto";
-    case StorageClassKind::Register: return "register";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String toString(ConstexprKind kind) noexcept
-{
-    switch(kind)
-    {
-    case ConstexprKind::None:      return "";
-    case ConstexprKind::Constexpr: return "constexpr";
-    case ConstexprKind::Consteval: return "consteval";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
 dom::String toString(ExplicitKind kind) noexcept
 {
     switch(kind)

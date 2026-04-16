@@ -41,9 +41,9 @@ MRDOCS_DECL
 dom::String
 toString(TypeKind kind) noexcept;
 
-inline
 /** Map a TypeKind into a DOM value.
 */
+inline
 void
 tag_invoke(
     dom::ValueFromTag,

@@ -35,6 +35,7 @@
         <identifier>B</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -58,6 +59,7 @@
   </source>
   <kind>function</kind>
   <id>TokaYJ9UI6a6x0IfsXTGliIuJ9k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
@@ -107,6 +109,7 @@
   </source>
   <kind>function</kind>
   <id>TokaYJ9UI6a6x0IfsXTGliIuJ9k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>

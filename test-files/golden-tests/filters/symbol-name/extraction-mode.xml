@@ -194,6 +194,7 @@
   </source>
   <kind>record</kind>
   <id>HIH1h4hOIdF5+btaX+gwmErtATY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</parent>
   <doc-comment>
@@ -229,6 +230,7 @@
   </source>
   <kind>record</kind>
   <id>ZZiAG+2jvp211xfxhzPQi3p+JQU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>HIH1h4hOIdF5+btaX+gwmErtATY=</parent>
   <doc-comment>
@@ -959,6 +961,7 @@
   </source>
   <kind>record</kind>
   <id>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>cw0xJkxH12xMAqMkCi84zr2R6nQ=</parent>
   <doc-comment>
@@ -994,6 +997,7 @@
   </source>
   <kind>record</kind>
   <id>cF5hGQlXVxQ9lU9qT768m47j5fE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</parent>
   <doc-comment>

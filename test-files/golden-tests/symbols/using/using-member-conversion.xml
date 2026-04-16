@@ -98,6 +98,7 @@
   </source>
   <kind>function</kind>
   <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
   <doc-comment>
@@ -160,6 +161,7 @@
         <identifier>X</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -185,6 +187,7 @@
   </source>
   <kind>function</kind>
   <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
   <doc-comment>
@@ -227,6 +230,7 @@
   </source>
   <kind>using</kind>
   <id>EFiZJ7JGhYhYwHH32s8HA+C+gns=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>yi1fc3tRK4IAsSp9WUPwfU6MSc8=</parent>
   <doc-comment>
@@ -263,6 +267,7 @@
   </source>
   <kind>function</kind>
   <id>Yyyb35deIA+gpVYakhwVjtGJBkQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
   <doc-comment>

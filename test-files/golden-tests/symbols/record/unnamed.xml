@@ -51,6 +51,7 @@
   </source>
   <kind>function</kind>
   <id>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</parent>
   <named>
@@ -110,6 +111,7 @@
   </source>
   <kind>variable</kind>
   <id>4Sy+GbRmqI4igByqQo0hAnRUahY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>8AwuUPjsLEReggyF5UohZMvrh8k=</parent>
   <doc-comment>
@@ -182,6 +184,7 @@
       <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
     </name>
   </named>
+  <storage-class>extern</storage-class>
 </variable>
 <variable>
   <name>y</name>
@@ -213,5 +216,6 @@
       <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
     </name>
   </named>
+  <storage-class>extern</storage-class>
 </variable>
 </mrdocs>

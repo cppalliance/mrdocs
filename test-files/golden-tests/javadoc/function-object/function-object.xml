@@ -66,6 +66,7 @@
   </source>
   <kind>function</kind>
   <id>SJcq0OY0c+Sn2qeErP31YsnigRE=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>DBR3jN3uyfnI20zmAUSKJdd5czg=</parent>
   <doc-comment>
@@ -142,6 +143,7 @@
   </source>
   <kind>function</kind>
   <id>WetcQwZF2HLFqHvCelvdZkd3uKw=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>wkfZ7hBp72uNy/H08ouKSfh83xw=</parent>
   <doc-comment>
@@ -226,6 +228,7 @@
   </source>
   <kind>function</kind>
   <id>dPBhh3IXC4bo1W1R+KW7DKUhWXc=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>btOmu4Wi+12LN0yOtwktdItL6TI=</parent>
   <doc-comment>
@@ -263,6 +266,7 @@
   </source>
   <kind>function</kind>
   <id>yzemSe6FSS2yygjwWU0fDjnApag=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>btOmu4Wi+12LN0yOtwktdItL6TI=</parent>
   <doc-comment>
@@ -329,6 +333,7 @@
   </source>
   <kind>function</kind>
   <id>ADXCgWvBcGrBZsanaYhrkqsGrm0=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>8MtMw2t61OoqkEmw6hklgOf9YUY=</parent>
   <doc-comment>

@@ -63,6 +63,7 @@
         <identifier>ExternalBase</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -87,6 +88,7 @@
   </source>
   <kind>function</kind>
   <id>r2FT8w6tN0syeB7bck2xfwAZX28=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
@@ -121,6 +123,7 @@
   </source>
   <kind>function</kind>
   <id>1DlxDyIhnIUKFbQOs4tQMjoMTgM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
   <doc-comment>

@@ -10,9 +10,9 @@
   <namespace-tranche>
     <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
     <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-    <functions>RjY3QWFLXBVMaEm9BnT1iH8A5JU=</functions>
-    <functions>lk5hZ+u3TPuYLv5UfIl4hOGGzjM=</functions>
-    <functions>fSdp0tRtLwcb+V3z/2Nwq8IdAAU=</functions>
+    <functions>/hucOiT8pcqRdkW15dk2G/D7xlU=</functions>
+    <functions>jE+MGE9EsNiR3aQKMfpwCmL6a/k=</functions>
+    <functions>/2uLQOeZ13kuKGEODAupW4G5i8o=</functions>
   </namespace-tranche>
 </namespace>
 <record>
@@ -78,6 +78,7 @@
   </source>
   <kind>overloads</kind>
   <id>+yf24/wS549V5ZqYWGboHExPRoY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -120,6 +121,7 @@
   </source>
   <kind>function</kind>
   <id>NsCpw4jurMmwsYzp5jE+NgG1eLE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -153,6 +155,7 @@
   </source>
   <kind>function</kind>
   <id>HkGsg4usg6CytwvmqPS1ZbH99t8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -210,6 +213,7 @@
   </source>
   <kind>overloads</kind>
   <id>TBURMVj9++7bBh2sg4BgMGmdMP4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -265,6 +269,7 @@
   </source>
   <kind>function</kind>
   <id>RRhK09XtJWQqLWvHlgZUv4deW1E=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -332,6 +337,7 @@
   </source>
   <kind>function</kind>
   <id>aOkWiNwfbs/JSs8z9GP/vTAwsbA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -402,6 +408,7 @@
   </source>
   <kind>overloads</kind>
   <id>DqUsxXtK/1rFeA0YoMBaT2oD5iw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -455,6 +462,7 @@
   </source>
   <kind>function</kind>
   <id>ycaQWu1bpL50KsLIdks09uNq0fw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -516,6 +524,7 @@
   </source>
   <kind>function</kind>
   <id>4jg29DjTLdYrWC4PLhyeE68ztvQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -588,6 +597,7 @@
   </source>
   <kind>overloads</kind>
   <id>nmsbNfdtYwc961rRlS7GTlnL3ik=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -630,6 +640,7 @@
   </source>
   <kind>function</kind>
   <id>JJtrUCsKraCMZOeI5dC8UzKCEmI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -678,6 +689,7 @@
   </source>
   <kind>function</kind>
   <id>x8gblCF18xnamr/xm7nsLiL0taU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -792,7 +804,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>RjY3QWFLXBVMaEm9BnT1iH8A5JU=</id>
+  <id>/hucOiT8pcqRdkW15dk2G/D7xlU=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>
@@ -929,7 +941,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>lk5hZ+u3TPuYLv5UfIl4hOGGzjM=</id>
+  <id>jE+MGE9EsNiR3aQKMfpwCmL6a/k=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>
@@ -1107,7 +1119,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>fSdp0tRtLwcb+V3z/2Nwq8IdAAU=</id>
+  <id>/2uLQOeZ13kuKGEODAupW4G5i8o=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>

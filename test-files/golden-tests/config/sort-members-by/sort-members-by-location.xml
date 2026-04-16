@@ -62,6 +62,7 @@
   </source>
   <kind>overloads</kind>
   <id>Cnsc4OfzqGbrnICr/PmPGh6bkZc=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -95,6 +96,7 @@
   </source>
   <kind>function</kind>
   <id>aQWtFVa4Xa+eceLXiLW74q44JRk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -151,6 +153,7 @@
   </source>
   <kind>function</kind>
   <id>WltomC+2IcmzMN0COGL0OWWmbZk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -183,6 +186,7 @@
   </source>
   <kind>function</kind>
   <id>HMG56OCQ5OpB2E9hu4bG3/hoOho=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -215,6 +219,7 @@
   </source>
   <kind>function</kind>
   <id>lBA1besl9J3wAZAcEn9C+K05hf4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <named>
@@ -239,6 +244,7 @@
   </source>
   <kind>function</kind>
   <id>gRx0djRTyQ5zuzBd9ujP7LLlWNg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <named>
@@ -263,6 +269,7 @@
   </source>
   <kind>function</kind>
   <id>zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -317,6 +324,7 @@
   </source>
   <kind>function</kind>
   <id>rjPdhFxUkaC43tWXi+kka78JQxI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -375,6 +383,7 @@
   </source>
   <kind>function</kind>
   <id>atwUGLD+QHVhH3x1+8qzINNxzMY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -454,6 +463,7 @@
   </source>
   <kind>function</kind>
   <id>CB0pXrzU8BKZ2LF0BSpclxIfgrs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>
@@ -533,6 +543,7 @@
   </source>
   <kind>function</kind>
   <id>6/NYLeQdPqWrbu5kHnTpE3u6Yg4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
   <doc-comment>

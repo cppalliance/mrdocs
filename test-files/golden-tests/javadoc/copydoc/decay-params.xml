@@ -9,7 +9,7 @@
   <extraction>regular</extraction>
   <namespace-tranche>
     <functions>mHoykrvnCPrloD8rIG6+dIga8dM=</functions>
-    <functions>IPZj2cmKd30EV/ztyuacllbdZcg=</functions>
+    <functions>pcjPlb94+CIWLp/GqtdwNH0kKCY=</functions>
   </namespace-tranche>
 </namespace>
 <function>
@@ -84,6 +84,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 <overloads>
   <name>foo</name>
@@ -111,7 +112,7 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>IPZj2cmKd30EV/ztyuacllbdZcg=</id>
+  <id>pcjPlb94+CIWLp/GqtdwNH0kKCY=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <doc-comment>
@@ -332,5 +333,6 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 </mrdocs>

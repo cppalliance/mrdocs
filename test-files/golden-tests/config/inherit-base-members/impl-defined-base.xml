@@ -68,6 +68,7 @@
   </source>
   <kind>function</kind>
   <id>0k4Wdt7n3RgOCeAZcrhJ7PruWP0=</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
   <parent>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</parent>
   <doc-comment>
@@ -116,6 +117,7 @@
         </name>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -141,6 +143,7 @@
   </source>
   <kind>function</kind>
   <id>o0JbdzeoEgGm/tWclYdgORU0Qyw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
@@ -174,6 +177,7 @@
   </source>
   <kind>function</kind>
   <id>LsIEKTwhFIkvPhRlDXC1p7T+GPU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <named>

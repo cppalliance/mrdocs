@@ -584,6 +584,7 @@
   </source>
   <kind>record</kind>
   <id>WRUY2j3O9l2Pd1qDymu1ksSw07c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <doc-comment>
@@ -626,6 +627,7 @@
   </source>
   <kind>function</kind>
   <id>/QkJ00FbaOOH1IQKxpOPbklxM0c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>WRUY2j3O9l2Pd1qDymu1ksSw07c=</parent>
   <doc-comment>
@@ -666,6 +668,7 @@
   </source>
   <kind>function</kind>
   <id>vL6CN4hW4T9Ah0GmoIu9Hx4iaPo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <doc-comment>

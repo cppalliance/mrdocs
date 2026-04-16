@@ -72,6 +72,7 @@
   </source>
   <kind>function</kind>
   <id>POYVSjIb9yYJwMJ0idlrE7qVb8s=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</parent>
   <doc-comment>
@@ -107,6 +108,7 @@
   </source>
   <kind>function</kind>
   <id>Jykv51AJ/2ySE5tqs91b5BH4PR0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</parent>
   <doc-comment>
@@ -179,6 +181,7 @@
         <identifier>base</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -203,6 +206,7 @@
   </source>
   <kind>function</kind>
   <id>9X0U5wi8aI04GBZwYXOMit+BPNs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
@@ -229,6 +233,7 @@
   </source>
   <kind>function</kind>
   <id>fJuJ+E/X6B4WdSCqYQX0onTsvhs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
@@ -303,6 +308,7 @@
         <identifier>base</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -328,6 +334,7 @@
   </source>
   <kind>function</kind>
   <id>w8SzajsNCB5ck0YpsMvHduC9g1E=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>VmATJ/H4380dpA0mtYd7uf/hcZA=</parent>
@@ -364,6 +371,7 @@
   </source>
   <kind>function</kind>
   <id>vt7li1a/kZQyCXxHvrdak2VBJQw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>VmATJ/H4380dpA0mtYd7uf/hcZA=</parent>

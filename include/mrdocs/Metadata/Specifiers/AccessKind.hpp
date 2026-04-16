@@ -14,7 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
-#include <string>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -41,25 +41,7 @@ enum class AccessKind
     Private,
 };
 
-/** Convert access specifier to its string form.
-*/
-MRDOCS_DECL
-dom::String
-toString(AccessKind kind) noexcept;
-
-/** Return the AccessKind as a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    AccessKind const kind)
-{
-    v = toString(kind);
-}
-
-
+MRDOCS_DESCRIBE_ENUM(AccessKind, None, Public, Protected, Private)
 
 } // mrdocs
 

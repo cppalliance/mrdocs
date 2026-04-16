@@ -57,6 +57,7 @@
   </source>
   <kind>overloads</kind>
   <id>4/AwllBtll8FuW0tFA3cMUpR8Sg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <func-class>normal</func-class>
@@ -81,6 +82,7 @@
   </source>
   <kind>function</kind>
   <id>umtiZdZUSDxw3juVm+S7M40tpXQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -104,6 +106,7 @@
   </source>
   <kind>function</kind>
   <id>ZlzGLjjc8rseQAYYNLgCZvhC28g=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -141,6 +144,7 @@
   </source>
   <kind>overloads</kind>
   <id>NcMo7ffWjuFftsr66BskEGEgREc=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <func-class>normal</func-class>
@@ -165,6 +169,7 @@
   </source>
   <kind>function</kind>
   <id>/FdiOdEzqaZeg+AJKJir7X+Te/U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -182,6 +187,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <function>
@@ -196,6 +202,7 @@
   </source>
   <kind>function</kind>
   <id>UNX9B8tS+5rPg6IDVPCp65KU9K8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -221,6 +228,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <overloads>
@@ -241,6 +249,7 @@
   </source>
   <kind>overloads</kind>
   <id>TMteh8/S1VX9JEEHtJWh5Th1uZg=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <func-class>normal</func-class>
@@ -265,6 +274,7 @@
   </source>
   <kind>function</kind>
   <id>o2jTMMUUPQBbGJOrh0qwurUTaTc=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -304,6 +314,7 @@
   </source>
   <kind>function</kind>
   <id>xtm3DYSrIA4dEog7ntDc3s6rKHs=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -357,6 +368,7 @@
   </source>
   <kind>overloads</kind>
   <id>SO7h8EG4J1fko32lzeE1EufNKsY=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <func-class>normal</func-class>
@@ -381,6 +393,7 @@
   </source>
   <kind>function</kind>
   <id>B3IB3WYPg106i0ziVCj3FHkRNAE=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -414,6 +427,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <function>
@@ -428,6 +442,7 @@
   </source>
   <kind>function</kind>
   <id>9QPd0C7ERvmPWPhi4ucPT1LXybM=</id>
+  <access>protected</access>
   <extraction>regular</extraction>
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <named>
@@ -469,6 +484,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 </mrdocs>

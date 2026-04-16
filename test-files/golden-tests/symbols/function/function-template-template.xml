@@ -52,5 +52,6 @@
     </template-tparam>
   </template>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
 </function>
 </mrdocs>

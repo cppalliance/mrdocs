@@ -61,6 +61,7 @@
   </source>
   <kind>overloads</kind>
   <id>LEZJddSqCEXJZ++1t8aAiluL0/E=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -94,6 +95,7 @@
   </source>
   <kind>function</kind>
   <id>x5T8zVxBVmg1ModTwgEAXcXWKDg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -127,6 +129,7 @@
   </source>
   <kind>function</kind>
   <id>uiH+ZSS+bYC5efGHgbdzlzXaV/o=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>

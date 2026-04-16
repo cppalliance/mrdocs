@@ -54,6 +54,7 @@
   </source>
   <kind>record</kind>
   <id>mHefDbLazHBw57+qAsFRfF7H528=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <key-kind>class</key-kind>
@@ -78,6 +79,7 @@
   </source>
   <kind>record</kind>
   <id>js4a2N+AFdpGVqiwDoP6CRe5qnw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <key-kind>class</key-kind>
@@ -110,6 +112,7 @@
   </source>
   <kind>overloads</kind>
   <id>MmuFIkmRn2CIRDHWFph0P7qxq6s=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -161,6 +164,7 @@
   </source>
   <kind>function</kind>
   <id>bHIVx85/epfX445qui1ES+eXxAE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -209,6 +213,7 @@
   </source>
   <kind>function</kind>
   <id>wdqJSwTs1MoRjomfd+M0f99GpL0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -258,6 +263,7 @@
   </source>
   <kind>function</kind>
   <id>nrGLN7FWjL9EkildFya4MufPTi8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -308,6 +314,7 @@
   </source>
   <kind>function</kind>
   <id>up/n+NenUj2VFy/iJnzCQL2/j3E=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -374,6 +381,7 @@
   </source>
   <kind>overloads</kind>
   <id>X2obKmJv3pBU/lvZ6h+2rPfxXow=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -420,6 +428,7 @@
   </source>
   <kind>function</kind>
   <id>UdqSOVfju1IlXGfdLPp3gwh4bQo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -463,6 +472,7 @@
   </source>
   <kind>function</kind>
   <id>51kEb0dyrnHV5CD4f0ndIecmNig=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -506,6 +516,7 @@
   </source>
   <kind>function</kind>
   <id>RPHQosc2m05tKyyFkpodac2CBUU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -551,6 +562,7 @@
   </source>
   <kind>function</kind>
   <id>eQB30nnNgju4ULQ5w/fxpDFoRmI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>
@@ -596,6 +608,7 @@
   </source>
   <kind>function</kind>
   <id>6KwEPWneBuFYEn0I8T3yYt0yN+k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <doc-comment>

@@ -1,7 +1,7 @@
 = Reference
 :mrdocs:
 
-[#abs-043]
+[#abs-0e]
 == abs
 
 Compute the absolute value of an integer&period;
@@ -16,10 +16,10 @@ Compute the absolute value of an integer&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-link:#abs-04b[abs](int x);
+link:#abs-04[abs](int x);
 ----
 
-[.small]#link:#abs-04b[_» more&period;&period;&period;_]#
+[.small]#link:#abs-04[_» more&period;&period;&period;_]#
 
 Compute the absolute value of an integer&period;
 
@@ -32,7 +32,7 @@ link:#abs-01[abs](long x);
 
 [.small]#link:#abs-01[_» more&period;&period;&period;_]#
 
-[#abs-04b]
+[#abs-04]
 == abs
 
 Compute the absolute value of an integer&period;

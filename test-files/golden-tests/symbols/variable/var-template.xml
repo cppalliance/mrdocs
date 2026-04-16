@@ -53,6 +53,7 @@
   </source>
   <kind>variable</kind>
   <id>kMNXdSEDYBD+T4RYbkq3ekR+jUU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
@@ -69,6 +70,7 @@
     </type-tparam>
   </template>
   <initializer>0</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -83,6 +85,7 @@
   </source>
   <kind>variable</kind>
   <id>Wtlw7VEK38lEEBeqNoDOjTkJE+U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
@@ -103,6 +106,7 @@
     </type-targ>
   </template>
   <initializer>-1</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>
@@ -117,6 +121,7 @@
   </source>
   <kind>variable</kind>
   <id>wvoZkG3eTMaiFAf971AFdvmHCDE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
@@ -144,6 +149,7 @@
     </type-targ>
   </template>
   <initializer>sizeof(T)</initializer>
+  <storage-class>static</storage-class>
   <is-inline>1</is-inline>
 </variable>
 <variable>

@@ -65,6 +65,7 @@
   </source>
   <kind>function</kind>
   <id>dmtEtFE6EVKE6hWuugP9vFuib6Y=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>O2UBDeG42PMrk1up8f8PGVFhIGk=</parent>
   <named>
@@ -113,6 +114,7 @@
   </source>
   <kind>function</kind>
   <id>QPLurkQ2BXODb4xY6bw1mlNtQ28=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</parent>
   <named>
@@ -122,6 +124,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <record>
@@ -161,6 +164,7 @@
   </source>
   <kind>function</kind>
   <id>p6A5dCCvCkASDE6pH4cJA/27/o8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</parent>
   <named>
@@ -209,6 +213,7 @@
   </source>
   <kind>function</kind>
   <id>G71rDzcAZPSKGoGGoDswQjD1JuA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>MBpLzhyCDdQBHul4AN2i2fR8fw0=</parent>
   <named>
@@ -257,6 +262,7 @@
   </source>
   <kind>function</kind>
   <id>rWLMsKBEv1FtDyk7Y7XNzcgmt68=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5s81XyCIgauM5viJN9KAwx2A6DU=</parent>
   <named>
@@ -306,6 +312,7 @@
   </source>
   <kind>function</kind>
   <id>A3MUO5+pwkURxw+SBeh1y0BKv7c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>SzwXGFnhX4HlHjHolU7XF/KEqDs=</parent>
   <named>
@@ -315,6 +322,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <constexpr>constexpr</constexpr>
   <is-record-method>1</is-record-method>
 </function>
 <record>
@@ -354,6 +362,7 @@
   </source>
   <kind>function</kind>
   <id>jlrEtbnYd1B6OAjYlF0gQ/oYu5w=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</parent>
   <named>
@@ -402,6 +411,7 @@
   </source>
   <kind>function</kind>
   <id>u+MePKsNF/sYSk6UpgNS65+USGU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>SX7tpa77UInh7a4AsMFjfiCtoLY=</parent>
   <named>
@@ -450,6 +460,7 @@
   </source>
   <kind>function</kind>
   <id>0hjrVGeDlQhdYkOu4shvWWPqNKU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</parent>
   <named>
@@ -499,6 +510,7 @@
   </source>
   <kind>function</kind>
   <id>+NevzZlqigIe1KSKS7eqq7pCd40=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>MXMa4TZZfdRkREzWSLpIF6ruUyw=</parent>
   <named>
@@ -548,6 +560,7 @@
   </source>
   <kind>function</kind>
   <id>I0S8eMgTnTkagm+IrM34MBiU4XI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</parent>
   <named>
@@ -597,6 +610,7 @@
   </source>
   <kind>function</kind>
   <id>5d5eSOvkYwBOnpbLcrkRuFvJGP4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>NyLraUP0R3lYeyTpHQYZpyZMstc=</parent>
   <named>
@@ -648,6 +662,7 @@
   </source>
   <kind>function</kind>
   <id>1Lz3aFupR+OsCqiPOaIFWqGuyCc=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</parent>
   <named>
@@ -699,6 +714,7 @@
   </source>
   <kind>function</kind>
   <id>wSFf8IAx5Twq6aD5T8XdnXGuhw8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</parent>
   <named>
@@ -748,6 +764,7 @@
   </source>
   <kind>function</kind>
   <id>OEX+TUed8FjXJPiI4c3+9WHzJl4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>75395VGvKeZbe1EhfJwktZuWLs0=</parent>
   <named>
@@ -757,6 +774,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <record>
@@ -782,6 +800,7 @@
         <identifier>T14</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -805,6 +824,7 @@
   </source>
   <kind>function</kind>
   <id>5+yfyWtDpz80IwKT3xugro18Ev0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>HL3/1NhKSels2G5ay7F0IYzlSLs=</parent>
   <named>
@@ -858,6 +878,7 @@
   </source>
   <kind>function</kind>
   <id>DBXd564vaQo7GHkh6XCC6HV78/I=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
   <named>
@@ -869,6 +890,7 @@
   <func-class>normal</func-class>
   <is-variadic>1</is-variadic>
   <has-trailing-return>1</has-trailing-return>
+  <constexpr>constexpr</constexpr>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
   <is-volatile>1</is-volatile>
@@ -885,6 +907,7 @@
   </source>
   <kind>function</kind>
   <id>YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
   <named>
@@ -913,6 +936,7 @@
   </source>
   <kind>function</kind>
   <id>II436kVwM/ZBYOf9q474VxRXK6c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
   <named>
@@ -923,6 +947,8 @@
   </named>
   <func-class>normal</func-class>
   <has-trailing-return>1</has-trailing-return>
+  <constexpr>constexpr</constexpr>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <record>
@@ -948,6 +974,7 @@
         <identifier>U</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -973,6 +1000,7 @@
   </source>
   <kind>function</kind>
   <id>DBXd564vaQo7GHkh6XCC6HV78/I=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
   <named>
@@ -984,6 +1012,7 @@
   <func-class>normal</func-class>
   <is-variadic>1</is-variadic>
   <has-trailing-return>1</has-trailing-return>
+  <constexpr>constexpr</constexpr>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
   <is-volatile>1</is-volatile>
@@ -1000,6 +1029,7 @@
   </source>
   <kind>function</kind>
   <id>/C2pxLlwRMKnr6YRbVnykUArzEI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
   <named>
@@ -1027,6 +1057,7 @@
   </source>
   <kind>function</kind>
   <id>II436kVwM/ZBYOf9q474VxRXK6c=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
   <named>
@@ -1037,6 +1068,8 @@
   </named>
   <func-class>normal</func-class>
   <has-trailing-return>1</has-trailing-return>
+  <constexpr>constexpr</constexpr>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 </mrdocs>

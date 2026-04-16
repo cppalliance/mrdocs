@@ -74,6 +74,7 @@
         <identifier>C0</identifier>
       </name>
     </named>
+    <access>private</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -107,6 +108,7 @@
         <identifier>C0</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -140,6 +142,7 @@
         <identifier>C0</identifier>
       </name>
     </named>
+    <access>protected</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -173,6 +176,7 @@
         <identifier>C0</identifier>
       </name>
     </named>
+    <access>private</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -206,6 +210,7 @@
         <identifier>C0</identifier>
       </name>
     </named>
+    <access>private</access>
     <is-virtual>1</is-virtual>
   </base>
   <derived>RoJyFLcF4tn+I7Xvlv0H+vBkIE4=</derived>
@@ -241,6 +246,7 @@
         <identifier>C1</identifier>
       </name>
     </named>
+    <access>private</access>
     <is-virtual>1</is-virtual>
   </base>
   <derived>RoJyFLcF4tn+I7Xvlv0H+vBkIE4=</derived>
@@ -276,6 +282,7 @@
         <identifier>C5</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <base>
     <named>
@@ -285,6 +292,7 @@
         <identifier>C6</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -374,6 +382,7 @@
         <identifier>S0</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <derived>OkKbIK8En3Y5FbOBQVeHnAsZ0aY=</derived>
   <record-interface>
@@ -408,6 +417,7 @@
         <identifier>S1</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <derived>OkKbIK8En3Y5FbOBQVeHnAsZ0aY=</derived>
   <record-interface>
@@ -442,6 +452,7 @@
         <identifier>S2</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <base>
     <named>
@@ -451,6 +462,7 @@
         <identifier>S3</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -484,6 +496,7 @@
         <identifier>S0</identifier>
       </name>
     </named>
+    <access>private</access>
   </base>
   <base>
     <named>
@@ -493,6 +506,7 @@
         <identifier>S1</identifier>
       </name>
     </named>
+    <access>protected</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -534,6 +548,7 @@
         <identifier>Ts</identifier>
       </name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>

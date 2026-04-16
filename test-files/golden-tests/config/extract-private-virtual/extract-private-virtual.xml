@@ -49,6 +49,7 @@
   </source>
   <kind>function</kind>
   <id>hLXvGC+nOrLQRH9lODKkgi/oUas=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <named>
@@ -74,6 +75,7 @@
   </source>
   <kind>function</kind>
   <id>IWP5ktgJAZgjufMQ6EE1eb6mm9g=</id>
+  <access>private</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <named>

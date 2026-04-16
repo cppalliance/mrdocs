@@ -81,6 +81,7 @@
   </source>
   <kind>overloads</kind>
   <id>90LmpTUv2mRF4c7fOK5KY82aqfg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -117,6 +118,7 @@
   </source>
   <kind>function</kind>
   <id>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -167,6 +169,7 @@
   </source>
   <kind>function</kind>
   <id>AXLv33SreHARdqogAHAgfhC3lFA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -217,6 +220,7 @@
   </source>
   <kind>function</kind>
   <id>F4U5PyaDoe8VKg41ubwK8aze9QE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -267,6 +271,7 @@
   </source>
   <kind>function</kind>
   <id>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -324,6 +329,7 @@
   </source>
   <kind>function</kind>
   <id>8QQvac4UAEj232hkdEvLmrs4iXo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -379,6 +385,7 @@
   </source>
   <kind>function</kind>
   <id>BQIWwUrUqUCA8gEZNkinmhykZiw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -427,6 +434,7 @@
   </source>
   <kind>function</kind>
   <id>RoN1eWo04RrcRuREabBhJcBRP9g=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -475,6 +483,7 @@
   </source>
   <kind>function</kind>
   <id>G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
