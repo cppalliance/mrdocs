@@ -24,6 +24,12 @@
 #include <type_traits>
 #include <vector>
 
+/** Schema writers for the MrDocs output formats.
+
+    Houses the JSON-Schema writer for the DOM (Handlebars) objects
+    and the RELAX NG Compact writer for the XML generator's output.
+    The writers are driven by reflection over described types.
+*/
 namespace mrdocs::schema {
 
 //------------------------------------------------
@@ -138,6 +144,12 @@ memberSchema()
 // those fields are NOT required in the schema.
 //------------------------------------------------
 
+/** True if `M` is always serialized, i.e. never skipped by
+    `shouldMapValue()` in `MapReflectedType.hpp`.
+
+    Members of such a type must appear in the JSON Schema's
+    `required` array.
+*/
 template <typename M>
 inline constexpr bool is_always_present_v =
     !mrdocs::detail::is_optional_v<M> &&

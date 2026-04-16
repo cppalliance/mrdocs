@@ -16,6 +16,7 @@
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Schemas/DomSchemaWriter.hpp>
 #include <mrdocs/Schemas/JsonEmitter.hpp>
+#include <mrdocs/Schemas/RncSchemaWriter.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>
@@ -166,6 +167,21 @@ mrdocs_main(int argc, char const** argv)
             return EXIT_FAILURE;
         }
         os << schema::toJson(schema::buildDomSchema());
+
+        // Write RNC schema (replaces hand-maintained mrdocs.rnc).
+        std::string rncPath = files::appendPath(dir, "mrdocs.rnc");
+        std::ofstream rncOs(rncPath,
+            std::ios_base::binary |
+            std::ios_base::out |
+            std::ios_base::trunc);
+        if (!rncOs.is_open())
+        {
+            llvm::errs() << "error: cannot open \""
+                         << rncPath << "\" for writing\n";
+            return EXIT_FAILURE;
+        }
+        rncOs << schema::buildRncSchema();
+
         return EXIT_SUCCESS;
     }
 

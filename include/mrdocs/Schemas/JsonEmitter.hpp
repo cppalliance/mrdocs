@@ -21,6 +21,14 @@ namespace mrdocs::schema {
 /** Serialize a dom::Value tree to formatted JSON.
 
     Handles null, boolean, integer, string, array, and object.
+
+    @param v The value to serialize.
+    @param indent Current indentation level in units of two spaces.
+    Callers should pass `0` for the top-level call; recursive calls
+    increment it for nested arrays and objects.
+    @return The JSON text. Arrays and objects are pretty-printed
+    with two-space indentation; scalars are emitted without
+    surrounding whitespace.
 */
 inline
 std::string
