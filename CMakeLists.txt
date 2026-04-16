@@ -589,12 +589,19 @@ if (MRDOCS_BUILD_TESTS)
             message(FATAL_ERROR "Java is needed to run xml-lint")
         endif()
 
+        # Generate mrdocs.rnc via the --schemas option, then
+        # convert it to a .rng for xmllint validation.
+        add_custom_command(
+            COMMAND mrdocs --schemas=${CMAKE_CURRENT_BINARY_DIR}
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rnc
+            DEPENDS mrdocs
+            COMMENT "Generating mrdocs.rnc from --schemas")
         add_custom_command(
             COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/util/trang.jar
-                ${CMAKE_CURRENT_SOURCE_DIR}/mrdocs.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
-            OUTPUT mrdocs.rng
-            DEPENDS mrdocs.rnc)
-        add_custom_target(mrdocs_rng ALL DEPENDS mrdocs.rng)
+                ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
+            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rnc)
+        add_custom_target(mrdocs_rng ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng)
 
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/golden-tests/*.xml)
         add_test(NAME xml-lint

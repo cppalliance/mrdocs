@@ -343,13 +343,22 @@ def get_dynamic_run_configs(
     # XML / RelaxNG tasks requiring Java and libxml2
     if java_path:
         configs.append({
+            "name": "Generate Schemas",
+            "group": "Codegen",
+            "script": os.path.join(options.build_dir, "bin", "mrdocs"),
+            "args": [
+                "--schemas=" + options.build_dir,
+            ],
+            "cwd": options.source_dir,
+        })
+        configs.append({
             "name": "Generate RelaxNG Schema",
             "group": "Codegen",
             "script": java_path,
             "args": [
                 "-jar",
                 os.path.join(options.source_dir, "util", "trang.jar"),
-                os.path.join(options.source_dir, "mrdocs.rnc"),
+                os.path.join(options.build_dir, "mrdocs.rnc"),
                 os.path.join(options.build_dir, "mrdocs.rng"),
             ],
             "cwd": options.source_dir,

@@ -785,7 +785,7 @@ class TestGenerateVSTaskConfigs(unittest.TestCase):
         )
         tasks_data = json.loads(mock_write.call_args_list[1][0][1])
         task = tasks_data["tasks"][0]
-        self.assertEqual(task["appliesTo"], "mrdocs.rnc")
+        self.assertEqual(task["appliesTo"], "*")
 
     @patch("src.configs.visual_studio.write_text")
     @patch("src.configs.visual_studio.load_json_file", return_value=None)
