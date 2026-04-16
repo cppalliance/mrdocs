@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,6 +14,8 @@
 #include <lib/Support/CliOverride.hpp>
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/Report.hpp>
+#include <mrdocs/Schemas/DomSchemaWriter.hpp>
+#include <mrdocs/Schemas/JsonEmitter.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>
@@ -21,6 +24,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/TargetParser/Host.h>
 #include <cstdlib>
+#include <fstream>
 #include <ranges>
 #include <vector>
 
@@ -139,6 +143,31 @@ mrdocs_main(int argc, char const** argv)
         return EXIT_FAILURE;
     }
 
+
+    // --schemas writes JSON Schema files and exits immediately,
+    // without needing a config file or source files.
+    if (toolArgs.schemas.getNumOccurrences() > 0)
+    {
+        std::string dir = toolArgs.schemas.getValue();
+        if (dir.empty())
+        {
+            dir = ".";
+        }
+        files::createDirectory(dir);
+        std::string path = files::appendPath(dir, "mrdocs-dom-schema.json");
+        std::ofstream os(path,
+            std::ios_base::binary |
+            std::ios_base::out |
+            std::ios_base::trunc);
+        if (!os.is_open())
+        {
+            llvm::errs() << "error: cannot open \""
+                         << path << "\" for writing\n";
+            return EXIT_FAILURE;
+        }
+        os << schema::toJson(schema::buildDomSchema());
+        return EXIT_SUCCESS;
+    }
 
     // Before `DoGenerateAction`, we use an error reporting level.
     // DoGenerateAction will set the level to whatever is specified in

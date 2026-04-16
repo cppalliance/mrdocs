@@ -32,14 +32,9 @@ namespace mrdocs::xml {
 
 namespace {
 
-template <typename T> struct is_optional : std::false_type {};
-template <typename T> struct is_optional<Optional<T>> : std::true_type {};
-
-template <typename T> struct is_vector : std::false_type {};
-template <typename T, typename A> struct is_vector<std::vector<T, A>> : std::true_type {};
-
-template <typename T> struct is_polymorphic : std::false_type {};
-template <typename T> struct is_polymorphic<Polymorphic<T>> : std::true_type {};
+using mrdocs::detail::is_optional;
+using mrdocs::detail::is_vector;
+using mrdocs::detail::is_polymorphic;
 
 std::string
 removeSuffix(std::string_view s, std::string_view suffix)

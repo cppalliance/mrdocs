@@ -49,10 +49,13 @@ isDefaultEnum(E value)
 // from Support/TypeTraits.hpp, which asks the related question
 // "is `T` some Polymorphic<...>?" without naming the inner type.
 template <typename T, typename U>
-inline constexpr bool is_polymorphic_for_v = false;
+struct is_polymorphic_for : std::false_type {};
 
 template <typename U>
-inline constexpr bool is_polymorphic_for_v<Polymorphic<U>, U> = true;
+struct is_polymorphic_for<Polymorphic<U>, U> : std::true_type {};
+
+template <typename T, typename U>
+inline constexpr bool is_polymorphic_for_v = is_polymorphic_for<T, U>::value;
 
 // Type trait: can we call merge(T&, T&&) via ADL?
 template <typename T, typename = void>

@@ -45,6 +45,8 @@ hideForeignOptions()
     {
         oursOptions.push_back(std::addressof(opt));
     });
+    // Options defined in ToolArgs (not generated PublicToolArgs).
+    oursOptions.push_back(&schemas);
     auto optionMap = llvm::cl::getRegisteredOptions();
     for(auto& opt : optionMap)
     {

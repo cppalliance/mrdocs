@@ -31,6 +31,19 @@ public:
     char const*                 usageText;
     llvm::cl::extrahelp         extraHelp;
 
+    /** Output directory for JSON Schema files.
+
+        When set, the tool writes schema files describing
+        the DOM and XML output formats, then exits without
+        extracting any source files.
+    */
+    llvm::cl::opt<std::string>  schemas{
+        "schemas",
+        llvm::cl::desc("Write JSON Schema files to <dir> (default: .) and exit"),
+        llvm::cl::value_desc("dir"),
+        llvm::cl::ValueOptional,
+        llvm::cl::cat(outputCat)};
+
     // Hide all options that don't belong to us
     void
     hideForeignOptions();
