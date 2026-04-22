@@ -1,0 +1,159 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#f1[`f1`] 
+| link:#f2[`f2`] 
+| link:#f3[`f3`] 
+| link:#f4[`f4`] 
+| link:#f5[`f5`] 
+| link:#f6[`f6`] 
+|===
+
+=== Variables
+
+[cols=1]
+|===
+| Name
+| link:#is_nothrow_move_assignable_v[`is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v`] 
+| link:#is_nothrow_move_constructible_v[`is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v`] 
+| link:#is_nothrow_swappable_v[`is&lowbar;nothrow&lowbar;swappable&lowbar;v`] 
+|===
+
+[#f1]
+== f1
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1() noexcept;
+----
+
+[#f2]
+== f2
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2() noexcept(true);
+----
+
+[#f3]
+== f3
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3() noexcept(false);
+----
+
+[#f4]
+== f4
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+void
+f4(T&) noexcept(is&lowbar;nothrow&lowbar;swappable&lowbar;v&lt;T&gt;);
+----
+
+[#f5]
+== f5
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+void
+f5(
+    T a,
+    T b) noexcept(noexcept(a &plus; b));
+----
+
+[#f6]
+== f6
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+void
+f6(
+    T&,
+    T&) noexcept(_see-below_);
+----
+
+=== `noexcept` Specification
+
+`noexcept` when `is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v&lt;T&gt; &amp;&amp; is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v&lt;T&gt;`.
+
+[#is_nothrow_move_assignable_v]
+== is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+inline constexpr bool is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v = false;
+----
+
+[#is_nothrow_move_constructible_v]
+== is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+inline constexpr bool is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v = false;
+----
+
+[#is_nothrow_swappable_v]
+== is&lowbar;nothrow&lowbar;swappable&lowbar;v
+
+=== Synopsis
+
+Declared in `&lt;noexcept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+inline constexpr bool is&lowbar;nothrow&lowbar;swappable&lowbar;v = false;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

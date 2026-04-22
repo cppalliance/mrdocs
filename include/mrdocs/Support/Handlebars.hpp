@@ -1313,6 +1313,18 @@ MRDOCS_DECL
 bool
 ne_fn(dom::Array const& args);
 
+/** "gt" helper function
+
+    The "gt" helper returns true if the first argument compares
+    greater than the second, via @ref dom::Value's `operator<=>`.
+
+    @param args The two values to compare.
+    @return True if the first value is greater than the second.
+*/
+MRDOCS_DECL
+bool
+gt_fn(dom::Array const& args);
+
 /** "not" helper function
 
     The "not" helper returns true if not all of the values are truthy.

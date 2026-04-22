@@ -3828,6 +3828,7 @@ registerAntoraHelpers(Handlebars& hbs)
     hbs.registerHelper("and", dom::makeVariadicInvocable(and_fn));
     hbs.registerHelper("detag", dom::makeInvocable(detag_fn));
     hbs.registerHelper("eq", dom::makeVariadicInvocable(eq_fn));
+    hbs.registerHelper("gt", dom::makeVariadicInvocable(gt_fn));
     hbs.registerHelper("increment", dom::makeInvocable(increment_fn));
     hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
     hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
@@ -3840,6 +3841,7 @@ registerLogicalHelpers(Handlebars& hbs)
 {
     hbs.registerHelper("and", dom::makeVariadicInvocable(and_fn));
     hbs.registerHelper("eq", dom::makeVariadicInvocable(eq_fn));
+    hbs.registerHelper("gt", dom::makeVariadicInvocable(gt_fn));
     hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
     hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
     hbs.registerHelper("or", dom::makeVariadicInvocable(or_fn));
@@ -3900,6 +3902,18 @@ eq_fn(dom::Array const& args) {
 bool
 ne_fn(dom::Array const& args) {
     return !eq_fn(args);
+}
+
+// Greater-than comparison via `operator<=>` on `dom::Value`.
+bool
+gt_fn(dom::Array const& args) {
+    // args carries trailing options, so we need at least two real
+    // arguments plus that one.
+    if (args.size() < 3)
+    {
+        return false;
+    }
+    return args.get(0) > args.get(1);
 }
 
 bool

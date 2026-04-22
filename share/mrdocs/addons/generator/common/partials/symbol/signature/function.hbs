@@ -31,7 +31,13 @@
 {{~#if isConst}} const{{/if~}}
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
-{{#if noexcept}} {{noexcept}}{{/if~}}
+{{~#if noexcept~}}
+    {{~! Specs with operands longer than 40 characters (full string > 50,
+         accounting for the "noexcept(" and ")" wrappers) are rendered as
+         `noexcept(see-below)` plus a dedicated specification section;
+         shorter ones are shown inline. ~}}
+    {{~#if (gt (len noexcept) 50)}} noexcept({{#>markup/em}}see-below{{/markup/em}}){{else}} {{noexcept}}{{/if~}}
+{{~/if~}}
 {{#if (eq funcClass "normal")}}{{>type/declarator-suffix returnType}}{{/if~}}
 {{#if requires}}
 
