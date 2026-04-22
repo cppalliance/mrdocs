@@ -1082,11 +1082,32 @@ jobs:
           limit: 150
           update-summary: ${{ runner.os == 'Linux' && 'true' || 'false' }}
 
+      # For non-tag publishes (the develop-release and master-release
+      # rolling releases), strip the project version out of the package
+      # filenames and insert the branch name instead. Subsequent pushes
+      # to the same branch then overwrite the existing GitHub-release
+      # assets cleanly; without this, a version bump would leave the
+      # previous version's files behind as stale assets. Tag releases
+      # keep their versioned filenames.
+      - name: Rebrand branch packages with the ref name
+        if: env.IS_PUBLISH_REF == 'true' && !startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euxo pipefail
+          cd packages
+          for f in MrDocs-*.*.*-*.*; do
+            [ -e "$f" ] || continue
+            new=$(echo "$f" | sed -E 's|^MrDocs-[0-9]+\.[0-9]+\.[0-9]+-|MrDocs-${{ github.ref_name }}-|')
+            mv -- "$f" "$new"
+          done
+
       - name: Create GitHub Package Release
         if: env.IS_PUBLISH_REF == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          files: packages/MrDocs-*.*.*-*.*
+          # After the rebrand step, branch packages have the form
+          # MrDocs-<ref>-<platform>.<ext> (no semver), so the glob
+          # is broader than the historical MrDocs-*.*.*-*.*.
+          files: packages/MrDocs-*-*.*
           fail_on_unmatched_files: true
           name: ${{ github.ref_name || github.ref }}
           tag_name: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
