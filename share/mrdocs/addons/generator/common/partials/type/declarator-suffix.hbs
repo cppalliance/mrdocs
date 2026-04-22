@@ -37,8 +37,10 @@
     {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
     {{! Refqualifiers as "&" or "&&" ~}}
     {{#if (eq refQualifier "lvalue")}} &{{else if (eq refQualifier "rvalue")}} &&{{/if~}}
-    {{! Exception spec as literal string ~}}
-    {{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
+    {{! noexcept specification with "see-below" placeholder for long operands ~}}
+    {{~#if exceptionSpec~}}
+        {{~#if (gt (len exceptionSpec) 50)}} noexcept({{#>markup/em}}see-below{{/markup/em}}){{else}} {{exceptionSpec}}{{/if~}}
+    {{~/if~}}
     {{! Declarator suffix of the return type ~}}
     {{~>type/declarator-suffix returnType link-components-impl=link-components-impl~}}
 {{/if}}
