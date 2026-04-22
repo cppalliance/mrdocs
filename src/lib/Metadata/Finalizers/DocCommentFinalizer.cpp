@@ -475,6 +475,15 @@ setAutoBrief(DocComment& doc) const
 
     for (auto it = doc.Document.begin(); it != doc.Document.end();)
     {
+        // A heading marks the start of a section (as of writing
+        // this, the only way to produce one is an @par with an
+        // explicit title). Anything that follows is the body of
+        // that section, not the symbol's introductory prose, so
+        // stop looking for a brief here. See issue #1162.
+        if ((*it)->Kind == doc::BlockKind::Heading)
+        {
+            return;
+        }
         if (auto& block = *it;
             block->Kind == doc::BlockKind::Paragraph)
         {

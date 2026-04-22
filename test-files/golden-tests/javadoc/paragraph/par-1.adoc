@@ -17,6 +17,10 @@
 | Brief
 | link:#f4[`f4`] 
 | Brief
+| link:#f5[`f5`] 
+| 
+| link:#f6[`f6`] 
+| A function&period;
 |===
 
 [#f1]
@@ -107,5 +111,41 @@ f4();
 ----
 void f4();
 ----
+[#f5]
+== f5
+
+=== Synopsis
+
+Declared in `&lt;par&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f5();
+----
+
+=== Custom par
+
+Paragraph 5
+
+[#f6]
+== f6
+
+A function&period;
+
+=== Synopsis
+
+Declared in `&lt;par&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f6();
+----
+
+=== Custom par
+
+Paragraph 6
+
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
