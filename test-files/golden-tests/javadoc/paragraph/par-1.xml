@@ -12,6 +12,8 @@
     <functions>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</functions>
     <functions>khwJweIqd5FuWAg8T+l+GEljQVc=</functions>
     <functions>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</functions>
+    <functions>RnDTZyCZuSqydMEPutN0yG4E/xg=</functions>
+    <functions>NEkWCLiknLGzCD6JnXuBTSAAne8=</functions>
   </namespace-tranche>
 </namespace>
 <function>
@@ -193,6 +195,93 @@
       <text>
         <kind>text</kind>
         <literal>Brief</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f5</name>
+  <source>
+    <location>
+      <short-path>par-1.cpp</short-path>
+      <source-path>par-1.cpp</source-path>
+      <line-number>52</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>RnDTZyCZuSqydMEPutN0yG4E/xg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Custom par</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Paragraph 5</literal>
+      </text>
+    </paragraph>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f6</name>
+  <source>
+    <location>
+      <short-path>par-1.cpp</short-path>
+      <source-path>par-1.cpp</source-path>
+      <line-number>61</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>NEkWCLiknLGzCD6JnXuBTSAAne8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Custom par</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Paragraph 6</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function.</literal>
       </text>
     </brief>
   </doc-comment>

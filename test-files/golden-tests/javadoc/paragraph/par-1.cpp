@@ -41,3 +41,21 @@ void f3();
     @endcode
  */
 void f4();
+
+// No front matter: the body of @par must not be promoted
+// to an auto-brief (issue #1162).
+/**
+
+    @par Custom par
+    Paragraph 5
+ */
+void f5();
+
+// Same shape as f5 but with explicit front matter: the front
+// matter becomes the brief, the @par section is preserved.
+/** A function.
+
+    @par Custom par
+    Paragraph 6
+ */
+void f6();
