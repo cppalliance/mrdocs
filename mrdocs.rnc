@@ -726,7 +726,7 @@ grammar
         element table-row
         {
             element is-header { Bool }?,
-            element cells { TableCell }*
+            TableCell*
         }
 
     TableBlock =

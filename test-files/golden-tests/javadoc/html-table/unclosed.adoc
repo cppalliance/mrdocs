@@ -1,0 +1,87 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#f1[`f1`] 
+| Function whose doc comment contains an unclosed table tag&period;
+| link:#f2[`f2`] 
+| Function whose doc comment contains an unclosed tr tag&period;
+| link:#f3[`f3`] 
+| Function whose doc comment contains an unclosed td tag&period;
+| link:#f4[`f4`] 
+| Function whose doc comment contains an unclosed thead tag&period;
+|===
+
+[#f1]
+== f1
+
+Function whose doc comment contains an unclosed table tag&period;
+
+=== Synopsis
+
+Declared in `&lt;unclosed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+=== Description
+
+The parser warns and skips the table&colon;
+
+[#f2]
+== f2
+
+Function whose doc comment contains an unclosed tr tag&period;
+
+=== Synopsis
+
+Declared in `&lt;unclosed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+[#f3]
+== f3
+
+Function whose doc comment contains an unclosed td tag&period;
+
+=== Synopsis
+
+Declared in `&lt;unclosed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+[#f4]
+== f4
+
+Function whose doc comment contains an unclosed thead tag&period;
+
+=== Synopsis
+
+Declared in `&lt;unclosed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f4();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

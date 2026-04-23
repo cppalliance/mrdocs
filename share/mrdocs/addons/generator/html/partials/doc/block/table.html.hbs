@@ -1,0 +1,5 @@
+<table>
+{{#each items}}<tr>
+{{#each cells}}{{#if ../is_header}}<th>{{> doc/inline-container }}</th>{{else}}<td>{{> doc/inline-container }}</td>{{/if}}
+{{/each}}</tr>
+{{/each}}</table>

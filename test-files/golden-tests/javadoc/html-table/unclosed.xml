@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
+    <functions>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</functions>
+    <functions>khwJweIqd5FuWAg8T+l+GEljQVc=</functions>
+    <functions>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>f1</name>
+  <source>
+    <location>
+      <short-path>unclosed.cpp</short-path>
+      <source-path>unclosed.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The parser warns and skips the table:</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function whose doc comment contains an unclosed table tag.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f2</name>
+  <source>
+    <location>
+      <short-path>unclosed.cpp</short-path>
+      <source-path>unclosed.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function whose doc comment contains an unclosed tr tag.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f3</name>
+  <source>
+    <location>
+      <short-path>unclosed.cpp</short-path>
+      <source-path>unclosed.cpp</source-path>
+      <line-number>19</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>khwJweIqd5FuWAg8T+l+GEljQVc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function whose doc comment contains an unclosed td tag.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>f4</name>
+  <source>
+    <location>
+      <short-path>unclosed.cpp</short-path>
+      <source-path>unclosed.cpp</source-path>
+      <line-number>25</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Function whose doc comment contains an unclosed thead tag.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

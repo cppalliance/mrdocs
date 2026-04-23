@@ -200,6 +200,16 @@ struct Cursor {
         children.assign(parent->child_begin(), parent->child_end());
     }
 
+    // Construct a cursor that walks a subrange of another cursor's
+    // siblings. Used to traverse the content between an HTML start
+    // and end tag without disturbing the outer cursor.
+    Cursor(Cursor const& src, std::size_t from, std::size_t to)
+    {
+        children.assign(
+            src.children.begin() + from,
+            src.children.begin() + to);
+    }
+
     bool
     done() const
     {
@@ -545,6 +555,395 @@ class DocCommentVisitor
         return res;
     }
 
+    // Small predicates on Clang comment children.
+    static bool
+    isStartTagNamed(
+        clang::comments::Comment const* c, llvm::StringRef name)
+    {
+        using namespace clang::comments;
+        return c->getCommentKind() == CommentKind::HTMLStartTagComment
+               && static_cast<HTMLStartTagComment const*>(c)->getTagName()
+                      == name;
+    }
+
+    static bool
+    isEndTagNamed(
+        clang::comments::Comment const* c, llvm::StringRef name)
+    {
+        using namespace clang::comments;
+        return c->getCommentKind() == CommentKind::HTMLEndTagComment
+               && static_cast<HTMLEndTagComment const*>(c)->getTagName()
+                      == name;
+    }
+
+    static bool
+    isNonWhitespaceText(clang::comments::Comment const* c)
+    {
+        using namespace clang::comments;
+        return c->getCommentKind() == CommentKind::TextComment
+               && !isWhitespace(
+                   static_cast<TextComment const*>(c)->getText());
+    }
+
+    // Emit a warning attached to the source location of `anchor`.
+    void
+    warnNear(
+        clang::comments::Comment const* anchor, std::string_view msg)
+    {
+        clang::PresumedLoc const loc
+            = sm_.getPresumedLoc(anchor->getBeginLoc());
+        report::warn(
+            "{} at {} ({})",
+            msg,
+            files::makePosixStyle(loc.getFilename()),
+            loc.getLine());
+    }
+
+    // Find the index of the end tag that matches the start tag at `cur.i`,
+    // handling nesting of tags with the same name. Returns
+    // `cur.children.size()` if no match is found.
+    static std::size_t
+    findMatchingEndTag(Cursor const& cur, llvm::StringRef tag)
+    {
+        std::size_t depth = 1;
+        for (std::size_t j = cur.i + 1; j < cur.children.size(); ++j)
+        {
+            clang::comments::Comment const* c = cur.children[j];
+            if (isStartTagNamed(c, tag))
+            {
+                ++depth;
+            }
+            else if (isEndTagNamed(c, tag) && --depth == 0)
+            {
+                return j;
+            }
+        }
+        return cur.children.size();
+    }
+
+    // --- <td>/<th> ---
+
+    doc::TableCell
+    collectCell(Cursor sub)
+    {
+        doc::TableCell cell;
+        BlockScope scope = enterScope(cell);
+        while (!sub.done())
+        {
+            visitNode(sub.cur(), sub);
+            sub.advance();
+        }
+        if (!cell.children.empty())
+        {
+            trim(cell);
+        }
+        return cell;
+    }
+
+    // On success, `cur.i` is the index of the end tag, so the outer
+    // advance moves past it.
+    Expected<doc::TableCell>
+    parseTableCell(Cursor& cur)
+    {
+        using namespace clang::comments;
+        HTMLStartTagComment const* start
+            = static_cast<HTMLStartTagComment const*>(cur.cur());
+        llvm::StringRef const tag = start->getTagName();
+        std::size_t const endIdx = findMatchingEndTag(cur, tag);
+        if (endIdx >= cur.children.size())
+        {
+            return Unexpected(Error(std::format(
+                "warning: HTML <{0}> tag not followed by </{0}>",
+                tag.str())));
+        }
+        doc::TableCell cell = collectCell(Cursor(cur, cur.i + 1, endIdx));
+        cur.i = endIdx;
+        return cell;
+    }
+
+    // --- <tr> ---
+
+    void
+    addRowCell(
+        Cursor& sub,
+        doc::TableRow& row,
+        bool& allHeader,
+        bool& anyCell,
+        clang::comments::HTMLStartTagComment const* s)
+    {
+        Expected<doc::TableCell> cellExp = parseTableCell(sub);
+        if (!cellExp)
+        {
+            warnNear(s, cellExp.error().message());
+            return;
+        }
+        row.Cells.push_back(std::move(*cellExp));
+        anyCell = true;
+        if (s->getTagName() != "th")
+        {
+            allHeader = false;
+        }
+    }
+
+    void
+    addRowTag(
+        Cursor& sub,
+        doc::TableRow& row,
+        bool& allHeader,
+        bool& anyCell,
+        clang::comments::HTMLStartTagComment const* s)
+    {
+        llvm::StringRef const tag = s->getTagName();
+        if (tag != "th" && tag != "td")
+        {
+            warnNear(s, std::format(
+                "warning: unexpected HTML <{}> inside <tr>",
+                tag.str()));
+            return;
+        }
+        addRowCell(sub, row, allHeader, anyCell, s);
+    }
+
+    void
+    addRowChild(
+        Cursor& sub,
+        doc::TableRow& row,
+        bool& allHeader,
+        bool& anyCell)
+    {
+        using namespace clang::comments;
+        Comment const* n = sub.cur();
+        if (n->getCommentKind() == CommentKind::HTMLStartTagComment)
+        {
+            addRowTag(
+                sub, row, allHeader, anyCell,
+                static_cast<HTMLStartTagComment const*>(n));
+        }
+        else if (isNonWhitespaceText(n))
+        {
+            warnNear(n, "warning: stray text inside <tr>");
+        }
+    }
+
+    doc::TableRow
+    collectRow(Cursor sub)
+    {
+        doc::TableRow row;
+        bool allHeader = true;
+        bool anyCell = false;
+        while (!sub.done())
+        {
+            addRowChild(sub, row, allHeader, anyCell);
+            sub.advance();
+        }
+        if (anyCell && allHeader)
+        {
+            row.is_header = true;
+        }
+        return row;
+    }
+
+    // On success, `cur.i` is the index of the end tag, so the outer
+    // advance moves past it.
+    Expected<doc::TableRow>
+    parseTableRow(Cursor& cur)
+    {
+        using namespace clang::comments;
+        HTMLStartTagComment const* start
+            = static_cast<HTMLStartTagComment const*>(cur.cur());
+        llvm::StringRef const tag = start->getTagName();
+        std::size_t const endIdx = findMatchingEndTag(cur, tag);
+        if (endIdx >= cur.children.size())
+        {
+            return Unexpected(Error(std::format(
+                "warning: HTML <{0}> tag not followed by </{0}>",
+                tag.str())));
+        }
+        doc::TableRow row = collectRow(Cursor(cur, cur.i + 1, endIdx));
+        cur.i = endIdx;
+        return row;
+    }
+
+    // --- <table> ---
+
+    void
+    addTableRow(
+        Cursor& sub,
+        doc::TableBlock& table,
+        clang::comments::HTMLStartTagComment const* s)
+    {
+        Expected<doc::TableRow> rowExp = parseTableRow(sub);
+        if (!rowExp)
+        {
+            warnNear(s, rowExp.error().message());
+            return;
+        }
+        // Skip rows whose cells all failed to parse: a row with
+        // no cells has no semantic content and only bloats output.
+        if (rowExp->Cells.empty())
+        {
+            return;
+        }
+        table.items.push_back(std::move(*rowExp));
+    }
+
+    // Walks an already-sub-ranged cursor collecting <tr> children of
+    // <thead>/<tbody>/<tfoot>, warning about anything else.
+    void
+    collectRowsFromGroup(Cursor sub, doc::TableBlock& table)
+    {
+        using namespace clang::comments;
+        while (!sub.done())
+        {
+            Comment const* n = sub.cur();
+            if (isStartTagNamed(n, "tr"))
+            {
+                addTableRow(
+                    sub, table,
+                    static_cast<HTMLStartTagComment const*>(n));
+            }
+            else if (isNonWhitespaceText(n))
+            {
+                warnNear(n, "warning: stray text inside <table>");
+            }
+            sub.advance();
+        }
+    }
+
+    void
+    addTableGroup(
+        Cursor& sub,
+        doc::TableBlock& table,
+        clang::comments::HTMLStartTagComment const* s)
+    {
+        llvm::StringRef const group = s->getTagName();
+        std::size_t const endIdx = findMatchingEndTag(sub, group);
+        if (endIdx >= sub.children.size())
+        {
+            warnNear(s, std::format(
+                "warning: HTML <{0}> tag not followed by </{0}>",
+                group.str()));
+            return;
+        }
+        collectRowsFromGroup(Cursor(sub, sub.i + 1, endIdx), table);
+        sub.i = endIdx;
+    }
+
+    void
+    addTableTag(
+        Cursor& sub,
+        doc::TableBlock& table,
+        clang::comments::HTMLStartTagComment const* s)
+    {
+        llvm::StringRef const inner = s->getTagName();
+        if (inner == "tr")
+        {
+            addTableRow(sub, table, s);
+            return;
+        }
+        if (inner == "thead" || inner == "tbody" || inner == "tfoot")
+        {
+            addTableGroup(sub, table, s);
+            return;
+        }
+        warnNear(s, std::format(
+            "warning: unexpected HTML <{}> inside <table>", inner.str()));
+    }
+
+    void
+    addTableChild(Cursor& sub, doc::TableBlock& table)
+    {
+        using namespace clang::comments;
+        Comment const* n = sub.cur();
+        if (n->getCommentKind() == CommentKind::HTMLStartTagComment)
+        {
+            addTableTag(
+                sub, table,
+                static_cast<HTMLStartTagComment const*>(n));
+        }
+        else if (isNonWhitespaceText(n))
+        {
+            warnNear(n, "warning: stray text inside <table>");
+        }
+    }
+
+    doc::TableBlock
+    collectTable(Cursor sub)
+    {
+        doc::TableBlock table;
+        while (!sub.done())
+        {
+            addTableChild(sub, table);
+            sub.advance();
+        }
+        return table;
+    }
+
+    // On success, `cur.i` is the index of the end tag, so the outer
+    // advance moves past it.
+    Expected<doc::TableBlock>
+    parseTable(Cursor& cur)
+    {
+        using namespace clang::comments;
+        HTMLStartTagComment const* start
+            = static_cast<HTMLStartTagComment const*>(cur.cur());
+        llvm::StringRef const tag = start->getTagName();
+        std::size_t const endIdx = findMatchingEndTag(cur, tag);
+        if (endIdx >= cur.children.size())
+        {
+            return Unexpected(Error(std::format(
+                "warning: HTML <{0}> tag not followed by </{0}>",
+                tag.str())));
+        }
+        doc::TableBlock table = collectTable(Cursor(cur, cur.i + 1, endIdx));
+        cur.i = endIdx;
+        return table;
+    }
+
+    // Flush any accumulated inlines into a `ParagraphBlock` and emplace
+    // it into the document, clearing the current inline container.
+    // Used before emplacing a block that interrupts the current
+    // paragraph (e.g. <table>).
+    void
+    flushCurrentParagraphAsBlock()
+    {
+        if (!curInlines_ || curInlines_->children.empty())
+        {
+            return;
+        }
+        doc::ParagraphBlock pending;
+        doc::InlineContainer& pendingInlines
+            = static_cast<doc::InlineContainer&>(pending);
+        pendingInlines.children = std::move(curInlines_->children);
+        curInlines_->children.clear();
+        trim(pendingInlines);
+        if (!pendingInlines.children.empty())
+        {
+            jd_.Document.emplace_back(std::move(pending));
+        }
+    }
+
+    void
+    visitHTMLTable(
+        clang::comments::HTMLStartTagComment const* C, Cursor& cur)
+    {
+        Expected<doc::TableBlock> tbExp = parseTable(cur);
+        if (!tbExp)
+        {
+            warnNear(C, tbExp.error().message());
+            return;
+        }
+        // A table with no rows (e.g., because every row's content
+        // failed to parse) carries no information. Drop it instead
+        // of emplacing an empty <table> into the document.
+        if (tbExp->items.empty())
+        {
+            return;
+        }
+        flushCurrentParagraphAsBlock();
+        jd_.Document.emplace_back(std::move(*tbExp));
+    }
+
     // Single-dispatch “node” entry that can use/modify the cursor
     void
     visitNode(clang::comments::Comment const* C, Cursor& cur)
@@ -646,6 +1045,14 @@ class DocCommentVisitor
                     C->getTagName().str(),
                     name.str())));
         };
+
+        // Container tags with nested HTML are handled separately;
+        // `parseHTMLStartSpan` can only gather pure text between start/end.
+        if (C->getTagName() == "table")
+        {
+            visitHTMLTable(C, cur);
+            return;
+        }
 
         auto compsExp = parseHTMLStartSpan(C, cur);
         if (!compsExp)
