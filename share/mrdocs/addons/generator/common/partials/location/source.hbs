@@ -12,7 +12,7 @@
 --}}
 Declared in {{#>markup/code~}}
     {{ str "<" }}{{#if (and @root.config.base-url dcl.shortPath dcl.sourcePath)~}}
-        {{#>markup/a href=(concat @root.config.base-url dcl.sourcePath '#L' dcl.line)}}{{dcl.shortPath}}{{/markup/a}}
+        {{#>markup/a href=(concat @root.config.base-url dcl.sourcePath '#L' dcl.lineNumber)}}{{dcl.shortPath}}{{/markup/a}}
     {{~else~}}
         {{dcl.shortPath}}
     {{~/if~}}{{ str ">" }}
