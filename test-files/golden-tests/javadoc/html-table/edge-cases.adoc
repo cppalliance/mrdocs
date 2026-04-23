@@ -1,0 +1,88 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#f1[`f1`] 
+| Function whose doc paragraph contains both prose and an inline table on the same paragraph (no blank line in between), so the table interrupts an in&hyphen;flight paragraph and the accumulated inlines are flushed before the table&period;
+| link:#f2[`f2`] 
+| Function whose doc contains a table nested inside a cell of an outer table&period; Exercises the depth tracking of the end&hyphen;tag matcher&period;
+| link:#f3[`f3`] 
+| Function whose doc contains empty cells&period;
+|===
+
+[#f1]
+== f1
+
+Function whose doc paragraph contains both prose and an inline table on the same paragraph (no blank line in between), so the table interrupts an in&hyphen;flight paragraph and the accumulated inlines are flushed before the table&period;
+
+=== Synopsis
+
+Declared in `&lt;edge&hyphen;cases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+=== Description
+
+Inline table follows&colon;
+
+|===
+| 1 | 2 
+|===
+[#f2]
+== f2
+
+Function whose doc contains a table nested inside a cell of an outer table&period; Exercises the depth tracking of the end&hyphen;tag matcher&period;
+
+=== Synopsis
+
+Declared in `&lt;edge&hyphen;cases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+=== Description
+
+|===
+| nested 
+|===
+|===
+|  | outer 
+|===
+[#f3]
+== f3
+
+Function whose doc contains empty cells&period;
+
+=== Synopsis
+
+Declared in `&lt;edge&hyphen;cases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+=== Description
+
+[%header]
+|===
+| Name |  
+| foo |  
+|===
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

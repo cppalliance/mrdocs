@@ -1,0 +1,4 @@
+{{#if items.[0].is_header}}[%header]
+{{/if}}|===
+{{#each items}}{{#each cells}}| {{> doc/inline-container }} {{/each}}
+{{/each}}|===
