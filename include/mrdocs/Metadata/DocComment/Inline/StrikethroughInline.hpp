@@ -42,6 +42,9 @@ struct StrikethroughInline final
     : InlineCommonBase<InlineKind::Strikethrough>
     , InlineContainer
 {
+    /** Inherit text container constructors.
+    */
+    using InlineContainer::InlineContainer;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

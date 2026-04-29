@@ -154,6 +154,10 @@ grammar
         | element code { ( Kind | Children | element literal { xsd:string } )* }
         | element strong { ( Kind | Children )* }
         | element emph { ( Kind | Children )* }
+        | element strikethrough { ( Kind | Children )* }
+        | element subscript { ( Kind | Children )* }
+        | element superscript { ( Kind | Children )* }
+        | element highlight { ( Kind | Children )* }
         | element link { ( Kind | Children | element href { xsd:string } )* }
         | element reference { ( Kind | element literal { xsd:string } | element id { Id } )* } )
 

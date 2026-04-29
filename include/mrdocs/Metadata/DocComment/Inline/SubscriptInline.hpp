@@ -32,6 +32,9 @@ struct SubscriptInline final
     : InlineCommonBase<InlineKind::Subscript>
     , InlineContainer
 {
+    /** Inherit text container constructors.
+    */
+    using InlineContainer::InlineContainer;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

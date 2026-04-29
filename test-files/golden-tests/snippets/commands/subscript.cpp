@@ -1,3 +1,3 @@
-/** Reads coefficient a~i~ from the polynomial.
+/** Reads coefficient a<sub>i</sub> from the polynomial.
  */
 double coefficient(unsigned i);
