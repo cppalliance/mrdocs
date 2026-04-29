@@ -1,0 +1,50 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#Task[`Task`] 
+|===
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#handshake[`handshake`] 
+|===
+
+[#Task]
+== Task
+
+=== Synopsis
+
+Declared in `&lt;empty&lowbar;template&lowbar;args&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T = int&gt;
+struct Task;
+----
+
+[#handshake]
+== handshake
+
+=== Synopsis
+
+Declared in `&lt;empty&lowbar;template&lowbar;args&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Task[Task&lt;&gt;]
+handshake();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
