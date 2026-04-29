@@ -33,6 +33,7 @@ npm --prefix util/danger run danger:ci     # run Danger in CI mode (requires Git
 - Scopes reflect the MrDocs tree: `source`, `tests`, `golden-tests`, `docs`, `ci`, `build`, `tooling`, `third-party`, `other`.
 - Conventional commit types allowed: `feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert`.
 - Non-test commit size notice triggers at 2000 lines of churn (tests and golden fixtures ignored) and is informational.
+- Feature PRs (`feat:` commits, `feat` PR title, or `feature` label) without any `docs/` change get a light warning. Opt out with the `no-docs-needed` label or a `[skip danger docs]` marker in the PR body.
 
 ## Updating rules
 

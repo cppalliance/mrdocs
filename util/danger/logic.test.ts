@@ -122,4 +122,85 @@ describe("starterChecks", () => {
 
         expect(warnings.some((message) => message.includes("Source changed"))).toBe(false);
     });
+
+    // Warns when a feat commit ships without any documentation update.
+    it("warns when a feat commit ships without docs", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: "Adds a shiny new generator option.\n\nTesting: ran golden tests locally.",
+            prTitle: "feat: shiny option",
+            labels: [],
+        };
+
+        const summary = summarizeScopes([
+            { filename: "src/lib/Gen/option.cpp", additions: 30, deletions: 1 },
+            { filename: "src/test/option.cpp", additions: 20, deletions: 0 },
+        ]);
+        const parsed = validateCommits([{ sha: "3", message: "feat: shiny option" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+
+        expect(warnings.some((message) => message.includes("does not update any documentation"))).toBe(true);
+    });
+
+    // Stays quiet when a feat commit also touches docs.
+    it("does not warn when a feat commit updates docs", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: "Adds a shiny new generator option.\n\nTesting: ran golden tests.",
+            prTitle: "feat: shiny option",
+            labels: [],
+        };
+
+        const summary = summarizeScopes([
+            { filename: "src/lib/Gen/option.cpp", additions: 30, deletions: 1 },
+            { filename: "src/test/option.cpp", additions: 20, deletions: 0 },
+            { filename: "docs/modules/ROOT/pages/options.adoc", additions: 12, deletions: 0 },
+        ]);
+        const parsed = validateCommits([{ sha: "4", message: "feat: shiny option" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+
+        expect(warnings.some((message) => message.includes("does not update any documentation"))).toBe(false);
+    });
+
+    // Honors explicit opt-out labels.
+    it("respects no-docs-needed label", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: "Adds an internal-only feature flag.\n\nTesting: covered by existing suites.",
+            prTitle: "feat: internal flag",
+            labels: ["no-docs-needed"],
+        };
+
+        const summary = summarizeScopes([
+            { filename: "src/lib/internal.cpp", additions: 5, deletions: 0 },
+            { filename: "src/test/internal.cpp", additions: 5, deletions: 0 },
+        ]);
+        const parsed = validateCommits([{ sha: "5", message: "feat: internal flag" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+
+        expect(warnings.some((message) => message.includes("does not update any documentation"))).toBe(false);
+    });
+
+    // Stays quiet for non-feature commits even without docs.
+    it("does not warn for fix commits without docs", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: "Fixes off-by-one.\n\nTesting: added a regression unit test.",
+            prTitle: "fix: off-by-one",
+            labels: [],
+        };
+
+        const summary = summarizeScopes([
+            { filename: "src/lib/loop.cpp", additions: 2, deletions: 2 },
+            { filename: "src/test/loop.cpp", additions: 8, deletions: 0 },
+        ]);
+        const parsed = validateCommits([{ sha: "6", message: "fix: off-by-one" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+
+        expect(warnings.some((message) => message.includes("does not update any documentation"))).toBe(false);
+    });
 });
