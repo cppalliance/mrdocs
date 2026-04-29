@@ -142,6 +142,8 @@ const scopeFormat = /^[a-z0-9._/-]+$/i;
 const typeSet = new Set(allowedTypes);
 const skipTestLabels = new Set(["no-tests-needed", "skip-tests", "tests-not-required"]);
 const skipTestMarkers = ["[skip danger tests]", "[danger skip tests]"];
+const skipDocsLabels = new Set(["no-docs-needed", "skip-docs", "docs-not-required"]);
+const skipDocsMarkers = ["[skip danger docs]", "[danger skip docs]"];
 const nonTestCommitLimit = 2000;
 
 /**
@@ -516,6 +518,21 @@ function hasSkipTests(prBody: string, labels: string[]): boolean {
 }
 
 /**
+ * Check for explicit signals to skip the feature-without-docs warning.
+ *
+ * @param prBody pull request body text.
+ * @param labels labels applied to the pull request.
+ * @returns true when skip markers or labels are present.
+ */
+function hasSkipDocs(prBody: string, labels: string[]): boolean {
+    if (labels.some((label) => skipDocsLabels.has(label))) {
+        return true;
+    }
+    const body = prBody.toLowerCase();
+    return skipDocsMarkers.some((marker) => body.includes(marker));
+}
+
+/**
  * Additional hygiene checks around PR description, test coverage signals, and coherence.
  *
  * @param input PR metadata and labels.
@@ -555,6 +572,19 @@ export function basicChecks(input: DangerInputs, scopes: ScopeReport, parsedComm
     ) {
         // === Source changes without tests/fixtures warnings ===
         warnings.push("Source changed but no tests or fixtures were updated.");
+    }
+
+    const featureSignal =
+        commitTypes.has("feat") ||
+        /^feat[(:]/i.test(input.prTitle || "") ||
+        input.labels.some((label) => /(^|[-_ ])feature([-_ ]|$)/i.test(label));
+
+    const skipDocs = hasSkipDocs(input.prBody || "", input.labels);
+    if (featureSignal && !skipDocs && scopes.totals.docs.files === 0) {
+        // === New feature without docs updates warnings ===
+        warnings.push(
+            "This PR looks like it adds a new feature but does not update any documentation. Please document the new functionality under `docs/`, or add a `no-docs-needed` label / `[skip danger docs]` marker if not applicable.",
+        );
     }
 
     const totalFiles = Object.values(scopes.totals).reduce((sum, scope) => sum + scope.files, 0);
