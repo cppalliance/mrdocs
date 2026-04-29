@@ -681,7 +681,9 @@
           "<sup>text</sup>"
         ],
         "partial": "commands/superscript.adoc",
-        "examples": [],
+        "examples": [
+          "commands/superscript"
+        ],
         "see_also": [
           "Subscript"
         ],
@@ -692,8 +694,7 @@
             "type": "Text",
             "description": "The text to raise as superscript."
           }
-        ],
-        "planned": true
+        ]
       },
       {
         "node_type": "SubscriptInline",
@@ -704,7 +705,9 @@
           "<sub>text</sub>"
         ],
         "partial": "commands/subscript.adoc",
-        "examples": [],
+        "examples": [
+          "commands/subscript"
+        ],
         "see_also": [
           "Superscript"
         ],
@@ -715,8 +718,7 @@
             "type": "Text",
             "description": "The text to lower as subscript."
           }
-        ],
-        "planned": true
+        ]
       }
     ],
     "math": [

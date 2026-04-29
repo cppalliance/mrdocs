@@ -11,6 +11,8 @@ MrDocs reads the usual Markdown spans, with Doxygen and HTML equivalents alongsi
 * xref:commands/reference.adoc#cmd-code-span[Code span]: `+`text`+`.
 * xref:commands/reference.adoc#cmd-strikethrough[Strikethrough]: `+~~text~~+`.
 * xref:commands/reference.adoc#cmd-highlight[Highlight]: `+==text==+`.
+* xref:commands/reference.adoc#cmd-subscript[Subscript]: `+~text~+` or `+<sub>text</sub>+`.
+* xref:commands/reference.adoc#cmd-superscript[Superscript]: `+^text^+` or `+<sup>text</sup>+`.
 
 .Text formatting
 [source,cpp]

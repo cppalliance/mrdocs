@@ -32,6 +32,9 @@ struct HighlightInline final
     : InlineCommonBase<InlineKind::Highlight>
     , InlineContainer
 {
+    /** Inherit text container constructors.
+    */
+    using InlineContainer::InlineContainer;
 };
 
 MRDOCS_DESCRIBE_STRUCT(

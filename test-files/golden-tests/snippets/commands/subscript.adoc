@@ -4,7 +4,7 @@
 [#coefficient]
 == coefficient
 
-Reads coefficient a&#126;i&#126; from the polynomial&period;
+Reads coefficient a~i~ from the polynomial&period;
 
 === Synopsis
 

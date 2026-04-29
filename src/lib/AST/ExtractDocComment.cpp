@@ -1119,6 +1119,36 @@ class DocCommentVisitor
                 C->hasTrailingNewline(),
                 ensureUTF8(std::move(comps.text)));
         }
+        else if (comps.tag == "strong")
+        {
+            emplaceInline<doc::StrongInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
+        }
+        else if (comps.tag == "mark")
+        {
+            emplaceInline<doc::HighlightInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
+        }
+        else if (comps.tag == "sub")
+        {
+            emplaceInline<doc::SubscriptInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
+        }
+        else if (comps.tag == "sup")
+        {
+            emplaceInline<doc::SuperscriptInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
+        }
+        else if (comps.tag == "del" || comps.tag == "s")
+        {
+            emplaceInline<doc::StrikethroughInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
+        }
         else
         {
             report::warn(

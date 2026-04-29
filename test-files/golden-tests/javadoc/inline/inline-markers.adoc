@@ -1,0 +1,38 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#f[`f`] 
+| Exercise the inline markup kinds (HTML and Markdown forms)&colon; subscript, superscript, highlight, strikethrough&period;
+|===
+
+[#f]
+== f
+
+Exercise the inline markup kinds (HTML and Markdown forms)&colon; subscript, superscript, highlight, strikethrough&period;
+
+=== Synopsis
+
+Declared in `&lt;inline&hyphen;markers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+=== Description
+
+HTML form (works in tight notation)&colon; H~2~O is water&semi; x^2^ is x squared&period; *Bold*, #highlighted#, [.line-through]#struck&hyphen;through#, and [.line-through]#also struck# text&period;
+
+Markdown form (requires whitespace flanks)&colon; Subscript&colon; ~i~ indicates an index&period; Superscript&colon; raise to the ^n^ power&period; Strong&colon; *bold*&period; Highlight&colon; #highlighted#&period; Strikethrough&colon; [.line-through]#struck&hyphen;through#&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,7 +4,7 @@
 [#power_of_two]
 == power&lowbar;of&lowbar;two
 
-Computes 2&circ;n&circ; in constant time&period;
+Computes 2^n^ in constant time&period;
 
 === Synopsis
 
