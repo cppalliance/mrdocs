@@ -24,6 +24,7 @@ INFO(Guide)
 INFO(NamespaceAlias)
 INFO(Using)
 INFO(Concept)
+INFO(Macro)
 
 #undef INFO
 

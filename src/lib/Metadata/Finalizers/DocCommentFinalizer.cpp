@@ -2096,8 +2096,14 @@ warnDocErrors()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
-        MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
-        warnParamErrors(dynamic_cast<FunctionSymbol const&>(*I));
+        if (I->isFunction())
+        {
+            warnParamErrors(dynamic_cast<FunctionSymbol const&>(*I));
+        }
+        else if (I->isMacro())
+        {
+            warnParamErrors(dynamic_cast<MacroSymbol const&>(*I));
+        }
     }
 }
 
@@ -2145,6 +2151,54 @@ warnParamErrors(FunctionSymbol const& I)
 
 void
 DocCommentFinalizer::
+warnParamErrors(MacroSymbol const& I)
+{
+    MRDOCS_CHECK_OR(I.doc);
+
+    auto docParamNames = getDocCommentParamNames(*I.doc);
+
+    // Check for duplicate doc parameters
+    std::ranges::sort(docParamNames);
+    auto [firstDup, lastUnique] = std::ranges::unique(docParamNames);
+    auto duplicateParamNames = std::ranges::subrange(firstDup, lastUnique);
+    auto [firstDupDup, _] = std::ranges::unique(duplicateParamNames);
+    for (auto const uniqueDuplicateParamNames = std::ranges::subrange(firstDup, firstDupDup);
+         std::string_view duplicateParamName: uniqueDuplicateParamNames)
+    {
+        this->warn(
+            *getPrimaryLocation(I),
+            "{}: Duplicate parameter documentation for '{}'",
+            corpus_.Corpus::qualifiedName(I),
+            duplicateParamName);
+    }
+    docParamNames.erase(lastUnique, docParamNames.end());
+
+    // Check for documented parameters that don't exist on the macro.
+    // For variadic macros, accept both `...` and `__VA_ARGS__` as valid
+    // names for the variadic argument list.
+    auto isMacroParam = [&](std::string_view const name)
+    {
+        if (std::ranges::find(I.Parameters, name) != I.Parameters.end())
+        {
+            return true;
+        }
+        return I.IsVariadic && (name == "..." || name == "__VA_ARGS__");
+    };
+    for (std::string_view docParamName: docParamNames)
+    {
+        if (!isMacroParam(docParamName))
+        {
+            this->warn(
+                *getPrimaryLocation(I),
+                "{}: Documented parameter '{}' does not exist",
+                corpus_.Corpus::qualifiedName(I),
+                docParamName);
+        }
+    }
+}
+
+void
+DocCommentFinalizer::
 warnNoParamDocs()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnNoParamdoc);
@@ -2152,9 +2206,15 @@ warnNoParamDocs()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
-        MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
-        warnNoParamDocs(dynamic_cast<FunctionSymbol const&>(*I));
+        if (I->isFunction())
+        {
+            warnNoParamDocs(dynamic_cast<FunctionSymbol const&>(*I));
+        }
+        else if (I->isMacro())
+        {
+            warnNoParamDocs(dynamic_cast<MacroSymbol const&>(*I));
+        }
     }
 }
 
@@ -2201,6 +2261,29 @@ warnNoParamDocs(FunctionSymbol const& I)
                 *getPrimaryLocation(I),
                 "{}: Missing documentation for return value",
                 corpus_.Corpus::qualifiedName(I));
+        }
+    }
+}
+
+void
+DocCommentFinalizer::
+warnNoParamDocs(MacroSymbol const& I)
+{
+    // Only the named parameters are required to be
+    // documented. The variadic argument list is optional;
+    // if the user does document it (as `@param ...` or
+    // `@param __VA_ARGS__`), the chosen name's validity
+    // is checked in `warnParamErrors`.
+    auto docParamNames = getDocCommentParamNames(*I.doc);
+    for (std::string_view paramName : I.Parameters)
+    {
+        if (std::ranges::find(docParamNames, paramName) == docParamNames.end())
+        {
+            this->warn(
+                *getPrimaryLocation(I),
+                "{}: Missing documentation for parameter '{}'",
+                corpus_.Corpus::qualifiedName(I),
+                paramName);
         }
     }
 }

@@ -28,7 +28,8 @@ HandleTranslationUnit(clang::ASTContext& Context)
         diags,
         compiler_,
         Context,
-        *sema_);
+        *sema_,
+        macroDefs_);
     visitor.build();
     ex_.report(std::move(visitor.results()), std::move(diags), std::move(visitor.undocumented()));
 }

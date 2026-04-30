@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+</namespace>
+<macro>
+  <name>EMBED_FUNC</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-embedded.cpp</shortPath>
+      <sourcePath>macros-embedded.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2dFYE4LwLyAkA3uA7Kd4gfZhuyLt</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A simple function-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The argument.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+  </parameters>
+  <source>#define EMBED_FUNC(x) (x)</source>
+</macro>
+<macro>
+  <name>EMBED_OBJECT</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-embedded.cpp</shortPath>
+      <sourcePath>macros-embedded.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>vdpMVAYZuWBsRhcnASK83Yx5S4F</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A simple object-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <source>#define EMBED_OBJECT 1</source>
+</macro>
+</mrdocs>

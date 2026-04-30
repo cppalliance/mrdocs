@@ -1,0 +1,2 @@
+multipage: true
+generator: [adoc, html]

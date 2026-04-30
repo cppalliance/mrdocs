@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+</namespace>
+<macro>
+  <name>DOC_THEN_BLANK</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>26</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2CjEHzyvJeernxCXkT7QGgKDP22D</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documentation for </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>DOC_THEN_BLANK</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>; one blank line separates this comment from the macro definition.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <source>#define DOC_THEN_BLANK 1</source>
+</macro>
+<macro>
+  <name>FIRST_THING_IN_FILE</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>taiRsNxDnEPbGDX6TUAdTGe8FsT</id>
+  <extraction>regular</extraction>
+  <source>#define FIRST_THING_IN_FILE 1</source>
+</macro>
+<macro>
+  <name>REDEFINED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>19</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2gZEKEXddibTYTDBviFnMfz3ri1H</id>
+  <extraction>regular</extraction>
+  <source>#define REDEFINED_MACRO 100</source>
+</macro>
+<macro>
+  <name>REDEFINED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2RxkLvemUQ3X8C4baVnh1hcpUDq1</id>
+  <extraction>regular</extraction>
+  <source>#define REDEFINED_MACRO 200</source>
+</macro>
+<macro>
+  <name>SAME_LINE</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>28</lineNumber>
+      <columnNumber>59</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3hM8jc31JWkocdaQKVddcEVJSd7F</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Doc-comment that ends on the macro&apos;s line.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <source>/** Doc-comment that ends on the macro&apos;s line. */ #define SAME_LINE 2</source>
+</macro>
+</mrdocs>

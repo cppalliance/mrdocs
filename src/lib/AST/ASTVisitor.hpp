@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -15,6 +16,7 @@
 #define MRDOCS_LIB_AST_ASTVISITOR_HPP
 
 #include <lib/AST/ClangHelpers.hpp>
+#include <lib/AST/MacroCollector.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/Support/ExecutionContext.hpp>
 #include <mrdocs/Metadata/Name.hpp>
@@ -24,6 +26,7 @@
 #include <clang/AST/ODRHash.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/SmallBitVector.h>
+#include <vector>
 
 namespace mrdocs {
 
@@ -74,6 +77,10 @@ class ASTVisitor
 
     // Semantic analysis
     clang::Sema& sema_;
+
+    // Macros captured by `MacroCollector` during preprocessing.
+    // Owned by `ASTAction`.
+    std::vector<MacroDefinition>& macroDefs_;
 
     // An unordered set of all extracted Info declarations
     SymbolSet info_;
@@ -282,13 +289,15 @@ public:
         @param compiler The compiler instance.
         @param context The AST context.
         @param sema The clang::Sema object.
+        @param macroDefs The macro definitions captured by MacroCollector.
     */
     ASTVisitor(
         ConfigImpl const& config,
         Diagnostics const& diags,
         clang::CompilerInstance& compiler,
         clang::ASTContext& context,
-        clang::Sema& sema) noexcept;
+        clang::Sema& sema,
+        std::vector<MacroDefinition>& macroDefs) noexcept;
 
     /** Build the metadata representation from the AST.
 
@@ -340,6 +349,23 @@ public:
     }
 
 private:
+    /*  Drain captured macro records into `info_`.
+
+        Each record becomes a `MacroSymbol` with
+        `Parent = SymbolID::invalid` (macros live at the corpus
+        root, not under any namespace).
+     */
+    void
+    addMacros();
+
+    /*  Apply the configured symbol-pattern filters to a macro
+        name and return the corresponding extraction mode.
+        `Dependency` means "filter out". Mirrors the pattern
+        precedence used for declarations.
+     */
+    ExtractionMode
+    macroNameMode(std::string_view name) const;
+
     // =================================================
     // AST Traversal
     // =================================================

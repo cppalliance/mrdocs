@@ -15,10 +15,12 @@
 #define MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <lib/AST/MacroCollector.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/Support/ExecutionContext.hpp>
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Tooling/Tooling.h>
+#include <vector>
 
 
 namespace mrdocs {
@@ -42,16 +44,19 @@ class ASTVisitorConsumer
     ConfigImpl const& config_;
     ExecutionContext& ex_;
     clang::CompilerInstance& compiler_;
+    std::vector<MacroDefinition>& macroDefs_;
     clang::Sema* sema_ = nullptr;
 
 public:
     ASTVisitorConsumer(
         ConfigImpl const& config,
         ExecutionContext& ex,
-        clang::CompilerInstance& compiler) noexcept
+        clang::CompilerInstance& compiler,
+        std::vector<MacroDefinition>& macroDefs) noexcept
         : config_(config)
         , ex_(ex)
         , compiler_(compiler)
+        , macroDefs_(macroDefs)
     {
     }
 

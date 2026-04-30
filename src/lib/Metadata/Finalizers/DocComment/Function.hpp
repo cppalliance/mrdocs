@@ -429,7 +429,8 @@ populateFunctionReturns(FunctionSymbol& I, CorpusImpl const& corpus)
 
     The doc parameter names can contain a single parameter or
     a list of parameters separated by commas. This function
-    returns a list of all parameter names in the doc.
+    returns a list of all parameter names in the doc. Empty
+    entries (e.g. from a malformed `@param a,`) are skipped.
  */
 llvm::SmallVector<std::string, 32>
 getDocCommentParamNames(DocComment const& doc)
@@ -443,7 +444,10 @@ getDocCommentParamNames(DocComment const& doc)
         {
             auto const trimmed =
                 trim(std::string_view(paramName.begin(), paramName.end()));
-            result.emplace_back(trimmed);
+            if (!trimmed.empty())
+            {
+                result.emplace_back(trimmed);
+            }
         }
     }
     return result;

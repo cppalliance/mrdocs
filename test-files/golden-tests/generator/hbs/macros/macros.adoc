@@ -1,0 +1,82 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+[#macros]
+== Macros
+
+[#EXAMPLE_ABI_VERSION]
+== EXAMPLE&lowbar;ABI&lowbar;VERSION
+
+The library&apos;s ABI version&period;
+
+=== Synopsis
+
+Declared in `&lt;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&num;define EXAMPLE&lowbar;ABI&lowbar;VERSION 3
+----
+
+[#EXAMPLE_CLAMP]
+== EXAMPLE&lowbar;CLAMP
+
+Clamp `x` to the closed range &lsqb;`lo`, `hi`&rsqb;&period;
+
+=== Synopsis
+
+Declared in `&lt;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&num;define EXAMPLE&lowbar;CLAMP(x, lo, hi) ((x) &lt; (lo) ? (lo) &colon; ((x) &gt; (hi) ? (hi) &colon; (x)))
+----
+
+=== Return Value
+
+`x` clamped to the range&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value to clamp&period;
+| *lo*
+| The lower bound&period;
+| *hi*
+| The upper bound&period;
+|===
+
+[#EXAMPLE_LOG]
+== EXAMPLE&lowbar;LOG
+
+Log a formatted message&period;
+
+=== Synopsis
+
+Declared in `&lt;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&num;define EXAMPLE&lowbar;LOG(fmt, &period;&period;&period;) &colon;&colon;example&colon;&colon;log&lowbar;impl((fmt), &lowbar;&lowbar;VA&lowbar;ARGS&lowbar;&lowbar;)
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *fmt*
+| A `printf`&hyphen;style format string&period;
+| *&period;&period;&period;*
+| Arguments referenced by `fmt`&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

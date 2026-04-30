@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+</namespace>
+<macro>
+  <name>MHG_LIMIT</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-header-guard.hpp</shortPath>
+      <sourcePath>macros-header-guard.hpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>1gwTwMaiDbHBadfKwUXwHkduac7</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The maximum supported value.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <source>#define MHG_LIMIT 256</source>
+</macro>
+</mrdocs>

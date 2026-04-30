@@ -456,7 +456,10 @@ loadLayoutTemplate(
         loaded = true;
     }
     if (!loaded)
-        formatError("Template {} not found in addons search path", filename).Throw();
+    {
+        return Unexpected(formatError(
+            "Template {} not found in addons search path", filename));
+    }
     return {};
 }
 
@@ -498,6 +501,17 @@ Builder(
         exp.error().Throw();
     if (auto exp = loadLayoutTemplate(templates_, layoutDirs, std::format("wrapper.{}.hbs", domCorpus.fileExtension)); !exp)
         exp.error().Throw();
+    // The macros-index layout is only used when the corpus has
+    // macros, and not every addon directory bundles it (some
+    // tests carry a minimal layout subset). Load it best-effort
+    // and let `renderMacrosIndexPage` fail if it's actually
+    // needed but missing.
+    (void)loadLayoutTemplate(templates_, layoutDirs,
+        std::format("macros-index.{}.hbs", domCorpus.fileExtension));
+    // The single-page macros heading is likewise best-effort; it is
+    // rendered only for a single-page corpus that has macros.
+    (void)loadLayoutTemplate(templates_, layoutDirs,
+        std::format("macros-section-heading.{}.hbs", domCorpus.fileExtension));
 }
 
 //------------------------------------------------
@@ -562,6 +576,27 @@ createContext(Symbol const& I)
     // settings, e.g. lookup config.generator-options.<generatorId>.
     ctx.set("generatorId", domCorpus.fileExtension);
     ctx.set("generatorConfig", generatorConfig(domCorpus));
+
+    // Macros live at the corpus root, not under any namespace,
+    // so the namespace template can't reach them through
+    // `symbol.members`. Expose them at `@root.corpusMacros` so
+    // the global-namespace page can link to them. Only set the
+    // field when there is at least one macro: MrDocs's
+    // Handlebars treats an empty array as truthy, which would
+    // otherwise inject the "See also" hint on every page.
+    std::vector<MacroSymbol const*> const macroList =
+        domCorpus.getCorpus().macros();
+    if (!macroList.empty())
+    {
+        dom::Array macros;
+        for (MacroSymbol const* m : macroList)
+        {
+            macros.emplace_back(domCorpus.construct(*m));
+        }
+        ctx.set("corpusMacros", macros);
+        ctx.set("corpusMacrosUrl",
+            std::format("/macros.{}", domCorpus.fileExtension));
+    }
     return ctx;
 }
 
@@ -641,6 +676,71 @@ Builder::
 wrapperTemplateFile() const
 {
     return std::format("wrapper.{}.hbs", domCorpus.fileExtension);
+}
+
+Expected<void>
+Builder::
+renderMacrosIndexPage(std::ostream& os)
+{
+    // Build a context that mirrors what `createContext(Symbol)`
+    // would produce, but with a synthesized `symbol` standing in
+    // for the missing C++ scope: name "Macros", no parent, no
+    // anchor target. The wrapper template walks
+    // `symbol/qualified-name-title` for the page heading, which
+    // for this stub falls through to `symbol/name-text` and just
+    // emits "Macros".
+    dom::Object ctx;
+
+    dom::Object page;
+    page.set("stylesheets", domCorpus.stylesheets);
+    page.set("inlineStyles", domCorpus.inlineStyles);
+    page.set("inlineScripts", domCorpus.inlineScripts);
+    page.set("hasDefaultStyles", domCorpus.hasDefaultStyles);
+    page.set("relfileprefix", std::string{});
+    ctx.set("page", page);
+
+    dom::Object stub;
+    stub.set("name", std::string("Macros"));
+    stub.set("kind", std::string{});
+    stub.set("anchor", std::string("macros"));
+    // `relativize` uses `@root.symbol.url` as the source path
+    // when computing relative hrefs; without it, links in the
+    // macros table render as absolute (e.g. `/MY_INC.html`),
+    // which breaks file:// browsing and any sub-path hosting.
+    stub.set("url", std::format("/macros.{}", domCorpus.fileExtension));
+    ctx.set("symbol", stub);
+    ctx.set("config", domCorpus->config.object());
+
+    dom::Array macros;
+    for (MacroSymbol const* m : domCorpus.getCorpus().macros())
+    {
+        macros.emplace_back(domCorpus.construct(*m));
+    }
+    ctx.set("corpusMacros", macros);
+
+    std::string const macrosTemplate =
+        std::format("macros-index.{}.hbs", domCorpus.fileExtension);
+    dom::Object const wrapperCtx = createFrame(ctx);
+    wrapperCtx.set("contents", dom::makeInvocable(
+        [this, macrosTemplate, ctx, &os](
+            dom::Value const&) -> Expected<dom::Value>
+        {
+            MRDOCS_TRY(callTemplate(os, macrosTemplate, ctx));
+            return {};
+        }));
+    return callTemplate(os, wrapperTemplateFile(), wrapperCtx);
+}
+
+Expected<void>
+Builder::
+renderMacrosSectionHeading(std::ostream& os)
+{
+    dom::Object ctx;
+    ctx.set("config", domCorpus->config.object());
+    return callTemplate(
+        os,
+        std::format("macros-section-heading.{}.hbs", domCorpus.fileExtension),
+        ctx);
 }
 
 

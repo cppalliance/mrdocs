@@ -155,6 +155,13 @@ XMLWriter::build()
         << "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
            "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
     (*this)(corpus_.globalNamespace());
+    // Macros are corpus-level: they are not in any C++ scope,
+    // so they appear as siblings of the global namespace rather
+    // than under it.
+    for (MacroSymbol const* m : corpus_.macros())
+    {
+        (*this)(*m);
+    }
     os_ << "</mrdocs>\n";
     return {};
 }

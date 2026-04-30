@@ -313,10 +313,16 @@ private:
     warnParamErrors(FunctionSymbol const& I);
 
     void
+    warnParamErrors(MacroSymbol const& I);
+
+    void
     warnNoParamDocs();
 
     void
     warnNoParamDocs(FunctionSymbol const& I);
+
+    void
+    warnNoParamDocs(MacroSymbol const& I);
 
     void
     warnUndocEnumValues();

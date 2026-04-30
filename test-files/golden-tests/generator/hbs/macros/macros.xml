@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+</namespace>
+<macro>
+  <name>EXAMPLE_ABI_VERSION</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>BXjLH3FoLuneZMZEsmHVVLE95m2</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The library&apos;s ABI version.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <source>#define EXAMPLE_ABI_VERSION 3</source>
+</macro>
+<macro>
+  <name>EXAMPLE_CLAMP</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>4QC1G22zW8fuoswW2heMXiU3sKXW</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Clamp </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>x</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> to the closed range [</literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>lo</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>, </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>hi</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>].</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>x</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> clamped to the range.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to clamp.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The lower bound.</literal>
+          </text>
+        </children>
+        <name>lo</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The upper bound.</literal>
+          </text>
+        </children>
+        <name>hi</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+    <string>lo</string>
+    <string>hi</string>
+  </parameters>
+  <source>#define EXAMPLE_CLAMP(x, lo, hi) ((x) &lt; (lo) ? (lo) : ((x) &gt; (hi) ? (hi) : (x)))</source>
+</macro>
+<macro>
+  <name>EXAMPLE_LOG</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>22</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3TgUu4akaEHtmpZHsYDRxsyAgVni</id>
+  <extraction>regular</extraction>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Log a formatted message.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>printf</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal>-style format string.</literal>
+          </text>
+        </children>
+        <name>fmt</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Arguments referenced by </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>fmt</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+        <name>...</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>fmt</string>
+  </parameters>
+  <isVariadic/>
+  <source>#define EXAMPLE_LOG(fmt, ...) ::example::log_impl((fmt), __VA_ARGS__)</source>
+</macro>
+</mrdocs>

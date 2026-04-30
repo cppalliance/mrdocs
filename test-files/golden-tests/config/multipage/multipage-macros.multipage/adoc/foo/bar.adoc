@@ -1,0 +1,19 @@
+[#foo-bar]
+= xref:foo.adoc[foo]::bar
+:relfileprefix: ../
+:mrdocs:
+
+A function in a namespace&period;
+
+== Synopsis
+
+Declared in `&lt;multipage&hyphen;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+bar();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

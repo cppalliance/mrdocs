@@ -7,16 +7,20 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include <lib/AST/ASTAction.hpp>
 #include <lib/AST/ASTVisitorConsumer.hpp>
+#include <lib/AST/MacroCollector.hpp>
 #include <lib/AST/MrDocsFileSystem.hpp>
 #include <clang/Frontend/CompilerInstance.h>
+#include <clang/Lex/Preprocessor.h>
 #include <clang/Lex/PreprocessorOptions.h>
 #include <clang/Parse/ParseAST.h>
+#include <memory>
 
 
 namespace mrdocs {
@@ -30,6 +34,10 @@ ExecuteAction()
     {
         return;
     }
+
+    CI.getPreprocessor().addPPCallbacks(
+        std::make_unique<MacroCollector>(
+            macroDefs_, CI.getPreprocessor()));
 
     // Ensure comments in system headers are retained.
     // We may want them if, e.g., a declaration was extracted
@@ -96,7 +104,7 @@ CreateASTConsumer(
     llvm::StringRef)
 {
     return std::make_unique<ASTVisitorConsumer>(
-        config_, ex_, Compiler);
+        config_, ex_, Compiler, macroDefs_);
 }
 
 } // mrdocs

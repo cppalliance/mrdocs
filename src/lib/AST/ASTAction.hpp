@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -15,10 +16,12 @@
 #define MRDOCS_LIB_AST_ASTACTION_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <lib/AST/MacroCollector.hpp>
 #include <lib/AST/MissingSymbolSink.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/Support/ExecutionContext.hpp>
 #include <clang/Tooling/Tooling.h>
+#include <vector>
 
 
 namespace mrdocs {
@@ -43,6 +46,7 @@ class ASTAction
     ExecutionContext& ex_;
     ConfigImpl const& config_;
     MissingSymbolSink* missingSink_ = nullptr;
+    std::vector<MacroDefinition> macroDefs_;
 
 public:
     ASTAction(
