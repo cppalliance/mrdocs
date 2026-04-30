@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+</div><!-- /symbol -->
+<h2 id="macros">Macros</h2>
+
+<div class="symbol">
+<div class="header">
+<h2 id="EXAMPLE_ABI_VERSION">EXAMPLE_ABI_VERSION</h2>
+<div class="brief">
+<p>The library&#x27;s ABI version.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;macros.cpp&gt;</code></p>
+<pre><code class="source-code cpp">#define EXAMPLE_ABI_VERSION 3</code></pre>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="EXAMPLE_CLAMP">EXAMPLE_CLAMP</h2>
+<div class="brief">
+<p>Clamp <code>x</code> to the closed range [<code>lo</code>, <code>hi</code>].</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;macros.cpp&gt;</code></p>
+<pre><code class="source-code cpp">#define EXAMPLE_CLAMP(x, lo, hi) ((x) &lt; (lo) ? (lo) : ((x) &gt; (hi) ? (hi) : (x)))</code></pre>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>x</code> clamped to the range.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>x</strong></td><td>The value to clamp.</td></tr>
+<tr><td><strong>lo</strong></td><td>The lower bound.</td></tr>
+<tr><td><strong>hi</strong></td><td>The upper bound.</td></tr>
+</tbody>
+</table>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="EXAMPLE_LOG">EXAMPLE_LOG</h2>
+<div class="brief">
+<p>Log a formatted message.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;macros.cpp&gt;</code></p>
+<pre><code class="source-code cpp">#define EXAMPLE_LOG(fmt, ...) ::example::log_impl((fmt), __VA_ARGS__)</code></pre>
+</div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>fmt</strong></td><td>A <code>printf</code>-style format string.</td></tr>
+<tr><td><strong>...</strong></td><td>Arguments referenced by <code>fmt</code>.</td></tr>
+</tbody>
+</table>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

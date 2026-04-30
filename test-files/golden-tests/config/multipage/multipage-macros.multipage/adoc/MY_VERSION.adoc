@@ -1,0 +1,19 @@
+[#MY_VERSION]
+= MY&lowbar;VERSION
+:mrdocs:
+
+Object&hyphen;like macro&period;
+
+== Synopsis
+
+Declared in `&lt;multipage&hyphen;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&num;define MY&lowbar;VERSION 1
+----
+
+See also: xref:macros.adoc[Macros]
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

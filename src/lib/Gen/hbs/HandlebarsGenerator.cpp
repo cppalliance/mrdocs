@@ -183,9 +183,45 @@ build(Corpus const& corpus) const
     MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(*this, domCorpus));
     MultiPageVisitor visitor(ex, outputPath, corpus);
     visitor(corpus.globalNamespace());
+
+    for (MacroSymbol const* m : corpus.macros())
+    {
+        visitor(*m);
+    }
+
     auto errors = ex.wait();
     MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
     report::info("Generated {} pages", visitor.count());
+
+    // Render the corpus-level Macros index page (multi-page
+    // mode only). Macros aren't members of any C++ scope, so
+    // they get their own page rather than being listed under
+    // the global namespace.
+    if (!corpus.macros().empty())
+    {
+        std::string const path = files::appendPath(
+            outputPath, std::format("macros.{}", fileExtension()));
+        std::ofstream os(path,
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc);
+        if (!os.is_open())
+        {
+            return Unexpected(formatError(
+                R"(std::ofstream("{}") failed)", path));
+        }
+        ex.async([&os](Builder& builder)
+        {
+            if (auto r = builder.renderMacrosIndexPage(os); !r)
+            {
+                r.error().Throw();
+            }
+        });
+        if (auto extraErrors = ex.wait(); !extraErrors.empty())
+        {
+            return Unexpected(extraErrors);
+        }
+    }
 
     MRDOCS_TRY(copyStylesheets(corpus.config, outputPath));
     MRDOCS_TRY(writeTagfile(outputPath));
@@ -269,9 +305,27 @@ renderSinglePage(
     // Embedded mode
     if (corpus.config->embedded)
     {
+        std::vector<MacroSymbol const*> const macros = corpus.macros();
+        std::string macrosHeading;
+        if (!macros.empty())
+        {
+            Builder headingBuilder(domCorpus, createEscapeFn(*this));
+            std::ostringstream headingOs;
+            MRDOCS_TRY(headingBuilder.renderMacrosSectionHeading(headingOs));
+            macrosHeading = headingOs.str();
+        }
+
         // Visit the corpus
         SinglePageVisitor visitor(ex, corpus, os);
         visitor(corpus.globalNamespace());
+        if (!macros.empty())
+        {
+            visitor.writeText(std::move(macrosHeading));
+        }
+        for (MacroSymbol const* m : macros)
+        {
+            visitor(*m);
+        }
 
         // Wait for all executors to finish and check errors
         auto errors = ex.wait();
@@ -282,10 +336,26 @@ renderSinglePage(
 
     // Wrapped mode
     Builder inlineBuilder(domCorpus, createEscapeFn(*this));
+    std::vector<MacroSymbol const*> const macros = corpus.macros();
+    std::string macrosHeading;
+    if (!macros.empty())
+    {
+        std::ostringstream headingOs;
+        MRDOCS_TRY(inlineBuilder.renderMacrosSectionHeading(headingOs));
+        macrosHeading = headingOs.str();
+    }
     return inlineBuilder.renderWrapped(os, [&]() -> Expected<void> {
         // This helper will write contents directly to ostream
         SinglePageVisitor visitor(ex, corpus, os);
         visitor(corpus.globalNamespace());
+        if (!macros.empty())
+        {
+            visitor.writeText(macrosHeading);
+        }
+        for (MacroSymbol const* m : macros)
+        {
+            visitor(*m);
+        }
 
         // Wait for all executors to finish and check errors
         auto errors = ex.wait();

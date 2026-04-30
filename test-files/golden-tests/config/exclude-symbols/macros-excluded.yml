@@ -1,0 +1,2 @@
+exclude-symbols:
+  - 'MYLIB_DETAIL_*'

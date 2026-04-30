@@ -1,0 +1,29 @@
+[#index]
+= Global namespace
+:mrdocs:
+
+== Namespaces
+
+[cols="1"]
+|===
+| Name
+| xref:foo.adoc[`foo`] 
+|===
+
+
+== xref:foo.adoc[foo] namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:foo/bar.adoc[`bar`] 
+| A function in a namespace&period;
+|===
+
+
+See also: xref:macros.adoc[Macros]
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

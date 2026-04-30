@@ -1,0 +1,16 @@
+[#foo]
+= foo
+:mrdocs:
+
+== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:foo/bar.adoc[`bar`] 
+| A function in a namespace&period;
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

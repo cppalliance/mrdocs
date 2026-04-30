@@ -23,6 +23,7 @@
 #include <mrdocs/Metadata/Symbol/Friend.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Symbol/Guide.hpp>
+#include <mrdocs/Metadata/Symbol/Macro.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Metadata/Symbol/NamespaceAlias.hpp>
 #include <mrdocs/Metadata/Symbol/Overloads.hpp>

@@ -18,7 +18,6 @@
 #include <mrdocs/Metadata/DocComment.hpp>
 
 namespace clang {
-class Decl;
 class ASTContext;
 class RawComment;
 namespace comments {
@@ -37,14 +36,16 @@ void
 initCustomCommentCommands(
     clang::ASTContext& ctx);
 
-/** Extract doc comments from a declaration
+/** Extract doc comments from a parsed FullComment.
 
-    Extract the DocComment from a declaration, populating the
-    DocComment object with the information parsed by clang.
+    Populate the DocComment object with the information
+    parsed by Clang. Used both for declaration comments
+    (caller passes `someDecl->getASTContext()`) and for
+    macro comments, where there is no `Decl`.
 
     @param jd The DocComment object to populate
     @param FC The full comment to parse
-    @param D The declaration to which the comment applies
+    @param ctx The ASTContext owning the comment
     @param config The MrDocs configuration object
     @param diags The diagnostics object
 */
@@ -52,7 +53,7 @@ void
 populateDocComment(
     Optional<DocComment>& jd,
     clang::comments::FullComment const* FC,
-    clang::Decl const* D,
+    clang::ASTContext const& ctx,
     Config const& config,
     Diagnostics& diags);
 

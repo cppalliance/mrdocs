@@ -1766,11 +1766,11 @@ class DocCommentVisitor
 public:
     DocCommentVisitor(
         clang::comments::FullComment const* FC,
-        clang::Decl const* D,
+        clang::ASTContext const& ctx,
         Config const& config,
         Diagnostics& diags)
         : config_(config)
-        , ctx_(D->getASTContext())
+        , ctx_(ctx)
         , sm_(ctx_.getSourceManager())
         , FC_(FC)
         , diags_(diags)
@@ -1806,12 +1806,12 @@ void
 populateDocComment(
     Optional<DocComment>& jd,
     clang::comments::FullComment const* FC,
-    clang::Decl const* D,
+    clang::ASTContext const& ctx,
     Config const& config,
     Diagnostics& diags)
 {
-    MRDOCS_COMMENT_TRACE(FC, D->getASTContext());
-    DocCommentVisitor visitor(FC, D, config, diags);
+    MRDOCS_COMMENT_TRACE(FC, ctx);
+    DocCommentVisitor visitor(FC, ctx, config, diags);
     auto result = visitor.build();
     if (!result.empty())
     {

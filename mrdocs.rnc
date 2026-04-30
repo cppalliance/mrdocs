@@ -387,6 +387,16 @@ grammar
             ( SymbolField | Template | element constraint { NameKind* | text } )*
         }
 
+    Macro =
+        element macro
+        {
+            ( SymbolField
+            | element isFunctionLike { Bool }
+            | element parameters { Strings }
+            | element isVariadic { Bool }
+            | element source { xsd:string } )*
+        }
+
     Overloads =
         element overloads
         {
@@ -399,7 +409,7 @@ grammar
 
     AnySymbol =
         ( Namespace | Record | Function | Typedef | Enum | EnumConstant
-        | Variable | Guide | NamespaceAlias | Using | Concept | Overloads )
+        | Variable | Guide | NamespaceAlias | Using | Concept | Macro | Overloads )
 
     #---------------------------------------------
     # Tagfile

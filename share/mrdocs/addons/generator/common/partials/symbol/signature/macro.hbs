@@ -1,0 +1,17 @@
+{{!--
+    Render the synopsis for a preprocessor macro.
+
+    For regular macros, the synopsis is the normalized
+    source of the `#define` directive.
+
+    For see-below macros, the body is replaced by a
+    `/* see-below */` marker. Implementation-defined
+    macros are not rendered at all.
+
+    Expected Context: {Symbol Object} (kind == "macro")
+--}}
+{{#isSeeBelow~}}
+#define {{name}}{{#if isFunctionLike}}({{#each parameters}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{#if isVariadic}}{{#if parameters}}, {{/if}}...{{/if}}){{/if}} /* see-below */
+{{~else~}}
+{{ source }}
+{{~/isSeeBelow}}

@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -12,7 +13,9 @@
 #include "SinglePageVisitor.hpp"
 #include "VisitorHelpers.hpp"
 #include <mrdocs/Support/unlock_guard.hpp>
+#include <cstddef>
 #include <sstream>
+#include <utility>
 
 namespace mrdocs::hbs {
 
@@ -45,6 +48,17 @@ operator()(T const& I)
 
 #define INFO(T) template void SinglePageVisitor::operator()<T##Symbol>(T##Symbol const&);
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
+
+void
+SinglePageVisitor::
+writeText(std::string text)
+{
+    std::size_t const symbolIdx = numSymbols_++;
+    ex_.async([this, symbolIdx, text = std::move(text)](Builder&)
+    {
+        writePage(text, symbolIdx);
+    });
+}
 
 // pageNumber is zero-based
 void

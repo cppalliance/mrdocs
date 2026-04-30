@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -33,6 +34,7 @@
 #include <clang/AST/TypeVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Lex/Lexer.h>
+#include <clang/Lex/MacroInfo.h>
 #include <clang/Sema/Lookup.h>
 #include <clang/Sema/Sema.h>
 #include <clang/Sema/Template.h>
@@ -41,6 +43,10 @@
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Process.h>
 #include <llvm/Support/SHA1.h>
+#include <array>
+#include <cstdint>
+#include <format>
+#include <map>
 #include <memory>
 #include <optional>
 #include <ranges>
@@ -54,13 +60,15 @@ ASTVisitor(
     Diagnostics const& diags,
     clang::CompilerInstance& compiler,
     clang::ASTContext& context,
-    clang::Sema& sema) noexcept
+    clang::Sema& sema,
+    std::vector<MacroDefinition>& macroDefs) noexcept
     : config_(config)
     , diags_(diags)
     , compiler_(compiler)
     , context_(context)
     , source_(context.getSourceManager())
     , sema_(sema)
+    , macroDefs_(macroDefs)
 {
     // Install handlers for our custom commands
     initCustomCommentCommands(context_);
@@ -84,6 +92,127 @@ build()
     clang::TranslationUnitDecl const* TU = context_.getTranslationUnitDecl();
     traverse(TU);
     MRDOCS_ASSERT(find(SymbolID::global));
+    addMacros();
+}
+
+void
+ASTVisitor::
+addMacros()
+{
+    for (MacroDefinition const& m : macroDefs_)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(!m.ClangMacro->isUsedForHeaderGuard());
+
+        // `findFileInfo` returns null only for invalid `SourceLocation`
+        // values and a handful of exotic `FileID` kinds (predefined-macro
+        // buffers, unusual `#line` situations). `MacroCollector` already
+        // drops invalid locations, builtins, and system headers, so
+        // anything reaching here points at a real source file.
+        FileInfo* file = findFileInfo(m.DefLoc);
+        MRDOCS_ASSERT(file);
+
+        clang::PresumedLoc const presLoc =
+            source_.getPresumedLoc(m.DefLoc, false);
+        MRDOCS_CHECK_OR_CONTINUE(presLoc.isValid());
+
+        // Stable `SymbolID` derived from the source-relative
+        // path, line number, and macro name.
+        std::string const usr = std::format(
+            "macro:{}@{}:{}",
+            m.Name,
+            file->short_path,
+            presLoc.getLine());
+        std::array<std::uint8_t, 20> const h =
+            llvm::SHA1::hash(llvm::arrayRefFromStringRef(usr));
+        SymbolID const id(h.data());
+        MRDOCS_CHECK_OR_CONTINUE(info_.find(id) == info_.end());
+
+        // Apply user-configured filters: by name (symbol
+        // patterns) and by source location (file patterns).
+        ExtractionMode const mode = macroNameMode(m.Name);
+        MRDOCS_CHECK_OR_CONTINUE(mode != ExtractionMode::Dependency);
+        MRDOCS_CHECK_OR_CONTINUE(checkFileFilters(file->full_path));
+
+        std::unique_ptr<MacroSymbol> sym =
+            std::make_unique<MacroSymbol>(id);
+        sym->Name = m.Name;
+        sym->IsFunctionLike = !m.IsObjectLike;
+        sym->IsVariadic = m.IsVariadic;
+        sym->Parameters = m.Parameters;
+        sym->Source = m.Source;
+        sym->Parent = SymbolID::invalid;
+        sym->Extraction = mode;
+
+        if (clang::RawComment const* RC =
+                context_.getRawCommentForAnyRedecl(m.ClangMacro))
+        {
+            // Macros have no `Decl`, but `RawComment::parse` requires a
+            // non-null, valid one (it dereferences it), so pass the
+            // translation unit.
+            clang::comments::FullComment* FC = RC->parse(
+                context_, &sema_.getPreprocessor(),
+                context_.getTranslationUnitDecl());
+            if (FC)
+            {
+                populateDocComment(
+                    sym->doc, FC, context_, config_, diags_);
+            }
+        }
+
+        // When `extract-all` is off, require a doc comment.
+        // Undocumented macros are dropped entirely.
+        MRDOCS_CHECK_OR_CONTINUE(config_->extractAll || sym->doc);
+
+        sym->Loc.DefLoc = Location(
+            file->full_path,
+            file->short_path,
+            file->source_path,
+            presLoc.getLine(),
+            presLoc.getColumn(),
+            sym->doc.has_value());
+
+        // Register kept-but-undocumented macros for the
+        // `warn-if-undocumented` pass, like other symbols. (Undocumented
+        // macros are already dropped above when `extract-all` is off.)
+        if (config_->warnIfUndocumented && !sym->doc)
+        {
+            UndocumentedSymbol undoc(id, m.Name, SymbolKind::Macro);
+            undoc.Loc = sym->Loc;
+            undocumented_.insert(std::move(undoc));
+        }
+
+        info_.emplace(std::move(sym));
+    }
+}
+
+ExtractionMode
+ASTVisitor::
+macroNameMode(std::string_view name) const
+{
+    using enum SymbolCheckType;
+    auto const matches = [&](
+        std::vector<SymbolGlobPattern> const& p)
+    {
+        return checkSymbolFiltersImpl<Strict>(p, name);
+    };
+    if (matches(config_->excludeSymbols))
+    {
+        return ExtractionMode::Dependency;
+    }
+    if (matches(config_->implementationDefined))
+    {
+        return ExtractionMode::ImplementationDefined;
+    }
+    if (matches(config_->seeBelow))
+    {
+        return ExtractionMode::SeeBelow;
+    }
+    if (!config_->includeSymbols.empty() &&
+        !matches(config_->includeSymbols))
+    {
+        return ExtractionMode::Dependency;
+    }
+    return ExtractionMode::Regular;
 }
 
 template <
@@ -598,7 +727,7 @@ populate(
     clang::comments::FullComment* FC =
         RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
     MRDOCS_CHECK_OR(FC, false);
-    populateDocComment(doc, FC, D, config_, diags_);
+    populateDocComment(doc, FC, D->getASTContext(), config_, diags_);
     return true;
 }
 

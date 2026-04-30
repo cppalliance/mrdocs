@@ -1,0 +1,28 @@
+[#MY_INC]
+= MY&lowbar;INC
+:mrdocs:
+
+Function&hyphen;like macro&period;
+
+== Synopsis
+
+Declared in `&lt;multipage&hyphen;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&num;define MY&lowbar;INC(x) ((x) &plus; 1)
+----
+
+== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The argument&period;
+|===
+
+See also: xref:macros.adoc[Macros]
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
