@@ -15,6 +15,7 @@
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Schemas/DomDescriptions.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/EnumToString.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
@@ -160,6 +161,40 @@ inline constexpr bool is_always_present_v =
     !std::is_base_of_v<ExprInfo, M>;
 
 //------------------------------------------------
+// Description injection (from DomDescriptions.hpp)
+//------------------------------------------------
+
+/** Add the type-level description for `T` to `schema`, if one exists.
+*/
+template <typename T>
+void
+applyTypeDescription(dom::Object& schema)
+{
+    constexpr std::string_view name = readableTypeName<T>();
+    if (auto const desc = findDomDescription(name); !desc.empty())
+    {
+        schema.set("description", std::string(desc));
+    }
+}
+
+/** Build the schema for a member of `Owner` with the given DOM name,
+    layering in any matching member-level description.
+*/
+template <typename Owner, typename M>
+dom::Object
+buildMemberSchema(std::string_view const domName)
+{
+    dom::Object schema = memberSchema<M>();
+    constexpr std::string_view ownerName = readableTypeName<Owner>();
+    if (auto const desc = findDomDescription(ownerName, domName);
+        !desc.empty())
+    {
+        schema.set("description", std::string(desc));
+    }
+    return schema;
+}
+
+//------------------------------------------------
 // Struct -> JSON Schema object
 //------------------------------------------------
 
@@ -188,7 +223,9 @@ addBaseProperties(dom::Object& properties, dom::Array& required)
                                 std::declval<BaseType>().*D.pointer)>;
                             std::string domName =
                                 mrdocs::detail::normalizeMemberName(D.name);
-                            properties.set(domName, memberSchema<M>());
+                            properties.set(
+                                domName,
+                                buildMemberSchema<BaseType, M>(domName));
 
                             if constexpr (is_always_present_v<M>)
                             {
@@ -211,6 +248,7 @@ objectSchema()
 {
     dom::Object schema;
     schema.set("type", "object");
+    applyTypeDescription<T>(schema);
 
     dom::Object properties;
     dom::Array required;
@@ -228,7 +266,8 @@ objectSchema()
                     std::declval<T>().*D.pointer)>;
                 std::string domName =
                     mrdocs::detail::normalizeMemberName(D.name);
-                properties.set(domName, memberSchema<M>());
+                properties.set(
+                    domName, buildMemberSchema<T, M>(domName));
 
                 if constexpr (is_always_present_v<M>)
                 {
@@ -239,20 +278,37 @@ objectSchema()
 
     // Custom tag_invoke extensions for Symbol (see SymbolBase.hpp).
     // These fields are added by the Symbol tag_invoke overload
-    // beyond what reflection provides.
+    // beyond what reflection provides. Descriptions live on the
+    // base `Symbol` entry in DomDescriptions.hpp.
     if constexpr (std::is_base_of_v<Symbol, T>)
     {
+        auto withDesc =
+            [](dom::Object schema, std::string_view const member)
+            {
+                if (auto const desc =
+                        findDomDescription("Symbol", member);
+                    !desc.empty())
+                {
+                    schema.set("description", std::string(desc));
+                }
+                return schema;
+            };
+
         dom::Object classSchema;
         classSchema.set("type", "string");
         classSchema.set("const", "symbol");
-        properties.set("class", std::move(classSchema));
+        properties.set("class", withDesc(std::move(classSchema), "class"));
 
         dom::Object boolSchema;
         boolSchema.set("type", "boolean");
-        properties.set("isRegular", boolSchema);
-        properties.set("isSeeBelow", boolSchema);
-        properties.set("isImplementationDefined", boolSchema);
-        properties.set("isDependency", boolSchema);
+        properties.set("isRegular",
+            withDesc(boolSchema, "isRegular"));
+        properties.set("isSeeBelow",
+            withDesc(boolSchema, "isSeeBelow"));
+        properties.set("isImplementationDefined",
+            withDesc(boolSchema, "isImplementationDefined"));
+        properties.set("isDependency",
+            withDesc(boolSchema, "isDependency"));
 
         required.push_back("class");
         required.push_back("isRegular");
@@ -295,6 +351,19 @@ objectSchema()
 // Polymorphic oneOf schemas
 //------------------------------------------------
 
+/** Wrap a list of `$ref`s into a `oneOf` schema for `Base` and
+    layer in any matching type-level description.
+*/
+template <typename Base>
+dom::Object
+makePolymorphicSchema(dom::Array oneOf)
+{
+    dom::Object schema;
+    schema.set("oneOf", std::move(oneOf));
+    applyTypeDescription<Base>(schema);
+    return schema;
+}
+
 /** Return a JSON Schema `oneOf` union for a polymorphic base type.
 
     A full specialization is provided for each polymorphic family
@@ -320,9 +389,7 @@ polymorphicSchema<Type>()
     dom::Array oneOf;
     #define INFO(X) oneOf.push_back(refSchema<X##Type>());
     #include <mrdocs/Metadata/Type/TypeNodes.inc>
-    dom::Object schema;
-    schema.set("oneOf", std::move(oneOf));
-    return schema;
+    return makePolymorphicSchema<Type>(std::move(oneOf));
 }
 
 /** Specialization for the `Name` family (IdentifierName, SpecializationName).
@@ -336,9 +403,7 @@ polymorphicSchema<Name>()
     dom::Array oneOf;
     #define INFO(X) oneOf.push_back(refSchema<X##Name>());
     #include <mrdocs/Metadata/Name/NameNodes.inc>
-    dom::Object schema;
-    schema.set("oneOf", std::move(oneOf));
-    return schema;
+    return makePolymorphicSchema<Name>(std::move(oneOf));
 }
 
 /** Specialization for the `TParam` family (TypeTParam, ConstantTParam,
@@ -353,9 +418,7 @@ polymorphicSchema<TParam>()
     dom::Array oneOf;
     #define INFO(X) oneOf.push_back(refSchema<X##TParam>());
     #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
-    dom::Object schema;
-    schema.set("oneOf", std::move(oneOf));
-    return schema;
+    return makePolymorphicSchema<TParam>(std::move(oneOf));
 }
 
 /** Specialization for the `TArg` family (TypeTArg, ConstantTArg,
@@ -370,9 +433,7 @@ polymorphicSchema<TArg>()
     dom::Array oneOf;
     #define INFO(X) oneOf.push_back(refSchema<X##TArg>());
     #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
-    dom::Object schema;
-    schema.set("oneOf", std::move(oneOf));
-    return schema;
+    return makePolymorphicSchema<TArg>(std::move(oneOf));
 }
 
 /** Specialization for the `doc::Block` family (paragraphs, lists,
@@ -387,9 +448,7 @@ polymorphicSchema<doc::Block>()
     dom::Array oneOf;
     #define INFO(X) oneOf.push_back(refSchema<doc::X##Block>());
     #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
-    dom::Object schema;
-    schema.set("oneOf", std::move(oneOf));
-    return schema;
+    return makePolymorphicSchema<doc::Block>(std::move(oneOf));
 }
 
 /** Specialization for the `doc::Inline` family (text, emphasis, code,
@@ -404,9 +463,7 @@ polymorphicSchema<doc::Inline>()
     dom::Array oneOf;
     #define INFO(X) oneOf.push_back(refSchema<doc::X##Inline>());
     #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
-    dom::Object schema;
-    schema.set("oneOf", std::move(oneOf));
-    return schema;
+    return makePolymorphicSchema<doc::Inline>(std::move(oneOf));
 }
 
 //------------------------------------------------
