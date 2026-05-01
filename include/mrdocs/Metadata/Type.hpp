@@ -25,6 +25,7 @@
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
+#include <mrdocs/Support/Visitor.hpp>
 
 namespace mrdocs {
 
@@ -45,45 +46,14 @@ visit(
     F&& fn,
     Args&&... args)
 {
-    add_cv_from_t<TypeTy, Type>& II = info;
+    auto visitor = makeVisitor<Type>(
+        info, std::forward<F>(fn),
+        std::forward<Args>(args)...);
     switch(info.Kind)
     {
-    case TypeKind::Named:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, NamedType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Decltype:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, DecltypeType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Auto:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, AutoType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::LValueReference:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, LValueReferenceType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::RValueReference:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, RValueReferenceType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Pointer:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, PointerType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::MemberPointer:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, MemberPointerType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Array:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, ArrayType>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Function:
-        return fn(static_cast<add_cv_from_t<
-            TypeTy, FunctionType>&>(II),
-                std::forward<Args>(args)...);
+    #define INFO(T) case TypeKind::T: \
+        return visitor.template visit<T##Type>();
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }

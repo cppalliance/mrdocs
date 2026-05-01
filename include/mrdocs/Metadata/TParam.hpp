@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/TParam/TemplateTParam.hpp>
 #include <mrdocs/Metadata/TParam/TypeTParam.hpp>
+#include <mrdocs/Support/Visitor.hpp>
 
 namespace mrdocs {
 
@@ -40,20 +41,13 @@ visit(
     F&& f,
     Args&&... args)
 {
+    auto visitor = makeVisitor<TParam>(
+        P, std::forward<F>(f), std::forward<Args>(args)...);
     switch(P.Kind)
     {
-    case TParamKind::Type:
-        return f(static_cast<add_cv_from_t<
-            TParamTy, TypeTParam>&>(P),
-            std::forward<Args>(args)...);
-    case TParamKind::Constant:
-        return f(static_cast<add_cv_from_t<
-            TParamTy, ConstantTParam>&>(P),
-            std::forward<Args>(args)...);
-    case TParamKind::Template:
-        return f(static_cast<add_cv_from_t<
-            TParamTy, TemplateTParam>&>(P),
-            std::forward<Args>(args)...);
+    #define INFO(Type) case TParamKind::Type: \
+        return visitor.template visit<Type##TParam>();
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }

@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TArg/TemplateTArg.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
+#include <mrdocs/Support/Visitor.hpp>
 
 namespace mrdocs {
 
@@ -35,20 +36,13 @@ visit(
     F&& f,
     Args&&... args)
 {
+    auto visitor = makeVisitor<TArg>(
+        A, std::forward<F>(f), std::forward<Args>(args)...);
     switch(A.Kind)
     {
-    case TArgKind::Type:
-        return f(static_cast<add_cv_from_t<
-            TArgTy, TypeTArg>&>(A),
-            std::forward<Args>(args)...);
-    case TArgKind::Constant:
-        return f(static_cast<add_cv_from_t<
-            TArgTy, ConstantTArg>&>(A),
-            std::forward<Args>(args)...);
-    case TArgKind::Template:
-        return f(static_cast<add_cv_from_t<
-            TArgTy, TemplateTArg>&>(A),
-            std::forward<Args>(args)...);
+    #define INFO(Type) case TArgKind::Type: \
+        return visitor.template visit<Type##TArg>();
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }
