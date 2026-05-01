@@ -1271,10 +1271,21 @@ setAutoRelates(Symbol& ctx)
         }();
     }
 
-    // Remove duplicates from relatedRecordsOrEnums
-    std::ranges::sort(relatedRecordsOrEnums);
+    // Remove duplicates from relatedRecordsOrEnums.
+    //
+    // Use plain std::sort/std::unique here instead of the ranges
+    // versions: libstdc++-15's `ranges::less` probes `operator<=>`
+    // via ADL on the element type, which on `Symbol*` reaches our
+    // generic mrdocs::operator<=> template.  Clang 19 hard-errors
+    // when substituting T = Symbol* into that template (operator<=>
+    // requires a class/enum parameter), instead of SFINAE'ing the
+    // candidate out of overload resolution -- a regression that's
+    // present in 19 but absent in 18 and >=20.
+    std::sort(
+        relatedRecordsOrEnums.begin(), relatedRecordsOrEnums.end());
     relatedRecordsOrEnums.erase(
-        std::ranges::unique(relatedRecordsOrEnums).begin(),
+        std::unique(
+            relatedRecordsOrEnums.begin(), relatedRecordsOrEnums.end()),
         relatedRecordsOrEnums.end());
 
     // Insert the records with valid ids into the doc relates section
