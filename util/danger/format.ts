@@ -9,8 +9,6 @@
 //
 import { formatChurn, scopeDisplayOrder, type DangerResult, type ScopeReport, type ScopeTotals } from "./logic";
 
-const notice = "> 🚧 Danger.js checks for MrDocs are experimental; expect some rough edges while we tune the rules.";
-
 const scopeLabels: Record<string, string> = {
     source: "Source",
     tests: "Unit Tests",
@@ -243,7 +241,6 @@ function renderTopChanges(summary: ScopeReport): string {
  */
 export function renderDangerReport(result: DangerResult): string {
     const sections = [
-        notice,
         renderWarnings(result.warnings),
         renderInfos(result.infos),
         renderHighlights(result.summary.highlights),

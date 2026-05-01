@@ -25,7 +25,6 @@ describe("renderDangerReport", () => {
 
         const output = renderDangerReport(result);
 
-        expect(output.startsWith("> 🚧 Danger.js checks for MrDocs")).toBe(true);
         expect(output).toContain("## ⚠️ Warnings");
         expect((output.match(/> \[!WARNING\]/g) || []).length).toBe(2);
         expect(output).toContain("## 🧾 Changes by Scope");
@@ -59,7 +58,6 @@ describe("renderDangerReport", () => {
         expect(output).toMatch(/\|\s*\*\*Total\*\*\s*\|\s*100%\s*\|\s*\*\*6\*\*\s*\|\s*5\s*\|\s*1\s*\|\s*\*\*2\*\*\s*\|/);
         // No highlights section when no golden tests changed
         expect(output).not.toContain("## ✨ Highlights");
-        expect(output.trim().startsWith("> 🚧 Danger.js checks for MrDocs")).toBe(true);
     });
 
     it("treats removed files as positive file deltas", () => {

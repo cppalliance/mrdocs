@@ -39,5 +39,3 @@ npm --prefix util/danger run danger:ci     # run Danger in CI mode (requires Git
 
 - Edit `logic.ts`, refresh `fixtures/` as needed, and run `npm test`.
 - Keep warnings human-readable; prefer `warn()` over `fail()` until the team decides otherwise.
-
-> Note: The Danger.js rules for MrDocs are still experimental, so some warnings may be rough or occasionally fire as false positives—feedback is welcome.
