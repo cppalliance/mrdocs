@@ -14,9 +14,9 @@
 #include <lib/Support/CliOverride.hpp>
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/Report.hpp>
+#include <lib/Schemas/DomSchemaWriter.hpp>
+#include <lib/Schemas/RncSchemaWriter.hpp>
 #include <mrdocs/Dom/Value.hpp>
-#include <mrdocs/Schemas/DomSchemaWriter.hpp>
-#include <mrdocs/Schemas/RncSchemaWriter.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>

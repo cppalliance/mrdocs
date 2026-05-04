@@ -8,14 +8,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SCHEMAS_DOMSCHEMAWRITER_HPP
-#define MRDOCS_API_SCHEMAS_DOMSCHEMAWRITER_HPP
+#ifndef MRDOCS_LIB_SCHEMAS_DOMSCHEMAWRITER_HPP
+#define MRDOCS_LIB_SCHEMAS_DOMSCHEMAWRITER_HPP
 
+#include <lib/Schemas/DomDescriptions.hpp>
 #include <mrdocs/Dom/Array.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Schemas/DomDescriptions.hpp>
 #include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/EnumToString.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
@@ -565,4 +565,4 @@ buildDomJsonSchema()
 
 } // mrdocs::schema
 
-#endif // MRDOCS_API_SCHEMAS_DOMSCHEMAWRITER_HPP
+#endif // MRDOCS_LIB_SCHEMAS_DOMSCHEMAWRITER_HPP

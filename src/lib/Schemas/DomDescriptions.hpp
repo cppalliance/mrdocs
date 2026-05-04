@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SCHEMAS_DOMDESCRIPTIONS_HPP
-#define MRDOCS_API_SCHEMAS_DOMDESCRIPTIONS_HPP
+#ifndef MRDOCS_LIB_SCHEMAS_DOMDESCRIPTIONS_HPP
+#define MRDOCS_LIB_SCHEMAS_DOMDESCRIPTIONS_HPP
 
 #include <string_view>
 
@@ -758,4 +758,4 @@ findDomDescription(
 
 } // namespace mrdocs::schema
 
-#endif // MRDOCS_API_SCHEMAS_DOMDESCRIPTIONS_HPP
+#endif // MRDOCS_LIB_SCHEMAS_DOMDESCRIPTIONS_HPP

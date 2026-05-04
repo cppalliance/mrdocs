@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SCHEMAS_RNCSCHEMAWRITER_HPP
-#define MRDOCS_API_SCHEMAS_RNCSCHEMAWRITER_HPP
+#ifndef MRDOCS_LIB_SCHEMAS_RNCSCHEMAWRITER_HPP
+#define MRDOCS_LIB_SCHEMAS_RNCSCHEMAWRITER_HPP
 
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Describe.hpp>
@@ -834,4 +834,4 @@ buildRncSchema()
 
 } // mrdocs::schema
 
-#endif // MRDOCS_API_SCHEMAS_RNCSCHEMAWRITER_HPP
+#endif // MRDOCS_LIB_SCHEMAS_RNCSCHEMAWRITER_HPP

@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Schemas/DomSchemaWriter.hpp>
+#include <lib/Schemas/DomSchemaWriter.hpp>
 #include <test_suite/test_suite.hpp>
 #include <cstddef>
 
