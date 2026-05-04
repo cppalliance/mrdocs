@@ -41,11 +41,11 @@
   </friend>
   <friend>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
         <identifier>B</identifier>
-      </name>
+      </identifier-name>
     </named>
     <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
   </friend>
@@ -96,10 +96,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

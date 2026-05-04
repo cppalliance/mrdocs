@@ -81,10 +81,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -106,16 +106,16 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
         <identifier>base_detail</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
           <identifier>detail</identifier>
-        </name>
-      </name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -157,10 +157,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -181,10 +181,10 @@
   <extraction>regular</extraction>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

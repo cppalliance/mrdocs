@@ -191,11 +191,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>js4a2N+AFdpGVqiwDoP6CRe5qnw=</id>
       <identifier>iterator</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -240,11 +240,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>mHefDbLazHBw57+qAsFRfF7H528=</id>
       <identifier>const_iterator</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -291,11 +291,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>mHefDbLazHBw57+qAsFRfF7H528=</id>
       <identifier>const_iterator</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -336,11 +336,11 @@
   </doc-comment>
   <r-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
@@ -449,11 +449,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -493,11 +493,11 @@
   </doc-comment>
   <r-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
@@ -538,11 +538,11 @@
   <l-value-reference>
     <named>
       <is-const>1</is-const>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -584,11 +584,11 @@
   <r-value-reference>
     <named>
       <is-const>1</is-const>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
@@ -630,11 +630,11 @@
   </doc-comment>
   <r-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </r-value-reference>
   <func-class>normal</func-class>

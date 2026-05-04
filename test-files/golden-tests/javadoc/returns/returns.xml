@@ -74,10 +74,10 @@
   <extraction>regular</extraction>
   <parent>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -97,10 +97,10 @@
   <extraction>regular</extraction>
   <parent>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>U</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -136,10 +136,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -187,11 +187,29 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
       <identifier>pair</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>int</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>int</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <func-class>normal</func-class>
 </function>

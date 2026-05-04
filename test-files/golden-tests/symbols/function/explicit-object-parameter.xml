@@ -87,10 +87,10 @@
   <param>
     <r-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Self</identifier>
-        </name>
+        </identifier-name>
       </named>
     </r-value-reference>
     <name>self</name>
@@ -129,20 +129,20 @@
   <param>
     <r-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Self</identifier>
-        </name>
+        </identifier-name>
       </named>
     </r-value-reference>
     <name>self</name>
   </param>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>x</name>
   </param>

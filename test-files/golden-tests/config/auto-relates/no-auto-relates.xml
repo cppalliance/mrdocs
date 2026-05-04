@@ -76,18 +76,18 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -117,19 +117,19 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -160,20 +160,20 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -204,19 +204,19 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -247,20 +247,20 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <is-const>1</is-const>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -291,20 +291,20 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>

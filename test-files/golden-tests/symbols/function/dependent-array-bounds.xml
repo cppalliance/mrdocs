@@ -45,19 +45,19 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <array>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
         <bounds>N</bounds>
       </array>
@@ -74,10 +74,10 @@
       <kind>constant</kind>
       <name>N</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>unsigned long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -116,20 +116,20 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <array>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
         <bounds>N</bounds>
       </array>
@@ -146,10 +146,10 @@
       <kind>constant</kind>
       <name>N</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>unsigned long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>

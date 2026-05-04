@@ -56,10 +56,10 @@
   <extraction>regular</extraction>
   <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -80,10 +80,10 @@
   <extraction>regular</extraction>
   <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -104,10 +104,10 @@
   <extraction>regular</extraction>
   <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -155,10 +155,10 @@
   <extraction>regular</extraction>
   <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -179,10 +179,10 @@
   <extraction>regular</extraction>
   <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -203,10 +203,10 @@
   <extraction>regular</extraction>
   <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -254,10 +254,10 @@
   <extraction>regular</extraction>
   <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -278,10 +278,10 @@
   <extraction>regular</extraction>
   <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -302,10 +302,10 @@
   <extraction>regular</extraction>
   <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

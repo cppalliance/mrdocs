@@ -159,18 +159,18 @@
   <pointer>
     <named>
       <is-const>1</is-const>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
   </pointer>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>code</name>
   </param>

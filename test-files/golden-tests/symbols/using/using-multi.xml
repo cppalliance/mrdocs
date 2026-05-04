@@ -47,17 +47,17 @@
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -77,17 +77,17 @@
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -107,15 +107,15 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <class>normal</class>
-  <name>
+  <identifier-name>
     <kind>identifier</kind>
     <identifier>f</identifier>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
       <identifier>A</identifier>
-    </name>
-  </name>
+    </identifier-name>
+  </identifier-name>
   <shadow-declarations>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</shadow-declarations>
 </using>
 <function>
@@ -133,17 +133,17 @@
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -163,15 +163,15 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <class>normal</class>
-  <name>
+  <identifier-name>
     <kind>identifier</kind>
     <identifier>g</identifier>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
       <identifier>A</identifier>
-    </name>
-  </name>
+    </identifier-name>
+  </identifier-name>
   <shadow-declarations>ylPpWuAYV7dDT1JQYve/w5+ZWK4=</shadow-declarations>
 </using>
 <function>
@@ -189,17 +189,17 @@
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>

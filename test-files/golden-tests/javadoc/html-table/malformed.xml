@@ -89,17 +89,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>c</name>
   </param>

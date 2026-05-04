@@ -52,10 +52,10 @@
   <extraction>regular</extraction>
   <parent>YAQKEfxRmUjg43kkhT1n65uziVY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -111,10 +111,10 @@
   <extraction>regular</extraction>
   <parent>9FbH1+tQ3QOHCAntoCpAF02+8Kk=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -151,10 +151,10 @@
   <extraction>regular</extraction>
   <parent>MNQItF4HxM3PrWN0lDhIV9SWyJ0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -209,10 +209,10 @@
   <extraction>regular</extraction>
   <parent>u4ylO6On5J13jZbcYjnClcxqHJ4=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

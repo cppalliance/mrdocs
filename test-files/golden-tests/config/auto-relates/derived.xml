@@ -72,11 +72,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
         <identifier>ABase</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -207,11 +207,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
         <identifier>ABase</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -284,11 +284,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sUXQIQ4En9nHLkCOmuPAkKTvSyQ=</id>
         <identifier>AView</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -346,20 +346,20 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
           <identifier>ABase</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -410,19 +410,19 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
           <identifier>ABase</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -473,20 +473,20 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
           <identifier>ABase</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -537,19 +537,19 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
           <identifier>ABase</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -600,20 +600,20 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <is-const>1</is-const>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
           <identifier>ABase</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -649,18 +649,18 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
         <identifier>ABase</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>

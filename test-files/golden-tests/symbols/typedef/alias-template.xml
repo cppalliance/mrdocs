@@ -29,11 +29,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
       <identifier>A</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -159,11 +168,29 @@
   <extraction>regular</extraction>
   <parent>i5oK/nki0o3BH2ZAgkGyaGib07g=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>U</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>

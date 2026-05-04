@@ -31,10 +31,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -54,10 +54,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -94,20 +94,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <constant-tparam>
       <kind>constant</kind>
       <name>x</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -146,10 +146,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <constant-tparam>
@@ -157,10 +157,10 @@
       <name>x</name>
       <array>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>int</identifier>
-          </name>
+          </identifier-name>
         </named>
       </array>
     </constant-tparam>
@@ -200,10 +200,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <constant-tparam>
@@ -212,17 +212,17 @@
       <pointer>
         <function>
           <named>
-            <name>
+            <identifier-name>
               <kind>identifier</kind>
               <identifier>int</identifier>
-            </name>
+            </identifier-name>
           </named>
           <named>
             <is-const>1</is-const>
-            <name>
+            <identifier-name>
               <kind>identifier</kind>
               <identifier>bool</identifier>
-            </name>
+            </identifier-name>
           </named>
         </function>
       </pointer>
@@ -263,19 +263,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <constant-tparam>
       <kind>constant</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>

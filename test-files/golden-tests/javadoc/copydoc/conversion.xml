@@ -92,11 +92,11 @@
   <members>CGrNRU4S73WU6e3HjSzK2ehtLi0=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -142,22 +142,22 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>aQ5vERa/ROUuSctnkS1VsKSt48E=</id>
           <identifier>string_type</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>other</name>
@@ -208,22 +208,22 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>EulqVl/v48vv9XjENaufduUwZKI=</id>
           <identifier>string_view_type</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>other</name>
@@ -264,11 +264,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>aQ5vERa/ROUuSctnkS1VsKSt48E=</id>
       <identifier>string_type</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
@@ -308,11 +308,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>EulqVl/v48vv9XjENaufduUwZKI=</id>
       <identifier>string_view_type</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>

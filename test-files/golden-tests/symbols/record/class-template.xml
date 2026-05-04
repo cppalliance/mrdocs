@@ -92,10 +92,10 @@
   <extraction>regular</extraction>
   <parent>gx6LdMT9nBMQKB26lZXGWbB7N6c=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -115,10 +115,10 @@
   <extraction>regular</extraction>
   <parent>sv7ww7qclY8KsvAbFHXaKZnSO80=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -138,11 +138,11 @@
   <extraction>regular</extraction>
   <parent>sv7ww7qclY8KsvAbFHXaKZnSO80=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
       <identifier>S</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -162,10 +162,10 @@
   <extraction>regular</extraction>
   <parent>sv7ww7qclY8KsvAbFHXaKZnSO80=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -246,11 +246,11 @@
   <extraction>regular</extraction>
   <parent>F1Cyqn/faLYbjTU4RfGsepUiiZw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
       <identifier>S</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -270,10 +270,10 @@
   <extraction>regular</extraction>
   <parent>F1Cyqn/faLYbjTU4RfGsepUiiZw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -293,10 +293,10 @@
   <extraction>regular</extraction>
   <parent>F1Cyqn/faLYbjTU4RfGsepUiiZw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -316,10 +316,10 @@
   <extraction>regular</extraction>
   <parent>tm2khHa6qZM0lj1f7IwBdxVxDgE=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -408,11 +408,11 @@
   <extraction>regular</extraction>
   <parent>xljI5oOqNOhyyR4QzmKvFB3nEfw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
       <identifier>S</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -432,10 +432,10 @@
   <extraction>regular</extraction>
   <parent>xljI5oOqNOhyyR4QzmKvFB3nEfw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -455,10 +455,10 @@
   <extraction>regular</extraction>
   <parent>xljI5oOqNOhyyR4QzmKvFB3nEfw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>U</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -478,10 +478,10 @@
   <extraction>regular</extraction>
   <parent>xljI5oOqNOhyyR4QzmKvFB3nEfw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -501,10 +501,10 @@
   <extraction>regular</extraction>
   <parent>IIPz8Fm6nqKoYQpeJ/kvZaWvtI8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -562,10 +562,10 @@
   <extraction>regular</extraction>
   <parent>x60FzYL65XgZZRrxrZuC5jemrwQ=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>

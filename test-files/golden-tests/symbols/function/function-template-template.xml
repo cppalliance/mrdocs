@@ -26,17 +26,26 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <identifier>ListType</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
     <name>param</name>
   </param>

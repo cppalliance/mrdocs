@@ -53,18 +53,18 @@
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>9Spd2Hgcx11GK/zJPhJblwaMxfU=</id>
         <identifier>type</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>

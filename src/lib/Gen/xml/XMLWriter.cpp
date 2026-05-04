@@ -16,6 +16,12 @@
 #include <mrdocs/Metadata/Attributes.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/Name/IdentifierName.hpp>
+#include <mrdocs/Metadata/Name/NameBase.hpp>
+#include <mrdocs/Metadata/Name/NameKind.hpp>
+#include <mrdocs/Metadata/Name/SpecializationName.hpp>
+#include <mrdocs/Metadata/Specifiers/ExplicitInfo.hpp>
+#include <mrdocs/Metadata/Specifiers/NoexceptInfo.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/EnumToString.hpp>
@@ -194,6 +200,9 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         { if (value.empty()) return; }
     else if constexpr (std::is_base_of_v<ExprInfo, Type>)
         { if (value.Written.empty()) return; }
+    else if constexpr (std::is_same_v<Type, NoexceptInfo> ||
+                       std::is_same_v<Type, ExplicitInfo>)
+        { if (toString(value).empty()) return; }
     else if constexpr (describe::has_describe_enumerators<Type>::value)
     {
         if constexpr (has_none_enumerator<Type>())
@@ -211,6 +220,15 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         // ExprInfo and ConstantExprInfo: write the Written string.
         tags_.indent() << "<" << tag << ">";
         os_ << xmlEscape(value.Written);
+        os_ << "</" << tag << ">\n";
+    }
+    else if constexpr (std::is_same_v<Type, NoexceptInfo> ||
+                       std::is_same_v<Type, ExplicitInfo>)
+    {
+        // Custom tag_invoke serializes these as a string; the
+        // skip rule above filtered out the empty case.
+        tags_.indent() << "<" << tag << ">";
+        os_ << xmlEscape(toString(value));
         os_ << "</" << tag << ">\n";
     }
     else if constexpr (std::is_same_v<Type, bool> ||
@@ -360,6 +378,19 @@ XMLWriter::writePolymorphic(T const& value)
             tags_.close(toKebabCase(#Name)); \
             break;
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
+        default: MRDOCS_UNREACHABLE();
+        }
+    }
+    else if constexpr (std::is_base_of_v<mrdocs::Name, T>)
+    {
+        switch (value.Kind)
+        {
+        #define INFO(N) case NameKind::N: \
+            tags_.open(toKebabCase(#N) + "-name"); \
+            writeMembers(static_cast<N##Name const&>(value)); \
+            tags_.close(toKebabCase(#N) + "-name"); \
+            break;
+        #include <mrdocs/Metadata/Name/NameNodes.inc>
         default: MRDOCS_UNREACHABLE();
         }
     }

@@ -325,11 +325,11 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>1L0CXReBnwnJJ+QMfbufLsSVX8Q=</id>
       <identifier>dependency</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -379,11 +379,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>4SJRVLqyXsDWvcWXoyjLUtLXROw=</id>
       <identifier>implementation_defined</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -431,11 +431,11 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</id>
       <identifier>regular</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -478,11 +478,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>TSJP5hkEf4wSQVuTwVCP1Zs/mBU=</id>
       <identifier>see_below</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -702,11 +702,11 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>CyWO4Tsh/ybq2vl/ylZdyGSc20U=</id>
       <identifier>dependency</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -756,11 +756,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>V7X9PJ4pWsN52pFdrtqL2hmhnp8=</id>
       <identifier>implementation_defined</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -1099,11 +1099,11 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>t1gs2ps85mDDF3gcK68GCS5x23g=</id>
       <identifier>dependency</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -1153,11 +1153,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>rl76spVysmpVYgBTOlxoh5Z9fk8=</id>
       <identifier>implementation_defined</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -1205,11 +1205,11 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>cw0xJkxH12xMAqMkCi84zr2R6nQ=</id>
       <identifier>regular</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -1252,11 +1252,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>1gqUCUm5v18bVRIAohOhUsenH0o=</id>
       <identifier>see_below</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

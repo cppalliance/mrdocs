@@ -88,11 +88,11 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
       <identifier>R</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

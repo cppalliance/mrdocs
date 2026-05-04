@@ -164,10 +164,10 @@
   <members>TdmZJwTZcT5Gr8LFdL1oe7FWI9U=</members>
   <members>KJUWs9wVpQtebRzMne9/RDEOV2I=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -250,17 +250,17 @@
     </postcondition>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -320,27 +320,27 @@
     </see>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
   <param>
     <pointer>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -442,26 +442,26 @@
     </postcondition>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>b</name>
   </param>

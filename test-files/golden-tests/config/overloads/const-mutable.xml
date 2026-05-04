@@ -62,10 +62,10 @@
   <members>c8FMK37zKpqJXH2ZioM0tYziY1g=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -86,10 +86,10 @@
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -112,10 +112,10 @@
   <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>

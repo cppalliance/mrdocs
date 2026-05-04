@@ -59,11 +59,11 @@
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
       <identifier>S</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>S{}</initializer>
   <storage-class>static</storage-class>
@@ -117,10 +117,10 @@
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <storage-class>static</storage-class>

@@ -48,16 +48,16 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>9QgUJNKn+WNP3bawIZL9jzTlEGc=</id>
         <identifier>C</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
           <identifier>B</identifier>
-        </name>
-      </name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -91,10 +91,10 @@
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -115,10 +115,10 @@
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <has-override-attr>1</has-override-attr>
@@ -141,10 +141,10 @@
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <has-override-attr>1</has-override-attr>
@@ -167,10 +167,10 @@
   <extraction>regular</extraction>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -192,16 +192,16 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>9QgUJNKn+WNP3bawIZL9jzTlEGc=</id>
         <identifier>C</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
           <identifier>B</identifier>
-        </name>
-      </name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -235,10 +235,10 @@
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -260,10 +260,10 @@
   <is-copy-from-inherited>1</is-copy-from-inherited>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -286,10 +286,10 @@
   <extraction>regular</extraction>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <has-override-attr>1</has-override-attr>
@@ -312,10 +312,10 @@
   <extraction>regular</extraction>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

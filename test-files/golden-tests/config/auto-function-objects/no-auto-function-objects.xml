@@ -100,10 +100,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -184,10 +184,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -225,10 +225,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <function-object-impl>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</function-object-impl>
@@ -248,11 +248,11 @@
   <extraction>regular</extraction>
   <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</id>
       <identifier>auto_fn</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>

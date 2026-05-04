@@ -29,11 +29,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
         <identifier>B</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -63,10 +63,10 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -113,10 +113,10 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

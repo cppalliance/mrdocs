@@ -75,11 +75,11 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -98,11 +98,29 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>short</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>long</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -121,11 +139,29 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>long</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -211,18 +247,18 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -242,19 +278,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
       <is-const>1</is-const>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -274,19 +310,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -307,20 +343,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -341,19 +377,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -374,20 +410,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -408,20 +444,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
             <identifier>A</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -443,21 +479,21 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
             <identifier>A</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -479,10 +515,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
@@ -490,11 +526,11 @@
         <is-const>1</is-const>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
             <identifier>A</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -516,18 +552,18 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
         <identifier>C</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -547,19 +583,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
       <is-const>1</is-const>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
         <identifier>C</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -579,19 +615,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
           <identifier>C</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -612,20 +648,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
           <identifier>C</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -646,19 +682,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
           <identifier>C</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -679,20 +715,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
           <identifier>C</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -713,20 +749,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
             <identifier>C</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -748,21 +784,21 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
             <identifier>C</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -784,10 +820,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
@@ -795,11 +831,11 @@
         <is-const>1</is-const>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
             <identifier>C</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -821,18 +857,36 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
         <identifier>B</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>short</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>long</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -852,19 +906,37 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
       <is-const>1</is-const>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
         <identifier>B</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>short</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>long</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -884,19 +956,37 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
           <identifier>B</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>long</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </l-value-reference>
   </param>
@@ -917,20 +1007,38 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
           <identifier>B</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>long</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </l-value-reference>
   </param>
@@ -951,19 +1059,37 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
           <identifier>B</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>long</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </pointer>
   </param>
@@ -984,20 +1110,38 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
           <identifier>B</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>long</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </pointer>
   </param>
@@ -1018,20 +1162,38 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
             <identifier>B</identifier>
-          </name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>short</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>long</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
         </named>
       </pointer>
     </pointer>
@@ -1053,21 +1215,39 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
           <is-const>1</is-const>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
             <identifier>B</identifier>
-          </name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>short</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>long</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
         </named>
       </pointer>
     </pointer>
@@ -1089,10 +1269,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
@@ -1100,11 +1280,29 @@
         <is-const>1</is-const>
         <named>
           <is-const>1</is-const>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
             <identifier>B</identifier>
-          </name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>short</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>long</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
         </named>
       </pointer>
     </pointer>
@@ -1126,18 +1324,18 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
         <identifier>D</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -1157,19 +1355,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
       <is-const>1</is-const>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
         <identifier>D</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -1189,19 +1387,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
           <identifier>D</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -1222,20 +1420,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
           <identifier>D</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
   </param>
@@ -1256,19 +1454,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
           <identifier>D</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -1289,20 +1487,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
           <identifier>D</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -1323,20 +1521,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
             <identifier>D</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -1358,21 +1556,21 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
             <identifier>D</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -1394,10 +1592,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
@@ -1405,11 +1603,11 @@
         <is-const>1</is-const>
         <named>
           <is-const>1</is-const>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
             <identifier>D</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </pointer>
@@ -1431,18 +1629,27 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
         <identifier>E</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>short</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -1462,19 +1669,28 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
       <is-const>1</is-const>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
         <identifier>E</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>short</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -1494,19 +1710,28 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
           <identifier>E</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </l-value-reference>
   </param>
@@ -1527,20 +1752,29 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
           <identifier>E</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </l-value-reference>
   </param>
@@ -1561,19 +1795,28 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
           <identifier>E</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </pointer>
   </param>
@@ -1594,20 +1837,29 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
           <identifier>E</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>short</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </pointer>
   </param>
@@ -1628,20 +1880,29 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
             <identifier>E</identifier>
-          </name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>short</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
         </named>
       </pointer>
     </pointer>
@@ -1663,21 +1924,30 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <pointer>
         <named>
           <is-const>1</is-const>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
             <identifier>E</identifier>
-          </name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>short</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
         </named>
       </pointer>
     </pointer>
@@ -1699,10 +1969,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
@@ -1710,11 +1980,20 @@
         <is-const>1</is-const>
         <named>
           <is-const>1</is-const>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
             <identifier>E</identifier>
-          </name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>short</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
         </named>
       </pointer>
     </pointer>

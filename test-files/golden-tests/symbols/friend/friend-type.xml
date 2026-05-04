@@ -53,10 +53,10 @@
   </record-interface>
   <friend>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </friend>
 </record>

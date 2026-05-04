@@ -31,10 +31,10 @@
   <parent>//////////////////////////8=</parent>
   <function>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>void</identifier>
-      </name>
+      </identifier-name>
     </named>
     <is-variadic>1</is-variadic>
   </function>
@@ -56,16 +56,16 @@
   <parent>//////////////////////////8=</parent>
   <function>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>void</identifier>
-      </name>
+      </identifier-name>
     </named>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <is-variadic>1</is-variadic>
   </function>
@@ -94,10 +94,10 @@
         <kind>type</kind>
         <function>
           <named>
-            <name>
+            <identifier-name>
               <kind>identifier</kind>
               <identifier>void</identifier>
-            </name>
+            </identifier-name>
           </named>
           <is-variadic>1</is-variadic>
         </function>
@@ -111,16 +111,16 @@
         <kind>type</kind>
         <function>
           <named>
-            <name>
+            <identifier-name>
               <kind>identifier</kind>
               <identifier>void</identifier>
-            </name>
+            </identifier-name>
           </named>
           <named>
-            <name>
+            <identifier-name>
               <kind>identifier</kind>
               <identifier>int</identifier>
-            </name>
+            </identifier-name>
           </named>
           <is-variadic>1</is-variadic>
         </function>
@@ -152,10 +152,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-variadic>1</is-variadic>
@@ -175,17 +175,17 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>

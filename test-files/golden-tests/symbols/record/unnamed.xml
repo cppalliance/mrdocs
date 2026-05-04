@@ -55,10 +55,10 @@
   <extraction>implementation-defined</extraction>
   <parent>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -124,10 +124,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -146,10 +146,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <function-object-impl>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</function-object-impl>
@@ -179,10 +179,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
-    </name>
+    </identifier-name>
   </named>
   <storage-class>extern</storage-class>
 </variable>
@@ -211,10 +211,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
-    </name>
+    </identifier-name>
   </named>
   <storage-class>extern</storage-class>
 </variable>

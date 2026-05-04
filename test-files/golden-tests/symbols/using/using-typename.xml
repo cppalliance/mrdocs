@@ -60,10 +60,10 @@
   <extraction>regular</extraction>
   <parent>pOlR4JvM07kjg0dk5WSjWZiChpc=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>

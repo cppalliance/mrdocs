@@ -112,29 +112,29 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>sNQWmhyaDchz7lnkqvq3y7z1HVU=</id>
       <identifier>C</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
         <identifier>N</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/uhjNgA3CZWDrUG93dNxJ8AXNlA=</id>
         <identifier>D</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>vrRDfj1fg+DIOkYAYqIPDg6Jfwc=</id>
           <identifier>M</identifier>
-        </name>
-      </name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <name>v</name>
   </param>

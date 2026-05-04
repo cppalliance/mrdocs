@@ -88,10 +88,10 @@
   <members>+yVVNLbCaXDXfZPFoKE5xv2xPZQ=</members>
   <members>tslXb2aqh8tYThe+A16a9felw5M=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -143,21 +143,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>ch</name>
   </param>
   <func-class>normal</func-class>
+  <noexcept>noexcept</noexcept>
   <constexpr>constexpr</constexpr>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
@@ -210,21 +211,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>unsigned char</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>ch</name>
   </param>
   <func-class>normal</func-class>
+  <noexcept>noexcept</noexcept>
   <constexpr>constexpr</constexpr>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>

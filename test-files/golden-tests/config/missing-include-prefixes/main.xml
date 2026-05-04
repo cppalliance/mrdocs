@@ -29,11 +29,11 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>KJQiUzqS/DyA8gVUV+KMxND3bns=</id>
       <identifier>unknown_type</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -52,16 +52,16 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>crCUrZiBv5bX9bGLig2c8iHIQTw=</id>
       <identifier>unknown_type</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>FSD/uKhIsgLLMoCQGwUzTPIPF6s=</id>
         <identifier>unknown_ns</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

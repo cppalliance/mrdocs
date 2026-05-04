@@ -102,10 +102,10 @@
       <kind>constant</kind>
       <name>N</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>unsigned long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -159,10 +159,10 @@
   </doc-comment>
   <scoped>1</scoped>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
 </enum>
 <function>
@@ -202,11 +202,11 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>xf6YhxRw8JpsHMwP6Tgyroti2gw=</id>
       <identifier>E</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -252,11 +252,25 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>Xw0FzsI74YygQXKG0MGYooG1ALg=</id>
       <identifier>SmallVector</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <id>xf6YhxRw8JpsHMwP6Tgyroti2gw=</id>
+            <identifier>E</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>3</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -302,11 +316,21 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>WLbdUmKVwrFg6XIcb9E1rmv/6pg=</id>
       <identifier>Result</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <id>xf6YhxRw8JpsHMwP6Tgyroti2gw=</id>
+            <identifier>E</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <func-class>normal</func-class>
 </function>

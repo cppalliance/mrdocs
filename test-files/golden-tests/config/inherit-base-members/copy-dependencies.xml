@@ -43,11 +43,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -103,11 +103,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -147,11 +147,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -191,11 +191,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -235,11 +235,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -279,11 +279,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -323,11 +323,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -367,11 +367,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -411,11 +411,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -492,11 +492,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -536,11 +536,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -573,21 +573,21 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -646,11 +646,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -690,11 +690,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -734,11 +734,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -778,11 +778,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
         <identifier>derived</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -822,11 +822,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -866,11 +866,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
         <identifier>derived</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -904,11 +904,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -948,11 +948,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -992,11 +992,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1036,11 +1036,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1074,11 +1074,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1112,11 +1112,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1149,21 +1149,21 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
   </base>
@@ -1212,11 +1212,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>aiF6nWGZXbG8UfC75J5tNuoPMRc=</id>
         <identifier>private_derived</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1256,11 +1256,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>aiF6nWGZXbG8UfC75J5tNuoPMRc=</id>
         <identifier>private_derived</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1293,21 +1293,21 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>protected</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>protected</access>
   </base>
@@ -1367,11 +1367,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>KpfFXd3FeSffU3rGswegSIkkCrM=</id>
         <identifier>protected_derived</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1411,11 +1411,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>KpfFXd3FeSffU3rGswegSIkkCrM=</id>
         <identifier>protected_derived</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1455,11 +1455,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1499,11 +1499,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1543,11 +1543,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1587,11 +1587,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1631,11 +1631,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=</id>
         <identifier>base_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1675,11 +1675,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1719,11 +1719,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1763,11 +1763,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sk8HTAQHhzXfZej4IJliADonAJQ=</id>
         <identifier>base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1801,11 +1801,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1839,11 +1839,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -1877,11 +1877,11 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFBKKIr2vNG5u3bxIaTbccBBkvQ=</id>
         <identifier>excluded_base</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>

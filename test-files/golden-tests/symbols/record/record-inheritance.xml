@@ -68,11 +68,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
         <identifier>C0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
   </base>
@@ -102,11 +102,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
         <identifier>C0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -136,11 +136,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
         <identifier>C0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>protected</access>
   </base>
@@ -170,11 +170,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
         <identifier>C0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
   </base>
@@ -204,11 +204,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
         <identifier>C0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
     <is-virtual>1</is-virtual>
@@ -240,11 +240,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>tm2khHa6qZM0lj1f7IwBdxVxDgE=</id>
         <identifier>C1</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
     <is-virtual>1</is-virtual>
@@ -276,21 +276,21 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>+FCicEQuRpyoPB1uYTGhWVcrlcE=</id>
         <identifier>C5</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>KS3H76wGd00jB2pnPVvaBxXfMk8=</id>
         <identifier>C6</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -376,11 +376,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>u38+snleg17KL7EQuD9FV1Z8b9E=</id>
         <identifier>S0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -411,11 +411,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>Tu+ql/Sdpk31DKHwwD/67uI3OZE=</id>
         <identifier>S1</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -446,21 +446,21 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>SjrYNgntOvtz+y7yw+WmqLzVdW0=</id>
         <identifier>S2</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ftBcWCAw4uNtak9kOXMXaOe13YU=</id>
         <identifier>S3</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -490,21 +490,21 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>u38+snleg17KL7EQuD9FV1Z8b9E=</id>
         <identifier>S0</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>private</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>Tu+ql/Sdpk31DKHwwD/67uI3OZE=</id>
         <identifier>S1</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>protected</access>
   </base>
@@ -543,10 +543,10 @@
   <base>
     <named>
       <is-pack-expansion>1</is-pack-expansion>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>Ts</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>

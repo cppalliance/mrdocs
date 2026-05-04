@@ -77,10 +77,10 @@
   <members>x5T8zVxBVmg1ModTwgEAXcXWKDg=</members>
   <members>uiH+ZSS+bYC5efGHgbdzlzXaV/o=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -108,10 +108,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>destructor</func-class>
   <requires>(sizeof(T) &gt; 4)</requires>
@@ -142,10 +142,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>destructor</func-class>
   <requires>(sizeof(T) &lt;= 4)</requires>

@@ -185,25 +185,26 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>other</name>
   </param>
   <func-class>normal</func-class>
+  <noexcept>noexcept</noexcept>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
 </function>

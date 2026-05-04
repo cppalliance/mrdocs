@@ -102,10 +102,10 @@
   <members>NsCpw4jurMmwsYzp5jE+NgG1eLE=</members>
   <members>HkGsg4usg6CytwvmqPS1ZbH99t8=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -134,10 +134,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>constructor</func-class>
   <is-record-method>1</is-record-method>
@@ -176,17 +176,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -248,11 +248,11 @@
   <members>aOkWiNwfbs/JSs8z9GP/vTAwsbA=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -301,22 +301,22 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>a</name>
@@ -369,19 +369,19 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -442,11 +442,11 @@
   <members>ycaQWu1bpL50KsLIdks09uNq0fw=</members>
   <members>4jg29DjTLdYrWC4PLhyeE68ztvQ=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -493,18 +493,18 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -555,21 +555,21 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>a</name>
@@ -620,11 +620,11 @@
   <members>JJtrUCsKraCMZOeI5dC8UzKCEmI=</members>
   <members>x8gblCF18xnamr/xm7nsLiL0taU=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -667,11 +667,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -724,21 +724,21 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>rhs</name>
@@ -835,10 +835,10 @@
   <members>KZjtZopBNIQu6m7CSYtaW15nzVY=</members>
   <members>GWvdMejp7gyak8VbJmHqkdDAIwk=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -866,10 +866,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -906,17 +906,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -964,10 +964,10 @@
   <members>16NjhjbwoK+Vd6t1bcmM8VOHLNA=</members>
   <members>bXeiHBnzzEhdDwJnWuc6kLHjG08=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -1015,20 +1015,20 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>value</name>
@@ -1080,20 +1080,20 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
           <identifier>B</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>value</name>
@@ -1151,10 +1151,10 @@
   <members>o9LYFrNet5gKZmsdnuPL/NS0fA8=</members>
   <members>6KV+YRw8Uydz6Cbetqmnu2NSCNw=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -1190,17 +1190,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -1247,26 +1247,26 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>b</name>
   </param>

@@ -67,10 +67,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <constexpr>constexpr</constexpr>
@@ -122,10 +122,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <constexpr>constexpr</constexpr>
@@ -187,10 +187,10 @@
   <members>yi6+RKHXbSoVR9R7xtUev7R+tpA=</members>
   <members>rxxMRI4yLbPZ6gsq6d/+e9IVaeQ=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -239,10 +239,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <constexpr>constexpr</constexpr>
@@ -302,17 +302,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>ch</name>
   </param>

@@ -30,11 +30,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>2iD5AHuu7qrCVJnAauz4We2QkKU=</id>
         <identifier>ConstBase</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -75,10 +75,10 @@
   <members>hbsgojOPl9JVh9Nb8C7b2dZ389k=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -99,10 +99,10 @@
   <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -125,10 +125,10 @@
   <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -152,11 +152,11 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</id>
         <identifier>Base</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -196,10 +196,10 @@
   <members>hbsgojOPl9JVh9Nb8C7b2dZ389k=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -220,10 +220,10 @@
   <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -246,10 +246,10 @@
   <parent>ZIHuevKEF1ZlGviVwUZq1CEFBRc=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -299,10 +299,10 @@
   <parent>2iD5AHuu7qrCVJnAauz4We2QkKU=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>

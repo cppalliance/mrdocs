@@ -47,16 +47,16 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ufjqSG34/fsb1/dKE4dBgs8spHM=</id>
         <identifier>path</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
           <identifier>std</identifier>
-        </name>
-      </name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>

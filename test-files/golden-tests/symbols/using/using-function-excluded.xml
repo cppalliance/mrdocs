@@ -51,14 +51,14 @@
     </brief>
   </doc-comment>
   <class>normal</class>
-  <name>
+  <identifier-name>
     <kind>identifier</kind>
     <identifier>f</identifier>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
       <identifier>A</identifier>
-    </name>
-  </name>
+    </identifier-name>
+  </identifier-name>
 </using>
 </mrdocs>

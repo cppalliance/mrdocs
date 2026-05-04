@@ -27,10 +27,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <constraints>std::is_class_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>

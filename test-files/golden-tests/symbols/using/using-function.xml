@@ -55,17 +55,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>
@@ -95,15 +95,15 @@
     </brief>
   </doc-comment>
   <class>normal</class>
-  <name>
+  <identifier-name>
     <kind>identifier</kind>
     <identifier>f</identifier>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
       <identifier>A</identifier>
-    </name>
-  </name>
+    </identifier-name>
+  </identifier-name>
   <shadow-declarations>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</shadow-declarations>
 </using>
 <function>
@@ -131,17 +131,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
   <func-class>normal</func-class>

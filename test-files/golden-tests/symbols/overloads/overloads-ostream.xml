@@ -91,11 +91,11 @@
   <members>uV72HdBWsWZ4EwLG0yd905Rczwc=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -140,19 +140,19 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>unsigned int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>shift</name>
   </param>
@@ -200,19 +200,19 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
         <identifier>A</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>shift</name>
   </param>
@@ -234,31 +234,31 @@
   <extraction>regular</extraction>
   <parent>QelU2GDLOEeJSbLfOayOweDPxeI=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>obj</name>
   </param>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>double</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>shift</name>
   </param>
@@ -407,11 +407,11 @@
   <members>ojxr+36qVG3RcL9uyYCrmeMtpKQ=</members>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
         <identifier>OStream</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
 </overloads>
@@ -469,32 +469,32 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
         <identifier>OStream</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
           <identifier>OStream</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>os</name>
   </param>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>VFtzIPiiZVDB77znFM+ODgLmKOw=</id>
         <identifier>B</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -553,32 +553,32 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
         <identifier>OStream</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>A6n++lhHK0l+ailOmBfa/TZCXd8=</id>
           <identifier>OStream</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>os</name>
   </param>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>QiJ36sJ5iTYFjV9O2r8TuROMu6Y=</id>
         <identifier>C</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>

@@ -54,10 +54,10 @@
   <extraction>regular</extraction>
   <parent>rOga+mYntM7ytFb7bhJSklZ0r34=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
   <is-variant>1</is-variant>
@@ -78,10 +78,10 @@
   <extraction>regular</extraction>
   <parent>rOga+mYntM7ytFb7bhJSklZ0r34=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
   <is-variant>1</is-variant>
@@ -129,10 +129,10 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
   <is-variant>1</is-variant>
@@ -153,10 +153,10 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
   <is-variant>1</is-variant>
@@ -177,10 +177,10 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>

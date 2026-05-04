@@ -128,10 +128,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>char</identifier>
-    </name>
+    </identifier-name>
   </named>
   <constants>WhHxTXqItGXwZujc82O1Xfzbaz4=</constants>
   <constants>Rifzp55QTXd/noKg5TyWoEJWlpE=</constants>
@@ -199,10 +199,10 @@
   </doc-comment>
   <scoped>1</scoped>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <constants>RyRlkoU0rHCqW5D5O8YXfJrvfaw=</constants>
   <constants>xFkU6j7yjwyQB2aStQjCIF9O+sQ=</constants>
@@ -287,10 +287,10 @@
   <parent>//////////////////////////8=</parent>
   <scoped>1</scoped>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>char</identifier>
-    </name>
+    </identifier-name>
   </named>
   <constants>m/aInWQVfzBhSp/BbwL1S6HYfgI=</constants>
   <constants>s6xZcC+IxMf8dGaSjBuD4CkmAuU=</constants>

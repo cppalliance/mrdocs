@@ -31,20 +31,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <is-pack-expansion>1</is-pack-expansion>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Ts</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>args</name>
@@ -74,19 +74,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <is-pack-expansion>1</is-pack-expansion>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Ts</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
     <name>args</name>
@@ -116,19 +116,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <is-pack-expansion>1</is-pack-expansion>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Ts</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>args</name>
@@ -158,18 +158,18 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
       <is-pack-expansion>1</is-pack-expansion>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>Ts</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>args</name>
   </param>
@@ -198,19 +198,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <r-value-reference>
       <is-pack-expansion>1</is-pack-expansion>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Args</identifier>
-        </name>
+        </identifier-name>
       </named>
     </r-value-reference>
     <name>args</name>
@@ -241,20 +241,20 @@
   <parent>//////////////////////////8=</parent>
   <pointer>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </pointer>
   <param>
     <r-value-reference>
       <is-pack-expansion>1</is-pack-expansion>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Args</identifier>
-        </name>
+        </identifier-name>
       </named>
     </r-value-reference>
     <name>args</name>

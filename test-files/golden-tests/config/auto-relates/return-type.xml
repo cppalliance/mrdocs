@@ -151,10 +151,10 @@
       <kind>constant</kind>
       <name>N</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>unsigned long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -204,11 +204,11 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
       <identifier>A</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -254,11 +254,25 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>Xw0FzsI74YygQXKG0MGYooG1ALg=</id>
       <identifier>SmallVector</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+            <identifier>A</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>3</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -304,11 +318,21 @@
     </reference>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>WLbdUmKVwrFg6XIcb9E1rmv/6pg=</id>
       <identifier>Result</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+            <identifier>A</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <func-class>normal</func-class>
 </function>

@@ -113,16 +113,16 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
       <identifier>absolute_uri_rule_t</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
         <identifier>detail</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </named>
   <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>
@@ -142,16 +142,16 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
       <identifier>absolute_uri_rule_t</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
         <identifier>regular</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </named>
   <initializer>{}</initializer>
   <is-constexpr>1</is-constexpr>

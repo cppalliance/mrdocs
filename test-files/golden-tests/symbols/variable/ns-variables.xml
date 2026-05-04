@@ -59,10 +59,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <is-constexpr>1</is-constexpr>
@@ -82,10 +82,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <is-constinit>1</is-constinit>
@@ -111,10 +111,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>1</initializer>
   <storage-class>extern</storage-class>
@@ -141,10 +141,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>1</initializer>
   <storage-class>extern</storage-class>
@@ -165,10 +165,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>double</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>3.14</initializer>
 </variable>
@@ -187,11 +187,11 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <storage-class>extern</storage-class>
 </variable>
@@ -210,10 +210,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <is-thread-local>1</is-thread-local>
@@ -233,10 +233,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <storage-class>static</storage-class>
@@ -257,10 +257,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <storage-class>static</storage-class>

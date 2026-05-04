@@ -34,10 +34,10 @@
       <type-targ>
         <kind>type</kind>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>int</identifier>
-          </name>
+          </identifier-name>
         </named>
       </type-targ>
       <key-kind>typename</key-kind>
@@ -67,11 +67,11 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>OaOnBHKCiwPzSl9scjYZHnbbONQ=</id>
       <identifier>Task</identifier>
-    </name>
+    </specialization-name>
   </named>
   <func-class>normal</func-class>
 </function>

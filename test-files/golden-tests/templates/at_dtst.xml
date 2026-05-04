@@ -26,14 +26,14 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <identifier>XX</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>

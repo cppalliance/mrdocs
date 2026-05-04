@@ -35,10 +35,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>5</initializer>
 </variable>
@@ -58,10 +58,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>4</initializer>
 </variable>
@@ -81,10 +81,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -109,10 +109,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>2</initializer>
   <is-constexpr>1</is-constexpr>
@@ -132,10 +132,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -162,10 +162,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>3</initializer>
   <is-inline>1</is-inline>
@@ -186,10 +186,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -215,10 +215,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>1</initializer>
   <is-inline>1</is-inline>
@@ -239,10 +239,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -269,10 +269,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>

@@ -86,10 +86,10 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -130,18 +130,18 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>n</name>
   </param>
@@ -175,11 +175,20 @@
   <key-kind>class</key-kind>
   <base>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</id>
         <identifier>base</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
     <access>public</access>
   </base>
@@ -212,10 +221,10 @@
   <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -239,18 +248,18 @@
   <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>n</name>
   </param>
@@ -302,11 +311,20 @@
   </template>
   <base>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</id>
         <identifier>base</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
     <access>public</access>
   </base>
@@ -349,10 +367,10 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -394,18 +412,18 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>n</name>
   </param>

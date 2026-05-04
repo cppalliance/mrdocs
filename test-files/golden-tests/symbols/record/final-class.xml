@@ -90,21 +90,21 @@
   <is-final>1</is-final>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>AiD3OiD6LwxTupKA1088x45xmFY=</id>
         <identifier>B1</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>d3qgfOExBXZ0LWp+CxgeblnNu78=</id>
         <identifier>B2</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>

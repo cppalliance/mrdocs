@@ -46,10 +46,10 @@
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
   <scoped>1</scoped>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <constants>wwbsykALj7y7OWYYyP6gTbo876U=</constants>
 </enum>
@@ -93,10 +93,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

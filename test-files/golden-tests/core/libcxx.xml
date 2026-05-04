@@ -78,17 +78,17 @@
   </doc-comment>
   <named>
     <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>

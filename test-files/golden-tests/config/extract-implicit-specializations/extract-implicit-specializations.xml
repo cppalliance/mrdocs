@@ -30,11 +30,20 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</id>
         <identifier>B</identifier>
-      </name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
     <access>public</access>
   </base>
@@ -66,10 +75,10 @@
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
@@ -125,10 +134,10 @@
   <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <func-class>normal</func-class>

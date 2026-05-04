@@ -99,10 +99,10 @@
   <members>F4U5PyaDoe8VKg41ubwK8aze9QE=</members>
   <members>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -139,22 +139,23 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit(sizeof(T) &gt; 4)</explicit>
 </function>
 <function>
   <name>A</name>
@@ -190,17 +191,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>double</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -241,22 +242,23 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit</explicit>
 </function>
 <function>
   <name>A</name>
@@ -292,17 +294,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>U</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -315,6 +317,7 @@
   </template>
   <func-class>constructor</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit(sizeof(U) &gt; 4)</explicit>
 </function>
 <function>
   <name>operator </name>
@@ -356,10 +359,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>U</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -371,6 +374,7 @@
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
+  <explicit>explicit(sizeof(U) &gt; 1)</explicit>
 </function>
 <function>
   <name>operator bool</name>
@@ -412,14 +416,15 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
+  <explicit>explicit</explicit>
 </function>
 <function>
   <name>operator char</name>
@@ -461,14 +466,15 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>char</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
+  <explicit>explicit(sizeof(T) &gt; 4)</explicit>
 </function>
 <function>
   <name>operator double</name>
@@ -510,10 +516,10 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>double</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>

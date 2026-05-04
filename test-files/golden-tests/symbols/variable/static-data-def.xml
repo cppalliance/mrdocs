@@ -74,10 +74,10 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <storage-class>static</storage-class>
@@ -104,10 +104,10 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>1</initializer>
   <storage-class>static</storage-class>
@@ -135,10 +135,10 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>2</initializer>
   <storage-class>static</storage-class>
@@ -168,10 +168,10 @@
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>3</initializer>
   <storage-class>static</storage-class>
@@ -200,10 +200,10 @@
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>4</initializer>
   <storage-class>static</storage-class>
@@ -224,10 +224,10 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>5</initializer>
   <storage-class>static</storage-class>
@@ -250,10 +250,10 @@
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>6</initializer>
   <storage-class>static</storage-class>
@@ -275,10 +275,10 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>7</initializer>
   <storage-class>static</storage-class>
@@ -334,10 +334,10 @@
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
     <is-const>1</is-const>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <storage-class>static</storage-class>
@@ -359,10 +359,10 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>0</initializer>
   <storage-class>static</storage-class>

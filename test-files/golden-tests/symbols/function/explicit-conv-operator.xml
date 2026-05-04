@@ -85,13 +85,14 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit</explicit>
 </function>
 <record>
   <name>ExplicitExpression</name>
@@ -113,10 +114,10 @@
       <kind>constant</kind>
       <name>B</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -176,13 +177,14 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit(B)</explicit>
 </function>
 <record>
   <name>ExplicitFalse</name>
@@ -255,13 +257,14 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit(false)</explicit>
 </function>
 <record>
   <name>ExplicitTrue</name>
@@ -334,12 +337,13 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>bool</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
+  <explicit>explicit(true)</explicit>
 </function>
 </mrdocs>

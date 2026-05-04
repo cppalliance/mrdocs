@@ -176,10 +176,10 @@
   <members>l8nlq2W8r0sGfJplanVYEUfvO8o=</members>
   <members>c8O1q40UylpJzj8XWv17OnPP6Ow=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -224,18 +224,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>0</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -284,18 +288,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>1</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -344,18 +352,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>2</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -404,18 +416,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>3</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -464,18 +480,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>4</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -524,18 +544,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>5</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -584,18 +608,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>6</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -644,18 +672,22 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>X9R785kQEYyJ0tnnSr0SvdLAZQw=</id>
         <identifier>param_t</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>7</value>
+        </constant-targ>
+      </specialization-name>
     </named>
     <name>a</name>
   </param>
@@ -713,10 +745,10 @@
   <members>pkByPldRuMDs8h9fkQnHTrf/rxM=</members>
   <members>bDQUNJ3SHpCjwF8zCqo7Jw8Cjic=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -760,18 +792,18 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>xp72Inw+cnb6GxbVsJgjH7TkgII=</id>
         <identifier>B</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -819,17 +851,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -887,10 +919,10 @@
   <members>8LU2TGwTCTeuAKkMvJpmvMdlTeE=</members>
   <members>aEsACCmKRAV5MPYavFglHXgugn0=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -934,28 +966,28 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>xp72Inw+cnb6GxbVsJgjH7TkgII=</id>
         <identifier>B</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>xFab/Y8fwS0B1mPatfT5Qz3HpRI=</id>
           <identifier>A</identifier>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
             <identifier>N</identifier>
-          </name>
-        </name>
-      </name>
+          </identifier-name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -1003,17 +1035,17 @@
     </param>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>a</name>
   </param>
@@ -1050,10 +1082,10 @@
       <kind>constant</kind>
       <name>N</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>

@@ -65,10 +65,10 @@
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -88,10 +88,10 @@
   <extraction>regular</extraction>
   <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>double</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>
@@ -121,17 +121,17 @@
   </doc-comment>
   <member-pointer>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
         <identifier>S</identifier>
-      </name>
+      </identifier-name>
     </named>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>double</identifier>
-      </name>
+      </identifier-name>
     </named>
   </member-pointer>
   <initializer>&amp;S::y</initializer>
@@ -162,17 +162,17 @@
   </doc-comment>
   <member-pointer>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
         <identifier>S</identifier>
-      </name>
+      </identifier-name>
     </named>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </member-pointer>
   <initializer>&amp;S::x</initializer>

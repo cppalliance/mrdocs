@@ -118,19 +118,19 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>EOLlVkgHSwHfoF79RB5z5u63swE=</id>
         <identifier>dynamic_bitset</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>n</name>
   </param>
@@ -231,21 +231,21 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>RjxurTLspCmZOtygTU8hoUYrzSY=</id>
         <identifier>istream</identifier>
-      </name>
+      </identifier-name>
     </named>
   </l-value-reference>
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>RjxurTLspCmZOtygTU8hoUYrzSY=</id>
           <identifier>istream</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>is</name>
@@ -253,11 +253,20 @@
   <param>
     <l-value-reference>
       <named>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>EOLlVkgHSwHfoF79RB5z5u63swE=</id>
           <identifier>dynamic_bitset</identifier>
-        </name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>B</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </l-value-reference>
     <name>bs</name>

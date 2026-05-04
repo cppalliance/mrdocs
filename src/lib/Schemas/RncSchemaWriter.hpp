@@ -62,8 +62,8 @@ removeSuffix(std::string_view s, std::string_view suffix)
     becomes "type-tparam"). The "Name" suffix is intentionally not
     stripped: the base struct `Name` itself stays "name" and concrete
     name types like `IdentifierName` stay "identifier-name", matching
-    XMLWriter's writePolymorphic which uses the base/concrete type
-    name directly.
+    XMLWriter's writePolymorphic which uses the `kebab(kind) + "-name"`
+    pattern.
 */
 template <typename T>
 std::string tagName()
@@ -169,12 +169,7 @@ std::string rncMember()
         }
         else if constexpr (std::is_same_v<V, mrdocs::Name>)
         {
-            // XMLWriter's writePolymorphic for Polymorphic<Name>
-            // falls into the generic case where T is deduced to the
-            // base `Name` (Polymorphic::operator* returns a base
-            // reference), so the element opened is always <name>
-            // with the base's described members.
-            return "Name";
+            return "AnyName";
         }
         else if constexpr (std::is_same_v<V, mrdocs::TParam>)
         {
@@ -233,15 +228,13 @@ std::string rncQuantifier()
 
 /** True if this member type is skipped by XMLWriter.
 
-    Non-described enums and non-described structs without
-    explicit handling in XMLWriter::write() (NoexceptInfo,
-    ExplicitInfo) fall through without producing output.
+    Non-described enums (TypeKind, NameKind dispatches happen via
+    the polymorphic tag name itself, so the enum value is not
+    re-emitted) fall through without producing output.
 */
 template <typename M>
 inline constexpr bool rnc_is_omitted_v =
-    (std::is_enum_v<M> && !describe::has_describe_enumerators<M>::value) ||
-    std::is_same_v<M, NoexceptInfo> ||
-    std::is_same_v<M, ExplicitInfo>;
+    std::is_enum_v<M> && !describe::has_describe_enumerators<M>::value;
 
 /** True if a described struct T (XMLWriter uses tagName<T> as the
     element name, dropping the member name). */

@@ -37,10 +37,10 @@
   </doc-comment>
   <scoped>1</scoped>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <constants>BBOAF6yhnTvCHkG9Jr5y9fvtD58=</constants>
   <constants>Lx0D7a81JkdDRHL9+a9QPTM4Np0=</constants>

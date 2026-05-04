@@ -30,10 +30,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <constraints>C</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -41,10 +41,10 @@
       <kind>constant</kind>
       <name>C</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
     <type-tparam>
@@ -70,10 +70,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <constraints>C</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -86,10 +86,10 @@
       <kind>constant</kind>
       <name>C</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -110,10 +110,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <constraints>std::is_class_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -141,10 +141,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <constraints>std::is_class_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>

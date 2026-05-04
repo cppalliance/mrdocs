@@ -72,16 +72,16 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ZFLr7GRQIMnYkYf3EtAsQX/ibQE=</id>
         <identifier>base_see</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
           <identifier>see_below_ns</identifier>
-        </name>
-      </name>
+        </identifier-name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -123,10 +123,10 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -147,10 +147,10 @@
   <extraction>regular</extraction>
   <parent>J1syoWzn2cGgGxt+fceKEo2Jpzc=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

@@ -175,10 +175,10 @@
   <param>
     <r-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Arg</identifier>
-        </name>
+        </identifier-name>
       </named>
     </r-value-reference>
     <name>obj</name>
@@ -211,10 +211,10 @@
   <param>
     <r-value-reference>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>Arg</identifier>
-        </name>
+        </identifier-name>
       </named>
     </r-value-reference>
     <name>obj</name>

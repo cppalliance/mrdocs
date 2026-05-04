@@ -49,11 +49,20 @@
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
       <identifier>A</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -79,11 +88,20 @@
   <extraction>regular</extraction>
   <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -166,16 +184,25 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
         <identifier>C</identifier>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
           <identifier>N</identifier>
-        </name>
-      </name>
+        </identifier-name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
     </named>
     <access>public</access>
   </base>

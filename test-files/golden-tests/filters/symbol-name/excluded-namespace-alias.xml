@@ -64,16 +64,16 @@
   <identifier-name>
     <kind>identifier</kind>
     <identifier>E</identifier>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>Rj2Fd5N7JujyJxCEKO4hXgEbuZE=</id>
       <identifier>S</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
         <identifier>B</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </identifier-name>
 </namespace-alias>
 </mrdocs>

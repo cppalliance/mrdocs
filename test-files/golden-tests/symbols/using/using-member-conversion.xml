@@ -40,10 +40,10 @@
   <pointer>
     <function>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </function>
   </pointer>
@@ -118,11 +118,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
       <identifier>fun_ptr</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
@@ -155,11 +155,11 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
         <identifier>X</identifier>
-      </name>
+      </identifier-name>
     </named>
     <access>public</access>
   </base>
@@ -207,11 +207,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
       <identifier>fun_ptr</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>
@@ -243,15 +243,15 @@
     </brief>
   </doc-comment>
   <class>normal</class>
-  <name>
+  <identifier-name>
     <kind>identifier</kind>
     <identifier>operator void(*)()</identifier>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
       <identifier>X</identifier>
-    </name>
-  </name>
+    </identifier-name>
+  </identifier-name>
   <shadow-declarations>Yyyb35deIA+gpVYakhwVjtGJBkQ=</shadow-declarations>
 </using>
 <function>
@@ -287,11 +287,11 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>+MazWJHV0srd0yDU8brifDayTEU=</id>
       <identifier>fun_ptr</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>conversion</func-class>
   <is-record-method>1</is-record-method>

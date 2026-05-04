@@ -44,16 +44,16 @@
     </returns>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>7PyvYkwEUjqZ90L8TvRpXXrIUqA=</id>
       <identifier>StringRef</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>AKTakQzBfC0KTDMPjnNxxSVhb0E=</id>
         <identifier>llvm</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

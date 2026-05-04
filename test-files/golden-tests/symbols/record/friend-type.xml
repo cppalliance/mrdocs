@@ -49,11 +49,11 @@
   </record-interface>
   <friend>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
         <identifier>Z</identifier>
-      </name>
+      </identifier-name>
     </named>
     <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
   </friend>
@@ -93,11 +93,11 @@
   </record-interface>
   <friend>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
   </friend>
@@ -137,11 +137,11 @@
   </record-interface>
   <friend>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
         <identifier>U</identifier>
-      </name>
+      </identifier-name>
     </named>
     <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
   </friend>
