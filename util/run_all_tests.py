@@ -377,9 +377,8 @@ def main() -> None:
                 "to see the exact failures, fix the code/test, then rerun."
             ),
             "xml-lint": (
-                "XML lint failed. Ensure Java and libxml2 are installed and on PATH. "
-                "Reproduce with `ctest --test-dir {build} -V -R xml-lint`. "
-                "If trang/rng files are missing, verify util/trang.jar exists."
+                "XML lint failed. Ensure libxml2 is installed and on PATH. "
+                "Reproduce with `ctest --test-dir {build} -V -R xml-lint`."
             ),
             "yaml-schema-check": (
                 "YAML schema check failed. Run `python util/generate-yaml-schema.py --check` from the repo root, "

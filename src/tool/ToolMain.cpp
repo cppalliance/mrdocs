@@ -15,7 +15,7 @@
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/Report.hpp>
 #include <lib/Schemas/DomSchemaWriter.hpp>
-#include <lib/Schemas/RncSchemaWriter.hpp>
+#include <lib/Schemas/RngSchemaWriter.hpp>
 #include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
@@ -168,19 +168,19 @@ mrdocs_main(int argc, char const** argv)
         }
         os << dom::JSON::stringify(schema::buildDomJsonSchema());
 
-        // Write RNC schema (replaces hand-maintained mrdocs.rnc).
-        std::string rncPath = files::appendPath(dir, "mrdocs.rnc");
-        std::ofstream rncOs(rncPath,
+        // Write the RELAX NG schema (XML syntax) for the XML output.
+        std::string rngPath = files::appendPath(dir, "mrdocs.rng");
+        std::ofstream rngOs(rngPath,
             std::ios_base::binary |
             std::ios_base::out |
             std::ios_base::trunc);
-        if (!rncOs.is_open())
+        if (!rngOs.is_open())
         {
             llvm::errs() << "error: cannot open \""
-                         << rncPath << "\" for writing\n";
+                         << rngPath << "\" for writing\n";
             return EXIT_FAILURE;
         }
-        rncOs << schema::buildRncSchema();
+        rngOs << schema::buildRngSchema();
 
         return EXIT_SUCCESS;
     }
