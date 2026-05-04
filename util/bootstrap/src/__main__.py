@@ -130,11 +130,6 @@ Examples:
         default=None,
         help="Python executable path",
     )
-    tools_group.add_argument(
-        "--java-path",
-        default=None,
-        help="Java executable path",
-    )
 
     # Directories
     dir_group = parser.add_argument_group("Directories")

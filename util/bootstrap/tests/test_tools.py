@@ -9,7 +9,7 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-"""Tests for tools/compilers.py, tools/ninja.py, tools/detection.py, tools/java.py."""
+"""Tests for tools/compilers.py, tools/ninja.py, tools/detection.py."""
 
 import io
 import json
@@ -28,7 +28,6 @@ sys.path.insert(0, str(__file__).rsplit("/", 2)[0])
 from src.tools.compilers import check_compiler, probe_compilers, sanitizer_flag_name
 from src.tools.detection import is_tool_executable, find_tool
 from src.tools.ninja import get_ninja_asset_name, install_ninja
-from src.tools.java import find_java
 from src.core.ui import TextUI
 
 
@@ -158,20 +157,6 @@ class TestFindTool(unittest.TestCase):
             with patch("src.tools.detection.is_windows", return_value=False):
                 result = find_tool("python")
                 self.assertEqual(result, sys.executable)
-
-    @patch("src.tools.detection.is_windows", return_value=True)
-    @patch("src.tools.detection.shutil.which", return_value=None)
-    def test_windows_java_delegates_to_find_java(self, mock_which, mock_win):
-        mock_mod = MagicMock()
-        mock_mod.find_vs_tool = MagicMock(return_value=None)
-        mock_java_mod = MagicMock()
-        mock_java_mod.find_java = MagicMock(return_value="C:\\Java\\bin\\java.exe")
-        with patch.dict("sys.modules", {
-            "src.tools.visual_studio": mock_mod,
-            "src.tools.java": mock_java_mod,
-        }):
-            result = find_tool("java")
-            self.assertEqual(result, "C:\\Java\\bin\\java.exe")
 
     @patch("src.tools.detection.is_windows", return_value=True)
     @patch("src.tools.detection.shutil.which", return_value=None)
@@ -558,86 +543,6 @@ class TestInstallNinja(unittest.TestCase):
                 ui=ui,
             )
         self.assertIsNone(result)
-
-
-# ── find_java ──────────────────────────────────────────────────────
-
-class TestFindJava(unittest.TestCase):
-
-    @patch("src.tools.java.is_windows", return_value=False)
-    def test_non_windows_returns_none(self, _):
-        self.assertIsNone(find_java())
-
-    @patch("src.tools.java.is_windows", return_value=True)
-    @patch("src.tools.java.os.path.isfile", return_value=True)
-    def test_java_home_found(self, mock_isfile, mock_win):
-        with patch.dict(os.environ, {"JAVA_HOME": "C:\\Java\\jdk"}):
-            result = find_java()
-            self.assertEqual(result, os.path.join("C:\\Java\\jdk", "bin", "java.exe"))
-
-    @patch("src.tools.java.is_windows", return_value=True)
-    @patch("src.tools.java.os.path.isfile", return_value=False)
-    @patch("src.tools.detection.os.path.isdir", return_value=False)
-    def test_java_home_not_found_no_registry(self, mock_isdir, mock_isfile, mock_win):
-        with patch.dict(os.environ, {"JAVA_HOME": "C:\\Java\\jdk", "ProgramFiles": "", "ProgramFiles(x86)": ""}, clear=False):
-            result = find_java()
-            self.assertIsNone(result)
-
-    @patch("src.tools.java.is_windows", return_value=True)
-    @patch("src.tools.java.os.path.isfile")
-    @patch("src.tools.detection.os.path.isdir", return_value=True)
-    @patch("os.listdir", return_value=["jre1.8.0_301"])
-    def test_program_files_found(self, mock_listdir, mock_isdir, mock_isfile, mock_win):
-        def isfile_side(p):
-            return "jre1.8.0_301" in p
-        mock_isfile.side_effect = isfile_side
-        with patch.dict(os.environ, {
-            "JAVA_HOME": "",
-            "ProgramFiles": "C:\\Program Files",
-            "ProgramFiles(x86)": "",
-        }, clear=False):
-            result = find_java()
-            self.assertIsNotNone(result)
-            self.assertIn("java.exe", result)
-
-    @patch("src.tools.java.is_windows", return_value=True)
-    @patch("src.tools.java.os.path.isfile", return_value=False)
-    @patch("src.tools.detection.os.path.isdir", return_value=False)
-    def test_nothing_found_returns_none(self, mock_isdir, mock_isfile, mock_win):
-        with patch.dict(os.environ, {
-            "JAVA_HOME": "",
-            "ProgramFiles": "",
-            "ProgramFiles(x86)": "",
-        }, clear=False):
-            result = find_java()
-            self.assertIsNone(result)
-
-    @patch("src.tools.java.is_windows", return_value=True)
-    @patch("src.tools.java.os.path.isfile", return_value=False)
-    def test_winreg_lookup(self, mock_isfile, mock_win):
-        """Test registry lookup path with mocked winreg module."""
-        mock_winreg = MagicMock()
-        mock_winreg.HKEY_LOCAL_MACHINE = 0x80000002
-
-        # Make OpenKey return a context manager
-        mock_key = MagicMock()
-        mock_key.__enter__ = MagicMock(return_value=mock_key)
-        mock_key.__exit__ = MagicMock(return_value=False)
-        mock_winreg.OpenKey = MagicMock(return_value=mock_key)
-        mock_winreg.QueryValueEx = MagicMock(side_effect=[
-            ("1.8", None),  # CurrentVersion
-            ("C:\\Java\\jre1.8", None),  # JavaHome
-        ])
-
-        # Override isfile to return True for the java.exe path
-        def isfile_side(p):
-            return p == os.path.join("C:\\Java\\jre1.8", "bin", "java.exe")
-        mock_isfile.side_effect = isfile_side
-
-        with patch.dict(os.environ, {"JAVA_HOME": "", "ProgramFiles": "", "ProgramFiles(x86)": ""}):
-            with patch.dict("sys.modules", {"winreg": mock_winreg}):
-                result = find_java()
-                self.assertEqual(result, os.path.join("C:\\Java\\jre1.8", "bin", "java.exe"))
 
 
 if __name__ == "__main__":

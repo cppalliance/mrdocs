@@ -78,15 +78,6 @@ PREREQUISITES = [
         install_windows="Install Visual Studio with C++ workload   # or: choco install visualstudio2022-workload-nativedesktop",
         check_cmd="",
     ),
-    Prerequisite(
-        name="java",
-        description="Java runtime (for XML schema validation in tests)",
-        required=False,
-        install_linux="sudo apt-get install -y default-jre",
-        install_macos="brew install openjdk",
-        install_windows="choco install openjdk   # or: winget install Microsoft.OpenJDK.21",
-        check_cmd="java -version",
-    ),
 ]
 
 
@@ -144,7 +135,7 @@ def check_prerequisites(
     Check all prerequisites and return a list of those that are missing.
 
     Args:
-        build_tests: If True, also check optional prerequisites needed for tests (java).
+        build_tests: If True, also check optional prerequisites needed for tests.
         cc: User-specified C compiler path (if set, skip compiler search).
         cxx: User-specified C++ compiler path (if set, skip compiler search).
         ui: TextUI for output.
@@ -159,11 +150,6 @@ def check_prerequisites(
     import copy
     checked = [copy.copy(p) for p in PREREQUISITES]
     for prereq in checked:
-        # Skip optional tools when not needed
-        if not prereq.required:
-            if prereq.name == "java" and not build_tests:
-                continue
-
         # If user already specified a compiler, skip auto-detection
         if prereq.name == "cc" and (cc or cxx):
             prereq.found_path = cc or cxx
@@ -299,7 +285,6 @@ _APT_PACKAGES = {
     "git": "git",
     "python3": "python3",
     "cc": "build-essential",
-    "java": "default-jre",
 }
 
 _BREW_PACKAGES = {
@@ -307,7 +292,6 @@ _BREW_PACKAGES = {
     "git": "git",
     "python3": "python3",
     "cc": None,  # Xcode command-line tools, not a brew package
-    "java": "openjdk",
 }
 
 

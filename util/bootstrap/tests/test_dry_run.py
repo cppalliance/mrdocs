@@ -1201,26 +1201,6 @@ class TestDryRunSkipsPrerequisites(unittest.TestCase):
                     # Should not raise even if tools are missing
                     installer.check_system_prerequisites()
 
-    def test_prerequisites_includes_java_when_testing(self):
-        """check_system_prerequisites should mention java when build_tests is True."""
-        with tempfile.TemporaryDirectory() as tmpdir:
-            installer = self._make_installer(tmpdir, build_tests=True)
-            with patch("sys.stdout", new_callable=StringIO) as mock_out:
-                with patch("sys.stderr", new_callable=StringIO):
-                    installer.check_system_prerequisites()
-                    output = mock_out.getvalue()
-        self.assertIn("java", output)
-
-    def test_prerequisites_omits_java_when_not_testing(self):
-        """check_system_prerequisites should omit java when build_tests is False."""
-        with tempfile.TemporaryDirectory() as tmpdir:
-            installer = self._make_installer(tmpdir, build_tests=False)
-            with patch("sys.stdout", new_callable=StringIO) as mock_out:
-                with patch("sys.stderr", new_callable=StringIO):
-                    installer.check_system_prerequisites()
-                    output = mock_out.getvalue()
-        self.assertNotIn("java", output)
-
 
 if __name__ == "__main__":
     unittest.main()

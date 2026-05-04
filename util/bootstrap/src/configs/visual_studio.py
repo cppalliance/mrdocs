@@ -167,8 +167,6 @@ def generate_visual_studio_run_configs(
             elif new_task["command"] == "npm" and "workingDirectory" in new_task:
                 new_task["appliesTo"] = os.path.join(new_task["workingDirectory"], "package.json")
                 new_task["appliesTo"] = rel_to_mrdocs_dir(new_task["appliesTo"], source_dir)
-            elif new_task["taskLabel"] == "Generate RelaxNG Schema":
-                new_task["appliesTo"] = "*"
             elif new_task["taskLabel"] == "XML Lint with RelaxNG Schema":
                 new_task["appliesTo"] = "mrdocs.rng"
 

@@ -54,7 +54,7 @@ def find_tool(tool: str) -> Optional[str]:
     1. Environment variables like TOOL_ROOT, TOOL_DIR, TOOL_PATH, etc.
     2. System PATH
     3. Visual Studio installation (Windows only)
-    4. Special handling for java and python
+    4. Special handling for python
 
     Args:
         tool: Name of the tool to find.
@@ -93,13 +93,6 @@ def find_tool(tool: str) -> Optional[str]:
         tool_path = find_vs_tool(tool)
         if tool_path:
             return tool_path
-
-        # Special handling for java on Windows
-        if tool == "java":
-            from .java import find_java
-            tool_path = find_java()
-            if tool_path:
-                return tool_path
 
     # 4. Special handling for python
     if tool == "python":

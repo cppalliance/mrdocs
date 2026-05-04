@@ -62,13 +62,11 @@ class TestBuildArgParser(unittest.TestCase):
             "--ninja-path", "/usr/bin/ninja",
             "--git-path", "/usr/bin/git",
             "--python-path", "/usr/bin/python3",
-            "--java-path", "/usr/bin/java",
         ])
         self.assertEqual(args.cmake_path, "/usr/bin/cmake")
         self.assertEqual(args.ninja_path, "/usr/bin/ninja")
         self.assertEqual(args.git_path, "/usr/bin/git")
         self.assertEqual(args.python_path, "/usr/bin/python3")
-        self.assertEqual(args.java_path, "/usr/bin/java")
 
     def test_directory_options(self):
         """Directory options should be accepted."""

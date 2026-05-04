@@ -40,7 +40,6 @@ def _make_options(**overrides):
         cc="/usr/bin/gcc",
         cxx="/usr/bin/g++",
         boost_src_dir="",
-        java_path="",
         ninja_path="",
         build_tests=True,
         jetbrains_run_config_dir="",
@@ -140,18 +139,18 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
         self.assertGreater(len(boost), 0)
         self.assertIn("Boost.Url Documentation", boost[0]["name"])
 
-    def test_java_config_added(self):
+    def test_schemas_config_always_added(self):
         opts = _make_options()
         defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="/usr/bin/java")
-        java_configs = [c for c in configs if "RelaxNG" in c.get("name", "")]
-        self.assertEqual(len(java_configs), 1)
+        configs = get_dynamic_run_configs(opts, defaults)
+        schemas = [c for c in configs if "Generate Schemas" in c.get("name", "")]
+        self.assertEqual(len(schemas), 1)
 
     @patch("src.configs.run_configs.is_windows", return_value=False)
-    def test_java_and_libxml2_unix(self, _mock_win):
+    def test_libxml2_unix(self, _mock_win):
         opts = _make_options()
         defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="/usr/bin/java", libxml2_root="/opt/libxml2")
+        configs = get_dynamic_run_configs(opts, defaults, libxml2_root="/opt/libxml2")
         lint_configs = [c for c in configs if "XML Lint" in c.get("name", "")]
         self.assertEqual(len(lint_configs), 1)
         # Unix uses find command
@@ -161,10 +160,10 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
     @patch("src.configs.run_configs.os.walk", return_value=[
         ("/golden", [], ["a.xml", "b.bad.xml", "c.xml"])
     ])
-    def test_java_and_libxml2_windows(self, _mock_walk, _mock_win):
+    def test_libxml2_windows(self, _mock_walk, _mock_win):
         opts = _make_options()
         defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="/usr/bin/java", libxml2_root="/opt/libxml2")
+        configs = get_dynamic_run_configs(opts, defaults, libxml2_root="/opt/libxml2")
         lint_configs = [c for c in configs if "XML Lint" in c.get("name", "")]
         self.assertEqual(len(lint_configs), 1)
         # Windows enumerates XML files directly; bad.xml excluded
@@ -172,10 +171,10 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
         xml_files = [a for a in args if a.endswith(".xml") and "rng" not in a]
         self.assertEqual(len(xml_files), 2)  # a.xml and c.xml, not b.bad.xml
 
-    def test_no_libxml2_without_java(self):
+    def test_no_lint_without_libxml2(self):
         opts = _make_options()
         defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="", libxml2_root="/opt/libxml2")
+        configs = get_dynamic_run_configs(opts, defaults, libxml2_root=None)
         lint = [c for c in configs if "XML Lint" in c.get("name", "")]
         self.assertEqual(len(lint), 0)
 
@@ -379,28 +378,6 @@ class TestGenerateRunConfigs(unittest.TestCase):
         self.assertEqual(cfg["args"][1], "--output=/src/install/release/out")
         for value in [cfg["program"], *cfg["args"]]:
             self.assertNotIn("${mrdocs_", value)
-
-    @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
-    @patch("src.configs.run_configs.load_json_file")
-    def test_filters_configs_requiring_java(self, mock_load, _mock_dyn):
-        data = self._base_json()
-        data["configs"].append({"name": "Java Thing", "requires": ["java"], "script": "j"})
-        mock_load.return_value = data
-        captured = {}
-        def fake_clion(configs, **kw):
-            captured["configs"] = configs
-        mock_mod = MagicMock()
-        mock_mod.generate_clion_run_configs = fake_clion
-        with patch.dict("sys.modules", {"src.configs.clion": mock_mod}):
-            opts = _make_options(java_path="")
-            generate_run_configs(
-                opts, self.defaults,
-                generate_clion=True, generate_vscode=False, generate_vs=False,
-                generate_justfile=False,
-                ui=self.ui,
-            )
-        names = [c["name"] for c in captured["configs"]]
-        self.assertNotIn("Java Thing", names)
 
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")

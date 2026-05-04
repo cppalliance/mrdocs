@@ -324,8 +324,6 @@ class MrDocsInstaller:
         # script lists what the user needs in a comment.
         if self.options.dry_run:
             prereqs = ["cmake", "git", "python3", "a C/C++ compiler"]
-            if self.options.build_tests:
-                prereqs.append("java")
             print(f"# Verify prerequisites: {', '.join(prereqs)}")
             return
 
@@ -402,8 +400,7 @@ class MrDocsInstaller:
         """Set up build-related options."""
         self.prompt_build_type_option("build_type")
         self.prompt_sanitizer_option("sanitizer")
-        if self.prompt_option("build_tests", "Build tests"):
-            self.check_tool("java")
+        self.prompt_option("build_tests", "Build tests")
 
     def install_dependencies(self):
         """Install third-party dependencies using recipes."""
@@ -1286,7 +1283,7 @@ class MrDocsInstaller:
 
         # Phase 0: Check system prerequisites
         self.ui.subsection("Checking system prerequisites")
-        self._dry_comment("Phase 0: Check system prerequisites (cmake, git, python3, cc, java)")
+        self._dry_comment("Phase 0: Check system prerequisites (cmake, git, python3, cc)")
         self.check_system_prerequisites()
 
         # Phase 1: Check tools

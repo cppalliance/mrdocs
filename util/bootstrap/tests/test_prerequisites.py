@@ -46,7 +46,7 @@ class TestPrerequisiteDataclass(unittest.TestCase):
         self.assertEqual(p.found_path, "")
 
     def test_optional_prerequisite(self):
-        p = Prerequisite(name="java", description="Java", required=False)
+        p = Prerequisite(name="optional", description="Optional", required=False)
         self.assertFalse(p.required)
 
     def test_install_hints(self):
@@ -71,10 +71,6 @@ class TestPrerequisitesList(unittest.TestCase):
         self.assertIn("git", names)
         self.assertIn("python3", names)
         self.assertIn("cc", names)
-
-    def test_has_optional_java(self):
-        java = next(p for p in PREREQUISITES if p.name == "java")
-        self.assertFalse(java.required)
 
     def test_all_have_install_hints(self):
         for p in PREREQUISITES:
@@ -137,30 +133,6 @@ class TestCheckPrerequisites(unittest.TestCase):
         missing = check_prerequisites(build_tests=True, ui=ui)
         names = [p.name for p in missing]
         self.assertIn("cmake", names)
-
-    @patch("src.tools.prerequisites._find_prerequisite")
-    def test_java_skipped_when_no_tests(self, mock_find):
-        def side_effect(prereq):
-            if prereq.name == "java":
-                return None
-            return "/usr/bin/tool"
-        mock_find.side_effect = side_effect
-        ui = TextUI()
-        missing = check_prerequisites(build_tests=False, ui=ui)
-        names = [p.name for p in missing]
-        self.assertNotIn("java", names)
-
-    @patch("src.tools.prerequisites._find_prerequisite")
-    def test_java_checked_when_tests_enabled(self, mock_find):
-        def side_effect(prereq):
-            if prereq.name == "java":
-                return None
-            return "/usr/bin/tool"
-        mock_find.side_effect = side_effect
-        ui = TextUI()
-        missing = check_prerequisites(build_tests=True, ui=ui)
-        names = [p.name for p in missing]
-        self.assertIn("java", names)
 
     @patch("src.tools.prerequisites._find_prerequisite")
     def test_compiler_check_skipped_with_cc(self, mock_find):
@@ -230,10 +202,10 @@ class TestReportMissingPrerequisites(unittest.TestCase):
 
     def test_optional_missing_reports_warning(self):
         ui = TextUI()
-        missing = [Prerequisite(name="java", description="Java", required=False,
-                                install_linux="apt install jre",
-                                install_macos="brew install openjdk",
-                                install_windows="choco install openjdk")]
+        missing = [Prerequisite(name="optional", description="Optional", required=False,
+                                install_linux="apt install opt",
+                                install_macos="brew install opt",
+                                install_windows="choco install opt")]
         report_missing_prerequisites(missing, ui=ui)
 
 
@@ -274,10 +246,10 @@ class TestGetPackageNames(unittest.TestCase):
     def test_brew_packages(self):
         prereqs = [
             Prerequisite(name="cmake", description="CMake"),
-            Prerequisite(name="java", description="Java", required=False),
+            Prerequisite(name="git", description="Git"),
         ]
         packages = _get_package_names(prereqs, "brew")
-        self.assertEqual(packages, ["cmake", "openjdk"])
+        self.assertEqual(packages, ["cmake", "git"])
 
     def test_brew_skips_cc(self):
         """cc maps to None for brew (needs xcode-select, not brew)."""

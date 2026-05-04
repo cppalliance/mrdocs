@@ -244,7 +244,7 @@ class TestGenerateClionGenericFallback(unittest.TestCase):
     @patch("src.configs.clion.write_text")
     @patch("src.configs.clion.ensure_dir")
     def test_generic_script(self, mock_ensure, mock_write):
-        configs = [{"name": "Trang", "script": "/usr/bin/trang", "args": ["-I", "rnc"]}]
+        configs = [{"name": "MyTool", "script": "/usr/bin/mytool", "args": ["-I", "rnc"]}]
         generate_clion_run_configs(
             configs, "/src", "/src/build", "release", dry_run=True, ui=_ui()
         )
@@ -774,18 +774,6 @@ class TestGenerateVSTaskConfigs(unittest.TestCase):
         tasks_data = json.loads(mock_write.call_args_list[1][0][1])
         task = tasks_data["tasks"][0]
         self.assertIn("package.json", task["appliesTo"])
-
-    @patch("src.configs.visual_studio.write_text")
-    @patch("src.configs.visual_studio.load_json_file", return_value=None)
-    @patch("src.configs.visual_studio.ensure_dir")
-    def test_relaxng_schema_task(self, mock_ensure, mock_load, mock_write):
-        configs = [{"name": "Generate RelaxNG Schema", "script": "trang"}]
-        generate_visual_studio_run_configs(
-            configs, "/src", "/src/build", "release", dry_run=False, ui=_ui()
-        )
-        tasks_data = json.loads(mock_write.call_args_list[1][0][1])
-        task = tasks_data["tasks"][0]
-        self.assertEqual(task["appliesTo"], "*")
 
     @patch("src.configs.visual_studio.write_text")
     @patch("src.configs.visual_studio.load_json_file", return_value=None)

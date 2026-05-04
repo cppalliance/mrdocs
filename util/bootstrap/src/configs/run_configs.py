@@ -128,19 +128,17 @@ def format_values(obj, tokens: Dict[str, Any]):
 def get_dynamic_run_configs(
     options: InstallOptions,
     default_options: InstallOptions,
-    java_path: str = "",
     libxml2_root: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     """
     Generate dynamic run configuration data.
 
     Creates configuration entries for bootstrap helpers, Boost documentation
-    targets, and XML/RelaxNG validation tasks.
+    targets, and XML schema validation tasks.
 
     Args:
         options: Current install options.
         default_options: Default install options (for comparison).
-        java_path: Path to Java executable.
         libxml2_root: Path to libxml2 installation root.
 
     Returns:
@@ -340,74 +338,61 @@ def get_dynamic_run_configs(
                         ],
                     })
 
-    # XML / RelaxNG tasks requiring Java and libxml2
-    if java_path:
-        configs.append({
-            "name": "Generate Schemas",
-            "group": "Codegen",
-            "script": os.path.join(options.build_dir, "bin", "mrdocs"),
-            "args": [
-                "--schemas=" + options.build_dir,
-            ],
-            "cwd": options.source_dir,
-        })
-        configs.append({
-            "name": "Generate RelaxNG Schema",
-            "group": "Codegen",
-            "script": java_path,
-            "args": [
-                "-jar",
-                os.path.join(options.source_dir, "util", "trang.jar"),
-                os.path.join(options.build_dir, "mrdocs.rnc"),
-                os.path.join(options.build_dir, "mrdocs.rng"),
-            ],
-            "cwd": options.source_dir,
-        })
+    # XML schema generation and validation tasks
+    configs.append({
+        "name": "Generate Schemas",
+        "group": "Codegen",
+        "script": os.path.join(options.build_dir, "bin", "mrdocs"),
+        "args": [
+            "--schemas=" + options.build_dir,
+        ],
+        "cwd": options.source_dir,
+    })
 
-        if libxml2_root:
-            libxml2_xmllint_executable = os.path.join(libxml2_root, "bin", "xmllint")
-            xml_sources_dir = os.path.join(options.source_dir, "test-files", "golden-tests")
+    if libxml2_root:
+        libxml2_xmllint_executable = os.path.join(libxml2_root, "bin", "xmllint")
+        xml_sources_dir = os.path.join(options.source_dir, "test-files", "golden-tests")
 
-            if is_windows():
-                xml_sources = []
-                for root, _, files in os.walk(xml_sources_dir):
-                    for file in files:
-                        if file.endswith(".xml") and not file.endswith(".bad.xml"):
-                            xml_sources.append(os.path.join(root, file))
-                configs.append({
-                    "name": "XML Lint with RelaxNG Schema",
-                    "group": "Test",
-                    "script": libxml2_xmllint_executable,
-                    "args": [
-                        "--dropdtd",
-                        "--noout",
-                        "--relaxng",
-                        os.path.join(options.build_dir, "mrdocs.rng"),
-                        *xml_sources,
-                    ],
-                    "cwd": options.source_dir,
-                })
-            else:
-                configs.append({
-                    "name": "XML Lint with RelaxNG Schema",
-                    "group": "Test",
-                    "script": "find",
-                    "args": [
-                        xml_sources_dir,
-                        "-type", "f",
-                        "-name", "*.xml",
-                        "!", "-name", "*.bad.xml",
-                        "-exec",
-                        libxml2_xmllint_executable,
-                        "--dropdtd",
-                        "--noout",
-                        "--relaxng",
-                        os.path.join(options.build_dir, "mrdocs.rng"),
-                        "{}",
-                        "+",
-                    ],
-                    "cwd": options.source_dir,
-                })
+        if is_windows():
+            xml_sources = []
+            for root, _, files in os.walk(xml_sources_dir):
+                for file in files:
+                    if file.endswith(".xml") and not file.endswith(".bad.xml"):
+                        xml_sources.append(os.path.join(root, file))
+            configs.append({
+                "name": "XML Lint with RelaxNG Schema",
+                "group": "Test",
+                "script": libxml2_xmllint_executable,
+                "args": [
+                    "--dropdtd",
+                    "--noout",
+                    "--relaxng",
+                    os.path.join(options.build_dir, "mrdocs.rng"),
+                    *xml_sources,
+                ],
+                "cwd": options.source_dir,
+            })
+        else:
+            configs.append({
+                "name": "XML Lint with RelaxNG Schema",
+                "group": "Test",
+                "script": "find",
+                "args": [
+                    xml_sources_dir,
+                    "-type", "f",
+                    "-name", "*.xml",
+                    "!", "-name", "*.bad.xml",
+                    "-exec",
+                    libxml2_xmllint_executable,
+                    "--dropdtd",
+                    "--noout",
+                    "--relaxng",
+                    os.path.join(options.build_dir, "mrdocs.rng"),
+                    "{}",
+                    "+",
+                ],
+                "cwd": options.source_dir,
+            })
 
     return configs
 
@@ -490,8 +475,6 @@ def generate_run_configs(
         include = True
         if "build_tests" in req and not options.build_tests:
             include = False
-        if "java" in req and not options.java_path:
-            include = False
         if include:
             cfg.pop("requires", None)
             filtered.append(cfg)
@@ -509,7 +492,6 @@ def generate_run_configs(
     dynamic_configs = get_dynamic_run_configs(
         options=options,
         default_options=default_options,
-        java_path=options.java_path,
         libxml2_root=libxml2_root,
     )
     configs.extend(dynamic_configs)

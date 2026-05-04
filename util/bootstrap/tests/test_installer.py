@@ -522,9 +522,7 @@ class TestSetupCompilers(unittest.TestCase):
 class TestSetupBuildOptions(unittest.TestCase):
     """Tests for setup_build_options with mocked prompt methods."""
 
-    @patch("src.installer.is_tool_executable", return_value=True)
-    @patch("src.installer.find_tool", return_value="/usr/bin/java")
-    def test_setup_build_options_with_tests(self, mock_find, mock_exec):
+    def test_setup_build_options_with_tests(self):
         inst = _make_installer(build_type="Release", sanitizer="none", build_tests=True)
         inst.setup_build_options()
         self.assertEqual(inst.options.build_type, "Release")

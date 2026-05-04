@@ -71,7 +71,6 @@
 <tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--ninja-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the Ninja executable. Ninja is the preferred CMake generator because it produces a <code>compile_commands.json</code> automatically; bootstrap discovers it on <code>PATH</code> by default.</p></td></tr>
 <tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--git-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to Git. Required for cloning recipes and for the compilation-database CMake integration. Bootstrap discovers Git on <code>PATH</code> by default.</p></td></tr>
 <tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--python-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the Python interpreter recipes should use for any Python steps. Defaults to the interpreter currently running bootstrap.</p></td></tr>
-<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--java-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to a Java runtime. Required for the xml-lint test step when <code>--build-tests</code> is on; ignored otherwise.</p></td></tr>
   </tbody>
 </table>
 ++++

@@ -46,9 +46,6 @@ class InstallOptions:
     cmake_path: str = ''
     python_path: str = ''
 
-    # Test tools
-    java_path: str = ''
-
     # Optional tools
     ninja_path: str = ''
 
