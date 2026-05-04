@@ -11,6 +11,7 @@
 #ifndef MRDOCS_LIB_SCHEMAS_DOMDESCRIPTIONS_HPP
 #define MRDOCS_LIB_SCHEMAS_DOMDESCRIPTIONS_HPP
 
+#include <mrdocs/Support/Assert.hpp>
 #include <string_view>
 
 /** Hand-curated descriptions for the JSON Schema produced by
@@ -51,10 +52,16 @@ struct DomDescription
     std::string_view text;
 };
 
-/** Retrieve the description for `(type, member)`, or `""` if
-    no entry exists.
+/** Retrieve the description for `(type, member)`.
+
+    Every described DOM type the schema writer emits, and every
+    described member of those types, is required to have an
+    entry; a missing one is treated as a developer mistake and
+    aborts via `MRDOCS_UNREACHABLE`.
+
+    @return The description text.
 */
-constexpr std::string_view
+inline std::string_view
 findDomDescription(
     std::string_view type,
     std::string_view member = "") noexcept;
@@ -198,6 +205,11 @@ inline constexpr DomDescription kDomDescriptions[] = {
      "for constructors and conversion functions."},
     {"FunctionSymbol", "attributes",
      "Attributes attached to the declaration."},
+    {"FunctionSymbol", "functionObjectImpl",
+     "Identifier of the function object this function is the "
+     "call-operator implementation of, when the "
+     "`auto-function-objects` feature recognized it as such; "
+     "empty otherwise."},
 
     // ----- RecordSymbol --------------------------------------------
     {"RecordSymbol", "",
@@ -392,6 +404,75 @@ inline constexpr DomDescription kDomDescriptions[] = {
     {"Inline", "",
      "An inline-level node in a parsed documentation comment "
      "(text, emphasis, code spans, references, etc.)."},
+    {"TParam", "",
+     "A template parameter of a templated symbol. The DOM "
+     "serializes the most-derived kind (type, non-type, "
+     "template); see the `oneOf` entries for the per-kind shape."},
+    {"TArg", "",
+     "A template argument supplied to a template specialization. "
+     "The DOM serializes the most-derived kind (type, non-type, "
+     "template); see the `oneOf` entries for the per-kind shape."},
+
+    // ----- Polymorphic-base members --------------------------------
+    {"Type", "kind",
+     "Discriminator selecting the type kind. Each concrete type "
+     "constrains this field to a single literal value."},
+    {"Type", "isConst",
+     "True when the type carries a top-level `const` qualifier."},
+    {"Type", "isVolatile",
+     "True when the type carries a top-level `volatile` qualifier."},
+    {"Type", "isPackExpansion",
+     "True when the type appears as the pattern of a pack "
+     "expansion (`T...`)."},
+    {"Type", "constraints",
+     "Constraint expressions associated with the type, such as "
+     "those discovered by SFINAE detection around "
+     "`std::enable_if_t<..., T>`."},
+
+    {"Name", "kind",
+     "Discriminator selecting the name kind. Each concrete name "
+     "constrains this field to a single literal value."},
+    {"Name", "id",
+     "Identifier of the named symbol when it lives in the corpus; "
+     "empty when the name refers to something outside it."},
+    {"Name", "identifier",
+     "Unqualified spelling of the name, as written in the source."},
+    {"Name", "prefix",
+     "Qualifying prefix (the `A::B::` part of `A::B::Name`); "
+     "absent when the name is unqualified."},
+
+    {"TParam", "kind",
+     "Discriminator selecting the template-parameter kind. Each "
+     "concrete TParam constrains this field to a single literal "
+     "value."},
+    {"TParam", "name",
+     "Parameter name as written; empty for unnamed template "
+     "parameters."},
+    {"TParam", "default",
+     "Default argument expression as written; absent when the "
+     "parameter has no default."},
+    {"TParam", "isParameterPack",
+     "True when the template parameter is a parameter pack "
+     "(`typename... Ts`, `int... Ns`, etc.)."},
+
+    {"TArg", "kind",
+     "Discriminator selecting the template-argument kind. Each "
+     "concrete TArg constrains this field to a single literal "
+     "value."},
+    {"TArg", "isPackExpansion",
+     "True when the argument is a pack expansion (`Args...`)."},
+
+    {"Block", "kind",
+     "Discriminator selecting the doc-block kind. Each concrete "
+     "block constrains this field to a single literal value."},
+    {"Inline", "kind",
+     "Discriminator selecting the doc-inline kind. Each concrete "
+     "inline constrains this field to a single literal value."},
+
+    {"BlockContainer", "blocks",
+     "Block-level children in document order."},
+    {"InlineContainer", "children",
+     "Inline-level children in document order."},
 
     // ----- Type variants -------------------------------------------
     {"NamedType", "",
@@ -505,6 +586,90 @@ inline constexpr DomDescription kDomDescriptions[] = {
      "1-based column number of the location."},
     {"Location", "documented",
      "True when a doc comment was attached at this location."},
+
+    // ----- Other supporting types ---------------------------------
+    {"DocComment", "",
+     "Parsed contents of a documentation comment: a brief, "
+     "any block-level body, and command groups (`@param`, "
+     "`@returns`, `@see`, etc.)."},
+    {"DocComment", "brief",
+     "First-sentence brief description; absent when none was "
+     "extracted."},
+    {"DocComment", "document",
+     "Free-form body blocks of the comment: every block-level "
+     "node not classified into one of the dedicated command "
+     "lists below."},
+    {"DocComment", "params",
+     "Documented function parameters (`@param` commands), in "
+     "declaration order."},
+    {"DocComment", "tparams",
+     "Documented template parameters (`@tparam` commands), in "
+     "declaration order."},
+    {"DocComment", "returns",
+     "Documented return-value description (`@returns` / "
+     "`@return` commands)."},
+    {"DocComment", "exceptions",
+     "Documented exceptions (`@throws` / `@throw` commands)."},
+    {"DocComment", "preconditions",
+     "Documented preconditions (`@pre` commands)."},
+    {"DocComment", "postconditions",
+     "Documented postconditions (`@post` commands)."},
+    {"DocComment", "sees",
+     "See-also references (`@see` commands)."},
+    {"DocComment", "related",
+     "Related-symbol references (`@related` commands)."},
+    {"DocComment", "relates",
+     "Symbols this comment attaches to via `@relates`. Drives "
+     "the non-member-functions section listed under a class."},
+
+    {"TemplateInfo", "",
+     "Template metadata attached to a templated symbol: "
+     "parameters, arguments (for specializations), and a "
+     "reference to the primary template."},
+    {"TemplateInfo", "params",
+     "Template parameter list, in declaration order."},
+    {"TemplateInfo", "args",
+     "Template arguments applied to the primary template, in "
+     "declaration order. Present on (partial) specializations "
+     "and instantiations; empty for the primary template "
+     "itself."},
+    {"TemplateInfo", "primary",
+     "Identifier of the primary template this entry "
+     "specializes; empty when this is itself the primary."},
+    {"TemplateInfo", "requires",
+     "Trailing `requires`-clause expression as written; empty "
+     "when the template has no constraints."},
+
+    {"SourceInfo", "",
+     "Source-location metadata for a symbol: every declaration "
+     "site plus the definition site, when one exists."},
+    {"SourceInfo", "loc",
+     "Locations of the symbol's declarations (one entry per "
+     "source declaration)."},
+    {"SourceInfo", "defLoc",
+     "Location of the symbol's definition; absent when no "
+     "definition was extracted."},
+
+    {"BaseInfo", "",
+     "A base-class clause of a class or struct declaration."},
+    {"BaseInfo", "type",
+     "Base type as written in the inheritance clause (a class "
+     "or template specialization)."},
+    {"BaseInfo", "access",
+     "Access specifier of the base (`\"public\"`, "
+     "`\"protected\"`, or `\"private\"`)."},
+    {"BaseInfo", "isVirtual",
+     "True when the base is inherited virtually."},
+
+    {"FriendInfo", "",
+     "A `friend` declaration appearing inside a class or "
+     "struct."},
+    {"FriendInfo", "id",
+     "Identifier of the symbol befriended when it lives in the "
+     "corpus; empty when the friend points outside it."},
+    {"FriendInfo", "type",
+     "Type befriended, used when the friend declaration names a "
+     "type rather than a corpus symbol."},
 
     // ----- TArg variants -------------------------------------------
     {"TypeTArg", "",
@@ -741,7 +906,7 @@ inline constexpr DomDescription kDomDescriptions[] = {
 
 } // namespace detail
 
-constexpr std::string_view
+inline std::string_view
 findDomDescription(
     std::string_view const type,
     std::string_view const member) noexcept
@@ -753,7 +918,7 @@ findDomDescription(
             return entry.text;
         }
     }
-    return {};
+    MRDOCS_UNREACHABLE();
 }
 
 } // namespace mrdocs::schema
