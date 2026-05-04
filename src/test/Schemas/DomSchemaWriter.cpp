@@ -63,7 +63,7 @@ struct DomSchemaWriterTest
 
     void test_top_level()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object root = schema.getObject();
 
         BOOST_TEST(root.exists("$schema"));
@@ -79,7 +79,7 @@ struct DomSchemaWriterTest
 
     void test_all_symbols_in_defs()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
 
         BOOST_TEST(d.exists("NamespaceSymbol"));
@@ -100,7 +100,7 @@ struct DomSchemaWriterTest
 
     void test_polymorphic_variants()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
 
         BOOST_TEST(oneOfArray(d, "Type").size() == 9);
@@ -115,7 +115,7 @@ struct DomSchemaWriterTest
 
     void test_function_symbol_properties()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
         dom::Object fp = props(d, "FunctionSymbol");
 
@@ -153,7 +153,7 @@ struct DomSchemaWriterTest
 
     void test_described_enum_values()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
         dom::Object fp = props(d, "FunctionSymbol");
 
@@ -179,7 +179,7 @@ struct DomSchemaWriterTest
 
     void test_non_described_enums()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
         dom::Object fp = props(d, "FunctionSymbol");
 
@@ -208,7 +208,7 @@ struct DomSchemaWriterTest
 
     void test_symbol_extensions()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
         dom::Object fp = props(d, "FunctionSymbol");
 
@@ -236,7 +236,7 @@ struct DomSchemaWriterTest
 
     void test_meta_object()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
         dom::Object fp = props(d, "FunctionSymbol");
 
@@ -259,7 +259,7 @@ struct DomSchemaWriterTest
 
     void test_required_fields()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
         dom::Array req = requiredArray(d, "FunctionSymbol");
 
@@ -283,7 +283,7 @@ struct DomSchemaWriterTest
 
     void test_supporting_types()
     {
-        dom::Value schema = schema::buildDomSchema();
+        dom::Value schema = schema::buildDomJsonSchema();
         dom::Object d = defs(schema);
 
         BOOST_TEST(d.exists("Location"));

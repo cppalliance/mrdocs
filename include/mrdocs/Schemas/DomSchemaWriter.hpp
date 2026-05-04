@@ -534,10 +534,14 @@ registerAllDefs(dom::Object& defs)
 // Top-level schema
 //------------------------------------------------
 
-/** Build the complete DOM JSON Schema document.
+/** Build the complete JSON Schema describing the DOM.
+
+    The returned `dom::Value` is a JSON Schema (draft 2020-12)
+    document that describes the structure of every Handlebars
+    DOM object MrDocs exposes to its templates.
 */
 inline dom::Value
-buildDomSchema()
+buildDomJsonSchema()
 {
     dom::Object schema;
     schema.set("$schema", "https://json-schema.org/draft/2020-12/schema");

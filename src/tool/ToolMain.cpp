@@ -166,7 +166,7 @@ mrdocs_main(int argc, char const** argv)
                          << path << "\" for writing\n";
             return EXIT_FAILURE;
         }
-        os << dom::JSON::stringify(schema::buildDomSchema());
+        os << dom::JSON::stringify(schema::buildDomJsonSchema());
 
         // Write RNC schema (replaces hand-maintained mrdocs.rnc).
         std::string rncPath = files::appendPath(dir, "mrdocs.rnc");
