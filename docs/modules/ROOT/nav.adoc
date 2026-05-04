@@ -22,6 +22,7 @@
 ** xref:generators/html.adoc[HTML]
 ** xref:generators/adoc.adoc[AsciiDoc]
 ** xref:generators/xml.adoc[XML]
+** xref:schemas.adoc[Output Schemas]
 * Extensions
 ** xref:extensions/corpus-extensions.adoc[Corpus Extensions]
 ** xref:extensions/handlebars-extensions.adoc[Handlebars Extensions]

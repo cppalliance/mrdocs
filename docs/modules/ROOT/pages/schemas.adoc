@@ -1,0 +1,45 @@
+= Output Schemas
+
+If you build tooling on top of MrDocs's XML output, or you write Handlebars templates against the DOM the HTML and AsciiDoc generators expose, you'll want a machine-readable description of the data. Run
+
+[source,bash]
+----
+mrdocs --schemas
+----
+
+and MrDocs writes two files to the current directory:
+
+`mrdocs.rng`::
+A RELAX NG schema (XML syntax) for the documents produced by the XML generator. Each XML output file's `xsi:noNamespaceSchemaLocation` points at this schema. Validate with `xmllint --relaxng`, or with any other RELAX NG tool.
+
+`mrdocs-dom-schema.json`::
+A JSON Schema (draft 2020-12) for the DOM that Handlebars templates see. Every type a template can encounter is listed in `$defs`, with a short prose description on each field.
+
+To write somewhere other than the current directory:
+
+[source,bash]
+----
+mrdocs --schemas=path/to/dir
+----
+
+The target directory is created if it doesn't already exist.
+
+`--schemas` doesn't read your configuration file or your source tree. It runs the schema generator and exits — you can invoke it on a checkout that has never been pointed at a real codebase.
+
+== Validating XML output
+
+[source,bash]
+----
+mrdocs --schemas=/tmp
+xmllint --noout --relaxng /tmp/mrdocs.rng path/to/output.xml
+----
+
+The XML generator's own output is well-formed by construction. The more interesting use is validating XML produced by post-processing pipelines, hand-edited fixtures, or external tools that consume and re-emit the corpus.
+
+== Inspecting the template DOM
+
+Open `mrdocs-dom-schema.json` and read the `$defs` section. It enumerates every symbol kind, type kind, name kind, doc-comment block, and so on, and explains the shape and meaning of each field. JSON-Schema-aware editors give completion and hover documentation if you point them at the file.
+
+== Versioning
+
+Both schemas are generated from the C++ types in the corpus, so they always match the MrDocs binary that produced them. Adding a new field anywhere in the metadata model updates the schema at the next build with no separate maintenance step. If you pin to a particular MrDocs version, regenerate the schema files when you upgrade.
