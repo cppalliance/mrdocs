@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -12,14 +13,14 @@
 #ifndef MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 #define MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 
+#include <lib/Support/Xml.hpp>
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Metadata/DocComment.hpp>
+#include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <clang/Basic/Specifiers.h>
+#include <mrdocs/Support/EnumToString.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
-#include <optional>
+#include <type_traits>
 #include <vector>
 
 /*
@@ -28,35 +29,6 @@
 */
 
 namespace mrdocs::xml {
-
-class jit_indenter;
-
-/** Manipulator to apply XML escaping to output.
-*/
-struct xmlEscape
-{
-    explicit
-    xmlEscape(
-        std::string_view const& s) noexcept
-        : s_(s)
-    {
-    }
-
-    friend
-    llvm::raw_ostream&
-    operator<<(
-        llvm::raw_ostream& os,
-        xmlEscape const& t)
-    {
-        t.write(os);
-        return os;
-    }
-
-private:
-    void write(llvm::raw_ostream& os) const;
-
-    llvm::StringRef s_;
-};
 
 //------------------------------------------------
 
@@ -136,71 +108,30 @@ struct Attributes
 
 //------------------------------------------------
 
-/** A stream which indents just in time.
-*/
-class jit_indenter
-{
-    llvm::raw_ostream& os_;
-    std::string const& indent_;
-    bool indented_ = false;
-
-public:
-    jit_indenter(
-        llvm::raw_ostream& os,
-        std::string const& indent) noexcept
-        : os_(os)
-        , indent_(indent)
-    {
-    }
-
-    template<class T>
-    llvm::raw_ostream&
-    operator<<(T const& t)
-    {
-        if(! indented_)
-        {
-            os_ << indent_;
-            indented_ = true;
-        }
-        return os_ << t;
-    }
-
-    void
-    finish()
-    {
-        if(indented_)
-            os_ << '\n';
-    }
-};
-
-//------------------------------------------------
-
 /** State object for emission of XML tags and content.
 */
 class XMLTags
 {
-public:
-    std::string indent_;
-    llvm::raw_ostream& os_;
-    bool nesting_ = true;
+    XmlEmitter emitter_;
 
+public:
     explicit
     XMLTags(
         llvm::raw_ostream& os) noexcept
-        : os_(os)
+        : emitter_(os)
     {
     }
 
-    llvm::raw_ostream& indent();
-    jit_indenter jit_indent() noexcept;
+    llvm::raw_ostream& indent() { return emitter_.indent(); }
+    jit_indenter jit_indent() noexcept { return emitter_.jit_indent(); }
 
     void open(dom::String const&, Attributes = {});
     void write(dom::String const&,
         llvm::StringRef value = {}, Attributes = {});
     void close(dom::String const&);
-    void nesting(bool enable) noexcept { nesting_ = enable; }
+    void nesting(bool enable) noexcept { emitter_.nesting(enable); }
 
-    void nest(int levels);
+    void nest(int levels) { emitter_.nest(levels); }
 };
 
 } // mrdocs::xml

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -16,58 +17,6 @@
 
 namespace mrdocs {
 namespace xml {
-
-//------------------------------------------------
-//
-// xmlEscape
-//
-//------------------------------------------------
-
-void
-xmlEscape::
-write(
-    llvm::raw_ostream& os) const
-{
-    std::size_t pos = 0;
-    auto const size = s_.size();
-    while(pos < size)
-    {
-    unescaped:
-        auto const found = s_.find_first_of("<>&'\"", pos);
-        if(found == llvm::StringRef::npos)
-        {
-            os.write(s_.data() + pos, s_.size() - pos);
-            break;
-        }
-        os.write(s_.data() + pos, found - pos);
-        pos = found;
-        while(pos < size)
-        {
-            auto const c = s_[pos];
-            switch(c)
-            {
-            case '<':
-                os.write("&lt;", 4);
-                break;
-            case '>':
-                os.write("&gt;", 4);
-                break;
-            case '&':
-                os.write("&amp;", 5);
-                break;
-            case '\'':
-                os.write("&apos;", 6);
-                break;
-            case '\"':
-                os.write("&quot;", 6);
-                break;
-            default:
-                goto unescaped;
-            }
-            ++pos;
-        }
-    }
-}
 
 //------------------------------------------------
 
@@ -134,22 +83,29 @@ operator<<(
 //
 //------------------------------------------------
 
-llvm::raw_ostream&
-XMLTags::
-indent()
+namespace {
+
+// Convert metadata-flavored Attributes into a span-friendly
+// vector of XmlAttribute, dropping suppressed entries.
+std::vector<XmlAttribute>
+toXmlAttributes(Attributes const& attrs)
 {
-    return os_ << indent_;
+    std::vector<XmlAttribute> result;
+    result.reserve(attrs.attrs_.size());
+    for(Attribute const& a : attrs.attrs_)
+    {
+        if(a.pred)
+        {
+            result.push_back({
+                std::string(std::string_view(a.name)),
+                std::string(std::string_view(a.value)),
+                true});
+        }
+    }
+    return result;
 }
 
-auto
-XMLTags::
-jit_indent() noexcept ->
-    jit_indenter
-{
-    return jit_indenter(os_, indent_);
-}
-
-//------------------------------------------------
+} // (anon)
 
 void
 XMLTags::
@@ -157,8 +113,8 @@ open(
     dom::String const& tag,
     Attributes attrs)
 {
-    indent() << '<' << tag << attrs << ">\n";
-    nest(1);
+    std::vector<XmlAttribute> const xml_attrs = toXmlAttributes(attrs);
+    emitter_.open(std::string_view(tag), xml_attrs);
 }
 
 void
@@ -166,8 +122,7 @@ XMLTags::
 close(
     dom::String const& tag)
 {
-    nest(-1);
-    indent() << "</" << tag << ">\n";
+    emitter_.close(std::string_view(tag));
 }
 
 void
@@ -177,37 +132,12 @@ write(
     llvm::StringRef value,
     Attributes attrs)
 {
-    if(value.empty())
-    {
-        indent() << "<" << tag << attrs << "/>\n";
-        return;
-    }
-
-    indent() <<
-        "<" << tag << attrs << ">" <<
-        xmlEscape(value) <<
-        "</" << tag << ">\n";
-}
-
-void
-XMLTags::
-nest(int levels)
-{
-    if (!nesting_)
-        return;
-    
-    if(levels > 0)
-    {
-        indent_.append(levels * 2, ' ');
-    }
-    else
-    {
-        auto const n = static_cast<std::size_t>(levels * -2);
-        MRDOCS_ASSERT(n <= indent_.size());
-        indent_.resize(indent_.size() - n);
-    }
+    std::vector<XmlAttribute> const xml_attrs = toXmlAttributes(attrs);
+    emitter_.write(
+        std::string_view(tag),
+        std::string_view(value.data(), value.size()),
+        xml_attrs);
 }
 
 } // xml
 } // mrdocs
-
