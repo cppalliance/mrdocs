@@ -14,8 +14,8 @@
 #include <lib/Support/CliOverride.hpp>
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/Report.hpp>
+#include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Schemas/DomSchemaWriter.hpp>
-#include <mrdocs/Schemas/JsonEmitter.hpp>
 #include <mrdocs/Schemas/RncSchemaWriter.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
@@ -166,7 +166,7 @@ mrdocs_main(int argc, char const** argv)
                          << path << "\" for writing\n";
             return EXIT_FAILURE;
         }
-        os << schema::toJson(schema::buildDomSchema());
+        os << dom::JSON::stringify(schema::buildDomSchema());
 
         // Write RNC schema (replaces hand-maintained mrdocs.rnc).
         std::string rncPath = files::appendPath(dir, "mrdocs.rnc");
