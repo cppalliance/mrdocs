@@ -579,18 +579,36 @@ if (MRDOCS_BUILD_TESTS)
         )
 
     #-------------------------------------------------
+    # Schemas
+    #-------------------------------------------------
+    # Generate mrdocs.rng and mrdocs-dom-schema.json via --schemas.
+    add_custom_command(
+        COMMAND mrdocs --schemas=${CMAKE_CURRENT_BINARY_DIR}
+        OUTPUT
+            ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
+            ${CMAKE_CURRENT_BINARY_DIR}/mrdocs-dom-schema.json
+        DEPENDS mrdocs
+        COMMENT "Generating schemas via --schemas")
+    add_custom_target(mrdocs_schemas ALL DEPENDS
+        ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
+        ${CMAKE_CURRENT_BINARY_DIR}/mrdocs-dom-schema.json)
+
+    # Freshness checks: the regenerated schemas must match the
+    # copies checked in under docs/.
+    add_test(NAME rng-schema-check
+             COMMAND ${CMAKE_COMMAND} -E compare_files
+                     ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
+                     ${CMAKE_CURRENT_SOURCE_DIR}/docs/mrdocs.rng)
+    add_test(NAME dom-schema-check
+             COMMAND ${CMAKE_COMMAND} -E compare_files
+                     ${CMAKE_CURRENT_BINARY_DIR}/mrdocs-dom-schema.json
+                     ${CMAKE_CURRENT_SOURCE_DIR}/docs/mrdocs-dom-schema.json)
+
+    #-------------------------------------------------
     # XML lint
     #-------------------------------------------------
     find_package(LibXml2 ${REQUIRED_IF_STRICT})
     if (LibXml2_FOUND)
-        # Generate mrdocs.rng via the --schemas option.
-        add_custom_command(
-            COMMAND mrdocs --schemas=${CMAKE_CURRENT_BINARY_DIR}
-            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
-            DEPENDS mrdocs
-            COMMENT "Generating mrdocs.rng from --schemas")
-        add_custom_target(mrdocs_rng ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng)
-
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/golden-tests/*.xml)
         add_test(NAME xml-lint
                  COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout

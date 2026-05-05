@@ -26,6 +26,13 @@ The target directory is created if it doesn't already exist.
 
 `--schemas` doesn't read your configuration file or your source tree. It runs the schema generator and exits — you can invoke it on a checkout that has never been pointed at a real codebase.
 
+The same files ship with this site:
+
+* xref:attachment$mrdocs.rng[mrdocs.rng]
+* xref:attachment$mrdocs-dom-schema.json[mrdocs-dom-schema.json]
+
+They track the published version of MrDocs.
+
 == Validating XML output
 
 [source,bash]

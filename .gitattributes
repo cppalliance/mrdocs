@@ -1,3 +1,5 @@
 test-files/**/*.xml binary
 test-files/golden-tests/** text eol=lf
 **.sh text eol=lf
+docs/mrdocs.rng text eol=lf
+docs/mrdocs-dom-schema.json text eol=lf
