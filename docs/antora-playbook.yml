@@ -97,3 +97,4 @@ asciidoc:
     - ./extensions/mrdocs-demos.js
     - ./extensions/mrdocs-releases.js
     - ./extensions/config-options-reference.js
+    - ./extensions/dom-reference.js
