@@ -388,22 +388,29 @@ namespace detail
 #    define MRDOCS_LABEL_(a)    MRDOCS_MERGE_(expected_result_, a)
 #    define MRDOCS_UNIQUE_NAME  MRDOCS_LABEL_(__LINE__)
 
+// `detail::failed` and `detail::error` below are qualified with `::mrdocs::`
+// so the macros remain correct when expanded inside another `detail`
+// namespace (e.g. `mrdocs::lua::detail`): a qualified `detail::` lookup
+// stops at the first matching nested `detail` and never falls through to
+// `mrdocs::detail`. `Unexpected` and `Error` are left unqualified: ordinary
+// scope walking finds them in `mrdocs::`.
+
 /// Try to retrive expected-like type
 #    define MRDOCS_TRY_VOID(expr)                          \
         auto MRDOCS_UNIQUE_NAME = expr;                    \
-        if (detail::failed(MRDOCS_UNIQUE_NAME)) {          \
-            return Unexpected(detail::error(MRDOCS_UNIQUE_NAME)); \
+        if (::mrdocs::detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+            return Unexpected(::mrdocs::detail::error(MRDOCS_UNIQUE_NAME)); \
         }                                                 \
         void(0)
 #    define MRDOCS_TRY_VAR(var, expr)                      \
         auto MRDOCS_UNIQUE_NAME = expr;                    \
-        if (detail::failed(MRDOCS_UNIQUE_NAME)) {          \
-            return Unexpected(detail::error(MRDOCS_UNIQUE_NAME)); \
+        if (::mrdocs::detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+            return Unexpected(::mrdocs::detail::error(MRDOCS_UNIQUE_NAME)); \
         }                                                  \
         var = *std::move(MRDOCS_UNIQUE_NAME)
 #    define MRDOCS_TRY_MSG(var, expr, msg)                 \
         auto MRDOCS_UNIQUE_NAME = expr;                    \
-        if (detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+        if (::mrdocs::detail::failed(MRDOCS_UNIQUE_NAME)) {          \
             return Unexpected(Error(msg));                 \
         }                                                  \
         var = *std::move(MRDOCS_UNIQUE_NAME)
@@ -413,12 +420,12 @@ namespace detail
 
 /// Check existing expected-like type
 #    define MRDOCS_CHECK_VOID(var)                         \
-        if (detail::failed(var)) {                         \
-            return Unexpected(detail::error(var));         \
+        if (::mrdocs::detail::failed(var)) {                         \
+            return Unexpected(::mrdocs::detail::error(var));         \
         }                                                  \
         void(0)
 #    define MRDOCS_CHECK_MSG(var, msg)                     \
-        if (detail::failed(var)) {                         \
+        if (::mrdocs::detail::failed(var)) {                         \
             return Unexpected(Error(msg));                 \
         }                                                  \
         void(0)
@@ -428,12 +435,12 @@ namespace detail
 
 /// Check existing expected-like type and return custom value otherwise
 #    define MRDOCS_CHECK_OR_VOID(var)                      \
-        if (detail::failed(var)) {                         \
+        if (::mrdocs::detail::failed(var)) {                         \
             return;                                        \
         }                                                  \
         void(0)
 #    define MRDOCS_CHECK_OR_VALUE(var, value)              \
-        if (detail::failed(var)) {                         \
+        if (::mrdocs::detail::failed(var)) {                         \
             return value;                                  \
         }                                                  \
         void(0)
@@ -442,7 +449,7 @@ namespace detail
         MRDOCS_CHECK_GET_OR_MACRO(__VA_ARGS__, MRDOCS_CHECK_OR_VALUE, MRDOCS_CHECK_OR_VOID)(__VA_ARGS__)
 
 #    define MRDOCS_CHECK_OR_CONTINUE(var)                  \
-        if (detail::failed(var)) {                         \
+        if (::mrdocs::detail::failed(var)) {                         \
             continue;                                      \
         }                                                  \
         void(0)

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>6Ck47Qi5Akzd//BP/G1woD2OR1Q=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>layering_entry</name>
+  <source>
+    <location>
+      <short-path>layering.cpp</short-path>
+      <source-path>layering.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>6Ck47Qi5Akzd//BP/G1woD2OR1Q=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

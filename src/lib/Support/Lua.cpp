@@ -4,20 +4,27 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include <lib/Support/LuaHandlebars.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/Lua.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/raw_ostream.h>
+#include <format>
+#include <print>
+
+// Lua's upstream headers are C-only and ship without `extern "C"` guards.
+// Wrap the includes here.
+extern "C" {
 #include <lua.h>
 #include <lualib.h>
-#include <format>
 #include <lauxlib.h>
-#include <print>
+}
 
 namespace mrdocs {
 namespace lua {
@@ -34,6 +41,7 @@ static char gImplKey{};
 //------------------------------------------------
 
 static void domObject_push_metatable(Access& A);
+static void domArray_push(Access& A, dom::Array const&);
 static void domValue_push(Access& A, dom::Value const&);
 
 //------------------------------------------------
@@ -278,8 +286,7 @@ domArray_get(
         lua_touserdata(A, index));
 }
 
-// Push the domObject metatable onto the stack
-[[maybe_unused]]
+// Push the domArray metatable onto the stack
 static
 void
 domArray_push_metatable(
@@ -291,10 +298,15 @@ domArray_push_metatable(
         return;
     }
 
-    lua_createtable(A, 0, 3);
+    lua_createtable(A, 0, 4);
 
     // Effect:      return t[i]
     // Signature:   (t, i)
+    //
+    // Lua-convention 1-indexed: `arr[1]` is the first element, and any
+    // index outside `[1, #arr]` returns nil. Together with `__len` and
+    // a 1-indexed `__pairs`, this is what makes the standard `ipairs`,
+    // `pairs`, and `#` operator work.
     luaM_pushstring(A, "__index");
     lua_pushcfunction(A,
     [](lua_State* L)
@@ -306,13 +318,20 @@ domArray_push_metatable(
             lua_pushnil(A);
             return 1;
         }
-        std::size_t index = lua_tonumber(A, 2);
+        lua_Number raw = lua_tonumber(A, 2);
         auto const& arr = domArray_get(A, 1);
         lua_pop(A, lua_gettop(A));
-        if(index < arr.size())
-            domValue_push(A, arr.at(index));
+        if(raw >= 1 &&
+           static_cast<std::size_t>(raw) <= arr.size())
+        {
+            domValue_push(
+                A,
+                arr.at(static_cast<std::size_t>(raw) - 1));
+        }
         else
+        {
             lua_pushnil(A);
+        }
         return 1;
     });
     lua_settable(A, -3);
@@ -328,8 +347,23 @@ domArray_push_metatable(
     lua_settable(A, -3);
 #endif
 
+    // Effect:      return #t
+    // Signature:   (t)
+    luaM_pushstring(A, "__len");
+    lua_pushcfunction(A,
+    [](lua_State* L)
+    {
+        Access A(L);
+        auto const& arr = domArray_get(A, 1);
+        lua_pushinteger(A, static_cast<lua_Integer>(arr.size()));
+        return 1;
+    });
+    lua_settable(A, -3);
+
     // Effect:      return next(t [, index])
     // Signature:   (t [, index])
+    //
+    // The upvalue holds the next 1-indexed key to yield.
     static constexpr auto const next =
     [](lua_State* L)
     {
@@ -344,12 +378,14 @@ domArray_push_metatable(
             lua_pushnil(A);
             return 2;
         }
-        auto index = lua_tonumber(A, lua_upvalueindex(1));
-        lua_pushnumber(A, index);
-        domValue_push(A, arr.at(index));
-        ++index;
-        if(index < arr.size())
-            lua_pushnumber(A, index);
+        lua_Number key = lua_tonumber(A, lua_upvalueindex(1));
+        lua_pushnumber(A, key);
+        domValue_push(
+            A,
+            arr.at(static_cast<std::size_t>(key) - 1));
+        ++key;
+        if(static_cast<std::size_t>(key) <= arr.size())
+            lua_pushnumber(A, key);
         else
             lua_pushnil(A);
         lua_replace(A, lua_upvalueindex(1));
@@ -358,6 +394,8 @@ domArray_push_metatable(
 
     // Effect:      return pairs(t)
     // Signature:   (t)
+    //
+    // First key handed to `next` is 1 (Lua convention).
     luaM_pushstring(A, "__pairs");
     lua_pushcfunction(A,
     [](lua_State* L)
@@ -365,7 +403,7 @@ domArray_push_metatable(
         Access A(L);
         auto arr = domArray_get(A, 1);
         if(! arr.empty())
-            lua_pushnumber(A, 0);
+            lua_pushnumber(A, 1);
         else
             lua_pushnil(A);
         lua_pushcclosure(A, next, 1);
@@ -389,6 +427,21 @@ domArray_push_metatable(
 
     lua_pushvalue(A, -1);
     A->arrMetaRef = luaL_ref(A, LUA_REGISTRYINDEX);
+}
+
+// Push a dom::Array onto the stack
+static
+void
+domArray_push(
+    Access& A,
+    dom::Array const& arr)
+{
+    auto& arr_ = *static_cast<
+        dom::Array*>(lua_newuserdatauv(
+            A, sizeof(dom::Array), 0));
+    domArray_push_metatable(A);
+    lua_setmetatable(A, -2);
+    std::construct_at(&arr_, arr);
 }
 
 //------------------------------------------------
@@ -590,8 +643,7 @@ domValue_push(
     case dom::Kind::String:
         return luaM_pushstring(A, value.getString());
     case dom::Kind::Array:
-        MRDOCS_UNREACHABLE();
-        //return domArray_push(A, value.getArray());
+        return domArray_push(A, value.getArray());
     case dom::Kind::Object:
         return domObject_push(A, value.getObject());
     default:
@@ -710,7 +762,8 @@ push(Scope& scope) const
     case Kind::value:
         return lua_pushvalue(A, index_);
     case Kind::domArray:
-        MRDOCS_UNREACHABLE();
+        domArray_push(A, arr_);
+        return;
     case Kind::domObject:
         domObject_push(A, obj_);
         return;
@@ -1153,6 +1206,229 @@ callImpl(
     if(rc != LUA_OK)
         return Unexpected(luaM_popError(A));
     return A.construct<Value>(-1, *scope_);
+}
+
+//------------------------------------------------
+//
+// registerHelper
+//
+//------------------------------------------------
+
+// Convert the Lua value at the given stack index to a dom::Value.
+// Used to marshal a helper's return value back to Handlebars.
+//
+// Userdata wrapping our own dom::Object/dom::Array are unwrapped in place
+// (preserving identity); raw Lua tables are converted to a dom::Object using
+// string keys (non-string keys are skipped). Non-representable types
+// (function, thread, light userdata) become null.
+static
+dom::Value
+luaToDom(Access& A, int idx)
+{
+    int const t = lua_type(A, idx);
+    switch(t)
+    {
+    case LUA_TNIL:
+        return dom::Value();
+    case LUA_TBOOLEAN:
+        return dom::Value(lua_toboolean(A, idx) != 0);
+    case LUA_TNUMBER:
+        if (lua_isinteger(A, idx))
+            return dom::Value(static_cast<std::int64_t>(
+                lua_tointeger(A, idx)));
+        // dom::Value has no double kind; truncate floats. Helpers that need
+        // sub-integer precision should return strings.
+        return dom::Value(static_cast<std::int64_t>(
+            lua_tonumber(A, idx)));
+    case LUA_TSTRING:
+    {
+        std::size_t len;
+        char const* data = lua_tolstring(A, idx, &len);
+        return dom::Value(std::string(data, len));
+    }
+    case LUA_TTABLE:
+    {
+        dom::Object obj;
+        int const absIdx = lua_absindex(A, idx);
+        lua_pushnil(A);
+        while (lua_next(A, absIdx) != 0)
+        {
+            if (lua_type(A, -2) == LUA_TSTRING)
+            {
+                std::size_t klen;
+                char const* kdata = lua_tolstring(A, -2, &klen);
+                obj.set(
+                    std::string_view(kdata, klen),
+                    luaToDom(A, -1));
+            }
+            lua_pop(A, 1); // pop value, keep key for next iteration
+        }
+        return dom::Value(std::move(obj));
+    }
+    case LUA_TUSERDATA:
+    {
+        if (! lua_getmetatable(A, idx))
+            return dom::Value();
+        int const metaIdx = lua_absindex(A, -1);
+        dom::Value result;
+        bool matched = false;
+
+        if (A->objMetaRef != LUA_NOREF)
+        {
+            lua_rawgeti(A, LUA_REGISTRYINDEX, A->objMetaRef);
+            if (lua_rawequal(A, metaIdx, -1))
+            {
+                result = dom::Value(*static_cast<dom::Object*>(
+                    lua_touserdata(A, idx)));
+                matched = true;
+            }
+            lua_pop(A, 1);
+        }
+        if (! matched && A->arrMetaRef != LUA_NOREF)
+        {
+            lua_rawgeti(A, LUA_REGISTRYINDEX, A->arrMetaRef);
+            if (lua_rawequal(A, metaIdx, -1))
+            {
+                result = dom::Value(*static_cast<dom::Array*>(
+                    lua_touserdata(A, idx)));
+            }
+            lua_pop(A, 1);
+        }
+        lua_pop(A, 1); // pop metatable
+        return result;
+    }
+    default:
+        return dom::Value();
+    }
+}
+
+namespace detail {
+
+// Registry-anchored handle that owns a Lua function's lifetime independently
+// of any Scope. The function lives in LUA_REGISTRYINDEX until the handle is
+// destroyed, so the Handlebars helper closure can keep firing across renders.
+struct LuaHelperHandle
+{
+    Context ctx;
+    int ref;
+
+    LuaHelperHandle(Context c, int r) noexcept
+        : ctx(std::move(c)), ref(r)
+    {
+    }
+    LuaHelperHandle(LuaHelperHandle const&) = delete;
+    LuaHelperHandle& operator=(LuaHelperHandle const&) = delete;
+    ~LuaHelperHandle()
+    {
+        Access A(ctx);
+        luaL_unref(A, LUA_REGISTRYINDEX, ref);
+    }
+};
+
+// Strip the trailing Handlebars options object (matching the JS helper
+// semantics), push positional args to Lua, run the helper, and return the
+// converted result. Errors from lua_pcall surface as Unexpected.
+static
+Expected<dom::Value, Error>
+invokeHelperRef(
+    std::shared_ptr<LuaHelperHandle> const& handle,
+    dom::Array const& args)
+{
+    if (args.empty())
+    {
+        return Unexpected(Error(
+            "Handlebars helper called without arguments; "
+            "expected options object as last argument"));
+    }
+    dom::Value const& options = args.back();
+    if (! options.isObject())
+    {
+        return Unexpected(Error(
+            "Handlebars helper options must be an object; "
+            "ensure the helper is called from a template context"));
+    }
+
+    Scope scope(handle->ctx);
+    Access A(scope);
+
+    lua_rawgeti(A, LUA_REGISTRYINDEX, handle->ref);
+
+    std::size_t const narg = args.size() - 1;
+    for (std::size_t i = 0; i < narg; ++i)
+    {
+        Param p(args.get(i));
+        Access::push(p, scope);
+    }
+
+    int const rc = lua_pcall(A, static_cast<int>(narg), 1, 0);
+    if (rc != LUA_OK)
+        return Unexpected(luaM_popError(A));
+
+    dom::Value result = luaToDom(A, lua_gettop(A));
+    lua_pop(A, 1);
+    return result;
+}
+
+} // detail
+
+Expected<void, Error>
+registerHelper(
+    Handlebars& hbs,
+    std::string_view name,
+    Context& ctx,
+    std::string_view script)
+{
+    // Resolve a Lua chunk to a callable: the chunk's return value is preferred
+    // (the "return function(...) ... end" idiom), falling back to a global of
+    // the same name (the "function name(...) ... end" idiom).
+    Scope scope(ctx);
+
+    auto chunk = scope.loadChunk(script, std::string(name));
+    if (! chunk)
+        return Unexpected(chunk.error());
+
+    auto chunkResult = chunk->call();
+    if (! chunkResult)
+        return Unexpected(chunkResult.error());
+
+    Access A(scope);
+    int ref;
+
+    if (chunkResult->isFunction())
+    {
+        lua_pushvalue(A, Access::index(*chunkResult));
+        ref = luaL_ref(A, LUA_REGISTRYINDEX);
+    }
+    else
+    {
+        auto global = scope.getGlobal(name);
+        if (! global)
+        {
+            return Unexpected(formatError(
+                "lua helper '{}': chunk did not return a function "
+                "and no global of that name was defined",
+                name));
+        }
+        if (! global->isFunction())
+        {
+            return Unexpected(formatError(
+                "lua helper '{}' is not a function", name));
+        }
+        lua_pushvalue(A, Access::index(*global));
+        ref = luaL_ref(A, LUA_REGISTRYINDEX);
+    }
+
+    auto handle = std::make_shared<detail::LuaHelperHandle>(ctx, ref);
+
+    hbs.registerHelper(
+        std::string(name),
+        dom::makeVariadicInvocable(
+            [handle](dom::Array const& args) -> Expected<dom::Value, Error>
+            {
+                return detail::invokeHelperRef(handle, args);
+            }));
+
+    return {};
 }
 
 //------------------------------------------------
