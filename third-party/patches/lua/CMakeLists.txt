@@ -21,24 +21,29 @@ option(BUILD_SHARED_LIBS "Create lua as a shared library" OFF)
 
 project(lua VERSION ${lua_VERSION} LANGUAGES C)
 
+# Files we always exclude from the core+stdlib library build:
+#   - lua.c     standalone interpreter (defines its own `main`)
+#   - luac.c    standalone bytecode compiler (defines its own `main`)
+#   - onelua.c  unity-build alternative that #includes the others; its
+#               default `MAKE_LUA` mode pulls in lua.c and would re-define
+#               `main`, conflicting with any application that links lua.lib.
+#   - ltests.c  Lua-internal test harness, only valid when LUA_USER_H
+#               enables it.
+set(LUA_EXCLUDE_NAMES lua.c luac.c onelua.c ltests.c)
+
 # Check if ./src exists
 if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/src")
-    # Lua sources live under ./src
-    file(GLOB LUA_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.c")
-    list(REMOVE_ITEM LUA_SOURCES
-            "${CMAKE_CURRENT_LIST_DIR}/src/lua.c"
-            "${CMAKE_CURRENT_LIST_DIR}/src/luac.c"
-    )
-    file(GLOB LUA_HEADERS "${CMAKE_CURRENT_LIST_DIR}/src/*.h")
+    set(LUA_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 else()
     # Lua sources live under ./ (github release)
-    file(GLOB LUA_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.c")
-    list(REMOVE_ITEM LUA_SOURCES
-            "${CMAKE_CURRENT_LIST_DIR}/lua.c"
-            "${CMAKE_CURRENT_LIST_DIR}/luac.c"
-    )
-    file(GLOB LUA_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h")
+    set(LUA_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 endif()
+
+file(GLOB LUA_SOURCES "${LUA_SOURCE_DIR}/*.c")
+foreach(_excl IN LISTS LUA_EXCLUDE_NAMES)
+    list(REMOVE_ITEM LUA_SOURCES "${LUA_SOURCE_DIR}/${_excl}")
+endforeach()
+file(GLOB LUA_HEADERS "${LUA_SOURCE_DIR}/*.h")
 
 add_library(lua ${LUA_SOURCES} ${LUA_HEADERS})
 target_include_directories(lua

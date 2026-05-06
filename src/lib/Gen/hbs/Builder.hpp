@@ -17,6 +17,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
+#include <mrdocs/Support/Lua.hpp>
 #include <map>
 #include <ostream>
 #include <vector>
@@ -41,6 +42,7 @@ namespace hbs {
 class Builder
 {
     js::Context ctx_;
+    lua::Context lua_ctx_;
     Handlebars hbs_;
     std::map<std::string, std::string, std::less<>> templates_;
     std::function<void(OutputRef&, std::string_view)> escapeFn_;

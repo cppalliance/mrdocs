@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -242,6 +243,52 @@ registerDefaultHelpers(Handlebars& hbs)
     hbs.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 }
 
+/** Categorizes files in the helper directories by extension.
+
+    Walks each directory recursively, picking files whose name ends in
+    `ext`. Files whose stem starts with `_` are treated as utility scripts
+    (loaded before helpers); the rest are recorded as helpers keyed by
+    stem. Other extensions are ignored, so JS and Lua scans do not
+    interfere with each other.
+
+    @param helperDirs The directories to scan for helper files.
+    @param ext The file extension to match (e.g. `.js`, `.lua`).
+    @param[out] utilityFiles Paths of utility scripts to run before helpers.
+    @param[out] helperFiles (helper name, path) pairs, in directory order.
+    @return Success, or the underlying filesystem error.
+*/
+Expected<void>
+collectHelperFiles(
+    std::vector<std::string> const& helperDirs,
+    std::string_view ext,
+    std::vector<std::string>& utilityFiles,
+    std::vector<std::pair<std::string, std::string>>& helperFiles)
+{
+    for (auto const& dir : helperDirs)
+    {
+        if (!files::exists(dir))
+            continue;
+
+        auto exp = forEachFile(dir, true,
+            [&](std::string_view pathName) -> Expected<void>
+            {
+                if (!pathName.ends_with(ext))
+                    return {};
+                auto name = files::getFileName(pathName);
+                name.remove_suffix(ext.size());
+
+                if (name.starts_with("_"))
+                    utilityFiles.emplace_back(pathName);
+                else
+                    helperFiles.emplace_back(std::string(name), std::string(pathName));
+                return {};
+            });
+        if (!exp)
+            return Unexpected(exp.error());
+    }
+    return {};
+}
+
 /** Registers user-defined JavaScript helpers from addon directories.
 
     Scans the specified directories for JavaScript files and registers
@@ -261,7 +308,7 @@ registerDefaultHelpers(Handlebars& hbs)
     @return Success, or an error if loading/registration fails.
 */
 Expected<void>
-registerUserHelpers(
+registerUserJsHelpers(
     Handlebars& hbs,
     js::Context& ctx,
     std::vector<std::string> const& helperDirs)
@@ -278,37 +325,8 @@ registerUserHelpers(
     std::vector<std::string> utilityFiles;
     std::vector<std::pair<std::string, std::string>> helperFiles; // (name, path)
 
-    for (auto const& dir : helperDirs)
-    {
-        if (!files::exists(dir))
-            continue;
+    MRDOCS_TRY(collectHelperFiles(helperDirs, ".js", utilityFiles, helperFiles));
 
-        auto exp = forEachFile(dir, true,
-            [&](std::string_view pathName) -> Expected<void>
-            {
-                constexpr std::string_view ext = ".js";
-                if (!pathName.ends_with(ext))
-                    return {};
-                auto name = files::getFileName(pathName);
-                name.remove_suffix(ext.size());
-
-                if (name.starts_with("_"))
-                {
-                    // Utility file: will be executed as script
-                    utilityFiles.emplace_back(pathName);
-                }
-                else
-                {
-                    // Helper file: will be registered as Handlebars helper
-                    helperFiles.emplace_back(std::string(name), std::string(pathName));
-                }
-                return {};
-            });
-        if (!exp)
-            return Unexpected(exp.error());
-    }
-
-    // Sort utility files alphabetically for predictable load order
     std::sort(utilityFiles.begin(), utilityFiles.end());
 
     // Load utilities first (they define globals available to helpers).
@@ -332,6 +350,61 @@ registerUserHelpers(
     {
         MRDOCS_TRY(auto script, files::getFileText(path));
         MRDOCS_TRY(js::registerHelper(hbs, name, ctx, script));
+    }
+
+    return {};
+}
+
+/** Registers user-defined Lua helpers from addon directories.
+
+    Mirrors @ref registerUserJsHelpers for Lua. Files are categorized:
+
+    - **Utility files** (prefixed with `_`): Loaded as Lua chunks and
+      executed once. Use them to populate the global table or `package`
+      modules that helpers can reference.
+    - **Helper files**: Registered as Handlebars helpers via
+      @ref lua::registerHelper, using the filename stem as the helper name.
+
+    Both `.js` and `.lua` files can coexist in the same addon directory.
+    A `.lua` helper registered with the same name as an existing `.js`
+    helper replaces it (because Handlebars helper registration overwrites).
+
+    @param hbs The Handlebars instance to register helpers with.
+    @param ctx The Lua context for script execution.
+    @param helperDirs The directories to scan for helper files.
+    @return Success, or an error if loading/registration fails.
+*/
+Expected<void>
+registerUserLuaHelpers(
+    Handlebars& hbs,
+    lua::Context& ctx,
+    std::vector<std::string> const& helperDirs)
+{
+    std::vector<std::string> utilityFiles;
+    std::vector<std::pair<std::string, std::string>> helperFiles; // (name, path)
+
+    MRDOCS_TRY(collectHelperFiles(helperDirs, ".lua", utilityFiles, helperFiles));
+
+    std::sort(utilityFiles.begin(), utilityFiles.end());
+
+    for (auto const& utilPath : utilityFiles)
+    {
+        lua::Scope scope(ctx);
+        MRDOCS_TRY(auto script, files::getFileText(utilPath));
+        MRDOCS_TRY(auto chunk, scope.loadChunk(script, utilPath));
+        auto exp = chunk.call();
+        if (!exp)
+        {
+            return Unexpected(formatError(
+                "Error loading utility {}: {}",
+                utilPath, exp.error().message()));
+        }
+    }
+
+    for (auto const& [name, path] : helperFiles)
+    {
+        MRDOCS_TRY(auto script, files::getFileText(path));
+        MRDOCS_TRY(lua::registerHelper(hbs, name, ctx, script));
     }
 
     return {};
@@ -389,9 +462,14 @@ Builder(
     // Load partials (later dirs overwrite earlier ones because we walk in order)
     registerPartials(hbs_, partialDirs);
 
-    // Built-in helpers first, then user JS helpers so overrides work as expected.
+    // Built-in helpers first, then user scripts (JS and Lua) so user code
+    // can override built-ins. JS runs before Lua, so a Lua helper with the
+    // same name as a JS helper takes precedence (last-write-wins on the
+    // Handlebars side).
     registerDefaultHelpers(hbs_);
-    if (auto exp = registerUserHelpers(hbs_, ctx_, helperDirs); !exp)
+    if (auto exp = registerUserJsHelpers(hbs_, ctx_, helperDirs); !exp)
+        exp.error().Throw();
+    if (auto exp = registerUserLuaHelpers(hbs_, lua_ctx_, helperDirs); !exp)
         exp.error().Throw();
 
     // Load layout templates
