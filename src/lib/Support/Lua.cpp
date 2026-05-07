@@ -433,7 +433,6 @@ domObject_push_metatable(
         domValue_push(A,
             domObject_get(A, 1).get(
                 luaM_getstring(A, 2)));
-        lua_replace(A, 1);
         return 1;
     });
     lua_settable(A, -3);
