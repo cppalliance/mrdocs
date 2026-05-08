@@ -554,6 +554,44 @@ if (MRDOCS_BUILD_TESTS)
     endforeach ()
 
     #-------------------------------------------------
+    # Template-only generators
+    #
+    # Fixtures under test-files/template-only-generators/<id> ship an
+    # addon defining their own Handlebars generator. They live outside
+    # test-files/golden-tests so the xml/adoc/html runs do not walk
+    # into them and demand expected files in their own formats.
+    #-------------------------------------------------
+    set(MRDOCS_TEMPLATE_ONLY_ROOT "${PROJECT_SOURCE_DIR}/test-files/template-only-generators")
+    add_test(NAME mrdocs-golden-tests-mock-md
+        COMMAND
+            mrdocs-test
+            --unit=false
+            --action=test
+            "${MRDOCS_TEMPLATE_ONLY_ROOT}/mock-md"
+            "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            --generator=mock-md
+            "--stdlib-includes=${LIBCXX_DIR}"
+            "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+            --log-level=warn
+    )
+    foreach (action IN ITEMS test create update)
+        add_custom_target(
+            mrdocs-${action}-test-fixtures-mock-md
+            COMMAND
+                mrdocs-test
+                --unit=false
+                --action=${action}
+                "${MRDOCS_TEMPLATE_ONLY_ROOT}/mock-md"
+                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                --generator=mock-md
+                "--stdlib-includes=${LIBCXX_DIR}"
+                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+                --log-level=warn
+            DEPENDS mrdocs-test
+        )
+    endforeach ()
+
+    #-------------------------------------------------
     # Self-documentation test (warn-as-error toggled by strict flag)
     #-------------------------------------------------
     set(MRDOCS_SELF_DOC_OUTPUT "${CMAKE_BINARY_DIR}/docs/self-reference")
