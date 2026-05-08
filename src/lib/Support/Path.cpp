@@ -206,7 +206,7 @@ getFileText(
     std::istreambuf_iterator<char> it(file);
     std::istreambuf_iterator<char> const end;
     std::string text(it, end);
-    if(! file.good())
+    if(file.fail() && ! file.eof())
         return Unexpected(formatError("getFileText(\"{}\") returned \"{}\"",
             pathName, std::error_code(errno, std::generic_category())));
     return text;
