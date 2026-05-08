@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,6 +15,7 @@
 #include "ToolCompilationDatabase.hpp"
 #include <lib/ConfigImpl.hpp>
 #include <lib/CorpusImpl.hpp>
+#include <lib/Gen/hbs/DataDrivenGenerators.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Generator.hpp>
@@ -47,16 +49,27 @@ DoGenerateAction(
 
     // --------------------------------------------------------------
     //
+    // Discover data-driven generators
+    //
+    // --------------------------------------------------------------
+    // Each <addon>/generator/<name>/ directory that ships its own
+    // Handlebars layouts is registered as an additional generator
+    // (subject to id and layout-template checks) before the user-
+    // requested generator is looked up below.
+    MRDOCS_TRY(hbs::discoverDataDrivenGenerators(*config));
+
+    // --------------------------------------------------------------
+    //
     // Load generator
     //
     // --------------------------------------------------------------
     auto& settings = config->settings();
     MRDOCS_TRY(
         Generator const& generator,
-        findGenerator(to_string(settings.generator)),
+        findGenerator(settings.generator),
         formatError(
             "the Generator \"{}\" was not found",
-            to_string(config->settings().generator)));
+            settings.generator));
 
     // --------------------------------------------------------------
     //
