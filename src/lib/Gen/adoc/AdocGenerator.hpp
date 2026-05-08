@@ -13,9 +13,7 @@
 #ifndef MRDOCS_LIB_GEN_ADOC_ADOCGENERATOR_HPP
 #define MRDOCS_LIB_GEN_ADOC_ADOCGENERATOR_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
-#include <mrdocs/Generator.hpp>
 
 namespace mrdocs::adoc {
 
@@ -23,24 +21,7 @@ class AdocGenerator final
     : public hbs::HandlebarsGenerator
 {
 public:
-    std::string_view
-    id() const noexcept override
-    {
-        return "adoc";
-    }
-
-    std::string_view
-    fileExtension() const noexcept override
-    {
-        return "adoc";
-    }
-
-
-    std::string_view
-    displayName() const noexcept override
-    {
-        return "Asciidoc";
-    }
+    AdocGenerator();
 
     void
     escape(OutputRef& os, std::string_view str) const override;

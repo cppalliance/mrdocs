@@ -23,23 +23,7 @@ class HTMLGenerator final
     : public hbs::HandlebarsGenerator
 {
 public:
-    std::string_view
-    id() const noexcept override
-    {
-        return "html";
-    }
-
-    std::string_view
-    fileExtension() const noexcept override
-    {
-        return "html";
-    }
-
-    std::string_view
-    displayName() const noexcept override
-    {
-        return "HTML";
-    }
+    HTMLGenerator();
 
     void
     escape(OutputRef& os, std::string_view str) const override;

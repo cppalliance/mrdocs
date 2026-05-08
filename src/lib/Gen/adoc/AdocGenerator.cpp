@@ -11,10 +11,16 @@
 
 #include "AdocGenerator.hpp"
 #include "AdocEscape.hpp"
-#include <mrdocs/Support/Handlebars.hpp>
+#include <memory>
 
 namespace mrdocs {
 namespace adoc {
+
+AdocGenerator::
+AdocGenerator()
+    : HandlebarsGenerator("adoc", "adoc", "Asciidoc")
+{
+}
 
 void
 AdocGenerator::

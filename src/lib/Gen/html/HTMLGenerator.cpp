@@ -11,9 +11,16 @@
 
 #include "HTMLGenerator.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
+#include <memory>
 
 namespace mrdocs {
 namespace html {
+
+HTMLGenerator::
+HTMLGenerator()
+    : HandlebarsGenerator("html", "html", "HTML")
+{
+}
 
 void
 HTMLGenerator::
