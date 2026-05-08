@@ -252,13 +252,9 @@
     },
     "generator": {
       "default": "adoc",
-      "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The generator can create different types of documentation such as HTML, XML, and AsciiDoc.",
-      "enum": [
-        "adoc",
-        "html",
-        "xml"
-      ],
-      "title": "Generator used to create the documentation"
+      "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, and `xml`; data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/.",
+      "title": "Generator used to create the documentation",
+      "type": "string"
     },
     "global-namespace-index": {
       "default": true,
