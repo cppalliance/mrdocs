@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>1Oafq0Qg8PKbrn4hwQwSeK44I44=</records>
+    <functions>IX3R+wr9jgB/i1gRciE8tyKKkOY=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>Documented</name>
+  <source>
+    <location>
+      <short-path>warn-when-undocumented.cpp</short-path>
+      <source-path>warn-when-undocumented.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>1Oafq0Qg8PKbrn4hwQwSeK44I44=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A documented struct.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>documentedFunction</name>
+  <source>
+    <location>
+      <short-path>warn-when-undocumented.cpp</short-path>
+      <source-path>warn-when-undocumented.cpp</source-path>
+      <line-number>16</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>IX3R+wr9jgB/i1gRciE8tyKKkOY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A documented function.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>
