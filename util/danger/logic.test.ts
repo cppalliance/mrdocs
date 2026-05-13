@@ -9,7 +9,10 @@
 //
 import { describe, expect, it } from "vitest";
 import {
+    aggregateSizeWarnings,
     commitSizeInfos,
+    evaluateDanger,
+    expectedBodyLength,
     parseCommitSummary,
     basicChecks,
     summarizeScopes,
@@ -69,6 +72,52 @@ describe("summarizeScopes", () => {
         expect(report.totals.build.files).toBe(1);
         expect(report.totals.toolchain.additions).toBe(55);
         expect(report.totals["toolchain-tests"].additions).toBe(200);
+    });
+});
+
+describe("aggregateSizeWarnings", () => {
+    // Stays quiet when source churn is under the aggregate threshold.
+    it("does not warn under the aggregate threshold", () => {
+        const summary = summarizeScopes([
+            { filename: "src/lib/file.cpp", additions: 1000, deletions: 500 },
+        ]);
+        expect(aggregateSizeWarnings(summary)).toEqual([]);
+    });
+
+    // Fires once aggregate source churn crosses the limit, even with well-sliced commits.
+    it("warns when aggregate source churn exceeds the threshold", () => {
+        const summary = summarizeScopes([
+            { filename: "src/lib/a.cpp", additions: 3000, deletions: 0 },
+            { filename: "src/lib/b.cpp", additions: 2500, deletions: 0 },
+        ]);
+        const warnings = aggregateSizeWarnings(summary);
+        expect(warnings.length).toBe(1);
+        expect(warnings[0]).toContain("5500");
+    });
+
+    // Ignores test, golden-test, and docs churn — only source counts.
+    it("ignores non-source churn", () => {
+        const summary = summarizeScopes([
+            { filename: "test-files/golden-tests/big.xml", additions: 20000, deletions: 0 },
+            { filename: "docs/big.adoc", additions: 5000, deletions: 0 },
+            { filename: "src/lib/small.cpp", additions: 10, deletions: 0 },
+        ]);
+        expect(aggregateSizeWarnings(summary)).toEqual([]);
+    });
+});
+
+describe("expectedBodyLength", () => {
+    // Bottoms out at 80 chars (log2(2) * 80) for tiny or zero-churn diffs.
+    it("bottoms out at 80 chars for tiny changes", () => {
+        expect(expectedBodyLength(0)).toBe(80);
+        expect(expectedBodyLength(1)).toBe(80);
+        expect(expectedBodyLength(2)).toBe(80);
+    });
+
+    // Grows roughly logarithmically with churn — 30k lines should still be only a few hundred chars.
+    it("grows logarithmically with churn", () => {
+        expect(expectedBodyLength(30000)).toBeGreaterThan(expectedBodyLength(1000));
+        expect(expectedBodyLength(30000)).toBeLessThan(expectedBodyLength(1000) * 3);
     });
 });
 
@@ -182,6 +231,127 @@ describe("starterChecks", () => {
         const warnings = basicChecks(inputs, summary, parsed);
 
         expect(warnings.some((message) => message.includes("does not update any documentation"))).toBe(false);
+    });
+
+    // Warns when the description is too short relative to the size of the change.
+    it("warns when description is short relative to churn", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody:
+                "Big refactor across the codebase. Tested locally with the existing suite; no behavior change expected.",
+            prTitle: "refactor: massive",
+            labels: [],
+        };
+        const summary = summarizeScopes([
+            { filename: "src/lib/big.cpp", additions: 5000, deletions: 1000 },
+        ]);
+        const parsed = validateCommits([{ sha: "sx", message: "refactor: massive" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+        expect(warnings.some((m) => m.includes("relative to the size of this change"))).toBe(true);
+        expect(warnings.some((m) => m.includes("PR description looks empty"))).toBe(false);
+    });
+
+    // An unfilled PR template (italic placeholders + headers, no real content) must still trip
+    // the empty-description warning and must not satisfy the testing-mention check via the
+    // "## Testing" header.
+    it("treats an unfilled PR template as empty after cleaning", () => {
+        const unfilledTemplate = [
+            "<!-- Fill this in yourself, or have your favorite AI agent draft it from the diff. -->",
+            "",
+            "## Summary",
+            "",
+            "_What this PR does and why. For large or non-trivial changes, link a design doc or issue, or explain the design inline._",
+            "",
+            "## Changes",
+            "",
+            "_Replace the lines that apply, delete the rest._",
+            "",
+            "- **Source**: _Implementation changes._",
+            "- **Tests**: _New or updated unit tests and fixtures._",
+            "- **Breaking changes**: _Anything downstream users need to know._",
+            "",
+            "## Testing",
+            "",
+            "_How this change stays tested going forward — the tests in this PR that cover the new behavior, plus any CI workflow changes needed so that coverage runs on every future build._",
+            "",
+            "## Documentation",
+            "",
+            "_What was updated in the documentation or why documentation is not needed._",
+        ].join("\n");
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: unfilledTemplate,
+            prTitle: "feat: something",
+            labels: [],
+        };
+        const summary = summarizeScopes([
+            { filename: "src/lib/file.cpp", additions: 100, deletions: 0 },
+        ]);
+        const parsed = validateCommits([{ sha: "swt", message: "feat: something" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+        expect(warnings.some((m) => m.includes("PR description looks empty"))).toBe(true);
+        // The "## Testing" header must not satisfy the test-mention check on its own —
+        // the source-without-tests warning should still fire.
+        expect(warnings.some((m) => m.includes("Source changed"))).toBe(true);
+    });
+
+    // Strips HTML comments before measuring length so PR-template scaffolding cannot game the check.
+    it("ignores HTML comments when measuring description length", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody:
+                "<!-- This is a long template comment that should not count toward the body length. -->\n" +
+                "<!-- More scaffolding here that adds many characters but conveys nothing useful. -->\n" +
+                "Fix.",
+            prTitle: "fix: tiny",
+            labels: [],
+        };
+        const summary = summarizeScopes([
+            { filename: "src/lib/tiny.cpp", additions: 1, deletions: 1 },
+        ]);
+        const parsed = validateCommits([{ sha: "sy", message: "fix: tiny" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+        expect(warnings.some((m) => m.includes("PR description looks empty"))).toBe(true);
+    });
+
+    // Stays quiet when description length is well-matched to a small change.
+    it("does not warn on short body for tiny diffs", () => {
+        const inputs: DangerInputs = {
+            files: [],
+            commits: [],
+            prBody: "Fix a typo in a code comment. Verified locally by running the existing unit test suite.",
+            prTitle: "fix: typo",
+            labels: [],
+        };
+        const summary = summarizeScopes([
+            { filename: "src/lib/typo.cpp", additions: 1, deletions: 1 },
+        ]);
+        const parsed = validateCommits([{ sha: "sz", message: "fix: typo" }]).parsed;
+        const warnings = basicChecks(inputs, summary, parsed);
+        expect(warnings.some((m) => m.includes("PR description looks empty"))).toBe(false);
+        expect(warnings.some((m) => m.includes("relative to the size of this change"))).toBe(false);
+    });
+
+    // End-to-end: PR #1178-shaped change surfaces both the aggregate-size and short-description warnings.
+    it("flags a large PR with a terse description through evaluateDanger", () => {
+        const result = evaluateDanger({
+            files: [
+                { filename: "src/lib/a.cpp", additions: 3000, deletions: 0 },
+                { filename: "src/lib/b.cpp", additions: 3000, deletions: 0 },
+                { filename: "test-files/golden-tests/x.xml", additions: 10000, deletions: 0 },
+                { filename: "docs/option.adoc", additions: 5, deletions: 0 },
+            ],
+            commits: [{ sha: "ab", message: "feat: large change" }],
+            prBody:
+                "Adds a new schema-generation option to mrdocs. Tested locally against the golden test suite and verified the generated schemas render correctly.",
+            prTitle: "feat: large change",
+            labels: [],
+        });
+        expect(result.warnings.some((m) => m.includes("source lines"))).toBe(true);
+        expect(result.warnings.some((m) => m.includes("relative to the size of this change"))).toBe(true);
     });
 
     // Stays quiet for non-feature commits even without docs.
