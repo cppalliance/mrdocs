@@ -31,4 +31,8 @@
 # Ignore hidden OS files under golden fixtures
 /test-files/golden-tests/**/.*
 /.code
+# Python (bootstrap.py at repo root, util/bootstrap/ utilities)
 __pycache__/
+.coverage
+.coverage.*
+htmlcov/
