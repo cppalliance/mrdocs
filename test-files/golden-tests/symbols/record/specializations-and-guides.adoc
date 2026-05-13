@@ -1,0 +1,124 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#A-0e[`A`] 
+| Primary class template&period;
+| link:#B-00[`B`] 
+| Class template with a deduction guide&period;
+|===
+
+
+[#A-0e]
+== A
+
+Primary class template&period;
+
+=== Synopsis
+
+Declared in `&lt;specializations&hyphen;and&hyphen;guides&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct A;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#A-0e-f[`f`] 
+| A member function&period;
+|===
+
+
+=== Specializations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#A-00[`A&lt;int&gt;`] 
+| Explicit specialization of the primary&period;
+|===
+
+
+[#A-0e-f]
+== link:#A-0e[A]::f
+
+A member function&period;
+
+=== Synopsis
+
+Declared in `&lt;specializations&hyphen;and&hyphen;guides&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+[#A-00]
+== link:#A-0e[A]&lt;int&gt;
+
+Explicit specialization of the primary&period;
+
+=== Synopsis
+
+Declared in `&lt;specializations&hyphen;and&hyphen;guides&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct link:#A-0e[A]&lt;int&gt;;
+----
+
+[#B-00]
+== B
+
+Class template with a deduction guide&period;
+
+=== Synopsis
+
+Declared in `&lt;specializations&hyphen;and&hyphen;guides&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int&gt;
+struct B;
+----
+
+=== Deduction Guides
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#B-0c[`B&lt;0&gt;`] 
+| Deduction guide for B&period;
+|===
+
+
+[#B-0c]
+== link:#B-00[B&lt;0&gt;]
+
+Deduction guide for B&period;
+
+=== Synopsis
+
+Declared in `&lt;specializations&hyphen;and&hyphen;guides&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#B-00[B&lt;0&gt;](bool) -> link:#B-00[B&lt;0&gt;];
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

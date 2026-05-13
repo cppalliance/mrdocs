@@ -111,6 +111,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</specializations>
 </record>
 <record>
   <name>S2</name>
@@ -144,6 +145,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>LQDMND21bNwDyy/hE3qQoQzFLXY=</specializations>
 </record>
 <typedef>
   <name>M2</name>
@@ -234,6 +236,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>S2</name>
@@ -303,6 +306,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <typedef>
   <name>M2</name>

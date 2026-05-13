@@ -276,6 +276,10 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>c7NNZfjOZ8Ztuw0u26xL/h7UKvA=</specializations>
+  <specializations>flxREiXFL5ObY0xUAxojj+jvR54=</specializations>
+  <specializations>nJGs54s6oYf7fHzIpo0tyaCSH9M=</specializations>
+  <specializations>6Syw3aWFS3pfPUbWU7C8uCE7Jjc=</specializations>
 </record>
 <record>
   <name>S1</name>
@@ -332,6 +336,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>S1</name>
@@ -389,6 +394,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>S0</name>
@@ -421,6 +427,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>S1</name>
@@ -476,5 +483,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 </mrdocs>

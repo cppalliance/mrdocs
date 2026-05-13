@@ -16,6 +16,7 @@
 #include <lib/AST/MissingSymbolSink.hpp>
 #include <lib/AST/MrDocsFileSystem.hpp>
 #include <lib/Metadata/Finalizers/BaseMembersFinalizer.hpp>
+#include <lib/Metadata/Finalizers/SpecializationFinalizer.hpp>
 #include <lib/Metadata/Finalizers/DerivedFinalizer.hpp>
 #include <lib/Metadata/Finalizers/DocCommentFinalizer.hpp>
 #include <lib/Metadata/Finalizers/FunctionObjectFinalizer.hpp>
@@ -1083,6 +1084,14 @@ CorpusImpl::finalize()
     {
         report::debug("  - Finalizing auto-relates");
         DerivedFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    // Populate primary -> specialization back-pointers
+    // and the deduction-guide lists on deduced records.
+    {
+        report::debug("  - Finalizing specializations");
+        SpecializationFinalizer finalizer(*this);
         finalizer.build();
     }
 

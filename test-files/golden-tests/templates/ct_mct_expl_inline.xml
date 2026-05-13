@@ -75,6 +75,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>bHsbts/3qH4qdnqFkFXkR6e8OCw=</specializations>
 </record>
 <function>
   <name>f</name>
@@ -135,6 +136,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>g</name>

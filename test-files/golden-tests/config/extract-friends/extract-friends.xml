@@ -67,6 +67,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</specializations>
 </record>
 <record>
   <name>hash</name>
@@ -105,6 +106,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>operator()</name>

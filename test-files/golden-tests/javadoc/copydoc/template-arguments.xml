@@ -364,6 +364,8 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>n2ekv7/9IraylJIibujZeExrML4=</specializations>
+  <specializations>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</specializations>
 </record>
 <record>
   <name>B</name>
@@ -410,6 +412,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -460,6 +463,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -530,6 +534,8 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>w5ssdgUOfKNpDbPFUfSYesxFAc8=</specializations>
+  <specializations>+AYNfv3bBiQwa6z9A60U/F7dvXE=</specializations>
 </record>
 <record>
   <name>C</name>
@@ -581,6 +587,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -631,6 +638,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>D</name>

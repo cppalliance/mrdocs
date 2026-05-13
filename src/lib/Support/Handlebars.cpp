@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -6472,6 +6473,60 @@ registerContainerHelpers(Handlebars& hbs)
     });
 
     hbs.registerHelper("filter_by", filter_by_fn);
+
+    static auto reject_by_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        dom::Value container = arguments.at(0);
+        std::vector<dom::Value> keys;
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            dom::Value key = arguments.at(i);
+            keys.push_back(key);
+        }
+
+        // Given an array of objects, reject (exclude) those whose
+        // value at any of the given keys is truthy. Inverse of
+        // `filter_by`: non-object elements are kept, since they
+        // have no keys to test.
+        if (container.isArray())
+        {
+            dom::Array const& arr = container.getArray();
+
+            std::vector<dom::Value> res;
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i) {
+                dom::Value el = arr.at(i);
+
+                if (!el.isObject())
+                {
+                    res.emplace_back(el);
+                    continue;
+                }
+
+                auto const matchIt = std::ranges::find_if(
+                    keys,
+                    [&](dom::Value const& key)
+                    {
+                        return
+                            el.getObject().exists(key.getString()) &&
+                            el.getObject().get(key.getString()).isTruthy();
+                    });
+                if (matchIt != keys.end())
+                {
+                    continue;
+                }
+
+                res.emplace_back(el);
+            }
+            return dom::Array(res);
+        }
+
+        // If the value is not an array, then we can't reject from it
+        return container;
+    });
+
+    hbs.registerHelper("reject_by", reject_by_fn);
 
     static auto any_of_by_fn = dom::makeVariadicInvocable([](
         dom::Array const& arguments) -> dom::Value
