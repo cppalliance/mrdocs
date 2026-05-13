@@ -107,6 +107,8 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>E4XI9hgprdQN7ez3dhWgM/Nx9DQ=</specializations>
+  <specializations>5GqWQ5IFiKuJx5FMNsyMUX5/JA0=</specializations>
 </record>
 <record>
   <name>writable_field_traits</name>
@@ -158,6 +160,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>writable_field_traits</name>
@@ -209,5 +212,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 </mrdocs>

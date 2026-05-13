@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -74,6 +75,43 @@ struct RecordSymbol final
     */
     std::vector<FriendInfo> Friends;
 
+    /** Whether this record is listed on its primary's page.
+
+        A presentation-layer flag set by `SpecializationFinalizer`
+        when *both* conditions hold:
+
+          1. This record is a template specialization (AST-local,
+             equivalent to `Template->specializationKind() != Primary`).
+          2. Its primary is being extracted in
+             @ref ExtractionMode::Regular (cross-symbol, needs the
+             corpus).
+
+        When set, the record is rendered in its primary's
+        "Specializations" section and suppressed from the parent
+        scope's listing. Orphan specializations (primary excluded
+        from extraction) fail condition 2 and keep the flag `false`,
+        so they remain reachable from the parent scope. The name
+        deliberately encodes the resulting placement rather than
+        the AST property in 1, which `Template` already exposes.
+    */
+    bool IsListedOnPrimary = false;
+
+    /** Specializations whose primary is this record.
+
+        Populated by `SpecializationFinalizer` with the IDs of
+        class-template specializations referring to this record
+        as their primary. Sorted by referent name then ID.
+    */
+    std::vector<SymbolID> Specializations;
+
+    /** Deduction guides associated with this class template.
+
+        Populated by `SpecializationFinalizer` with the IDs of
+        deduction guides that deduce this record. Sorted by
+        referent name then ID.
+    */
+    std::vector<SymbolID> DeductionGuides;
+
     //--------------------------------------------
 
     /** Create a record symbol bound to an ID.
@@ -93,7 +131,8 @@ MRDOCS_DESCRIBE_STRUCT(
     RecordSymbol,
     (SymbolCommonBase<SymbolKind::Record>),
     (KeyKind, Template, IsTypeDef, IsFinal, IsFinalDestructor,
-     Bases, Derived, Interface, Friends)
+     Bases, Derived, Interface, Friends,
+     IsListedOnPrimary, Specializations, DeductionGuides)
 )
 
 /** Return the default accessibility for a record key kind.

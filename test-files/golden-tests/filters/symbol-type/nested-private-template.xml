@@ -83,6 +83,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</specializations>
 </record>
 <record>
   <name>impl</name>
@@ -128,5 +129,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 </mrdocs>

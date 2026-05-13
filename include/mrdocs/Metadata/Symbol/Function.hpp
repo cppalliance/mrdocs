@@ -22,6 +22,7 @@
 #include <mrdocs/Metadata/Symbol/SymbolBase.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/MapReflectedType.hpp>
 #include <string>
 #include <vector>
 
@@ -137,6 +138,36 @@ struct FunctionSymbol final
     */
     Optional<SymbolID> FunctionObjectImpl;
 
+    /** Whether this function is listed on its primary's page.
+
+        A presentation-layer flag set by `SpecializationFinalizer`
+        when *both* conditions hold:
+
+          1. This function is a template specialization (AST-local,
+             equivalent to `Template->specializationKind() != Primary`).
+          2. Its primary is being extracted in
+             @ref ExtractionMode::Regular (cross-symbol, needs the
+             corpus).
+
+        When set, the function is rendered in its primary's
+        "Specializations" section and suppressed from the parent
+        scope's listing. Orphan specializations (primary excluded
+        from extraction) fail condition 2 and keep the flag `false`,
+        so they remain reachable from the parent scope. The name
+        deliberately encodes the resulting placement rather than
+        the AST property in 1, which `Template` already exposes.
+    */
+    bool IsListedOnPrimary = false;
+
+    /** Specializations whose primary is this function.
+
+        Populated by `SpecializationFinalizer` with the IDs of
+        function-template specializations referring to this
+        function as their primary. Sorted by referent name
+        then ID.
+    */
+    std::vector<SymbolID> Specializations;
+
     //--------------------------------------------
 
     /** Construct a function symbol with its ID.
@@ -161,7 +192,8 @@ MRDOCS_DESCRIBE_STRUCT(
      IsNodiscard, IsExplicitObjectMemberFunction, Constexpr,
      OverloadedOperator, StorageClass, IsRecordMethod, IsVirtual,
      IsVirtualAsWritten, IsPure, IsConst, IsVolatile, IsFinal,
-     RefQualifier, Explicit, Attributes, FunctionObjectImpl)
+     RefQualifier, Explicit, Attributes, FunctionObjectImpl,
+     IsListedOnPrimary, Specializations)
 )
 
 /** Map a vector of parameters to a @ref dom::Value object.

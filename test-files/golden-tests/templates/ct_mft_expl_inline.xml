@@ -96,6 +96,7 @@
   </template>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
+  <specializations>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</specializations>
 </function>
 <function>
   <name>f</name>
@@ -131,5 +132,6 @@
   </template>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </function>
 </mrdocs>

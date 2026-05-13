@@ -86,6 +86,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>BImCLyzY3azoxv/pd8PtoMYhX4k=</specializations>
 </record>
 <record>
   <name>A</name>
@@ -158,5 +159,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 </mrdocs>

@@ -370,7 +370,10 @@ grammar
             BaseInfo*,
             element derived { SymbolID }*,
             RecordInterface?,
-            FriendInfo*
+            FriendInfo*,
+            element is-listed-on-primary { Bool }?,
+            element specializations { SymbolID }*,
+            element deduction-guides { SymbolID }*
         }
 
     BaseInfo =
@@ -445,7 +448,9 @@ grammar
             element ref-qualifier { text }?,
             element explicit { text }?,
             element attributes { text }*,
-            element function-object-impl { SymbolID }?
+            element function-object-impl { SymbolID }?,
+            element is-listed-on-primary { Bool }?,
+            element specializations { SymbolID }*
         }
 
     #---------------------------------------------

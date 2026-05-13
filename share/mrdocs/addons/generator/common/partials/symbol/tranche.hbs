@@ -7,6 +7,10 @@
 
     Each value in the tranche is a list of symbols that belong to the tranche.
 
+    Template specializations and deduction guides are filtered out: they are
+    listed instead on the primary template's own page, via the dedicated
+    "Specializations" / "Deduction Guides" sections.
+
     Expected Context: {Tranche Object}
 
     Example:
@@ -17,21 +21,20 @@
 {{#if is-namespace}}
 {{>symbol/members-table members=tranche.namespaces title="Namespaces"}}
 {{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
-{{>symbol/members-table members=tranche.records title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=(reject_by tranche.records "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}
 {{>symbol/members-table members=tranche.typedefs title=(concat (select label (concat label " ") "") "Type Aliases")}}
 {{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
-{{>symbol/members-table members=tranche.functions title="Functions"}}
+{{>symbol/members-table members=(reject_by tranche.functions "isListedOnPrimary") title="Functions"}}
 {{>symbol/members-table members=tranche.variables title="Variables"}}
 {{>symbol/members-table members=tranche.concepts title="Concepts"}}
-{{>symbol/members-table members=tranche.guides title=(concat (select label (concat label " ") "") "Deduction Guides")}}
 {{>symbol/members-table members=tranche.usings title=(concat (select label (concat label " ") "") "Using Declarations")}}
 {{else}}
 {{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
-{{>symbol/members-table members=tranche.records title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=(reject_by tranche.records "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}
 {{>symbol/members-table members=tranche.typedefs title=(concat (select label (concat label " ") "") "Type Aliases")}}
 {{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
-{{>symbol/members-table members=tranche.functions title=(concat (select label (concat label " ") "") "Member Functions")}}
-{{>symbol/members-table members=tranche.staticFunctions title=(concat (select label (concat label " ") "") "Static Member Functions")}}
+{{>symbol/members-table members=(reject_by tranche.functions "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Member Functions")}}
+{{>symbol/members-table members=(reject_by tranche.staticFunctions "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Static Member Functions")}}
 {{>symbol/members-table members=tranche.variables title=(concat (select label (concat label " ") "") "Data Members")}}
 {{>symbol/members-table members=tranche.staticVariables title=(concat (select label (concat label " ") "") "Static Data Members")}}
 {{>symbol/members-table members=tranche.aliases title=(concat (select label (concat label " ") "") "Aliases")}}

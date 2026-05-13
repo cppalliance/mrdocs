@@ -43,6 +43,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>AKwlChAOi+0ttIAPsD7uitS+gk0=</specializations>
 </record>
 <record>
   <name>B</name>
@@ -75,6 +76,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>IMS2etMN5nj/r7pRC8mVNme6K+o=</specializations>
 </record>
 <function>
   <name>f</name>
@@ -136,6 +138,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -204,6 +207,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>g</name>

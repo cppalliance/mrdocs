@@ -130,6 +130,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <specializations>6f4GHawhlUckr08SJkt7su9cIDY=</specializations>
 </record>
 <typedef>
   <name>type</name>
@@ -197,6 +198,7 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
+  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>is_match</name>

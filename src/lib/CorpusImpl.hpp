@@ -64,6 +64,7 @@ class CorpusImpl final : public Corpus
     friend class NamespacesFinalizer;
     friend class DerivedFinalizer;
     friend class FunctionObjectFinalizer;
+    friend class SpecializationFinalizer;
 
 public:
     /** Constructor.
