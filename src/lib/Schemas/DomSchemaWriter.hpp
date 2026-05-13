@@ -276,45 +276,22 @@ objectSchema()
             });
     }
 
-    // Custom tag_invoke extensions for Symbol (see SymbolBase.hpp).
-    // These fields are added by the Symbol tag_invoke overload
-    // beyond what reflection provides. Descriptions live on the
-    // base `Symbol` entry in DomDescriptions.hpp.
+    // `class` is the only field Symbol's tag_invoke adds beyond
+    // what reflection provides; see SymbolBase.hpp. It acts as a
+    // discriminator so templates can tell Symbol DOM entries apart
+    // from Type or Name entries in mixed arrays.
     if constexpr (std::is_base_of_v<Symbol, T>)
     {
-        auto withDesc =
-            [](dom::Object schema, std::string_view const member)
-            {
-                if (auto const desc =
-                        findDomDescription("Symbol", member);
-                    !desc.empty())
-                {
-                    schema.set("description", std::string(desc));
-                }
-                return schema;
-            };
-
         dom::Object classSchema;
         classSchema.set("type", "string");
         classSchema.set("const", "symbol");
-        properties.set("class", withDesc(std::move(classSchema), "class"));
-
-        dom::Object boolSchema;
-        boolSchema.set("type", "boolean");
-        properties.set("isRegular",
-            withDesc(boolSchema, "isRegular"));
-        properties.set("isSeeBelow",
-            withDesc(boolSchema, "isSeeBelow"));
-        properties.set("isImplementationDefined",
-            withDesc(boolSchema, "isImplementationDefined"));
-        properties.set("isDependency",
-            withDesc(boolSchema, "isDependency"));
-
+        if (auto const desc = findDomDescription("Symbol", "class");
+            !desc.empty())
+        {
+            classSchema.set("description", std::string(desc));
+        }
+        properties.set("class", std::move(classSchema));
         required.push_back("class");
-        required.push_back("isRegular");
-        required.push_back("isSeeBelow");
-        required.push_back("isImplementationDefined");
-        required.push_back("isDependency");
     }
 
     // $meta object (added by addMetaObject in MapReflectedType.hpp).

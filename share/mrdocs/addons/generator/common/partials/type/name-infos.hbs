@@ -12,7 +12,7 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if id.isImplementationDefined~}}
+{{#if (eq id.extraction "implementation-defined")~}}
     {{! The name refers to a symbol that's implementation defined. These are special names that should not be linked. ~}}
     {{ str '/* '}}implementation-defined{{ str ' */'~}}
 {{else~}}

@@ -22,11 +22,11 @@
 {{> markup/table
     weights=(arr 1 4)
     headers=(arr "Name" "Description")
-    items=(filter_by members "isRegular" "isSeeBelow")
+    items=(filter_by_eq members "extraction" "regular" "see-below")
     columns=(arr "." "doc.brief") }}
 {{~else~}}
 {{> markup/table
     headers=(arr "Name")
-    items=(filter_by members "isRegular" "isSeeBelow")
+    items=(filter_by_eq members "extraction" "regular" "see-below")
     columns=(arr ".") }}
 {{~/if}}

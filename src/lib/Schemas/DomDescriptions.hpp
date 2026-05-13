@@ -22,8 +22,7 @@
     automatically by reflection, but the *meaning* of each field
     cannot be inferred from the C++ types alone (e.g. the C++ doc
     comment describes the C++ class, not the DOM projection;
-    synthesized fields like `class` or `isSeeBelow` have no C++
-    counterpart at all).
+    the synthesized `class` field has no C++ counterpart at all).
 
     This header carries a small lookup table indexed by
     `(typeName, memberName)`. The schema writer consults it when
@@ -109,18 +108,6 @@ inline constexpr DomDescription kDomDescriptions[] = {
      "Tag set to the literal `\"symbol\"`. Lets templates "
      "discriminate symbol DOM objects from auxiliary types "
      "(`type`, `name`, etc.) without inspecting `kind`."},
-    {"Symbol", "isRegular",
-     "Convenience boolean equivalent to "
-     "`extraction === \"regular\"`."},
-    {"Symbol", "isSeeBelow",
-     "Convenience boolean equivalent to "
-     "`extraction === \"see-below\"`."},
-    {"Symbol", "isImplementationDefined",
-     "Convenience boolean equivalent to "
-     "`extraction === \"implementation-defined\"`."},
-    {"Symbol", "isDependency",
-     "Convenience boolean equivalent to "
-     "`extraction === \"dependency\"`."},
 
     // ----- FunctionSymbol ------------------------------------------
     {"FunctionSymbol", "",

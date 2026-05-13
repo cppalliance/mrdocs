@@ -24,5 +24,5 @@
       final;` is ill-formed (`final` can't be used on a non-defining
       declaration). Similarly, don't show a semicolon if there are base
       classes. --}}
-{{~#isSeeBelow}} { /* see-below */ }{{/isSeeBelow~}}
-{{#if (or isSeeBelow (and (not isFinal) (eq (len bases) 0)))}};{{/if}}
+{{~#if (eq extraction "see-below")}} { /* see-below */ }{{/if~}}
+{{#if (or (eq extraction "see-below") (and (not isFinal) (eq (len bases) 0)))}};{{/if}}

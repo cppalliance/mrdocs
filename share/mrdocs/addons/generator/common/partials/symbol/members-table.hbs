@@ -15,7 +15,7 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{#if members}}
-{{#if (or (eq members.[0].$meta.type "Name") (any_of_by members "isRegular" "isSeeBelow"))}}
+{{#if (or (eq members.[0].$meta.type "Name") (any_of_by_eq members "extraction" "regular" "see-below"))}}
 {{#>markup/h level=(select @root.config.multipage (select traversing-global-namespace 3 2) 3)}}{{title}}{{/markup/h}}
 {{~>symbol/detail/members-table-impl members=members isName=(eq members.[0].$meta.type "Name") includeBrief=(select (any_of_by members "doc.brief") true false) title=title}}
 

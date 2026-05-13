@@ -212,24 +212,18 @@ struct DomSchemaWriterTest
         dom::Object d = defs(schema);
         dom::Object fp = props(d, "FunctionSymbol");
 
-        // Custom fields from Symbol's tag_invoke overload.
+        // `class` is the only synthesized field on Symbol's
+        // `tag_invoke` overload (see SymbolBase.hpp). Templates
+        // use it as a discriminator across Symbol/Type/Name DOM
+        // objects. The previous `isRegular`/`isSeeBelow`/etc.
+        // convenience booleans have been dropped: templates now
+        // derive them from the described `extraction` enum.
         BOOST_TEST(fp.exists("class"));
         BOOST_TEST(fp.get("class").getObject()
                      .get("const").getString() == "symbol");
 
-        BOOST_TEST(fp.exists("isRegular"));
-        BOOST_TEST(fp.get("isRegular").getObject()
-                     .get("type").getString() == "boolean");
-
-        BOOST_TEST(fp.exists("isSeeBelow"));
-        BOOST_TEST(fp.exists("isImplementationDefined"));
-        BOOST_TEST(fp.exists("isDependency"));
-
-        // They should all be required.
         dom::Array req = requiredArray(d, "FunctionSymbol");
         BOOST_TEST(arrayContains(req, "class"));
-        BOOST_TEST(arrayContains(req, "isRegular"));
-        BOOST_TEST(arrayContains(req, "isDependency"));
     }
 
     // -- $meta object ---------------------------------------------

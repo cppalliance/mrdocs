@@ -6582,6 +6582,98 @@ registerContainerHelpers(Handlebars& hbs)
 
     hbs.registerHelper("any_of_by", any_of_by_fn);
 
+    static auto filter_by_eq_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        // (filter_by_eq container key value1 value2 ...)
+        //
+        // Filter elements of `container` keeping those whose value
+        // at `key` equals any of the listed values. The terminal
+        // argument is the Handlebars options object and is dropped.
+        if (arguments.size() < 4)
+        {
+            return arguments.at(0);
+        }
+        dom::Value container = arguments.at(0);
+        dom::Value key = arguments.at(1);
+        std::vector<dom::Value> values;
+        for (std::size_t i = 2; i < arguments.size() - 1; ++i)
+        {
+            values.push_back(arguments.at(i));
+        }
+
+        if (!container.isArray())
+        {
+            return container;
+        }
+        dom::Array const& arr = container.getArray();
+
+        std::vector<dom::Value> res;
+        std::size_t const n = arr.size();
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            dom::Value el = arr.at(i);
+            if (!el.isObject())
+            {
+                continue;
+            }
+            dom::Value const fieldValue = el.lookup(key.getString());
+            auto const matchIt = std::ranges::find(values, fieldValue);
+            if (matchIt == values.end())
+            {
+                continue;
+            }
+            res.emplace_back(el);
+        }
+        return dom::Array(res);
+    });
+
+    hbs.registerHelper("filter_by_eq", filter_by_eq_fn);
+
+    static auto any_of_by_eq_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        // (any_of_by_eq container key value1 value2 ...)
+        //
+        // True if any element of `container` has its value at `key`
+        // equal to any of the listed values.
+        if (arguments.size() < 4)
+        {
+            return false;
+        }
+        dom::Value container = arguments.at(0);
+        dom::Value key = arguments.at(1);
+        std::vector<dom::Value> values;
+        for (std::size_t i = 2; i < arguments.size() - 1; ++i)
+        {
+            values.push_back(arguments.at(i));
+        }
+
+        if (!container.isArray())
+        {
+            return false;
+        }
+        dom::Array const& arr = container.getArray();
+
+        std::size_t const n = arr.size();
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            dom::Value el = arr.at(i);
+            if (!el.isObject())
+            {
+                continue;
+            }
+            dom::Value const fieldValue = el.lookup(key.getString());
+            if (std::ranges::find(values, fieldValue) != values.end())
+            {
+                return true;
+            }
+        }
+        return false;
+    });
+
+    hbs.registerHelper("any_of_by_eq", any_of_by_eq_fn);
+
     hbs.registerHelper("at", dom::makeInvocable(at_fn));
 
     static auto fill_fn = dom::makeInvocable([](

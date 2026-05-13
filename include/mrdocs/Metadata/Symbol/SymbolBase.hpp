@@ -191,7 +191,15 @@ MRDOCS_DESCRIBE_STRUCT(
      Extraction, IsCopyFromInherited, Parent, doc, Attributes)
 )
 
-/** Map a Symbol to a dom::Object with computed extraction properties.
+/** Map a Symbol to a dom::Object plus a `class` discriminator.
+
+    The `class` field is the only synthesized member here: templates
+    that consume a mixed array of DOM objects use it to tell Symbol
+    entries apart from Type or Name entries. Everything else comes
+    from reflection over the described struct, including the
+    `extraction` enum that templates compare with `(eq extraction
+    "regular")` etc.
+
     @param io The IO object to map into.
     @param I The Symbol to map.
     @param domCorpus The DomCorpus context.
@@ -207,10 +215,6 @@ tag_invoke(
     MRDOCS_ASSERT(domCorpus);
     mapReflectedType<false>(io, I, domCorpus);
     io.map("class", std::string("symbol"));
-    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
-    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
-    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
-    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
 }
 
 //------------------------------------------------
