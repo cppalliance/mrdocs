@@ -145,6 +145,9 @@ const skipTestMarkers = ["[skip danger tests]", "[danger skip tests]"];
 const skipDocsLabels = new Set(["no-docs-needed", "skip-docs", "docs-not-required"]);
 const skipDocsMarkers = ["[skip danger docs]", "[danger skip docs]"];
 const nonTestCommitLimit = 2000;
+const aggregateSourceLimit = 5000;
+const minBodyChars = 40;
+const bodyCharsPerLog2Churn = 80;
 
 /**
  * Format churn as a + / - pair with explicit signs.
@@ -503,6 +506,61 @@ export function commitSizeInfos(commits: CommitInfo[]): string[] {
 }
 
 /**
+ * Warn when the aggregate source-scope churn across the whole PR is large.
+ *
+ * Complementary to {@link commitSizeInfos}: that rule fires on a single oversized commit,
+ * this one fires when the total source delta — however well-sliced — crosses a generous
+ * threshold and warrants explicit reviewer guidance.
+ *
+ * @param scopes summarized scope totals for the PR.
+ * @returns warnings, or empty if the PR stays under the aggregate limit.
+ */
+export function aggregateSizeWarnings(scopes: ScopeReport): string[] {
+    const sourceChurn = scopes.totals.source.additions + scopes.totals.source.deletions;
+    if (sourceChurn <= aggregateSourceLimit) {
+        return [];
+    }
+    return [
+        `This PR touches **${sourceChurn}** source lines across ${scopes.totals.source.files} files (threshold ${aggregateSourceLimit}). ` +
+            "Large changes are harder to review even when well-sliced — consider splitting, or expand the description with rationale, design notes, and reviewer guidance.",
+    ];
+}
+
+/**
+ * Strip PR-template scaffolding (HTML comments, Markdown headers, and italic placeholders)
+ * so an unfilled template does not inflate body-length checks or satisfy mention checks.
+ *
+ * The PR template uses visible italic placeholder text (e.g. `_What this PR does and why._`)
+ * that contributors are expected to overwrite. Without stripping, an unfilled template
+ * contributes ~1 KB of "content" and contains the word "Testing" via the section header,
+ * which would mask both the length floor and the missing-testing-note check.
+ */
+function cleanBody(body: string): string {
+    return body
+        // HTML comments.
+        .replace(/<!--[\s\S]*?-->/g, "")
+        // Markdown ATX headers — scaffolding, not content.
+        .replace(/^[ \t]*#+\s+.*$/gm, "")
+        // Bullet placeholders of the form: `- **Label**: _placeholder text._`
+        .replace(/^[ \t]*-\s+\*\*[^*\n]+\*\*:\s+_[^_\n]+_[ \t]*$/gm, "")
+        // Standalone italic placeholder lines.
+        .replace(/^[ \t]*_[^_\n]+_[ \t]*$/gm, "")
+        .trim();
+}
+
+/**
+ * Suggested body length given the size of the change.
+ *
+ * Roughly logarithmic: tiny diffs → ~80 chars; 1k lines → ~800; 30k lines → ~1200.
+ * The {@link minBodyChars} floor is enforced separately by callers so an empty body
+ * is reported with a clearer message than a short-but-non-empty one.
+ */
+export function expectedBodyLength(totalChurn: number): number {
+    const churn = Math.max(totalChurn, 2);
+    return Math.floor(bodyCharsPerLog2Churn * Math.log2(churn));
+}
+
+/**
  * Check for explicit signals to skip source-vs-test warnings.
  *
  * @param prBody pull request body text.
@@ -549,10 +607,18 @@ export function basicChecks(input: DangerInputs, scopes: ScopeReport, parsedComm
         /refactor/i.test(input.prTitle || "") ||
         input.labels.some((label) => /refactor/i.test(label));
 
-    const cleanedBody = (input.prBody || "").trim();
-    if (cleanedBody.length < 40) {
+    const cleanedBody = cleanBody(input.prBody || "");
+    const totalChurn = scopes.overall.additions + scopes.overall.deletions;
+    const expectedBodyChars = expectedBodyLength(totalChurn);
+    if (cleanedBody.length < minBodyChars) {
         // === PR description completeness warnings ===
         warnings.push("PR description looks empty. Please add a short rationale and testing notes.");
+    } else if (cleanedBody.length < expectedBodyChars) {
+        // === PR description too short for the size of the change ===
+        warnings.push(
+            `PR description is short (${cleanedBody.length} chars) relative to the size of this change (~${totalChurn} lines of churn). ` +
+                `Aim for around **${expectedBodyChars}** characters — expand on rationale, testing, and reviewer guidance.`,
+        );
     } else if (
         scopes.totals.source.files > 0 &&
         scopes.totals["golden-tests"].files === 0 &&
@@ -625,6 +691,7 @@ export function evaluateDanger(input: DangerInputs): DangerResult {
 
     const warnings = [
         ...commitValidation.warnings,
+        ...aggregateSizeWarnings(summary),
         ...basicChecks(input, summary, commitValidation.parsed),
     ];
 
