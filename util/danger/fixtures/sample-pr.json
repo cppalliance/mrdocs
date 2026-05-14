@@ -32,5 +32,6 @@
   ],
   "prBody": "Sample rationale\\n\\nTesting: unit tests locally",
   "prTitle": "Sample Danger fixture",
-  "labels": []
+  "labels": [],
+  "prTemplate": "_What this PR does and why._\n\n## Changes\n\n_Replace the lines that apply._\n\n## Testing\n\n_How this change stays tested._\n\n## Documentation\n\n_What was updated._\n"
 }

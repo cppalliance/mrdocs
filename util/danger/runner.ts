@@ -7,9 +7,24 @@
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import type { DangerDSLType } from "danger";
 import { evaluateDanger, type CommitInfo, type FileChange } from "./logic";
 import { renderDangerReport } from "./format";
+
+/**
+ * Read the project's PR template so rules can check the body against it.
+ * Missing or unreadable templates degrade gracefully — the template-section
+ * check just stays quiet rather than failing the run.
+ */
+function loadPrTemplate(): string {
+    try {
+        return readFileSync(join(process.cwd(), ".github/pull_request_template.md"), "utf8");
+    } catch {
+        return "";
+    }
+}
 
 // Danger provides these as globals at runtime; we declare them for editors/typecheckers.
 declare const danger: DangerDSLType;
@@ -113,6 +128,7 @@ export async function runDanger(): Promise<void> {
         prBody: pr.body || "",
         prTitle: pr.title || "",
         labels,
+        prTemplate: loadPrTemplate(),
     });
 
     const warnings = [...fetchWarnings, ...evaluation.warnings];

@@ -36,7 +36,7 @@ npm --prefix util/danger run danger:ci     # run Danger in CI mode (requires Git
 - Aggregate PR source churn triggers a warning above 5000 lines (much more generous than the per-commit limit, since well-sliced commits can still amount to a large overall change).
 - PR description length is checked against a log-scaled floor (`80 * log2(churn)` characters). Tiny diffs need ~80 chars; ~1k-line changes need ~800; ~30k-line changes need ~1200. HTML comments in the body (e.g. PR template scaffolding) are stripped before measurement.
 - Feature PRs (`feat:` commits, `feat` PR title, or `feature` label) without any `docs/` change get a light warning. Opt out with the `no-docs-needed` label or a `[skip danger docs]` marker in the PR body.
-- The PR template (`.github/pull_request_template.md`) mirrors these rules; following it tends to satisfy all of them automatically.
+- The PR template (`.github/pull_request_template.md`) mirrors these rules; following it tends to satisfy all of them automatically. Section headers from the template (any level) that are missing from the PR body are reported as an informational note rather than a warning.
 
 ## Updating rules
 
