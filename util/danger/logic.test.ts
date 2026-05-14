@@ -14,12 +14,32 @@ import {
     evaluateDanger,
     expectedBodyLength,
     parseCommitSummary,
+    parsePrTemplateSections,
+    prTemplateInfos,
     basicChecks,
     summarizeScopes,
     validateCommits,
     type CommitInfo,
     type DangerInputs,
 } from "./logic";
+
+const sampleTemplate = [
+    "<!-- Fill this in yourself. -->",
+    "",
+    "_What this PR does and why._",
+    "",
+    "## Changes",
+    "",
+    "_Replace the lines that apply._",
+    "",
+    "## Testing",
+    "",
+    "_How this change stays tested._",
+    "",
+    "## Documentation",
+    "",
+    "_What was updated._",
+].join("\n");
 
 describe("parseCommitSummary", () => {
     // Ensures we correctly extract type, scope, and subject when format is valid.
@@ -136,6 +156,123 @@ describe("commitSizeInfos", () => {
         ];
         const infos = commitSizeInfos(commits);
         expect(infos.length).toBe(1);
+    });
+});
+
+describe("parsePrTemplateSections", () => {
+    // Pulls H2 headers in document order; ignores intro paragraphs and comments.
+    it("extracts H2 headers from the template", () => {
+        expect(parsePrTemplateSections(sampleTemplate)).toEqual(["Changes", "Testing", "Documentation"]);
+    });
+
+    // No headers means no sections to enforce.
+    it("returns an empty array when there are no headers", () => {
+        expect(parsePrTemplateSections("just a paragraph\n\nno headers here")).toEqual([]);
+    });
+
+    // Handles any ATX heading level so future templates can mix H1/H2/H3.
+    it("extracts headings of any ATX level", () => {
+        const template = [
+            "# Summary",
+            "## Changes",
+            "### Subsection",
+            "#### Detail",
+            "##### Deeper",
+            "###### Deepest",
+        ].join("\n");
+        expect(parsePrTemplateSections(template)).toEqual([
+            "Summary",
+            "Changes",
+            "Subsection",
+            "Detail",
+            "Deeper",
+            "Deepest",
+        ]);
+    });
+
+    // Strips the optional ATX closing run of `#` characters.
+    it("strips trailing closing hashes from ATX headers", () => {
+        expect(parsePrTemplateSections("## Changes ##\n### Testing ###")).toEqual(["Changes", "Testing"]);
+    });
+
+    // Dedupes by title (case-insensitive) so cross-level repeats don't double-flag.
+    it("dedupes repeated titles across levels", () => {
+        const template = ["## Notes", "### notes", "#### NOTES"].join("\n");
+        expect(parsePrTemplateSections(template)).toEqual(["Notes"]);
+    });
+});
+
+describe("prTemplateInfos", () => {
+    // A body that includes every template header produces no info.
+    it("stays quiet when all template sections are present", () => {
+        const body = [
+            "Rationale for the change.",
+            "",
+            "## Changes",
+            "- Source: tweak.",
+            "",
+            "## Testing",
+            "Ran the suite.",
+            "",
+            "## Documentation",
+            "No user-facing change.",
+        ].join("\n");
+        expect(prTemplateInfos(body, ["Changes", "Testing", "Documentation"])).toEqual([]);
+    });
+
+    // Missing sections are listed in the single info message.
+    it("lists missing sections", () => {
+        const body = ["Rationale.", "", "## Changes", "- Source: tweak."].join("\n");
+        const infos = prTemplateInfos(body, ["Changes", "Testing", "Documentation"]);
+        expect(infos).toHaveLength(1);
+        expect(infos[0]).toContain("**Testing**");
+        expect(infos[0]).toContain("**Documentation**");
+        expect(infos[0]).not.toContain("**Changes**");
+    });
+
+    // Header matching is case-insensitive so contributors don't trip over capitalization.
+    it("matches headers case-insensitively", () => {
+        const body = ["## changes", "## testing", "## documentation"].join("\n");
+        expect(prTemplateInfos(body, ["Changes", "Testing", "Documentation"])).toEqual([]);
+    });
+
+    // The body can use a different heading level than the template — title alone is what matters.
+    it("matches sections regardless of heading level", () => {
+        const body = ["# Changes", "### Testing", "###### Documentation"].join("\n");
+        expect(prTemplateInfos(body, ["Changes", "Testing", "Documentation"])).toEqual([]);
+    });
+
+    // An empty body is already covered by the empty-description warning — skip to avoid noise.
+    it("skips when the PR body is empty", () => {
+        expect(prTemplateInfos("", ["Changes", "Testing"])).toEqual([]);
+        expect(prTemplateInfos("   \n\n  ", ["Changes", "Testing"])).toEqual([]);
+    });
+
+    // A template with no headers produces no info.
+    it("skips when the template has no headers", () => {
+        expect(prTemplateInfos("some body", [])).toEqual([]);
+    });
+
+    // Singular wording when exactly one section is missing.
+    it("uses singular wording for a single missing section", () => {
+        const body = ["## Changes", "## Testing"].join("\n");
+        const infos = prTemplateInfos(body, ["Changes", "Testing", "Documentation"]);
+        expect(infos[0]).toContain("missing template section:");
+    });
+});
+
+describe("evaluateDanger pr-template info", () => {
+    // The new check is wired into the infos channel so it renders as [!NOTE].
+    it("surfaces missing template sections via infos", () => {
+        const result = evaluateDanger({
+            files: [{ filename: "src/lib/x.cpp", additions: 10, deletions: 1 }],
+            commits: [{ sha: "ab", message: "fix: small change" }],
+            prBody: "A short rationale that explains what is going on, with no template structure at all.",
+            prTitle: "fix: small change",
+            labels: [],
+            prTemplate: sampleTemplate,
+        });
+        expect(result.infos.some((m) => m.includes("missing template sections"))).toBe(true);
     });
 });
 

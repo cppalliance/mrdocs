@@ -98,6 +98,7 @@ export interface DangerInputs {
     prBody: string;
     prTitle: string;
     labels: string[];
+    prTemplate?: string;
 }
 
 /**
@@ -505,6 +506,68 @@ export function commitSizeInfos(commits: CommitInfo[]): string[] {
     return messages;
 }
 
+// Matches any ATX heading (#, ##, …, ######) with optional trailing # marks per the CommonMark spec.
+const atxHeadingPattern = /^[ \t]*#{1,6}[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*$/;
+
+/**
+ * Extract section headers of any level (H1–H6) from a Markdown document.
+ *
+ * Used to discover the section structure of the project's PR template so that
+ * missing sections can be reported back to contributors. Returns titles in
+ * document order, deduped (case-insensitive) so a template that repeats a
+ * heading at different levels does not double-flag.
+ */
+export function parsePrTemplateSections(template: string): string[] {
+    const sections: string[] = [];
+    const seen = new Set<string>();
+    for (const raw of template.split("\n")) {
+        const match = raw.match(atxHeadingPattern);
+        if (!match) continue;
+        const title = match[1].trim();
+        const key = title.toLowerCase();
+        if (!seen.has(key)) {
+            seen.add(key);
+            sections.push(title);
+        }
+    }
+    return sections;
+}
+
+function escapeRegExp(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Report PR-template sections that the body is missing.
+ *
+ * Matches headings of any level (so a body can use `### Testing` even if the
+ * template uses `## Testing`). The template is a convention, not a hard
+ * requirement, so this is an informational note rather than a warning — the
+ * empty-description warning already covers the case where the contributor
+ * wrote nothing at all.
+ */
+export function prTemplateInfos(prBody: string, templateSections: string[]): string[] {
+    if (!prBody.trim() || templateSections.length === 0) {
+        return [];
+    }
+    const missing = templateSections.filter((section) => {
+        const pattern = new RegExp(
+            `^[ \\t]*#{1,6}[ \\t]+${escapeRegExp(section)}(?:[ \\t]+#+)?[ \\t]*$`,
+            "im",
+        );
+        return !pattern.test(prBody);
+    });
+    if (missing.length === 0) {
+        return [];
+    }
+    const noun = missing.length === 1 ? "section" : "sections";
+    const list = missing.map((name) => `**${name}**`).join(", ");
+    return [
+        `PR description is missing template ${noun}: ${list}. ` +
+            "Following the [pull request template](.github/pull_request_template.md) helps reviewers find rationale, testing notes, and docs status quickly.",
+    ];
+}
+
 /**
  * Warn when the aggregate source-scope churn across the whole PR is large.
  *
@@ -687,7 +750,10 @@ export function evaluateDanger(input: DangerInputs): DangerResult {
     const summary = summarizeScopes(input.files);
     const commitValidation = validateCommits(input.commits);
 
-    const infos = commitSizeInfos(input.commits);
+    const infos = [
+        ...commitSizeInfos(input.commits),
+        ...prTemplateInfos(input.prBody || "", parsePrTemplateSections(input.prTemplate || "")),
+    ];
 
     const warnings = [
         ...commitValidation.warnings,
