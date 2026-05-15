@@ -1,0 +1,263 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+# Always-run aggregator and (conditionally) the publisher. The first step
+# checks every upstream job's result and fails if any failed or were
+# cancelled; the remaining publishing steps are gated on `should-publish`
+# so the job is cheap on PRs and only renders/publishes on push events to
+# develop, master, or tags. This job is the single required status check
+# the branch protection rules rely on.
+
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      submatrix:
+        description: 'JSON-encoded releases submatrix from cpp-matrix (for platform names)'
+        type: string
+        required: true
+      should-publish:
+        description: 'true on push to develop/master/tags; gates the actual publishing steps'
+        type: boolean
+        default: false
+      scope-detector-result:
+        type: string
+        required: true
+      cpp-matrix-result:
+        type: string
+        required: true
+      utility-tests-result:
+        type: string
+        required: true
+      build-result:
+        type: string
+        required: true
+      releases-result:
+        type: string
+        required: true
+      documentation-result:
+        type: string
+        required: true
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      # Aggregator: succeed only if every upstream job ended in success or
+      # skipped. Failure or cancellation fails this job so the branch
+      # protection gate fails too.
+      - name: Check upstream status
+        env:
+          SCOPE_DETECTOR: ${{ inputs.scope-detector-result }}
+          CPP_MATRIX: ${{ inputs.cpp-matrix-result }}
+          UTILITY_TESTS: ${{ inputs.utility-tests-result }}
+          BUILD: ${{ inputs.build-result }}
+          RELEASES: ${{ inputs.releases-result }}
+          DOCUMENTATION: ${{ inputs.documentation-result }}
+        run: |
+          set -euo pipefail
+          fail=0
+          for name in SCOPE_DETECTOR CPP_MATRIX UTILITY_TESTS BUILD RELEASES DOCUMENTATION; do
+            val="${!name}"
+            case "$val" in
+              success|skipped)
+                printf '  %-15s %s\n' "$name" "$val"
+                ;;
+              *)
+                printf '  %-15s %s  <-- failure\n' "$name" "$val"
+                fail=1
+                ;;
+            esac
+          done
+          if [[ "$fail" -ne 0 ]]; then
+            echo "::error::one or more upstream jobs failed or were cancelled"
+            exit 1
+          fi
+          echo "All upstream jobs OK."
+
+      - name: Install packages
+        if: inputs.should-publish
+        uses: alandefreitas/cpp-actions/package-install@v1.9.4
+        with:
+          apt-get: rsync git
+
+      - name: Clone MrDocs
+        if: inputs.should-publish
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install Node.js
+        if: inputs.should-publish
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Download all platform packages
+        if: inputs.should-publish
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-packages-*
+          path: packages
+          merge-multiple: true
+
+      - name: Download website (Linux)
+        if: inputs.should-publish
+        uses: actions/download-artifact@v4
+        with:
+          name: Website Linux
+          path: build/website
+
+      - name: Download demos (Linux)
+        if: inputs.should-publish
+        uses: actions/download-artifact@v4
+        with:
+          name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name) && format('-{0}', github.ref_name)) || '' }}-Linux
+          path: .
+
+      - name: Unpack demos
+        if: inputs.should-publish
+        run: |
+          set -euo pipefail
+          mkdir -p demos
+          # generate-demos.sh writes a bzip2 archive despite the .gz suffix;
+          # -xaf auto-detects compression so we don't have to depend on the
+          # script keeping the same algorithm.
+          tar -xaf demos.tar.gz -C demos
+
+      - name: Ensure all refs for Antora
+        if: inputs.should-publish
+        run: |
+          set -euo pipefail
+          # Make sure Antora sees every branch and tag from the upstream repo,
+          # regardless of who triggered the workflow.
+          git remote set-url origin https://github.com/cppalliance/mrdocs.git
+          git fetch --prune --prune-tags origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/tags/*:refs/tags/*'
+
+      # Antora's playbook references `./ui/build/ui-bundle.zip` (relative to
+      # docs/), so we need the gulp-built bundle in this runner. We could pass
+      # it as an artifact from Documentation/Linux, but rebuilding here is
+      # cheap and keeps Publish self-contained.
+      - name: Generate Antora UI
+        if: inputs.should-publish
+        working-directory: docs/ui
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm ci
+          npx gulp
+
+      - name: Generate Remote Documentation
+        if: inputs.should-publish
+        working-directory: docs
+        run: |
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
+          set -x
+          npm ci
+          npx antora --clean --fetch antora-playbook.yml --log-level=debug
+          mkdir -p ../build/website/docs
+          cp -vr build/site/* ../build/website/docs
+
+      - name: Download previous demos (tags only)
+        if: inputs.should-publish && startsWith(github.ref, 'refs/tags/')
+        id: download-prev-demos
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: demos-develop-Linux
+          path: demos-previous
+
+      - name: Compare demos (tags only)
+        if: inputs.should-publish && startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true'
+        id: compare-demos
+        run: .github/scripts/compare-demos.sh
+
+      - name: Upload demo diff (tags only)
+        if: inputs.should-publish && startsWith(github.ref, 'refs/tags/') && steps.compare-demos.outputs.diff == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: demos-diff
+          path: demos-diff
+          retention-days: 30
+
+      - name: Publish website to GitHub Pages
+        if: inputs.should-publish
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/website
+          force_orphan: true
+
+      - name: Publish website to dev-websites
+        if: inputs.should-publish
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          set -euvx
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          chmod 600 /home/runner/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+
+          rsyncopts=(--recursive --delete --links --times --chmod=D0755,F0755 --compress --compress-choice=zstd --rsh="ssh -o StrictHostKeyChecking=no" --human-readable)
+          website_dir="ubuntu@dev-websites.cpp.al:/var/www/mrdox.com"
+          demo_dir="$website_dir/demos/${{ github.ref_name }}"
+
+          time rsync "${rsyncopts[@]}" --exclude=demos/ --exclude=roadmap/ $(pwd)/build/website/ "$website_dir"/
+          time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
+
+      - name: Create changelog
+        if: inputs.should-publish
+        uses: alandefreitas/cpp-actions/create-changelog@v1.9.4
+        with:
+          output-path: CHANGELOG.md
+          thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          limit: 150
+          update-summary: true
+
+      # For non-tag publishes (develop-release and master-release rolling
+      # releases), strip the project version out of the package filenames
+      # and insert the branch name instead. Subsequent pushes overwrite the
+      # existing GitHub-release assets cleanly. Tag releases keep their
+      # versioned filenames.
+      - name: Rebrand branch packages
+        if: inputs.should-publish && !startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euxo pipefail
+          cd packages
+          for f in MrDocs-*.*.*-*.*; do
+            [ -e "$f" ] || continue
+            new=$(echo "$f" | sed -E 's|^MrDocs-[0-9]+\.[0-9]+\.[0-9]+-|MrDocs-${{ github.ref_name }}-|')
+            mv -- "$f" "$new"
+          done
+
+      - name: Create consolidated GitHub Release
+        if: inputs.should-publish
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packages/MrDocs-*-*.*
+          fail_on_unmatched_files: true
+          name: ${{ github.ref_name || github.ref }}
+          tag_name: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
+          body_path: CHANGELOG.md
+          prerelease: false
+          draft: false
+          token: ${{ github.token }}

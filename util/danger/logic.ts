@@ -125,6 +125,81 @@ export const scopeDisplayOrder: ScopeKey[] = [
     "other",
 ];
 
+/**
+ * Scopes whose changes can affect the produced mrdocs binary or how it is
+ * tested. CI uses this to decide whether the full build matrix (sanitizers,
+ * coverage, extras) needs to run, or whether the cheap path (reusing
+ * develop's release artifacts) is safe.
+ */
+export const codeChangeScopes: ReadonlySet<ScopeKey> = new Set([
+    "source",
+    "tests",
+    "golden-tests",
+    "build",
+    "third-party",
+]);
+
+/**
+ * Paths inside scopes that are otherwise treated as meta (`ci`, `toolchain`)
+ * but still drive how the binary is built or tested. A change to one of
+ * these files must trigger a full matrix even if the rest of the diff is
+ * tooling-only, otherwise the modified workflow / script could be skipped
+ * via matrix-selector='none' and ship to develop without ever running.
+ */
+const buildAffectingPathPatterns: RegExp[] = [
+    // Workflow files that drive build, matrix, release, docs, or publish.
+    // pr-target-checks.yml is excluded because it only runs Danger.js.
+    /^\.github\/workflows\/ci(\.|-)/i,
+    // Build / install / demo / coverage scripts run inside ci-build,
+    // ci-release, ci-documentation, ci-publish.
+    /^\.github\/scripts\//i,
+    // Bootstrap drives third-party dependency builds inside ci-build.
+    // The `tests/` subdirectory is exercised by utility-tests on every PR,
+    // so changes there don't need a full matrix.
+    /^bootstrap\.py$/i,
+    /^util\/bootstrap\/(?!tests\/)/i,
+];
+
+/**
+ * Classify each path and return the unique set of scopes touched.
+ */
+export function scopesTouched(paths: Iterable<string>): Set<ScopeKey> {
+    const set = new Set<ScopeKey>();
+    for (const path of paths) {
+        set.add(classifyScope(path));
+    }
+    return set;
+}
+
+/**
+ * True when any of the supplied scopes can affect the mrdocs binary or its
+ * tests.
+ */
+export function isCodeChange(scopes: Iterable<ScopeKey>): boolean {
+    for (const scope of scopes) {
+        if (codeChangeScopes.has(scope)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * True when any supplied path drives the build pipeline itself (CI workflow
+ * files, build scripts, bootstrap). The scope-detector ORs this with
+ * `isCodeChange` so a CI-only PR that edits ci-build.yml still forces the
+ * full matrix.
+ */
+export function affectsBuildPipeline(paths: Iterable<string>): boolean {
+    for (const path of paths) {
+        const normalized = path.replace(/\\/g, "/");
+        if (buildAffectingPathPatterns.some((pattern) => pattern.test(normalized))) {
+            return true;
+        }
+    }
+    return false;
+}
+
 const allowedTypes = [
     "feat",
     "fix",

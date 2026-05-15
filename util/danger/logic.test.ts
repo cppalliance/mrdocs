@@ -9,14 +9,17 @@
 //
 import { describe, expect, it } from "vitest";
 import {
+    affectsBuildPipeline,
     aggregateSizeWarnings,
     commitSizeInfos,
     evaluateDanger,
     expectedBodyLength,
+    isCodeChange,
     parseCommitSummary,
     parsePrTemplateSections,
     prTemplateInfos,
     basicChecks,
+    scopesTouched,
     summarizeScopes,
     validateCommits,
     type CommitInfo,
@@ -156,6 +159,144 @@ describe("commitSizeInfos", () => {
         ];
         const infos = commitSizeInfos(commits);
         expect(infos.length).toBe(1);
+    });
+});
+
+describe("scopesTouched", () => {
+    // Classifies a list of file paths into the unique set of scopes touched.
+    it("returns the unique set of scopes for the given paths", () => {
+        const scopes = scopesTouched([
+            "src/lib/file.cpp",
+            "include/mrdocs/example.hpp",
+            "test-files/golden-tests/out.xml",
+            "docs/index.adoc",
+            ".github/workflows/ci.yml",
+        ]);
+        expect(scopes).toEqual(new Set(["source", "golden-tests", "docs", "ci"]));
+    });
+
+    // Empty input → empty set.
+    it("returns an empty set when no paths are given", () => {
+        expect(scopesTouched([])).toEqual(new Set());
+    });
+});
+
+describe("isCodeChange", () => {
+    // Scopes that can affect the mrdocs binary trigger the full build matrix.
+    it("is true when source is touched", () => {
+        expect(isCodeChange(new Set(["source"]))).toBe(true);
+    });
+
+    it("is true when tests are touched", () => {
+        expect(isCodeChange(new Set(["tests"]))).toBe(true);
+    });
+
+    it("is true when golden-tests are touched", () => {
+        expect(isCodeChange(new Set(["golden-tests"]))).toBe(true);
+    });
+
+    it("is true when build files are touched", () => {
+        expect(isCodeChange(new Set(["build"]))).toBe(true);
+    });
+
+    it("is true when third-party is touched", () => {
+        expect(isCodeChange(new Set(["third-party"]))).toBe(true);
+    });
+
+    // Meta scopes do not justify rebuilding the binary.
+    it("is false for docs-only changes", () => {
+        expect(isCodeChange(new Set(["docs"]))).toBe(false);
+    });
+
+    it("is false for ci-only changes", () => {
+        expect(isCodeChange(new Set(["ci"]))).toBe(false);
+    });
+
+    it("is false for tooling-only changes", () => {
+        expect(isCodeChange(new Set(["tooling"]))).toBe(false);
+    });
+
+    it("is false for toolchain or toolchain-tests changes", () => {
+        expect(isCodeChange(new Set(["toolchain"]))).toBe(false);
+        expect(isCodeChange(new Set(["toolchain-tests"]))).toBe(false);
+    });
+
+    // A mixed change with any code scope still trips the flag.
+    it("is true when at least one scope is code-relevant", () => {
+        expect(isCodeChange(new Set(["docs", "ci", "source"]))).toBe(true);
+    });
+
+    // Empty set: no change.
+    it("is false on an empty scope set", () => {
+        expect(isCodeChange(new Set())).toBe(false);
+    });
+});
+
+describe("affectsBuildPipeline", () => {
+    // CI workflow files that drive the matrix must trip the full-matrix gate
+    // even when classified under the `ci` scope (which is not a code change).
+    it("flags ci-build.yml changes", () => {
+        expect(affectsBuildPipeline([".github/workflows/ci-build.yml"])).toBe(true);
+    });
+
+    it("flags any ci-*.yml workflow", () => {
+        expect(affectsBuildPipeline([".github/workflows/ci-matrix.yml"])).toBe(true);
+        expect(affectsBuildPipeline([".github/workflows/ci-release.yml"])).toBe(true);
+        expect(affectsBuildPipeline([".github/workflows/ci-documentation.yml"])).toBe(true);
+        expect(affectsBuildPipeline([".github/workflows/ci-publish.yml"])).toBe(true);
+        expect(affectsBuildPipeline([".github/workflows/ci-scope-detector.yml"])).toBe(true);
+        expect(affectsBuildPipeline([".github/workflows/ci.yml"])).toBe(true);
+    });
+
+    it("flags build / install / demo scripts", () => {
+        expect(affectsBuildPipeline([".github/scripts/install-mrdocs-package.sh"])).toBe(true);
+        expect(affectsBuildPipeline([".github/scripts/generate-demos.sh"])).toBe(true);
+    });
+
+    it("flags bootstrap entry and sources", () => {
+        expect(affectsBuildPipeline(["bootstrap.py"])).toBe(true);
+        expect(affectsBuildPipeline(["util/bootstrap/main.py"])).toBe(true);
+    });
+
+    // Workflow files that only drive PR comments / Danger.js posting don't
+    // affect the build pipeline; they're exercised by their own jobs.
+    it("does not flag pr-target-checks.yml", () => {
+        expect(affectsBuildPipeline([".github/workflows/pr-target-checks.yml"])).toBe(false);
+    });
+
+    // PR template, gitignore, license: meta files with no build effect.
+    it("does not flag PR template or meta files", () => {
+        expect(affectsBuildPipeline([".github/pull_request_template.md"])).toBe(false);
+        expect(affectsBuildPipeline([".gitignore"])).toBe(false);
+        expect(affectsBuildPipeline(["LICENSE.txt"])).toBe(false);
+    });
+
+    // Bootstrap tests are exercised in utility-tests on every PR, no full
+    // matrix needed.
+    it("does not flag bootstrap tests", () => {
+        expect(affectsBuildPipeline(["util/bootstrap/tests/test_installer.py"])).toBe(false);
+    });
+
+    // Danger.js source is exercised by utility-tests' vitest step.
+    it("does not flag util/danger changes", () => {
+        expect(affectsBuildPipeline(["util/danger/logic.ts"])).toBe(false);
+        expect(affectsBuildPipeline(["util/danger/dangerfile.ts"])).toBe(false);
+    });
+
+    // Source / docs / build / third-party are already covered by scope-based
+    // `isCodeChange`; this helper is purely the build-pipeline supplement.
+    it("does not flag normal source paths", () => {
+        expect(affectsBuildPipeline(["src/lib/file.cpp"])).toBe(false);
+        expect(affectsBuildPipeline(["docs/index.adoc"])).toBe(false);
+    });
+
+    it("returns false on empty input", () => {
+        expect(affectsBuildPipeline([])).toBe(false);
+    });
+
+    // Normalizes Windows-style separators so backslashes don't bypass the gate.
+    it("normalizes backslashes", () => {
+        expect(affectsBuildPipeline([".github\\workflows\\ci-build.yml"])).toBe(true);
     });
 });
 

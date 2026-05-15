@@ -31,32 +31,111 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Classifies changed files into scopes and probes develop-release / coverage
+  # caches to decide which (sub)matrix the build job should run.
+  scope-detector:
+    name: Scope Detector
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/ci-scope-detector.yml
+    secrets: inherit
+
+  # Generates the full build matrix and the named submatrices
+  # (releases, coverage, releases-and-coverage) consumed below.
   cpp-matrix:
     name: Generate Test Matrix
     uses: ./.github/workflows/ci-matrix.yml
     secrets: inherit
 
+  # Bootstrap pytest, Danger.js vitest, YAML schema, snippet verify, plus a
+  # coverage replay to codecov when the Coverage matrix entry is skipped.
+  utility-tests:
+    name: Utility Tests
+    needs: scope-detector
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/ci-utility-tests.yml
+    with:
+      coverage-replay: ${{ needs.scope-detector.outputs.is-push == 'false' && needs.scope-detector.outputs.run-coverage-build == 'false' && needs.scope-detector.outputs.coverage-cache-warm == 'true' }}
+      merge-base-sha: ${{ needs.scope-detector.outputs.merge-base-sha }}
+    secrets: inherit
+
+  # Builds and tests the (sub)matrix selected by scope-detector. Skipped
+  # entirely when matrix-selector is 'none' (both caches warm, no code).
   build:
     name: Build & Test
-    needs: [cpp-matrix, utility-tests]
+    needs: [scope-detector, cpp-matrix, utility-tests]
+    if: needs.scope-detector.outputs.matrix-selector != 'none'
     permissions:
       actions: write
     uses: ./.github/workflows/ci-build.yml
     with:
-      matrix: ${{ needs.cpp-matrix.outputs.matrix }}
+      # scope-detector picks 'full' | 'releases-and-coverage' | 'releases'
+      # | 'coverage'. 'full' uses cpp-matrix.matrix, the others index
+      # into the submatrices.
+      matrix: >-
+        ${{ needs.scope-detector.outputs.matrix-selector == 'full'
+              && needs.cpp-matrix.outputs.matrix
+              || toJSON(fromJSON(needs.cpp-matrix.outputs.submatrices)[needs.scope-detector.outputs.matrix-selector]) }}
     secrets: inherit
 
-  utility-tests:
-    name: Utility Tests
-    uses: ./.github/workflows/ci-utility-tests.yml
-    secrets: inherit
-
+  # Per-OS smoke + demo generation. Always required. Sources packages from
+  # this run when ci-build ran, from develop-release otherwise.
   releases:
     name: Releases
-    needs: [utility-tests, cpp-matrix, build]
+    needs: [scope-detector, cpp-matrix, build]
+    if: |
+      always() &&
+      needs.scope-detector.result == 'success' &&
+      needs.cpp-matrix.result == 'success' &&
+      (needs.build.result == 'success' || needs.build.result == 'skipped')
     permissions:
-      contents: write
+      contents: read
     uses: ./.github/workflows/ci-releases.yml
     with:
-      submatrices: ${{ needs.cpp-matrix.outputs.submatrices }}
+      submatrix: ${{ toJSON(fromJSON(needs.cpp-matrix.outputs.submatrices).releases) }}
+      use-develop-binaries: ${{ needs.scope-detector.outputs.run-release-build == 'false' }}
+    secrets: inherit
+
+  # Per-OS docs/website/Antora-UI validation. Scope-gated: runs when
+  # source, docs, build, or third-party changed.
+  documentation:
+    name: Documentation
+    needs: [scope-detector, cpp-matrix, build]
+    if: |
+      always() &&
+      needs.scope-detector.outputs.run-documentation == 'true' &&
+      needs.cpp-matrix.result == 'success' &&
+      (needs.build.result == 'success' || needs.build.result == 'skipped')
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci-documentation.yml
+    with:
+      submatrix: ${{ toJSON(fromJSON(needs.cpp-matrix.outputs.submatrices).releases) }}
+      use-develop-binaries: ${{ needs.scope-detector.outputs.run-release-build == 'false' }}
+    secrets: inherit
+
+  # Single Linux job that always runs. Aggregates every upstream job's
+  # result so this status check is the single gate branch protection relies
+  # on. The actual publishing work (Antora multi-ref render, GH Pages /
+  # dev-websites rsync, consolidated GitHub Release) is gated on
+  # `should-publish` and only fires on push to develop/master/tags.
+  publish:
+    name: Publish
+    needs: [scope-detector, cpp-matrix, utility-tests, build, releases, documentation]
+    if: always()
+    permissions:
+      contents: write
+    uses: ./.github/workflows/ci-publish.yml
+    with:
+      submatrix: ${{ toJSON(fromJSON(needs.cpp-matrix.outputs.submatrices).releases) }}
+      should-publish: ${{ needs.scope-detector.outputs.is-push == 'true' && (github.ref_name == 'develop' || github.ref_name == 'master' || startsWith(github.ref, 'refs/tags/')) }}
+      scope-detector-result: ${{ needs.scope-detector.result }}
+      cpp-matrix-result: ${{ needs.cpp-matrix.result }}
+      utility-tests-result: ${{ needs.utility-tests.result }}
+      build-result: ${{ needs.build.result }}
+      releases-result: ${{ needs.releases.result }}
+      documentation-result: ${{ needs.documentation.result }}
     secrets: inherit

@@ -7,12 +7,13 @@
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
-# Per-OS smoke validation of the produced mrdocs binary plus demo
-# generation against vendored third-party projects. Runs on every PR
-# (always required) so the `Releases / Linux/Windows/macOS` status
-# checks always reflect an end-to-end install + run of the binary.
+# Per-OS validation that the docs/website/Antora-UI pipelines build
+# cleanly with the installed mrdocs binary. Scope-gated: runs when
+# source, docs, build, or third-party files changed (i.e. anything
+# that can influence rendered documentation). Skipped on tooling /
+# ci / toolchain-only PRs.
 
-name: Releases
+name: Documentation
 
 on:
   workflow_call:
@@ -27,7 +28,7 @@ on:
         default: false
 
 jobs:
-  releases:
+  documentation:
     strategy:
       fail-fast: false
       matrix:
@@ -61,10 +62,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Ninja
-        if: runner.os == 'Windows'
-        uses: seanmiddleditch/gha-setup-ninja@v5
-
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.9.4
         id: setup-cpp
@@ -72,10 +69,8 @@ jobs:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
 
-      # When use-develop-binaries=false the package comes from this run's
-      # ci-build artifact. When true we pull the matching platform asset
-      # from the rolling develop-release; the scope-detector only sets
-      # this when it verified the cache is warm.
+      # Same dual-source pattern as ci-releases.yml: fresh-build artifact
+      # when we built this run, develop-release fallback otherwise.
       - name: Download MrDocs package (fresh build)
         if: ${{ !inputs.use-develop-binaries }}
         uses: actions/download-artifact@v4
@@ -101,62 +96,40 @@ jobs:
       - name: Install MrDocs from Package
         run: .github/scripts/install-mrdocs-package.sh
 
-      - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.9.4
-        with:
-          branch: develop
-          modules: url
-          boost-dir: boost
-          modules-scan-paths: '"test example"'
-          modules-exclude-paths: ''
-          trace-commands: true
-
-      - name: Clone Beman.Optional
-        uses: actions/checkout@v4
-        with:
-          repository: steve-downey/optional
-          ref: main
-          path: beman-optional
-
-      - name: Clone Fmt
-        uses: actions/checkout@v4
-        with:
-          repository: fmtlib/fmt
-          ref: main
-          path: fmt
-
-      - name: Clone Nlohmann.Json
-        uses: actions/checkout@v4
-        with:
-          repository: nlohmann/json
-          ref: develop
-          path: nlohmann-json
-
-      - name: Clone MpUnits
-        uses: actions/checkout@v4
-        with:
-          repository: mpusz/mp-units
-          ref: master
-          path: mp-units
-
-      - name: Patch Demo Projects
+      - name: Generate Landing Page
+        working-directory: docs/website
         run: |
-          set -euo pipefail
+          npm ci
+          node render.js
+          mkdir -p ../../build/website
+          cp index.html ../../build/website/index.html
+          cp robots.txt ../../build/website/robots.txt
+          cp styles.css ../../build/website/styles.css
+          cp -r assets ../../build/website/assets
+
+      - name: Generate Antora UI
+        working-directory: docs/ui
+        run: |
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
+          npm ci
+          npx gulp lint
+          npx gulp
+
+      - name: Generate Local Documentation
+        working-directory: docs
+        run: |
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
           set -x
-          for project in beman-optional fmt nlohmann-json mp-units; do
-            src="./examples/third-party/$project"
-            dst="./$project"
-            [ -d "$src" ] || { echo "Source not found: $src" >&2; exit 1; }
-            mkdir -p "$dst"
-            tar -C "$src" -cf - . | tar -C "$dst" -xpf -
-          done
+          npm ci
+          npx antora antora-playbook.yml --attribute branchesarray=HEAD --stacktrace --log-level=debug
+          mkdir -p ../build/docs-local
+          cp -vr build/site/* ../build/docs-local
 
-      - name: Generate Demos
-        run: .github/scripts/generate-demos.sh
-
-      - name: Upload Demos as Artifacts
+      - name: Upload Website as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name) && format('-{0}', github.ref_name)) || '' }}-${{ runner.os }}
-          path: demos.tar.gz
-          retention-days: ${{ contains(fromJSON('["master", "develop"]'), github.ref_name) && '30' || '1' }}
+          name: Website ${{ runner.os }}
+          path: build/website
+          retention-days: 30
