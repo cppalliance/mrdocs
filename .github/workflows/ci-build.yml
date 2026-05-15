@@ -158,6 +158,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Process Coverage
+        id: process-coverage
         if: matrix.coverage == 'true'
         uses: alandefreitas/cpp-actions/process-coverage@v1.9.4
         with:
@@ -166,3 +167,19 @@ jobs:
           html-report: true
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           codecov-flags: cpp
+
+      # Save the produced LCOV report so PRs that don't change source files
+      # can replay it to codecov without re-running a Coverage build.
+      # `ci-scope-detector.yml` probes this artifact by name and merge-base SHA.
+      - name: Save coverage for replay
+        if: |
+          matrix.coverage == 'true' &&
+          github.event_name == 'push' &&
+          github.ref_name == 'develop' &&
+          steps.process-coverage.outputs.lcov-file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-develop
+          path: ${{ steps.process-coverage.outputs.lcov-file }}
+          retention-days: 90
+          if-no-files-found: error

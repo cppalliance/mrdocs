@@ -12,11 +12,23 @@ name: Utility Tests
 
 on:
   workflow_call:
+    inputs:
+      coverage-replay:
+        description: 'when true, re-upload develop coverage to codecov instead of running a Coverage build'
+        type: boolean
+        default: false
+      merge-base-sha:
+        description: 'merge-base SHA used to locate the matching coverage-develop artifact'
+        type: string
+        default: ''
 
 jobs:
   utility-tests:
     runs-on: ubuntu-24.04
     name: Utility Tests
+    permissions:
+      contents: read
+      actions: read
 
     steps:
       - name: Clone MrDocs
@@ -58,3 +70,43 @@ jobs:
 
       - name: Verify snippet .cpp files match golden tests
         run: .github/scripts/verify-snippets.sh
+
+      # When the Coverage matrix entry was skipped because the develop cache is
+      # warm, fetch develop's LCOV report and re-upload it tagged with the PR's
+      # commit SHA. Codecov sees zero patch lines and unchanged project totals,
+      # so codecov/patch and codecov/project post passing statuses without us
+      # rebuilding the whole project just to remeasure unchanged coverage.
+      - name: Coverage replay (fetch develop LCOV)
+        if: inputs.coverage-replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGE_BASE: ${{ inputs.merge-base-sha }}
+        run: |
+          set -euo pipefail
+          artifact_id=$(gh api -X GET "/repos/$GITHUB_REPOSITORY/actions/artifacts" \
+            -f name=coverage-develop -f per_page=100 \
+            --jq '.artifacts[] | select(.expired == false and .workflow_run.head_sha == "'"$MERGE_BASE"'") | .id' \
+            | head -n1)
+          if [[ -z "${artifact_id:-}" ]]; then
+            echo "::error::coverage-develop artifact disappeared between probe and replay"
+            exit 1
+          fi
+          gh api -H 'Accept: application/vnd.github+json' \
+            "/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > coverage.zip
+          unzip -o coverage.zip -d coverage-develop
+          lcov_path=$(find coverage-develop -maxdepth 3 -name '*.info' -print -quit)
+          if [[ -z "${lcov_path:-}" ]]; then
+            echo "::error::no LCOV file found inside coverage-develop artifact"
+            exit 1
+          fi
+          echo "LCOV_PATH=$lcov_path" >> "$GITHUB_ENV"
+
+      - name: Coverage replay (upload to codecov)
+        if: inputs.coverage-replay
+        uses: codecov/codecov-action@v5
+        with:
+          files: ${{ env.LCOV_PATH }}
+          flags: cpp
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          override_commit: ${{ github.event.pull_request.head.sha || github.sha }}

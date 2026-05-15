@@ -115,6 +115,11 @@ jobs:
 
           submatrices: |
             releases: {{ieq is-release-build 'true'}}
+            # `coverage` is a raw boolean factor (undefined on non-Coverage rows),
+            # so `ieq` would crash. Wrap in `#if` like the `is-bottleneck` extra-value
+            # above to handle undefined cleanly.
+            coverage: {{#if coverage}}true{{/if}}
+            releases-and-coverage: {{#if (or (ieq is-release-build 'true') coverage)}}true{{/if}}
           trace-commands: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
 

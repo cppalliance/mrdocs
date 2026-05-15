@@ -1,0 +1,281 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+# Classifies the changed files in this run into the Danger scope buckets
+# (see `util/danger/logic.ts`) and decides which parts of the build matrix
+# still need to execute.
+#
+
+name: Scope Detector
+
+on:
+  workflow_call:
+    outputs:
+      is-code-change:
+        description: 'true when files in source/tests/golden-tests/build/third-party changed'
+        value: ${{ jobs.detect.outputs.is-code-change }}
+      is-push:
+        description: 'true when the triggering event is a push'
+        value: ${{ jobs.detect.outputs.is-push }}
+      force-full:
+        description: 'true when [full ci] marker or full-ci label is set'
+        value: ${{ jobs.detect.outputs.force-full }}
+      release-cache-warm:
+        description: 'true when develop-release contains all 3 platform assets'
+        value: ${{ jobs.detect.outputs.release-cache-warm }}
+      coverage-cache-warm:
+        description: 'true when coverage-develop artifact matches the merge-base SHA (strict)'
+        value: ${{ jobs.detect.outputs.coverage-cache-warm }}
+      run-release-build:
+        description: 'build release packages from this run rather than reusing develop-release'
+        value: ${{ jobs.detect.outputs.run-release-build }}
+      run-coverage-build:
+        description: 'build a fresh coverage report rather than replaying develop'
+        value: ${{ jobs.detect.outputs.run-coverage-build }}
+      run-full-matrix:
+        description: 'run the full build matrix including sanitizers'
+        value: ${{ jobs.detect.outputs.run-full-matrix }}
+      is-docs-change:
+        description: 'true when files in the docs scope changed'
+        value: ${{ jobs.detect.outputs.is-docs-change }}
+      run-documentation:
+        description: 'run the per-OS Documentation jobs (Antora + UI + local playbook)'
+        value: ${{ jobs.detect.outputs.run-documentation }}
+      matrix-selector:
+        description: 'which (sub)matrix ci-build should run: full | releases-and-coverage | releases | coverage | none'
+        value: ${{ jobs.detect.outputs.matrix-selector }}
+      scopes-json:
+        description: 'JSON array of scopes touched by this change'
+        value: ${{ jobs.detect.outputs.scopes-json }}
+      merge-base-sha:
+        description: 'merge-base against the base ref, used for cache lookups'
+        value: ${{ jobs.detect.outputs.merge-base-sha }}
+
+jobs:
+  detect:
+    name: Detect
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      is-code-change: ${{ steps.classify.outputs.is-code-change }}
+      is-push: ${{ steps.classify.outputs.is-push }}
+      force-full: ${{ steps.classify.outputs.force-full }}
+      release-cache-warm: ${{ steps.probe-release.outputs.warm }}
+      coverage-cache-warm: ${{ steps.probe-coverage.outputs.warm }}
+      run-release-build: ${{ steps.derive.outputs.run-release-build }}
+      run-coverage-build: ${{ steps.derive.outputs.run-coverage-build }}
+      run-full-matrix: ${{ steps.derive.outputs.run-full-matrix }}
+      is-docs-change: ${{ steps.classify.outputs.is-docs-change }}
+      run-documentation: ${{ steps.derive.outputs.run-documentation }}
+      matrix-selector: ${{ steps.derive.outputs.matrix-selector }}
+      scopes-json: ${{ steps.classify.outputs.scopes-json }}
+      merge-base-sha: ${{ steps.classify.outputs.merge-base-sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install scope classifier
+        working-directory: util/danger
+        run: npm ci --ignore-scripts
+
+      - name: Classify changed files
+        id: classify
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          set -euo pipefail
+
+          # is-push is exposed as its own signal so consumers can react to
+          # push events without having to re-detect github.event_name.
+          is_push='false'
+          if [[ "$GITHUB_EVENT_NAME" == 'push' ]]; then
+            is_push='true'
+          fi
+
+          # On PRs the diff is base..HEAD via the merge-base; on push events
+          # we deliberately leave the file list empty — the derive step forces
+          # a full matrix on pushes regardless of which files changed.
+          if [[ "$GITHUB_EVENT_NAME" == 'pull_request' ]]; then
+            merge_base=$(git merge-base "origin/$BASE_REF" HEAD)
+            git diff --name-only "$merge_base" HEAD > changed-files.txt
+          else
+            merge_base="$(git rev-parse HEAD)"
+            : > changed-files.txt
+          fi
+
+          # The classifier is the one in util/danger/logic.ts — same scope
+          # rules Danger uses, so the two reports stay in sync.
+          result=$(npm --prefix util/danger run --silent danger:detect-scopes < changed-files.txt)
+          echo "Detector output: $result"
+
+          # Manual overrides: a `[full ci]` marker in the PR body or a
+          # `full-ci` label both force the full matrix downstream.
+          force_full='false'
+          if [[ -n "${PR_BODY:-}" ]] && grep -qiF '[full ci]' <<< "$PR_BODY"; then
+            force_full='true'
+          fi
+          if [[ -n "${PR_LABELS:-}" ]] && echo "$PR_LABELS" | jq -e 'index("full-ci")' >/dev/null 2>&1; then
+            force_full='true'
+          fi
+
+          # docs scope is tracked separately so Documentation jobs can run on
+          # docs-only PRs (where is-code-change is false but docs still need
+          # validating across OSes).
+          is_docs_change='false'
+          if jq -e '.scopes | index("docs")' <<< "$result" >/dev/null 2>&1; then
+            is_docs_change='true'
+          fi
+
+          {
+            echo "is-push=$is_push"
+            echo "merge-base-sha=$merge_base"
+            echo "scopes-json=$(jq -c .scopes <<< "$result")"
+            echo "is-code-change=$(jq -r .is_code_change <<< "$result")"
+            echo "is-docs-change=$is_docs_change"
+            echo "force-full=$force_full"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Probe develop-release cache warmth
+        id: probe-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Probe failure (rate limit, missing release, missing token scope)
+          # leaves warm=false so we fall back to a fresh build.
+          warm='false'
+
+          # Fetch the asset filenames of the rolling develop-release.
+          assets=$(gh release view develop-release --json assets --jq '.assets[].name' 2>/dev/null || true)
+
+          # Cache is warm only if all three platforms are present; one missing
+          # platform invalidates the whole probe (we'd still need a fresh build
+          # for that platform to satisfy the required Releases / * checks).
+          have_linux='false'
+          have_windows='false'
+          have_mac='false'
+          while IFS= read -r asset; do
+            [[ -z "$asset" ]] && continue
+            case "$asset" in
+              *Linux*) have_linux='true' ;;
+              *Windows*) have_windows='true' ;;
+              *Darwin*|*macOS*) have_mac='true' ;;
+            esac
+          done <<< "$assets"
+          if [[ "$have_linux" == 'true' && "$have_windows" == 'true' && "$have_mac" == 'true' ]]; then
+            warm='true'
+          fi
+          echo "warm=$warm" >> "$GITHUB_OUTPUT"
+
+      - name: Probe coverage-develop cache warmth (strict)
+        id: probe-coverage
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGE_BASE: ${{ steps.classify.outputs.merge-base-sha }}
+        run: |
+          set -euo pipefail
+          # Strict: the artifact's workflow_run.head_sha must equal the PR's
+          # merge base. If develop moved forward since the PR forked, the
+          # match fails and we rebuild coverage — accepting a small false-cold
+          # rate to keep codecov's diff math honest.
+          warm='false'
+
+          # Query non-expired coverage-develop artifacts and filter by the
+          # workflow_run.head_sha (server-side via --jq); take the first hit.
+          # A probe error (auth, rate limit) silently leaves warm=false.
+          artifact_id=$(gh api -X GET "/repos/$GITHUB_REPOSITORY/actions/artifacts" \
+            -f name=coverage-develop -f per_page=100 \
+            --jq '.artifacts[] | select(.expired == false and .workflow_run.head_sha == "'"$MERGE_BASE"'") | .id' \
+            2>/dev/null | head -n1 || true)
+          if [[ -n "${artifact_id:-}" ]]; then
+            warm='true'
+          fi
+          echo "warm=$warm" >> "$GITHUB_OUTPUT"
+
+      - name: Derive build flags
+        id: derive
+        env:
+          IS_CODE_CHANGE: ${{ steps.classify.outputs.is-code-change }}
+          IS_DOCS_CHANGE: ${{ steps.classify.outputs.is-docs-change }}
+          IS_PUSH: ${{ steps.classify.outputs.is-push }}
+          FORCE_FULL: ${{ steps.classify.outputs.force-full }}
+          RELEASE_WARM: ${{ steps.probe-release.outputs.warm }}
+          COVERAGE_WARM: ${{ steps.probe-coverage.outputs.warm }}
+        run: |
+          set -euo pipefail
+
+          # Pushes and the [full ci] override force the full matrix; we keep
+          # is-code-change as a pure file-diff signal so consumers (Danger,
+          # diagnostics) can read either bit independently.
+          run_full_matrix='false'
+          if [[ "$IS_CODE_CHANGE" == 'true' || "$IS_PUSH" == 'true' || "$FORCE_FULL" == 'true' ]]; then
+            run_full_matrix='true'
+          fi
+
+          # Need a fresh release build whenever the full matrix runs, or when
+          # the develop-release cache is cold (e.g. probe failed, missing
+          # platform asset). Currently always true because the build dispatch
+          # below uses release-build entries unconditionally as a safety net.
+          run_release_build='false'
+          if [[ "$run_full_matrix" == 'true' || "$RELEASE_WARM" != 'true' ]]; then
+            run_release_build='true'
+          fi
+
+          # Need a fresh coverage build whenever the full matrix runs, or when
+          # the coverage-develop cache is cold (no matching merge-base SHA).
+          # When false, utility-tests replays the cached LCOV to codecov.
+          run_coverage_build='false'
+          if [[ "$run_full_matrix" == 'true' || "$COVERAGE_WARM" != 'true' ]]; then
+            run_coverage_build='true'
+          fi
+
+          # Documentation jobs run when anything affecting the binary or the
+          # docs source changed; skipped on tooling/ci/toolchain-only PRs.
+          run_documentation='false'
+          if [[ "$run_full_matrix" == 'true' || "$IS_DOCS_CHANGE" == 'true' ]]; then
+            run_documentation='true'
+          fi
+
+          # Single string telling ci.yml which (sub)matrix to dispatch into
+          # ci-build.yml: 'full' uses cpp-matrix.outputs.matrix, the others
+          # are submatrix keys on cpp-matrix.outputs.submatrices. 'none' skips
+          # ci-build entirely (both caches warm, no code change).
+          if [[ "$run_full_matrix" == 'true' ]]; then
+            matrix_selector='full'
+          elif [[ "$run_release_build" == 'true' && "$run_coverage_build" == 'true' ]]; then
+            matrix_selector='releases-and-coverage'
+          elif [[ "$run_release_build" == 'true' ]]; then
+            matrix_selector='releases'
+          elif [[ "$run_coverage_build" == 'true' ]]; then
+            matrix_selector='coverage'
+          else
+            matrix_selector='none'
+          fi
+
+          {
+            echo "run-full-matrix=$run_full_matrix"
+            echo "run-release-build=$run_release_build"
+            echo "run-coverage-build=$run_coverage_build"
+            echo "run-documentation=$run_documentation"
+            echo "matrix-selector=$matrix_selector"
+          } >> "$GITHUB_OUTPUT"
+
