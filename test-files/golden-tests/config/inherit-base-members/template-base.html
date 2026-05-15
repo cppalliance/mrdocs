@@ -1,0 +1,320 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">
+Global Namespace</h2>
+</div>
+<h2>
+Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#base-06"><code>base</code></a> </td><td>A class template base.</td></tr><tr>
+<td><a href="#concrete_derived"><code>concrete_derived</code></a> </td><td>A non-template that inherits from a concrete specialization.</td></tr><tr>
+<td><a href="#derived"><code>derived</code></a> </td><td>A class template that inherits from <code>base&lt;T&gt;</code>.</td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="base-06">
+base</h2>
+<div>
+<p>A class template base.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename T&gt;
+class base;</code></pre>
+</div>
+<h2>
+Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#base-06-method"><code>method</code></a> </td><td>A regular member function that should also be inherited.</td></tr><tr>
+<td><a href="#base-06-operator_subs"><code>operator[]</code></a> </td><td>Indexing operator that should be inherited.</td></tr>
+</tbody>
+</table>
+
+
+
+<div>
+<h2>
+Derived Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#concrete_derived"><code>concrete_derived</code></a>
+    </td><td>A non-template that inherits from a concrete specialization.</td></tr>
+<tr><td><a href="#derived"><code>derived</code></a>
+    </td><td>A class template that inherits from <code>base&lt;T&gt;</code>.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="base-06-method">
+base::method</h2>
+<div>
+<p>A regular member function that should also be inherited.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">T&
+method();</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="base-06-operator_subs">
+base::operator[]</h2>
+<div>
+<p>Indexing operator that should be inherited.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">T&
+operator[](int n);</code></pre>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>n</strong></td>
+<td>The right operand</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="concrete_derived">
+concrete_derived</h2>
+<div>
+<p>A non-template that inherits from a concrete specialization.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">class concrete_derived
+    : public <a href="#base-06">base&lt;int&gt;</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#base-06">base&lt;int&gt;</a></code></td><td>A class template base.</td></tr>
+</tbody>
+</table>
+</div>
+<h2>
+Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#concrete_derived-method"><code>method</code></a> </td></tr><tr>
+<td><a href="#concrete_derived-operator_subs"><code>operator[]</code></a> </td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="concrete_derived-method">
+concrete_derived::method</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">int&
+method();</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="concrete_derived-operator_subs">
+concrete_derived::operator[]</h2>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">int&
+operator[](int n);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="derived">
+derived</h2>
+<div>
+<p>A class template that inherits from <code>base&lt;T&gt;</code>.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename T&gt;
+class derived
+    : public <a href="#base-06">base&lt;T&gt;</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#base-06">base&lt;T&gt;</a></code></td><td>A class template base.</td></tr>
+</tbody>
+</table>
+</div>
+<h2>
+Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#derived-method"><code>method</code></a> </td><td>A regular member function that should also be inherited.</td></tr><tr>
+<td><a href="#derived-operator_subs"><code>operator[]</code></a> </td><td>Indexing operator that should be inherited.</td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="derived-method">
+derived::method</h2>
+<div>
+<p>A regular member function that should also be inherited.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">T&
+method();</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="derived-operator_subs">
+derived::operator[]</h2>
+<div>
+<p>Indexing operator that should be inherited.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;template-base.cpp&gt;</code></div>
+<pre><code class="source-code cpp">T&
+operator[](int n);</code></pre>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>n</strong></td>
+<td>The right operand</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

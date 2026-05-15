@@ -1,0 +1,236 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#base-06[`base`] 
+| A class template base&period;
+| link:#concrete_derived[`concrete&lowbar;derived`] 
+| A non&hyphen;template that inherits from a concrete specialization&period;
+| link:#derived[`derived`] 
+| A class template that inherits from `base&lt;T&gt;`&period;
+|===
+
+[#base-06]
+== base
+
+A class template base&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+class base;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#base-06-method[`method`] 
+| A regular member function that should also be inherited&period;
+| link:#base-06-operator_subs[`operator&lsqb;&rsqb;`] 
+| Indexing operator that should be inherited&period;
+|===
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| link:#concrete_derived[`concrete&lowbar;derived`]
+| A non&hyphen;template that inherits from a concrete specialization&period;
+| link:#derived[`derived`]
+| A class template that inherits from `base&lt;T&gt;`&period;
+|===
+
+[#base-06-method]
+== link:#base-06[base]::method
+
+A regular member function that should also be inherited&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T&
+method();
+----
+
+[#base-06-operator_subs]
+== link:#base-06[base]::operator&lsqb;&rsqb;
+
+Indexing operator that should be inherited&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T&
+operator&lsqb;&rsqb;(int n);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *n*
+| The right operand
+|===
+
+[#concrete_derived]
+== concrete&lowbar;derived
+
+A non&hyphen;template that inherits from a concrete specialization&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class concrete&lowbar;derived
+    : public link:#base-06[base&lt;int&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#base-06[base&lt;int&gt;]`
+| A class template base&period;
+|===
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#concrete_derived-method[`method`] 
+| link:#concrete_derived-operator_subs[`operator&lsqb;&rsqb;`] 
+|===
+
+[#concrete_derived-method]
+== link:#concrete_derived[concrete&lowbar;derived]::method
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+method();
+----
+
+[#concrete_derived-operator_subs]
+== link:#concrete_derived[concrete&lowbar;derived]::operator&lsqb;&rsqb;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+operator&lsqb;&rsqb;(int n);
+----
+
+[#derived]
+== derived
+
+A class template that inherits from `base&lt;T&gt;`&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+class derived
+    : public link:#base-06[base&lt;T&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#base-06[base&lt;T&gt;]`
+| A class template base&period;
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#derived-method[`method`] 
+| A regular member function that should also be inherited&period;
+| link:#derived-operator_subs[`operator&lsqb;&rsqb;`] 
+| Indexing operator that should be inherited&period;
+|===
+
+[#derived-method]
+== link:#derived[derived]::method
+
+A regular member function that should also be inherited&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T&
+method();
+----
+
+[#derived-operator_subs]
+== link:#derived[derived]::operator&lsqb;&rsqb;
+
+Indexing operator that should be inherited&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T&
+operator&lsqb;&rsqb;(int n);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *n*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

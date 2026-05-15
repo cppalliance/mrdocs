@@ -242,12 +242,25 @@ operator()(RecordSymbol& I)
         auto& baseNameType = baseI.Type->asNamed();
         MRDOCS_ASSERT(!baseNameType.Name.valueless_after_move());
         auto& baseName = baseNameType.Name->asName();
+        // `baseName.id` is the primary template's ID. When the base
+        // names a concrete specialization (e.g. `base<int>`) and
+        // `extract-implicit-specializations` is on, we prefer the
+        // implicit specialization's ID so inherited members carry
+        // the substituted types. For a dependent base such as
+        // `base<T>` in `template<T> class derived : public base<T>`,
+        // `specializationID` stays invalid (no `ClassTemplate-
+        // SpecializationDecl` exists in the AST), so we fall back
+        // to the primary's ID and inherit its members with the
+        // primary's template parameter intact.
         SymbolID baseID = baseName.id;
         if (corpus_.config->extractImplicitSpecializations && 
             baseName.isSpecialization())
         {
             auto& baseSpec = baseName.asSpecialization();
-            baseID = baseSpec.specializationID;
+            if (baseSpec.specializationID)
+            {
+                baseID = baseSpec.specializationID;
+            }
         }
         MRDOCS_CHECK_OR_CONTINUE(baseID);
         auto basePtr = corpus_.find(baseID);
