@@ -4,7 +4,9 @@
 * xref:usage.adoc[Getting Started]
 * xref:config-file.adoc[]
 * xref:commands.adoc[Documenting the Code]
+* xref:addons.adoc[]
 * xref:generators.adoc[]
+* xref:extensions.adoc[]
 * xref:design-notes.adoc[]
 * xref:reference:index.adoc[Library Reference]
 * Contribute

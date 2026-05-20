@@ -77,13 +77,8 @@ Mr.Docs attempts to support various alternatives for customizing the output form
 The `adoc` and `html` generators use https://handlebarsjs.com/[Handlebars,window=_blank] templates.
 These templates can be customized to change the output format and style of the documentation.
 
-The templates used to generate the documentation are located in the `share/mrdocs/addons/generator` directory.
-Users can create a copy of these files and provide their own `addons` directory via the `addons` option in the configuration file or via the command line.
-
-[source,yaml]
-----
-addons: /path/to/custom/addons
-----
+The templates used to generate the documentation live in the built-in addon under `share/mrdocs/addons/generator`.
+You can replace or supplement that addon with your own; xref:addons.adoc[Addons] covers the lookup paths (`addons`, `addons-supplemental`) and how files from multiple addons combine.
 
 Each symbol goes through a main layout template in the `<addons>/generator/<generator>/layouts/single-symbol.<generator>.hbs` directory.
 This template is a simple entry point that renders the partial relative to the symbol kind.
@@ -110,6 +105,56 @@ Each time the generator encounters a symbol, it renders the layout template with
 The layout template can include other partial templates to render the symbol data. These partials are available in the `<addons>/generator/<generator>/partials` directory.
 
 The Document Object Model (DOM) for each symbol includes all information about the symbol.One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.All references to other symbols are resolved in the templates.
+
+[#custom-helpers]
+=== Custom Helpers
+
+Beyond the built-in helpers, an addon can register its own Handlebars helpers in JavaScript or Lua.
+Drop a script alongside your partials and Mr.Docs picks it up automatically:
+
+* `<addons>/generator/common/helpers/*.{js,lua}`: helpers available to every output format.
+* `<addons>/generator/<generator>/helpers/*.{js,lua}`: helpers available only to the matching format (`html`, `adoc`, ...). A format-specific helper overrides a common one with the same name.
+
+The file's stem (with the `.js` or `.lua` extension stripped) becomes the helper name.
+Templates invoke it the same way they invoke a built-in helper:
+
+[source,handlebars]
+----
+{{my_helper symbol.name}}
+----
+
+==== Helper resolution
+
+Each script is expected to expose a single function, the helper:
+
+* Return the function from the chunk (recommended):
++
+[source,javascript]
+----
+return function(name) {
+    return "[" + name + "]";
+};
+----
++
+[source,lua]
+----
+return function(name)
+    return "[" .. name .. "]"
+end
+----
+
+* Or define a global with the same stem as the file (for example, `my_helper.lua` defining `function my_helper(name) ... end`).
+
+==== Utility files
+
+A file whose stem starts with an underscore (for example, `_utils.js`) is loaded first and is *not* registered as a helper.
+Use these files to define globals that several helpers share, so a single utility script can set up state once instead of every helper duplicating it.
+
+==== Arguments and the Handlebars options object
+
+Mr.Docs strips Handlebars' trailing options object before forwarding arguments to the helper.
+Helpers receive the positional arguments only and don't have to filter the options out themselves.
+This also avoids expensive marshalling of symbol contexts, which contain circular references.
 
 == Stylesheet Options
 
