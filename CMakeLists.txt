@@ -176,6 +176,31 @@ else()
     )
 endif()
 
+# Generate the mrdocs.set allowlist artifacts from
+# src/lib/Extensions/AllowedFields.json: a constexpr `kSettableFields[]`
+# array consumed by SetMember.cpp at runtime, and an AsciiDoc table
+# included by docs/modules/ROOT/pages/extensions.adoc. Same JSON drives
+# both, so the runtime allowlist and the rendered reference cannot
+# drift.
+set(ALLOWED_FIELDS_JSON
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/Extensions/AllowedFields.json")
+set(ALLOWED_FIELDS_SCRIPT
+    "${CMAKE_CURRENT_SOURCE_DIR}/util/generate_extension_allowed_fields.py")
+set(ALLOWED_FIELDS_CPP
+    "${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Extensions/AllowedFields.gen.hpp")
+set(ALLOWED_FIELDS_ADOC
+    "${CMAKE_CURRENT_SOURCE_DIR}/docs/modules/ROOT/partials/extensions-allowed-fields.adoc")
+add_custom_command(
+    OUTPUT ${ALLOWED_FIELDS_CPP} ${ALLOWED_FIELDS_ADOC}
+    COMMAND ${PYTHON_EXECUTABLE} ${ALLOWED_FIELDS_SCRIPT}
+        ${ALLOWED_FIELDS_JSON}
+        ${ALLOWED_FIELDS_CPP}
+        ${ALLOWED_FIELDS_ADOC}
+    DEPENDS ${ALLOWED_FIELDS_JSON} ${ALLOWED_FIELDS_SCRIPT}
+    COMMENT "Generating mrdocs.set allowlist artifacts"
+    VERBATIM
+)
+
 #-------------------------------------------------
 #
 # Docs build
@@ -313,6 +338,7 @@ list(APPEND LIB_SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Version.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/PublicSettings.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp
+    ${ALLOWED_FIELDS_CPP}
 )
 add_library(mrdocs-core ${LIB_SOURCES})
 target_compile_features(mrdocs-core PUBLIC cxx_std_23)

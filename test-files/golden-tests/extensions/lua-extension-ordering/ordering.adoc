@@ -1,0 +1,32 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#from_supplemental[`from&lowbar;supplemental`] 
+| A function whose name is rewritten twice, once by each of two scripts living in two different addon roots&period; The script in the alphabetically&hyphen;later root must win&period;
+|===
+
+[#from_supplemental]
+== from&lowbar;supplemental
+
+A function whose name is rewritten twice, once by each of two scripts living in two different addon roots&period; The script in the alphabetically&hyphen;later root must win&period;
+
+=== Synopsis
+
+Declared in `&lt;ordering&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+from&lowbar;supplemental();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

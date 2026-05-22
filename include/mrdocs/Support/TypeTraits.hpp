@@ -13,6 +13,7 @@
 #define MRDOCS_API_SUPPORT_TYPETRAITS_HPP
 
 #include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <type_traits>
 #include <vector>
 
@@ -38,6 +39,15 @@ struct is_vector<std::vector<T, A>> : std::true_type {};
 
 template <typename T>
 inline constexpr bool is_vector_v = is_vector<T>::value;
+
+template <typename T>
+struct is_polymorphic : std::false_type {};
+
+template <typename T>
+struct is_polymorphic<Polymorphic<T>> : std::true_type {};
+
+template <typename T>
+inline constexpr bool is_polymorphic_v = is_polymorphic<T>::value;
 
 } // namespace detail
 

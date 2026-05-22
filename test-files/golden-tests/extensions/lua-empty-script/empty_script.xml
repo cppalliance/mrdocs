@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>h47phbZIVEFdp8eGsRoxrdB6IFM=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>unchanged_function</name>
+  <source>
+    <location>
+      <short-path>empty_script.cpp</short-path>
+      <source-path>empty_script.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>h47phbZIVEFdp8eGsRoxrdB6IFM=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function untouched by any extension - the test verifies that loading an extension file that does NOT define </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>transform_corpus</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> completes the build cleanly and leaves the corpus alone.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>
