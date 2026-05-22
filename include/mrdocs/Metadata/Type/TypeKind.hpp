@@ -17,6 +17,18 @@
 namespace mrdocs {
 
 /** Variants of C++ types captured in metadata.
+
+    @note `TypeKind` is intentionally NOT registered with
+    `MRDOCS_DESCRIBE_ENUM`. Describing it would make the reflection-
+    driven XML writer emit a redundant `<kind>...</kind>` child into
+    every type element (NamedType, LValueReferenceType, ...), which
+    would churn every XML golden test for no semantic gain. Code that
+    needs a string form for a `TypeKind` value calls `toString` below;
+    the script side of `mrdocs.set` falls back to `toString` for
+    polymorphic `kind:` matching when the discriminator enum is
+    undescribed, so script names (`lvalue-reference`, ...) match the
+    DOM and Handlebars side and differ only from the XML writer's tag
+    form (`l-value-reference`, ...).
 */
 enum class TypeKind {
 #define INFO(Type) Type,

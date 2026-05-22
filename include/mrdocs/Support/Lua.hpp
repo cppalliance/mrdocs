@@ -121,6 +121,19 @@ public:
     /** Constructor.
     */
     Context(Context const&) noexcept;
+
+    /** Return the underlying `lua_State*`.
+
+        Exposed as `void*` so callers don't have to drag `lua.h` into
+        the public API. Cast to `lua_State*` at the use site. The state
+        is owned by this Context and must not be `lua_close`d by the
+        caller; use this only when the wrapper does not yet abstract
+        the operation you need (for example, registering a native
+        C function that the script can call as a global).
+    */
+    MRDOCS_DECL
+    void*
+    nativeState() const noexcept;
 };
 
 //------------------------------------------------
@@ -210,6 +223,20 @@ public:
         std::string_view key,
         source_location loc =
             source_location::current());
+
+    /** Push a dom::Value onto the Lua stack.
+
+        Primitives (nil, boolean, integer, string) are pushed as their
+        Lua-native counterparts. Arrays and objects are pushed as
+        userdata wrapping the underlying dom container, with the same
+        lazy bindings used elsewhere in the wrapper.
+
+        @param value The DOM value to push.
+        @return A Value referring to the new stack slot.
+    */
+    MRDOCS_DECL
+    Value
+    pushDom(dom::Value const& value);
 };
 
 //------------------------------------------------

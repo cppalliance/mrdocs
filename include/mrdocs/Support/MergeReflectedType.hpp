@@ -44,11 +44,15 @@ isDefaultEnum(E value)
 }
 
 // Type trait: is this Polymorphic<U> for a given U?
+//
+// Built alongside (not on top of) the unary `is_polymorphic_v<T>`
+// from Support/TypeTraits.hpp, which asks the related question
+// "is `T` some Polymorphic<...>?" without naming the inner type.
 template <typename T, typename U>
-inline constexpr bool is_polymorphic_v = false;
+inline constexpr bool is_polymorphic_for_v = false;
 
 template <typename U>
-inline constexpr bool is_polymorphic_v<Polymorphic<U>, U> = true;
+inline constexpr bool is_polymorphic_for_v<Polymorphic<U>, U> = true;
 
 // Type trait: can we call merge(T&, T&&) via ADL?
 template <typename T, typename = void>
@@ -135,7 +139,7 @@ mergeByType(T& dst, T&& src)
     // Polymorphic<Type>: take src if dst is in a placeholder
     // state — either AutoType{} or a blank NamedType with an
     // empty Identifier.
-    else if constexpr (is_polymorphic_v<T, Type>)
+    else if constexpr (is_polymorphic_for_v<T, Type>)
     {
         if (isPlaceholderType(dst))
         {
@@ -144,7 +148,7 @@ mergeByType(T& dst, T&& src)
         return true;
     }
     // Polymorphic<Name>: take src if dst has an empty Identifier.
-    else if constexpr (is_polymorphic_v<T, Name>)
+    else if constexpr (is_polymorphic_for_v<T, Name>)
     {
         if (dst->Identifier.empty())
         {

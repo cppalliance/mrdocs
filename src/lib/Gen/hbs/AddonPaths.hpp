@@ -12,6 +12,7 @@
 #define MRDOCS_LIB_GEN_HBS_ADDONPATHS_HPP
 
 #include <lib/ConfigImpl.hpp>
+#include <lib/Support/AddonRoots.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <optional>
 #include <string>
@@ -19,35 +20,6 @@
 #include <vector>
 
 namespace mrdocs::hbs::addon_paths {
-
-/** Returns the list of addon root directories from the configuration.
-
-    This function collects all valid addon root paths by checking
-    the primary addons directory and any supplemental addon directories
-    specified in the configuration.
-
-    @param config The configuration containing addon path settings.
-    @return A vector of existing addon root directory paths. The primary
-            addons directory (if it exists) appears first, followed by
-            any existing supplemental addon directories in their
-            configured order.
-*/
-inline std::vector<std::string>
-addonRoots(Config const& config)
-{
-    std::vector<std::string> roots;
-    roots.reserve(1 + config->addonsSupplemental.size());
-
-    if (files::exists(config->addons))
-        roots.push_back(config->addons);
-
-    for (auto const& supplemental : config->addonsSupplemental)
-    {
-        if (files::exists(supplemental))
-            roots.push_back(supplemental);
-    }
-    return roots;
-}
 
 /** Returns directories containing Handlebars partial templates.
 
@@ -161,7 +133,7 @@ findFile(
     std::string_view subdir,
     std::string_view filename)
 {
-    auto roots = addonRoots(config);
+    auto roots = mrdocs::addonRoots(config);
     for (auto it = roots.rbegin(); it != roots.rend(); ++it)
     {
         std::string candidate = files::appendPath(*it, "generator", generator, subdir, filename);

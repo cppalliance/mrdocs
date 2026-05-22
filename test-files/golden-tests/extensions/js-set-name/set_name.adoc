@@ -1,0 +1,32 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#renamed_target_function[`renamed&lowbar;target&lowbar;function`] 
+| Brief rewritten by JS extension
+|===
+
+[#renamed_target_function]
+== renamed&lowbar;target&lowbar;function
+
+Brief rewritten by JS extension
+
+=== Synopsis
+
+Declared in `&lt;set&lowbar;name&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+renamed&lowbar;target&lowbar;function();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

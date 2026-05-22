@@ -97,6 +97,13 @@ Context::
 Context(
     Context const& other) noexcept = default;
 
+void*
+Context::
+nativeState() const noexcept
+{
+    return impl_->L;
+}
+
 void
 Scope::
 reset()
@@ -735,6 +742,15 @@ getGlobal(
         lua_pop(A, 1);
         return Unexpected(formatError("global key '{}' not found", key));
     }
+    return A.construct<Value>(-1, *this);
+}
+
+Value
+Scope::
+pushDom(dom::Value const& value)
+{
+    Access A(*this);
+    domValue_push(A, value);
     return A.construct<Value>(-1, *this);
 }
 

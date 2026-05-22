@@ -22,6 +22,7 @@
 #include <lib/Metadata/Finalizers/NamespacesFinalizer.hpp>
 #include <lib/Metadata/Finalizers/OverloadsFinalizer.hpp>
 #include <lib/Metadata/Finalizers/SortMembersFinalizer.hpp>
+#include <lib/Extensions/RunExtensions.hpp>
 #include <lib/Support/Chrono.hpp>
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Metadata.hpp>
@@ -930,6 +931,13 @@ CorpusImpl::build(
     // Finalize corpus
     // ------------------------------------------
     corpus->finalize();
+
+    // ------------------------------------------
+    // Run user extension scripts
+    // ------------------------------------------
+    // Extensions fire after finalizers and before any generator runs,
+    // so any mutations they perform are visible to every output format.
+    MRDOCS_TRY(runExtensions(*corpus));
 
     report::info(
         "Extracted {} declarations in {}",
