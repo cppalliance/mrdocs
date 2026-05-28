@@ -156,6 +156,50 @@ Mr.Docs strips Handlebars' trailing options object before forwarding arguments t
 Helpers receive the positional arguments only and don't have to filter the options out themselves.
 This also avoids expensive marshalling of symbol contexts, which contain circular references.
 
+=== Custom output formats
+
+Beyond the three built-in formats (`adoc`, `html`, `xml`), you can add an output format of your own by dropping a template directory under an addon root.
+No C++ subclass is needed: Mr.Docs walks the immediate subdirectories of <addons>/generator/ at startup, and any subdirectory that ships an `mrdocs-generator.yml` file is installed as a new generator with id `<name>`.
+
+The directory name is both the format id and the output file extension: the Handlebars Builder keys all template lookups on the file extension, so the two must agree.
+To add a format that emits `.md` files, name the directory `md` and select it with `--generator=md`.
+
+To add the format:
+
+. Create <addons>/generator/md/mrdocs-generator.yml. The file declares the directory as a generator and supplies any escape rules; an empty file is fine when there are no rules to specify.
+. Create <addons>/generator/md/layouts/index.md.hbs and <addons>/generator/md/layouts/wrapper.md.hbs. These have the same role they have for `adoc` and `html`: `index` renders one symbol; `wrapper` is interpolated around the index output and is responsible for the page title and any boilerplate.
+. Optionally add <addons>/generator/md/partials/ and <addons>/generator/md/helpers/ for the partials and helpers your layouts use. The lookup paths and override rules are the same as for the built-in formats.
+. Select the format on the command line or in your config with `generator: md`. Mr.Docs writes output files with the `.md` extension.
+
+A directory under `generator/` that does not ship an `mrdocs-generator.yml` is treated as a shared-assets directory and skipped. That's how the built-in `common/` directory (which ships only CSS and shared partials) coexists with real generator directories without being mistakenly registered.
+
+==== The `mrdocs-generator.yml` manifest
+
+If your format needs per-pattern escape rules, drop a `mrdocs-generator.yml` file alongside `layouts/`:
+
+[source,yaml]
+----
+escape:
+  '*': '\*'
+  '**': '<strong>'
+  '_': '\_'
+  '`': '\`'
+----
+
+The `escape` key is optional and holds a sub-mapping from byte-sequence keys to replacement strings.
+A position in the input that matches no rule passes through unchanged.
+Keys may be one or more bytes long; an empty key is rejected at startup.
+
+Multi-byte keys are useful for tokens like Markdown's `**` (bold) versus a literal `*`, RST's ``` `` ``` (literal) versus ``` ` ``` (emphasis), or for whole UTF-8 codepoints that should be replaced as a unit.
+When more than one rule could match at a position, the longest match wins, so a `**` rule takes precedence over a `*` rule when both are present.
+
+Unknown top-level keys are silently ignored so future schema additions stay non-breaking.
+
+==== Layering across addon roots
+
+If the same id appears under more than one addon root, the first one wins: that root's manifest sets the format's escape rules.
+Later roots can still contribute layered partials and helpers under the same id through the existing template-loading path, so a project can supplement a shared format without redefining it.
+
 == Stylesheet Options
 
 The HTML and AsciiDoc generators ship a bundled stylesheet that is inlined by default. You can replace or layer styles with the following options (available in config files and on the CLI):
