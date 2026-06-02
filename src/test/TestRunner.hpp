@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -55,7 +56,10 @@ struct TestResults
 class TestRunner
 {
     ThreadPool threadPool_;
-    Generator const* gen_;
+    /// Id of the chosen generator. Resolved per-test (after each test's
+    /// settings load) so that data-driven generators contributed via
+    /// addons-supplemental are picked up correctly.
+    std::string genId_;
     ReferenceDirectories dirs_;
 
     /** Run a single .cpp test file with inherited directory settings. */
@@ -80,6 +84,7 @@ public:
     void
     handleCompilationDatabase(
         llvm::StringRef filePath,
+        Generator const& gen,
         MrDocsCompilationDatabase const& compilations,
         std::shared_ptr<ConfigImpl const> const& config,
         TestLayout const& layout);

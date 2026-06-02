@@ -454,7 +454,7 @@ Builder(
     namespace fs = std::filesystem;
 
     auto const& config = domCorpus->config;
-    auto const roots = addonRoots(config);
+    auto const roots = addon_paths::addonRoots(config.settings());
     auto const partialDirs = addon_paths::partialDirs(roots, domCorpus.fileExtension);
     auto const helperDirs = addon_paths::helperDirs(roots, domCorpus.fileExtension);
     auto const layoutDirs = addon_paths::layoutDirs(roots, domCorpus.fileExtension);

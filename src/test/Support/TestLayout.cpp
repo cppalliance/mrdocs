@@ -28,26 +28,46 @@ pathWithExtension(
 
 } // (anon)
 
-/** Build the per-file layout and normalized settings with mode validation. */
-Expected<ResolvedLayout>
-resolveTestLayout(
+/** Read any per-file mrdocs.yml on top of the directory-level settings. */
+Expected<LoadedTestSettings>
+loadTestSettings(
     llvm::StringRef filePath,
     Config::Settings const& dirSettings,
-    llvm::StringRef generatorExtension,
-    ReferenceDirectories const& dirs,
-    Action action)
+    ReferenceDirectories const& dirs)
 {
-    Config::Settings fileSettings = dirSettings;
-    auto configPath = files::withExtension(filePath, "yml");
-    bool const hasFileConfig = files::exists(configPath);
-    if (hasFileConfig)
+    LoadedTestSettings result;
+    result.settings = dirSettings;
+    result.dirMultipage = dirSettings.multipage;
+    std::string const configPath = files::withExtension(filePath, "yml");
+    result.hasFileConfig = files::exists(configPath);
+    if (result.hasFileConfig)
     {
-        if (auto exp = Config::Settings::load_file(fileSettings, configPath, dirs); !exp)
+        Expected<void> const exp = Config::Settings::load_file(
+            result.settings, configPath, dirs);
+        if (!exp)
         {
             return Unexpected(exp.error());
         }
     }
+    return result;
+}
 
+/** Build the layout, prepare multipage outputs, and normalize settings.
+    The split from loadTestSettings lets the caller run addon-generator
+    discovery in between, so the chosen generator's file extension is
+    known when paths are computed.
+*/
+Expected<ResolvedLayout>
+buildTestLayout(
+    llvm::StringRef filePath,
+    LoadedTestSettings loaded,
+    llvm::StringRef generatorExtension,
+    ReferenceDirectories const& dirs,
+    Action action)
+{
+    bool const dirMultipage = loaded.dirMultipage;
+    Config::Settings fileSettings = std::move(loaded.settings);
+    bool const hasFileConfig = loaded.hasFileConfig;
     bool const hasTagfileOverride = !fileSettings.tagfile.empty();
 
     TestLayout layout;
@@ -118,7 +138,7 @@ resolveTestLayout(
             return Unexpected(Error("multipage tests require a per-file mrdocs.yml with multipage: true"));
         }
 
-        if (dirSettings.multipage)
+        if (dirMultipage)
         {
             return Unexpected(Error("multipage defaults must remain disabled at the directory level"));
         }

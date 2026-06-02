@@ -56,7 +56,7 @@ DoGenerateAction(
     // Handlebars layouts is registered as an additional generator
     // (subject to id and layout-template checks) before the user-
     // requested generator is looked up below.
-    MRDOCS_TRY(hbs::discoverDataDrivenGenerators(*config));
+    MRDOCS_TRY(hbs::discoverDataDrivenGenerators(config->settings()));
 
     // --------------------------------------------------------------
     //
