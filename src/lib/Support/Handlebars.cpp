@@ -303,18 +303,10 @@ HTMLEscape(
     OutputRef& out,
     std::string_view str)
 {
+    // Entity table lives in the public header so the HTML generator's
+    // `EscapeMap` can share it. Source convention follows handlebars.js:
     // https://github.com/handlebars-lang/handlebars.js/blob/master/lib/handlebars/utils.js
-    static constexpr std::pair<char, std::string_view>
-        escapeMap[] = {
-            {'&', "&amp;"},
-            {'<', "&lt;"},
-            {'>', "&gt;"},
-            {'"', "&quot;"},
-            {'\'', "&#x27;"},
-            {'`', "&#x60;"},
-            {'=', "&#x3D;"}
-        };
-    static constexpr auto badChars = std::views::keys(escapeMap);
+    static constexpr auto badChars = std::views::keys(htmlEscapeEntities);
     for (auto c : str)
     {
         if (auto it = std::ranges::find(badChars, c); it != badChars.end())

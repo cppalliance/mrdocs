@@ -287,6 +287,19 @@ HTMLEscape(
     OutputRef& out,
     std::string_view str);
 
+/** Character-to-entity table used by `HTMLEscape`.
+*/
+inline constexpr std::pair<char, std::string_view>
+htmlEscapeEntities[] = {
+    {'&',  "&amp;"},
+    {'<',  "&lt;"},
+    {'>',  "&gt;"},
+    {'"',  "&quot;"},
+    {'\'', "&#x27;"},
+    {'`',  "&#x60;"},
+    {'=',  "&#x3D;"}
+};
+
 /** \brief HTML escapes the specified string.
  *
  * This function HTML escapes the specified string, making it safe for

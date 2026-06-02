@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -16,13 +17,84 @@
 #include <lib/Gen/hbs/HandlebarsCorpus.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
+#include <array>
+#include <string>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 namespace mrdocs {
 
 class OutputRef;
 
 namespace hbs {
+
+/** Pattern-replacement table used to escape rendered output values.
+
+    A single-byte source is stored in a 256-entry array indexed by the
+    `unsigned char` value of the source. A multi-byte source goes into a
+    bucket keyed by its first byte; each bucket is empty for bytes that
+    have no multi-byte rule, so the walk pays nothing for the multi-byte
+    machinery in the common case. When the bucket is non-empty, the
+    longest matching pattern wins; if no multi-byte pattern matches at
+    the current position, the single-byte rule (if any) applies. A byte
+    with no rule at all passes through unchanged.
+
+    Multi-byte support exists so that a format can distinguish, e.g.,
+    Markdown's `**bold**` from a literal `*`, or RST's ``` ``literal`` ```
+    from `*emphasis*`. It also accommodates UTF-8 codepoints past ASCII,
+    which are indexed by byte everywhere else but want to be replaced as
+    a whole.
+*/
+class EscapeMap
+{
+    // Single-byte rules. Index by `unsigned char`; empty string means
+    // "no rule for this byte" (pass through).
+    std::array<std::string, 256> singleByte_;
+
+    // Multi-byte rules bucketed by first byte. Each bucket holds
+    // (pattern, replacement) pairs where `pattern.size() >= 2` and
+    // `pattern[0]` equals the bucket index. Buckets are typically
+    // empty, so the walk's "is there anything to check here?" test is
+    // a single null check per input byte.
+    std::array<std::vector<std::pair<std::string, std::string>>, 256>
+        multiByte_;
+
+public:
+    /** Replace a single byte with `replacement` whenever it appears
+        in escaped text.
+
+        @param c The byte to replace.
+        @param replacement The string to emit in its place.
+    */
+    void
+    set(char c, std::string_view replacement)
+    {
+        singleByte_[static_cast<unsigned char>(c)] = replacement;
+    }
+
+    /** Replace a pattern of one or more bytes with `replacement`
+        whenever it appears in escaped text.
+
+        Single-byte patterns are stored on the fast single-byte path
+        and behave identically to `set(char, string_view)`. Multi-byte
+        patterns are stored in a bucket keyed by their first byte;
+        when an existing pattern with the same source is set again,
+        the replacement is updated in place.
+
+        Behavior is undefined when `source` is empty.
+
+        @param source The byte sequence to replace.
+        @param replacement The string to emit in its place.
+    */
+    void
+    set(std::string_view source, std::string_view replacement);
+
+    /** Append the escaped form of `str` to `out`.
+    */
+    void
+    apply(OutputRef& out, std::string_view str) const;
+};
 
 class HandlebarsGenerator
     : public Generator
@@ -46,10 +118,57 @@ public:
         bool hasDefaultStyles = false;
     };
 
+protected:
+    /** Escape table for rendered output. Subclasses populate it in
+        their constructor; the base class drives `escape()` from it.
+    */
+    EscapeMap escapeMap_;
+
 private:
+    std::string id_;
+    std::string fileExtension_;
+    std::string displayName_;
+
     Expected<StylesData> prepareStylesheets(Config const& config) const;
 
 public:
+    /** Construct a Handlebars-based generator from data.
+
+        Used both by the built-in subclasses (which pass their fixed
+        identity strings and populate `escapeMap_` in the body) and by
+        the addon-discovery path, which can build a generator entirely
+        from a template directory without writing a new C++ subclass.
+
+        @param id Stable identifier (matches `mrdocs.yml`'s `generator:`).
+        @param fileExtension Output file extension (e.g. "html", "adoc").
+        @param displayName Human-readable name shown in messages.
+        @param escapeMap Character-replacement table; empty means
+                        rendered output passes through unchanged.
+    */
+    HandlebarsGenerator(
+        std::string const& id,
+        std::string const& fileExtension,
+        std::string const& displayName,
+        EscapeMap escapeMap = {});
+
+    std::string_view
+    id() const noexcept override
+    {
+        return id_;
+    }
+
+    std::string_view
+    fileExtension() const noexcept override
+    {
+        return fileExtension_;
+    }
+
+    std::string_view
+    displayName() const noexcept override
+    {
+        return displayName_;
+    }
+
     Expected<void>
     build(
         std::string_view outputPath,
@@ -74,7 +193,16 @@ public:
         std::string_view fileName,
         Corpus const& corpus) const;
 
-    /** Output an escaped string to the output stream.
+    /** Append the escaped form of `str` to `os`.
+
+        The default implementation drives the result from the
+        generator's `escapeMap_`, which is the path used by
+        data-driven generators (their map comes from
+        `mrdocs-generator.yml`). The built-in `adoc` and `html`
+        generators override this with their own hand-written
+        switches; the array lookup the default uses is slightly
+        slower than a compiled switch, and those generators are
+        on the hot path.
     */
     virtual
     void
