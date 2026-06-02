@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -102,6 +103,19 @@ createExecutors(
 // HandlebarsGenerator
 //
 //------------------------------------------------
+
+HandlebarsGenerator::
+HandlebarsGenerator(
+    std::string const& id,
+    std::string const& fileExtension,
+    std::string const& displayName,
+    EscapeMap escapeMap)
+    : escapeMap_(std::move(escapeMap))
+    , id_(id)
+    , fileExtension_(fileExtension)
+    , displayName_(displayName)
+{
+}
 
 Expected<void>
 HandlebarsGenerator::
@@ -239,10 +253,81 @@ buildOne(
 }
 
 void
+EscapeMap::
+set(std::string_view source, std::string_view replacement)
+{
+    if (source.size() == 1)
+    {
+        set(source[0], replacement);
+        return;
+    }
+    auto& bucket = multiByte_[static_cast<unsigned char>(source[0])];
+    // Update in place when the same source is registered twice.
+    for (auto& entry : bucket)
+    {
+        if (entry.first == source)
+        {
+            entry.second.assign(replacement);
+            return;
+        }
+    }
+    bucket.emplace_back(std::string(source), std::string(replacement));
+}
+
+void
+EscapeMap::
+apply(OutputRef& out, std::string_view str) const
+{
+    std::size_t i = 0;
+    while (i < str.size())
+    {
+        auto const byte = static_cast<unsigned char>(str[i]);
+        // Multi-byte path: only entered when this byte has at least
+        // one multi-byte rule registered. The longest match wins, so
+        // a `**` rule takes precedence over a `*` rule at the same
+        // position.
+        auto const& bucket = multiByte_[byte];
+        if (!bucket.empty())
+        {
+            std::string const* longestRepl = nullptr;
+            std::size_t longestLen = 0;
+            std::size_t const remaining = str.size() - i;
+            for (auto const& [pattern, repl] : bucket)
+            {
+                if (pattern.size() <= remaining &&
+                    pattern.size() > longestLen &&
+                    str.compare(i, pattern.size(), pattern) == 0)
+                {
+                    longestRepl = &repl;
+                    longestLen = pattern.size();
+                }
+            }
+            if (longestRepl)
+            {
+                out << *longestRepl;
+                i += longestLen;
+                continue;
+            }
+        }
+        // Single-byte fallback: array lookup, no allocation.
+        std::string const& r = singleByte_[byte];
+        if (r.empty())
+        {
+            out << str[i];
+        }
+        else
+        {
+            out << r;
+        }
+        ++i;
+    }
+}
+
+void
 HandlebarsGenerator::
 escape(OutputRef& out, std::string_view str) const
 {
-    out << str;
+    escapeMap_.apply(out, str);
 }
 
 std::string
