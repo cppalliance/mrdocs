@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -20,6 +21,36 @@
 #include <vector>
 
 namespace mrdocs::hbs::addon_paths {
+
+/** Returns the list of addon root directories from the configuration.
+
+    This function collects all valid addon root paths by checking
+    the primary addons directory and any supplemental addon directories
+    specified in the settings.
+
+    @param settings The configuration settings containing addon paths.
+    @return A vector of existing addon root directory paths. The primary
+            addons directory (if it exists) appears first, followed by
+            any existing supplemental addon directories in their
+            configured order.
+*/
+inline std::vector<std::string>
+addonRoots(Config::Settings const& settings)
+{
+    std::vector<std::string> roots;
+    roots.reserve(1 + settings.addonsSupplemental.size());
+
+    if (files::exists(settings.addons))
+        roots.push_back(settings.addons);
+
+    for (auto const& supplemental : settings.addonsSupplemental)
+    {
+        if (files::exists(supplemental))
+            roots.push_back(supplemental);
+    }
+    return roots;
+}
+
 
 /** Returns directories containing Handlebars partial templates.
 
@@ -133,7 +164,7 @@ findFile(
     std::string_view subdir,
     std::string_view filename)
 {
-    auto roots = mrdocs::addonRoots(config);
+    auto roots = addonRoots(config.settings());
     for (auto it = roots.rbegin(); it != roots.rend(); ++it)
     {
         std::string candidate = files::appendPath(*it, "generator", generator, subdir, filename);

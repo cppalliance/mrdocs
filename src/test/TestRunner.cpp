@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -17,6 +18,7 @@
 #include "Support/Comparison.hpp"
 #include <lib/ConfigImpl.hpp>
 #include <lib/CorpusImpl.hpp>
+#include <lib/Gen/hbs/DataDrivenGenerators.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/SingleFileDB.hpp>
 #include <lib/Support/ExecuteAndWaitWithLogging.hpp>
@@ -37,9 +39,10 @@ namespace mrdocs {
 
 TestRunner::
 TestRunner(std::string_view generator)
-    : gen_(findGenerator(generator))
+    : genId_(generator)
 {
-    MRDOCS_ASSERT(gen_ != nullptr);
+    // The generator is looked up per-test in `handleFile`; after that,
+    // test's mrdocs.yml has been loaded and addon discovery has run.
 }
 
 namespace {
@@ -165,8 +168,37 @@ handleFile(
     if (!ensureRegularCpp(filePath))
         return;
 
-    auto resolved = resolveTestLayout(
-        filePath, dirSettings, gen_->fileExtension(), dirs_, testArgs.action);
+    // Load the per-file mrdocs.yml first so data-driven generators
+    // contributed via addons-supplemental are visible to discovery
+    // before the chosen generator is looked up.
+    //
+    // The generator registry is process-global and persists across
+    // tests. `discoverDataDrivenGenerators` is idempotent (it skips ids
+    // already installed), so re-running it per fixture is safe; but
+    // it also means the first fixture that registers a given id
+    // wins, and a later fixture that ships a generator directory
+    // with the same id will see its own contents quietly ignored.
+    Expected<LoadedTestSettings> loaded =
+        loadTestSettings(filePath, dirSettings, dirs_);
+    if (!loaded)
+    {
+        return report::error("{}: \"{}\"", loaded.error(), filePath);
+    }
+    Expected<void> discovered =
+        hbs::discoverDataDrivenGenerators(loaded->settings);
+    if (!discovered)
+    {
+        return report::error("{}: \"{}\"", discovered.error(), filePath);
+    }
+    Generator const* gen = findGenerator(genId_);
+    if (!gen)
+    {
+        return report::error(
+            "{}: the Generator \"{}\" was not found", filePath, genId_);
+    }
+
+    Expected<ResolvedLayout> resolved = buildTestLayout(
+        filePath, *std::move(loaded), gen->fileExtension(), dirs_, testArgs.action);
     if (!resolved)
     {
         return report::error("{}: \"{}\"", resolved.error(), filePath);
@@ -194,7 +226,7 @@ handleFile(
             db,
             config,
             defaultIncludePaths);
-        handleCompilationDatabase(filePath, compilations, config, layout);
+        handleCompilationDatabase(filePath, *gen, compilations, config, layout);
     };
 
     runWith({ "clang", "-std=c++23" });
@@ -204,6 +236,7 @@ handleFile(
 void
 TestRunner::handleCompilationDatabase(
     llvm::StringRef filePath,
+    Generator const& gen,
     MrDocsCompilationDatabase const& compilations,
     std::shared_ptr<ConfigImpl const> const& config,
     TestLayout const& layout)
@@ -219,7 +252,7 @@ TestRunner::handleCompilationDatabase(
     {
         test_support::SinglePageArgs args{
             layout,
-            *gen_,
+            gen,
             **corpus,
             filePath,
             testArgs.action,
@@ -237,7 +270,7 @@ TestRunner::handleCompilationDatabase(
     {
         test_support::MultipageArgs args{
             layout,
-            *gen_,
+            gen,
             **corpus,
             testArgs.action,
             testArgs.forceOption.getValue(),
