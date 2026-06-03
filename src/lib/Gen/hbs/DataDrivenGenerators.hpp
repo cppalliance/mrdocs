@@ -33,6 +33,10 @@ namespace mrdocs::hbs {
        (the built-in `common/` is the canonical example) don't declare
        a manifest and are skipped.
 
+    3. Its manifest does not name a `script`. A manifest with a `script`
+       key declares a script-driven generator, which is installed by
+       `discoverScriptGenerators` instead, so it is skipped here.
+
     For each accepted directory, a `HandlebarsGenerator` is constructed
     with id, file extension, and display name all set to `<name>`, and
     installed into the global registry. Escape rules are read from
@@ -44,36 +48,14 @@ namespace mrdocs::hbs {
 Expected<void>
 discoverDataDrivenGenerators(Config::Settings const& settings);
 
-/** Parsed contents of a single `mrdocs-generator.yml`.
+/** Load mrdocs-generator.yml and return the resulting `EscapeMap`.
+
+    A thin convenience over `loadGeneratorManifest` (see
+    <lib/Gen/GeneratorManifest.hpp>) that keeps only the escape rules,
+    for callers that render output and don't need the other manifest
+    fields. Parsing rules and errors are as documented there.
 */
-struct GeneratorManifest
-{
-    /** Id of a generator whose partials and helpers this one falls back
-        to, after its own directory but before `common/`. Empty when
-        the generator stands alone.
-    */
-    std::string extends;
-
-    /** Per-pattern escape rules to apply to rendered output values.
-    */
-    EscapeMap escape;
-};
-
-/** Load mrdocs-generator.yml and return its parsed contents.
-
-    The file is expected to contain a top-level mapping. Recognized
-    top-level keys:
-
-    - `extends:` (optional scalar) names another generator this one
-      inherits partials and helpers from. Layouts do not inherit.
-    - `escape:` (optional mapping) holds a sub-mapping from byte-sequence
-      keys to replacement strings. Keys may be one or more bytes long;
-      an empty key is a hard error.
-
-    Unknown top-level keys are ignored so future schema additions are
-    non-breaking.
-*/
-Expected<GeneratorManifest>
+Expected<EscapeMap>
 loadGeneratorMetadata(std::string_view yamlPath);
 
 } // namespace mrdocs::hbs

@@ -17,6 +17,7 @@
 #include <lib/Support/Chrono.hpp>
 #include <lib/CorpusImpl.hpp>
 #include <lib/Gen/hbs/DataDrivenGenerators.hpp>
+#include <lib/Gen/script/ScriptGenerator.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Generator.hpp>
@@ -50,14 +51,16 @@ DoGenerateAction(
 
     // --------------------------------------------------------------
     //
-    // Discover data-driven generators
+    // Discover addon-defined generators
     //
     // --------------------------------------------------------------
-    // Each <addon>/generator/<name>/ directory that ships its own
-    // Handlebars layouts is registered as an additional generator
-    // (subject to id and layout-template checks) before the user-
-    // requested generator is looked up below.
+    // Each <addon>/generator/<name>/ directory that ships a
+    // mrdocs-generator.yml is registered as an additional generator
+    // before the user-requested generator is looked up below. A manifest
+    // that declares `escape` rules is a data-driven Handlebars generator;
+    // a manifest that names a `script` is a script-driven generator.
     MRDOCS_TRY(hbs::discoverDataDrivenGenerators(config->settings()));
+    MRDOCS_TRY(script::discoverScriptGenerators(config->settings()));
 
     // --------------------------------------------------------------
     //
