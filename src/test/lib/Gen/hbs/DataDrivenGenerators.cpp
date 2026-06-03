@@ -59,12 +59,12 @@ struct DataDrivenGeneratorsTest
             files::appendPath(td.path(), "g.yml");
         writeFile(path, "");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
         if (result)
         {
             // Empty map: every char passes through.
-            BOOST_TEST(applyEscape(result->escape, "abc*_") == "abc*_");
+            BOOST_TEST(applyEscape(*result, "abc*_") == "abc*_");
         }
     }
 
@@ -79,11 +79,11 @@ struct DataDrivenGeneratorsTest
         // explicitly tolerates extra keys for forward compatibility.
         writeFile(path, "displayName: Markdown\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
         if (result)
         {
-            BOOST_TEST(applyEscape(result->escape, "abc") == "abc");
+            BOOST_TEST(applyEscape(*result, "abc") == "abc");
         }
     }
 
@@ -101,12 +101,12 @@ struct DataDrivenGeneratorsTest
             "  '*': '\\*'\n"
             "  '_': '\\_'\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
         if (result)
         {
-            BOOST_TEST(applyEscape(result->escape, "*foo_bar*") == "\\*foo\\_bar\\*");
-            BOOST_TEST(applyEscape(result->escape, "no specials") == "no specials");
+            BOOST_TEST(applyEscape(*result, "*foo_bar*") == "\\*foo\\_bar\\*");
+            BOOST_TEST(applyEscape(*result, "no specials") == "no specials");
         }
     }
 
@@ -120,7 +120,7 @@ struct DataDrivenGeneratorsTest
         // Top-level scalar is rejected.
         writeFile(path, "just a string\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
     }
 
@@ -134,7 +134,7 @@ struct DataDrivenGeneratorsTest
         // 'escape:' must be a mapping, not a scalar.
         writeFile(path, "escape: nope\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
     }
 
@@ -154,15 +154,15 @@ struct DataDrivenGeneratorsTest
             "  '**': '<strong>'\n"
             "  '*': '<em>'\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
         if (result)
         {
-            BOOST_TEST(applyEscape(result->escape, "**foo**") == "<strong>foo<strong>");
-            BOOST_TEST(applyEscape(result->escape, "*bar*") == "<em>bar<em>");
+            BOOST_TEST(applyEscape(*result, "**foo**") == "<strong>foo<strong>");
+            BOOST_TEST(applyEscape(*result, "*bar*") == "<em>bar<em>");
             // A leftover lone `*` after a `**` match falls back to the
             // single-byte rule.
-            BOOST_TEST(applyEscape(result->escape, "***") == "<strong><em>");
+            BOOST_TEST(applyEscape(*result, "***") == "<strong><em>");
         }
     }
 
@@ -180,11 +180,11 @@ struct DataDrivenGeneratorsTest
             "escape:\n"
             "  '\xC3\xA9': 'e'\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
         if (result)
         {
-            BOOST_TEST(applyEscape(result->escape, "caf\xC3\xA9") == "cafe");
+            BOOST_TEST(applyEscape(*result, "caf\xC3\xA9") == "cafe");
         }
     }
 
@@ -199,7 +199,7 @@ struct DataDrivenGeneratorsTest
             "escape:\n"
             "  '': 'x'\n");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
     }
 
@@ -211,7 +211,7 @@ struct DataDrivenGeneratorsTest
         std::string const path =
             files::appendPath(td.path(), "does-not-exist.yml");
 
-        Expected<GeneratorManifest> result = loadGeneratorMetadata(path);
+        Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
     }
 

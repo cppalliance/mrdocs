@@ -18,6 +18,7 @@
 #include <lib/ConfigImpl.hpp>
 #include <lib/CorpusImpl.hpp>
 #include <lib/Gen/hbs/DataDrivenGenerators.hpp>
+#include <lib/Gen/script/ScriptGenerator.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/SingleFileDB.hpp>
 #include <lib/Support/Path.hpp>
@@ -379,6 +380,7 @@ handleFile(
         LoadedTestSettings loaded,
         loadTestSettings(filePath, dirSettings, dirs));
     MRDOCS_TRY(hbs::discoverDataDrivenGenerators(loaded.settings));
+    MRDOCS_TRY(script::discoverScriptGenerators(loaded.settings));
 
     // The generator(s) come from the test's merged configuration (the
     // directory chain supplies a default), in single, list, or
