@@ -802,11 +802,20 @@ domValue_push(
     {
     case dom::Kind::Null:
         return lua_pushnil(A);
+    case dom::Kind::Undefined:
+        // Lua has a single nullary value, so a missing field maps to
+        // `nil` just as `Null` does. A read of an absent field (for
+        // example the global namespace's name) yields `Undefined` and
+        // must not abort.
+        return lua_pushnil(A);
     case dom::Kind::Boolean:
         return lua_pushboolean(A, value.getBool());
     case dom::Kind::Integer:
         return lua_pushnumber(A, value.getInteger());
     case dom::Kind::String:
+    case dom::Kind::SafeString:
+        // A `SafeString` is a string already marked safe for an output
+        // format; to a Lua script it is just its bytes.
         return luaM_pushstring(A, value.getString());
     case dom::Kind::Array:
         return domArray_push(A, value.getArray());
