@@ -452,7 +452,7 @@
       {
         "name": "generator",
         "brief": "Generator(s) used to create the documentation",
-        "details": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, `xml`, and `noop` (which extracts but writes no output, useful for checking extraction warnings); data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/. This option accepts a single generator (`generator: xml`), a list (`generator: [xml, adoc]`), or a comma-separated string (`generator: \"xml,adoc\"`); when more than one is given the documentation is produced once per generator.",
+        "details": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, `xml`, and `noop` (which extracts but writes no output, useful for checking extraction warnings); data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/; script-driven generators instead ship a Lua or JavaScript script that produces the output. This option accepts a single generator (`generator: xml`), a list (`generator: [xml, adoc]`), or a comma-separated string (`generator: \"xml,adoc\"`); when more than one is given the documentation is produced once per generator.",
         "type": "string-list",
         "default": ["html"]
       },

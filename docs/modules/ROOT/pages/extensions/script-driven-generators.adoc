@@ -1,0 +1,76 @@
+= Script-driven generators
+
+A data-driven generator renders one page per symbol from templates. When you need a different output structure, e.g. one file per namespace, or a single artifact aggregated across every symbol, such as a search index, a template generator cannot express it, because the page-per-symbol shape is fixed by the host. A script-driven generator hands the whole emit to a Lua or JavaScript script, which traverses the corpus and writes whatever files it wants. No C++ and no templates are involved.
+
+A generator directory is script-driven when its mrdocs-generator.yml names an entry script:
+
+[source,yaml]
+----
+script: generator.lua
+----
+
+The `script` key holds a path to a Lua (.lua) or JavaScript (.js) file, relative to the generator directory. Naming a script is what distinguishes the two flavors: a manifest with a `script` key is script-driven, otherwise the directory is a data-driven (template) generator. As with template generators, the directory name is the generator id you select with `--generator`.
+
+== The `generate` entry point
+
+The script defines a single entry point, a function named `generate`:
+
+[source,lua]
+----
+function generate(corpus, output, config, params)
+  -- ...
+end
+----
+
+`corpus.symbols` is the array of every symbol. Each symbol carries the same fields the template and helper layers see, plus a flat `_id` string suitable as a stable per-symbol URL fragment.
+
+`output.write(relativePath, contents)` writes one file under the configured output directory, which is the path specified with `--output` on the command line, or with the `output` key in the config file; that's the same location the built-in generators write to. The path is resolved relative to that directory and may not escape it; an absolute path or one that climbs above the output directory is rejected. Parent directories are created as needed.
+
+Because the script owns the output, it also owns what a per-page generator would otherwise do for it: the URLs it emits, and any escaping of the content it writes. The host does not apply an escape map to a script-driven generator's output.
+
+`config` is the resolved configuration: the same object the templates receive, holding every value from the config file and the command line. See xref:configuration/reference.adoc[the configuration reference] for the available keys.
+
+`params` is this generator's own parameters, read from the optional `params:` mapping in its mrdocs-generator.yml. A scalar value is a string (a script coerces numbers or booleans itself); nested mappings and sequences become objects and arrays. It is an empty object when the manifest declares no parameters. For example:
+
+[source,yaml]
+----
+script: generator.lua
+params:
+  title: API Reference
+----
+
+makes `params.title` available to the script.
+
+`config` and `params` are trailing arguments, so a generator that needs neither can omit them, and use `function generate(corpus, output)`.
+
+Both Lua and JavaScript look up `generate` as a global function, so a generator must define one; a value the script returns is not used. Requiring the named global keeps one convention across the two languages and leaves room for a script to expose more than one named entry point later.
+
+Unlike a corpus-transform extension, whose hook is optional, a generator must define a `generate` function: selecting the generator is a request for output, so a missing entry point is an error.
+
+== Example: a search index
+
+This generator emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
+
+[source,lua]
+----
+-- Quote a string as a JSON value.
+local function json_string(s)
+  s = s:gsub('\\', '\\\\'):gsub('"', '\\"')
+  return '"' .. s .. '"'
+end
+
+function generate(corpus, output)
+  local entries = {}
+  for _, sym in ipairs(corpus.symbols) do
+    local name = sym.name or ""
+    if name ~= "" then
+      entries[#entries + 1] =
+        '{"name":' .. json_string(name) ..
+        ',"url":' .. json_string(sym._id .. ".html") .. "}"
+    end
+  end
+  output.write(
+    "search-index.json",
+    "[" .. table.concat(entries, ",") .. "]")
+end
+----
