@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#scoped_context]
+== scoped&lowbar;context
+
+Attach a key&sol;value pair to the current logging scope&period;
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+scoped&lowbar;context(
+    char const* key,
+    char const* value);
+----
+
+=== Return Value
+
+An opaque token whose type is implementation&hyphen;defined&semi; store it in `auto`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

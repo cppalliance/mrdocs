@@ -26,7 +26,10 @@
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
+#include <clang/AST/Comment.h>
+#include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ODRHash.h>
+#include <clang/AST/RawCommentList.h>
 #include <clang/AST/TypeVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
@@ -2987,6 +2990,52 @@ checkFileFilters(std::string_view const symbolPath) const
     return true;
 }
 
+std::optional<ExtractionMode>
+ASTVisitor::
+checkDocCommentExtractionFlag(clang::Decl const* D)
+{
+    clang::RawComment const* RC =
+        D->getASTContext().getRawCommentForAnyRedecl(D);
+    if (!RC)
+    {
+        return std::nullopt;
+    }
+    clang::comments::FullComment const* FC = RC->parse(
+        D->getASTContext(), &sema_.getPreprocessor(), D);
+    if (!FC)
+    {
+        return std::nullopt;
+    }
+    auto& traits =
+        D->getASTContext().getCommentCommandTraits();
+    auto const* implCmd =
+        traits.getCommandInfo("implementationdefined");
+    auto const* seeCmd = traits.getCommandInfo("seebelow");
+    if (!implCmd && !seeCmd)
+    {
+        return std::nullopt;
+    }
+    using namespace clang::comments;
+    for (auto const* C : FC->getBlocks())
+    {
+        if (C->getCommentKind() != CommentKind::BlockCommandComment)
+        {
+            continue;
+        }
+        auto const* BC = static_cast<BlockCommandComment const*>(C);
+        unsigned const id = BC->getCommandID();
+        if (implCmd && id == implCmd->getID())
+        {
+            return ExtractionMode::ImplementationDefined;
+        }
+        if (seeCmd && id == seeCmd->getID())
+        {
+            return ExtractionMode::SeeBelow;
+        }
+    }
+    return std::nullopt;
+}
+
 ASTVisitor::ExtractionInfo
 ASTVisitor::
 checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
@@ -3014,6 +3063,21 @@ checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
     // Get the symbol name
     llvm::SmallString<256> const name = qualifiedName(ND);
     auto const symbolName = name.str();
+
+    // Honor the @implementationdefined and @seebelow doc commands.
+    // These are the per-symbol equivalent of the `implementation-defined`
+    // and `see-below` configuration globs, and feeding the result through
+    // this function means children of a flagged symbol cascade by the
+    // same rules used for the globs (members of a see-below record
+    // become dependencies, etc.).
+    //
+    // Cheap to call: the comment parse is cached on the ASTContext, and
+    // checkSymbolFilters caches its own result via `updateCache`, so each
+    // Decl is inspected once.
+    if (auto const docFlag = checkDocCommentExtractionFlag(D))
+    {
+        return updateCache({*docFlag, ExtractionMatchType::Strict});
+    }
 
     // Function to check if parent is of a certain extraction mode
     auto ParentIs = [&](clang::Decl const* D, ExtractionMode expected) {

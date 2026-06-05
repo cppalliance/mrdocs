@@ -1044,6 +1044,19 @@ private:
         return checkSymbolFilters(D, true);
     }
 
+    /** Inspect @p D's doc comment for `@implementationdefined` or
+        `@seebelow` block commands and, if found, return the matching
+        extraction mode. Returns `std::nullopt` otherwise.
+
+        Honoring these flags inside the filter step lets the
+        cascading rules (e.g. members of a see-below record becoming
+        dependencies) fire before the child declarations are
+        traversed, matching the behavior of the corresponding
+        configuration globs.
+    */
+    std::optional<ExtractionMode>
+    checkDocCommentExtractionFlag(clang::Decl const* D);
+
     /* The strategy for checking filters in `checkSymbolFilters`
      */
     enum SymbolCheckType {

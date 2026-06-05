@@ -112,6 +112,12 @@ struct MRDOCS_DECL DocComment {
     /// True if the @functionobject (or @functor) command was used on this symbol.
     bool IsFunctionObject = false;
 
+    /// True if the @seebelow command was used on this symbol.
+    bool IsSeeBelow = false;
+
+    /// True if the @implementationdefined command was used on this symbol.
+    bool IsImplementationDefined = false;
+
     /** Constructor.
     */
     MRDOCS_DECL
@@ -185,9 +191,11 @@ MRDOCS_DESCRIBE_STRUCT(
 inline
 void merge(DocComment& I, DocComment&& other)
 {
-    // Merge the function-object flag before comparing so
-    // the flag alone doesn't cause spurious inequality.
+    // Merge the marker flags before comparing so the flags
+    // alone don't cause spurious inequality.
     I.IsFunctionObject |= other.IsFunctionObject;
+    I.IsSeeBelow |= other.IsSeeBelow;
+    I.IsImplementationDefined |= other.IsImplementationDefined;
 
     // FIXME: this doesn't merge parameter information;
     // parameters with the same name but different directions
