@@ -18,6 +18,7 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -40,6 +41,24 @@ protected:
     {
     }
 public:
+    /** Build a Corpus from a configuration.
+
+        Drives extraction over the translation units described by the
+        configuration. The compilation database is resolved from the
+        configuration settings (a `compile_commands.json` path, a
+        `CMakeLists.txt` plus `cmake` options, or a database
+        synthesized from `source-root` and `input`).
+
+        @param config The Config used for extraction, as returned
+                      by @ref Config::load.
+        @return A unique pointer to the populated Corpus on success,
+                otherwise an Error.
+    */
+    MRDOCS_DECL
+    static
+    Expected<std::unique_ptr<Corpus>>
+    build(std::shared_ptr<Config const> const& config);
+
     /** The iterator type for the index of all symbols.
 
         The iterator is a forward iterator that

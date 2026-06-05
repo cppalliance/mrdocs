@@ -201,6 +201,25 @@ public:
     virtual
     ~Config() noexcept = 0;
 
+    /** Create a Config from normalized public settings.
+
+        The settings must already be normalized against
+        the reference directories (call
+        @ref Settings::normalize first).
+
+        @param settings   Normalized public settings.
+        @param dirs       Reference directories used to resolve relative paths.
+        @param threadPool Thread pool that the resulting Config will own a reference to.
+        @return A shared, immutable Config on success, otherwise an Error.
+    */
+    MRDOCS_DECL
+    static
+    Expected<std::shared_ptr<Config const>>
+    load(
+        Settings const& settings,
+        ReferenceDirectories const& dirs,
+        ThreadPool& threadPool);
+
     /** Return a pool of threads for executing work.
     */
     MRDOCS_DECL

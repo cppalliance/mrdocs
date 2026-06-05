@@ -1,0 +1,13 @@
+== Breaking-change report ==
+
+Added (1):
+  + [function] area_of_square
+
+Removed (1):
+  - [function] legacy_helper
+
+Changed (1):
+  * [function] Point::length
+      - noexcept differs
+
+Suggested version bump: major

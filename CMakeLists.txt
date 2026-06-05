@@ -592,6 +592,15 @@ if (MRDOCS_BUILD_TESTS)
     endforeach ()
 
     #-------------------------------------------------
+    # Library-usage examples
+    #
+    # Standalone C++ programs that demonstrate MrDocs as a library.
+    # They live under examples/library/ and link mrdocs-core privately,
+    # just as the in-tree CLI and mrdocs-test do.
+    #-------------------------------------------------
+    add_subdirectory(examples/library)
+
+    #-------------------------------------------------
     # Self-documentation test (warn-as-error toggled by strict flag)
     #-------------------------------------------------
     set(MRDOCS_SELF_DOC_OUTPUT "${CMAKE_BINARY_DIR}/docs/self-reference")

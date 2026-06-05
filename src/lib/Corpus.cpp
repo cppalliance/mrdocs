@@ -9,7 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/CompilationDatabaseBuilder.hpp>
 #include <lib/ConfigImpl.hpp>
+#include <lib/CorpusImpl.hpp>
+#include <lib/Support/Path.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -20,6 +23,28 @@ namespace mrdocs {
 //------------------------------------------------
 
 Corpus::~Corpus() noexcept = default;
+
+Expected<std::unique_ptr<Corpus>>
+Corpus::
+build(std::shared_ptr<Config const> const& config)
+{
+    MRDOCS_CHECK(config, "config must not be null");
+    auto const configImpl =
+        std::dynamic_pointer_cast<ConfigImpl const>(config);
+    MRDOCS_CHECK(configImpl,
+        "config was not produced by Config::load");
+
+    ScopedTempDirectory tempDir(
+        configImpl->settings().outputDir(),
+        ".temp");
+    MRDOCS_CHECK(!tempDir.failed(), tempDir.error());
+
+    MRDOCS_TRY(
+        MrDocsCompilationDatabase compilations,
+        generateCompilationDatabase(tempDir.path(), configImpl));
+
+    return CorpusImpl::build(configImpl, compilations);
+}
 
 //------------------------------------------------
 //
