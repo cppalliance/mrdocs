@@ -1,0 +1,9 @@
+source-root: .
+input:
+  - .
+file-patterns:
+  - 'lib.cpp'
+extract-all: true
+multipage: false
+warnings: false
+show-namespaces: false

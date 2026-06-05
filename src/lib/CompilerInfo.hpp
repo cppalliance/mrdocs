@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_TOOL_COMPILERINFO_HPP
-#define MRDOCS_TOOL_COMPILERINFO_HPP
+#ifndef MRDOCS_LIB_COMPILERINFO_HPP
+#define MRDOCS_LIB_COMPILERINFO_HPP
 
 #include <mrdocs/ADT/Optional.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
@@ -53,4 +53,4 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
 } // mrdocs
 
 
-#endif // MRDOCS_TOOL_COMPILERINFO_HPP
+#endif // MRDOCS_LIB_COMPILERINFO_HPP

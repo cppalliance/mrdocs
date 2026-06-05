@@ -12,7 +12,7 @@
 //
 
 #include "ToolArgs.hpp"
-#include "ToolCompilationDatabase.hpp"
+#include <lib/CompilationDatabaseBuilder.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/CorpusImpl.hpp>
 #include <lib/Gen/hbs/DataDrivenGenerators.hpp>

@@ -8,12 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "ToolCompilationDatabase.hpp"
+#include "CompilationDatabaseBuilder.hpp"
 #include "CompilerInfo.hpp"
 #include <lib/MrDocsSettingsDB.hpp>
 #include <lib/Support/CMakeExecution.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <llvm/Support/MemoryBuffer.h>
 
 
 namespace mrdocs {
@@ -34,7 +35,11 @@ namespace {
  * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
 */
 Expected<std::string>
-generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs, llvm::StringRef buildDir)
+generateCompileCommandsFile(
+    llvm::StringRef inputPath,
+    llvm::StringRef cmakeArgs,
+    llvm::StringRef buildDir,
+    llvm::StringRef workingDir)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -48,7 +53,7 @@ generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs
     // --------------------------------------------------------------
     if (fs::is_directory(fileStatus))
     {
-        return executeCmakeExportCompileCommands(inputPath, cmakeArgs, buildDir);
+        return executeCmakeExportCompileCommands(inputPath, cmakeArgs, buildDir, workingDir);
     }
 
     // --------------------------------------------------------------
@@ -59,7 +64,7 @@ generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs
     {
         std::string cmakeSourceDir = files::getParentDir(inputPath);
         return executeCmakeExportCompileCommands(
-            cmakeSourceDir, cmakeArgs, buildDir);
+            cmakeSourceDir, cmakeArgs, buildDir, workingDir);
     }
 
     // --------------------------------------------------------------
@@ -116,7 +121,7 @@ generateCompilationDatabase(
     std::string buildPath = files::appendPath(tempDir, "build");
     Expected<std::string> const compileCommandsPathExp =
         generateCompileCommandsFile(
-            compilationDatabasePath, settings.cmake, buildPath);
+            compilationDatabasePath, settings.cmake, buildPath, settings.configDir());
     if (!compileCommandsPathExp)
     {
         report::error(
@@ -132,11 +137,49 @@ generateCompilationDatabase(
     // --------------------------------------------------------------
     std::string compileCommandsPath = files::normalizePath(*compileCommandsPathExp);
     MRDOCS_TRY(compileCommandsPath, files::makeAbsolute(compileCommandsPath));
+
+    // Read the file ourselves and substitute placeholders before
+    // handing the buffer to Clang. The standard
+    // `compile_commands.json` format requires absolute paths in the
+    // `directory` field and in `file`/`command`/`arguments`, which
+    // makes hand-written databases unportable across machines. By
+    // resolving `${MRDOCS_SOURCE_ROOT}` against the project's
+    // `source-root` we let authors check a manually written
+    // database into version control alongside their headers.
+    //
+    // The token is namespaced with `MRDOCS_` so it cannot appear in
+    // a legitimate compiler argument by accident. Adding more
+    // placeholders is straightforward; keep them under the same
+    // `${MRDOCS_*}` namespace.
+    auto compileCommandsBuf =
+        llvm::MemoryBuffer::getFile(compileCommandsPath);
+    if (!compileCommandsBuf)
+    {
+        return Unexpected(formatError(
+            "Failed to read compilation database `{}`: {}",
+            compileCommandsPath,
+            compileCommandsBuf.getError().message()));
+    }
+    std::string compileCommandsContent =
+        (*compileCommandsBuf)->getBuffer().str();
+    {
+        std::string const& sourceRoot = settings.sourceRoot;
+        static llvm::StringRef const placeholder = "${MRDOCS_SOURCE_ROOT}";
+        size_t pos = 0;
+        while ((pos = compileCommandsContent.find(
+                    placeholder.data(), pos, placeholder.size()))
+               != std::string::npos)
+        {
+            compileCommandsContent.replace(pos, placeholder.size(), sourceRoot);
+            pos += sourceRoot.size();
+        }
+    }
+
     std::string errorMessage;
     std::unique_ptr<clang::tooling::JSONCompilationDatabase>
         jsonDatabasePtr =
-            clang::tooling::JSONCompilationDatabase::loadFromFile(
-                compileCommandsPath,
+            clang::tooling::JSONCompilationDatabase::loadFromBuffer(
+                compileCommandsContent,
                 errorMessage,
                 clang::tooling::JSONCommandLineSyntax::AutoDetect);
     if (!jsonDatabasePtr)

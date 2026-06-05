@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_TOOL_TOOLCOMPILATIONDATABASE_HPP
-#define MRDOCS_TOOL_TOOLCOMPILATIONDATABASE_HPP
+#ifndef MRDOCS_LIB_COMPILATIONDATABASEBUILDER_HPP
+#define MRDOCS_LIB_COMPILATIONDATABASEBUILDER_HPP
 
 #include <lib/ConfigImpl.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
@@ -25,4 +25,4 @@ generateCompilationDatabase(
 } // mrdocs
 
 
-#endif // MRDOCS_TOOL_TOOLCOMPILATIONDATABASE_HPP
+#endif // MRDOCS_LIB_COMPILATIONDATABASEBUILDER_HPP

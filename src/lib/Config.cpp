@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/ConfigImpl.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
@@ -23,6 +24,16 @@ Config() noexcept
 
 Config::
 ~Config() noexcept = default;
+
+Expected<std::shared_ptr<Config const>>
+Config::
+load(
+    Settings const& settings,
+    ReferenceDirectories const& dirs,
+    ThreadPool& threadPool)
+{
+    return ConfigImpl::load(settings, dirs, threadPool);
+}
 
 Expected<void>
 Config::Settings::
