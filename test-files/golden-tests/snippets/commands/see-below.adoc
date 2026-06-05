@@ -1,0 +1,19 @@
+= Reference
+:mrdocs:
+
+[#handle]
+== handle
+
+A handle whose exact representation is unspecified&period;
+
+=== Synopsis
+
+Declared in `&lt;see&hyphen;below&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class handle { /* see-below */ };
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

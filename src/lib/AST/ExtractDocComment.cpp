@@ -33,6 +33,7 @@
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/JSON.h>
 #include <cctype>
+#include <cstddef>
 #include <format>
 #include <ranges>
 #include <string_view>
@@ -113,12 +114,41 @@ struct CustomFlagCommand
     bool DocComment::* flag;
 };
 
+// Compile-time ASCII lowercasing of a PascalCase command name, so the
+// FlagCommands.inc entries stay PascalCase (e.g. FunctionObject) while
+// the parser matches the lowercase spelling (functionobject).
+template <std::size_t N>
+struct LoweredName
+{
+    char value[N]{};
+    constexpr LoweredName(char const (&s)[N])
+    {
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            char const c = s[i];
+            value[i] = (c >= 'A' && c <= 'Z')
+                ? static_cast<char>(c - 'A' + 'a')
+                : c;
+        }
+    }
+};
+
+template <std::size_t N>
+LoweredName(char const (&)[N]) -> LoweredName<N>;
+
+// One static lowercased spelling per flag command.
+#define INFO(Name) constexpr LoweredName lowered_##Name{#Name};
+#include <mrdocs/Metadata/DocComment/FlagCommands.inc>
+
+// The dispatch table is generated from FlagCommands.inc; each command
+// maps to its DocComment::Is<Name> flag. Aliases target the same flag,
+// so they are spelled out by hand.
+#define INFO(Name) {lowered_##Name.value, &DocComment::Is##Name},
 constexpr CustomFlagCommand customFlagCommands[] = {
-    {"functionobject", &DocComment::IsFunctionObject},
-    // For consistency, the name of the command must be "functionobject"
-    // and not "function_object"; but that's not very readable, so we
-    // provide "functor" as an alternative.
-    {"functor",        &DocComment::IsFunctionObject},
+#include <mrdocs/Metadata/DocComment/FlagCommands.inc>
+    // `functionobject` is the canonical spelling; `functor` reads
+    // better, so it is offered as an alias for the same flag.
+    {"functor", &DocComment::IsFunctionObject},
 };
 
 // -------- Small helpers
