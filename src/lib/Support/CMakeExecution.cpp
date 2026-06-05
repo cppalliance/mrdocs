@@ -11,10 +11,12 @@
 #include "CMakeExecution.hpp"
 #include "ExecuteAndWaitWithLogging.hpp"
 #include <lib/Support/Path.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Program.h>
+#include <system_error>
 
 
 namespace mrdocs {
@@ -24,15 +26,19 @@ namespace {
 Expected<std::string>
 getCmakePath()
 {
-    llvm::ErrorOr<std::string> path = llvm::sys::findProgramByName("cmake");
+    // `CMAKE_ROOT` is an explicit user override and wins over whatever
+    // `cmake` happens to be on the `PATH`. Falling back to `PATH` only
+    // when `CMAKE_ROOT` is unset (or doesn't contain a `cmake`) matches
+    // the convention used by the rest of the toolchain env vars.
+    llvm::ErrorOr<std::string> path = std::make_error_code(std::errc::no_such_file_or_directory);
+    if (char const* const cmakeRootPath = std::getenv("CMAKE_ROOT"))
+    {
+        std::string const cmakeBinPath = files::appendPath(cmakeRootPath, "bin");
+        path = llvm::sys::findProgramByName("cmake", {cmakeBinPath, cmakeRootPath});
+    }
     if (!path)
     {
-        char const* const cmakeRootPath = std::getenv("CMAKE_ROOT");
-        if (cmakeRootPath != nullptr)
-        {
-            std::string cmakeBinPath = files::appendPath(cmakeRootPath, "bin");
-            path = llvm::sys::findProgramByName("cmake", {cmakeBinPath, cmakeRootPath});
-        }
+        path = llvm::sys::findProgramByName("cmake");
     }
     MRDOCS_CHECK(path, "CMake executable not found");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
@@ -386,12 +392,79 @@ parseBashArgs(std::string_view str)
 /* Pushes the CMake arguments to the `args` vector, replacing the
  * default generator with Ninja if Visual Studio is the default generator.
  */
+// If `value` is a relative path that contains a path separator and
+// resolves against `baseDir` to an existing filesystem entry, return
+// the absolute path. Otherwise return an empty optional, leaving the
+// value alone.
+//
+// This lets users write `cmake: '-D Boost_DIR=../external/boost/...'`
+// in `mrdocs.yml` and have it resolve like the other path-bearing
+// fields in the config. CMake itself stores `-D` values verbatim and
+// does not resolve them against any predictable directory, so MrDocs
+// translates the path before invoking `cmake`.
+std::optional<std::string>
+resolveRelativePath(
+    llvm::StringRef value,
+    llvm::StringRef baseDir)
+{
+    if (baseDir.empty() || value.empty())
+    {
+        return std::nullopt;
+    }
+    if (llvm::sys::path::is_absolute(value))
+    {
+        return std::nullopt;
+    }
+    // Heuristic: only treat the value as a path if it contains a
+    // path separator. This avoids accidentally rewriting things
+    // like `-D MY_FLAG=ON` or `-D LEVEL=2`.
+    if (value.find('/') == llvm::StringRef::npos &&
+        value.find('\\') == llvm::StringRef::npos)
+    {
+        return std::nullopt;
+    }
+    llvm::SmallString<256> candidate(baseDir);
+    llvm::sys::path::append(candidate, value);
+    if (!llvm::sys::fs::exists(candidate))
+    {
+        return std::nullopt;
+    }
+    llvm::sys::fs::make_absolute(candidate);
+    llvm::sys::path::remove_dots(candidate, /*remove_dot_dot=*/true);
+    return candidate.str().str();
+}
+
+// Apply `resolveRelativePath` to a single token formatted as
+// `NAME=VALUE`, returning the rewritten token or std::nullopt if
+// the value didn't qualify.
+std::optional<std::string>
+maybeRewriteDValue(
+    llvm::StringRef nameAndValue,
+    llvm::StringRef baseDir)
+{
+    auto const eq = nameAndValue.find('=');
+    if (eq == llvm::StringRef::npos)
+    {
+        return std::nullopt;
+    }
+    auto const value = nameAndValue.substr(eq + 1);
+    auto const absolute = resolveRelativePath(value, baseDir);
+    if (!absolute)
+    {
+        return std::nullopt;
+    }
+    std::string rewritten(nameAndValue.substr(0, eq + 1));
+    rewritten += *absolute;
+    return rewritten;
+}
+
 Expected<llvm::SmallVector<llvm::SmallString<128>, 50>>
 generateCMakeArgs(
     std::string const& cmakePath,
     llvm::StringRef cmakeArgs,
     llvm::StringRef projectPath,
-    llvm::StringRef buildDir)
+    llvm::StringRef buildDir,
+    llvm::StringRef configDir)
 {
     auto const userArgs = parseBashArgs(cmakeArgs.str());
     llvm::SmallVector<llvm::SmallString<128>, 50> res;
@@ -402,34 +475,59 @@ generateCMakeArgs(
     res.emplace_back("-B");
     res.emplace_back(buildDir);
 
+    // CMake processes `-D` flags in order: later values win. Insert
+    // MrDocs's defaults first, so anything the user puts in the
+    // `cmake:` configuration option (or in their CLI `cmakeArgs`)
+    // can override them. The two defaults below are non-negotiable
+    // for the rest of the pipeline to function, but the user is
+    // still free to set them to a different value (for example,
+    // `cmake: '-DMRDOCS_BUILD=OFF'` to ask a CMakeLists.txt to
+    // expose a target it normally hides during the documentation
+    // build).
+    res.emplace_back("-D");
+    res.emplace_back("MRDOCS_BUILD=ON");
+    res.emplace_back("-D");
+    res.emplace_back("CMAKE_EXPORT_COMPILE_COMMANDS=ON");
+
     bool generatorSet = false;
     std::string_view generatorName = {};
     bool visualStudioSet = false;
-    bool compileCommandsSet = false;
 
     for (size_t i = 0; i < userArgs.size(); ++i)
     {
-        // Compile commands
+        // Cache variables: forward, rewriting relative path values
+        // to absolute against the config directory. The defaults
+        // inserted above are positioned before this point, so an
+        // explicit user value lands later in the argv and wins.
         if (userArgs[i].starts_with("-D"))
         {
-            std::string_view cacheValue;
             if (userArgs[i].size() == 2 &&
                 i + 1 < userArgs.size())
             {
                 res.emplace_back(userArgs[i]);
-                res.emplace_back(userArgs[i+1]);
-                cacheValue = userArgs[i+1];
+                if (auto rewritten = maybeRewriteDValue(userArgs[i+1], configDir))
+                {
+                    res.emplace_back(*rewritten);
+                }
+                else
+                {
+                    res.emplace_back(userArgs[i+1]);
+                }
                 ++i;
             }
             else if (userArgs[i].size() > 2)
             {
-                res.emplace_back(userArgs[i]);
-                cacheValue = userArgs[i];
-                cacheValue.remove_prefix(2);
-            }
-            if (cacheValue.starts_with("CMAKE_EXPORT_COMPILE_COMMANDS="))
-            {
-                compileCommandsSet = true;
+                llvm::StringRef const body(userArgs[i].data() + 2, userArgs[i].size() - 2);
+                if (auto rewritten = maybeRewriteDValue(body, configDir))
+                {
+                    std::string out("-D");
+                    out += *rewritten;
+                    res.emplace_back(out);
+                }
+                else
+                {
+                    res.emplace_back(userArgs[i]);
+                }
             }
             continue;
         }
@@ -479,12 +577,6 @@ generateCMakeArgs(
         res.emplace_back(userArgs[i]);
     }
 
-    if (!compileCommandsSet)
-    {
-        res.emplace_back("-D");
-        res.emplace_back("CMAKE_EXPORT_COMPILE_COMMANDS=ON");
-    }
-
     if (visualStudioSet)
     {
         res.emplace_back("-G");
@@ -508,15 +600,47 @@ generateCMakeArgs(
 } // anonymous namespace
 
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs, llvm::StringRef buildDir)
+executeCmakeExportCompileCommands(
+    llvm::StringRef projectPath,
+    llvm::StringRef cmakeArgs,
+    llvm::StringRef buildDir,
+    llvm::StringRef workingDir)
 {
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
 
     constexpr std::array<std::optional<llvm::StringRef>, 3>
         redirects = {std::nullopt, std::nullopt, std::nullopt};
-    MRDOCS_TRY(auto args, generateCMakeArgs(cmakePath, cmakeArgs, projectPath, buildDir));
+    MRDOCS_TRY(auto args, generateCMakeArgs(cmakePath, cmakeArgs, projectPath, buildDir, workingDir));
     std::vector<llvm::StringRef> argsRef(args.begin(), args.end());
+
+    // Switch to the requested working directory so CMake resolves
+    // relative paths in cache assignments (`-D VAR=relpath`) against the
+    // location the user expects, then restore the previous CWD on exit.
+    llvm::SmallString<256> savedCwd;
+    bool cwdChanged = false;
+    if (!workingDir.empty())
+    {
+        if (auto const ec = llvm::sys::fs::current_path(savedCwd))
+        {
+            return Unexpected(Error(ec.message()));
+        }
+        if (auto const ec = llvm::sys::fs::set_current_path(workingDir))
+        {
+            return Unexpected(Error(formatError(
+                "Failed to set working directory '{}': {}",
+                workingDir.operator std::string_view(),
+                ec.message())));
+        }
+        cwdChanged = true;
+    }
+    ScopeExit const restoreCwd([&]
+    {
+        if (cwdChanged)
+        {
+            (void)llvm::sys::fs::set_current_path(savedCwd);
+        }
+    });
 
     int const result = ExecuteAndWaitWithLogging(cmakePath, argsRef, std::nullopt, redirects);
     if (result != 0) {
