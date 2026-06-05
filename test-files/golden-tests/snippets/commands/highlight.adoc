@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#log]
+== log
+
+Logs a message at the given severity&period;
+
+=== Synopsis
+
+Declared in `&lt;highlight&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+log(
+    int severity,
+    char const* msg);
+----
+
+=== Description
+
+Messages with #error# severity are also written to `stderr`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
