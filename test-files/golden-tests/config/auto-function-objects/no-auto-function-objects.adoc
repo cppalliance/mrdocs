@@ -98,6 +98,11 @@ int
 explicit&lowbar;var();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 Something&period;
