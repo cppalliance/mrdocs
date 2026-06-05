@@ -44,6 +44,91 @@ static void domObject_push_metatable(Access& A);
 static void domArray_push(Access& A, dom::Array const&);
 static void domValue_push(Access& A, dom::Value const&);
 
+// Convert a Lua value at the given stack index into a `dom::Value`.
+// Used by `__newindex` so scripts can write structured values
+// (tables become objects or arrays based on key shape).
+static dom::Value luaValueToDom(lua_State* L, int index);
+
+static dom::Value
+luaTableToDom(lua_State* L, int absIdx)
+{
+    // A table with any string key becomes a `dom::Object`; otherwise
+    // it is treated as a 1-based array, matching the convention Lua
+    // scripts already use.
+    bool hasStringKey = false;
+    lua_pushnil(L);
+    while (lua_next(L, absIdx) != 0)
+    {
+        if (lua_type(L, -2) == LUA_TSTRING)
+        {
+            hasStringKey = true;
+            lua_pop(L, 2);
+            break;
+        }
+        lua_pop(L, 1);
+    }
+
+    if (hasStringKey)
+    {
+        dom::Object obj;
+        lua_pushnil(L);
+        while (lua_next(L, absIdx) != 0)
+        {
+            if (lua_type(L, -2) == LUA_TSTRING)
+            {
+                std::size_t klen = 0;
+                char const* kdata = lua_tolstring(L, -2, &klen);
+                obj.set(
+                    std::string_view(kdata, klen),
+                    luaValueToDom(L, -1));
+            }
+            lua_pop(L, 1);
+        }
+        return dom::Value(std::move(obj));
+    }
+
+    dom::Array arr;
+    lua_Unsigned const len = lua_rawlen(L, absIdx);
+    for (lua_Unsigned i = 1; i <= len; ++i)
+    {
+        lua_rawgeti(L, absIdx, static_cast<lua_Integer>(i));
+        arr.push_back(luaValueToDom(L, -1));
+        lua_pop(L, 1);
+    }
+    return dom::Value(std::move(arr));
+}
+
+static dom::Value
+luaValueToDom(lua_State* L, int index)
+{
+    int const absIdx = lua_absindex(L, index);
+    switch (lua_type(L, absIdx))
+    {
+    case LUA_TNIL:
+        return dom::Value(nullptr);
+    case LUA_TBOOLEAN:
+        return dom::Value(lua_toboolean(L, absIdx) != 0);
+    case LUA_TNUMBER:
+        if (lua_isinteger(L, absIdx))
+        {
+            return dom::Value(
+                static_cast<std::int64_t>(lua_tointeger(L, absIdx)));
+        }
+        return dom::Value(
+            static_cast<std::int64_t>(lua_tonumber(L, absIdx)));
+    case LUA_TSTRING:
+    {
+        std::size_t len = 0;
+        char const* data = lua_tolstring(L, absIdx, &len);
+        return dom::Value(std::string(data, len));
+    }
+    case LUA_TTABLE:
+        return luaTableToDom(L, absIdx);
+    default:
+        return dom::Value();
+    }
+}
+
 //------------------------------------------------
 //
 // Context, Scope
@@ -56,6 +141,7 @@ struct Context::Impl
 
     int objMetaRef = LUA_NOREF;
     int arrMetaRef = LUA_NOREF;
+    int funcMetaRef = LUA_NOREF;
 
     ~Impl();
     Impl();
@@ -499,6 +585,14 @@ domObject_push_metatable(
 
     // Effect:      t[k] = v
     // Signature:   (t, k, v)
+    //
+    // Routes the assignment through `dom::Object::set` on the
+    // underlying holder. The default `dom::Object` writes to its own
+    // overlay; the symbol-proxy implementation used by corpus
+    // extensions overrides `set` to mutate the live C++ object
+    // instead. A `std::exception` from that override propagates back
+    // here and is rethrown as a Lua error so the script sees a real
+    // failure instead of a silent assignment.
     luaM_pushstring(A, "__newindex");
     lua_pushcfunction(A,
     [](lua_State* L)
@@ -506,37 +600,14 @@ domObject_push_metatable(
         Access A(L);
         auto& obj = domObject_get(A, 1);
         auto key = luaM_getstring(A, 2);
-        switch(lua_type(A, 3))
+        dom::Value value = luaValueToDom(L, 3);
+        try
         {
-        case LUA_TNIL:
-            // VFALCO should erase instead?
-            obj.set(key, nullptr);
-            break;
-        case LUA_TBOOLEAN:
-            obj.set(key, lua_toboolean(A, 3) != 0);
-            break;
-        case LUA_TLIGHTUSERDATA:
-            MRDOCS_UNREACHABLE();
-        case LUA_TNUMBER:
-            obj.set(key, lua_tonumber(A, 3));
-            break;
-        case LUA_TSTRING:
-            obj.set(key, luaM_getstring(A, 3));
-            break;
-        case LUA_TTABLE:
-            // VFALCO TODO
-            MRDOCS_UNREACHABLE();
-            break;
-        case LUA_TFUNCTION:
-            // VFALCO TODO
-            MRDOCS_UNREACHABLE();
-            break;
-        case LUA_TUSERDATA:
-            MRDOCS_UNREACHABLE();
-        case LUA_TTHREAD:
-            MRDOCS_UNREACHABLE();
-        default:
-            MRDOCS_UNREACHABLE();
+            obj.set(key, std::move(value));
+        }
+        catch (std::exception const& ex)
+        {
+            return luaL_error(L, "%s", ex.what());
         }
         return 0;
     });
@@ -630,6 +701,94 @@ domObject_push(
 
 //------------------------------------------------
 //
+// dom::Function
+//
+//------------------------------------------------
+
+static
+dom::Function&
+domFunction_get(Access& A, int index)
+{
+    return *static_cast<dom::Function*>(
+        lua_touserdata(A, index));
+}
+
+// Push the domFunction metatable onto the stack
+static
+void
+domFunction_push_metatable(
+    Access& A)
+{
+    if(A->funcMetaRef != LUA_NOREF)
+    {
+        lua_rawgeti(A, LUA_REGISTRYINDEX, A->funcMetaRef);
+        return;
+    }
+
+    lua_createtable(A, 0, 2);
+
+    // Effect:      collect Lua args, dispatch to dom::Function::call,
+    //              push the resulting dom::Value.
+    // Signature:   (userdata, args...)
+    //
+    // The userdata at index 1 is the function holder; real call args
+    // start at index 2. Errors from `call` are turned into Lua errors
+    // so a script can recover with `pcall`.
+    luaM_pushstring(A, "__call");
+    lua_pushcfunction(A,
+    [](lua_State* L)
+    {
+        Access A(L);
+        int const top = lua_gettop(A);
+        dom::Array args;
+        for (int i = 2; i <= top; ++i)
+        {
+            args.push_back(luaValueToDom(L, i));
+        }
+        dom::Function fn = domFunction_get(A, 1);
+        Expected<dom::Value> result = fn.call(args);
+        if (! result)
+        {
+            return luaL_error(L, "%s",
+                result.error().reason().c_str());
+        }
+        domValue_push(A, *result);
+        return 1;
+    });
+    lua_settable(A, -3);
+
+    // Effect:      ~dom::Function
+    // Signature:   (userdata)
+    luaM_pushstring(A, "__gc");
+    lua_pushcfunction(A,
+    [](lua_State* L)
+    {
+        Access A(L);
+        std::destroy_at(&domFunction_get(A, 1));
+        return 0;
+    });
+    lua_settable(A, -3);
+
+    lua_pushvalue(A, -1);
+    A->funcMetaRef = luaL_ref(A, LUA_REGISTRYINDEX);
+}
+
+// Push a dom::Function onto the stack
+static
+void
+domFunction_push(
+    Access& A,
+    dom::Function fn)
+{
+    auto& slot = *static_cast<dom::Function*>(
+        lua_newuserdatauv(A, sizeof(dom::Function), 0));
+    domFunction_push_metatable(A);
+    lua_setmetatable(A, -2);
+    std::construct_at(&slot, std::move(fn));
+}
+
+//------------------------------------------------
+//
 // dom::Value
 //
 //------------------------------------------------
@@ -653,6 +812,8 @@ domValue_push(
         return domArray_push(A, value.getArray());
     case dom::Kind::Object:
         return domObject_push(A, value.getObject());
+    case dom::Kind::Function:
+        return domFunction_push(A, value.getFunction());
     default:
         MRDOCS_UNREACHABLE();
     }

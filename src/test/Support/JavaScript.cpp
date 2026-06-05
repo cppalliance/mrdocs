@@ -990,9 +990,16 @@ struct JavaScript_test
             BOOST_TEST(x.isNumber());
             BOOST_TEST(x.getDom() == 1);
 
-            // JS writes do NOT update the C++ object (no set trap in proxy)
+            // JS writes route through the proxy's set trap into
+            // dom::ObjectImpl::set; for the default object impl this
+            // updates the underlying storage and the new value is
+            // visible on the C++ side.
             scope.eval("o.a = 2;");
-            BOOST_TEST(o1.get("a") == 1);  // C++ object unchanged
+            BOOST_TEST(o1.get("a") == 2);
+
+            // Restore the original value so the rest of the test
+            // sees a known starting state.
+            o1.set("a", 1);
 
             // 'in' operator works via has trap
             scope.eval("var hasA = 'a' in o;");

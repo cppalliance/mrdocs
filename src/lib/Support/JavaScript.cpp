@@ -1810,6 +1810,47 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
     jerry_value_free(getOwnPropDesc_key);
     jerry_value_free(getOwnPropDesc_fn);
 
+    // 'set' trap: handler.set(target, prop, value, receiver) -> boolean
+    //
+    // Delegates the assignment to `dom::Object::set` on the underlying
+    // holder. The default `dom::Object` writes to its own overlay; the
+    // symbol-proxy implementation used by corpus extensions overrides
+    // `set` to mutate the live C++ object instead. A `std::exception`
+    // from that override propagates back here and is rethrown as a JS
+    // `TypeError` so the script sees a real error instead of a silent
+    // assignment.
+    jerry_value_t set_fn = jerry_function_external(
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 3)
+                return jerry_boolean(false);
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_boolean(false);
+
+            std::string propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            dom::Value val = toDomValue(args_p[2], h->impl);
+
+            try
+            {
+                h->value.getObject().set(propName, val);
+            }
+            catch (std::exception const& ex)
+            {
+                return jerry_throw_sz(JERRY_ERROR_TYPE, ex.what());
+            }
+            return jerry_boolean(true);
+        });
+
+    jerry_value_t set_key = makeString("set");
+    sr = jerry_object_set(handler, set_key, set_fn);
+    jerry_value_free(sr);
+    jerry_value_free(set_key);
+    jerry_value_free(set_fn);
+
     // Store the holder directly on the handler object via native pointer.
     // When the handler is garbage collected (after the proxy is collected),
     // DomValueHolder::free_cb will be called to delete the holder.
