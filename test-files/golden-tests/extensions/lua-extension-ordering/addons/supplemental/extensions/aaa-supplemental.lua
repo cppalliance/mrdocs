@@ -6,7 +6,7 @@
 function transform_corpus(corpus)
     for _, sym in ipairs(corpus.symbols) do
         if sym.kind == "function" then
-            mrdocs.set(sym._id, "name", "from_supplemental")
+            sym.name = "from_supplemental"
         end
     end
 end

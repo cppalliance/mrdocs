@@ -9,67 +9,31 @@
 //
 
 #include "JsBinding.hpp"
-#include "SetMember.hpp"
+#include "CorpusDom.hpp"
 
 #include <lib/CorpusImpl.hpp>
+#include <lib/Js/StdGlobals.hpp>
 
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
 #include <mrdocs/Support/Path.hpp>
 
-#include <string>
-#include <utility>
-
 namespace mrdocs {
-namespace {
-
-// The JS wrapper already knows how to expose a `dom::Function` as a
-// callable JS value (`setGlobal` -> `toJsValue` -> `makeFunctionProxy`),
-// so no escape hatch is needed: we just build the `mrdocs` API as a
-// `dom::Object` containing `dom::Function` entries and set it as a
-// global.
-dom::Object
-buildJsMrDocsApi(ExtensionState& state)
-{
-    // `ExtensionState` is a stack local in `runOneJsExtension`; capturing
-    // by raw pointer here is safe because the API object, the script
-    // execution, and the state all live within the same call frame.
-    ExtensionState* statePtr = &state;
-    dom::Object api;
-    api.set("set", dom::Value(dom::makeVariadicInvocable(
-        [statePtr](dom::Array const& args) -> Expected<dom::Value, Error>
-        {
-            if (args.size() < 3)
-            {
-                return Unexpected(Error(
-                    "mrdocs.set: expected (symbol_id, field, value)"));
-            }
-            return setMemberImpl(
-                *statePtr, args.get(0), args.get(1), args.get(2));
-        })));
-    return api;
-}
-
-} // (anon)
 
 Expected<void>
 runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
 {
     js::Context ctx;
-    ExtensionState state{ &corpus, {} };
-
-    DomCorpus domCorpus(corpus);
-    dom::Value corpusValue = buildCorpusDom(corpus, domCorpus, state);
-
     js::Scope scope(ctx);
 
-    // Expose `mrdocs.set(...)` (and any future setters) as a global
-    // object whose entries are `dom::Function`s; the JS wrapper turns
-    // these into callable proxies via `makeFunctionProxy`.
-    scope.setGlobal("mrdocs", dom::Value(buildJsMrDocsApi(state)));
+    js::registerStdGlobals(scope);
 
-    // Run the script (defines globals, including `transform_corpus`).
+    // The corpus argument is a small navigable object: an array of
+    // per-symbol proxies plus `get(id)` / `lookup(name)` functions.
+    // Everything else a script does runs through that proxy: direct
+    // reads via reflection, direct writes that mutate the live Symbol.
+    dom::Value corpusValue = buildCorpusDom(corpus);
+
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
     if (Expected<void> exp = scope.script(script); !exp)
     {
