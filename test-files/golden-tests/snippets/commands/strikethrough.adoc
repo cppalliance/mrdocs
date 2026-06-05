@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#send_request]
+== send&lowbar;request
+
+Sends a request to the server&period;
+
+=== Synopsis
+
+Declared in `&lt;strikethrough&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+send&lowbar;request(char const* path);
+----
+
+=== Description
+
+Replaces the [.line-through]#deprecated# `send&lowbar;raw` API&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
