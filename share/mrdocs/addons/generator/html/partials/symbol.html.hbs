@@ -38,24 +38,22 @@
 {{> symbol/signatures symbol ~}}
 </div>
 {{/unless}}
-{{! Description }}
-{{#unless traversing-global-namespace}}
-{{#if (or symbol.doc.document symbol.functionObjectImpl)}}
-<div>
-{{#unless (and symbol.doc.document (eq (lookup (first symbol.doc.document) "kind") "heading")) }}
-{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
-{{~/unless}}
-{{#if symbol.functionObjectImpl}}
+{{~#if symbol.functionObjectImpl}}
 <div class="admonition">
 <h4>NOTE</h4>
 <div>
 <p>{{> symbol/function-object-disclaimer}}</p>
 </div>
 </div>
-{{/if}}
+{{/if~}}
+{{! Description }}
+{{#unless traversing-global-namespace}}
 {{#if symbol.doc.document}}
+<div>
+{{#unless (eq (lookup (first symbol.doc.document) "kind") "heading") }}
+{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
+{{~/unless}}
 {{> doc/block/document symbol.doc.document }}
-{{/if}}
 </div>
 {{/if}}
 {{/unless}}

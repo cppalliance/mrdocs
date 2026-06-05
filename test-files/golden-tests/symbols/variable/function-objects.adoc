@@ -156,6 +156,11 @@ int
 invoke();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 The result&period;
@@ -259,6 +264,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 invoke();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -576,6 +586,11 @@ int
 all&lowbar;special&lowbar;fo();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 The result&period;
@@ -594,6 +609,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 by&lowbar;value&lowbar;assign&lowbar;fo();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -615,6 +635,11 @@ compare&lowbar;double(
     T const& a,
     T const& b);
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -649,6 +674,11 @@ compare&lowbar;int(
     T const& b);
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 True if a is less than b&period;
@@ -680,6 +710,11 @@ int
 default&lowbar;ctor&lowbar;with&lowbar;all&lowbar;defaults&lowbar;fo();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 The result&period;
@@ -700,6 +735,11 @@ int
 detail&lowbar;fo();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 The result&period;
@@ -718,6 +758,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 doc&lowbar;on&lowbar;struct();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -738,6 +783,11 @@ int
 doc&lowbar;on&lowbar;var();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 Something&period;
@@ -756,6 +806,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 explicit&lowbar;fo();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -776,6 +831,11 @@ int
 marked&lowbar;on&lowbar;type();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 The result&period;
@@ -794,6 +854,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 mixed(int x);
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -873,6 +938,11 @@ int
 multi&lowbar;overload();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 A number&period;
@@ -893,6 +963,11 @@ multi&lowbar;overload(
     char const* begin,
     char const* end);
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -924,6 +999,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 nested&lowbar;record&lowbar;fo();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -959,6 +1039,11 @@ bool
 single&lowbar;overload();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 A Boolean&period;
@@ -980,6 +1065,11 @@ template&lowbar;call&lowbar;fo(
     Iter first,
     Iter last);
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Parameters
 
@@ -1009,6 +1099,11 @@ int
 template&lowbar;fo(T const& val);
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 The result&period;
@@ -1036,11 +1131,9 @@ void
 undocumented&lowbar;both();
 ----
 
-=== Description
-
 [NOTE]
 ====
-This function object does not participate in argument-dependent lookup. Taking the address of this function object is undefined behavior.
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
 ====
 
 [#example-unnamed_fo]
@@ -1057,6 +1150,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 unnamed&lowbar;fo();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -1076,6 +1174,11 @@ Declared in `&lt;function&hyphen;objects&period;cpp&gt;`
 int
 visible&lowbar;fo();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 

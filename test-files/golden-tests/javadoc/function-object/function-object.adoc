@@ -34,6 +34,11 @@ int
 auto&lowbar;detected();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 A value&period;
@@ -52,6 +57,11 @@ Declared in `&lt;function&hyphen;object&period;cpp&gt;`
 int
 doc&lowbar;on&lowbar;struct();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
@@ -72,6 +82,11 @@ int
 doc&lowbar;on&lowbar;variable();
 ----
 
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
 === Return Value
 
 A value&period;
@@ -90,6 +105,11 @@ Declared in `&lt;function&hyphen;object&period;cpp&gt;`
 int
 forced();
 ----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
 
 === Return Value
 
