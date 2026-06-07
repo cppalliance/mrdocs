@@ -13,11 +13,15 @@
 #define MRDOCS_LIB_GEN_HBS_ADDONPATHS_HPP
 
 #include <lib/ConfigImpl.hpp>
+#include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 #include <lib/Support/AddonRoots.hpp>
+#include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <string_view>
+#include <unordered_set>
 #include <vector>
 
 namespace mrdocs::hbs::addon_paths {
@@ -54,23 +58,31 @@ addonRoots(Config::Settings const& settings)
 
 /** Returns directories containing Handlebars partial templates.
 
-    For each addon root, this function looks for partial templates in:
+    For each addon root, walks the inheritance chain:
     1. `generator/common/partials/` - shared partials for all formats
-    2. `generator/<ext>/partials/` - format-specific partials
+    2. for each id in `chain`, in order: `generator/<id>/partials/`
+
+    The chain is given most-general first, most-specific last: for a
+    generator `md` that extends `adoc`, the caller passes `{"adoc", "md"}`,
+    so adoc's partials override common's, and md's override adoc's.
+    For a generator that stands alone, the caller passes a single-element
+    chain (just its own id).
 
     The order preserves root precedence: for each root, common partials
-    are loaded first, then format-specific ones. Later roots (supplemental
+    are loaded first, then the inheritance chain. Later roots (supplemental
     addons) can override partials from earlier roots.
 
     @param roots The addon root directories to search.
-    @param ext The output format extension (e.g., "html", "adoc").
+    @param chain The inheritance chain of format ids, most-general first.
     @return A vector of existing partial directories in load order.
 */
 inline std::vector<std::string>
-partialDirs(std::vector<std::string> const& roots, std::string_view ext)
+partialDirs(
+    std::vector<std::string> const& roots,
+    std::vector<std::string> const& chain)
 {
     std::vector<std::string> dirs;
-    dirs.reserve(roots.size() * 2);
+    dirs.reserve(roots.size() * (1 + chain.size()));
 
     for (auto const& root : roots)
     {
@@ -78,12 +90,23 @@ partialDirs(std::vector<std::string> const& roots, std::string_view ext)
         if (files::exists(commonDir))
             dirs.push_back(commonDir);
 
-        auto const formatDir = files::appendPath(root, "generator", ext, "partials");
-        if (files::exists(formatDir))
-            dirs.push_back(formatDir);
+        for (auto const& id : chain)
+        {
+            auto const formatDir = files::appendPath(root, "generator", id, "partials");
+            if (files::exists(formatDir))
+                dirs.push_back(formatDir);
+        }
     }
 
     return dirs;
+}
+
+/** Overload taking a single format id (no inheritance chain).
+*/
+inline std::vector<std::string>
+partialDirs(std::vector<std::string> const& roots, std::string_view ext)
+{
+    return partialDirs(roots, std::vector<std::string>{std::string(ext)});
 }
 
 /** Returns directories containing JavaScript helper scripts.
@@ -101,10 +124,12 @@ partialDirs(std::vector<std::string> const& roots, std::string_view ext)
     @return A vector of existing helper directories in load order.
 */
 inline std::vector<std::string>
-helperDirs(std::vector<std::string> const& roots, std::string_view ext)
+helperDirs(
+    std::vector<std::string> const& roots,
+    std::vector<std::string> const& chain)
 {
     std::vector<std::string> dirs;
-    dirs.reserve(roots.size() * 2);
+    dirs.reserve(roots.size() * (1 + chain.size()));
 
     for (auto const& root : roots)
     {
@@ -112,11 +137,22 @@ helperDirs(std::vector<std::string> const& roots, std::string_view ext)
         if (files::exists(commonDir))
             dirs.push_back(commonDir);
 
-        auto const formatDir = files::appendPath(root, "generator", ext, "helpers");
-        if (files::exists(formatDir))
-            dirs.push_back(formatDir);
+        for (auto const& id : chain)
+        {
+            auto const formatDir = files::appendPath(root, "generator", id, "helpers");
+            if (files::exists(formatDir))
+                dirs.push_back(formatDir);
+        }
     }
     return dirs;
+}
+
+/** Overload taking a single format id (no inheritance chain).
+*/
+inline std::vector<std::string>
+helperDirs(std::vector<std::string> const& roots, std::string_view ext)
+{
+    return helperDirs(roots, std::vector<std::string>{std::string(ext)});
 }
 
 /** Returns directories containing layout templates.
@@ -172,6 +208,51 @@ findFile(
             return candidate;
     }
     return std::nullopt;
+}
+
+/** Resolves a generator's inheritance chain into format ids.
+
+    Returns the list of format ids that a Builder should consult, in
+    load order: the most-general first, the generator's own id last.
+    Layouts do not inherit (each format owns its `index.<id>.hbs`),
+    so callers that load layouts pass only the leaf id, not the chain.
+
+    Walks the global generator registry via `findGenerator()` to follow
+    `HandlebarsGenerator::extends()` references. A reference to a
+    generator that is not installed (or is not a HandlebarsGenerator)
+    silently terminates the walk; a cycle aborts at the first repeat,
+    so a misconfigured manifest cannot loop the lookup.
+
+    @param ext The leaf format id (typically `HandlebarsCorpus::fileExtension`).
+    @return The chain, e.g. `{"adoc", "md"}` for a `md` generator that
+            extends `adoc`. A standalone generator returns `{ext}`.
+*/
+inline std::vector<std::string>
+extensionChain(std::string_view ext)
+{
+    std::vector<std::string> chain;
+    std::unordered_set<std::string> seen;
+    std::string cur(ext);
+    while (!cur.empty() && !seen.contains(cur))
+    {
+        seen.insert(cur);
+        chain.push_back(cur);
+        Generator const* gen = findGenerator(cur);
+        if (!gen)
+        {
+            break;
+        }
+        auto const* hbsGen =
+            dynamic_cast<HandlebarsGenerator const*>(gen);
+        if (!hbsGen)
+        {
+            break;
+        }
+        cur = std::string(hbsGen->extends());
+    }
+    // Caller wants most-general first, most-specific last.
+    std::reverse(chain.begin(), chain.end());
+    return chain;
 }
 
 } // namespace mrdocs::hbs::addon_paths

@@ -1,0 +1,4 @@
+{{#if (eq (or level 3) 1)}}\section{ {{~> @partial-block ~}} }
+{{else if (eq (or level 3) 2)}}\subsection{ {{~> @partial-block ~}} }
+{{else}}\subsubsection{ {{~> @partial-block ~}} }
+{{/if}}

@@ -455,8 +455,11 @@ Builder(
 
     auto const& config = domCorpus->config;
     auto const roots = addon_paths::addonRoots(config.settings());
-    auto const partialDirs = addon_paths::partialDirs(roots, domCorpus.fileExtension);
-    auto const helperDirs = addon_paths::helperDirs(roots, domCorpus.fileExtension);
+    auto const chain = addon_paths::extensionChain(domCorpus.fileExtension);
+    auto const partialDirs = addon_paths::partialDirs(roots, chain);
+    auto const helperDirs = addon_paths::helperDirs(roots, chain);
+    // Layouts do not inherit: each format owns its index.<id>.hbs and
+    // wrapper.<id>.hbs because the filename is keyed on the leaf id.
     auto const layoutDirs = addon_paths::layoutDirs(roots, domCorpus.fileExtension);
 
     // Load partials (later dirs overwrite earlier ones because we walk in order)
