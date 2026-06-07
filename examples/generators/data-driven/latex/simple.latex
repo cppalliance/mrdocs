@@ -1,0 +1,58 @@
+\documentclass{article}
+\title{Reference}
+\begin{document}
+\maketitle
+
+\subsection{Point}
+
+A small two-dimensional point.
+
+
+\subsubsection{Synopsis}
+Declared in \texttt{<simple.cpp>}
+
+\begin{verbatim}
+struct Point;
+\end{verbatim}
+\subsection{Member Functions}
+
+
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+\texttt{length} & Distance from the origin.\\
+\texttt{translate} & Translate by an offset.\\
+\end{tabular}
+
+
+
+
+\subsection{Point::length}
+
+Distance from the origin.
+
+
+\subsubsection{Synopsis}
+Declared in \texttt{<simple.cpp>}
+
+\begin{verbatim}
+double
+length() const;
+\end{verbatim}
+
+\subsection{Point::translate}
+
+Translate by an offset.
+
+
+\subsubsection{Synopsis}
+Declared in \texttt{<simple.cpp>}
+
+\begin{verbatim}
+void
+translate(
+    int dx,
+    int dy);
+\end{verbatim}
+
+\end{document}

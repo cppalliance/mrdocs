@@ -128,6 +128,7 @@ private:
     std::string id_;
     std::string fileExtension_;
     std::string displayName_;
+    std::string extends_;
 
     Expected<StylesData> prepareStylesheets(Config const& config) const;
 
@@ -144,12 +145,32 @@ public:
         @param displayName Human-readable name shown in messages.
         @param escapeMap Character-replacement table; empty means
                         rendered output passes through unchanged.
+        @param extends Id of the generator this one inherits partials
+                       and helpers from. Empty means no inheritance;
+                       only `common/` is consulted as a fallback.
     */
     HandlebarsGenerator(
         std::string const& id,
         std::string const& fileExtension,
         std::string const& displayName,
-        EscapeMap escapeMap = {});
+        EscapeMap escapeMap = {},
+        std::string extends = {});
+
+    /** Id of the generator this one inherits partials and helpers from.
+
+        Empty when the generator stands alone (the default, used by
+        the built-in `adoc` and `html` generators). When non-empty,
+        the Builder walks `<root>/generator/<extends>/{partials,helpers}/`
+        in addition to `common/` and the generator's own directory,
+        so an addon can ship only the partials it overrides and inherit
+        the rest from a parent format. Layouts do not inherit; each
+        format owns its `index.<id>.hbs` and `wrapper.<id>.hbs`.
+    */
+    std::string_view
+    extends() const noexcept
+    {
+        return extends_;
+    }
 
     std::string_view
     id() const noexcept override

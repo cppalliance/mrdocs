@@ -1,0 +1,7 @@
+addons-supplemental:
+  - addons
+generator: jsonl
+multipage: false
+show-namespaces: false
+warn-if-undocumented: false
+source-root: .

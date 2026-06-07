@@ -109,11 +109,13 @@ HandlebarsGenerator(
     std::string const& id,
     std::string const& fileExtension,
     std::string const& displayName,
-    EscapeMap escapeMap)
+    EscapeMap escapeMap,
+    std::string extends)
     : escapeMap_(std::move(escapeMap))
     , id_(id)
     , fileExtension_(fileExtension)
     , displayName_(displayName)
+    , extends_(std::move(extends))
 {
 }
 

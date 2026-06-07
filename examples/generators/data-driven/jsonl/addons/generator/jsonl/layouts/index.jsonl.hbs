@@ -1,0 +1,3 @@
+{{#unless (eq symbol.kind "namespace")~}}
+{"name": "{{>symbol/qualified-name-text symbol}}", "kind": "{{symbol.kind}}", "anchor": "{{symbol.anchor}}", "brief": "{{#if symbol.doc.brief.children}}{{#each symbol.doc.brief.children}}{{literal}}{{/each}}{{/if}}"}
+{{/unless}}

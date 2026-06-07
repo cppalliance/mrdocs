@@ -1,0 +1,4 @@
+{"name": "Point", "kind": "record", "anchor": "Point", "brief": "A small two-dimensional point."}
+{"name": "Point::length", "kind": "function", "anchor": "Point-length", "brief": "Distance from the origin."}
+{"name": "Point::translate", "kind": "function", "anchor": "Point-translate", "brief": "Translate by an offset."}
+

@@ -1,0 +1,323 @@
+{{#unless @root.config.multipage }}
+
+{{#> markup/h level=2 id=symbol.anchor }}{{> symbol/qualified-name symbol }}{{/markup/h}}
+{{~/unless}}
+{{! Brief }}
+{{#if symbol.doc.brief}}
+
+{{> doc/block/brief symbol.doc.brief }}
+
+{{/if}}
+{{! Synopsis }}
+{{#unless (eq symbol.kind "namespace")}}
+
+{{#> markup/dynamic-level-h level=2 }}{{#if (ne symbol.kind "overloads")}}Synopsis{{else}}Synopses{{/if}}{{/markup/dynamic-level-h}}
+{{>location/source dcl=(primary_location symbol)}}
+
+{{> symbol/signatures symbol ~}}
+
+{{/unless}}
+{{#if symbol.functionObjectImpl ~}}
+
+**NOTE**
+
+{{> symbol/function-object-disclaimer}}
+
+{{~/if}}
+{{! Description }}
+{{#unless traversing-global-namespace}}
+{{#if symbol.doc.document}}
+
+{{#unless (eq (lookup (first symbol.doc.document) "kind") "heading") }}
+{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
+{{~/unless}}
+{{> doc/block/document symbol.doc.document }}
+
+{{/if}}
+{{/unless}}
+{{! Base classes }}
+{{#if (any_of_by symbol.bases "isPublic")}}
+
+{{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each (filter_by symbol.bases "isPublic")}}
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> doc/block/inline-brief type.name.id.doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Protected Base classes }}
+{{#if (any_of_by symbol.bases "isProtected")}}
+
+{{#> markup/dynamic-level-h }}Protected Base Classes{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each (filter_by symbol.bases "isProtected")}}
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> doc/block/inline-brief type.name.id.doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Members }}
+{{! Record interface }}
+{{#if (eq symbol.kind "record")}}
+{{#with symbol.interface}}
+{{>symbol/tranche tranche=public label="" is-namespace=false}}
+
+{{>symbol/tranche tranche=protected label="Protected" is-namespace=false}}
+
+{{>symbol/tranche tranche=private label="Private" is-namespace=false}}
+{{/with}}
+{{! Namespace members }}
+{{else if (eq symbol.kind "namespace")}}
+{{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
+{{! Enum members }}
+{{else if (eq symbol.kind "enum")}}
+{{>symbol/members-table members=symbol.constants title="Members"}}
+{{/if}}
+{{! Friends }}
+{{#if symbol.friends}}
+
+{{#> markup/dynamic-level-h }}Friends{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.friends }}
+<tr>
+{{#if id}}
+<td>{{#>markup/code}}{{> symbol/name id }}{{/markup/code}}</td>
+<td>{{> doc/block/inline-brief id.doc.brief }}</td>
+{{else}}
+<td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td>
+<td></td>
+{{/if}}
+</tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Using directives }}
+{{#if symbol.usingDirectives}}
+
+{{>symbol/members-table members=symbol.usingDirectives title="Using Namespace Directives"}}
+
+{{/if}}
+{{! Related symbols }}
+{{#if symbol.doc.related}}
+
+{{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.related}}
+<tr><td>{{> doc/inline/reference }}</td><td>{{> doc/block/inline-brief id.doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Derived classes }}
+{{#if symbol.derived}}
+
+{{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.derived}}
+<tr><td>{{#if url~}}
+    {{#>markup/a href=url}}{{#>markup/code}}{{> type/name-info-text . }}{{/markup/code}}{{/markup/a}}
+    {{else~}}
+    {{> type/name-info-text . }}
+{{/if}}</td><td>{{> doc/block/inline-brief doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Using symbols }}
+{{#if symbol.shadowDeclarations}}
+
+{{#> markup/dynamic-level-h level=2 }}Introduced Symbols{{/markup/dynamic-level-h~}}
+{{#if (any_of_by symbol.shadowDeclarations "doc")}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.shadowDeclarations}}
+<tr>
+<td>{{> symbol/qualified-name . }}</td>
+<td>{{> doc/block/inline-brief doc.brief }}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+{{else}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.shadowDeclarations}}
+<tr>
+<td>{{> symbol/qualified-name . }}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+{{/if}}
+
+{{/if}}
+{{! Exceptions }}
+{{#if symbol.doc.exceptions}}
+
+{{#> markup/dynamic-level-h level=2 }}Exceptions{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.exceptions}}
+<tr>
+<td>{{> doc/inline/reference exception}}</td>
+<td>{{> doc/block .}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Return value }}
+{{#if symbol.doc.returns}}
+
+{{#> markup/dynamic-level-h level=2 }}Return Value{{/markup/dynamic-level-h~}}
+{{#if (eq (size symbol.doc.returns) 1)}}
+{{> doc/block/returns symbol.doc.returns.[0]}}
+
+{{else}}
+{{#each symbol.doc.returns}}
+- {{> doc/block/returns .}}
+{{/each}}
+{{/if}}
+
+{{/if}}
+{{! Template Parameters }}
+{{#if symbol.doc.tparams}}
+
+{{#> markup/dynamic-level-h level=2 }}Template Parameters{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.tparams}}
+<tr>
+<td><strong>{{name}}</strong></td>
+<td>{{>doc/block .}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Parameters }}
+{{#if symbol.doc.params}}
+
+{{#> markup/dynamic-level-h level=2 }}Parameters{{/markup/dynamic-level-h~}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.params}}
+<tr>
+<td><strong>{{name}}</strong>{{#if direction}} [{{direction}}]{{/if}}</td>
+<td>{{>doc/block .}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+
+{{/if}}
+{{! Preconditions }}
+{{#if symbol.doc.preconditions}}
+
+{{#> markup/dynamic-level-h level=2 }}Preconditions{{/markup/dynamic-level-h~}}
+{{#each symbol.doc.preconditions}}
+- {{>doc/block .}}
+{{/each}}
+
+{{/if}}
+{{! Postconditions }}
+{{#if symbol.doc.postconditions}}
+
+{{#> markup/dynamic-level-h level=2 }}Postconditions{{/markup/dynamic-level-h~}}
+{{#each symbol.doc.postconditions}}
+- {{>doc/block .}}
+{{/each}}
+
+{{/if}}
+{{! See Also }}
+{{#if symbol.doc.sees}}
+
+{{#> markup/dynamic-level-h level=2 }}See Also{{/markup/dynamic-level-h~}}
+{{#each symbol.doc.sees}}
+{{>doc/block .}}
+
+{{/each}}
+
+{{/if}}
+{{! Recursive index for multipage global namespace }}
+{{#if (and (eq symbol.kind "namespace") @root.config.multipage @root.config.global-namespace-index (eq @root.symbol.kind "namespace") (not @root.symbol.name) (not @root.symbol.parent)) }}
+{{#each symbol.members.namespaces}}
+{{#if isRegular}}
+{{#> markup/dynamic-level-h id=null }}{{> symbol/qualified-name . }} namespace{{/markup/dynamic-level-h~}}
+{{> symbol symbol=. id=null traversing-global-namespace=true }}
+{{/if}}
+{{/each}}
+{{/if}}

@@ -44,15 +44,36 @@ namespace mrdocs::hbs {
 Expected<void>
 discoverDataDrivenGenerators(Config::Settings const& settings);
 
-/** Load mrdocs-generator.yml and return the resulting `EscapeMap`.
-
-    The file is expected to contain a top-level mapping. The optional
-    'escape:' key holds a sub-mapping from byte-sequence keys to
-    replacement strings. Keys may be one or more bytes long; an empty
-    key is a hard error. Unknown top-level keys are ignored so future
-    schema additions are non-breaking.
+/** Parsed contents of a single `mrdocs-generator.yml`.
 */
-Expected<EscapeMap>
+struct GeneratorManifest
+{
+    /** Id of a generator whose partials and helpers this one falls back
+        to, after its own directory but before `common/`. Empty when
+        the generator stands alone.
+    */
+    std::string extends;
+
+    /** Per-pattern escape rules to apply to rendered output values.
+    */
+    EscapeMap escape;
+};
+
+/** Load mrdocs-generator.yml and return its parsed contents.
+
+    The file is expected to contain a top-level mapping. Recognized
+    top-level keys:
+
+    - `extends:` (optional scalar) names another generator this one
+      inherits partials and helpers from. Layouts do not inherit.
+    - `escape:` (optional mapping) holds a sub-mapping from byte-sequence
+      keys to replacement strings. Keys may be one or more bytes long;
+      an empty key is a hard error.
+
+    Unknown top-level keys are ignored so future schema additions are
+    non-breaking.
+*/
+Expected<GeneratorManifest>
 loadGeneratorMetadata(std::string_view yamlPath);
 
 } // namespace mrdocs::hbs

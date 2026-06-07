@@ -1,6 +1,6 @@
 addons-supplemental:
   - addons
-generator: mock-md
+generator: latex
 multipage: false
 show-namespaces: false
 warn-if-undocumented: false

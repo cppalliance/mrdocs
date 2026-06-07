@@ -1,0 +1,227 @@
+{{#unless @root.config.multipage }}
+
+{{#> markup/h level=2 id=symbol.anchor }}{{> symbol/qualified-name symbol }}{{/markup/h}}
+{{~/unless}}
+{{#if symbol.doc.brief}}
+
+{{> doc/block/brief symbol.doc.brief }}
+
+{{/if}}
+{{#unless (eq symbol.kind "namespace")}}
+
+{{#> markup/dynamic-level-h level=2 }}{{#if (ne symbol.kind "overloads")}}Synopsis{{else}}Synopses{{/if}}{{/markup/dynamic-level-h~}}
+
+{{>location/source dcl=(primary_location symbol)}}
+
+{{> symbol/signatures symbol ~}}
+
+{{/unless}}
+{{#if symbol.functionObjectImpl ~}}
+
+\textbf{NOTE}
+
+{{> symbol/function-object-disclaimer}}
+
+{{~/if}}
+{{#unless traversing-global-namespace}}
+{{#if symbol.doc.document}}
+
+{{#unless (eq (lookup (first symbol.doc.document) "kind") "heading") }}
+{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h~}}
+{{~/unless}}
+{{> doc/block/document symbol.doc.document }}
+
+{{/if}}
+{{/unless}}
+{{#if (any_of_by symbol.bases "isPublic")}}
+
+{{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each (filter_by symbol.bases "isPublic")~}}
+\texttt{ {{~> type/declarator type ~}} } & {{> doc/block/inline-brief type.name.id.doc.brief~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if (any_of_by symbol.bases "isProtected")}}
+
+{{#> markup/dynamic-level-h }}Protected Base Classes{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each (filter_by symbol.bases "isProtected")~}}
+\texttt{ {{~> type/declarator type ~}} } & {{> doc/block/inline-brief type.name.id.doc.brief~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if (eq symbol.kind "record")}}
+{{#with symbol.interface}}
+{{>symbol/tranche tranche=public label="" is-namespace=false}}
+
+{{>symbol/tranche tranche=protected label="Protected" is-namespace=false}}
+
+{{>symbol/tranche tranche=private label="Private" is-namespace=false}}
+{{/with}}
+{{else if (eq symbol.kind "namespace")}}
+{{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
+{{else if (eq symbol.kind "enum")}}
+{{>symbol/members-table members=symbol.constants title="Members"}}
+{{/if}}
+{{#if symbol.friends}}
+
+{{#> markup/dynamic-level-h }}Friends{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each symbol.friends~}}
+{{#if id~}}
+\texttt{ {{~> symbol/name id ~}} } & {{> doc/block/inline-brief id.doc.brief~}} \\
+{{else~}}
+\texttt{ {{~> type/declarator type ~}} } &  \\
+{{/if~}}
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if symbol.usingDirectives}}
+
+{{>symbol/members-table members=symbol.usingDirectives title="Using Namespace Directives"}}
+
+{{/if}}
+{{#if symbol.doc.related}}
+
+{{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each symbol.doc.related~}}
+{{> doc/inline/reference }} & {{> doc/block/inline-brief id.doc.brief~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if symbol.derived}}
+
+{{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each symbol.derived~}}
+\texttt{ {{~> type/name-info-text . ~}} } & {{> doc/block/inline-brief doc.brief~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if symbol.shadowDeclarations}}
+
+{{#> markup/dynamic-level-h level=2 }}Introduced Symbols{{/markup/dynamic-level-h~}}
+{{#if (any_of_by symbol.shadowDeclarations "doc")}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each symbol.shadowDeclarations~}}
+{{> symbol/qualified-name . }} & {{> doc/block/inline-brief doc.brief~}} \\
+{{/each}}
+\end{tabular}
+{{else}}
+\begin{tabular}{l}
+\textbf{Name} \\
+\hline
+{{#each symbol.shadowDeclarations~}}
+{{> symbol/qualified-name . }} \\
+{{/each}}
+\end{tabular}
+{{/if}}
+
+{{/if}}
+{{#if symbol.doc.exceptions}}
+
+{{#> markup/dynamic-level-h level=2 }}Exceptions{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Thrown on} \\
+\hline
+{{#each symbol.doc.exceptions~}}
+{{> doc/inline/reference exception}} & {{> doc/block .~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if symbol.doc.returns}}
+
+{{#> markup/dynamic-level-h level=2 }}Return Value{{/markup/dynamic-level-h~}}
+{{#if (eq (size symbol.doc.returns) 1)}}
+{{> doc/block/returns symbol.doc.returns.[0]}}
+
+{{else}}
+\begin{itemize}
+{{#each symbol.doc.returns}}
+\item {{>doc/block/returns .}}
+{{/each}}
+\end{itemize}
+{{/if}}
+
+{{/if}}
+{{#if symbol.doc.tparams}}
+
+{{#> markup/dynamic-level-h level=2 }}Template Parameters{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each symbol.doc.tparams~}}
+\textbf{ {{~name~}} } & {{>doc/block .~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if symbol.doc.params}}
+
+{{#> markup/dynamic-level-h level=2 }}Parameters{{/markup/dynamic-level-h~}}
+\begin{tabular}{ll}
+\textbf{Name} & \textbf{Description} \\
+\hline
+{{#each symbol.doc.params~}}
+\textbf{ {{~name~}}{{#if direction}} [{{direction}}]{{/if}} } & {{>doc/block .~}} \\
+{{/each}}
+\end{tabular}
+
+{{/if}}
+{{#if symbol.doc.preconditions}}
+
+{{#> markup/dynamic-level-h level=2 }}Preconditions{{/markup/dynamic-level-h~}}
+\begin{itemize}
+{{#each symbol.doc.preconditions}}
+\item {{>doc/block .}}
+{{/each}}
+\end{itemize}
+
+{{/if}}
+{{#if symbol.doc.postconditions}}
+
+{{#> markup/dynamic-level-h level=2 }}Postconditions{{/markup/dynamic-level-h~}}
+\begin{itemize}
+{{#each symbol.doc.postconditions}}
+\item {{>doc/block .}}
+{{/each}}
+\end{itemize}
+
+{{/if}}
+{{#if symbol.doc.sees}}
+
+{{#> markup/dynamic-level-h level=2 }}See Also{{/markup/dynamic-level-h~}}
+{{#each symbol.doc.sees}}
+{{>doc/block .}}
+
+{{/each}}
+
+{{/if}}
+{{#if (and (eq symbol.kind "namespace") @root.config.multipage @root.config.global-namespace-index (eq @root.symbol.kind "namespace") (not @root.symbol.name) (not @root.symbol.parent)) }}
+{{#each symbol.members.namespaces}}
+{{#if isRegular}}
+{{#> markup/dynamic-level-h id=null }}{{> symbol/qualified-name . }} namespace{{/markup/dynamic-level-h~}}
+{{> symbol symbol=. id=null traversing-global-namespace=true }}
+{{/if}}
+{{/each}}
+{{/if}}

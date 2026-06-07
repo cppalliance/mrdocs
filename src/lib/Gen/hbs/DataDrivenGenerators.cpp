@@ -95,10 +95,12 @@ maybeRegister(std::filesystem::path const& dir)
         return {};
     }
     std::string const name = dir.filename().string();
-    MRDOCS_TRY(EscapeMap escapeMap, loadGeneratorMetadata(yamlPath));
+    MRDOCS_TRY(GeneratorManifest manifest, loadGeneratorMetadata(yamlPath));
     (void)installGenerator(
         std::make_unique<HandlebarsGenerator>(
-            name, name, name, std::move(escapeMap)));
+            name, name, name,
+            std::move(manifest.escape),
+            std::move(manifest.extends)));
     return {};
 }
 
@@ -125,18 +127,18 @@ scanGeneratorDir(std::string_view generatorDir)
 
 } // (anon)
 
-Expected<EscapeMap>
+Expected<GeneratorManifest>
 loadGeneratorMetadata(std::string_view yamlPath)
 {
     MRDOCS_TRY(std::string text, files::getFileText(yamlPath));
     llvm::SourceMgr sm;
     llvm::yaml::Stream stream(text, sm);
 
-    EscapeMap map;
+    GeneratorManifest manifest;
     llvm::yaml::document_iterator docIt = stream.begin();
     if (docIt == stream.end())
     {
-        return map;
+        return manifest;
     }
     llvm::yaml::Node* const rootNode = docIt->getRoot();
     if (rootNode == nullptr ||
@@ -144,7 +146,7 @@ loadGeneratorMetadata(std::string_view yamlPath)
     {
         // Empty document: file with no content, only comments, or a
         // literal `null`. All of these mean "no rules".
-        return map;
+        return manifest;
     }
     llvm::yaml::MappingNode* const root =
         llvm::dyn_cast<llvm::yaml::MappingNode>(rootNode);
@@ -163,20 +165,35 @@ loadGeneratorMetadata(std::string_view yamlPath)
             continue;
         }
         llvm::SmallString<16> keyBuf;
-        if (keyNode->getValue(keyBuf) != "escape")
+        llvm::StringRef const keyStr = keyNode->getValue(keyBuf);
+        if (keyStr == "extends")
         {
+            llvm::yaml::ScalarNode* const extNode =
+                llvm::dyn_cast_or_null<llvm::yaml::ScalarNode>(pair.getValue());
+            if (!extNode)
+            {
+                return Unexpected(formatError(
+                    "{}: 'extends' must be a scalar", yamlPath));
+            }
+            llvm::SmallString<32> valBuf;
+            llvm::StringRef const valStr = extNode->getValue(valBuf);
+            manifest.extends.assign(valStr.data(), valStr.size());
             continue;
         }
-        llvm::yaml::MappingNode* const escNode =
-            llvm::dyn_cast_or_null<llvm::yaml::MappingNode>(pair.getValue());
-        if (!escNode)
+        if (keyStr == "escape")
         {
-            return Unexpected(formatError(
-                "{}: 'escape' must be a mapping", yamlPath));
+            llvm::yaml::MappingNode* const escNode =
+                llvm::dyn_cast_or_null<llvm::yaml::MappingNode>(pair.getValue());
+            if (!escNode)
+            {
+                return Unexpected(formatError(
+                    "{}: 'escape' must be a mapping", yamlPath));
+            }
+            MRDOCS_TRY(populateEscapeFromMapping(*escNode, manifest.escape, yamlPath));
+            continue;
         }
-        MRDOCS_TRY(populateEscapeFromMapping(*escNode, map, yamlPath));
     }
-    return map;
+    return manifest;
 }
 
 Expected<void>
