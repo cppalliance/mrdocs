@@ -13,6 +13,7 @@
 export type ScopeKey =
     | "golden-tests"
     | "tests"
+    | "examples"
     | "source"
     | "docs"
     | "ci"
@@ -115,6 +116,7 @@ export const scopeDisplayOrder: ScopeKey[] = [
     "source",
     "tests",
     "golden-tests",
+    "examples",
     "docs",
     "ci",
     "build",
@@ -135,6 +137,7 @@ export const codeChangeScopes: ReadonlySet<ScopeKey> = new Set([
     "source",
     "tests",
     "golden-tests",
+    "examples",
     "build",
     "third-party",
 ]);
@@ -268,9 +271,19 @@ const scopeRules: ScopeRule[] = [
             /^docs\/website\/snippets\//i,
         ],
     },
+    // examples/** are runnable fixtures paired with the documentation:
+    // each one ships a real {cpp} program plus its mrdocs configuration
+    // and the rendered output, exercised by a ctest entry. They have
+    // their own scope so the source bucket reflects actual library
+    // changes and the size warning does not trip on what is effectively
+    // a doc/test addition.
+    {
+        scope: "examples",
+        patterns: [/^examples\//i],
+    },
     {
         scope: "source",
-        patterns: [/^src\//i, /^include\//i, /^examples\//i, /^share\//i, /^SourceFileNames\.cpp$/i],
+        patterns: [/^src\//i, /^include\//i, /^share\//i, /^SourceFileNames\.cpp$/i],
     },
     { scope: "docs", patterns: [/^docs\//i, /^README\.adoc$/i, /^Doxyfile/i] },
     { scope: "ci", patterns: [/^\.github\//, /^\.roadmap\//, /^\.gitignore$/i, /^\.gitattributes$/i, /^LICENSE\.txt$/i] },
@@ -348,6 +361,13 @@ export function summarizeScopes(files: FileChange[]): ScopeReport {
         },
         source: {
             scope: "source",
+            files: 0,
+            additions: 0,
+            deletions: 0,
+            status: { added: 0, modified: 0, removed: 0, renamed: 0, other: 0 },
+        },
+        examples: {
+            scope: "examples",
             files: 0,
             additions: 0,
             deletions: 0,
