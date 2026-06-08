@@ -1,0 +1,158 @@
+= Reference
+:mrdocs:
+
+[#circle]
+== circle
+
+A circle implementation&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class circle
+    : public link:#shape[shape]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#shape[shape]`
+| A base class declaring a virtual `draw` method&period;
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#circle-2constructor[`circle`]         [.small]#[constructor]#
+| Construct a circle of the given radius&period;
+| link:#shape-draw[`draw`]  [.small]#[virtual]#
+| Render the shape&period;
+|===
+
+=== Private Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#circle-draw[`draw`]  [.small]#[virtual]#
+| The private override of `shape&colon;&colon;draw`&period;
+|===
+
+[#circle-2constructor]
+== link:#circle[circle]::circle
+
+Construct a circle of the given radius&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+circle(double r);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *r*
+| The value to construct from
+|===
+
+[#circle-draw]
+== link:#circle[circle]::draw
+
+The private override of `shape&colon;&colon;draw`&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+void
+draw() override;
+----
+
+[#shape]
+== shape
+
+A base class declaring a virtual `draw` method&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct shape;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#shape-2destructor[`&#126;shape`] [.small]#[destructor]# [.small]#[virtual]#
+| Destructor
+| link:#shape-draw[`draw`]  [.small]#[virtual]#
+| Render the shape&period;
+|===
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| link:#circle[`circle`]
+| A circle implementation&period;
+|===
+
+[#shape-2destructor]
+== link:#shape[shape]::&#126;shape
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+virtual
+&#126;shape() = default;
+----
+
+[#shape-draw]
+== link:#shape[shape]::draw
+
+Render the shape&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+void
+draw() = 0;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

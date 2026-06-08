@@ -1,0 +1,71 @@
+= Reference
+:mrdocs:
+
+[#sqrt]
+== sqrt
+
+Compute the integer square root&period;
+
+=== Synopsis
+
+Declared in `&lt;sqrt&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+&lsqb;&lsqb;nodiscard&rsqb;&rsqb;
+constexpr
+T
+sqrt(T value) noexcept
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Returns the integer square root of `value` via bit manipulation&period;
+
+=== Complexity
+
+Logarithmic in `value`&period;
+
+[NOTE]
+====
+Returns zero for zero input&period;
+
+====
+
+=== Return Value
+
+The integer square root of `value`&period;
+
+=== Template Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *T*
+| An integral type&period;
+|===
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *value*
+| The integral value, which must be non&hyphen;negative&period;
+|===
+
+=== Preconditions
+
+* `value &gt;&equals; 0`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

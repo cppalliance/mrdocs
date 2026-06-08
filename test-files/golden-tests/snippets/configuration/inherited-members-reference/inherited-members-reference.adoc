@@ -1,0 +1,114 @@
+= Reference
+:mrdocs:
+
+[#figure]
+== figure
+
+A drawable figure&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;reference&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct figure;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#figure-draw[`draw`] 
+| Render the figure&period;
+|===
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| link:#square[`square`]
+| A square&period;
+|===
+
+[#figure-draw]
+== link:#figure[figure]::draw
+
+Render the figure&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;reference&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+draw();
+----
+
+[#square]
+== square
+
+A square&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;reference&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct square
+    : link:#figure[figure]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#figure[figure]`
+| A drawable figure&period;
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#square-2constructor[`square`]         [.small]#[constructor]#
+| Construct a square of the given side&period;
+| link:#figure-draw[`draw`] 
+| Render the figure&period;
+|===
+
+[#square-2constructor]
+== link:#square[square]::square
+
+Construct a square of the given side&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;reference&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+square(double side);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *side*
+| The value to construct from
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

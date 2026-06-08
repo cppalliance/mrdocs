@@ -1,0 +1,61 @@
+= Reference
+:mrdocs:
+
+[#numerics-clamp]
+== numerics::clamp
+
+Constrain a value to the inclusive range `&lsqb;lo, hi&rsqb;`&period;
+
+=== Synopsis
+
+Declared in `&lt;numerics&sol;clamp&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+T
+clamp(
+    T const& v,
+    T const& lo,
+    T const& hi);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Returns `lo` when `v &lt; lo`, `hi` when `hi &lt; v`, otherwise `v`&period; Behavior is undefined if `hi &lt; lo`&period;
+
+=== Return Value
+
+A copy of `v`, `lo`, or `hi`, whichever lies within the range&period;
+
+=== Template Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *T*
+| A type comparable with `operator&lt;`&period;
+|===
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *v*
+| The value to constrain&period;
+| *lo*
+| The inclusive lower bound&period;
+| *hi*
+| The inclusive upper bound&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

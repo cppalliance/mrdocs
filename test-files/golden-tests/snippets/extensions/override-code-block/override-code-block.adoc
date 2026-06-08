@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#square]
+== square
+
+Square `value` and return the result&period;
+
+=== Synopsis
+
+Declared in `&lt;override&hyphen;code&hyphen;block&period;cpp&gt;`
+
+.Listing
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+square(double value);
+----
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

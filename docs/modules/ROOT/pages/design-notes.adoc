@@ -2,96 +2,74 @@
 
 == Why automate documentation?
 
-{cpp} API design is challenging.
-When you write a function signature or declare a class, it is at that moment that you are likely to have as much information as you will ever have about what it is supposed to do.
-The more time passes before you write the documentation, the less likely you are to remember all the details of what motivated the API in the first place.
+{cpp} API design is hard, and the moment you write a function signature is usually the moment you know the most about what it is supposed to do. Wait a week, and the details start to fade. Wait a month, and you reconstruct them from the call sites. Writing the documentation now, next to the declaration, captures what you already have in your head.
 
-In other words, because best and worst engineers are naturally lazy, the *temporal adjacency* of the {cpp} declaration to the documentation improves outcomes.
-For this reason, having the documentation be as close as possible to the declaration is ideal.
-That is, the *spatial adjacency* of the C++ declaration to the documentation improves outcomes because it facilitates temporal adjacency.
+Keeping the docs next to the code does two things at once:
 
-In summary, the automated extraction of reference documentation from {cpp} declarations containing attached documentation comments is ideal because:
+* It makes them easier to update when a signature changes (you see them in the same diff), and
+* It makes them more likely to be written in the first place (no separate file to open).
 
-* Temporally adjacent documentation is more comprehensive
-* Spatially adjacent documentation requires less effort to maintain
-* And causally connected documentation is more accurate
+Header-only handwritten reference documentation works for small libraries. They stop scaling as soon as the codebase outgrows what one developer can hold in memory, and they drift the moment a signature changes without an edit to the matching prose.
 
-From the perspective of engineers, however, the biggest advantage of automated documentation is that it implies a single source of truth for the API at a low cost.
-However, {cpp} codebases are notoriously challenging to document automatically because of constructs where the code needs to diverge from the intended API that represents the contract with the user.
-
-Tools like Doxygen typically require workarounds and manual intervention via preprocessor macros to produce accurate documentation.
-These workarounds are problematic because they result in two versions of the code: the well-formed and the ill-formed versions.
-This subverts the single source of truth for the code.
-
-
+Generating the reference from the headers fixes the drift, but only if the generator reads those headers as the compiler does. Other tools often cannot do that, and the workaround is to keep a parallel ill-formed declaration just for the documentation tool. That defeats the point: the source code no longer reflects what is compiled.
 
 |===
-|  | Mr. Docs | Automatic | Manual | No Reference
+|  | Mr.Docs | Other Tools | Manual | No Reference
 
-| No workarounds | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
-| Nice for users | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
-| Single Source of Truth | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
-| Less Work for Developers | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16]
-| Always up-to-date | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Reader-friendly output | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Stays in sync with source | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| No source-code workarounds | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Low author overhead | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16]
+| Single source of truth | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
 |===
 
-* By providing no reference to users, they are forced to read header files to understand the API.
-This is a problem because header files are not always the best source of truth for the API.
-Developers familiar with https://cppreference.com[cppreference.com,window=_blank] will know that the documentation there is often more informative than the header files.
-* A common alternative is to provide a manual reference to the API.
-Developers duplicate the signatures, which requires extra work.
-This strategy tends to work well for small libraries and allows the developer to express the contract with the user directly.
-However, as the single source of truth is lost, it becomes unmanageable as the codebase grows.
-When the declaration changes, they forget to edit the docs, and the reference becomes out of date.
-* In this case, it looks like the best solution is to automate the documentation.
-The causal connection between the declaration and the generated documentation improves outcomes.
-That's when developers face difficulties with existing tools like Doxygen, which require workarounds and manual intervention to produce accurate documentation.
-The workarounds mean that there are two versions of the code: the well-formed and the ill-formed versions.
-* The philosophy behind Mr.Docs is to provide solutions to these workarounds so that the single source of truth can be maintained with minimal effort by developers.
-With Mr.Docs, the documented {cpp} code should be the same as the code that is compiled.
+In other words, Mr.Docs gives users a presentable reference section without extra work for developers. It aims to address the reasons developers had to resort to workarounds in their code, so the documented {cpp} code remains the compiled {cpp} code.
 
 == Customization
 
-Once the documentation is extracted from the code, it is necessary to format it in a way that is useful to the user.
-This usually involves generating output files that match the documentation's content to the user's needs.
+Extraction turns the headers into a corpus. What readers then see depends on which generator runs over that corpus and how its templates and helpers are wired up. Mr.Docs offers three ways to customize that output, from least to most involved:
 
-A limitation of existing tools like Doxygen is that their output formats are not very customizable.
-It supports minor customization in the output style and, for custom content formats, it requires much more complex workflows, like generating XML files and writing secondary applications to process them.
+* Configure an existing generator. The xref:generators/index.adoc[built-in generators] (HTML, AsciiDoc, XML) accept template overrides and helper functions, so you change the look without writing {cpp}. Most projects stop here.
+* Write a xref:extensions/data-driven-generators.adoc[data-driven generator]. Drop a directory of https://handlebarsjs.com/[Handlebars^] templates into an addon, and Mr.Docs registers a new output format.
+* Link xref:extensions/as-library.adoc[`mrdocs-core`] and write a custom cpp:Generator[] subclass. Use this when you need to compare two corpora, run multi-pass analysis, or emit a binary format.
 
-MrDocs supports multiple output formats and customization options.
-In practice, MrDocs attempts to provide three levels of customization:
+Mr.Docs deliberately does not generate the prose around the reference: overviews, tutorials, design notes like this one. Write those as ordinary https://asciidoc.org/[AsciiDoc^] or https://commonmark.org/[Markdown^] next to the generated pages. The xref:extensions/antora.adoc[Antora extensions] wire the two together so the hand-written prose can link into the generated reference with a `cpp:` macro.
 
-* At the first level, the user can use an existing generator and customize its templates and helper functions.
-* The user can write a MrDocs plugin at a second level that defines a new generator.
-* At a third level, it can use a generator for a structured file format and consume the output in a more uncomplicated secondary application or script.
+== Special {cpp} constructs
 
-These multiple levels of complexity mean developers can focus solely on the documentation content.
-In practice, developers rarely need new generators and are usually only interested in changing how an existing generator formats the output.
-Removing the necessity of writing and maintaining a secondary application only to customize the output via XML files can save these developers an immense amount of time.
+Mr.Docs parses {cpp} with https://clang.llvm.org/docs/LibTooling.html[Clang's libtooling API], so anything that compiles is in the corpus, including https://en.cppreference.com/w/cpp/language/templates[templates^], https://en.cppreference.com/w/cpp/language/constraints[concepts^], deduced return types, https://en.cppreference.com/w/cpp/language/partial_specialization[partial specializations^], and https://en.cppreference.com/w/cpp/language/coroutines[coroutines^]. Getting the construct into the corpus is the easy part; rendering it the way a reader expects is where the options and metadata commands below come in.
 
-=== Custom Main Pages
+[.text-center]
+*Implementation details*
 
-This customized design means MrDocs does not need to support custom main pages directly. Instead, you can create your own by writing your markup files. These pages are authored entirely by the user and can be seamlessly combined with the MrDocs output, since the output is designed to be customized to your needs.
+Private and helper code often has to live next to the public API in {cpp} headers, and choosing what to expose is an API design decision. xref:configuration/filters.adoc[Filters] decide what enters the corpus at all: xref:configuration/reference.adoc#include-symbols_option[`include-symbols`] keeps a namespace, xref:configuration/reference.adoc#exclude-symbols_option[`exclude-symbols`] drops sub-trees inside it. xref:configuration/reference.adoc#implementation-defined_option[`implementation-defined`] drops a page entirely and renders every reference to the symbol as `+/* implementation-defined */+`. xref:configuration/reference.adoc#see-below_option[`see-below`] is the gentler form: the page stays but the synopsis collapses to `+/* see-below */+`. The same effect is available per-symbol from the doc comment with xref:commands/reference.adoc#cmd-implementation-defined[`@implementationdefined`] and xref:commands/reference.adoc#cmd-see-below[`@seebelow`].
 
-== {cpp} Constructs
+[.text-center]
+*Overload sets*
 
-To deal with the complexity of {cpp} constructs, MrDocs uses clang's libtooling API.
-That means MrDocs understands all {cpp}: if clang can compile it, MrDocs knows about it.
+A {cpp} overload set is many functions sharing a name. The default rendering is one page per signature; xref:configuration/reference.adoc#overloads_option[`overloads`] merges them into a single page so the reader sees the whole set at once. Mr.Docs picks a canonical signature for the page title and lists each overload underneath with its own parameter table.
 
-Here are a few constructs MrDocs attempts to understand and document automatically from the metadata:
+[.text-center]
+*SFINAE constraints and concepts*
 
-* Overload sets
-* Private APIs
-* Unspecified Return Types
-* Concepts
-* Typedefs
-* Namespace Aliases
-* Constants
-* Automatic Related Types
-* Macros
-* SFINAE
-* Hidden Base Classes
-* Hidden EBO
-* Niebloids
-* Coroutines
+A function constrained with https://en.cppreference.com/w/cpp/types/enable_if[`enable_if`^], a https://en.cppreference.com/w/cpp/language/constraints[`requires` clause^], or a concept on its return type has a different signature from its unconstrained sibling. Readers care about the constraint, not about the spelling of `typename std::enable_if<...>::type`. The xref:configuration/reference.adoc#sfinae_option[`sfinae`] option lifts the constraint into a "Requires" section attached to the signature and renders the return type as if the constraint were not there. Concepts and `requires` clauses go through the same path, so each constraint is documented as a named requirement rather than as type-system machinery.
 
+[.text-center]
+*Algorithm function objects*
+
+An https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_object[Algorithm Function Object^] is a https://en.cppreference.com/w/cpp/language/constexpr[`constexpr`^] variable of an unnamed type with a single `operator()`. The variable is what the caller invokes; the type is an implementation detail. xref:configuration/reference.adoc#auto-function-objects_option[`auto-function-objects`] detects this pattern and pulls the synopsis from the type's `operator()`. When the type has extra members that defeat auto-detection, xref:commands/reference.adoc#cmd-function-object[`@functionobject`] on the variable forces the same treatment.
+
+[.text-center]
+*Inferred metadata*
+
+The first sentence of a doc comment is the symbol's xref:commands/reference.adoc#cmd-summary[brief] by default. xref:configuration/reference.adoc#auto-relates_option[`auto-relates`] infers xref:commands/reference.adoc#cmd-relates[`@relates`] from the first parameter type of a free function. xref:configuration/reference.adoc#auto-function-metadata_option[`auto-function-metadata`] lifts a xref:commands/reference.adoc#cmd-parameters[`@param`], xref:commands/reference.adoc#cmd-returns[`@returns`], or xref:commands/reference.adoc#cmd-exceptions[`@throws`] written on a base-class virtual into its overrides. These are opt-in shortcuts; everything they infer can also be written explicitly with the matching xref:commands/metadata.adoc[metadata command].
+
+[.text-center]
+*Inherited members*
+
+Multiple inheritance, https://en.cppreference.com/w/cpp/language/ebo[EBO^], and helper-base patterns produce members that are inherited but read as part of the derived class's interface. Mr.Docs lists inherited members on the derived class's page so readers do not have to chase the inheritance chain. xref:configuration/reference.adoc#inherit-base-members_option[`inherit-base-members`] picks how, and distinguishes ordinary inheritance from helper-base patterns like https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern[CRTP^] and EBO, so the latter are not presented as user-facing members.
+
+[.text-center]
+*Resolved types and aliases*
+
+A few constructs are visible to Mr.Docs only because libtooling drives the front-end. Deduced return types (https://en.cppreference.com/w/cpp/language/auto[`auto`^], https://en.cppreference.com/w/cpp/language/decltype[`decltype(auto)`^]) are resolved against their definitions, so a function declared `auto` can show what it returns. Type aliases (https://en.cppreference.com/w/cpp/language/typedef[typedefs^], https://en.cppreference.com/w/cpp/language/type_alias[`using` declarations^], https://en.cppreference.com/w/cpp/language/namespace_alias[namespace aliases^]) carry their target through the corpus, so a function declared in terms of an alias resolves to the underlying symbol when readers click through. Concepts get their own pages with the `requires` body intact.

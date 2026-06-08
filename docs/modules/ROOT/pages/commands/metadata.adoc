@@ -1,0 +1,91 @@
+= Metadata Commands
+
+A metadata command attaches a structured fact to the symbol instead of adding prose to the description. MrDocs renders those facts in dedicated places: the parameter table, the return-value section, the list of exceptions, and so on.
+
+== Summary
+
+The first sentence of a doc comment is the symbol's xref:commands/reference.adoc#cmd-summary[summary] by default. Reach for `@brief` (or `@short`) only when the opening sentence is not the summary you want.
+
+.Summary
+[source,cpp]
+----
+include::example$snippets/commands/summary.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/summary.adoc[tags=!footer]
+========
+
+== Parameters and return value
+
+xref:commands/reference.adoc#cmd-parameters[`@param`] documents one function parameter; MrDocs matches the name against the signature, and an optional `[in]`, `[out]`, or `[in,out]` records how data flows. xref:commands/reference.adoc#cmd-template-parameters[`@tparam`] does the same for template parameters, and xref:commands/reference.adoc#cmd-returns[`@returns`] describes what the function hands back.
+
+.Parameters, template parameters, and return value together
+[source,cpp]
+----
+include::example$snippets/commands/resample.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/resample.adoc[tags=!footer]
+========
+
+== Errors and contracts
+
+xref:commands/reference.adoc#cmd-exceptions[`@throws`] names an exception the function may raise and the condition that triggers it; repeat it for each one. xref:commands/reference.adoc#cmd-preconditions[`@pre`] and xref:commands/reference.adoc#cmd-postconditions[`@post`] state what must hold before the call and what is guaranteed after it.
+
+.Preconditions, postconditions, and exceptions together
+[source,cpp]
+----
+include::example$snippets/commands/transfer.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/transfer.adoc[tags=!footer]
+========
+
+== Relationships
+
+xref:commands/reference.adoc#cmd-relates[`@relates`] ties a free function to a class, listing it among that class's non-member functions.
+
+.Relates
+[source,cpp]
+----
+include::example$snippets/commands/relates.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/relates.adoc[tags=!footer]
+========
+
+xref:commands/reference.adoc#cmd-see-also[`@see`] adds an entry to the "See also" section. Its argument is an ordinary paragraph, so put an `@ref` inside it to link a symbol.
+
+.See also
+[source,cpp]
+----
+include::example$snippets/commands/see-also.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/see-also.adoc[tags=!footer]
+========
+
+== Symbol flags
+
+Three commands set a flag on the symbol rather than producing visible text. xref:commands/reference.adoc#cmd-function-object[`@functionobject`] marks a `constexpr` variable as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)^]: put it on the variable, document the type's `operator()` (that is where the AFO's signature and text come from), and reach for it only when the type has extra members that defeat auto-detection. xref:commands/reference.adoc#cmd-see-below[`@seebelow`] renders a declaration's body as `pass:[/* see below */]`. xref:commands/reference.adoc#cmd-implementation-defined[`@implementationdefined`] hides a type whose definition is not part of the public interface, so its uses render as `pass:[/* implementation-defined */]`.
+
+.A small regex engine using all three flags
+[source,cpp]
+----
+include::example$snippets/commands/regex.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/regex.adoc[tags=!footer]
+========

@@ -1,0 +1,3 @@
+## Pattern: handwritten compilation database, no build system.
+source-root: ..
+compilation-database: compile_commands.json

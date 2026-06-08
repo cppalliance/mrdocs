@@ -1,0 +1,930 @@
+{
+  "block_commands": {
+    "markup_blocks": [
+      {
+        "node_type": "ParagraphBlock",
+        "heading": "Paragraph",
+        "kind": "Block",
+        "syntaxes": [
+          "(plain prose)",
+          "@details { text }"
+        ],
+        "partial": "commands/paragraph.adoc",
+        "examples": [
+          "commands/paragraph"
+        ],
+        "see_also": [
+          "Heading"
+        ],
+        "description": "A paragraph is the most basic block structure in a doc comment.\nAny plain text that is not part of another command is treated as a paragraph.\nConsecutive lines of text are merged into a single paragraph; a blank line starts a new one.\n\nThe `@details` command is an explicit way to begin the detailed description section, but in practice you rarely need it -- any text after the brief summary is already treated as detail paragraphs.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Paragraph",
+            "description": "The paragraph body. Plain prose is detected automatically; `@details` begins the detailed-description section explicitly."
+          }
+        ]
+      },
+      {
+        "node_type": "HeadingBlock",
+        "heading": "Heading",
+        "kind": "Block",
+        "syntaxes": [
+          "@par [title] { content }"
+        ],
+        "partial": "commands/heading.adoc",
+        "examples": [
+          "commands/heading"
+        ],
+        "see_also": [
+          "Paragraph"
+        ],
+        "description": "The `@par` command creates a named heading (subsection) inside a doc comment.\nThe text on the same line as `@par` becomes the heading title; subsequent lines form the body of that section.",
+        "parameters": [
+          {
+            "name": "title",
+            "type": "Text",
+            "description": "The heading text, on the same line as `@par`. If omitted, no heading is emitted."
+          },
+          {
+            "name": "content",
+            "type": "Paragraph",
+            "description": "The section body, on the lines after `@par`."
+          }
+        ]
+      },
+      {
+        "node_type": "ListBlock",
+        "heading": "List",
+        "kind": "Block",
+        "syntaxes": [
+          "@li { item }",
+          "@arg { item }",
+          "- (Markdown bullet)"
+        ],
+        "partial": "commands/list.adoc",
+        "examples": [
+          "commands/list"
+        ],
+        "see_also": [],
+        "description": "Creates an unordered (bulleted) list inside a doc comment.\nYou can use the Javadoc/Doxygen `@li` command, its alias `@arg`, or Markdown-style dash bullets (`- `).\nAll three syntaxes produce the same list structure.",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "Paragraph",
+            "description": "The text of one list item."
+          }
+        ]
+      },
+      {
+        "node_type": "TableBlock",
+        "heading": "Table",
+        "kind": "Block",
+        "syntaxes": [
+          "<table>"
+        ],
+        "partial": "commands/table.adoc",
+        "examples": [
+          "commands/table"
+        ],
+        "see_also": [],
+        "description": "Creates a table inside a doc comment using HTML table markup.\nMrDocs parses standard HTML `<table>`, `<tr>`, `<th>`, and `<td>` elements and converts them to a table in the output format."
+      },
+      {
+        "node_type": "CodeBlock",
+        "heading": "Code Block",
+        "kind": "Block",
+        "syntaxes": [
+          "@code[{.lang}] ... @endcode",
+          "@verbatim ... @endverbatim"
+        ],
+        "partial": "commands/code-block.adoc",
+        "examples": [
+          "commands/code-block"
+        ],
+        "see_also": [],
+        "description": "Inserts a block of preformatted code into the documentation.\nEverything between the opening and closing tags is preserved verbatim, including whitespace and indentation.\n\n`@code` and `@verbatim` produce the same output.\nUse `@code` for source code and `@verbatim` for other preformatted text, though MrDocs treats them identically.",
+        "parameters": [
+          {
+            "name": "lang",
+            "type": "Language",
+            "description": "Optional language hint for syntax highlighting, e.g. `cpp`."
+          },
+          {
+            "name": "code",
+            "type": "Code",
+            "description": "The verbatim source between the opening command and `@endcode`/`@endverbatim`."
+          }
+        ]
+      },
+      {
+        "node_type": "AdmonitionBlock",
+        "heading": "Admonitions",
+        "kind": "Block",
+        "syntaxes": [
+          "@note { text }",
+          "@warning { text }",
+          "@tip { text }",
+          "@important { text }",
+          "@caution { text }"
+        ],
+        "partial": "commands/admonitions.adoc",
+        "examples": [
+          "commands/admonitions"
+        ],
+        "see_also": [],
+        "description": "Admonition commands wrap a paragraph in a callout block.\nThe five kinds differ in urgency:\n\n* `@note` -- supplementary information the reader should be aware of.\n* `@tip` -- a helpful suggestion or best practice.\n* `@important` -- information critical to correct usage.\n* `@warning` -- something that could lead to unexpected behavior if ignored.\n* `@caution` -- something that could cause data loss, security issues, or other serious problems.\n\nThe text following the command becomes the body of the admonition block.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Paragraph",
+            "description": "The admonition body."
+          }
+        ]
+      },
+      {
+        "node_type": "QuoteBlock",
+        "heading": "Quote",
+        "kind": "Planned",
+        "syntaxes": [
+          "> text"
+        ],
+        "partial": "commands/quote.adoc",
+        "examples": [],
+        "see_also": [
+          "Paragraph"
+        ],
+        "planned": true,
+        "description": "The AST defines a Quote node, but no parser path produces it yet.\nWhen that lands, it will hold a blockquote inside a doc comment.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Paragraph",
+            "description": "The quoted text; prefix each line with `>`."
+          }
+        ]
+      },
+      {
+        "node_type": "ThematicBreakBlock",
+        "heading": "Thematic Break",
+        "kind": "Planned",
+        "syntaxes": [
+          "---",
+          "***",
+          "___"
+        ],
+        "partial": "commands/thematic-break.adoc",
+        "examples": [],
+        "see_also": [
+          "Heading"
+        ],
+        "planned": true,
+        "description": "The AST defines a ThematicBreak node, but no parser path produces it yet.\nWhen that lands, it will render as a horizontal rule between doc-comment sections."
+      },
+      {
+        "node_type": "DefinitionListBlock",
+        "heading": "Definition List",
+        "kind": "Planned",
+        "syntaxes": [
+          "term : definition"
+        ],
+        "partial": "commands/definition-list.adoc",
+        "examples": [],
+        "see_also": [
+          "List"
+        ],
+        "planned": true,
+        "description": "The AST defines a DefinitionList node, but no parser path produces it yet.\nWhen that lands, it will hold a definition list of term-description pairs.",
+        "parameters": [
+          {
+            "name": "term",
+            "type": "Text",
+            "description": "The term being defined."
+          },
+          {
+            "name": "definition",
+            "type": "Paragraph",
+            "description": "A definition, on a line prefixed with `:`."
+          }
+        ]
+      },
+      {
+        "node_type": "FootnoteDefinitionBlock",
+        "heading": "Footnote Definition",
+        "kind": "Planned",
+        "syntaxes": [
+          "[^label]: text"
+        ],
+        "partial": "commands/footnote-definition.adoc",
+        "examples": [],
+        "see_also": [
+          "Footnote Reference"
+        ],
+        "planned": true,
+        "description": "The AST defines a FootnoteDefinition node, but no parser path produces it yet.\nWhen that lands, it will hold the body of a footnote that inline content can reference.",
+        "parameters": [
+          {
+            "name": "label",
+            "type": "Text",
+            "description": "The footnote identifier that references point to."
+          },
+          {
+            "name": "text",
+            "type": "Paragraph",
+            "description": "The footnote body."
+          }
+        ]
+      },
+      {
+        "node_type": "MathBlock",
+        "heading": "Math Block",
+        "kind": "Planned",
+        "syntaxes": [
+          "$$ expression $$"
+        ],
+        "partial": "commands/math-block.adoc",
+        "examples": [],
+        "see_also": [
+          "Math"
+        ],
+        "planned": true,
+        "description": "The AST defines a block-level Math node, but no parser path produces it yet.\nThis is the block form, separate from the inline `$...$` and `$$...$$` math that already works.\nWhen that lands, it will hold a standalone math expression as its own block.",
+        "parameters": [
+          {
+            "name": "expression",
+            "type": "Math",
+            "description": "A standalone LaTeX math expression."
+          }
+        ]
+      }
+    ],
+    "metadata_blocks": [
+      {
+        "node_type": "BriefBlock",
+        "heading": "Summary",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@brief { text }",
+          "@short { text }"
+        ],
+        "partial": "commands/summary.adoc",
+        "examples": [
+          "commands/summary"
+        ],
+        "see_also": [
+          "Paragraph"
+        ],
+        "description": "The `@brief` command marks its content as the brief description (summary) of the documented symbol.\nThe first sentence of a doc comment is automatically treated as the brief, so you only need `@brief` when you want to override that behavior or when the automatic detection does not capture what you intend.\n\n`@short` is an alias for `@brief`.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Paragraph",
+            "description": "The brief, one-sentence summary of the symbol."
+          }
+        ]
+      },
+      {
+        "node_type": "ParamBlock",
+        "heading": "Parameters",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@param[<dir>] <name> { description }"
+        ],
+        "partial": "commands/parameters.adoc",
+        "examples": [
+          "commands/parameters"
+        ],
+        "see_also": [
+          "Template Parameters",
+          "Returns"
+        ],
+        "description": "The `@param` command documents a function parameter.\nWrite one `@param` per parameter you want to describe.\nThe parameter name follows the command, and everything after it is the description.\n\nAn optional direction indicator can appear in square brackets between `@param` and the parameter name to specify how data flows through the parameter.",
+        "parameters": [
+          {
+            "name": "dir",
+            "type": "Direction",
+            "description": "Optional parameter direction."
+          },
+          {
+            "name": "name",
+            "type": "Symbol",
+            "description": "The function parameter being documented; must match the signature."
+          },
+          {
+            "name": "description",
+            "type": "Paragraph",
+            "description": "Description of the parameter."
+          }
+        ]
+      },
+      {
+        "node_type": "TParamBlock",
+        "heading": "Template Parameters",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@tparam <name> { description }"
+        ],
+        "partial": "commands/template-parameters.adoc",
+        "examples": [
+          "commands/template-parameters"
+        ],
+        "see_also": [
+          "Parameters"
+        ],
+        "description": "The `@tparam` command documents a template parameter.\nIt works like `@param`, but for type, non-type, and template-of-template parameters.",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "Symbol",
+            "description": "The template parameter; must match the template declaration."
+          },
+          {
+            "name": "description",
+            "type": "Paragraph",
+            "description": "Description of the template parameter."
+          }
+        ]
+      },
+      {
+        "node_type": "ReturnsBlock",
+        "heading": "Returns",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@return { description }",
+          "@returns { description }",
+          "@result { description }"
+        ],
+        "partial": "commands/returns.adoc",
+        "examples": [
+          "commands/returns"
+        ],
+        "see_also": [
+          "Parameters",
+          "Exceptions"
+        ],
+        "description": "The `@return` command documents the return value of a function.\nAll three spellings are equivalent.\nYou can use multiple `@return` commands when a function returns a composite value and you want to describe each part separately.",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "Paragraph",
+            "description": "Description of the return value."
+          }
+        ]
+      },
+      {
+        "node_type": "ThrowsBlock",
+        "heading": "Exceptions",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@throw <exception> { description }",
+          "@throws <exception> { description }",
+          "@exception <exception> { description }"
+        ],
+        "partial": "commands/exceptions.adoc",
+        "examples": [
+          "commands/exceptions"
+        ],
+        "see_also": [
+          "Returns",
+          "Preconditions"
+        ],
+        "description": "The `@throw` command documents an exception that a function may throw.\nAll three spellings are equivalent.\nThe exception type follows the command, and the rest of the line (and continuation lines) describe when or why the exception is thrown.",
+        "parameters": [
+          {
+            "name": "exception",
+            "type": "Symbol",
+            "description": "The exception type that may be thrown, e.g. `std::invalid_argument`."
+          },
+          {
+            "name": "description",
+            "type": "Paragraph",
+            "description": "When and why the exception is thrown."
+          }
+        ]
+      },
+      {
+        "node_type": "PreconditionBlock",
+        "heading": "Preconditions",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@pre { description }"
+        ],
+        "partial": "commands/preconditions.adoc",
+        "examples": [
+          "commands/preconditions"
+        ],
+        "see_also": [
+          "Postconditions",
+          "Exceptions"
+        ],
+        "description": "The `@pre` command documents a precondition that must hold before calling the function.\nYou can use multiple `@pre` commands to list several preconditions; each one renders as a separate bullet in a \"Preconditions\" section.",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "Paragraph",
+            "description": "A condition that must hold before the call."
+          }
+        ]
+      },
+      {
+        "node_type": "PostconditionBlock",
+        "heading": "Postconditions",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@post { description }"
+        ],
+        "partial": "commands/postconditions.adoc",
+        "examples": [
+          "commands/postconditions"
+        ],
+        "see_also": [
+          "Preconditions"
+        ],
+        "description": "The `@post` command documents a postcondition that is guaranteed after the function returns successfully.\nLike `@pre`, you can use multiple `@post` commands to list several postconditions; each renders as a separate bullet in a \"Postconditions\" section.",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "Paragraph",
+            "description": "A condition guaranteed after the call."
+          }
+        ]
+      },
+      {
+        "node_type": "SeeBlock",
+        "heading": "See-also",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@see { references }",
+          "@sa { references }"
+        ],
+        "partial": "commands/see-also.adoc",
+        "examples": [
+          "commands/see-also"
+        ],
+        "see_also": [
+          "Cross-reference"
+        ],
+        "description": "The `@see` command adds an entry to the \"See also\" section of the documented symbol.\nThe argument is parsed as inline content, so you can include cross-references, links, or plain text.\nMultiple `@see` commands produce multiple entries.\n\n`@sa` is a Doxygen-compatible alias for `@see`.",
+        "parameters": [
+          {
+            "name": "references",
+            "type": "Paragraph",
+            "description": "The text shown in the See Also section. Typically references to related symbols, but parsed as an ordinary paragraph."
+          }
+        ],
+        "note": "`@see` looks special, but its argument is just an ordinary paragraph. MrDocs does not auto-link names inside it (Doxygen's documentation is misleading on this point). To link to a symbol, use `@ref` inside the paragraph."
+      },
+      {
+        "node_type": "RelatesInline",
+        "heading": "Relates",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@relates <name>",
+          "@related <name>",
+          "@relatedalso <name>",
+          "@relatesalso <name>",
+          "@memberof <name>"
+        ],
+        "partial": "commands/relates.adoc",
+        "examples": [
+          "commands/relates"
+        ],
+        "see_also": [],
+        "description": "Declares that the documented free function is logically related to (or a member of) the specified class or struct. MrDocs stores each target in the symbol's `relates` field and renders it under Non-Member Functions. `@related`, `@relatedalso`, and `@relatesalso` are aliases for `@relates`; `@memberof` behaves the same way.",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "Symbol",
+            "description": "The class or struct this free function is related to."
+          }
+        ]
+      },
+      {
+        "flag": "FunctionObject",
+        "heading": "Function Object",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@functionobject",
+          "@functor"
+        ],
+        "partial": "commands/function-object.adoc",
+        "examples": [
+          "commands/function-object"
+        ],
+        "see_also": [],
+        "description": "Marks a `constexpr` variable as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)^] (the niebloid pattern: a callable object that stands in for a function). Place the command on the variable or on its function-object record; it never goes on `operator()`. MrDocs then documents the variable as a function whose signature and text come from the record's `operator()` overloads, falling back to the variable's own doc comment when `operator()` is undocumented. The record's own doc comment is not used. With `auto-function-objects` enabled (the default) a variable whose type has only `operator()` overloads is detected automatically, so the command is needed only when the type has extra public members that defeat detection. `@functor` is an alias for `@functionobject`.",
+        "note": "Document the `operator()`, not the variable or the record: that is where MrDocs takes the AFO's signature and description from."
+      },
+      {
+        "flag": "SeeBelow",
+        "heading": "See Below",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@seebelow"
+        ],
+        "partial": "commands/see-below.adoc",
+        "examples": [
+          "commands/see-below"
+        ],
+        "see_also": [],
+        "description": "Marks the symbol so its synopsis renders as `/* see below */` instead of the full declaration, for interfaces whose exact form is unspecified."
+      },
+      {
+        "flag": "ImplementationDefined",
+        "heading": "Implementation Defined",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@implementationdefined"
+        ],
+        "partial": "commands/implementation-defined.adoc",
+        "examples": [
+          "commands/implementation-defined"
+        ],
+        "see_also": [],
+        "description": "Marks the symbol as implementation-defined, so its details are hidden from the generated documentation."
+      }
+    ]
+  },
+  "inline_commands": {
+    "inline_formatting": [
+      {
+        "node_type": "EmphInline",
+        "heading": "Emphasis",
+        "kind": "Inline",
+        "syntaxes": [
+          "*text*",
+          "_text_",
+          "@a <word>",
+          "@e <word>",
+          "@em <word>",
+          "<em>text</em>"
+        ],
+        "partial": "commands/emphasis.adoc",
+        "examples": [
+          "commands/emphasis"
+        ],
+        "see_also": [
+          "Strong"
+        ],
+        "description": "Renders its content in italic (emphasized) style.\nUse `*` or `_` around the emphasized text.\nThe Doxygen commands `@a`, `@e`, and `@em` emphasize the single word that follows them.",
+        "parameters": [
+          {
+            "name": "word",
+            "type": "Text",
+            "description": "The word to emphasize (command form). The Markdown/HTML forms wrap a span of text."
+          }
+        ]
+      },
+      {
+        "node_type": "StrongInline",
+        "heading": "Strong",
+        "kind": "Inline",
+        "syntaxes": [
+          "**text**",
+          "__text__",
+          "@b <word>",
+          "@strong <word>",
+          "<strong>text</strong>"
+        ],
+        "partial": "commands/strong.adoc",
+        "examples": [
+          "commands/strong"
+        ],
+        "see_also": [
+          "Emphasis"
+        ],
+        "description": "Renders its content in bold (strong) style.\nUse `**` or `__` around the bold text.\nThe Doxygen commands `@b` and `@strong` bold the single word that follows them.",
+        "parameters": [
+          {
+            "name": "word",
+            "type": "Text",
+            "description": "The word to render bold (command form). The Markdown/HTML forms wrap a span of text."
+          }
+        ]
+      },
+      {
+        "node_type": "CodeInline",
+        "heading": "Code Span",
+        "kind": "Inline",
+        "syntaxes": [
+          "`text`",
+          "@c <word>",
+          "@p <word>",
+          "<code>text</code>"
+        ],
+        "partial": "commands/code-span.adoc",
+        "examples": [
+          "commands/code-span"
+        ],
+        "see_also": [
+          "Code Block"
+        ],
+        "description": "Renders its content in a monospace code font, inline within the surrounding text.\nMarkdown-style backtick delimiters wrap the text to be rendered as code.\nThe Doxygen commands `@c` and `@p` apply code formatting to the single word that follows them.\nThe HTML `<code>` tag is also recognized.",
+        "parameters": [
+          {
+            "name": "word",
+            "type": "Text",
+            "description": "The word to render as inline code (command form). The Markdown/HTML forms wrap a span of text."
+          }
+        ]
+      },
+      {
+        "node_type": "StrikethroughInline",
+        "heading": "Strikethrough",
+        "kind": "Inline",
+        "syntaxes": [
+          "~~text~~",
+          "<del>text</del>"
+        ],
+        "partial": "commands/strikethrough.adoc",
+        "examples": [
+          "commands/strikethrough"
+        ],
+        "see_also": [],
+        "description": "Renders its content with a horizontal line through the middle, for deleted or deprecated text.\nWrap the text in double tildes (`~~`).",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Text",
+            "description": "The text to strike through."
+          }
+        ]
+      },
+      {
+        "node_type": "HighlightInline",
+        "heading": "Highlight",
+        "kind": "Inline",
+        "syntaxes": [
+          "==text==",
+          "<mark>text</mark>"
+        ],
+        "partial": "commands/highlight.adoc",
+        "examples": [
+          "commands/highlight"
+        ],
+        "see_also": [],
+        "description": "Renders its content with a highlighted background, drawing attention to specific words or phrases.\nMarkdown-style double equals signs (`==`) wrap the text.\nThe HTML `<mark>` tag is also recognized.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Text",
+            "description": "The text to highlight."
+          }
+        ]
+      },
+      {
+        "node_type": "SuperscriptInline",
+        "heading": "Superscript",
+        "kind": "Inline",
+        "syntaxes": [
+          "^text^",
+          "<sup>text</sup>"
+        ],
+        "partial": "commands/superscript.adoc",
+        "examples": [],
+        "see_also": [
+          "Subscript"
+        ],
+        "description": "Renders its content as superscript, positioned above the baseline.\nUse for footnote markers, exponents, and ordinal indicators.\nWrap the text in carets (`^`).",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Text",
+            "description": "The text to raise as superscript."
+          }
+        ],
+        "planned": true
+      },
+      {
+        "node_type": "SubscriptInline",
+        "heading": "Subscript",
+        "kind": "Inline",
+        "syntaxes": [
+          "~text~",
+          "<sub>text</sub>"
+        ],
+        "partial": "commands/subscript.adoc",
+        "examples": [],
+        "see_also": [
+          "Superscript"
+        ],
+        "description": "Renders its content as subscript, positioned below the baseline.\nUse for chemical formulas, mathematical indices, and similar notation.\nWrap the text in single tildes (`~`).",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Text",
+            "description": "The text to lower as subscript."
+          }
+        ],
+        "planned": true
+      }
+    ],
+    "math": [
+      {
+        "node_type": "MathInline",
+        "heading": "Math",
+        "kind": "Inline",
+        "syntaxes": [
+          "$expression$ (inline)",
+          "$$expression$$ (display)"
+        ],
+        "partial": "commands/math.adoc",
+        "examples": [],
+        "see_also": [
+          "Code Span"
+        ],
+        "description": "Renders a mathematical expression.\nSingle dollar signs (`$...$`) produce an inline math span that flows within surrounding text.\nDouble dollar signs (`$$...$$`) produce a display math block, typically centered on its own line.\nThe content between the delimiters is treated as a literal math expression and is not parsed for Markdown or other formatting.",
+        "parameters": [
+          {
+            "name": "expression",
+            "type": "Math",
+            "description": "A LaTeX math expression; `$...$` inline, `$$...$$` display."
+          }
+        ],
+        "planned": true
+      }
+    ],
+    "links_and_images": [
+      {
+        "node_type": "LinkInline",
+        "heading": "Link",
+        "kind": "Inline",
+        "syntaxes": [
+          "[text](url)",
+          "<a href=\"url\">text</a>"
+        ],
+        "partial": "commands/link.adoc",
+        "examples": [
+          "commands/link"
+        ],
+        "see_also": [
+          "Cross-reference",
+          "Image"
+        ],
+        "description": "Creates a hyperlink to an external URL.\nThe Markdown form puts the visible text in square brackets and the URL in parentheses.\nThe HTML form uses an `<a>` tag with an `href` attribute.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "Text",
+            "description": "The link text."
+          },
+          {
+            "name": "url",
+            "type": "Path",
+            "description": "The destination URL."
+          }
+        ]
+      },
+      {
+        "node_type": "ImageInline",
+        "heading": "Image",
+        "kind": "Inline",
+        "syntaxes": [
+          "![alt](src)",
+          "<img src=\"src\" alt=\"alt\">",
+          "@image <format> <file> [\"caption\"]"
+        ],
+        "partial": "commands/image.adoc",
+        "examples": [],
+        "see_also": [
+          "Link"
+        ],
+        "description": "Embeds an image inline.\nThe Markdown form is an exclamation mark, alt text in square brackets, then the source path in parentheses.\nThe HTML form uses an `<img>` tag with `src` and `alt` attributes.",
+        "parameters": [
+          {
+            "name": "format",
+            "type": "Text",
+            "description": "Output format the image applies to, e.g. `html`."
+          },
+          {
+            "name": "file",
+            "type": "Path",
+            "description": "Path to the image file."
+          },
+          {
+            "name": "caption",
+            "type": "Text",
+            "description": "Optional caption."
+          }
+        ],
+        "planned": true
+      }
+    ],
+    "cross_references": [
+      {
+        "node_type": "ReferenceInline",
+        "heading": "Cross-reference",
+        "kind": "Inline",
+        "syntaxes": [
+          "@ref <name> [\"text\"]",
+          "@link <name> ... @endlink"
+        ],
+        "partial": "commands/cross-reference.adoc",
+        "examples": [
+          "commands/cross-reference"
+        ],
+        "see_also": [
+          "Link",
+          "See-also"
+        ],
+        "description": "Creates a cross-reference to another documented symbol.\nThe `@ref` command takes a symbol name (optionally namespace-qualified) and produces a link to that symbol's documentation page.\nQualified names use `::` separators (e.g., `@ref A::f1`, `@ref ::A::f1`).\nOperator names are supported (e.g., `@ref F::operator+`).",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "Symbol",
+            "description": "Qualified name of the symbol to link to."
+          },
+          {
+            "name": "text",
+            "type": "Text",
+            "description": "Optional display text for the link."
+          }
+        ]
+      },
+      {
+        "node_type": "FootnoteReferenceInline",
+        "heading": "Footnote Reference",
+        "kind": "Planned",
+        "syntaxes": [
+          "[^label]"
+        ],
+        "partial": "commands/footnote-reference.adoc",
+        "examples": [],
+        "see_also": [
+          "Footnote Definition"
+        ],
+        "planned": true,
+        "description": "The AST defines a FootnoteReference node, but no parser path produces it yet.\nWhen that lands, it will hold an inline reference to a footnote definition.",
+        "parameters": [
+          {
+            "name": "label",
+            "type": "Text",
+            "description": "The identifier of the footnote definition to reference."
+          }
+        ]
+      }
+    ],
+    "copy_directives": [
+      {
+        "node_type": "CopyDetailsInline",
+        "heading": "Copy",
+        "kind": "Inline",
+        "syntaxes": [
+          "@copydoc <reference>",
+          "@copybrief <reference>",
+          "@copydetails <reference>"
+        ],
+        "partial": "commands/copydoc.adoc",
+        "examples": [
+          "commands/copydoc"
+        ],
+        "see_also": [
+          "Copy Brief",
+          "Copy Details"
+        ],
+        "description": "Copy documentation from another symbol. `@copydoc` copies the whole doc comment (brief, description, and every metadata block); `@copybrief` copies only the brief; `@copydetails` copies only the detailed description. Useful for overloads, redeclarations, and wrappers that share documentation with another symbol.",
+        "parameters": [
+          {
+            "name": "reference",
+            "type": "Symbol",
+            "description": "The symbol whose documentation to copy."
+          }
+        ]
+      }
+    ],
+    "line_breaks": [
+      {
+        "node_type": "LineBreakInline",
+        "heading": "Line Break",
+        "kind": "Inline",
+        "syntaxes": [
+          "<br>",
+          "<br/>"
+        ],
+        "partial": "commands/line-break.adoc",
+        "examples": [],
+        "see_also": [
+          "Soft Break"
+        ],
+        "description": "The `<br>` HTML tag marks a hard line break inside inline content.\nMrDocs accepts both `<br>` and the self-closing `<br/>`.\nThe visible rendering is still being refined: the parser consumes the tag without emitting an explicit line-break element yet.",
+        "planned": true
+      },
+      {
+        "node_type": "SoftBreakInline",
+        "heading": "Soft Break",
+        "kind": "Planned",
+        "syntaxes": [
+          "(newline within a paragraph)",
+          "\\ (at end of line)"
+        ],
+        "partial": "commands/soft-break.adoc",
+        "examples": [],
+        "see_also": [
+          "Line Break"
+        ],
+        "planned": true,
+        "description": "The AST defines a SoftBreak node, but no parser path produces it yet.\nA soft break is a line break that renderers may collapse to a space, in contrast to the hard `<br>` break."
+      }
+    ]
+  }
+}

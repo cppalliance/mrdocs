@@ -109,10 +109,12 @@ function humanizePageType(pageType) {
 function humanizeFormat(format) {
     if (format === 'html') {
         return 'HTML';
-    } else if (format === 'adoc') {
-        return 'Asciidoc';
     } else if (format === 'adoc-asciidoc') {
-        return 'Rendered AsciiDoc';
+        // Single AsciiDoc column. We deliberately link to the
+        // rendered version (asciidoctor's default stylesheet, no
+        // customization) so the reader sees plain AsciiDoc output
+        // and gets a built-in cue that the look is itself customizable.
+        return 'AsciiDoc';
     } else if (format === 'xml') {
         return 'XML';
     }
@@ -160,6 +162,10 @@ function libraryLink(library) {
         return 'https://www.github.com/steve-downey/optional[Beman.Optional,window=_blank]';
     } else if (library === 'fmt') {
         return 'https://github.com/fmtlib/fmt[fmt,window=_blank]';
+    } else if (library === 'mp-units') {
+        return 'https://github.com/mpusz/mp-units[mp-units,window=_blank]';
+    } else if (library === 'mrdocs') {
+        return 'https://github.com/cppalliance/mrdocs[Mr.Docs,window=_blank]';
     }
     return humanizeLibrary(library);
 }
@@ -168,9 +174,16 @@ module.exports = function (registry) {
     registry.blockMacro('mrdocs-demos', function () {
         const self = this
         self.process(function (parent, target, attrs) {
+            // Each demos page is rendered once per component version. Show
+            // only the demos that match this page's version, so v0.0.5's
+            // page shows v0.0.5 demos and develop's page shows develop
+            // demos. The attribute is set by Antora.
+            const pageVersion = parent.getDocument().getAttribute(
+                'page-component-version')
             // Collect all demo URLs
             let finalDemoDirs = [];
-            const versions = getSubdirectoriesSync('https://mrdocs.com/demos/');
+            const versions = getSubdirectoriesSync('https://mrdocs.com/demos/')
+                .filter((v) => !pageVersion || v === pageVersion);
             for (const version of versions) {
                 const demoLibraries = getSubdirectoriesSync(`https://mrdocs.com/demos/${version}/`);
                 for (const demoLibrary of demoLibraries) {
@@ -198,11 +211,12 @@ module.exports = function (registry) {
                 }
             }
 
-            // Create tables
+            // Create tables. Each page renders only its own version (see
+            // the version filter above), so the per-version heading would
+            // just repeat the page title.
             let text = ''
             for (const version of allVersions) {
                 text += '\n'
-                text += `**${version}**\n\n`;
                 text += `|===\n`;
 
                 // Collect all unique page types, formats, and libraries for this version
@@ -231,9 +245,13 @@ module.exports = function (registry) {
                     return a.localeCompare(b);
                 });
 
-                // Sort versionFormats to have adoc, html, xml first
+                // Drop the raw `.adoc` format and keep only the
+                // rendered AsciiDoc (`adoc-asciidoc`); the single
+                // AsciiDoc column links to the rendered version.
+                versionFormats = versionFormats.filter(format => format !== 'adoc');
+                // Order columns HTML first, then AsciiDoc, then XML.
                 versionFormats.sort((a, b) => {
-                    const order = ['adoc-asciidoc', 'adoc', 'html', 'xml'];
+                    const order = ['html', 'adoc-asciidoc', 'xml'];
                     const aIndex = order.indexOf(a);
                     const bIndex = order.indexOf(b);
                     if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
@@ -297,7 +315,10 @@ module.exports = function (registry) {
                                     const formatIcons = {
                                         adoc: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/asciidoc.svg',
                                         html: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
-                                        'adoc-asciidoc': 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
+                                        // The single AsciiDoc column now points at the rendered
+                                        // form, but the cell still represents the AsciiDoc format,
+                                        // so use the AsciiDoc icon.
+                                        'adoc-asciidoc': 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/asciidoc.svg',
                                         default: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/code_blocks.svg'
                                     };
                                     const icon = formatIcons[format] || formatIcons.default;

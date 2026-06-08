@@ -1,0 +1,50 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib[`lib`] 
+| A tiny example library&period;
+|===
+
+[#lib]
+== lib
+
+A tiny example library&period;
+
+=== Description
+
+Holds the entry points the documentation calls out and a few helpers consumed by the rest of the project&period;
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-run[`run`] 
+| A function inside `lib`&period; With `show&hyphen;namespaces&colon; true` the namespace appears in the rendered output as a dedicated entry&semi; with `false` the namespace is flattened into the parent&period;
+|===
+
+[#lib-run]
+== link:#lib[lib]::run
+
+A function inside `lib`&period; With `show&hyphen;namespaces&colon; true` the namespace appears in the rendered output as a dedicated entry&semi; with `false` the namespace is flattened into the parent&period;
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;namespaces&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+run();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

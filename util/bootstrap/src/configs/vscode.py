@@ -182,6 +182,13 @@ def generate_vscode_run_configs(
             }
             if 'cwd' in config and config["cwd"] != source_dir:
                 new_task["options"]["cwd"] = config["cwd"]
+            # Forward `env` from the config entry. VS Code tasks
+            # accept env vars via `options.env`; without this an
+            # entry like `ANTORA_SKIP_CPP_REFERENCE=1` would be in the
+            # source dict but never reach the launched process.
+            env = config.get("env") or {}
+            if env:
+                new_task["options"]["env"] = dict(env)
 
             replace_with_placeholders(new_task, source_dir)
             vs_tasks_by_name[new_task["label"]] = new_task

@@ -34,7 +34,7 @@
     },
     {
       "title": "Built for C++",
-      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, niebloids, and more."
+      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, algorithm function objects, and more."
     },
     {
       "title": "Multiple output formats",

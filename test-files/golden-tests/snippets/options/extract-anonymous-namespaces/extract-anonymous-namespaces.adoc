@@ -1,0 +1,35 @@
+= Reference
+:mrdocs:
+
+[#lib-run]
+== lib::run
+
+A regular public function&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;anonymous&hyphen;namespaces&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+run();
+----
+
+[#lib-warm_caches]
+== lib::warm&lowbar;caches
+
+A helper with translation&hyphen;unit&hyphen;local linkage&period; With `extract&hyphen;anonymous&hyphen;namespaces&colon; true` it shows up in the docs&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;anonymous&hyphen;namespaces&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+warm&lowbar;caches();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,540 @@
+= Migration Notes
+:page-aliases: caveats.adoc
+:url-dependencies: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/dependencies
+:url-snippets: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/test-files/golden-tests/snippets/options
+
+Mr.Docs takes a different shape from other tools. Most of the differences come from one design choice:
+
+[.text-center]
+*Mr.Docs only works with valid {cpp} code.*
+
+It uses the compilation database and Clang to parse the source as the compiler does, so symbols come from a real AST rather than from text. The rest of this page covers what those changes imply for a project migrating to Mr.Docs.
+
+In this page, we
+
+* Explore the link:#how-it-works[workflow] in more detail,
+* Contrast it with the workarounds other tools require for link:#idioms-without-workarounds[common {cpp} idioms],
+* Cover how to link:#handling-dependencies[handle dependencies] in the documentation, including link:#system_dependencies[system headers].
+
+[#how-it-works]
+== Mr.Docs workflow
+
+By the time you reach this page, you have already seen a documented project running in xref:page$usage.adoc[]. The diagram below traces the workflow: how the configuration, the source, and the doc comments come together into a corpus that the generators turn into rendered output.
+
+include::partial$workflow.adoc[]
+
+The four steps are:
+
+1. You provide a xref:configuration/index.adoc[configuration file] (or command-line arguments) that point at the source code and pick the output format.
+2. The configuration defines a *compilation database* Mr.Docs reads to drive Clang. The xref:usage.adoc#usage-patterns[Usage patterns] section walks the three ways to supply that database.
+3. Clang extracts every symbol with its xref:commands/index.adoc[doc comments] into one corpus.
+4. A xref:generators/index.adoc[generator] turns the corpus into rendered output.
+
+Two design choices follow from this workflow: Mr.Docs needs to *parse the code* (not just read it as text), and the result is a *symbol corpus* rather than documents.
+
+[#idioms-without-workarounds]
+== Idioms without workarounds
+
+Several {cpp} idioms can't be expressed directly in the language. In tools such as Doxygen, projects work around this with a preprocessor macro that swaps in a documentation-only declaration when the tool runs. The source then carries two versions of each affected symbol. Mr.Docs reads the real source and lets the documentation and configuration options express the intent, which removes the need for that macro layer.
+
+=== Example 1: implementation-defined symbols
+
+A public function returns an opaque, *implementation-detail* type that callers should not name. The real type lives in a detail header somewhere else in the project tree.
+
+[tabs]
+======
+Mr.Docs::
++
+--
+The function is declared with its real return type. The configuration marks the symbol as `implementation-defined`, so the rendered synopsis shows the placeholder, and the type itself gets no documentation page:
+
+.`include/logr/detail/scope_token.hpp`
+[source,c++]
+----
+include::example$snippets/options/implementation-defined/include/logr/detail/scope_token.hpp[tag=body]
+----
+
+.`include/logr/log.hpp`
+[source,c++]
+----
+include::example$snippets/options/implementation-defined/include/logr/log.hpp[tag=body]
+----
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/implementation-defined/implementation-defined.yml[tags=!test-only]
+----
+
+.Synopsis hides the detail type behind a placeholder, and the detail type has no page
+[.adoc-preview]
+========
+include::example$snippets/options/implementation-defined/implementation-defined.adoc[tags=!footer]
+========
+--
+
+Other tools::
++
+--
+The concrete type is wrapped in a preprocessor conditional so the documentation tool doesn't see it:
+
+.`include/logr/detail/scope_token.hpp`
+[source,c++]
+----
+#if !defined(LOGR_DOCUMENTATION_BUILD)
+namespace logr::detail {
+struct scope_token { ~scope_token(); };
+}
+#endif
+----
+
+The public function splits its declaration into a documentation branch, with a placeholder for the return type that won't parse, and a real branch the compiler sees. This relies on the {cpp} parser not recognizing the placeholder as invalid code:
+
+.`include/logr/log.hpp`
+[source,c++]
+----
+#include <logr/detail/scope_token.hpp>
+namespace logr {
+#if defined(LOGR_DOCUMENTATION_BUILD)
+/** Attach a key/value pair to every log line in the current scope.
+
+    The context stays attached until the returned token is destroyed.
+    Hold it in `auto`; nested contexts stack and unwind in reverse order.
+
+    @par Example
+    @code
+    void handle_request(request const& req) {
+        auto ctx = logr::scoped_context("request_id", req.id);
+        do_work(req);
+    }
+    @endcode
+
+    @param key   The context name surfaced on each log line.
+    @param value The context value surfaced on each log line.
+    @return An opaque RAII token whose lifetime governs how long the pair
+            stays attached. The type is implementation-defined; store it
+            in `auto`.
+*/
+__implementation_defined__ scoped_context(char const* key, char const* value);
+#else
+detail::scope_token scoped_context(char const* key, char const* value);
+#endif
+} // namespace logr
+----
+
+The project's `Doxyfile` defines the documentation-mode macro so the documented branch is what the tool reads:
+
+.`Doxyfile`
+[source,ini]
+----
+PREDEFINED = LOGR_DOCUMENTATION_BUILD=1
+----
+--
+======
+
+[TIP]
+====
+The `&lowbar;&lowbar;MRDOCS&lowbar;&lowbar;` macro is also available, as Mr.Docs's equivalent of the project-wide doc-mode macros that other tools rely on. You can also use the `defines` option in the `mrdocs.yml` file to define extra macros. These macros are defined whenever Mr.Docs is parsing, so a header can switch declarations conditionally when a documentation build needs a different one.
+
+This means the macro workarounds in the "Other tools" tabs would still work in Mr.Docs as long as both branches parse as valid {cpp} by literally defining an `\__implementation_defined__` excluded type. However, the Mr.Docs configuration in the corresponding tabs is the idiomatic, recommended approach because it avoids duplicate declarations and the project-wide doc-mode macro.
+====
+
+=== Example 2: "see-below" types
+
+The type is part of the public API, and callers may need to name it, but the documentation should hide its members or definition, as we don't want to list them exhaustively for this symbol. The user can hold an instance, pass it around, or feed it to other declarations. The synopsis page should show "see below" instead of listing the struct body.
+
+[tabs]
+======
+Mr.Docs::
++
+--
+The type is declared normally and tagged with the `@seebelow` doc command. The synopsis is rendered as "see below" and the members are omitted, but the type itself remains a documented symbol in the corpus. No configuration entry is needed; the command on the symbol is enough:
+
+.`include/netz/buffer_view.hpp`
+[source,c++]
+----
+include::example$snippets/options/see-below/include/netz/buffer_view.hpp[tag=body]
+----
+
+.`include/netz/stream.hpp`
+[source,c++]
+----
+include::example$snippets/options/see-below/include/netz/stream.hpp[tag=body]
+----
+
+[NOTE]
+====
+The `see-below` configuration option also accepts a glob of symbol names for cases where the doc-command treatment is not practical, for example when the same rule has to apply across many types or when the source can't be changed. The `@implementationdefined` command and the matching `implementation-defined` configuration option work the same way.
+====
+
+.The type keeps its page, but the members collapse into a "see below" placeholder
+[.adoc-preview]
+========
+include::example$snippets/options/see-below/see-below.adoc[tags=!footer]
+========
+--
+
+Other tools::
++
+--
+The type is declared normally so that its page stays in the documentation. The public function's declaration swaps in a `__see_below__` placeholder when the documentation tool is running:
+
+.`include/netz/buffer_view.hpp`
+[source,c++]
+----
+namespace netz {
+/** A non-owning view of a contiguous byte range.
+
+    Used as the parameter and return type for the framing helpers in
+    `netz::stream` and as the buffer surface presented to async read
+    handlers. Stores a pointer and a length, and does not extend the
+    lifetime of the storage it refers to.
+*/
+class buffer_view
+{
+public:
+    unsigned char const* data() const noexcept;
+    unsigned long size() const noexcept;
+};
+}
+----
+
+.`include/netz/stream.hpp`
+[source,c++]
+----
+#include <netz/buffer_view.hpp>
+namespace netz {
+#if defined(NETZ_DOCUMENTATION_BUILD)
+/** Locate the first complete packet at the start of the buffer.
+
+    Scans `input` for a frame boundary. The returned view aliases the
+    same memory as `input`, so the storage behind `input` must outlive
+    the returned view.
+
+    @param input Bytes received from the stream, up to the caller's
+                 current fill mark.
+    @return A view of the bytes belonging to the first packet, or an
+            empty view if no complete packet is present yet.
+*/
+__see_below__ first_packet(__see_below__ input);
+#else
+buffer_view first_packet(buffer_view input);
+#endif
+} // namespace netz
+----
+
+.`Doxyfile`
+[source,ini]
+----
+PREDEFINED = NETZ_DOCUMENTATION_BUILD=1
+----
+--
+======
+
+
+=== Example 3: algorithm function objects
+
+A library exposes *https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[algorithm function objects^]* (informally known as niebloids): a symbol callers use like a function, but that is implemented as a `constexpr` variable of a functor record type. The variable inhibits https://en.cppreference.com/cpp/language/adl[Argument-Dependent Lookup^] (ADL).
+
+[tabs]
+======
+Mr.Docs::
++
+--
+The algorithm function object is declared as the compiler sees it. Mr.Docs detects the pattern and documents the pattern as a single symbol:
+
+.`include/numerics/clamp.hpp`
+[source,c++]
+----
+include::example$snippets/options/auto-function-objects/include/numerics/clamp.hpp[tag=body]
+----
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/auto-function-objects/auto-function-objects.yml[tags=!test-only]
+----
+
+[NOTE]
+====
+The `auto-function-objects` option tags variables as algorithm function objects automatically when the pattern is unambiguous. For records that fall outside the heuristic or to have more control over the feature, apply the `@functionobject` doc command directly to the variable to force the treatment.
+====
+
+.The `_fn` struct and its `constexpr` instance merge into a single function entry
+[.adoc-preview]
+========
+include::example$snippets/options/auto-function-objects/auto-function-objects.adoc[tags=!footer]
+========
+--
+
+Other tools::
++
+--
+The documented form is a plain function template the compiler never compiles; the implementation form is the algorithm function object the documentation tool never sees:
+
+.`include/numerics/clamp.hpp`
+[source,c++]
+----
+namespace numerics {
+#if defined(NUMERICS_DOCUMENTATION_BUILD)
+/** Constrain a value to the inclusive range `[lo, hi]`.
+
+    Returns `lo` when `v < lo`, `hi` when `hi < v`, otherwise `v`.
+    Behavior is undefined if `hi < lo`.
+
+    @tparam T  A type comparable with `operator<`.
+    @param  v  The value to constrain.
+    @param  lo The inclusive lower bound.
+    @param  hi The inclusive upper bound.
+    @return A copy of `v`, `lo`, or `hi`, whichever lies within the range.
+*/
+template <class T>
+T clamp(T const& v, T const& lo, T const& hi);
+#else
+struct clamp_fn
+{
+    template <class T>
+    T operator()(T const& v, T const& lo, T const& hi) const;
+};
+inline constexpr clamp_fn clamp = {};
+#endif
+} // namespace numerics
+----
+
+.`Doxyfile`
+[source,ini]
+----
+PREDEFINED = NUMERICS_DOCUMENTATION_BUILD=1
+----
+--
+======
+
+=== Example 4: excluded symbols
+
+A library ships an auxiliary namespace (here `jzon::extra`) with trace, benchmarking, or other secondary utilities that should not appear in the rendered output.
+
+[tabs]
+======
+Mr.Docs::
++
+--
+The `extra::` namespace is declared normally. A single configuration glob excludes everything inside it from the corpus:
+
+.`include/jzon/extra/utilities.hpp`
+[source,c++]
+----
+include::example$snippets/options/exclude-symbols/include/jzon/extra/utilities.hpp[tag=body]
+----
+
+.`include/jzon/parser.hpp`
+[source,c++]
+----
+include::example$snippets/options/exclude-symbols/include/jzon/parser.hpp[tag=body]
+----
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/exclude-symbols/exclude-symbols.yml[tags=!test-only]
+----
+
+.The symbols in the `extra::` namespace are not included in the corpus
+[.adoc-preview]
+========
+include::example$snippets/options/exclude-symbols/exclude-symbols.adoc[tags=!footer]
+========
+--
+
+Other tools::
++
+--
+Every declaration in the auxiliary namespace is wrapped in a preprocessor conditional the Doxyfile evaluates as "skip":
+
+.`include/jzon/extra/utilities.hpp`
+[source,c++]
+----
+namespace jzon::extra {
+#if !defined(JZON_DOCUMENTATION_BUILD)
+void enable_trace();
+void disable_trace();
+#endif
+} // namespace jzon::extra
+----
+
+The public header is unchanged:
+
+.`include/jzon/parser.hpp`
+[source,c++]
+----
+namespace jzon {
+/** Validate that the document is well-formed JSON.
+
+    Parses `source` without constructing a value tree, reporting only
+    whether the input conforms to RFC 8259. Comments and trailing
+    commas are rejected.
+
+    @param source A null-terminated UTF-8 JSON document.
+    @return `true` if the document is syntactically valid JSON, `false`
+            if any syntactic error is encountered.
+*/
+bool validate(char const* source);
+} // namespace jzon
+----
+
+.`Doxyfile`
+[source,ini]
+----
+PREDEFINED = JZON_DOCUMENTATION_BUILD=1
+----
+
+`\cond INTERNAL` ... `\endcond` blocks are the alternative; the marker still lives next to every internal declaration. Mr.Docs's glob covers a whole namespace at once, regardless of how the source is split across files.
+--
+======
+
+Many other idioms collapse into a one-line configuration option or a single doc command: exposition-only "see-below" synopses, hidden friend operators, related-symbol grouping, deprecated-but-documented overloads, and so on. The xref:commands/reference.adoc[Commands] and xref:configuration/reference.adoc[Options] references are the place to look when you find yourself reaching for a preprocessor conditional.
+
+[#handling-dependencies]
+== Handling dependencies
+
+Another consequence of Mr.Docs needing valid {cpp} is that the public headers of every dependency a project's public API names must be reachable when the documentation builds. Mr.Docs has to resolve each `#include` and bind every name that appears in a signature; without those headers, the parse fails, and Mr.Docs can't build the corpus.
+
+[TIP]
+====
+Documentation builds often run somewhere different from the project's build: on CI runners, in containers, or on fresh laptops. Some dependencies are impossible to get there (vendor SDKs, private monorepo paths). Others are impractical: an LLVM-scale dependency takes hours to fetch and configure for a documentation build that itself runs in seconds. This section lists several strategies for handling dependencies in the documentation build.
+====
+
+[#find-the-dependency]
+=== Find the dependency
+
+This is the most accurate option: Mr.Docs sees the same headers the compiler would. The cost is that the headers must be available in the documentation environment. The project also needs CMake (or another build system Mr.Docs can drive) to surface the include paths.
+
+The starter project at {url-dependencies}/find[`examples/dependencies/find/`^] is a small `httpd` library whose public API mentions a Boost.Asio type:
+
+.`include/httpd/listener.hpp`
+[source,c++]
+----
+include::example$examples/dependencies/find/include/httpd/listener.hpp[]
+----
+
+The CMakeLists.txt calls `find_package(Boost ...)` like any other project. The example ships a small CMake stub for Boost so the build runs unattended; a real project would rely on the system or vendored Boost install:
+
+.`CMakeLists.txt`
+[source,cmake]
+----
+include::example$examples/dependencies/find/CMakeLists.txt[]
+----
+
+The Mr.Docs configuration hands the `CMakeLists.txt` to Mr.Docs.
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/dependencies/find/docs/mrdocs.yml[tags=!test-only]
+----
+
+[NOTE]
+====
+When the dependency lives somewhere CMake doesn't already search, point CMake at it through the `cmake:` option, the https://cmake.org/cmake/help/latest/variable/CMAKE_PREFIX_PATH.html[`CMAKE_PREFIX_PATH`^] variable, or the https://cmake.org/cmake/help/latest/variable/PackageName_ROOT.html[`<PackageName>_ROOT`^] variables.
+====
+
+[#shim-files]
+=== Shim files
+
+When the dependency can't be made available in the documentation build environment, you can write small *shim headers* on disk that forward-declare only what the public API mentions, and add the shim's directory to `includes`. LLVM as a dependency is the canonical case: it would take hours to fetch and configure LLVM, only to render docs in seconds. The starter project at {url-dependencies}/shim-files[`examples/dependencies/shim-files/`^] is a small `astutil` library that depends on `llvm::StringRef`:
+
+.`include/astutil/types.hpp`
+[source,c++]
+----
+include::example$examples/dependencies/shim-files/include/astutil/types.hpp[]
+----
+
+The shim lives under `docs/shims/`. One forward declaration is enough because `astutil` only takes `llvm::StringRef` through references in its public API:
+
+.`docs/shims/llvm/ADT/StringRef.h`
+[source,c++]
+----
+include::example$examples/dependencies/shim-files/docs/shims/llvm/ADT/StringRef.h[]
+----
+
+The Mr.Docs configuration scans the project's `include/` and adds the shim directory to the Clang include path:
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/dependencies/shim-files/docs/mrdocs.yml[]
+----
+
+The shim satisfies the `#include` because it lives on the include path. The real LLVM tree contributes nothing to the rendered documentation; for documenting a public API, that's usually what you want.
+
+Shim files are the right form when the shim grows beyond a handful of forward declarations or when several projects share the same set of stubs.
+
+[#shim-snippets]
+=== Shim snippets
+
+For one-off stubs that don't deserve their own file, you can describe the shim contents directly in the configuration file with the `missing-include-shims` option. The key is the include path; the value is the file contents. MrDocs will include that shim in the filesystem as a convenience. The starter project at {url-dependencies}/shim-snippets[`examples/dependencies/shim-snippets/`^] is a small `logutil` library that uses one type from \{fmt}:
+
+.`include/logutil/buffer.hpp`
+[source,c++]
+----
+include::example$examples/dependencies/shim-snippets/include/logutil/buffer.hpp[]
+----
+
+The Mr.Docs configuration ships the forward declaration directly:
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/dependencies/shim-snippets/docs/mrdocs.yml[]
+----
+
+[TIP]
+====
+Mr.Docs wraps each shim in an include guard, so repeated `#include` directives are safe.
+====
+
+[#accept-missing-includes]
+=== Accept missing includes
+
+Some dependencies are too large to mirror as shim files (the AWS SDK, a vendored monorepo tree, a generated SDK with hundreds of headers). For many of those, Mr.Docs can accept that certain include paths will be missing in the documentation environment, and keep parsing. Set `missing-include-prefixes` to the include-path prefixes you want forgiven. The starter project at {url-dependencies}/accept-missing[`examples/dependencies/accept-missing/`^] is a small `s3util` library that uses the AWS SDK:
+
+.`include/s3util/uploader.hpp`
+[source,c++]
+----
+include::example$examples/dependencies/accept-missing/include/s3util/uploader.hpp[]
+----
+
+The configuration forgives the entire `aws/` prefix:
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/dependencies/accept-missing/docs/mrdocs.yml[]
+----
+
+When Clang reports a missing `#include` whose path starts with one of those prefixes, Mr.Docs treats the include as satisfied by an empty file instead of failing the parse. The dependency does not need to be present on disk.
+
+[NOTE]
+====
+Very often, a symbol from one of those includes may still be referenced in your public API (say, `Aws::String` appearing in a parameter type). When the reference is unambiguous (a type or a namespace), Mr.Docs considers that symbol to be an external declaration or namespace.
+
+However, this is a fallback, not a substitute for the shim mechanisms above. When the missing-symbol references are ambiguous, Mr.Docs replays the original errors. For dependencies whose names need controlled disambiguation, mix in a few targeted shims through `missing-include-shims`.
+====
+
+[#system_dependencies]
+== System dependencies
+
+Parallel to the above strategies sits a special case: the {cpp} standard library, the C standard library, and platform headers like `&lt;Windows.h&gt;` or `&lt;linux/version.h&gt;`. These aren't usually pinned in a build configuration and they don't appear in the compilation database either.
+
+[NOTE]
+====
+By default, Mr.Docs uses the *same headers the compiler does*. It probes the configured compiler to discover the system include paths it would use and feeds them to its own parser. The practical consequence is the same constraint a regular build has: every platform on which you want to generate documentation must also be a platform on which your library compiles. If the library has a `#include &lt;windows.h&gt;` guarded behind `#ifdef _WIN32`, you can only document that branch from a machine that has the Windows SDK on disk.
+====
+
+To generate documentation on a platform without compiling on it, the four strategies from xref:#handling-dependencies[Handling dependencies] apply unchanged. Add the platform header's directory to `includes`, write a shim that defines the few symbols you use, or forgive the prefix with `missing-include-prefixes`. The same levers that let you document a project against a missing Boost work for a project against a missing `&lt;windows.h&gt;`.
+
+For the standard libraries specifically, Mr.Docs also ships a self-contained alternative. Two options swap the system-header probe for a bundled set of headers:
+
+* `use-system-stdlib` (default `true`) makes Clang find libc&plus;&plus; via `-stdlib`. Set to `false` to use Mr.Docs's bundled libc&plus;&plus; headers at `<mrdocs-root>/share/mrdocs/headers/libcxx` instead. The path is overridable through `stdlib-includes`.
+* `use-system-libc` (default `true`) makes Clang use the system C standard library and the platform headers it transitively pulls in. Set to `false` to use Mr.Docs's bundled libc stubs at `<mrdocs-root>/share/mrdocs/headers/libc-stubs`. The path is overridable through `libc-includes`.
+
+The bundled headers buy portability: the documentation build resolves the same way on every host because Mr.Docs supplies the headers itself, regardless of whether the host has a real `&lt;cstdio&gt;` or `&lt;windows.h&gt;`. The cost is that Mr.Docs's view of the standard library is now its own environment, distinct from any real toolchain. Doc-only divergences between what Mr.Docs sees and what the compiler sees become a class of bug that doesn't exist when both consult the same headers. Use the bundled stubs when the portability benefit is worth that risk.

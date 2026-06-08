@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>DJniu23RWKHl/v6l6J0tgGRu2VU=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>config</name>
+  <source>
+    <location>
+      <short-path>heading.cpp</short-path>
+      <source-path>heading.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>DJniu23RWKHl/v6l6J0tgGRu2VU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <heading>
+      <kind>heading</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Thread safety</literal>
+      </text>
+      <level>1</level>
+    </heading>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Instances are immutable after construction and may be shared across threads without locking.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A configuration record.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+</mrdocs>

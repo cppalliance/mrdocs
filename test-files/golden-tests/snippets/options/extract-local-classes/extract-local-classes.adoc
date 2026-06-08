@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#each]
+== each
+
+A function whose local helper class is part of the public interface (its instances escape via the returned visitor)&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;local&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+each();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

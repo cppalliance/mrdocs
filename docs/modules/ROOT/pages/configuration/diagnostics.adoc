@@ -1,0 +1,42 @@
+= Diagnostics
+
+These options govern what MrDocs reports while it runs and how it behaves when something goes wrong. They change what appears in your terminal, not the documentation itself, so there is no rendered example below. The xref:configuration/reference.adoc#_diagnostics_options_reference[Diagnostics reference] has the full option list.
+
+== Doc-comment lint
+
+The `warn-*` family treats common documentation problems as warnings, so a CI run can catch them the same way it catches compiler warnings. The most useful ones in practice:
+
+* xref:configuration/reference.adoc#warn-if-undocumented_option[`warn-if-undocumented`] flags exported symbols that have no doc comment.
+* xref:configuration/reference.adoc#warn-if-doc-error_option[`warn-if-doc-error`] flags malformed doc comments (broken `@param` syntax, unterminated code blocks, and similar).
+* xref:configuration/reference.adoc#warn-no-paramdoc_option[`warn-no-paramdoc`] and xref:configuration/reference.adoc#warn-unnamed-param_option[`warn-unnamed-param`] flag functions whose parameters are not documented or not named.
+* xref:configuration/reference.adoc#warn-if-undoc-enum-val_option[`warn-if-undoc-enum-val`] flags enumerators without doc comments.
+* xref:configuration/reference.adoc#warn-broken-ref_option[`warn-broken-ref`] flags `@ref` and `@see` targets that do not resolve.
+
+xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] turns every warning into a failure, the usual CI setup once a project is past the bring-up phase.
+
+[source,yaml]
+----
+include::example$configuration/diagnostics-lint.yml[]
+----
+
+TIP: `warn-as-error` is also a useful local-development tool: turn it on with the `warn-if-undocumented` family and run MrDocs in a loop while you fill in the missing comments. Each run terminates at the first undocumented symbol, so you can knock them out one by one until the build goes green.
+
+xref:configuration/reference.adoc#warnings_option[`warnings`] is the master switch: set it to `false` to silence the entire family at once.
+
+== Log verbosity
+
+xref:configuration/reference.adoc#log-level_option[`log-level`] picks the verbosity (`error`, `warn`, `info`, `debug`, `trace`). xref:configuration/reference.adoc#verbose_option[`verbose`] is the boolean shorthand for the most detailed level.
+
+[source,yaml]
+----
+include::example$configuration/diagnostics-logging.yml[]
+----
+
+== Runtime tuning
+
+xref:configuration/reference.adoc#concurrency_option[`concurrency`] caps the number of threads MrDocs uses to extract symbols. The default `0` matches the hardware; lower it on shared CI runners or to make logs easier to read.
+
+[source,yaml]
+----
+include::example$configuration/diagnostics-runtime.yml[]
+----

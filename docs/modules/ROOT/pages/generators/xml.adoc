@@ -1,0 +1,53 @@
+= XML
+
+The `xml` generator emits a single XML document that contains every symbol Mr.Docs extracted. It's an *intermediate format*: not meant to be read directly by humans, but easy to consume from tools that want full structured access to the corpus. Pick it explicitly through the xref:configuration/reference.adoc#generator_option[`generator`] option:
+
+[source,yaml]
+----
+generator: xml
+----
+
+The most common reasons to use it are:
+
+* Custom post-processing pipelines (Python, https://www.w3.org/TR/xslt-30/[XSLT^], an in-house templating tool) that want every symbol field Mr.Docs sees, with no markup decisions baked in.
+* Diffing the corpus across commits, releases, or compiler upgrades.
+* Cross-checking other generators' output. Mr.Docs's own test suite compares the XML form because it's the lowest-noise format to assert against.
+
+== Output
+
+The output is a single file (`reference.xml` by default) regardless of the xref:configuration/reference.adoc#multipage_option[`multipage`] setting; `multipage` is meaningful only for the text generators. The document starts with a root `<mrdocs>` element and contains the entire symbol forest:
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <name>logr</name>
+  <kind>namespace</kind>
+  <id>...</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>...</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>scoped_context</name>
+  ...
+</function>
+</mrdocs>
+----
+
+Symbols are emitted flat as siblings of the root; parent/child relationships are expressed through `<id>` references rather than nesting.
+
+== Schema
+
+The schema is the same model Mr.Docs uses internally, just serialized. The xref:extensions/dom-reference.adoc[DOM reference] documents every field by name, and applies to the XML output element-for-element: a field shown as `Name` in the DOM appears as `<name>` in the XML, `Loc` as `<location>`, and so on.
+
+The canonical https://relaxng.org/[RELAX NG^] schema ships at the URL referenced in the root element:
+
+[source]
+----
+https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc
+----
+

@@ -1,0 +1,95 @@
+= Reference
+:mrdocs:
+
+[#logr-log_record]
+== logr::log&lowbar;record
+
+A complete log record&period;
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;log&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class log&lowbar;record { /* see-below */ };
+----
+
+=== Description
+
+Carries the message text and the level at which the record was emitted&period; Construct one and hand it to `emit()`&period;
+
+[#logr-scoped_context]
+== logr::scoped&lowbar;context
+
+Attach a key&sol;value pair to every log line in the current scope&period;
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;log&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+scoped&lowbar;context(
+    char const* key,
+    char const* value);
+----
+
+=== Description
+
+The context stays attached until the returned token is destroyed&period; Hold it in `auto`&semi; nested contexts stack and unwind in reverse order&period;
+
+=== Return Value
+
+An opaque RAII token whose lifetime governs how long the pair stays attached&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *key*
+| The context name surfaced on each log line&period;
+| *value*
+| The context value surfaced on each log line&period;
+|===
+
+[#logr-set_encoder]
+== logr::set&lowbar;encoder
+
+Replace the active encoder&period;
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;log&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+set&lowbar;encoder(&sol;&ast; implementation-defined &ast;&sol;&& enc);
+----
+
+=== Description
+
+Obtain an encoder via `make&lowbar;json&lowbar;encoder()` or `make&lowbar;text&lowbar;encoder()` and hand it here&period;
+
+=== Example
+
+[,cpp]
+----
+logr::set_encoder(logr::make_json_encoder());
+----
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *enc*
+| The library&apos;s private encoder representation&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

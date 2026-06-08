@@ -1,0 +1,4 @@
+includes:
+  - ../include
+defines:
+  - MRDOCS_BUILD

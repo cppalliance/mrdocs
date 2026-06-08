@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>421gJmPHEHyEKpWsujC2FDAzHIA=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>count_unique</name>
+  <source>
+    <location>
+      <short-path>emphasis.cpp</short-path>
+      <source-path>emphasis.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>421gJmPHEHyEKpWsujC2FDAzHIA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Duplicates are detected by </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>operator==</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> comparison.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Counts the number of </literal>
+      </text>
+      <emph>
+        <kind>emph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>unique</literal>
+        </text>
+      </emph>
+      <text>
+        <kind>text</kind>
+        <literal> elements in the input.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>unsigned int</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>values</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>unsigned int</identifier>
+      </name>
+    </named>
+    <name>n</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

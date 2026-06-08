@@ -1,0 +1,109 @@
+= Reference
+:mrdocs:
+
+[#gadget]
+== gadget
+
+A class declared with members in deliberately scattered order to show how sorting affects the rendered member list&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct gadget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#gadget-2constructor[`gadget`]         [.small]#[constructor]#
+| Construct a gadget&period;
+| link:#gadget-2destructor[`&#126;gadget`] [.small]#[destructor]#
+| Destroy the gadget&period;
+| link:#gadget-hide[`hide`] 
+| Hide the gadget&period;
+| link:#gadget-refresh[`refresh`] 
+| Refresh the gadget&period;
+| link:#gadget-show[`show`] 
+| Show the gadget&period;
+|===
+
+[#gadget-2constructor]
+== link:#gadget[gadget]::gadget
+
+Construct a gadget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+gadget();
+----
+
+[#gadget-2destructor]
+== link:#gadget[gadget]::&#126;gadget
+
+Destroy the gadget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;gadget();
+----
+
+[#gadget-hide]
+== link:#gadget[gadget]::hide
+
+Hide the gadget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+hide();
+----
+
+[#gadget-refresh]
+== link:#gadget[gadget]::refresh
+
+Refresh the gadget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+refresh();
+----
+
+[#gadget-show]
+== link:#gadget[gadget]::show
+
+Show the gadget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+show();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

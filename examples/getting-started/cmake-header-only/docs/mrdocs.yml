@@ -1,0 +1,3 @@
+## Pattern: header-only library that lives inside a CMake project.
+source-root: ..
+compilation-database: ../CMakeLists.txt

@@ -1,0 +1,25 @@
+= Reference
+:mrdocs:
+
+[#distance]
+== distance
+
+Compute the Euclidean distance between two points&period;
+
+=== Synopsis
+
+Declared in `&lt;helper&hyphen;slug&period;cpp&gt;` (anchor: `helper&hyphen;slug&hyphen;cpp`)
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+distance(
+    double x1,
+    double y1,
+    double x2,
+    double y2);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

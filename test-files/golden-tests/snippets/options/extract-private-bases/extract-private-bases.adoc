@@ -1,0 +1,82 @@
+= Reference
+:mrdocs:
+
+[#logger]
+== logger
+
+A logger mixin&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class logger;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#logger-log[`log`] 
+| Write a message to the log&period;
+|===
+
+[#logger-log]
+== link:#logger[logger]::log
+
+Write a message to the log&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+log(char const* msg);
+----
+
+[#widget]
+== widget
+
+A widget that privately inherits from `logger` for the logging implementation&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class widget
+    : link:#logger[logger]
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-show[`show`] 
+| Render the widget and write a log entry&period;
+|===
+
+[#widget-show]
+== link:#widget[widget]::show
+
+Render the widget and write a log entry&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&hyphen;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+show();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

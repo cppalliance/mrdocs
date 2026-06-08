@@ -1,0 +1,1 @@
+MESSAGE(FATAL_ERROR "Tests are not supported in this example.")

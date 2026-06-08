@@ -1,0 +1,30 @@
+= Reference
+:mrdocs:
+
+[#compute_hash]
+== compute&lowbar;hash
+
+Computes a hash code for a byte sequence&period;
+
+=== Synopsis
+
+Declared in `&lt;code&hyphen;block&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned int
+compute&lowbar;hash(
+    char const* data,
+    unsigned int n);
+----
+
+=== Description
+
+Typical use&colon;
+
+[,cpp]
+----
+auto h = compute_hash("hello", 5);
+----
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

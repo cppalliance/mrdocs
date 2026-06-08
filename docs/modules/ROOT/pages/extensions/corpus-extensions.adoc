@@ -1,0 +1,205 @@
+= Corpus Extensions
+
+Use an extension to rewrite metadata across many symbols at once: backfill briefs from a naming convention, tag symbols by group, mark generated code as "see below" in the output. Extensions run between extraction and rendering, so every generator sees the change.
+
+== Languages and addon locations
+
+Extensions are user-supplied scripts dropped under `<addons>/extensions/` with the `.js` or `.lua` extension. The addon roots come from the xref:configuration/reference.adoc#addons_option[`addons`] and xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] options, the same roots that hold the xref:extensions/handlebars-extensions.adoc[Handlebars templates]. Mr.Docs aggregates scripts across every root and runs them in alphabetical order by full path, with the two languages interleaved.
+
+[TIP]
+====
+Both scripting languages reach the same `mrdocs` API. The choice is a trade-off, not a ranking.
+
+* *JavaScript* is more familiar to most developers. The runtime Mr.Docs embeds is a small ES engine, so scripts have the language proper (closures, destructuring, regex, classes) but not a Node-style standard library. There is no `fs`, no `path`, no `process`. Scripts that only manipulate the corpus do not miss any of that.
+* *Lua* is the language designed to be embedded. Mr.Docs links it whole, so scripts have access to the entire Lua standard library (`string`, `table`, `math`, `io`, `os`) and can do filesystem work or text munging without leaving the script. The cost is that fewer people read Lua at a glance than read JavaScript. If you're already familiar with Lua, it is the more powerful choice.
+====
+
+== Accessing the corpus
+
+A script extends Mr.Docs by defining a function named `transform_corpus(corpus)`. Mr.Docs calls it once per loaded script with a flat read-only view of the corpus. A script that doesn't define `transform_corpus` is silently ignored at this step.
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/noop.js`
+[source,javascript]
+----
+include::example$snippets/extensions/entry-point/addons/extensions/noop.js[]
+----
+
+Lua::
++
+.`addons/extensions/noop.lua`
+[source,lua]
+----
+include::example$snippets/extensions/entry-point/addons/extensions/noop.lua[]
+----
+======
+
+The `corpus` object provides functions that expose the symbol graph. The `corpus.symbols` field is a flat array containing every extracted symbol. Scripts that need queries like "all members of `X`" simply walk the array and filter.
+
+For instance, the following scripts count the symbols of each kind and report the totals at the end of the run:
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/count_by_kind.js`
+[source,javascript]
+----
+function transform_corpus(corpus) {
+    var counts = {};
+    for (var i = 0; i < corpus.symbols.length; ++i) {
+        var k = corpus.symbols[i].kind;
+        counts[k] = (counts[k] || 0) + 1;
+    }
+    for (var k in counts) {
+        console.log(k + ": " + counts[k]);
+    }
+}
+----
+
+Lua::
++
+.`addons/extensions/count_by_kind.lua`
+[source,lua]
+----
+function transform_corpus(corpus)
+    local counts = {}
+    for _, sym in ipairs(corpus.symbols) do
+        counts[sym.kind] = (counts[sym.kind] or 0) + 1
+    end
+    for k, v in pairs(counts) do
+        print(k .. ": " .. v)
+    end
+end
+----
+======
+
+Each entry in `corpus.symbols` is a proxy for a live Mr.Docs symbol. The fields of each object are at xref:extensions/dom-reference.adoc[the DOM reference].
+
+When a script knows a symbol's id and needs to act on that one symbol:
+
+* `corpus.get(id)` returns the proxy for it or `null` if the id is unknown
+* `corpus.lookup(name)` does a global-namespace name lookup and returns the proxy (or `null`)
+
+.`subclass-tree.cpp`
+[source,cpp]
+----
+include::example$snippets/extensions/subclass-tree/subclass-tree.cpp[]
+----
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/subclass_tree.js`
+[source,javascript]
+----
+include::example$snippets/extensions/subclass-tree/addons/extensions/subclass_tree.js[]
+----
+
+Lua::
++
+.`addons/extensions/subclass_tree.lua`
+[source,lua]
+----
+include::example$snippets/extensions/subclass-tree/addons/extensions/subclass_tree.lua[]
+----
+======
+
+Running either script against the fixture above prints:
+
+[source,text]
+----
+Shape
+  Circle
+  Polygon
+    Quadrilateral
+      Square
+    Triangle
+----
+
+[[modifying-the-corpus]]
+== Modifying the corpus
+
+Scripts modify the corpus by assigning to fields on a symbol proxy. Each assignment lands directly in the underlying Mr.Docs symbol. The runtime validates each assignment and raises an exception on an invalid value. An uncaught error in an extension aborts the build and includes the script's path and the error message.
+
+Most extensions read some attribute of a symbol and write back a string, an enumerator, or a small structured value. For instance, a codebase that follows "any function whose name starts with `is_<name>` is a predicate returning `true` if its `<name>` holds" encodes information that the brief could repeat verbatim:
+
+.`brief-from-name.cpp`
+[source,cpp]
+----
+include::example$snippets/extensions/brief-from-name/brief-from-name.cpp[]
+----
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/brief_from_name.js`
+[source,javascript]
+----
+include::example$snippets/extensions/brief-from-name/addons/extensions/brief_from_name.js[]
+----
+
+Lua::
++
+.`addons/extensions/brief_from_name.lua`
+[source,lua]
+----
+include::example$snippets/extensions/brief-from-name/addons/extensions/brief_from_name.lua[]
+----
+======
+
+Every `is_foo_bar` function then ships with "Returns true if foo bar." Authors only have to write a brief when the synthesized one is not the right one.
+
+[.adoc-preview]
+========
+include::example$snippets/extensions/brief-from-name/brief-from-name.adoc[tags=!footer]
+========
+
+== Cross-linking Symbols
+
+When the value being written needs to reference another symbol, the second symbol's `id` is what makes the link clickable in the rendered output rather than a plain string.
+
+For instance, consider a project where the `parse_X` and `format_X` free functions are symmetric. A reader landing on one almost always wants to see the other. The extension builds a `name → id` index in one pass, then walks it again to look up each partner:
+
+.`parse-format-relates.cpp`
+[source,cpp]
+----
+include::example$snippets/extensions/parse-format-relates/parse-format-relates.cpp[]
+----
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/parse_format_relates.js`
+[source,javascript]
+----
+include::example$snippets/extensions/parse-format-relates/addons/extensions/parse_format_relates.js[]
+----
+
+Lua::
++
+.`addons/extensions/parse_format_relates.lua`
+[source,lua]
+----
+include::example$snippets/extensions/parse-format-relates/addons/extensions/parse_format_relates.lua[]
+----
+======
+
+[.adoc-preview]
+========
+include::example$snippets/extensions/parse-format-relates/parse-format-relates.adoc[tags=!footer]
+========
+
+The two-pass shape (index, then look up) is the idiom whenever a write needs to refer to a symbol the script hasn't yet seen during the walk.
+
+[NOTE]
+====
+Notice in this example that `s.doc.sees` receives a list of polymorphic types that represent a paragraph in `s.doc.sees.children`. These polymorphic objects accept an object with a `kind:` selector that names the concrete derived class to construct.
+====
+

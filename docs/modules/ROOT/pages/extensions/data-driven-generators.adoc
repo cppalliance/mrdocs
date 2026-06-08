@@ -1,0 +1,249 @@
+= Data-Driven Generators
+:url-data-driven: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/generators/data-driven
+:url-jsonlines: https://jsonlines.org/
+:url-markdown: https://daringfireball.net/projects/markdown/
+:url-latex: https://www.latex-project.org/
+:url-handlebars: https://handlebarsjs.com/
+
+Beyond the three built-in generators, you can add an output format of your own by dropping a template directory under either an xref:configuration/reference.adoc#addons_option[addon root] or an xref:configuration/reference.adoc#addons-supplemental_option[supplemental addon root]. Mr.Docs walks the immediate template subdirectories of every {url-handlebars}[Handlebars^] generator it finds at startup, and any subdirectory that ships an `mrdocs-generator.yml` file is installed as a new generator.
+
+[[the-mrdocs-generator-yml-manifest]]
+== The manifest
+
+The manifest's presence is what marks a directory as a data-driven handlebars generator: any directory with `<addons>/generator/<name>/mrdocs-generator.yml` declares the directory as a data-driven generator. Alongside the manifest, each generator owns two layouts under `<addons>/generator/<name>/layouts/`:
+
+* `index.<name>.hbs` renders a single symbol, and
+* `wrapper.<name>.hbs` is interpolated around the index output to provide the page title and any boilerplate.
+
+The `partials/` and `helpers/` subdirectories are technically optional and follow the same lookup rules as the built-in formats (see xref:extensions/handlebars-extensions.adoc[Handlebars Extensions]).
+
+For instance, consider the `jsonl` generator that ships under {url-data-driven}/jsonl[`examples/generators/data-driven/jsonl/`^]. Each symbol becomes one JSON object on its own line (the {url-jsonlines}[JSON Lines^] convention) so a client search box can ingest the file streamably. A similar pattern can be used to define a generator for navigation sidebars. The manifest only sets escape rules for the two characters that must be quoted inside a JSON string:
+
+.`addons/generator/jsonl/mrdocs-generator.yml`
+[source,yaml]
+----
+include::example$data-driven-generators/jsonl/addons/generator/jsonl/mrdocs-generator.yml[]
+----
+
+The `escape:` key holds a sub-mapping from byte-sequence keys to replacement strings.
+
+We can now define the handlebars templates. The wrapper here is a pass-through, so the index template always owns every line of output:
+
+.`addons/generator/jsonl/layouts/wrapper.jsonl.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/jsonl/addons/generator/jsonl/layouts/wrapper.jsonl.hbs[]
+----
+
+.`addons/generator/jsonl/layouts/index.jsonl.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/jsonl/addons/generator/jsonl/layouts/index.jsonl.hbs[]
+----
+
+The fixture's input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$data-driven-generators/jsonl/simple.cpp[]
+----
+
+Once everything is in place, the format is selectable through the xref:configuration/reference.adoc#generator_option[`generator`] option, just like any built-in format. Mr.Docs writes output files with the `.<name>` extension.
+
+[source,yaml]
+----
+generator: jsonl
+----
+
+Or on the command line, where the flag wins over the file:
+
+[source,bash]
+----
+mrdocs --config=path/to/mrdocs.yml --generator=jsonl
+----
+
+Rendered output:
+
+.`simple.jsonl`
+[source,json]
+----
+include::example$data-driven-generators/jsonl/simple.jsonl[]
+----
+
+[[inheriting-from-another-generator]]
+== Inheriting templates
+
+A second key on the manifest, `extends: <id>`, makes the generator's partial and helper lookup fall back to another installed generator after consulting its own directory.
+
+[NOTE]
+.Lookup precedence
+====
+For any partial or helper, the lookup walks these directories from lowest to highest precedence:
+
+. `<addons>/generator/common/`
+. `<addons>/generator/<parent>/` (for each ancestor in the chain, root-most first)
+. `<addons>/generator/<id>/`
+
+An own file overrides the parent's, and the parent's overrides `common/`. Inheritance walks the chain recursively, so when `latex extends md` and `md extends html` and `html` itself stands alone, the chain for `latex` resolves to `[common, html, md, latex]`. A cycle, or a parent id that is not installed, terminates the walk silently.
+====
+
+The two examples below stack on each other:
+
+* The Markdown generator extends the built-in HTML one, because any valid HTML is already valid Markdown content. Most HTML partials are reused in Markdown, which then swaps in its flavored headings, bold, code spans, and code blocks.
+
+* {url-latex}[LaTeX^] then extends Markdown because most of what the Markdown generator produces is also acceptable inside a LaTeX document for the template we're using. The only things that need to change are the wrapping and a few markup primitives.
+
+Each manifest declares its parent and sets its own escape rules:
+
+[tabs]
+======
+Markdown::
++
+.`addons/generator/md/mrdocs-generator.yml`
+[source,yaml]
+----
+include::example$data-driven-generators/md/addons/generator/md/mrdocs-generator.yml[]
+----
+
+LaTeX::
++
+.`addons/generator/latex/mrdocs-generator.yml`
+[source,yaml]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/mrdocs-generator.yml[]
+----
+======
+
+Each generator owns its wrapper. The Markdown wrapper is a single heading. The LaTeX wrapper is a small article preamble.
+
+[tabs]
+======
+Markdown::
++
+.`addons/generator/md/layouts/wrapper.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/layouts/wrapper.md.hbs[]
+----
++
+.`addons/generator/md/layouts/index.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/layouts/index.md.hbs[]
+----
+
+LaTeX::
++
+.`addons/generator/latex/layouts/wrapper.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/layouts/wrapper.latex.hbs[]
+----
++
+.`addons/generator/latex/layouts/index.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/layouts/index.latex.hbs[]
+----
+======
+
+The actual format differences live in `partials/markup/`. Each leaf ships a handful of markup overrides. The rest of the HTML pipeline reaches for the inherited ones and embeds them directly.
+
+[tabs]
+======
+Markdown::
++
+.`addons/generator/md/partials/markup/strong.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/partials/markup/strong.md.hbs[]
+----
++
+.`addons/generator/md/partials/markup/em.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/partials/markup/em.md.hbs[]
+----
++
+.`addons/generator/md/partials/markup/code.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/partials/markup/code.md.hbs[]
+----
++
+.`addons/generator/md/partials/markup/h.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/partials/markup/h.md.hbs[]
+----
++
+.`addons/generator/md/partials/markup/code-block.md.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/md/addons/generator/md/partials/markup/code-block.md.hbs[]
+----
+
+LaTeX::
++
+.`addons/generator/latex/partials/markup/strong.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/strong.latex.hbs[]
+----
++
+.`addons/generator/latex/partials/markup/em.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/em.latex.hbs[]
+----
++
+.`addons/generator/latex/partials/markup/code.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/code.latex.hbs[]
+----
++
+.`addons/generator/latex/partials/markup/h.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/h.latex.hbs[]
+----
++
+.`addons/generator/latex/partials/markup/code-block.latex.hbs`
+[source,handlebars]
+----
+include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/code-block.latex.hbs[]
+----
+======
+
+The same shape of input as the jsonl section drives both formats:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$data-driven-generators/md/simple.cpp[]
+----
+
+Rendered outputs. Both files mix inherited HTML structure (residual `<div>` blocks and tables) with the format-specific markup the overrides supplied. Anything not covered by an override stays HTML, which the surrounding format accepts:
+
+[tabs]
+======
+Markdown::
++
+.`simple.md`
+[source,markdown]
+----
+include::example$data-driven-generators/md/simple.md[]
+----
+
+LaTeX::
++
+.`simple.latex`
+[source,latex]
+----
+include::example$data-driven-generators/latex/simple.latex[]
+----
+======
+
+

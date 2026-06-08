@@ -1,0 +1,249 @@
+= Filters
+:page-aliases: config-file/filters.adoc
+
+Filters are the gate at the front of the pipeline: they decide which symbols enter the documentation corpus at all. MrDocs filters by qualified name, by where the source sits on disk, and by category (undocumented declarations, private members, friends, and so on), and it can hide the implementation details of a type without dropping it from the corpus. Once a symbol has cleared the filters, xref:configuration/extraction.adoc[Extraction] decides how MrDocs presents it. The xref:configuration/reference.adoc#_filters_options_reference[Filters reference] lists every option.
+
+== Name filters
+
+The most common filter in C++ libraries is by qualified name. xref:configuration/reference.adoc#include-symbols_option[`include-symbols`] keeps only the symbols whose names match one of the listed globs. The usual entry point is the library's top-level namespace. xref:configuration/reference.adoc#exclude-symbols_option[`exclude-symbols`] then drops a glob inside that set. Two patterns are common: the `unsafe_*` family of functions (faster variants that skip validation, on the assumption the caller has already validated), and a helper namespace like `jzon::extra` for tracing or debug hooks the public docs do not need.
+
+.`include/jzon/parser.hpp`
+[source,cpp]
+----
+include::example$snippets/configuration/name-filters/include/jzon/parser.hpp[tag=body]
+----
+
+.`include/jzon/extra/utilities.hpp`
+[source,cpp]
+----
+include::example$snippets/configuration/name-filters/include/jzon/extra/utilities.hpp[tag=body]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/configuration/name-filters/name-filters.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/configuration/name-filters/name-filters.adoc[tags=!footer]
+========
+
+Three patterns drive that output:
+
+* `+include-symbols: ['jzon::**']+` keeps the whole `jzon` namespace.
+* `exclude-symbols: ['jzon::unsafe_*']` then removes `unsafe_parse` and `unsafe_element_count`, so only the safe overloads land in the public docs.
+* `+exclude-symbols: ['jzon::extra::**']+` removes the `jzon::extra` helper functions.
+
+The pattern delimiter is `::` instead of `/`. A single `+*+` matches anything that does not cross a `::`, so `+jzon::*+` matches `jzon::parse` but not `jzon::extra::enable_trace`. A double `+**+` matches everything including `::`, so `+jzon::**+` matches both.
+
+NOTE: The Doxygen option analogous to `exclude-symbols` is https://www.doxygen.nl/manual/config.html#cfg_exclude_symbols[`EXCLUDE_SYMBOLS`^]. Doxygen has no inclusion counterpart. It documents everything by default and narrows the set with the https://www.doxygen.nl/manual/config.html#cfg_extract_all[`EXTRACT_*`^] family plus `EXCLUDE_SYMBOLS`.
+
+== Implementation details
+
+Sometimes a type that lives in the library's implementation appears in a public signature: a return type, a parameter, an inherited base. Dropping it with `exclude-symbols` would break cross-references and leave the reference as a bare name. The two options below keep the symbol in the corpus and hide its details from the reader.
+
+xref:configuration/reference.adoc#implementation-defined_option[`implementation-defined`] drops the page for the matched symbols and renders any reference to them as `+/* implementation-defined */+`. xref:configuration/reference.adoc#see-below_option[`see-below`] is gentler: the symbol keeps its page, but the synopsis collapses to `+/* see-below */+` and the members are not enumerated. Use `see-below` when the type matters to the reader but its implementation does not. Use `implementation-defined` when the type's name should not be advertised.
+
+.`include/logr/log.hpp`
+[source,cpp]
+----
+include::example$snippets/configuration/private-symbols/include/logr/log.hpp[tag=body]
+----
+
+.`include/logr/detail/scope_token.hpp`
+[source,cpp]
+----
+include::example$snippets/configuration/private-symbols/include/logr/detail/scope_token.hpp[tag=body]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/configuration/private-symbols/private-symbols.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/configuration/private-symbols/private-symbols.adoc[tags=!footer]
+========
+
+`implementation-defined` matches two patterns. `+'logr::detail::**'+` catches the conventional internal namespace, and `+'logr::*_impl'+` catches the `_impl`-suffixed forward declarations the library uses as opaque customization-point handles. Where either type appears in the signature of `scoped_context` or `set_encoder`, the rendered synopsis substitutes `+/* implementation-defined */+`. `see-below` matches `logr::log_record`: the type keeps its page, but the synopsis on that page collapses to `+/* see-below */+`, so the reader sees what the type is rather than how it is laid out.
+
+TIP: When the set of implementation symbols is small or awkward to describe with a glob, use the xref:commands/reference.adoc#cmd-implementation-defined[`@implementationdefined`] and xref:commands/reference.adoc#cmd-see-below[`@seebelow`] doc-comment commands instead. Same effect, declared next to the symbol rather than in the config.
+
+NOTE: Doxygen has no direct analogue. Marking a symbol with the https://www.doxygen.nl/manual/commands.html#cmdinternal[`\internal`^] command plus https://www.doxygen.nl/manual/config.html#cfg_internal_docs[`INTERNAL_DOCS=NO`^] hides it from the output, but Doxygen does not render references to it as "implementation-defined" or collapse its synopsis to "see-below".
+
+== Path filters
+
+Reach for path filters when the libraries you want to keep share a naming scheme that a symbol filter cannot separate, or when the source tree contains directories (vendored code, generated headers) that should not appear in the docs at all.
+
+xref:configuration/reference.adoc#input_option[`input`] is the list of directories MrDocs scans for sources. A miniature FFmpeg layout makes the case: every public function across `libavcodec`, `libavformat`, and friends sits at global scope under the same `av_*` prefix, so `include-symbols: ['av_*']` would pull them all in. Only the directory tells them apart.
+
+.`include/libavcodec/avcodec.h`
+[source,cpp]
+----
+include::example$snippets/options/input/include/libavcodec/avcodec.h[tag=body]
+----
+
+.`include/libavformat/avformat.h`
+[source,cpp]
+----
+include::example$snippets/options/input/include/libavformat/avformat.h[tag=body]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/input/input.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/input/input.adoc[tags=!footer]
+========
+
+Only `include/libavcodec` is in `input`, so the format-library functions never enter the corpus. The default is `<source-root>/.`, which covers the whole project.
+
+xref:configuration/reference.adoc#recursive_option[`recursive`] decides whether MrDocs walks into subdirectories under each input root. Set it to `false` when only the top-level files of a directory are public.
+
+The exclusion side of the same axis: xref:configuration/reference.adoc#exclude_option[`exclude`] drops a specific subdirectory inside `input`. Use it for code that does not belong in the output, such as a vendored copy of a third-party library or a generated-code tree that lives next to the source. The example below documents the `httpd` library while skipping a vendored copy of zlib that the project bundles for convenience:
+
+.`include/httpd/server.hpp`
+[source,cpp]
+----
+include::example$snippets/options/exclude/include/httpd/server.hpp[tag=body]
+----
+
+.`include/zlib/zlib.h`
+[source,cpp]
+----
+include::example$snippets/options/exclude/include/zlib/zlib.h[tag=body]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/exclude/exclude.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/exclude/exclude.adoc[tags=!footer]
+========
+
+xref:configuration/reference.adoc#exclude-patterns_option[`exclude-patterns`] is the glob form of `exclude` and matches across the tree, so one pattern can drop every directory matching the glob no matter where it sits under `input`. The classic case is build-generated headers that live next to each component's hand-written ones under a `_generated/` subdirectory:
+
+.`include/storage/storage.hpp`
+[source,cpp]
+----
+include::example$snippets/options/exclude-patterns/include/storage/storage.hpp[tag=body]
+----
+
+.`include/storage/_generated/messages.hpp`
+[source,cpp]
+----
+include::example$snippets/options/exclude-patterns/include/storage/_generated/messages.hpp[tag=body]
+----
+
+.`include/payments/payments.hpp`
+[source,cpp]
+----
+include::example$snippets/options/exclude-patterns/include/payments/payments.hpp[tag=body]
+----
+
+.`include/payments/_generated/messages.hpp`
+[source,cpp]
+----
+include::example$snippets/options/exclude-patterns/include/payments/_generated/messages.hpp[tag=body]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/exclude-patterns/exclude-patterns.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/exclude-patterns/exclude-patterns.adoc[tags=!footer]
+========
+
+A single `+'**/_generated/**'+` pattern drops both `storage/_generated/` and `payments/_generated/`. With the literal `exclude:`, you would need one entry per directory.
+
+xref:configuration/reference.adoc#file-patterns_option[`file-patterns`] narrows the file set MrDocs scans inside the input directories: only files whose names match one of the globs are read. The default already covers the common C++ header extensions, so you set it only to narrow further (for example, to skip `.ipp`).
+
+WARNING: `exclude` and `exclude-patterns` are for code that should not appear in the docs at all, such as vendored libraries or generated code. Do not reach for them when the directory holds *your own* library's private internals. Dropped symbols leave the corpus entirely, so any reference to one from a kept declaration renders as the literal name (`detail::cache_entry`) instead of an implementation marker. For your own internals, use the xref:#_implementation_details[`implementation-defined` and `see-below` options] covered above. They keep the cross-references intact and render them as `+/* implementation-defined */+` or collapse the synopsis to `+/* see-below */+`.
+
+NOTE: The analogous Doxygen options are https://www.doxygen.nl/manual/config.html#cfg_input[`INPUT`^], https://www.doxygen.nl/manual/config.html#cfg_recursive[`RECURSIVE`^], https://www.doxygen.nl/manual/config.html#cfg_exclude[`EXCLUDE`^], https://www.doxygen.nl/manual/config.html#cfg_exclude_patterns[`EXCLUDE_PATTERNS`^], and https://www.doxygen.nl/manual/config.html#cfg_file_patterns[`FILE_PATTERNS`^].
+
+== Category filters
+
+The `extract-*` family flips MrDocs's category-level defaults: each option toggles a class of declarations that the default would either include or omit. The two most common are below. The reference page covers the rest (static locals, anonymous and empty namespaces, friends, local classes, implicit template specializations); reach for one when you discover the default is hiding something you wanted documented.
+
+=== Undocumented symbols
+
+xref:configuration/reference.adoc#extract-all_option[`extract-all`] decides whether MrDocs documents declarations that have no doc comment. The default `true` pulls them in; set it to `false` to keep the public docs to the symbols the author has explicitly written prose for:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/extract-all/extract-all.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/extract-all/extract-all.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/extract-all/extract-all.adoc[tags=!footer]
+========
+
+`documented` survives; `undocumented` is dropped because no doc comment is attached.
+
+=== Private members
+
+xref:configuration/reference.adoc#extract-private_option[`extract-private`] adds private members to a class's page, with companion switches xref:configuration/reference.adoc#extract-private-virtual_option[`extract-private-virtual`] and xref:configuration/reference.adoc#extract-private-bases_option[`extract-private-bases`] for private overrides and private bases:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/extract-private/extract-private.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/extract-private/extract-private.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/extract-private/extract-private.adoc[tags=!footer]
+========
+
+== Glob syntax
+
+Symbol and file patterns share the same wildcards (the file form uses `/` as the path delimiter; the symbol form uses `::`):
+
+* `*` matches all characters except the delimiter.
+* `**` matches all characters including the delimiter.
+* `?` matches any single character.
+* `[<chars>]` matches one character in the bracket; ranges work as `[a-z]`; negate with `[^<chars>]` or `[!<chars>]`.
+* `{<glob>,...}` matches one of the globs in the list.
+* `\` escapes the next character so it is treated as a literal.
+
+== Inclusion rules
+
+Inclusion rules (`include-symbols`, `implementation-defined`, `see-below`) are intentionally looser than `exclude-symbols`: a symbol counts as included when any of the following hold.
+
+. The symbol strictly matches one of the patterns. `std::vector` matches both `std::vector` and `std::*`.
+. The symbol is a parent namespace of an included symbol. `std::filesystem::*` therefore also pulls in `std` and `std::filesystem`.
+. The parent symbol is included. `std::*` matches `std::vector::iterator` because `std::vector` matches.
+. A literal pattern that names a namespace pulls in everything under it. `std` behaves like `std::**`.
+
+Exclusion rules require a strict match: a symbol is excluded only when it (or its scope) is the pattern's exact target.

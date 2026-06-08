@@ -1,0 +1,93 @@
+= Configuration
+:page-aliases: config-file.adoc, config-file/index.adoc, config-file/cli.adoc
+
+MrDocs is configured by options that name the source root, the compilation database, the generator, the filters, and so on. Every option has a YAML key in `mrdocs.yml` and a kebab-case command-line flag with the same name. The two surfaces are equivalent: pick whichever fits each option, mix them in the same invocation, and the CLI value wins on collision.
+
+== A minimal mrdocs.yml
+
+The smallest useful `mrdocs.yml` points at the source tree and tells MrDocs how to compile it. For a CMake project, that is two lines:
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/getting-started/cmake-header-only/docs/mrdocs.yml[lines=2..]
+----
+
+xref:configuration/reference.adoc#source-root_option[`source-root`] is the root of your source tree, resolved relative to the `mrdocs.yml` file. xref:configuration/reference.adoc#compilation-database_option[`compilation-database`] tells MrDocs how to compile the sources.
+
+TIP: xref:usage.adoc[Basic Usage Patterns] walks through complete starter projects for each compilation-database shape (existing `compile_commands.json`, MrDocs-driven CMake, header scan). Pick the one closest to your project and copy it.
+
+From here the file grows as you customize more: a different xref:configuration/reference.adoc#generator_option[`generator`], xref:configuration/filters.adoc[filters] over what gets documented, xref:configuration/output.adoc[output] options for page structure and styling, and so on. For example, this file produces XML output and limits extraction to the `mylib` namespace:
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$configuration/customized.yml[]
+----
+
+Each category page introduces its options in context, and the xref:configuration/reference.adoc[Reference] lists every option with its default and an example.
+
+== Running MrDocs
+
+NOTE: The commands below assume `mrdocs` is on your `PATH`.
+
+The simplest invocation names the config file with the xref:configuration/reference.adoc#config_option[`--config`] flag:
+
+[source,bash]
+----
+mrdocs --config=path/to/mrdocs.yml
+----
+
+If you run MrDocs from the directory that contains `mrdocs.yml`, you can omit the flag and let the `config` default take over (it points at `mrdocs.yml` in the current directory):
+
+[source,bash]
+----
+mrdocs
+----
+
+NOTE: xref:configuration/reference.adoc#config_option[`--config`] is the only option that can't be set in the file, for the obvious reason that a file can't point at itself. Every other option is mirrored on both surfaces.
+
+== CLI overrides
+
+Any option from the config file can be overridden by passing the same name as a CLI flag; the CLI value wins. The example below keeps everything from `mrdocs.yml` except the output directory:
+
+[source,bash]
+----
+mrdocs --config=path/to/mrdocs.yml --output=../docs/reference
+----
+
+NOTE: Relative paths are resolved against the directory containing `mrdocs.yml`, whether they come from the config file or from the command line. The path to `mrdocs.yml` itself is the only exception; it is resolved against the shell's current directory.
+
+== File location
+
+`mrdocs.yml` can sit anywhere. By convention, many projects keep it at `docs/mrdocs.yml` so the `docs/` directory groups everything documentation-related in one place:
+
+.A typical layout with `docs/mrdocs.yml`
+[source]
+----
++ <project-directory>
+  + docs
+    + mrdocs.yml
+    + ...
+  + include
+  + src
+  + test
+  + ...
+----
+
+Wherever the file lives, the most important option to set is xref:configuration/reference.adoc#source-root_option[`source-root`]. It is the base MrDocs uses to form the per-file paths that link each symbol back to its source file, so combined with xref:configuration/reference.adoc#base-url_option[`base-url`] it produces working links to the code on your repository host. The default is the directory containing `mrdocs.yml`, so a `mrdocs.yml` at the project root needs nothing set; a `mrdocs.yml` at `docs/mrdocs.yml` typically uses `source-root: ..` so the resulting paths are anchored at the repository root.
+
+== JSON schema
+
+A JSON schema for `mrdocs.yml` is published on https://www.schemastore.org/json/, so most editors (including JetBrains IDEs and VS Code) pick it up automatically and start autocompleting option names. To pin a specific schema version, or to bind the schema manually in an editor that does not consult Schema Store, prepend a directive at the top of the file:
+
+* JetBrains IDEs honor `# $schema: <url>`.
+* Editors backed by the https://github.com/redhat-developer/yaml-language-server[YAML language server] honor `# yaml-language-server: $schema=<url>`.
+
+.Inline-schema file compatible with both editors
+[source,yaml]
+----
+include::partial$mrdocs-schema-example.yml[]
+----
+
+The schema is also attached to this site: xref:attachment$mrdocs.schema.json[mrdocs.schema.json].

@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#set_value]
+== set&lowbar;value
+
+Sets the value pointed to by `target`&period;
+
+=== Synopsis
+
+Declared in `&lt;code&hyphen;span&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+set&lowbar;value(
+    int* target,
+    int new&lowbar;value);
+----
+
+=== Description
+
+The previous value of `&ast;target` is overwritten&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

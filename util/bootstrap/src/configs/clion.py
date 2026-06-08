@@ -24,6 +24,21 @@ from ..core.filesystem import ensure_dir, write_text
 from ..core.ui import TextUI, get_default_ui
 
 
+def _env_prefix(config: Dict[str, Any]) -> str:
+    """Return a shell prefix that sets each `env` entry inline for the
+    command that follows, e.g. `KEY='value' OTHER='x' `. Empty when the
+    config has no env entries. CLion's Shell run plugin does forward
+    `<envs>` to the child process via GeneralCommandLine, but in
+    `EXECUTE_IN_TERMINAL=false` mode the npx-shell-node chain we use
+    doesn't always inherit them reliably. Embedding the assignments in
+    SCRIPT_TEXT makes them load-bearing for execution; the `<envs>` block
+    is still emitted so the IDE shows the same values in its UI."""
+    env = config.get("env") or {}
+    if not env:
+        return ""
+    return " ".join(f"{k}={shlex.quote(v)}" for k, v in env.items()) + " "
+
+
 def generate_clion_run_configs(
     configs: List[Dict[str, Any]],
     source_dir: str,
@@ -137,7 +152,7 @@ def generate_clion_run_configs(
                     attrib["folderName"] = config["folder"]
                 clion_config = ET.SubElement(root, "configuration", attrib)
                 ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
-                              value=f"bash {shlex.quote(config['script'])}")
+                              value=f"{_env_prefix(config)}bash {shlex.quote(config['script'])}")
                 ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
                 ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
                 ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
@@ -149,9 +164,23 @@ def generate_clion_run_configs(
                 ET.SubElement(clion_config, "option", name="INDEPENDENT_INTERPRETER_PATH", value="true")
                 ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
                 ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
-                ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
+                # Run inside the Run tool window instead of spawning a
+                # new external terminal each invocation. The Run window
+                # is reused and gives the same scrollback/search the
+                # IDE provides for other configurations.
+                ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="false")
                 ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="false")
-                ET.SubElement(clion_config, "envs")
+                # Forward `env` from the config entry. The CLion Shell
+                # plugin uses `EnvironmentVariablesData`, which expects
+                # `<envs pass-parent-envs="true"><env name=.. value=../></envs>`.
+                # `pass-parent-envs` defaults to true but writing it
+                # explicitly matches CLion's own canonical serialization,
+                # so a hand-edited config and a generated one stay
+                # byte-identical and the env field is guaranteed to
+                # populate in the run-config dialog.
+                envs = ET.SubElement(clion_config, "envs", attrib={"pass-parent-envs": "true"})
+                for key, value in config.get("env", {}).items():
+                    ET.SubElement(envs, "env", name=key, value=value)
                 ET.SubElement(clion_config, "method", v="2")
 
             elif config["script"].endswith(".js"):
@@ -203,7 +232,7 @@ def generate_clion_run_configs(
                 clion_config = ET.SubElement(root, "configuration", attrib)
                 args = config.get("args") or []
                 ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
-                              value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in args)}")
+                              value=f"{_env_prefix(config)}{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in args)}")
                 ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
                 ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
                 ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
@@ -215,9 +244,22 @@ def generate_clion_run_configs(
                 ET.SubElement(clion_config, "option", name="INDEPENDENT_INTERPRETER_PATH", value="true")
                 ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
                 ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
-                ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
+                # Same as the .sh branch above: keep output in the Run
+                # tool window rather than opening a fresh terminal tab
+                # for every invocation.
+                ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="false")
                 ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="false")
-                ET.SubElement(clion_config, "envs")
+                # Forward `env` from the config entry. The CLion Shell
+                # plugin uses `EnvironmentVariablesData`, which expects
+                # `<envs pass-parent-envs="true"><env name=.. value=../></envs>`.
+                # `pass-parent-envs` defaults to true but writing it
+                # explicitly matches CLion's own canonical serialization,
+                # so a hand-edited config and a generated one stay
+                # byte-identical and the env field is guaranteed to
+                # populate in the run-config dialog.
+                envs = ET.SubElement(clion_config, "envs", attrib={"pass-parent-envs": "true"})
+                for key, value in config.get("env", {}).items():
+                    ET.SubElement(envs, "env", name=key, value=value)
                 ET.SubElement(clion_config, "method", v="2")
 
         tree = ET.ElementTree(root)

@@ -1,0 +1,125 @@
+= Documenting the Code
+:page-aliases: commands.adoc
+
+The code should be documented with the https://docs.oracle.com/en/java/javase/13/docs/specs/javadoc/doc-comment-spec.html[Doc Comment,window=_blank] format, also informally known as Javadoc-style or Doxygen-style comments.
+
+In its most basic form, a doc comment is a block between `pass:[/**]` and `pass:[*/]` placed above a class, function, or field declaration. Sequential `pass:[///]`-comments are a common alternative, especially for single-line blocks. Both styles can appear side by side in the same file:
+
+.A struct, its members, and a function, mixing `pass:[/**]` and `pass:[///]`
+[source,cpp]
+----
+include::example$snippets/commands/intro/person.cpp[]
+----
+
+.Rendered output
+[.adoc-preview]
+========
+include::example$snippets/commands/intro/person.adoc[tags=!footer]
+========
+
+Each doc comment in the example above starts with a brief sentence, optionally followed by a detailed description. Most doc comments contain those two sections; you can also mark them explicitly with `@brief` and `@details`.
+
+Doc comments can also carry special commands like `@param`, `@returns`, or `@throws` that attach structured information to the declaration.
+MrDocs supports most commands you would already use in a Javadoc or Doxygen comment.
+The xref:commands/reference.adoc[Commands Reference] lists every command MrDocs understands, grouped by category.
+
+== Documentation Comment Formats
+
+The format MrDocs reads goes back to Java's `doc` tool and spread from there. Each ecosystem that picked it up kept the same `/** ... */` shape and added its own conventions.
+
+* Javadoc started the convention with Java. Its https://docs.oracle.com/en/java/javase/17/docs/specs/doc/doc-comment-spec.html[official specification] calls them *Documentation Comments*, usually shortened to "doc comments"; in practice many developers know them as *Javadoc-style comments*.
+* Doxygen brought the same syntax to C, C++, and other languages. The https://www.doxygen.nl/manual/docblocks.html[docs] call them *comment blocks* but also call out the Javadoc lineage for readers coming from Java.
+* https://jsdoc.app/[JSDoc] brought the same idea to JavaScript. Developers there call them *JSDoc comments*, following the tradition of naming the form after the tool.
+
+Other ecosystems have adopted similar approaches and comment styles, sometimes with different syntax:
+
+- C#: XML documentation comments (`/// ...`)
+- Rust: doc comments (`/// ...` and `//! ...`)
+- Swift: markup-based documentation comments (`/// ...`)
+
+[cols="1,1,2,2",options="header"]
+|===
+| Language | Tool | Official Term | Common Term
+
+| Java
+| Javadoc
+| https://docs.oracle.com/en/java/javase/17/docs/specs/doc/doc-comment-spec.html[Documentation comments]
+| Javadoc-style comments
+
+| C, C++, etc.
+| Doxygen
+| https://www.doxygen.nl/manual/docblocks.html[Comment blocks]
+| Doxygen-style comments
+
+| JavaScript
+| JSDoc
+| https://jsdoc.app/[JSDoc comments]
+| -
+
+| C#
+| XML Documentation Comments
+| https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/[XML documentation comments]
+| -
+
+| Rust
+| Rustdoc
+| https://doc.rust-lang.org/rustdoc/the-doc-attribute.html[Doc comments]
+| -
+
+| Swift
+| Swift Markup
+| https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/[Markup documentation comments]
+| -
+|===
+
+- The original term, coming from Java, is *doc comments*; later tools followed the same convention.
+- Many communities still call them after the tool: *Javadoc-style comments*, *Doxygen-style comments*, *JSDoc comments*.
+- MrDocs reads the same `/** ... */` shape, so a doc comment that compiles for Doxygen typically works here without changes.
+
+== Parsing Algorithm
+
+MrDocs uses the same two-phase parsing model as the https://spec.commonmark.org/0.31.2/#appendix-a-parsing-strategy[CommonMark specification^]. It adds a pre-step to extract the text from the comment markers, and recognizes some MrDocs-specific commands alongside the standard CommonMark syntax.
+
+.Doc-comment parsing pipeline
+[mermaid]
+....
+graph LR
+  classDef input fill:#D1E8FF,stroke:#005CFF,stroke-width:2;
+  classDef common fill:#FFF5D1,stroke:#FFA500,stroke-width:2;
+  classDef mrdocs fill:#F3D1FF,stroke:#8000C0,stroke-width:2;
+  classDef output fill:#D1FFD1,stroke:#008000,stroke-width:2;
+
+  PRE["Pre-step<br/>strip markers,<br/>fix indentation"]
+  B1["Phase 1<br/>group lines<br/>into blocks"]
+  B2["Metadata blocks<br/>@param, @returns…"]
+  I1["Phase 2<br/>parse inline<br/>elements"]
+  I2["Inline commands<br/>@ref, @copydoc…"]
+  DOC["Structured comment<br/>on the symbol"]
+
+  PRE --> B1 --> I1 --> DOC
+  B1 -. extends .-> B2
+  I1 -. extends .-> I2
+
+  class B1,I1 common
+  class PRE,B2,I2 mrdocs
+  class DOC output
+....
+
+[.text-center]
+**Pre-step: extract text from the comment**
+
+Source comments arrive wrapped in markers: `pass:[/**] ... pass:[*/]` with optional leading `pass:[*]` continuation characters, or runs of `pass:[///]` and `pass:[//!]` lines. MrDocs strips those markers and normalizes the leading indentation. The result is plain text, ready for the rest of the algorithm.
+
+[.text-center]
+**Phase 1: group lines into blocks**
+
+MrDocs walks the lines in order and groups them into blocks: paragraphs, lists, fenced and indented code blocks, block quotes, and headings.
+
+MrDocs adds one more family: *metadata blocks*, introduced by commands like `@brief`, `@param`, `@returns`, `@throws`, `@par`, or `@code` / `@endcode`. Each one supplies structured information for the declaration: a parameter description, a return value, a named section, a code example. Parsing is the same as for any other block. The difference comes later, when MrDocs attaches each metadata block to the right field on the symbol's record.
+
+[.text-center]
+**Phase 2: parse the contents of each block**
+
+Once the block structure is fixed, MrDocs parses each block's content for inline elements, such as emphasis, code spans, and links.
+
+On top of those CommonMark inlines, MrDocs recognizes extra inline commands: cross-references like `pass:[@ref]`, copy directives like `pass:[@copydoc]`, Doxygen-style formatting commands such as `pass:[@a]`, `pass:[@b]`, and `pass:[@c]`, and inline math. The xref:commands/inlines.adoc[Inline Commands] page lists them all.

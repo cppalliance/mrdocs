@@ -1,0 +1,113 @@
+= Output
+
+MrDocs separates corpus extraction (everything covered by xref:configuration/filters.adoc[Filters] and xref:configuration/extraction.adoc[Extraction]) from the presentation layer that renders the corpus to disk. The options on this page belong to that second half: they pick the output format, decide what is visible on the rendered pages, link those pages to the source code and to other documentation sets, and let you swap or extend the styling. The xref:configuration/reference.adoc#_output_options_reference[Output reference] lists every option with its default and an example.
+
+== Format
+
+xref:configuration/reference.adoc#generator_option[`generator`] picks the format MrDocs emits. The built-in choices are `html` (the default), `adoc`, and `xml`; the xref:generators/index.adoc[Generators] section describes what each produces and when to choose it.
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/generator/generator.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/generator/generator.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/generator/generator.adoc[tags=!footer]
+========
+
+xref:configuration/reference.adoc#output_option[`output`] is the directory (or, for a single-file generator, the file) MrDocs writes to. The default is `<config-dir>/reference-output`. It's very common to override this option in the site's pages directory from the CLI. MrDocs creates the directory if it does not exist.
+
+xref:configuration/reference.adoc#multipage_option[`multipage`] (on by default) writes one file per symbol so the result can be browsed page-by-page on a website. Turn it off for a one-shot dump or when the output will be embedded in a larger single document.
+
+== Showing and hiding
+
+The options here change what the presentation layer renders without changing what is in the corpus.
+
+xref:configuration/reference.adoc#show-namespaces_option[`show-namespaces`] (on by default) gives each namespace its own page. Turn it off for a flatter, easier-to-skim layout in which namespaces are collapsed into the parent's listing:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/show-namespaces/show-namespaces.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/show-namespaces/show-namespaces.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/show-namespaces/show-namespaces.adoc[tags=!footer]
+========
+
+xref:configuration/reference.adoc#show-enum-constants_option[`show-enum-constants`] gives each enumerator its own page, with its full description visible there (and the link from the enum's synopsis pointing at that page):
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/show-enum-constants/show-enum-constants.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/show-enum-constants/show-enum-constants.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/show-enum-constants/show-enum-constants.adoc[tags=!footer]
+========
+
+NOTE: When `show-enum-constants` is off (the default), enumerators are folded into the enum's synopsis and only their *brief* sentence travels with them (in the default generator templates). Any detailed description, `@par` blocks, `@note`s, or other metadata you wrote on the enumerators are dropped from the rendered output, because there is no enumerator-specific page to host them. If you wrote long-form documentation on an enumerator, turn the option on so that documentation has somewhere to live.
+
+xref:configuration/reference.adoc#global-namespace-index_option[`global-namespace-index`] turns the global-namespace page into a project-wide index of every top-level symbol. xref:configuration/reference.adoc#legible-names_option[`legible-names`] uses readable symbol names in file names and URLs (the alternative is short opaque hashes).
+
+== Source links
+
+xref:configuration/reference.adoc#base-url_option[`base-url`] is the prefix MrDocs joins with each source file's path to build the "Declared in" link. Set it to your repository's blob URL so every symbol page links to the code that defines it:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/base-url/base-url.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/base-url/base-url.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/base-url/base-url.adoc[tags=!footer]
+========
+
+== External docs
+
+xref:configuration/reference.adoc#tagfile_option[`tagfile`] writes a Doxygen-compatible tag file alongside the documentation. The expected use is cross-linking: other MrDocs runs can read it to resolve `@ref` targets that live in your library, and Doxygen-generated docs can consume it for the same purpose. Reach for it when you publish a library that other people's docs need to link to.
+
+TIP: A few projects use the tag file in a less obvious way: they read it from their own site-generation scripts to build a navigation tree or a search index from the symbol list, rather than maintaining one by hand.
+
+NOTE: The inverse direction (consuming tag files emitted by other projects so that your pages link to *their* symbols) is handled by the xref:extensions/antora.adoc#antora-cpp-tagfiles-extension[`antora-cpp-tagfiles-extension`]. Point it at one or more tag files in your Antora playbook, and references like `boost::asio::io_context` resolve to the Boost.Asio site automatically.
+
+== Styling
+
+The default HTML output ships with a stylesheet that is fine to publish as-is. The options here come into play when you want the pages to match the rest of a site, or when you need to swap the markup outright for something the built-in template cannot produce.
+
+xref:configuration/reference.adoc#stylesheets_option[`stylesheets`] adds extra stylesheets to every HTML page. xref:configuration/reference.adoc#no-default-styles_option[`no-default-styles`] drops the built-in stylesheet entirely (because you are shipping your own). xref:configuration/reference.adoc#linkcss_option[`linkcss`] and xref:configuration/reference.adoc#copycss_option[`copycss`] decide whether each stylesheet is referenced by `<link>` or copied next to the output, and xref:configuration/reference.adoc#stylesdir_option[`stylesdir`] sets the directory the `href` attributes point at.
+
+When you need to change the markup itself (not just the styles), reach for xref:extensions/handlebars-extensions.adoc[Handlebars templates] and the xref:configuration/reference.adoc#addons_option[`addons`] / xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] options that load them.
+
+xref:configuration/reference.adoc#embedded_option[`embedded`] drops the page wrapper (header, sidebar, footer) from the HTML output so the symbol pages can be embedded inside another document. Reach for it when MrDocs is rendering snippets into a larger site rather than producing a standalone manual.

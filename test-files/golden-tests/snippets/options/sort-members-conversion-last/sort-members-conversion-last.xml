@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>aL95UZNOlsUmaEAcsStBDZ+x1U8=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>value</name>
+  <source>
+    <location>
+      <short-path>sort-members-conversion-last.cpp</short-path>
+      <source-path>sort-members-conversion-last.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>aL95UZNOlsUmaEAcsStBDZ+x1U8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class whose conversion operators are pushed to the bottom of the member list.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>RPunmq5aFxzEZJf1vZ9erveYWm4=</functions>
+      <functions>hSQSbK8or+zfcEL8Ri1sGkP6Ml0=</functions>
+      <functions>mGeGbxbwVloE+3jqAPmFIIQq3sE=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>get</name>
+  <source>
+    <location>
+      <short-path>sort-members-conversion-last.cpp</short-path>
+      <source-path>sort-members-conversion-last.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>RPunmq5aFxzEZJf1vZ9erveYWm4=</id>
+  <extraction>regular</extraction>
+  <parent>aL95UZNOlsUmaEAcsStBDZ+x1U8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Read the underlying integer.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator bool</name>
+  <source>
+    <location>
+      <short-path>sort-members-conversion-last.cpp</short-path>
+      <source-path>sort-members-conversion-last.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>hSQSbK8or+zfcEL8Ri1sGkP6Ml0=</id>
+  <extraction>regular</extraction>
+  <parent>aL95UZNOlsUmaEAcsStBDZ+x1U8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Convert to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bool</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> for use in conditions.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>bool</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<function>
+  <name>operator int</name>
+  <source>
+    <location>
+      <short-path>sort-members-conversion-last.cpp</short-path>
+      <source-path>sort-members-conversion-last.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>mGeGbxbwVloE+3jqAPmFIIQq3sE=</id>
+  <extraction>regular</extraction>
+  <parent>aL95UZNOlsUmaEAcsStBDZ+x1U8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Convert to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> for arithmetic contexts.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The object converted to </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>int</literal>
+        </text>
+      </code>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>conversion</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+</mrdocs>

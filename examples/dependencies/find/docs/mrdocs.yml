@@ -1,0 +1,6 @@
+## Pattern: a CMake project finds Boost via CMake itself.
+source-root: ..
+compilation-database: ../CMakeLists.txt
+# tag::test-only[]
+cmake: '-D Boost_DIR=../external/boost/lib/cmake/Boost'
+# end::test-only[]

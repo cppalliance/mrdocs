@@ -1,0 +1,11 @@
+## Pattern: a scan-mode project inlines the shim it needs for {fmt}.
+source-root: ..
+input:
+  - ../include
+includes:
+  - ../include
+file-patterns:
+  - '*.hpp'
+missing-include-shims:
+  "fmt/format.h": |
+    namespace fmt { class memory_buffer; }

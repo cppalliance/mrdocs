@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#truncate]
+== truncate
+
+Truncate a string to the given length&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+truncate(
+    char* s,
+    int n);
+----
+
+=== Description
+
+The first sentence of this comment becomes the brief&semi; the rest is the description&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

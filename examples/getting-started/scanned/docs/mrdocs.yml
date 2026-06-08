@@ -1,0 +1,11 @@
+## Pattern: MrDocs scans the `input` directories, synthesizes
+## a compilation database from the headers it finds.
+source-root: ..
+
+## Which directories MrDocs walks looking for files to document.
+input:
+  - ../include
+
+## Where MrDocs looks for `#include` directives.
+includes:
+  - ../include

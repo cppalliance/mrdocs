@@ -1,0 +1,7 @@
+[#config-options-reference]
+= Options Reference
+
+[config-options-reference,level=2]
+====
+include::partial$ConfigOptions.json[]
+====

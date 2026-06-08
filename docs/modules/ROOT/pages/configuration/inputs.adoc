@@ -1,0 +1,45 @@
+= Inputs
+
+To document your code, MrDocs needs to know where the source lives and how to compile it. The options on this page answer both questions. The xref:configuration/reference.adoc#_inputs_options_reference[Inputs reference] lists every option with its default.
+
+== Pointing at your code
+
+xref:configuration/reference.adoc#source-root_option[`source-root`] is the base MrDocs uses to form the per-file paths that link each symbol page back to the source file it lives in (combined with xref:configuration/reference.adoc#base-url_option[`base-url`], those paths become full URLs to your repository host). It defaults to the directory holding `mrdocs.yml`. The example sets `source-root: ..` so the resulting paths are anchored at the repository root.
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/getting-started/compilation-database/docs/mrdocs.yml[]
+----
+
+TIP: xref:configuration/reference.adoc#compilation-database_option[`compilation-database`] is the option that determines how MrDocs compiles your code. xref:usage.adoc[Basic Usage Patterns] walks through complete starter projects. Pick the one closest to your project.
+
+If MrDocs is invoking CMake on your behalf (the `compilation-database` value points at a `CMakeLists.txt`), xref:configuration/reference.adoc#cmake_option[`cmake`] passes extra arguments through to that CMake invocation — for example `'-D MY_PROJECT_TESTS=OFF'` to silence test targets while configuring for the docs build.
+
+== Extra includes and defines
+
+The compilation database carries most of the flags MrDocs needs, but you can add to them. xref:configuration/reference.adoc#includes_option[`includes`] and xref:configuration/reference.adoc#system-includes_option[`system-includes`] add directories to the header search path, and xref:configuration/reference.adoc#defines_option[`defines`] adds preprocessor definitions to every entry in the database. 
+
+.`docs/mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/configuration/inputs/extra-includes/docs/mrdocs.yml[]
+----
+
+.`include/lib/api.hpp`
+[source,cpp]
+----
+include::example$examples/configuration/inputs/extra-includes/include/lib/api.hpp[]
+----
+
+.`external/extlib/types.h`
+[source,cpp]
+----
+include::example$examples/configuration/inputs/extra-includes/external/extlib/types.h[]
+----
+
+These options are usually the first to reach for when MrDocs reports that a header cannot be found.
+
+== Standard library headers
+
+For the C and C++ standard libraries, MrDocs can use the headers installed on your system or the ones it bundles for reproducible results. xref:configuration/reference.adoc#use-system-stdlib_option[`use-system-stdlib`] and xref:configuration/reference.adoc#use-system-libc_option[`use-system-libc`] pick between the two; xref:configuration/reference.adoc#stdlib-includes_option[`stdlib-includes`] and xref:configuration/reference.adoc#libc-includes_option[`libc-includes`] say where the bundled headers live.

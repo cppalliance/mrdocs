@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#next_byte]
+== next&lowbar;byte
+
+Reads the next byte from the stream&period;
+
+=== Synopsis
+
+Declared in `&lt;preconditions&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char
+next&lowbar;byte();
+----
+
+=== Preconditions
+
+* The stream must be open and have at least one byte available&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

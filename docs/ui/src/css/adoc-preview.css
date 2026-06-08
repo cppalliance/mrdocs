@@ -1,0 +1,178 @@
+/*
+ * Inline AsciiDoc preview card.
+ *
+ * `.adoc-preview` marks a delimited AsciiDoc block as a "what this
+ * renders to" preview. The `adoc-preview-extension.js` Antora
+ * extension undemotes the heading paragraphs that AsciiDoc produces
+ * inside the block; this stylesheet wraps the result in a glass
+ * card with a "Preview" label so the included content reads as a
+ * different visual context from the surrounding page.
+ *
+ * The styling mirrors the `.documentation-panel` glass card on the
+ * website landing page so the two look consistent. Inherited text
+ * colors from the page theme keep the preview legible without
+ * overriding them.
+ *
+ * Selectors are prefixed with `.doc` to match the specificity of
+ * the bundled `.doc .exampleblock > .content` rule in doc.css that
+ * we override below.
+ */
+
+.doc .adoc-preview {
+  position: relative;
+  margin: 1.25rem 0 1.75rem;
+  padding: 4rem 1.5rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/*
+ * Header strip. `adoc-preview-extension.js` always injects a
+ * `.primary` span saying "Preview" so the card carries that
+ * affordance permanently. When the author gave the block a title,
+ * the extension also appends a separator and a `.subtitle` span,
+ * so the strip reads "PREVIEW  ·  Implicit details" without
+ * losing the constant "PREVIEW" tag.
+ */
+
+.doc .adoc-preview > .adoc-preview-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.doc .adoc-preview-label .primary,
+.doc .adoc-preview-label .subtitle {
+  text-transform: uppercase;
+}
+
+.doc .adoc-preview-label .primary {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.doc .adoc-preview-label .separator {
+  margin: 0 0.55rem;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.doc .adoc-preview-label .subtitle {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/*
+ * AsciiDoc wraps the example block's body in `<div class="content">`,
+ * which the bundled doc.css gives its own dark background, border,
+ * and padding. That would draw a second frame inside the card, so
+ * strip it and let the glass card be the only boundary.
+ */
+
+.doc .adoc-preview > .content {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+/*
+ * The card is a self-contained visual context, so its headings are
+ * sized to read on their own rather than relative to the host page's
+ * section depth. The symbol name (h5) is the dominant element and
+ * its subsections (h6) are clearly subordinate.
+ */
+
+.doc .adoc-preview h4,
+.doc .adoc-preview h5,
+.doc .adoc-preview h6 {
+  margin: 1.1rem 0 0.5rem;
+  font-weight: 600;
+  border: none;
+  color: inherit;
+}
+
+.doc .adoc-preview h4,
+.doc .adoc-preview h5 {
+  font-size: 1.35rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.doc .adoc-preview h6 {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 1.25rem;
+}
+
+/*
+ * The first heading inside the card shouldn't have a top margin,
+ * because the label strip already provides the spacing.
+ */
+
+.doc .adoc-preview > .content > :first-child {
+  margin-top: 0;
+}
+
+/*
+ * Tighten paragraph and listing spacing inside the card.
+ */
+
+.doc .adoc-preview p {
+  margin: 0.4rem 0;
+}
+
+.doc .adoc-preview .listingblock {
+  margin: 0.6rem 0;
+}
+
+/*
+ * Soften table borders inside the card so they don't fight the
+ * card's outer border.
+ */
+
+.doc .adoc-preview table {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.doc .adoc-preview table th,
+.doc .adoc-preview table td {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/*
+ * Optional caption. Authors mark a paragraph inside the block with
+ * `[.caption]` to explain what the preview demonstrates. The strip
+ * mirrors the top label: edge-to-edge across the card, with the
+ * same translucent background and a divider line, so the caption
+ * reads as a footer rather than as content that drifted off.
+ */
+
+.doc .adoc-preview .caption {
+  margin: 1.5rem -1.5rem -1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.doc .adoc-preview .caption p {
+  margin: 0;
+}

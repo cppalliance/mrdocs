@@ -25,6 +25,25 @@ from ..core.filesystem import load_json_file
 from ..core.ui import TextUI, get_default_ui
 from ..core.options import InstallOptions
 
+
+def _cli_flag_for_dest() -> Dict[str, str]:
+    """Map each argparse `dest` to the first CLI option string the
+    parser accepts (preferring long forms over short ones). Used to
+    convert `InstallOptions` field names into CLI flags that the
+    bootstrap actually recognizes, instead of blindly turning
+    `field_name` into `--field-name` (which breaks for fields whose
+    `dest` differs from their flag, like `non_interactive` ↔ `--yes`
+    or `plain_ui` ↔ `--plain`)."""
+    from .. import __main__ as bootstrap_main  # avoid import cycle at module load
+    parser = bootstrap_main.build_arg_parser()
+    mapping: Dict[str, str] = {}
+    for action in parser._actions:
+        if not action.option_strings or action.dest in ("help", "version"):
+            continue
+        long_flags = [s for s in action.option_strings if s.startswith("--")]
+        mapping[action.dest] = (long_flags or action.option_strings)[0]
+    return mapping
+
 # Variable expansion pattern for $var and ${var} syntax
 _VAR_PATTERN = re.compile(r"\$(\w+)|\${([^}]+)}")
 
@@ -71,25 +90,41 @@ def get_dynamic_run_configs(
     """
     configs: List[Dict[str, Any]] = []
 
-    # Bootstrap helper targets
+    # Bootstrap helper targets. Only InstallOptions fields that have a
+    # corresponding CLI flag are emitted; the rest are programmatic-only
+    # (e.g. generate_vs_run_configs, third_party_src_dir) and would make
+    # bootstrap exit with `unrecognized arguments` if passed to it.
+    cli_flag_for_dest = _cli_flag_for_dest()
     bootstrap_args: List[str] = []
     for field in dataclasses.fields(InstallOptions):
+        if field.name == "non_interactive":
+            continue
+        flag = cli_flag_for_dest.get(field.name)
+        if flag is None:
+            continue
         value = getattr(options, field.name)
         default_value = getattr(default_options, field.name, None)
-        if value is not None and (value != default_value or field.name == "build_type"):
-            if field.name == "non_interactive":
-                continue
-            if field.type is bool:
-                if value:
-                    bootstrap_args.append(f"--{field.name.replace('_', '-')}")
-                else:
-                    bootstrap_args.append(f"--no-{field.name.replace('_', '-')}")
-            elif field.type is str:
-                if value != "":
-                    bootstrap_args.append(f"--{field.name.replace('_', '-')}")
-                    bootstrap_args.append(value)
+        if value is None or (value == default_value and field.name != "build_type"):
+            continue
+        if field.type is bool:
+            # `store_false` actions are spelled as a negative flag
+            # (`--no-build-tests`, `--no-run-configs`) and should be
+            # emitted only when the option is False (i.e. the user
+            # opted out of the True default). Plain `store_true`
+            # actions are spelled as a positive flag and should be
+            # emitted only when the option is True.
+            if flag.startswith("--no-"):
+                if not value:
+                    bootstrap_args.append(flag)
             else:
-                raise TypeError(f"Unsupported type {field.type} for field '{field.name}' in InstallOptions.")
+                if value:
+                    bootstrap_args.append(flag)
+        elif field.type is str:
+            if value != "":
+                bootstrap_args.append(flag)
+                bootstrap_args.append(value)
+        else:
+            raise TypeError(f"Unsupported type {field.type} for field '{field.name}' in InstallOptions.")
 
     bootstrap_refresh_config_name = options.preset or options.build_type or "debug"
 
@@ -152,6 +187,58 @@ def get_dynamic_run_configs(
             "script": os.path.join(options.source_dir, "util", "reformat.py"),
             "args": [],
             "cwd": options.source_dir
+        },
+        {
+            "name": "MrDocs Render Docs",
+            "script": "npx",
+            "folder": "MrDocs Render Docs",
+            "args": [
+                "antora",
+                "--fetch",
+                "antora-playbook.yml",
+                "--attribute",
+                "branchesarray=HEAD",
+            ],
+            "cwd": os.path.join(options.source_dir, "docs"),
+            "env": {
+                "MRDOCS_ROOT": options.install_dir,
+            },
+        },
+        {
+            "name": "MrDocs Render Docs (No Reference)",
+            "script": "npx",
+            "folder": "MrDocs Render Docs",
+            "args": [
+                "antora",
+                "--fetch",
+                "antora-playbook.yml",
+                "--attribute",
+                "branchesarray=HEAD",
+                "--attribute",
+                "tagsarray=",
+            ],
+            "cwd": os.path.join(options.source_dir, "docs"),
+            "env": {
+                "ANTORA_SKIP_CPP_REFERENCE": "1",
+                "MRDOCS_ROOT": options.install_dir,
+            },
+        },
+        {
+            "name": "MrDocs Build Docs UI Bundle",
+            "script": "npx",
+            "folder": "MrDocs Render Docs",
+            "args": ["gulp", "bundle"],
+            "cwd": os.path.join(options.source_dir, "docs", "ui"),
+        },
+        {
+            "name": "MrDocs Test Getting-Started Examples",
+            "script": os.path.join(options.source_dir, "util", "docs", "test_getting_started.sh"),
+            "folder": "MrDocs Render Docs",
+            "args": [],
+            "cwd": options.source_dir,
+            "env": {
+                "MRDOCS_BIN": os.path.join(options.install_dir, "bin", "mrdocs"),
+            },
         },
     ])
 

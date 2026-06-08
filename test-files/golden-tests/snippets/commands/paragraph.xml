@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>ut9RCZbJuyrdBnyDFKI+5qdJ1VI=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>absolute</name>
+  <source>
+    <location>
+      <short-path>paragraph.cpp</short-path>
+      <source-path>paragraph.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>ut9RCZbJuyrdBnyDFKI+5qdJ1VI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns the input unchanged when non-negative, otherwise returns its negation.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Computes the absolute value of an integer.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

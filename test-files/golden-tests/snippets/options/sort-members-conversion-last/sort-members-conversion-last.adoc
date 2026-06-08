@@ -1,0 +1,85 @@
+= Reference
+:mrdocs:
+
+[#value]
+== value
+
+A class whose conversion operators are pushed to the bottom of the member list&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;conversion&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct value;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#value-get[`get`] 
+| Read the underlying integer&period;
+| link:#value-2conversion-08[`operator bool`] 
+| Convert to `bool` for use in conditions&period;
+| link:#value-2conversion-09[`operator int`] 
+| Convert to `int` for arithmetic contexts&period;
+|===
+
+[#value-get]
+== link:#value[value]::get
+
+Read the underlying integer&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;conversion&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+get() const;
+----
+
+[#value-2conversion-08]
+== link:#value[value]::operator bool
+
+Convert to `bool` for use in conditions&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;conversion&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+operator bool() const;
+----
+
+=== Return Value
+
+The object converted to `bool`
+
+[#value-2conversion-09]
+== link:#value[value]::operator int
+
+Convert to `int` for arithmetic contexts&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;conversion&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+operator int() const;
+----
+
+=== Return Value
+
+The object converted to `int`
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

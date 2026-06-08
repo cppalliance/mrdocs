@@ -1,0 +1,22 @@
+= Reference
+:mrdocs:
+
+[#cli-parse]
+== cli::parse
+
+Parses command&hyphen;line arguments into an option set&period;
+
+=== Synopsis
+
+Declared in `&lt;cli&sol;parse&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+parse(
+    int argc,
+    char** argv);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

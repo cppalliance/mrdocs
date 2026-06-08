@@ -1,0 +1,177 @@
+// Auto-generated from util/bootstrap/src/__main__.py.
+// Run `python util/docs/generate_bootstrap_options.py --update` to regenerate.
+// Do not edit by hand; CI checks this file matches the parser.
+
+[#build-configuration]
+=== Build Configuration
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--build-type</code><br/><span style="color: darkgreen;">(enum)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Selects the CMake build configuration. Release maximizes optimization; Debug disables it and enables assertions; RelWithDebInfo produces optimized binaries with debug info; MinSizeRel optimizes for size; DebugFast trades some debuggability for build speed.</p><p class="tableblock">Choices: <code>Release</code>, <code>Debug</code>, <code>RelWithDebInfo</code>, <code>MinSizeRel</code>, <code>DebugFast</code></p><p class="tableblock">Default: <code>Release</code></p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--preset</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Name of the CMake preset to use. The default template expands to a value derived from build type, OS, compiler, and sanitizer; override only when you have a custom preset.</p><p class="tableblock">Default: a name like <code>release-macos</code> or <code>debug-linux-clang-asan</code>, derived from the build type, OS, compiler, and sanitizer</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--sanitizer</code><br/><span style="color: darkgreen;">(enum)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Builds Mr.Docs with a Clang/GCC sanitizer enabled. <code>address</code> catches out-of-bounds and use-after-free, <code>undefined</code> catches undefined behavior, <code>thread</code> catches data races, <code>memory</code> catches uninitialized reads. Bootstrap also rebuilds libc++ with the matching instrumentation when the sanitizer needs it.</p><p class="tableblock">Choices: <code>address</code>, <code>undefined</code>, <code>thread</code>, <code>memory</code></p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--no-build-tests</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Skip building the test suite (golden, unit, lint, schema, self-doc). Tests are built by default; pass <code>--no-build-tests</code> for a leaner build that skips the Java-runtime requirement of the xml-lint step.</p></td></tr>
+  </tbody>
+</table>
+++++
+
+[#compiler-options]
+=== Compiler Options
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cc</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the C compiler. Defaults to the compiler CMake discovers on the system; set this when you need to pin a specific version or pick between Clang and GCC.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cxx</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the C++ compiler. Defaults to the compiler CMake discovers on the system; set this to pin a specific version or to use a different toolchain from CC.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cflags</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Extra flags appended to every C compile command, both for third-party recipes and for Mr.Docs itself. Useful for linker-friendly debug info (<code>-gz=zstd</code>) or coverage flags.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cxxflags</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Extra flags appended to every C++ compile command, both for third-party recipes and for Mr.Docs itself.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--ldflags</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Extra flags appended to every link command, both for third-party recipes and for Mr.Docs itself.</p></td></tr>
+  </tbody>
+</table>
+++++
+
+[#tool-paths]
+=== Tool Paths
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cmake-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the CMake executable. Bootstrap discovers CMake on <code>PATH</code> by default; set this when multiple CMake versions are installed and the wrong one is picked up.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--ninja-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the Ninja executable. Ninja is the preferred CMake generator because it produces a <code>compile_commands.json</code> automatically; bootstrap discovers it on <code>PATH</code> by default.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--git-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to Git. Required for cloning recipes and for the compilation-database CMake integration. Bootstrap discovers Git on <code>PATH</code> by default.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--python-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to the Python interpreter recipes should use for any Python steps. Defaults to the interpreter currently running bootstrap.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--java-path</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path to a Java runtime. Required for the xml-lint test step when <code>--build-tests</code> is on; ignored otherwise.</p></td></tr>
+  </tbody>
+</table>
+++++
+
+[#directories]
+=== Directories
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--source-dir</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Root of the cloned Mr.Docs source tree. Bootstrap auto-detects this from the working directory, so you usually do not need to set it explicitly.</p><p class="tableblock">Default: the directory containing the cloned source</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--build-dir</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Where CMake places intermediate build artefacts. The default template expands per build type, OS, compiler, and sanitizer so different combinations do not clobber each other.</p><p class="tableblock">Default: <code>&lt;source-dir&gt;/build/&lt;preset&gt;</code></p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--install-dir</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Where the final binaries and resources are installed. The default template expands per build type, OS, compiler, and sanitizer so different combinations install side-by-side.</p><p class="tableblock">Default: <code>&lt;source-dir&gt;/install/&lt;preset&gt;</code></p></td></tr>
+  </tbody>
+</table>
+++++
+
+[#behavior-options]
+=== Behavior Options
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">-y</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Accept every default prompt without asking. Use this for CI, containers, and scripted installs where there is no human at the keyboard.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--dry-run</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Print every command bootstrap would run, fully resolved with absolute paths, without executing anything. Useful when you want to inspect the build steps or reproduce them manually.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--verbose</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Show extra log lines about each step bootstrap takes.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--debug</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Show full Python tracebacks on errors. Implies verbose.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--plain</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Disable colors and emoji in the output. Use for CI logs and any environment that does not render terminal escape codes.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--install-system-deps</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">If a required system tool (CMake, a compiler, Git, etc.) is missing, attempt to install it via <code>apt-get</code> on Linux or <code>brew</code> on macOS before continuing.</p></td></tr>
+  </tbody>
+</table>
+++++
+
+[#dependency-options]
+=== Dependency Options
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--clean</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Wipe every cached third-party dependency build and start over. The Mr.Docs build itself is also cleared.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--force</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Rebuild a recipe even when its stamp file says it is up to date. Use this after an out-of-band change to a recipe's source tree.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--recipe-filter</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Comma-separated list of recipe names to build (for example, <code>llvm,jerryscript</code>). Recipes not in the list are skipped.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--skip-build</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Install dependencies but skip the CMake configure and build of Mr.Docs itself. Useful when you only need the dependency tree populated for CI cache restoration.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--list-recipes</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Print every dependency recipe bootstrap knows about and exit.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cache-dir</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Use a shared directory of cached dependency installs. Each recipe installs to <code>&lt;cache-dir&gt;/&lt;recipe-name&gt;</code> instead of the per-build location. Bootstrap checks stamp files and skips recipes that are already up to date, so this directory is the natural unit of CI cache restoration.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--cache-key</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Print the cache key for one recipe and exit (for example, <code>--cache-key llvm</code>). The key includes the recipe name, the OS, and the configuration that affects its build, so it can be used as a cache restore key in CI.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--os-key</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">OS or container identifier baked into cache keys (for example, <code>ubuntu:24.04</code>, <code>macos-15</code>). Required for cross-machine cache reuse so that builds from different runners do not pull each other's artefacts.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--env-file</code><br/><span style="color: darkgreen;">(string)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Path where bootstrap writes computed <code>&lt;recipe&gt;_ROOT</code> paths and propagation flags in <code>key=value</code> format. CI uses the file to inject environment variables into the steps that follow bootstrap.</p></td></tr>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--refresh-all</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Re-run the bootstrap configuration step for every existing IDE configuration in the source tree, regenerating run configs from current options without rebuilding.</p></td></tr>
+  </tbody>
+</table>
+++++
+
+[#run-configuration-options]
+=== Run Configuration Options
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 25%;">
+    <col style="width: 75%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">Name</th>
+      <th class="tableblock halign-left valign-top">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td class="tableblock halign-left valign-top"><code style="color: darkblue">--no-run-configs</code><br/><span style="color: darkgreen;">(flag)</span></td><td class="tableblock halign-left valign-top"><p class="tableblock">Skip generating IDE run/debug configurations for CLion, VS Code, and Visual Studio. Bootstrap generates configs by default so common Mr.Docs targets are one click away; pass <code>--no-run-configs</code> when you do not want bootstrap to touch the IDE config directories.</p></td></tr>
+  </tbody>
+</table>
+++++

@@ -635,6 +635,76 @@ if (MRDOCS_BUILD_TESTS)
                  COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-yaml-schema.py --check
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
+
+    #-------------------------------------------------
+    # Configuration-page examples
+    #
+    # Each lives at examples/configuration/<page>/<example>/ and ships
+    # a docs/mrdocs.yml, a run.sh, and the minimum source the
+    # demonstrated option needs to exercise. These run on every CI
+    # build (no MRDOCS_EXPENSIVE_TESTS gate) because they don't invoke
+    # CMake.
+    #-------------------------------------------------
+    set(_config_examples
+        "inputs/extra-includes"
+        "parsing/missing-include-prefixes"
+        "parsing/missing-include-shims"
+        "diagnostics/lint"
+        "diagnostics/logging"
+        "diagnostics/runtime"
+        "overview/customized"
+    )
+    foreach (example IN LISTS _config_examples)
+        string(REPLACE "/" "-" _name ${example})
+        set(_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/configuration/${example}")
+        set(_out "${CMAKE_CURRENT_BINARY_DIR}/configuration-examples/${_name}/reference-output")
+        add_test(
+            NAME mrdocs-configuration-${_name}
+            COMMAND bash run.sh
+                    --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
+                    --output=${_out}
+            WORKING_DIRECTORY ${_src}
+        )
+        set_property(TEST mrdocs-configuration-${_name} PROPERTY
+            ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+    endforeach ()
+
+    #-------------------------------------------------
+    # Getting-started and dependency examples
+    #
+    # Each starter project under examples/getting-started/ is invoked
+    # exactly as the user-facing docs in usage.adoc instruct, and each
+    # fixture under examples/dependencies/ is exercised with the same
+    # mrdocs invocation those docs use. Gated on MRDOCS_EXPENSIVE_TESTS
+    # because the cmake / cmake-header-only variants invoke CMake's
+    # configure step, which itself isn't sanitized.
+    #-------------------------------------------------
+    if (MRDOCS_EXPENSIVE_TESTS)
+        foreach (example IN ITEMS compilation-database cmake cmake-header-only scanned)
+            set(_example_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/getting-started/${example}")
+            set(_example_out "${CMAKE_CURRENT_BINARY_DIR}/getting-started/${example}/reference-output")
+            add_test(
+                NAME mrdocs-getting-started-${example}
+                COMMAND bash run.sh
+                        --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
+                        --output=${_example_out}
+                WORKING_DIRECTORY ${_example_src}
+            )
+            set_property(TEST mrdocs-getting-started-${example} PROPERTY
+                ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+        endforeach ()
+        foreach (example IN ITEMS find shim-files shim-snippets accept-missing)
+            set(_example_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/dependencies/${example}")
+            set(_example_out "${CMAKE_CURRENT_BINARY_DIR}/dependencies/${example}/reference-output")
+            add_test(
+                NAME mrdocs-dependencies-${example}
+                COMMAND mrdocs docs/mrdocs.yml
+                        --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
+                        --output ${_example_out}
+                WORKING_DIRECTORY ${_example_src}
+            )
+        endforeach ()
+    endif()
 endif()
 
 #-------------------------------------------------

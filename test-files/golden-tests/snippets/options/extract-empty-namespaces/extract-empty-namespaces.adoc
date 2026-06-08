@@ -1,0 +1,54 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#lib[`lib`] 
+|===
+
+[#lib]
+== lib
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#lib-experimental[`experimental`] 
+|===
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-greet[`greet`] 
+| Greet the user by name&period;
+|===
+
+[#lib-experimental]
+== link:#lib[lib]::experimental
+
+[#lib-greet]
+== link:#lib[lib]::greet
+
+Greet the user by name&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+greet(char const* name);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

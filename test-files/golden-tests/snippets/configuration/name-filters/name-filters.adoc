@@ -1,0 +1,95 @@
+= Reference
+:mrdocs:
+
+[#jzon-value]
+== jzon::value
+
+A parsed JSON document&period;
+
+=== Synopsis
+
+Declared in `&lt;jzon&sol;parser&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class value;
+----
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#jzon-parse[`parse`]
+| Parse a JSON document&period;
+|===
+
+[#jzon-parse]
+== jzon::parse
+
+Parse a JSON document&period;
+
+=== Synopsis
+
+Declared in `&lt;jzon&sol;parser&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#jzon-value[value]
+parse(char const* source);
+----
+
+=== Description
+
+Validates `source` and returns the resulting value tree&period;
+
+=== Return Value
+
+A parsed JSON document&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *source*
+| A null&hyphen;terminated UTF&hyphen;8 JSON document&period;
+|===
+
+[#jzon-validate]
+== jzon::validate
+
+Validate that the document is well&hyphen;formed JSON&period;
+
+=== Synopsis
+
+Declared in `&lt;jzon&sol;parser&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+validate(char const* source);
+----
+
+=== Description
+
+Parses `source` without constructing a value tree, reporting only whether the input conforms to RFC 8259&period;
+
+=== Return Value
+
+`true` if the document is syntactically valid JSON&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *source*
+| A null&hyphen;terminated UTF&hyphen;8 JSON document&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

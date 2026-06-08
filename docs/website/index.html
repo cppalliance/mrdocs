@@ -13,15 +13,13 @@
     <meta name="description" content="Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs.">
     <link rel="canonical" href="https://www.mrdocs.com">
     <meta name="robots" content="index, follow">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.mrdocs.com">
     <meta property="og:title" content="Mr.Docs">
     <meta property="og:description" content="Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs.">
-    <meta property="og:image" content="https://www.mrdocs.com/assets/social/mrdocs-social.jpg">
+    <meta property="og:url" content="https://www.mrdocs.com">
     <meta property="og:site_name" content="Mr.Docs">
+    <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@cppalliance">
-    <meta name="twitter:creator" content="@cppalliance">
+    <meta property="twitter:domain" content="https://www.mrdocs.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -175,7 +173,7 @@
                             </path>
                         </svg>
                         <h4>Built for C++</h4>
-                        <p>Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, niebloids, and more.</p>
+                        <p>Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, algorithm function objects, and more.</p>
                     </div>
                     <div>
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -232,32 +230,32 @@
                         <div class="documentation-panel">
                             <div>
 <div>
-<h2 id="terminate"><a href="#terminate">terminate</a></h2>
+<h2 id="terminate">
+terminate</h2>
 <div>
-<span>Exit the program.</span>
-
+<p>Exit the program.</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;terminate.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-[[noreturn]]
+<pre><code class="source-code cpp">[[noreturn]]
 void
-terminate() noexcept;
-</code>
-</pre>
+terminate() noexcept;</code></pre>
 </div>
 <div>
-<h3>Description</h3>
+<h3>
+Description</h3>
 <p>The program will end immediately.</p>
 <div class="admonition">
 <h4>NOTE</h4>
+<div>
 <p>This function does not return.</p>
 </div>
-</div>
+</div></div>
+
 </div>
 
                         </div>
@@ -291,37 +289,38 @@ terminate() noexcept;
                         <div class="documentation-panel">
                             <div>
 <div>
-<h2 id="distance"><a href="#distance">distance</a></h2>
+<h2 id="distance">
+distance</h2>
 <div>
-<span>Return the distance between two points</span>
-
+<p>Return the distance between two points</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;distance.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-double
+<pre><code class="source-code cpp">double
 distance(
     double x0,
     double y0,
     double x1,
-    double y1);
-</code>
-</pre>
+    double y1);</code></pre>
 </div>
 <div>
-<h3>Description</h3>
+<h3>
+Description</h3>
 <p>This function returns the distance between two points according to the Euclidean distance formula.</p>
 </div>
+
 <div>
-<h3>Return Value</h3>
-<span>The distance between the two points</span>
+<h3>
+Return Value</h3>
+The distance between the two points
 </div>
 <div>
-<h3>Parameters</h3>
+<h3>
+Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -332,19 +331,19 @@ distance(
 <tbody>
 <tr>
 <td><strong>x0</strong></td>
-<td><span>The x-coordinate of the first point</span></td>
+<td>The x-coordinate of the first point</td>
 </tr>
 <tr>
 <td><strong>y0</strong></td>
-<td><span>The y-coordinate of the first point</span></td>
+<td>The y-coordinate of the first point</td>
 </tr>
 <tr>
 <td><strong>x1</strong></td>
-<td><span>The x-coordinate of the second point</span></td>
+<td>The x-coordinate of the second point</td>
 </tr>
 <tr>
 <td><strong>y1</strong></td>
-<td><span>The y-coordinate of the second point</span></td>
+<td>The y-coordinate of the second point</td>
 </tr>
 </tbody>
 </table>
@@ -380,34 +379,34 @@ distance(
                         <div class="documentation-panel">
                             <div>
 <div>
-<h2 id="is_prime"><a href="#is_prime">is_prime</a></h2>
+<h2 id="is_prime">
+is_prime</h2>
 <div>
-<span>Return true if a number is prime.</span>
-
+<p>Return true if a number is prime.</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;is_prime.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-bool
-is_prime(unsigned long long n) noexcept;
-</code>
-</pre>
+<pre><code class="source-code cpp">bool
+is_prime(unsigned long long n) noexcept;</code></pre>
 </div>
 <div>
-<h3>Description</h3>
-<h3>Complexity</h3>
+<h2>
+Complexity</h2>
 <p>Linear in n.</p>
 </div>
+
 <div>
-<h3>Return Value</h3>
-<span>Whether <code>n</code> is prime.</span>
+<h3>
+Return Value</h3>
+Whether <code>n</code> is prime.
 </div>
 <div>
-<h3>Parameters</h3>
+<h3>
+Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -418,7 +417,7 @@ is_prime(unsigned long long n) noexcept;
 <tbody>
 <tr>
 <td><strong>n</strong></td>
-<td><span>The number to test</span></td>
+<td>The number to test</td>
 </tr>
 </tbody>
 </table>
@@ -435,7 +434,6 @@ is_prime(unsigned long long n) noexcept;
                     <div class="panel-container">
                         <div class="snippet-panel">
                             <pre><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;type_traits&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdexcept&gt;</span></span>
 
 <span class="hljs-comment">/** Computes the square root of an integral value.
 
@@ -478,31 +476,31 @@ std::<span class="hljs-type">enable_if_t</span>&lt;std::is_integral_v&lt;T&gt;, 
                         <div class="documentation-panel">
                             <div>
 <div>
-<h2 id="sqrt"><a href="#sqrt">sqrt</a></h2>
+<h2 id="sqrt">
+sqrt</h2>
 <div>
-<span>Computes the square root of an integral value.</span>
-
+<p>Computes the square root of an integral value.</p>
 </div>
 </div>
 <div>
-<h3>Synopsis</h3>
+<h3>
+Synopsis</h3>
 <div>
 Declared in <code>&lt;sqrt.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<pre><code class="source-code cpp">template&lt;typename T&gt;
 T
 sqrt(T value)
-requires std::is_integral_v&lt;T&gt;;
-</code>
-</pre>
+requires std::is_integral_v&lt;T&gt;;</code></pre>
 </div>
 <div>
-<h3>Description</h3>
+<h3>
+Description</h3>
 <p>This function calculates the square root of a given integral value using bit manipulation.</p>
 </div>
+
 <div>
-<h3>Exceptions</h3>
+<h3>
+Exceptions</h3>
 <table>
 <thead>
 <tr>
@@ -513,17 +511,19 @@ requires std::is_integral_v&lt;T&gt;;
 <tbody>
 <tr>
 <td><code>std::invalid_argument</code></td>
-<td><span>if the input value is negative.</span></td>
+<td>if the input value is negative.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div>
-<h3>Return Value</h3>
-<span>The square root of the input value.</span>
+<h3>
+Return Value</h3>
+The square root of the input value.
 </div>
 <div>
-<h3>Template Parameters</h3>
+<h3>
+Template Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -534,13 +534,14 @@ requires std::is_integral_v&lt;T&gt;;
 <tbody>
 <tr>
 <td><strong>T</strong></td>
-<td><span>The type of the input value. Must be an integral type.</span></td>
+<td>The type of the input value. Must be an integral type.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div>
-<h3>Parameters</h3>
+<h3>
+Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -551,7 +552,84 @@ requires std::is_integral_v&lt;T&gt;;
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The integral value to compute the square root of.</span></td>
+<td>The integral value to compute the square root of.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="snippet-documentation-panel">
+                    <ul class="check">
+                        <li>Function objects are documented as callable entities—operator() parameter list and return type appear directly on the variable.</li>
+                    </ul>
+                    <div class="panel-container">
+                        <div class="snippet-panel">
+                            <pre><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">abs_fn</span>
+{
+    <span class="hljs-comment">/** Compute the absolute value.
+
+        @param x The input value.
+        @return The absolute value of x.
+    */</span>
+    <span class="hljs-function"><span class="hljs-type">double</span>
+    <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">double</span> x)</span> <span class="hljs-type">const</span> <span class="hljs-keyword">noexcept</span></span>;
+};
+
+<span class="hljs-comment">/** Return the absolute value of a number. */</span>
+<span class="hljs-keyword">constexpr</span> abs_fn abs = {};
+</code></pre>
+                            <div class="snippet-image">
+                                <div class="box3 box-shape1 box0">
+                                    <div class="inner-box pointing"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="documentation-panel">
+                            <div>
+<div>
+<h2 id="abs">
+abs</h2>
+<div>
+<p>Compute the absolute value.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;function_object.cpp&gt;</code></div>
+<pre><code class="source-code cpp">double
+abs(double x) noexcept;</code></pre>
+</div>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>This function is defined as an <a href="https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects">Algorithm Function Object (AFO)</a>.</p>
+</div>
+</div>
+<div>
+<h3>
+Return Value</h3>
+The absolute value of x.
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>x</strong></td>
+<td>The input value.</td>
 </tr>
 </tbody>
 </table>

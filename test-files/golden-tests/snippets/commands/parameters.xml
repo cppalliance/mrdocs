@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>ralwjWu3q4YOmyLxZY5I4Pd2Hzk=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>copy_bytes</name>
+  <source>
+    <location>
+      <short-path>parameters.cpp</short-path>
+      <source-path>parameters.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>ralwjWu3q4YOmyLxZY5I4Pd2Hzk=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Copies bytes from one buffer to another.</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The destination buffer. Must be at least </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>n</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> bytes long.</literal>
+      </text>
+      <name>dst</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The source buffer.</literal>
+      </text>
+      <name>src</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The number of bytes to copy.</literal>
+      </text>
+      <name>n</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>dst</name>
+  </param>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>src</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>unsigned int</identifier>
+      </name>
+    </named>
+    <name>n</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

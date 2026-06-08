@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>T1qvugW1v9SECG2DJqXLMk2uCE4=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>close_handle</name>
+  <source>
+    <location>
+      <short-path>admonitions.cpp</short-path>
+      <source-path>admonitions.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>T1qvugW1v9SECG2DJqXLMk2uCE4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Closing a handle invalidates any iterators that point into the underlying buffer.</literal>
+        </text>
+      </paragraph>
+      <admonish>note</admonish>
+    </admonition>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Do not call this from a destructor that runs during program termination.</literal>
+        </text>
+      </paragraph>
+      <admonish>warning</admonish>
+    </admonition>
+    <admonition>
+      <kind>admonition</kind>
+      <paragraph>
+        <kind>paragraph</kind>
+        <text>
+          <kind>text</kind>
+          <literal>Prefer the RAII wrapper </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <text>
+            <kind>text</kind>
+            <literal>scoped_handle</literal>
+          </text>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>, which closes automatically at scope exit.</literal>
+        </text>
+      </paragraph>
+      <admonish>tip</admonish>
+    </admonition>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Closes the handle.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

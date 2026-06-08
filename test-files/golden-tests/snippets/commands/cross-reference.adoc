@@ -1,0 +1,39 @@
+= Reference
+:mrdocs:
+
+[#triple]
+== triple
+
+Triples the input&period;
+
+=== Synopsis
+
+Declared in `&lt;cross&hyphen;reference&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+triple(int x);
+----
+
+[#twice]
+== twice
+
+Doubles the input&period;
+
+=== Synopsis
+
+Declared in `&lt;cross&hyphen;reference&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+twice(int x);
+----
+
+=== Description
+
+Closely related to link:#triple[`triple`]&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

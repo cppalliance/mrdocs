@@ -1,0 +1,75 @@
+= Reference
+:mrdocs:
+
+[#widget]
+== widget
+
+A class whose destructor sits at the top of the member list&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;dtors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-2constructor[`widget`]         [.small]#[constructor]#
+| Construct an empty widget&period;
+| link:#widget-2destructor[`&#126;widget`] [.small]#[destructor]#
+| Destroy the widget and release resources&period;
+| link:#widget-refresh[`refresh`] 
+| Refresh the widget&period;
+|===
+
+[#widget-2constructor]
+== link:#widget[widget]::widget
+
+Construct an empty widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;dtors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+widget();
+----
+
+[#widget-2destructor]
+== link:#widget[widget]::&#126;widget
+
+Destroy the widget and release resources&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;dtors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;widget();
+----
+
+[#widget-refresh]
+== link:#widget[widget]::refresh
+
+Refresh the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;dtors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+refresh();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

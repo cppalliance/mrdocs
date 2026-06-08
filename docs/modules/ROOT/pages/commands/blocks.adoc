@@ -1,0 +1,89 @@
+= Block Commands
+
+Doc comments get their structure from block commands: the paragraphs, lists, tables, code listings, and admonitions that make up a description. Each command starts a new block, and the text after it, on the same line or below, is its content.
+
+== Paragraphs and headings
+
+Plain prose is already a xref:commands/reference.adoc#cmd-paragraph[paragraph]. Consecutive lines join into one paragraph, and a blank line starts the next. The first paragraph is the brief; everything after it is the detailed description. When you want to be explicit, `@details` opens the detail section.
+
+.Paragraphs
+[source,cpp]
+----
+include::example$snippets/commands/paragraph.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/paragraph.adoc[tags=!footer]
+========
+
+A xref:commands/reference.adoc#cmd-heading[heading] (`@par`) splits a long description into labelled sections. The text on the `@par` line is the heading; the lines beneath it are the section body.
+
+.Headings
+[source,cpp]
+----
+include::example$snippets/commands/heading.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/heading.adoc[tags=!footer]
+========
+
+== Lists and tables
+
+A xref:commands/reference.adoc#cmd-list[list] follows the Markdown convention: lines that begin with `-` become bullets. `@li` and `@arg` are Doxygen-compatible aliases for a single item.
+
+.Lists
+[source,cpp]
+----
+include::example$snippets/commands/list.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/list.adoc[tags=!footer]
+========
+
+A xref:commands/reference.adoc#cmd-table[table] uses HTML `<table>` markup, which gives you full control over headers, rows, and cells.
+
+.Tables
+[source,cpp]
+----
+include::example$snippets/commands/table.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/table.adoc[tags=!footer]
+========
+
+== Code blocks
+
+A xref:commands/reference.adoc#cmd-code-block[code block] reproduces source verbatim. Fence it with `@code` and `@endcode`, and tag the language (`@code{.cpp}`) so the highlighter knows what to do. `@verbatim` and `@endverbatim` are the same idea without highlighting.
+
+.Code blocks
+[source,cpp]
+----
+include::example$snippets/commands/code-block.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/code-block.adoc[tags=!footer]
+========
+
+== Admonitions
+
+xref:commands/reference.adoc#cmd-admonitions[Admonitions] call out something the reader should not miss. The five kinds, `@note`, `@tip`, `@important`, `@warning`, and `@caution`, share one shape and differ only in how they are styled. The text after the command is the admonition body.
+
+.Admonitions
+[source,cpp]
+----
+include::example$snippets/commands/admonitions.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/admonitions.adoc[tags=!footer]
+========

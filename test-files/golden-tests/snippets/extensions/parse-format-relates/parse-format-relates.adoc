@@ -1,0 +1,161 @@
+= Reference
+:mrdocs:
+
+[#request]
+== request
+
+An HTTP request as a structured value&period;
+
+=== Synopsis
+
+Declared in `&lt;parse&hyphen;format&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct request;
+----
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#format_request[`format&lowbar;request`]
+| Format `r` as the wire&hyphen;format text of an HTTP request&period;
+| link:#parse_request[`parse&lowbar;request`]
+| Parse `text` into a request&period; Returns a valid request on success&period;
+|===
+
+[#user]
+== user
+
+A user record&period;
+
+=== Synopsis
+
+Declared in `&lt;parse&hyphen;format&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct user;
+----
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#format_user[`format&lowbar;user`]
+| Format `u` as the canonical wire&hyphen;format text of a user&period;
+| link:#parse_user[`parse&lowbar;user`]
+| Parse `text` into a user&period;
+|===
+
+[#format_request]
+== format&lowbar;request
+
+Format `r` as the wire&hyphen;format text of an HTTP request&period;
+
+=== Synopsis
+
+Declared in `&lt;parse&hyphen;format&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const*
+format&lowbar;request(link:#request[request] const& r);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *r*
+| An HTTP request as a structured value&period;
+|===
+
+=== See Also
+
+link:#parse_request[`parse&lowbar;request`]
+
+[#format_user]
+== format&lowbar;user
+
+Format `u` as the canonical wire&hyphen;format text of a user&period;
+
+=== Synopsis
+
+Declared in `&lt;parse&hyphen;format&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const*
+format&lowbar;user(link:#user[user] const& u);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *u*
+| A user record&period;
+|===
+
+=== See Also
+
+link:#parse_user[`parse&lowbar;user`]
+
+[#parse_request]
+== parse&lowbar;request
+
+Parse `text` into a request&period; Returns a valid request on success&period;
+
+=== Synopsis
+
+Declared in `&lt;parse&hyphen;format&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#request[request]
+parse&lowbar;request(char const* text);
+----
+
+=== Return Value
+
+An HTTP request as a structured value&period;
+
+=== See Also
+
+link:#format_request[`format&lowbar;request`]
+
+[#parse_user]
+== parse&lowbar;user
+
+Parse `text` into a user&period;
+
+=== Synopsis
+
+Declared in `&lt;parse&hyphen;format&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#user[user]
+parse&lowbar;user(char const* text);
+----
+
+=== Return Value
+
+A user record&period;
+
+=== See Also
+
+link:#format_user[`format&lowbar;user`]
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

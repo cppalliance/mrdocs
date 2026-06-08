@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>6vqdhGr1hvHjXkhqMT7oi3+WZIg=</functions>
+    <functions>FYE5yGNATeSwpRIEVq5+CfTAYFc=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>av_packet_alloc</name>
+  <source>
+    <location>
+      <short-path>libavcodec/avcodec.h</short-path>
+      <source-path>include/libavcodec/avcodec.h</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>6vqdhGr1hvHjXkhqMT7oi3+WZIg=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Allocate a new packet on the heap.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>av_packet_free</name>
+  <source>
+    <location>
+      <short-path>libavcodec/avcodec.h</short-path>
+      <source-path>include/libavcodec/avcodec.h</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>FYE5yGNATeSwpRIEVq5+CfTAYFc=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Release a packet allocated with </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>av_packet_alloc</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

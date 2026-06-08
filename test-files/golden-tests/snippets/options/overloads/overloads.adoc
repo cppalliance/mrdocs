@@ -1,0 +1,74 @@
+= Reference
+:mrdocs:
+
+[#abs-043]
+== abs
+
+Compute the absolute value of an integer&period;
+
+=== Synopses
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+Compute the absolute value of an integer&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+link:#abs-04b[abs](int x);
+----
+
+[.small]#link:#abs-04b[_» more&period;&period;&period;_]#
+
+Compute the absolute value of an integer&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+long
+link:#abs-01[abs](long x);
+----
+
+[.small]#link:#abs-01[_» more&period;&period;&period;_]#
+
+[#abs-04b]
+== abs
+
+Compute the absolute value of an integer&period;
+
+=== Synopsis
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+abs(int x);
+----
+
+=== Description
+
+One overload takes `int` and the other `long`, so the documentation page lists both side by side&period;
+
+[#abs-01]
+== abs
+
+Compute the absolute value of an integer&period;
+
+=== Synopsis
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+long
+abs(long x);
+----
+
+=== Description
+
+One overload takes `int` and the other `long`, so the documentation page lists both side by side&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

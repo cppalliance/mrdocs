@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#sort_buffer]
+== sort&lowbar;buffer
+
+Sorts the elements of `buffer` in ascending order&period;
+
+=== Synopsis
+
+Declared in `&lt;postconditions&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+sort&lowbar;buffer(
+    int* buffer,
+    unsigned int n);
+----
+
+=== Postconditions
+
+* For every index i in &lsqb;0, n &hyphen; 1),&rsqb; `buffer&lsqb;i&rsqb;&lt;&equals; buffer&lsqb;i &plus; 1&rsqb;`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

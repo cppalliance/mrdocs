@@ -341,3 +341,15 @@ body {
     background: var(--navbar-menu_hover-background);
   }
 }
+
+.navbar-github {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.github-icon {
+  display: block;
+  fill: currentColor;
+}

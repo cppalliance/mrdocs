@@ -72,16 +72,12 @@ Examples:
         help="Enable sanitizer",
     )
     build_group.add_argument(
-        "--build-tests",
-        action="store_true",
-        default=None,
-        help="Build tests",
-    )
-    build_group.add_argument(
         "--no-build-tests",
         action="store_false",
         dest="build_tests",
-        help="Don't build tests",
+        # No affirmative `--build-tests`: building tests is the default,
+        # so an explicit "yes" flag would only reassert the default.
+        help="Skip building the test suite (default: tests are built)",
     )
 
     # Compiler options
@@ -161,7 +157,7 @@ Examples:
     # Behavior options
     behavior_group = parser.add_argument_group("Behavior Options")
     behavior_group.add_argument(
-        "-y", "--yes",
+        "-y", "--yes", "--non-interactive",
         action="store_true",
         dest="non_interactive",
         help="Non-interactive mode (accept defaults)",
@@ -182,7 +178,7 @@ Examples:
         help="Debug mode (show tracebacks)",
     )
     behavior_group.add_argument(
-        "--plain",
+        "--plain", "--plain-ui",
         action="store_true",
         dest="plain_ui",
         help="Plain output (no colors or emojis)",
@@ -250,16 +246,12 @@ Examples:
     # Run configuration options
     config_group = parser.add_argument_group("Run Configuration Options")
     config_group.add_argument(
-        "--generate-run-configs",
-        action="store_true",
-        default=None,
-        help="Generate IDE run configurations",
-    )
-    config_group.add_argument(
         "--no-run-configs",
         action="store_false",
         dest="generate_run_configs",
-        help="Don't generate IDE run configurations",
+        # No affirmative `--generate-run-configs`: generation is the
+        # default, so an explicit "yes" flag would only reassert it.
+        help="Skip generating IDE run configurations (default: configs are generated)",
     )
 
     return parser

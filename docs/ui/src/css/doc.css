@@ -1,3 +1,19 @@
+/*
+ * The site navbar is `position: fixed` at the top of the viewport, so a
+ * fragment jump that targets a heading by its raw offset would slide that
+ * heading under the navbar. `scroll-padding-top` reserves the navbar's
+ * worth of pixels at the top of the scroll port (plus a little breathing
+ * room) for browser-native anchor jumps. The matching offset for
+ * scripted jumps lives in `03-fragment-jumper.js`.
+ *
+ * Headings near the very end of the document can't reach this landing
+ * position because there isn't enough content below them to push them up;
+ * that's expected behavior and we don't pad the page bottom to force it.
+ */
+html {
+  scroll-padding-top: calc(4rem + 1rem);
+}
+
 .doc {
   color: var(--doc-font-color) !important;
   font-size: var(--doc-font-size);
@@ -64,14 +80,44 @@
 
 .doc h2:not(.discrete) {
   border-bottom: 1px solid var(--section-divider-color);
+  font-size: calc(28 / var(--rem-base) * 1rem);
   margin-left: -1rem;
   margin-right: -1rem;
   padding: 0.4rem 1rem 0.1rem;
 }
 
-.doc h3:not(.discrete),
-.doc h4:not(.discrete) {
+.doc h3:not(.discrete) {
+  font-size: calc(23 / var(--rem-base) * 1rem);
   font-weight: var(--alt-heading-font-weight);
+  margin-top: 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.doc h4:not(.discrete) {
+  font-size: calc(20 / var(--rem-base) * 1rem);
+  font-weight: var(--alt-heading-font-weight);
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.doc h5:not(.discrete) {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  font-weight: var(--alt-heading-font-weight);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-white-75);
+}
+
+.doc h6:not(.discrete) {
+  font-size: calc(14 / var(--rem-base) * 1rem);
+  font-weight: var(--alt-heading-font-weight);
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-white-60);
 }
 
 .doc h1 .anchor,
@@ -809,10 +855,45 @@
 .doc .listingblock pre:not(.highlight),
 .doc .literalblock pre {
   background: var(--pre-background);
-  box-shadow: inset 0 0 1.75px var(--pre-border-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   display: block;
+  font-size: calc(15.5 / var(--rem-base) * 1rem);
+  line-height: 1.55;
   overflow-x: auto;
-  padding: 0.875em;
+  padding: 1rem 1.25rem;
+}
+
+/*
+ * When a listing block carries a `.Title` line, render the title as a
+ * header strip inside the same card as the source code rather than as
+ * a separate caption floating above. The strip shares the code's dark
+ * canvas with a slightly lighter text color, and the pre below loses
+ * its top corners and top border so the two pieces read as one card
+ * split by a single divider line. No second card around the existing
+ * one: this is the same canvas with a header at the top.
+ */
+.doc .listingblock > .title {
+  background: var(--pre-background);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--body-font-family);
+  font-size: calc(13 / var(--rem-base) * 1rem);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px 6px 0 0;
+  padding: 0.55rem 1.25rem;
+  margin-bottom: 0;
+}
+
+.doc .listingblock > .title + .content > pre.highlight > code,
+.doc .listingblock > .title + .content > pre:not(.highlight) {
+  border-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .doc .listingblock > .content {

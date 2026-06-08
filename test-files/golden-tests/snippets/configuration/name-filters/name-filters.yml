@@ -1,0 +1,9 @@
+# tag::test-only[]
+includes:
+  - include
+# end::test-only[]
+include-symbols:
+  - 'jzon::**'
+exclude-symbols:
+  - 'jzon::unsafe_*'
+  - 'jzon::extra::**'

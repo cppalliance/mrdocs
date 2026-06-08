@@ -1,0 +1,9 @@
+## Pattern: a scan-mode project ships a shim for the LLVM headers
+source-root: ..
+input:
+  - ../include
+includes:
+  - ../include
+  - shims
+file-patterns:
+  - '*.hpp'

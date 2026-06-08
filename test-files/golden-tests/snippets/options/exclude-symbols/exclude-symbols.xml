@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>4Rg2mIlfVnjgfjvR/Ahkc/njpLw=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>jzon</name>
+  <source>
+    <location>
+      <short-path>jzon/parser.hpp</short-path>
+      <source-path>include/jzon/parser.hpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+    <location>
+      <short-path>jzon/extra/utilities.hpp</short-path>
+      <source-path>include/jzon/extra/utilities.hpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>namespace</kind>
+  <id>4Rg2mIlfVnjgfjvR/Ahkc/njpLw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>XJygbDHtnZ7YX28y+hFlg8fMnY8=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>validate</name>
+  <source>
+    <location>
+      <short-path>jzon/parser.hpp</short-path>
+      <source-path>include/jzon/parser.hpp</source-path>
+      <line-number>17</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>XJygbDHtnZ7YX28y+hFlg8fMnY8=</id>
+  <extraction>regular</extraction>
+  <parent>4Rg2mIlfVnjgfjvR/Ahkc/njpLw=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Parses </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>source</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> without constructing a value tree, reporting only whether the input conforms to RFC 8259. Comments and trailing commas are rejected.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Validate that the document is well-formed JSON.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the document is syntactically valid JSON, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if any syntactic error is encountered.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A null-terminated UTF-8 JSON document.</literal>
+      </text>
+      <name>source</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>source</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

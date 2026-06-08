@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="logger">
+logger</h2>
+<div>
+<p>A logger mixin.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;extract-private-bases.cpp&gt;</code></div>
+<pre><code class="source-code cpp">class logger;</code></pre>
+</div>
+<h2>
+Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#logger-log"><code>log</code></a> </td><td>Write a message to the log.</td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="logger-log">
+logger::log</h2>
+<div>
+<p>Write a message to the log.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;extract-private-bases.cpp&gt;</code></div>
+<pre><code class="source-code cpp">void
+log(char const* msg);</code></pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="widget">
+widget</h2>
+<div>
+<p>A widget that privately inherits from <code>logger</code> for the logging implementation.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;extract-private-bases.cpp&gt;</code></div>
+<pre><code class="source-code cpp">class widget
+    : <a href="#logger">logger</a></code></pre>
+</div>
+<h2>
+Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#widget-show"><code>show</code></a> </td><td>Render the widget and write a log entry.</td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="widget-show">
+widget::show</h2>
+<div>
+<p>Render the widget and write a log entry.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;extract-private-bases.cpp&gt;</code></div>
+<pre><code class="source-code cpp">void
+show();</code></pre>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

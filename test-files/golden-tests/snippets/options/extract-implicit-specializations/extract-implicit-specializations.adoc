@@ -1,0 +1,72 @@
+= Reference
+:mrdocs:
+
+[#box]
+== box
+
+A simple container template&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct box;
+----
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#box-value[`value`] 
+| The contained value&period;
+|===
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#make_int_box[`make&lowbar;int&lowbar;box`]
+| Uses `box&lt;int&gt;`&period; With `extract&hyphen;implicit&hyphen;specializations&colon; true`, that implicit instantiation shows up in the docs as `box&lt;int&gt;` alongside the primary template&period;
+|===
+
+[#box-value]
+== link:#box[box]::value
+
+The contained value&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T value;
+----
+
+[#make_int_box]
+== make&lowbar;int&lowbar;box
+
+Uses `box&lt;int&gt;`&period; With `extract&hyphen;implicit&hyphen;specializations&colon; true`, that implicit instantiation shows up in the docs as `box&lt;int&gt;` alongside the primary template&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#box[box&lt;int&gt;]
+make&lowbar;int&lowbar;box(int v);
+----
+
+=== Return Value
+
+A simple container template&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

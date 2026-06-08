@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#area]
+== area
+
+Compute the area of a circle of radius `r`&period;
+
+=== Synopsis
+
+Declared in `&lt;https://github.com/example/geom/blob/main/base-url.cpp#L2[base&hyphen;url&period;cpp]&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+area(double r);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

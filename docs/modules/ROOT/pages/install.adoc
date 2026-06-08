@@ -4,16 +4,25 @@
 [#mrdocs-binaries]
 == Binary Packages
 
-Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"].
-Most users should use these packages.
+Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"]. Most users should start here; if no binary release fits your platform, build from source below.
 
 mrdocs-releases::[]
 
 [#mrdocs-bootstrap-script]
-== Bootstrap Script
+== Build from Source
 
-The bootstrap script is the recommended way to install Mr.Docs and all its dependencies from source.
-It handles LLVM, Clang, JerryScript, Lua, Boost headers, and libxml2 automatically.
+If no binary release fits your platform, build Mr.Docs from source with the bootstrap script. The script provisions every dependency Mr.Docs needs (LLVM, Clang, and the other third-party libraries) into the install prefix you choose, configures the project, and runs the build. See https://cppalliance.org/alan/2026/04/15/Alan.html[the bootstrap walkthrough on the C++ Alliance site,window="_blank"] for the design rationale.
+
+[TIP]
+====
+Already installed Mr.Docs from a xref:#mrdocs-binaries[binary package]? Skip the rest of this section and go straight to xref:#_verification[Verification].
+====
+
+=== Prerequisites
+
+You need Python, a recent C++ toolchain (Clang or a recent GCC), CMake, and Git on the machine. If any of those are missing, pass `--install-system-deps` to the bootstrap script below and it will use your system package manager to install them.
+
+=== Running the script
 
 [source,bash]
 ----
@@ -22,85 +31,94 @@ cd mrdocs
 python bootstrap.py
 ----
 
-The script prompts for the installation directory and other options interactively.
-Every option can also be specified on the command line; run `python bootstrap.py --help` for the full list.
+The script prompts for the install directory and other settings interactively. Every prompt has an equivalent CLI flag; the `--help` output lists them all.
 
-=== Non-interactive mode
+=== Usage patterns
 
-Use `--yes` to accept all defaults without prompting.
-This is handy for refreshing dependencies or scripting:
+*Non-interactive (CI or scripted installs):* `--yes` accepts every default without prompting.
 
 [source,bash]
 ----
 python bootstrap.py --yes --build-type Release
 ----
 
-=== Build options
-
-`--build-type <type>`:: CMake build type: `Debug`, `Release`, `RelWithDebInfo`, or `MinSizeRel`.
-`--sanitizer <san>`:: Enable a sanitizer (`address`, `memory`, `undefined`, `thread`). When using `address` or `memory` with clang, bootstrap automatically builds instrumented libc++ runtimes and propagates the required flags.
-`--cc <path>` / `--cxx <path>`:: Paths to the C and C++ compilers.
-`--cflags <flags>` / `--cxxflags <flags>` / `--ldflags <flags>`:: Extra compiler or linker flags passed to all dependency and project builds (e.g. `--cxxflags "-gz=zstd"`).
-`--build-tests`:: Build the Mr.Docs test suite (requires Java for xml-lint).
-
-=== Dependency options
-
-`--recipe-filter <list>`:: Only build specific recipes (comma-separated, e.g. `llvm,jerryscript`).
-`--skip-build`:: Install dependencies only; do not configure or build Mr.Docs itself.
-`--clean`:: Clean and rebuild all dependencies from scratch.
-`--force`:: Force rebuild even if a dependency is already up to date.
-`--list-recipes`:: Print available recipes and exit.
-`--install-system-deps`:: Attempt to install missing system prerequisites (cmake, git, a compiler) via `apt-get` or `brew`.
-
-=== CI and caching options
-
-`--plain`:: Disable colors and emoji so output is suitable for CI log parsing.
-`--cache-dir <path>`:: Point bootstrap at a directory of cached dependency installs. Bootstrap checks stamp files and skips up-to-date recipes. After a run the directory contains everything CI needs to save back to cache.
-`--cache-key <recipe>`:: Print the cache key for a recipe and exit (e.g. `--cache-key llvm`). Useful for CI save/restore steps.
-`--os-key <key>`:: OS or container identifier included in cache keys (e.g. `ubuntu:24.04`, `macos-15`).
-`--env-file <path>`:: Write computed `_ROOT` paths and flags to a file in `key=value` format, ready for CI environment injection.
-
-A typical CI invocation looks like:
-
-[source,bash]
-----
-python bootstrap.py --yes --plain \
-  --build-type Release --sanitizer asan \
-  --cc clang-19 --cxx clang++-19 \
-  --cache-dir ../third-party --skip-build
-----
-
-=== Dry-run mode
-
-Use `--dry-run` to see every command bootstrap would execute, printed as copy-pasteable shell commands with fully resolved paths.
-This is the recommended reference if you need to understand or reproduce the build steps manually:
+*Dry-run:* `--dry-run` prints every command the script would run, fully resolved. The output is copy-paste-ready shell, useful when you want to follow the build manually:
 
 [source,bash]
 ----
 python bootstrap.py --yes --dry-run --build-type Release
 ----
 
-[NOTE]
+*Continuous integration:* point `--cache-dir` at a CI-cached directory of dependency installs; the script checks stamp files and skips up-to-date recipes. Pair with `--skip-build` if you only need the dependencies.
+
+[source,bash]
+----
+python bootstrap.py --yes --plain \
+  --build-type Release --sanitizer address \
+  --cache-dir ../third-party --skip-build
+----
+
+For more options and details, see the xref:#_bootstrap-options[Bootstrap Options Reference] section at the end of this page.
+
+== Verification
+
+After install, confirm the binary is on `PATH` and reports the expected version:
+
+[source,bash]
+----
+mrdocs --version
+----
+
+[TIP]
 ====
-The bootstrap script automatically installs all dependencies (LLVM, Clang, etc.) to the same prefix as Mr.Docs.
-This ensures that the Clang resource directory can be found at runtime without additional configuration.
+If the shell reports "command not found" (or "is not recognized as an internal or external command" on Windows), Mr.Docs is installed but its `bin/` directory is not on your `PATH`. Add it and reopen the terminal:
+
+[tabs]
+======
+Windows::
++
+--
+Append the install prefix's `bin\` to your user `PATH` from PowerShell:
+
+[source,powershell]
+----
+[Environment]::SetEnvironmentVariable(
+  'Path',
+  $env:Path + ';C:\path\to\install\bin',
+  'User')
+----
+
+Replace `C:\path\to\install` with the prefix you passed to `--install-dir`. Close and reopen the terminal so the new `PATH` takes effect.
+--
+
+Linux / macOS::
++
+--
+Append the install prefix's `bin/` to `PATH` in your shell profile (typically `~/.zshrc`, `~/.bashrc`, or `~/.profile`):
+
+[source,bash]
+----
+echo 'export PATH="/path/to/install/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+----
+
+Replace `/path/to/install` with the prefix you passed to `--install-dir` (or the default expansion shown in xref:#directories[Directories]).
+--
+======
+
+If `mrdocs --version` still fails after fixing `PATH`, the binary is on disk but cannot start. Run it with the full path (`/path/to/install/bin/mrdocs --version`) to see the actual error: missing shared library, wrong CPU architecture, or a mismatched glibc are the usual suspects, all fixable by rerunning bootstrap with the right `--cc` / `--cxx`.
 ====
 
 == Package layout
 
-The MrDocs installation directory follows the "Filesystem Hierarchy Standard" (FHS) layout:
+A Mr.Docs install follows the conventional Unix layout. After install, the prefix contains:
 
-* `bin`: the MrDocs executable intended to be used by users or invoked from the command line.
-* `share`: resource files installed by MrDocs
-* `doc`: the MrDocs documentation
-* `include`: the MrDocs headers
-* `lib`: the MrDocs library
+* `bin/` -- the `mrdocs` executable.
+* `share/mrdocs/` -- bundled resources Mr.Docs reads at runtime
+* `lib/` and `include/` -- the Mr.Docs core library and its public headers, for embedding Mr.Docs in another program.
 
-The FHS layout provides a directory structure that also serves as a widely accepted convention for organizing files and directories in Unix-like systems, but that can be used in any operating system.
+[#bootstrap-reference]
+== Appendix: Bootstrap Options Reference
 
-[IMPORTANT]
-====
-The MrDocs binary must be installed in the same installation prefix as the Clang library it was built from.
-This is required because the Clang resource directory location is resolved relative to the MrDocs executable at runtime.
-When installing both LLVM/Clang and MrDocs, ensure they share the same `CMAKE_INSTALL_PREFIX`.
-====
+include::partial$bootstrap-options.adoc[leveloffset=0]
+

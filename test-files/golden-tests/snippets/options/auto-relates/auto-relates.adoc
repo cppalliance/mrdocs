@@ -1,0 +1,91 @@
+= Reference
+:mrdocs:
+
+[#point]
+== point
+
+A two&hyphen;dimensional point&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct point;
+----
+
+=== Data Members
+
+[cols=1]
+|===
+| Name
+| link:#point-x[`x`] 
+| link:#point-y[`y`] 
+|===
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#print[`print`]
+| Print a point to stdout&period;
+|===
+
+[#point-x]
+== link:#point[point]::x
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double x;
+----
+
+[#point-y]
+== link:#point[point]::y
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double y;
+----
+
+[#print]
+== print
+
+Print a point to stdout&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+print(link:#point[point] p);
+----
+
+=== Description
+
+The free function takes `point` as its only parameter, so it gets attached to `point` as a related function&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *p*
+| A two&hyphen;dimensional point&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

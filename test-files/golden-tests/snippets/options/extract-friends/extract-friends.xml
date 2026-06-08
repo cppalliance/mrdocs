@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>3jwTUSkZsOmMaDwirtDbb77uS/k=</records>
+    <functions>hv7LSydioRTZsrEz1uDZ7DCRk7Q=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>point</name>
+  <source>
+    <location>
+      <short-path>extract-friends.cpp</short-path>
+      <source-path>extract-friends.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>3jwTUSkZsOmMaDwirtDbb77uS/k=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A point in 2D.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <variables>IT5L3BVNARQt9DxCiPIULeR2VgA=</variables>
+      <variables>jXR5vV59+7yy8AXn77sRwtX7bz0=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+  <friend>
+    <id>hv7LSydioRTZsrEz1uDZ7DCRk7Q=</id>
+  </friend>
+</record>
+<variable>
+  <name>x</name>
+  <source>
+    <location>
+      <short-path>extract-friends.cpp</short-path>
+      <source-path>extract-friends.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>IT5L3BVNARQt9DxCiPIULeR2VgA=</id>
+  <extraction>regular</extraction>
+  <parent>3jwTUSkZsOmMaDwirtDbb77uS/k=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<variable>
+  <name>y</name>
+  <source>
+    <location>
+      <short-path>extract-friends.cpp</short-path>
+      <source-path>extract-friends.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>jXR5vV59+7yy8AXn77sRwtX7bz0=</id>
+  <extraction>regular</extraction>
+  <parent>3jwTUSkZsOmMaDwirtDbb77uS/k=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<function>
+  <name>operator==</name>
+  <source>
+    <location>
+      <short-path>extract-friends.cpp</short-path>
+      <source-path>extract-friends.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>hv7LSydioRTZsrEz1uDZ7DCRk7Q=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Equality comparison, declared as a friend so it participates in ADL.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> if the objects are equal, </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> otherwise</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The left operand</literal>
+      </text>
+      <name>a</name>
+    </param>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>b</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>3jwTUSkZsOmMaDwirtDbb77uS/k=</id>
+        <identifier>point</identifier>
+      </name>
+    </named>
+    <name>a</name>
+  </param>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>3jwTUSkZsOmMaDwirtDbb77uS/k=</id>
+        <identifier>point</identifier>
+      </name>
+    </named>
+    <name>b</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

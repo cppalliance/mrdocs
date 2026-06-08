@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#render]
+== render
+
+Renders the document&period;
+
+=== Synopsis
+
+Declared in `&lt;line&hyphen;break&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+render();
+----
+
+=== Description
+
+First lineSecond line in the same paragraph&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

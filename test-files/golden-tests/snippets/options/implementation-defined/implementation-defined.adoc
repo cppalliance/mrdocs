@@ -1,0 +1,51 @@
+= Reference
+:mrdocs:
+
+[#logr-scoped_context]
+== logr::scoped&lowbar;context
+
+Attach a key&sol;value pair to every log line in the current scope&period;
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;log&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+scoped&lowbar;context(
+    char const* key,
+    char const* value);
+----
+
+=== Description
+
+The context stays attached until the returned token is destroyed&period; Hold it in `auto`&semi; nested contexts stack and unwind in reverse order&period;
+
+=== Example
+
+[,cpp]
+----
+void handle_request(request const& req) {
+    auto ctx = logr::scoped_context("request_id", req.id);
+    do_work(req);
+}
+----
+=== Return Value
+
+An opaque RAII token whose lifetime governs how long the pair stays attached&period; The type is implementation&hyphen;defined&semi; store it in `auto`&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *key*
+| The context name surfaced on each log line&period;
+| *value*
+| The context value surfaced on each log line&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

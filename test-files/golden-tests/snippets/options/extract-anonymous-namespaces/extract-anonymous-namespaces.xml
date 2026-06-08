@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>y7xkLA97sKMumR7qcex5x/ika4M=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>lib</name>
+  <source>
+    <location>
+      <short-path>extract-anonymous-namespaces.cpp</short-path>
+      <source-path>extract-anonymous-namespaces.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>namespace</kind>
+  <id>y7xkLA97sKMumR7qcex5x/ika4M=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>oinHAiCRt7QGfbwTU9lqJXi2WWE=</functions>
+    <functions>IweA1NA5/pZkv4DSfS8yDypv9jY=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>run</name>
+  <source>
+    <location>
+      <short-path>extract-anonymous-namespaces.cpp</short-path>
+      <source-path>extract-anonymous-namespaces.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>oinHAiCRt7QGfbwTU9lqJXi2WWE=</id>
+  <extraction>regular</extraction>
+  <parent>y7xkLA97sKMumR7qcex5x/ika4M=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A regular public function.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>warm_caches</name>
+  <source>
+    <location>
+      <short-path>extract-anonymous-namespaces.cpp</short-path>
+      <source-path>extract-anonymous-namespaces.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>IweA1NA5/pZkv4DSfS8yDypv9jY=</id>
+  <extraction>regular</extraction>
+  <parent>y7xkLA97sKMumR7qcex5x/ika4M=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A helper with translation-unit-local linkage. With </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>extract-anonymous-namespaces: true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> it shows up in the docs.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

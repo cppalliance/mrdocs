@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>5Ys5ZXeJ1C3le3Vk84H2Io4RsUU=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>parse_int</name>
+  <source>
+    <location>
+      <short-path>exceptions.cpp</short-path>
+      <source-path>exceptions.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>5Ys5ZXeJ1C3le3Vk84H2Io4RsUU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Parses an integer from a string.</literal>
+      </text>
+    </brief>
+    <throws>
+      <kind>throws</kind>
+      <text>
+        <kind>text</kind>
+        <literal>when the text does not contain a valid integer representation.</literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>std::invalid_argument</literal>
+      </reference>
+    </throws>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>text</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

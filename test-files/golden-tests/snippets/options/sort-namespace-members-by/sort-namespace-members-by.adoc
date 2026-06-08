@@ -1,0 +1,50 @@
+= Reference
+:mrdocs:
+
+[#lib-connect]
+== lib::connect
+
+Connect to a remote service&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;namespace&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+connect();
+----
+
+[#lib-init]
+== lib::init
+
+Initialize the library&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;namespace&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+init();
+----
+
+[#lib-shutdown]
+== lib::shutdown
+
+Shut everything down&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;namespace&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+shutdown();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

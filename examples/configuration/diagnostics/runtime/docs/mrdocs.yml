@@ -1,0 +1,5 @@
+source-root: ..
+input:
+  - ../include
+concurrency: 4
+ignore-failures: true

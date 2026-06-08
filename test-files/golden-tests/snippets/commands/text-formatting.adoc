@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#format_money]
+== format&lowbar;money
+
+Formats a quantity for _human_ reading&period;
+
+=== Synopsis
+
+Declared in `&lt;text&hyphen;formatting&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const*
+format&lowbar;money(long cents);
+----
+
+=== Description
+
+Returns a *localized* string&period; Pass the raw value in `cents`&semi; the [.line-through]#deprecated# `format&lowbar;dollars` spelling is gone&period; Out&hyphen;of&hyphen;range inputs are #flagged# in the output&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

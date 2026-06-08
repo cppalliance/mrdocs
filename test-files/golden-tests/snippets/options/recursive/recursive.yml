@@ -1,0 +1,7 @@
+# tag::test-only[]
+includes:
+  - include
+# end::test-only[]
+input:
+  - include/cli
+recursive: false

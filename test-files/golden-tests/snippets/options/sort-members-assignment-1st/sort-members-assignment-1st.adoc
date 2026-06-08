@@ -1,0 +1,134 @@
+= Reference
+:mrdocs:
+
+[#widget]
+== widget
+
+A class whose assignment operators should be grouped at the top of the member list&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;assignment&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-operator_assign-00[`operator&equals;`] 
+| Assignment operators
+| link:#widget-refresh[`refresh`] 
+| Refresh the widget&period;
+|===
+
+[#widget-operator_assign-00]
+== link:#widget[widget]::operator&equals;
+
+Assignment operators
+
+=== Synopses
+
+Declared in `&lt;sort&hyphen;members&hyphen;assignment&hyphen;1st&period;cpp&gt;`
+
+Copy&hyphen;assign from another widget&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#widget[widget]&
+link:#widget-operator_assign-0b[operator&equals;](link:#widget[widget] const& other);
+----
+
+[.small]#link:#widget-operator_assign-0b[_» more&period;&period;&period;_]#
+
+Move&hyphen;assign from another widget&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#widget[widget]&
+link:#widget-operator_assign-03[operator&equals;](link:#widget[widget]&& other);
+----
+
+[.small]#link:#widget-operator_assign-03[_» more&period;&period;&period;_]#
+
+[#widget-operator_assign-0b]
+== link:#widget[widget]::operator&equals;
+
+Copy&hyphen;assign from another widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;assignment&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#widget[widget]&
+operator&equals;(link:#widget[widget] const& other);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The object to copy assign from
+|===
+
+[#widget-operator_assign-03]
+== link:#widget[widget]::operator&equals;
+
+Move&hyphen;assign from another widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;assignment&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#widget[widget]&
+operator&equals;(link:#widget[widget]&& other);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The object to move assign from
+|===
+
+[#widget-refresh]
+== link:#widget[widget]::refresh
+
+Refresh the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;assignment&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+refresh();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

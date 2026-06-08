@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "${MRDOCS_SOURCE_ROOT}",
+    "command": "clang++ -std=c++20 -I${MRDOCS_SOURCE_ROOT}/include -c ${MRDOCS_SOURCE_ROOT}/src/point.cpp -o ${MRDOCS_SOURCE_ROOT}/point.o",
+    "file": "${MRDOCS_SOURCE_ROOT}/src/point.cpp"
+  }
+]

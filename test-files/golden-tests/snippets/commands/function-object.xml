@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>LCuEXjDTHwkM+XhPaB+iwLVSsEE=</records>
+    <functions>IRl4fwfFt3xAl5cuHiR99eUb+D8=</functions>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>scale_fn</name>
+  <source>
+    <location>
+      <short-path>function-object.cpp</short-path>
+      <source-path>function-object.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>LCuEXjDTHwkM+XhPaB+iwLVSsEE=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>KUr2khRd8D3DikEmgZISNlEWkLI=</functions>
+      <variables>OQDvXb7UMpQOrLDDsTPeN6myHDc=</variables>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>operator()</name>
+  <source>
+    <location>
+      <short-path>function-object.cpp</short-path>
+      <source-path>function-object.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>KUr2khRd8D3DikEmgZISNlEWkLI=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>LCuEXjDTHwkM+XhPaB+iwLVSsEE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> scaled by the configured factor.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> scaled by the configured factor.</literal>
+      </text>
+    </returns>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The right operand</literal>
+      </text>
+      <name>x</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+  <is-const>1</is-const>
+</function>
+<variable>
+  <name>factor</name>
+  <source>
+    <location>
+      <short-path>function-object.cpp</short-path>
+      <source-path>function-object.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>OQDvXb7UMpQOrLDDsTPeN6myHDc=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>LCuEXjDTHwkM+XhPaB+iwLVSsEE=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+<function>
+  <name>scale</name>
+  <source>
+    <location>
+      <short-path>function-object.cpp</short-path>
+      <source-path>function-object.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>IRl4fwfFt3xAl5cuHiR99eUb+D8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> scaled by the configured factor.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>x</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> scaled by the configured factor.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+  <function-object-impl>LCuEXjDTHwkM+XhPaB+iwLVSsEE=</function-object-impl>
+</function>
+</mrdocs>

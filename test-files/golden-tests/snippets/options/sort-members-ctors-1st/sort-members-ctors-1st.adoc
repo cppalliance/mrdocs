@@ -1,0 +1,129 @@
+= Reference
+:mrdocs:
+
+[#widget]
+== widget
+
+A class whose constructors should head the rendered member list regardless of where the declarations sit in the source&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-2constructor-05[`widget`]         [.small]#[constructor]#
+| Constructors
+| link:#widget-hide[`hide`] 
+| Hide the widget&period;
+| link:#widget-show[`show`] 
+| Show the widget&period;
+|===
+
+[#widget-2constructor-05]
+== link:#widget[widget]::widget
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
+
+Construct an empty widget&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#widget-2constructor-03[widget]();
+----
+
+[.small]#link:#widget-2constructor-03[_» more&period;&period;&period;_]#
+
+Construct a widget with the given label&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#widget-2constructor-0a[widget](char const* label);
+----
+
+[.small]#link:#widget-2constructor-0a[_» more&period;&period;&period;_]#
+
+[#widget-2constructor-03]
+== link:#widget[widget]::widget
+
+Construct an empty widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+widget();
+----
+
+[#widget-2constructor-0a]
+== link:#widget[widget]::widget
+
+Construct a widget with the given label&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+widget(char const* label);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *label*
+| The value to construct from
+|===
+
+[#widget-hide]
+== link:#widget[widget]::hide
+
+Hide the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+hide();
+----
+
+[#widget-show]
+== link:#widget[widget]::show
+
+Show the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+show();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#absolute]
+== absolute
+
+Computes the absolute value of an integer&period;
+
+=== Synopsis
+
+Declared in `&lt;paragraph&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+absolute(int x);
+----
+
+=== Description
+
+Returns the input unchanged when non&hyphen;negative, otherwise returns its negation&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,221 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="request">
+request</h2>
+<div>
+<p>An HTTP request as a structured value.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;parse-format-relates.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct request;</code></pre>
+</div>
+
+
+<div>
+<h2>
+Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#format_request"><code>format_request</code></a></td><td>Format <code>r</code> as the wire-format text of an HTTP request.</td></tr>
+<tr><td><a href="#parse_request"><code>parse_request</code></a></td><td>Parse <code>text</code> into a request. Returns a valid request on success.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="user">
+user</h2>
+<div>
+<p>A user record.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;parse-format-relates.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct user;</code></pre>
+</div>
+
+
+<div>
+<h2>
+Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#format_user"><code>format_user</code></a></td><td>Format <code>u</code> as the canonical wire-format text of a user.</td></tr>
+<tr><td><a href="#parse_user"><code>parse_user</code></a></td><td>Parse <code>text</code> into a user.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="format_request">
+format_request</h2>
+<div>
+<p>Format <code>r</code> as the wire-format text of an HTTP request.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;parse-format-relates.cpp&gt;</code></div>
+<pre><code class="source-code cpp">char const*
+format_request(<a href="#request">request</a> const& r);</code></pre>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>r</strong></td>
+<td>An HTTP request as a structured value.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+See Also</h3>
+<p><p><a href="#parse_request"><code>parse_request</code></a></p>
+</p>
+</div>
+</div>
+<div>
+<div>
+<h2 id="format_user">
+format_user</h2>
+<div>
+<p>Format <code>u</code> as the canonical wire-format text of a user.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;parse-format-relates.cpp&gt;</code></div>
+<pre><code class="source-code cpp">char const*
+format_user(<a href="#user">user</a> const& u);</code></pre>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>u</strong></td>
+<td>A user record.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+See Also</h3>
+<p><p><a href="#parse_user"><code>parse_user</code></a></p>
+</p>
+</div>
+</div>
+<div>
+<div>
+<h2 id="parse_request">
+parse_request</h2>
+<div>
+<p>Parse <code>text</code> into a request. Returns a valid request on success.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;parse-format-relates.cpp&gt;</code></div>
+<pre><code class="source-code cpp"><a href="#request">request</a>
+parse_request(char const* text);</code></pre>
+</div>
+<div>
+<h3>
+Return Value</h3>
+An HTTP request as a structured value.
+</div>
+<div>
+<h3>
+See Also</h3>
+<p><p><a href="#format_request"><code>format_request</code></a></p>
+</p>
+</div>
+</div>
+<div>
+<div>
+<h2 id="parse_user">
+parse_user</h2>
+<div>
+<p>Parse <code>text</code> into a user.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;parse-format-relates.cpp&gt;</code></div>
+<pre><code class="source-code cpp"><a href="#user">user</a>
+parse_user(char const* text);</code></pre>
+</div>
+<div>
+<h3>
+Return Value</h3>
+A user record.
+</div>
+<div>
+<h3>
+See Also</h3>
+<p><p><a href="#format_user"><code>format_user</code></a></p>
+</p>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

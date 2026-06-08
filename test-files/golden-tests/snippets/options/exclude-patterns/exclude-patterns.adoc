@@ -1,0 +1,39 @@
+= Reference
+:mrdocs:
+
+[#payments-authorize]
+== payments::authorize
+
+Authorize a payment of `amount` against `account`&period;
+
+=== Synopsis
+
+Declared in `&lt;payments&sol;payments&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+authorize(
+    char const* account,
+    double amount);
+----
+
+[#storage-put]
+== storage::put
+
+Persist a value under `key`&period;
+
+=== Synopsis
+
+Declared in `&lt;storage&sol;storage&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+put(
+    char const* key,
+    char const* value);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

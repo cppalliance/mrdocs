@@ -1,0 +1,5 @@
+# tag::test-only[]
+includes:
+  - include
+# end::test-only[]
+auto-function-objects: true

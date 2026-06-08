@@ -1,0 +1,40 @@
+= Reference
+:mrdocs:
+
+[#close_handle]
+== close&lowbar;handle
+
+Closes the handle&period;
+
+=== Synopsis
+
+Declared in `&lt;admonitions&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+close&lowbar;handle();
+----
+
+=== Description
+
+[NOTE]
+====
+Closing a handle invalidates any iterators that point into the underlying buffer&period;
+
+====
+
+[WARNING]
+====
+Do not call this from a destructor that runs during program termination&period;
+
+====
+
+[TIP]
+====
+Prefer the RAII wrapper `scoped&lowbar;handle`, which closes automatically at scope exit&period;
+
+====
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

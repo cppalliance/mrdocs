@@ -1,0 +1,7 @@
+source-root: ..
+input:
+  - ../include
+includes:
+  - ../external
+defines:
+  - LIB_BUILD

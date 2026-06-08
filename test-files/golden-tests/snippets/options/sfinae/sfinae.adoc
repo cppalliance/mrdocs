@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#twice]
+== twice
+
+Multiply by two, but only for integers&period;
+
+=== Synopsis
+
+Declared in `&lt;sfinae&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+T
+twice(T x)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
+----
+
+=== Description
+
+The `std&colon;&colon;enable&lowbar;if&lowbar;t` SFINAE on the return type restricts the overload to integral arguments&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

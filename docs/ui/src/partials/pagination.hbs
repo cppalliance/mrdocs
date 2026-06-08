@@ -1,4 +1,4 @@
-{{#unless (eq page.attributes.pagination undefined)}}
+{{#unless (eq page.attributes.pagination 'none')}}
 {{#if (or page.previous page.next)}}
 <nav class="pagination">
   {{#if (ne page.attributes.pagination 'next')}}

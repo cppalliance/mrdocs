@@ -1,0 +1,178 @@
+= Reference
+:mrdocs:
+
+[#Circle]
+== Circle
+
+A round shape&period;
+
+=== Synopsis
+
+Declared in `&lt;subclass&hyphen;tree&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Circle
+    : link:#Shape[Shape]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#Shape[Shape]`
+| The root of the shape hierarchy&period;
+|===
+
+[#Polygon]
+== Polygon
+
+A shape with straight sides&period;
+
+=== Synopsis
+
+Declared in `&lt;subclass&hyphen;tree&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Polygon
+    : link:#Shape[Shape]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#Shape[Shape]`
+| The root of the shape hierarchy&period;
+|===
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| link:#Quadrilateral[`Quadrilateral`]
+| A four&hyphen;sided polygon&period;
+| link:#Triangle[`Triangle`]
+| A three&hyphen;sided polygon&period;
+|===
+
+[#Quadrilateral]
+== Quadrilateral
+
+A four&hyphen;sided polygon&period;
+
+=== Synopsis
+
+Declared in `&lt;subclass&hyphen;tree&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Quadrilateral
+    : link:#Polygon[Polygon]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#Polygon[Polygon]`
+| A shape with straight sides&period;
+|===
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| link:#Square[`Square`]
+| A quadrilateral with equal sides&period;
+|===
+
+[#Shape]
+== Shape
+
+The root of the shape hierarchy&period;
+
+=== Synopsis
+
+Declared in `&lt;subclass&hyphen;tree&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Shape;
+----
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| link:#Circle[`Circle`]
+| A round shape&period;
+| link:#Polygon[`Polygon`]
+| A shape with straight sides&period;
+|===
+
+[#Square]
+== Square
+
+A quadrilateral with equal sides&period;
+
+=== Synopsis
+
+Declared in `&lt;subclass&hyphen;tree&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Square
+    : link:#Quadrilateral[Quadrilateral]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#Quadrilateral[Quadrilateral]`
+| A four&hyphen;sided polygon&period;
+|===
+
+[#Triangle]
+== Triangle
+
+A three&hyphen;sided polygon&period;
+
+=== Synopsis
+
+Declared in `&lt;subclass&hyphen;tree&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Triangle
+    : link:#Polygon[Polygon]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#Polygon[Polygon]`
+| A shape with straight sides&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
