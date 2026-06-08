@@ -49,8 +49,8 @@ jobs:
         id: package-install
         with:
           packages: ${{ matrix.install }}
-          apt-get-source-keys: ${{ matrix.coverage == 'true' && 'https://apt.llvm.org/llvm-snapshot.gpg.key' || '' }}
-          apt-get-sources: ${{ matrix.coverage == 'true' && 'deb https://apt.llvm.org/noble/ llvm-toolchain-noble-21 main' || '' }}
+          apt-get-source-keys: ${{ matrix.coverage && 'https://apt.llvm.org/llvm-snapshot.gpg.key' || '' }}
+          apt-get-sources: ${{ matrix.coverage && 'deb https://apt.llvm.org/noble/ llvm-toolchain-noble-21 main' || '' }}
 
       - name: Clone MrDocs
         uses: actions/checkout@v4
@@ -159,7 +159,7 @@ jobs:
 
       - name: Process Coverage
         id: process-coverage
-        if: matrix.coverage == 'true'
+        if: matrix.coverage
         uses: alandefreitas/cpp-actions/process-coverage@v1.9.4
         with:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
@@ -173,7 +173,7 @@ jobs:
       # `ci-scope-detector.yml` probes this artifact by name and merge-base SHA.
       - name: Save coverage for replay
         if: |
-          matrix.coverage == 'true' &&
+          matrix.coverage &&
           github.event_name == 'push' &&
           github.ref_name == 'develop' &&
           steps.process-coverage.outputs.lcov-file != ''
