@@ -1,0 +1,5 @@
+## Pattern: MrDocs drives CMake itself. No need to pre-build the project.
+source-root: ..
+compilation-database: ../CMakeLists.txt
+## For extra CMake variables:
+# cmake: '-D BOOST_ROOT=/path/to/boost'

@@ -1,0 +1,36 @@
+= Reference
+:mrdocs:
+
+[#run]
+== run
+
+A regular free function&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;static&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+run();
+----
+
+[#warm_caches]
+== warm&lowbar;caches
+
+A static helper with internal linkage&period; With `extract&hyphen;static&colon; true` it appears in the docs&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;static&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+void
+warm&lowbar;caches();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

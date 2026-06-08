@@ -1,0 +1,22 @@
+= Reference
+:mrdocs:
+
+[#multiply]
+== multiply
+
+Multiply two integers&period;
+
+=== Synopsis
+
+Declared in `&lt;generator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+multiply(
+    int a,
+    int b);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

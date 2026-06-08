@@ -1,0 +1,44 @@
+= Reference
+:mrdocs:
+
+[#transfer]
+== transfer
+
+Moves funds from one account to another&period;
+
+=== Synopsis
+
+Declared in `&lt;transfer&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+transfer(
+    int from,
+    int to,
+    long amount);
+----
+
+=== Exceptions
+
+[cols="1,4"]
+|===
+| Name
+| Thrown on
+| `std&colon;&colon;invalid&lowbar;argument`
+| If an account number is unknown&period;
+| `std&colon;&colon;out&lowbar;of&lowbar;range`
+| If `from` cannot cover `amount`&period;
+|===
+
+=== Preconditions
+
+* `amount` is positive&period;
+* `from` and `to` are different accounts&period;
+
+=== Postconditions
+
+* `from` falls by `amount` and `to` rises by the same&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

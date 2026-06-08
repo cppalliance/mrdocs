@@ -1,0 +1,109 @@
+= Reference
+:mrdocs:
+
+[#value]
+== value
+
+A class whose relational operators sit at the bottom of the member list&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;relational&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct value;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#value-get[`get`] 
+| Get the underlying integer&period;
+| link:#value-operator_eq[`operator&equals;&equals;`] 
+| Equality comparison&period;
+| link:#value-operator_lt[`operator&lt;`] 
+| Less&hyphen;than comparison&period;
+|===
+
+[#value-get]
+== link:#value[value]::get
+
+Get the underlying integer&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;relational&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+get() const;
+----
+
+=== Return Value
+
+the underlying integer&period;
+
+[#value-operator_eq]
+== link:#value[value]::operator&equals;&equals;
+
+Equality comparison&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;relational&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(link:#value[value] const& rhs) const;
+----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *rhs*
+| The right operand
+|===
+
+[#value-operator_lt]
+== link:#value[value]::operator&lt;
+
+Less&hyphen;than comparison&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;relational&hyphen;last&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&lt;(link:#value[value] const& rhs) const;
+----
+
+=== Return Value
+
+`true` if the left object is less than the right object, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *rhs*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

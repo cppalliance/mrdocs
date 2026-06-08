@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>t/n0z/2INUVPXCCm04ZHo6noLj8=</functions>
+    <functions>K4jz8Jq/Yf0YP4ae1HoCyO/o6X8=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>triple</name>
+  <source>
+    <location>
+      <short-path>cross-reference.cpp</short-path>
+      <source-path>cross-reference.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>t/n0z/2INUVPXCCm04ZHo6noLj8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Triples the input.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>twice</name>
+  <source>
+    <location>
+      <short-path>cross-reference.cpp</short-path>
+      <source-path>cross-reference.cpp</source-path>
+      <line-number>8</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>K4jz8Jq/Yf0YP4ae1HoCyO/o6X8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Closely related to </literal>
+      </text>
+      <reference>
+        <kind>reference</kind>
+        <literal>triple</literal>
+        <id>t/n0z/2INUVPXCCm04ZHo6noLj8=</id>
+      </reference>
+      <text>
+        <kind>text</kind>
+        <literal>.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Doubles the input.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>x</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

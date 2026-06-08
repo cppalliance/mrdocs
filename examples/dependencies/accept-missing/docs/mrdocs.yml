@@ -1,0 +1,10 @@
+## Pattern: forgives an entire include prefix.
+source-root: ..
+input:
+  - ../include
+includes:
+  - ../include
+file-patterns:
+  - '*.hpp'
+missing-include-prefixes:
+  - "aws/"

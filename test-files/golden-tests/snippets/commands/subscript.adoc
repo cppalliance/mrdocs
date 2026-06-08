@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#coefficient]
+== coefficient
+
+Reads coefficient a&#126;i&#126; from the polynomial&period;
+
+=== Synopsis
+
+Declared in `&lt;subscript&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+coefficient(unsigned int i);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

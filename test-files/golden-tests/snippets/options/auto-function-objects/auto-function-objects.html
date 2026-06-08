@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="numerics-clamp">
+numerics::clamp</h2>
+<div>
+<p>Constrain a value to the inclusive range <code>[lo, hi]</code>.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;numerics/clamp.hpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;class T&gt;
+T
+clamp(
+    T const& v,
+    T const& lo,
+    T const& hi);</code></pre>
+</div>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>This function is defined as an <a href="https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects">Algorithm Function Object (AFO)</a>.</p>
+</div>
+</div>
+<div>
+<h3>
+Description</h3>
+<p>Returns <code>lo</code> when <code>v &lt; lo</code>, <code>hi</code> when <code>hi &lt; v</code>, otherwise <code>v</code>. Behavior is undefined if <code>hi &lt; lo</code>.</p>
+</div>
+<div>
+<h3>
+Return Value</h3>
+A copy of <code>v</code>, <code>lo</code>, or <code>hi</code>, whichever lies within the range.
+</div>
+<div>
+<h3>
+Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td>A type comparable with <code>operator&lt;</code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v</strong></td>
+<td>The value to constrain.</td>
+</tr>
+<tr>
+<td><strong>lo</strong></td>
+<td>The inclusive lower bound.</td>
+</tr>
+<tr>
+<td><strong>hi</strong></td>
+<td>The inclusive upper bound.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

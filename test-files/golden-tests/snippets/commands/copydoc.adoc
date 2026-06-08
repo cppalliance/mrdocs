@@ -1,0 +1,71 @@
+= Reference
+:mrdocs:
+
+[#b64_encode]
+== b64&lowbar;encode
+
+Encodes a byte sequence as base&hyphen;64&period;
+
+=== Synopsis
+
+Declared in `&lt;copydoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char*
+b64&lowbar;encode(
+    char const* data,
+    unsigned int n);
+----
+
+=== Return Value
+
+A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *data*
+| The bytes to encode&period;
+| *n*
+| Number of bytes in `data`&period;
+|===
+
+[#base64]
+== base64
+
+Encodes a byte sequence as base&hyphen;64&period;
+
+=== Synopsis
+
+Declared in `&lt;copydoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char*
+base64(
+    char const* data,
+    unsigned int n);
+----
+
+=== Return Value
+
+A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *data*
+| The bytes to encode&period;
+| *n*
+| Number of bytes in `data`&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

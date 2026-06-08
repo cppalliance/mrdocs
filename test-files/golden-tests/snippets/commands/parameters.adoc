@@ -1,0 +1,37 @@
+= Reference
+:mrdocs:
+
+[#copy_bytes]
+== copy&lowbar;bytes
+
+Copies bytes from one buffer to another&period;
+
+=== Synopsis
+
+Declared in `&lt;parameters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copy&lowbar;bytes(
+    char* dst,
+    char const* src,
+    unsigned int n);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *dst* [out]
+| The destination buffer&period; Must be at least `n` bytes long&period;
+| *src* [in]
+| The source buffer&period;
+| *n* [in]
+| The number of bytes to copy&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

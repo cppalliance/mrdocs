@@ -7,6 +7,167 @@
     Official repository: https://github.com/cppalliance/mrdocs
 */
 
+const fs = require('fs')
+const path = require('path')
+
+// Optional per-option fixture under
+// `test-files/golden-tests/snippets/options/<option>/`. The extension
+// uses this to emit an `<em>Example</em>` block under each option's
+// detail, with the .cpp source and the .yml configuration as code
+// blocks. Rendering the .adoc preview inline would require a second
+// asciidoctor instance and clashes with Antora's, so the .adoc
+// preview is handled by the per-category page using `include::`
+// directives instead.
+const OPTIONS_FIXTURES_DIR = path.resolve(
+    __dirname, '..', '..', 'test-files', 'golden-tests', 'snippets', 'options')
+
+const ADOC_HEADER_RE = /^= Reference\n:mrdocs:\n\n/
+const ADOC_FOOTER_RE = /\n*\[\.small\]#Created with https:\/\/www\.mrdocs\.com\[MrDocs\]#\s*\n*$/
+
+// Remove every AsciiDoc-include tag region from `text`. A tag region
+// is the block between `<prefix> tag::name[]` and `<prefix> end::name[]`
+// (markers and their enclosed content). The markers exist so that the
+// intermediary pages can include only the relevant fragments via
+// `[tags=!test-only]` and similar; they are noise when the whole file
+// is dumped into the auto-generated reference preview.
+function stripTaggedRegions(text) {
+    return text
+        .replace(/^[ \t]*(?:\/\/|#)[ \t]*tag::([A-Za-z0-9_\-]+)\[\][ \t]*\r?\n[\s\S]*?^[ \t]*(?:\/\/|#)[ \t]*end::\1\[\][ \t]*\r?\n?/gm, '')
+        // Tidy: collapse 3+ consecutive blank lines that a removal can leave.
+        .replace(/\n{3,}/g, '\n\n')
+        .replace(/^\n+/, '')
+}
+
+// Return the lines between `<prefix> tag::body` and `<prefix> end::body`,
+// without the marker lines themselves. Falls back to the whole file
+// when no body tag is present.
+function extractBody(text) {
+    const m = text.match(/(?:^|\n)[ \t]*(?:\/\/|#)[ \t]*tag::body\[\][ \t]*\r?\n([\s\S]*?)[ \t]*(?:\/\/|#)[ \t]*end::body\[\]/m)
+    return m ? m[1].replace(/\n+$/, '') : stripTaggedRegions(text).replace(/\n+$/, '')
+}
+
+// Collect every `*.hpp`/`*.h` under the fixture's `include/` tree, if
+// any. The fixture's `.cpp` is often just a couple of `#include`s, so
+// the meaningful declarations live in these headers; we display them
+// alongside the .cpp so the example actually makes sense.
+function loadIncludeHeaders(dir) {
+    const includeRoot = path.join(dir, 'include')
+    if (!fs.existsSync(includeRoot)) return []
+    const out = []
+    const walk = (subdir) => {
+        for (const entry of fs.readdirSync(subdir, { withFileTypes: true })) {
+            const full = path.join(subdir, entry.name)
+            if (entry.isDirectory()) {
+                walk(full)
+            } else if (/\.(hpp|h|hxx|ipp)$/i.test(entry.name)) {
+                const rel = path.relative(dir, full).split(path.sep).join('/')
+                out.push({ path: rel, body: extractBody(fs.readFileSync(full, 'utf-8')) })
+            }
+        }
+    }
+    walk(includeRoot)
+    out.sort((a, b) => a.path.localeCompare(b.path))
+    return out
+}
+
+function loadOptionFixture(optionName) {
+    const dir = path.join(OPTIONS_FIXTURES_DIR, optionName)
+    if (!fs.existsSync(dir)) return null
+    const read = (ext) => {
+        const p = path.join(dir, `${optionName}.${ext}`)
+        return fs.existsSync(p) ? fs.readFileSync(p, 'utf-8') : null
+    }
+    const adocRaw = read('adoc')
+    const cppRaw = read('cpp')
+    const ymlRaw = read('yml')
+    return {
+        cpp: cppRaw ? stripTaggedRegions(cppRaw) : null,
+        yml: ymlRaw ? stripTaggedRegions(ymlRaw) : null,
+        adoc: adocRaw
+            ? adocRaw.replace(ADOC_HEADER_RE, '').replace(ADOC_FOOTER_RE, '')
+            : null,
+        headers: loadIncludeHeaders(dir),
+    }
+}
+
+// Asciidoctor instance reused across calls. `@asciidoctor/core` is
+// the package Antora itself loads, so requiring it doesn't create a
+// second Opal runtime the way the top-level `asciidoctor` package
+// would.
+let _adoc = null
+function asciidoctorCore() {
+    if (!_adoc) _adoc = require('@asciidoctor/core')()
+    return _adoc
+}
+
+function renderFixtureHtml(optionName) {
+    const f = loadOptionFixture(optionName)
+    if (!f) return null
+    const parts = []
+    parts.push('<div class="paragraph"><p><em>Example</em></p></div>')
+    // Headers under `include/` come first: that is where the actual
+    // declarations live, while the `.cpp` is usually just a couple of
+    // `#include`s to wire them into a translation unit.
+    for (const h of f.headers) {
+        parts.push(`<div class="listingblock"><div class="title">${escapeHtml(h.path)}</div><div class="content">`)
+        parts.push(`<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">${escapeHtml(h.body)}</code></pre>`)
+        parts.push('</div></div>')
+    }
+    if (f.cpp && !/^\s*$/.test(f.cpp)) {
+        const cppTitle = f.headers.length ? `${optionName}.cpp` : 'Input'
+        parts.push(`<div class="listingblock"><div class="title">${escapeHtml(cppTitle)}</div><div class="content">`)
+        parts.push(`<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">${escapeHtml(f.cpp.replace(/\n+$/, ''))}</code></pre>`)
+        parts.push('</div></div>')
+    }
+    if (f.yml) {
+        parts.push('<div class="listingblock"><div class="title">mrdocs.yml</div><div class="content">')
+        parts.push(`<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">${escapeHtml(f.yml.replace(/\n+$/, ''))}</code></pre>`)
+        parts.push('</div></div>')
+    }
+    if (f.adoc) {
+        try {
+            // `leveloffset=2` so the embedded symbol page's `==` headings
+            // render as `<h4>` instead of `<h2>`. That stops the embedded
+            // title from colliding with the absolute-positioned preview
+            // label and matches the `.adoc-preview h4/h5/h6` rules in
+            // `adoc-preview.css`.
+            let html = asciidoctorCore().convert(f.adoc, {
+                standalone: false,
+                attributes: { leveloffset: '+2' },
+            })
+            // Tag every section heading inside the preview with
+            // `class="discrete"`. The convert() output emits plain
+            // `<h4 id="...">name</h4>`, which the host page's
+            // `.doc h5:not(.discrete) { text-transform: uppercase }`
+            // rule (and its h6 sibling) would render in all caps. The
+            // sibling preview path through `[.adoc-preview]` blocks
+            // already lands at `class="discrete"` via
+            // `adoc-preview-extension.js`, so adding it here makes the
+            // two paths render identically.
+            html = html.replace(
+                /<h([4-6])(\s+[^>]*)?>/g,
+                (_match, level, attrs = '') =>
+                    /\bclass\s*=/.test(attrs)
+                        ? `<h${level}${attrs.replace(/class="([^"]*)"/, (_m, c) => `class="${c} discrete"`)}>`
+                        : `<h${level}${attrs} class="discrete">`
+            )
+            // The inline title becomes the subtitle next to the
+            // canonical "Preview" label that `adoc-preview-extension.js`
+            // injects post-conversion: the strip reads "PREVIEW ·
+            // <option>" so the reader sees which option this preview is
+            // demonstrating. Emitting a label here too would stack two
+            // labels at top:0 (the original overlap bug).
+            const title = `<div class="title">${escapeHtml(optionName)}</div>`
+            parts.push(`<div class="exampleblock adoc-preview">${title}<div class="content">`)
+            parts.push(html)
+            parts.push('</div></div>')
+        } catch (err) {
+            console.error('[config-options-reference] failed to render preview for', optionName, ':', err.message)
+        }
+    }
+    return parts.join('\n')
+}
+
 function toSnakeCase(str) {
     return str.toLowerCase().replace(/ /g, '_').replace(/[^a-z0-9_]/g, '');
 }
@@ -190,6 +351,15 @@ function pushOptionBlocks(options, block, parents = []) {
         block.lines.push(`</ul>`)
         block.lines.push(`</div>`)
         block.lines.push(`</p></div>`)
+
+        // Embed the per-option fixture (if any) right under the
+        // option's detail block. This keeps the single source of
+        // truth: the option is described once in the auto-generated
+        // detail above, and the example below shows it in action.
+        const fixtureHtml = renderFixtureHtml(option.name)
+        if (fixtureHtml) {
+            block.lines.push(fixtureHtml)
+        }
     }
 
     // Iterate the options that have suboptions
@@ -216,14 +386,34 @@ module.exports = function (registry) {
             let level = attrs.level || 3
             let code = reader.getLines().join('\n')
             let categories = JSON.parse(code)
+            // Optional filter: render only the named category. Used by
+            // the per-category reference pages so each one only emits
+            // the options for its own section, instead of the full
+            // reference.
+            let categoryFilter = attrs.category
+            if (categoryFilter) {
+                categories = categories.filter(c => c.category === categoryFilter)
+                if (!categories.length) {
+                    throw new Error(`config-options-reference: no category named "${categoryFilter}" (available: ${JSON.parse(code).map(c => c.category).join(', ')})`)
+                }
+            }
+            // When emitting a single category page, the category name
+            // is already the page title; suppress the inner heading
+            // to avoid the duplicated title.
+            let omitHeading = !!attrs['omit-heading']
             let block = self.$create_pass_block(parent, '', Opal.hash(attrs))
+            // Emit each category as a top-level `.sect1` so it matches
+            // Antora's TOC selector (`article.doc > .sect1 > h2[id]`)
+            // and shows up in the right-hand sidebar.
             for (let category of categories) {
-                block.lines.push('<div class="sect2">')
-                let snake_case = toSnakeCase(category.category)
-                block.lines.push(`<h${level} id="_${snake_case}_options_reference">`)
-                block.lines.push(`<a class="anchor" href="#_${snake_case}_options_reference"></a>`)
-                block.lines.push(category.category)
-                block.lines.push(`</h${level}>`)
+                block.lines.push('<div class="sect1">')
+                if (!omitHeading) {
+                    let snake_case = toSnakeCase(category.category)
+                    block.lines.push(`<h${level} id="_${snake_case}_options_reference">`)
+                    block.lines.push(`<a class="anchor" href="#_${snake_case}_options_reference"></a>`)
+                    block.lines.push(category.category)
+                    block.lines.push(`</h${level}>`)
+                }
                 if (category.brief) {
                     block.lines.push(`<div class="paragraph"><p><i>${category.brief}</i></p></div>`)
                 }

@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#count_unique]
+== count&lowbar;unique
+
+Counts the number of _unique_ elements in the input&period;
+
+=== Synopsis
+
+Declared in `&lt;emphasis&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned int
+count&lowbar;unique(
+    int const* values,
+    unsigned int n);
+----
+
+=== Description
+
+Duplicates are detected by `operator&equals;&equals;` comparison&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

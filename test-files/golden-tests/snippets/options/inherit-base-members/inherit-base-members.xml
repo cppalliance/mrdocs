@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>6XWMjyzUIoqNVxOSPOzFFtyAm+s=</records>
+    <records>zXRFJ9s2e7uvcfIMfWpg6pzEhHw=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>circle</name>
+  <source>
+    <location>
+      <short-path>inherit-base-members.cpp</short-path>
+      <source-path>inherit-base-members.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>6XWMjyzUIoqNVxOSPOzFFtyAm+s=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A circle. The </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>draw</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>shape</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> is inherited and listed on the circle&apos;s page too.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>zXRFJ9s2e7uvcfIMfWpg6pzEhHw=</id>
+        <identifier>shape</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>E/3xIrBEkC0XrV554bjbK11f5eU=</functions>
+      <functions>btV4vQqwwJ1X/GnVLRsN3y3CId4=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>circle</name>
+  <source>
+    <location>
+      <short-path>inherit-base-members.cpp</short-path>
+      <source-path>inherit-base-members.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>E/3xIrBEkC0XrV554bjbK11f5eU=</id>
+  <extraction>regular</extraction>
+  <parent>6XWMjyzUIoqNVxOSPOzFFtyAm+s=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Construct a circle of the given radius.</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value to construct from</literal>
+      </text>
+      <name>r</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>r</name>
+  </param>
+  <func-class>constructor</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>draw</name>
+  <source>
+    <location>
+      <short-path>inherit-base-members.cpp</short-path>
+      <source-path>inherit-base-members.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>btV4vQqwwJ1X/GnVLRsN3y3CId4=</id>
+  <extraction>regular</extraction>
+  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <parent>6XWMjyzUIoqNVxOSPOzFFtyAm+s=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Render the shape to the screen.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>shape</name>
+  <source>
+    <location>
+      <short-path>inherit-base-members.cpp</short-path>
+      <source-path>inherit-base-members.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>zXRFJ9s2e7uvcfIMfWpg6pzEhHw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A base shape with one operation.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <derived>6XWMjyzUIoqNVxOSPOzFFtyAm+s=</derived>
+  <record-interface>
+    <record-tranche>
+      <functions>PY4+kUotX71G+Nm6+tOdF5hmG5M=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>draw</name>
+  <source>
+    <location>
+      <short-path>inherit-base-members.cpp</short-path>
+      <source-path>inherit-base-members.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>PY4+kUotX71G+Nm6+tOdF5hmG5M=</id>
+  <extraction>regular</extraction>
+  <parent>zXRFJ9s2e7uvcfIMfWpg6pzEhHw=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Render the shape to the screen.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+</mrdocs>

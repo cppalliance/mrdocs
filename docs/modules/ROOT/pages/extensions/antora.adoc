@@ -1,0 +1,52 @@
+= Antora extensions
+
+Two Antora extensions connect the xref:page$generators/adoc.adoc[Asciidoc Generator] into an Antora build. One runs Mr.Docs as a stage inside the Antora build. The other registers the resulting Mr.Docs xref:configuration/reference.adoc#tagfile_option[tagfile], so prose on the site can link to C++ symbols.
+
+[#antora-cpp-reference-extension]
+== C++ reference extension
+
+The https://github.com/cppalliance/antora-cpp-reference-extension[C++ reference extension^] runs Mr.Docs during an Antora build and drops the generated `.adoc` files into an Antora module with its virtual filesystem. The module's name is `reference` by default and is settable per playbook or per component.
+
+Minimal playbook configuration:
+
+[source,yaml]
+----
+antora:
+  extensions:
+    - require: '@cppalliance/antora-cpp-reference-extension'
+----
+
+Navigation and cross-component xrefs resolve without post-processing. Two options worth knowing: `breadcrumbs` for the generated pages, and `version` to pin Mr.Docs to a semver range.
+
+Each component that ships a reference points at its Mr.Docs configuration in its own `antora.yml`:
+
+[source,yaml]
+----
+ext:
+  cpp-reference:
+    config: doc/mrdocs.yml
+----
+
+The https://github.com/cppalliance/antora-cpp-reference-extension#readme[README^] documents other features, such as custom module name, dependency download, `auto-base-url` detection, `skip` mode for fast iteration without a C++ toolchain.
+
+[#antora-cpp-tagfiles-extension]
+== C++ tagfiles extension
+
+The https://github.com/cppalliance/antora-cpp-tagfiles-extension[C++ tagfiles extension^] adds an Asciidoctor `cpp:` macro that resolves C++ names against a https://www.doxygen.nl/manual/external.html[Doxygen-style tagfile^] (an XML index mapping each symbol to a URL). When the reference extension is also in the playbook, it registers the tagfile from the current build automatically, so something like `+cpp:my_lib::Widget[]+` in prose links to the page Mr.Docs just generated.
+
+The extension also bundles the cppreference tagfile, so `std::*` names resolve to https://en.cppreference.com[cppreference.com^] without extra configuration. Adding more tagfiles (Boost libraries, in-house projects) extends the macro to those targets.
+
+Loading extra tagfiles for other projects:
+
+[source,yaml]
+----
+antora:
+  extensions:
+    - require: '@cppalliance/antora-cpp-tagfiles-extension'
+      cpp-tagfiles:
+        files:
+          - file: 'tagfiles/boost.tag'
+            base_url: 'https://www.boost.org/doc/libs/release/doc/html/'
+----
+
+The https://github.com/cppalliance/antora-cpp-tagfiles-extension#readme[README^] covers per-component tagfiles, `using-namespaces` directives, template parameters, nested-symbol resolution, and target-name overrides.

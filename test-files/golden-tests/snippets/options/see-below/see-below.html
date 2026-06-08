@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="netz-buffer_view">
+netz::buffer_view</h2>
+<div>
+<p>A non-owning view of a contiguous byte range.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;netz/buffer_view.hpp&gt;</code></div>
+<pre><code class="source-code cpp">class buffer_view { /* see-below */ };</code></pre>
+</div>
+<div>
+<h3>
+Description</h3>
+<p>Used as the parameter and return type for the framing helpers in <code>netz::stream</code> and as the buffer surface presented to async read handlers. Stores a pointer and a length, and does not extend the lifetime of the storage it refers to.</p>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="netz-first_packet">
+netz::first_packet</h2>
+<div>
+<p>Locate the first complete packet at the start of the buffer.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;netz/stream.hpp&gt;</code></div>
+<pre><code class="source-code cpp"><a href="#netz-buffer_view">buffer_view</a>
+first_packet(<a href="#netz-buffer_view">buffer_view</a> input);</code></pre>
+</div>
+<div>
+<h3>
+Description</h3>
+<p>Scans <code>input</code> for a frame boundary. The returned view aliases the same memory as <code>input</code>, so the storage behind <code>input</code> must outlive the returned view.</p>
+</div>
+<div>
+<h3>
+Return Value</h3>
+A view of the bytes belonging to the first packet, or an empty view if no complete packet is present yet.
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>input</strong></td>
+<td>Bytes received from the stream, up to the caller&#x27;s current fill mark.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

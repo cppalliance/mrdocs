@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>CME+vidZknihb2qZ8qBZKcVGx2k=</functions>
+    <functions>hdKXH4As4RBBV8Fm5K/8e3fSvJo=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>deprecation_notice</name>
+  <source>
+    <location>
+      <short-path>copydetails.cpp</short-path>
+      <source-path>copydetails.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>CME+vidZknihb2qZ8qBZKcVGx2k=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Emits a one-time warning to the diagnostic stream when a deprecated symbol is used. The warning includes the symbol name and the recommended replacement.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Logs a deprecation warning for the given symbol.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>name</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>info_log</name>
+  <source>
+    <location>
+      <short-path>copydetails.cpp</short-path>
+      <source-path>copydetails.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>hdKXH4As4RBBV8Fm5K/8e3fSvJo=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Emits a one-time warning to the diagnostic stream when a deprecated symbol is used. The warning includes the symbol name and the recommended replacement.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Logs an info-level message.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>msg</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

@@ -1,0 +1,30 @@
+= Commands Reference
+
+This page lists every doc-comment command MrDocs understands, grouped by category. See xref:commands/index.adoc[Documenting the Code] for an introduction.
+
+[#notation]
+== Notation
+
+The *Syntaxes* listed for each command use these conventions:
+
+`+<arg>+`:: A required argument.
+`+[arg]+`:: An optional argument.
+`+{ arg }+`:: A <<cmd-paragraph,Paragraph>> argument: free-form text that runs until a blank line or the next command.
+`+a / b+`:: A paired command with an opening (`a`) and closing (`b`) form.
+`+...+`:: A multi-line body (for example, the contents of a code or math block).
+
+[#parameter-types]
+== Parameter Types
+
+Every command argument has a *type* that determines how MrDocs parses it. When a type is itself a documentation node it links to that node's command; the remaining types are described here.
+
+[[ptype-paragraph]]<<cmd-paragraph,Paragraph>>:: Free-form text that runs until a blank line or the next command. It may contain inline markup and references, but the command itself does nothing special with it.
+[[ptype-text]]*Text*:: A span of inline text on the command's line, with no block structure.
+[[ptype-symbol]]*Symbol*:: The name of a C++ entity (a parameter, type, or symbol). MrDocs resolves and links it where it can.
+[[ptype-direction]]*Direction*:: One of `in`, `out`, or `in,out`.
+[[ptype-language]]*Language*:: A fenced-code language tag, such as `cpp`.
+[[ptype-path]]*Path*:: A file path or URL.
+[[ptype-math]]*Math*:: A LaTeX math expression.
+[[ptype-code]]*Code*:: Verbatim source lines, reproduced without markup processing.
+
+include::partial$commands/groups/reference.adoc[]

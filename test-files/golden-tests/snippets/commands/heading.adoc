@@ -1,0 +1,23 @@
+= Reference
+:mrdocs:
+
+[#config]
+== config
+
+A configuration record&period;
+
+=== Synopsis
+
+Declared in `&lt;heading&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct config;
+----
+
+=== Thread safety
+
+Instances are immutable after construction and may be shared across threads without locking&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#lib-run]
+== lib::run
+
+The library&apos;s only public entry point&period;
+
+=== Synopsis
+
+Declared in `&lt;include&hyphen;symbols&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+run();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,43 @@
+= Reference
+:mrdocs:
+
+[#average]
+== average
+
+Computes the average of two values&period;
+
+=== Synopsis
+
+Declared in `&lt;see&hyphen;also&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+average(
+    double a,
+    double b);
+----
+
+=== See Also
+
+link:#sum[`sum`]
+
+[#sum]
+== sum
+
+Computes the sum of two values&period;
+
+=== Synopsis
+
+Declared in `&lt;see&hyphen;also&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+sum(
+    double a,
+    double b);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

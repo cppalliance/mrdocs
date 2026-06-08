@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#lookup]
+== lookup
+
+Looks up a configuration value by key&period;
+
+=== Synopsis
+
+Declared in `&lt;returns&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const*
+lookup(char const* key);
+----
+
+=== Return Value
+
+The value associated with the key, or `nullptr` when no such key exists&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,74 @@
+= Reference
+:mrdocs:
+
+[#status]
+== status
+
+Status of a network operation&period;
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum class status : int;
+----
+
+=== Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#status-ok[`ok`] 
+| Operation succeeded&period;
+| link:#status-timeout[`timeout`] 
+| Operation timed out&period;
+| link:#status-error[`error`] 
+| Operation failed for another reason&period;
+|===
+
+[#status-ok]
+== link:#status[status]::ok
+
+Operation succeeded&period;
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+ok
+----
+
+[#status-timeout]
+== link:#status[status]::timeout
+
+Operation timed out&period;
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+timeout
+----
+
+[#status-error]
+== link:#status[status]::error
+
+Operation failed for another reason&period;
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+error
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

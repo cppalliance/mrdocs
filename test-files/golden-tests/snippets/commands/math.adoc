@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#circle_area]
+== circle&lowbar;area
+
+Computes the area of a circle&colon; _A &equals;  r&circ;2_&period;
+
+=== Synopsis
+
+Declared in `&lt;math&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+circle&lowbar;area(double r);
+----
+
+=== Description
+
+For very large radii the result is taken modulo floating&hyphen;point precision&colon; _A&lowbar;&lcub;approx&rcub; &equals;  r&circ;2 &plus;_
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

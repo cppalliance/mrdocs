@@ -1,0 +1,5 @@
+missing-include-shims:
+  "llvm/ADT/StringRef.h": |
+    namespace llvm { class StringRef; }
+  "boost/version.hpp": |
+    #define BOOST_VERSION 108400

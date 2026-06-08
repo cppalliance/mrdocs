@@ -1,0 +1,57 @@
+= AsciiDoc
+
+The `adoc` generator emits https://asciidoc.org/[AsciiDoc^] files, the source format https://antora.org/[Antora^] and most other AsciiDoc tooling consume. Pick it explicitly through the xref:configuration/reference.adoc#generator_option[`generator`] option:
+
+[source,yaml]
+----
+generator: adoc
+----
+
+This is the format Mr.Docs uses to build its own documentation site, and it's the recommended choice when the reference is folded into a larger Antora component (or any pipeline that already consumes AsciiDoc).
+
+== Output layout
+
+In the default xref:configuration/reference.adoc#multipage_option[`multipage`] mode, every symbol gets its own `.adoc` file under the xref:configuration/reference.adoc#output_option[output directory], mirroring its parent-context tree (the namespace, class, or class template each symbol is declared inside). The top-level `index.adoc` is the page for the global namespace; set xref:configuration/reference.adoc#global-namespace-index_option[`global-namespace-index`] to `true` to make that page also serve as a project-wide table of contents.
+
+[source,text]
+----
+output/
+  index.adoc
+  logr/
+    log/
+      scoped_context.adoc
+  ...
+----
+
+Set `multipage: false` to emit a single AsciiDoc file that contains the whole corpus. The file is written to whatever path the xref:configuration/reference.adoc#output_option[`output`] option points at (interpreted as a file path rather than a directory in that mode). This is convenient when the rest of the site is a single page or when piping into a one-shot converter.
+
+For inclusion in an outer AsciiDoc document, set xref:configuration/reference.adoc#embedded_option[`embedded`] to `true`; it strips the doctitle so an outer page can pull the file in with an `include::` directive without colliding with its own title.
+
+== Antora integration
+
+Two Antora extensions, maintained alongside Mr.Docs, make the AsciiDoc output a first-class part of an Antora site:
+
+xref:extensions/antora.adoc#antora-cpp-reference-extension[`antora-cpp-reference-extension`]::
+Runs Mr.Docs during the Antora build, drops the content of generated `.adoc` files into a module in the virtual Antora filesystem (`reference` by default), and stitches them into the site. The build-time glue: "Mr.Docs writes AsciiDoc to a directory" becomes "Mr.Docs is a stage in our Antora build", no handwritten scripts in between.
+
+xref:extensions/antora.adoc#antora-cpp-tagfiles-extension[`antora-cpp-tagfiles-extension`]::
+Reads tagfiles Mr.Docs writes alongside the rendered pages and registers an Asciidoctor `cpp:` macro. With both extensions in the same playbook, the wiring is automatic: something like `+cpp:my_lib::Widget[]+` anywhere in the prose resolves to the symbol page Mr.Docs just generated in this build. Additional tagfiles (the bundled cppreference one, Boost, anyone else's) extend the macro's reach to external projects.
+
+== Stylesheet options
+
+The `adoc` generator does not ship its own CSS. Three of the stylesheet options surface in the output anyway, by emitting AsciiDoc attributes at the top of each generated `.adoc` file that Asciidoctor reads when it converts the file to HTML on its own (Antora ignores them because it owns its own UI bundle):
+
+xref:configuration/reference.adoc#stylesheets_option[`stylesheets`]::
+Each entry is emitted as a `:stylesheet:` attribute. Asciidoctor honours the last `:stylesheet:` it sees, so the order matters when more than one is listed.
+
+xref:configuration/reference.adoc#stylesdir_option[`stylesdir`]::
+Emitted as the `:stylesdir:` attribute, the base directory Asciidoctor joins with the stylesheet path before resolving the link.
+
+xref:configuration/reference.adoc#linkcss_option[`linkcss`]::
+When `true`, emitted as `:linkcss:`. Asciidoctor produces a `<link>` reference to the stylesheet in the rendered HTML instead of inlining the CSS.
+
+The xref:configuration/reference.adoc#no-default-styles_option[`no-default-styles`] and xref:configuration/reference.adoc#copycss_option[`copycss`] options are HTML-generator concerns: the adoc generator has no default stylesheet to suppress, and the copy-CSS step belongs to Asciidoctor's HTML conversion rather than to Mr.Docs. Set them for the `html` generator path only.
+
+== Customizing the markup
+
+The pages themselves come from xref:extensions/handlebars-extensions.adoc[Handlebars templates] under `<mrdocs-root>/share/mrdocs/addons/generator/adoc/`. Override a single partial via xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] to tweak the output without copying the whole tree. The data the templates see is documented in the xref:extensions/dom-reference.adoc[DOM reference].

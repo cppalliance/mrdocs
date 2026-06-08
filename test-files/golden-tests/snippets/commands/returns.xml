@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>K6HDbxUD4+8vUS8mgDhA4dwsfL0=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>lookup</name>
+  <source>
+    <location>
+      <short-path>returns.cpp</short-path>
+      <source-path>returns.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>K6HDbxUD4+8vUS8mgDhA4dwsfL0=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Looks up a configuration value by key.</literal>
+      </text>
+    </brief>
+    <returns>
+      <kind>returns</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The value associated with the key, or </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>nullptr</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> when no such key exists.</literal>
+      </text>
+    </returns>
+  </doc-comment>
+  <pointer>
+    <named>
+      <is-const>1</is-const>
+      <name>
+        <kind>identifier</kind>
+        <identifier>char</identifier>
+      </name>
+    </named>
+  </pointer>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>key</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

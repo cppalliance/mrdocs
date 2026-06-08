@@ -1,0 +1,6 @@
+# Per-pattern build outputs and rendered documentation
+*/build/
+*/docs/reference-output/
+
+# clangd index
+*/.cache/

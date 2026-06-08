@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>y7xkLA97sKMumR7qcex5x/ika4M=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>lib</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>5</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>namespace</kind>
+  <id>y7xkLA97sKMumR7qcex5x/ika4M=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <paragraph>
+      <kind>paragraph</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Holds the entry points the documentation calls out and a few helpers consumed by the rest of the project.</literal>
+      </text>
+    </paragraph>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A tiny example library.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <namespace-tranche>
+    <functions>oinHAiCRt7QGfbwTU9lqJXi2WWE=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>run</name>
+  <source>
+    <location>
+      <short-path>show-namespaces.cpp</short-path>
+      <source-path>show-namespaces.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>oinHAiCRt7QGfbwTU9lqJXi2WWE=</id>
+  <extraction>regular</extraction>
+  <parent>y7xkLA97sKMumR7qcex5x/ika4M=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A function inside </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>lib</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal>. With </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>show-namespaces: true</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> the namespace appears in the rendered output as a dedicated entry; with </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>false</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> the namespace is flattened into the parent.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

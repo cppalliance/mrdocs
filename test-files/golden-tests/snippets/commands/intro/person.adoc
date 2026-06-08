@@ -1,0 +1,101 @@
+= Reference
+:mrdocs:
+
+[#person]
+== person
+
+The main information about a person
+
+=== Synopsis
+
+Declared in `&lt;person&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct person;
+----
+
+=== Description
+
+This class represents a person with a name and an age&period; This is the information about a person that we need to store in our system&period;
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#person-age[`age`] 
+| The person&apos;s age in years&period;
+| link:#person-name[`name`] 
+| The person&apos;s full name&period;
+|===
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#greet[`greet`]
+| A function to greet a person
+|===
+
+[#person-age]
+== link:#person[person]::age
+
+The person&apos;s age in years&period;
+
+=== Synopsis
+
+Declared in `&lt;person&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int age;
+----
+
+[#person-name]
+== link:#person[person]::name
+
+The person&apos;s full name&period;
+
+=== Synopsis
+
+Declared in `&lt;person&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const* name;
+----
+
+[#greet]
+== greet
+
+A function to greet a person
+
+=== Synopsis
+
+Declared in `&lt;person&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+greet(link:#person[person] const& p);
+----
+
+=== Description
+
+This function takes a person and prints a greeting message&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *p*
+| The person to greet
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,69 @@
+= Inline Commands
+
+An inline command works inside a sentence. Most shape a run of text, such as emphasis or a code span; the rest build links, cross-references, or pull documentation in from another symbol.
+
+== Text formatting
+
+MrDocs reads the usual Markdown spans, with Doxygen and HTML equivalents alongside them:
+
+* xref:commands/reference.adoc#cmd-emphasis[Emphasis]: `+*text*+` or `+_text_+`.
+* xref:commands/reference.adoc#cmd-strong[Strong]: `+**text**+` or `+__text__+`.
+* xref:commands/reference.adoc#cmd-code-span[Code span]: `+`text`+`.
+* xref:commands/reference.adoc#cmd-strikethrough[Strikethrough]: `+~~text~~+`.
+* xref:commands/reference.adoc#cmd-highlight[Highlight]: `+==text==+`.
+
+.Text formatting
+[source,cpp]
+----
+include::example$snippets/commands/text-formatting.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/text-formatting.adoc[tags=!footer]
+========
+
+== Links
+
+A xref:commands/reference.adoc#cmd-link[link] uses the Markdown form `+[text](url)+`, with the HTML `<a>` form available too.
+
+.Links
+[source,cpp]
+----
+include::example$snippets/commands/link.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/link.adoc[tags=!footer]
+========
+
+== Cross-references
+
+xref:commands/reference.adoc#cmd-cross-reference[`@ref`] links to another symbol by its qualified name; MrDocs resolves it against the corpus and emits a working link. This is the command to reach for whenever one symbol's documentation should point at another.
+
+.Cross-references
+[source,cpp]
+----
+include::example$snippets/commands/cross-reference.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/cross-reference.adoc[tags=!footer]
+========
+
+== Copying documentation
+
+When two symbols share documentation, xref:commands/reference.adoc#cmd-copy[`@copydoc`] copies the whole comment from another symbol; `@copybrief` and `@copydetails` copy just the brief or just the description. This keeps overloads and wrappers in step with a single source of truth.
+
+.Copying documentation
+[source,cpp]
+----
+include::example$snippets/commands/copydoc.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/copydoc.adoc[tags=!footer]
+========

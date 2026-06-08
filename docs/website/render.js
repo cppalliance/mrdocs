@@ -13,6 +13,7 @@ const hljs = require('highlight.js/lib/core');
 hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
 const fs = require('fs');
+const os = require('os');
 const assert = require('assert');
 const path = require('path');
 const {execSync} = require('child_process');
@@ -61,8 +62,13 @@ if (!fs.existsSync(mrdocsExecutable)) {
     process.exit(1);
 }
 
-// Read panel snippet files and create documentation
-const absSnippetsDir = path.join(__dirname, 'snippets')
+// Read panel snippet files and create documentation. The default
+// location is the golden-tests snippets directory, so the landing
+// page reuses the same sources the test suite already covers.
+// Override with SNIPPETS_PATH to point at a different snippet root.
+const absSnippetsDir = process.env.SNIPPETS_PATH
+    ? path.resolve(process.env.SNIPPETS_PATH)
+    : path.resolve(__dirname, '..', '..', 'test-files', 'golden-tests', 'snippets')
 for (let panel of data.panels) {
     console.log(`Generating documentation for panel ${panel.source}`)
 
@@ -72,24 +78,18 @@ for (let panel of data.panels) {
     assert(fs.existsSync(sourcePath))
     const sourceBasename = path.basename(sourcePath, path.extname(sourcePath))
 
-    // Create a CMakeLists.txt file for the snippet
-    const cmakeListsPath = path.join(absSnippetsDir, 'CMakeLists.txt')
-    const cmakeListsContent = `
-cmake_minimum_required(VERSION 3.13)
-project(${sourceBasename})
-add_executable(${sourceBasename} ${panel.source})
-target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
-`;
-    fs.writeFileSync(cmakeListsPath, cmakeListsContent)
-
-    // Run mrdocs to generate documentation
+    // Run mrdocs in header-scan mode: no compilation database, the
+    // config points `input` at the snippets directory, `file-patterns`
+    // narrows the scan to this panel's source file, and `recursive`
+    // is off so we never pick up identically named files in nested
+    // golden-test subdirectories.
     const mrdocsConfig = path.join(absSnippetsDir, 'mrdocs.yml')
-    const mrdocsInput = cmakeListsPath
-    const mrdocsOutput = path.join(absSnippetsDir, 'output', 'reference.html')
+    const mrdocsOutput = path.join(os.tmpdir(), `mrdocs-website-${sourceBasename}.html`)
     const args = [
         mrdocsExecutable,
         `--config=${mrdocsConfig}`,
-        mrdocsInput,
+        `--file-patterns=${panel.source}`,
+        '--recursive=false',
         `--output=${mrdocsOutput}`,
         '--multipage=false',
         '--generator=html',
@@ -118,9 +118,8 @@ target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
     const snippetContents = fs.readFileSync(sourcePath, 'utf8');
     panel.snippet = hljs.highlight(snippetContents, {language: 'cpp'}).value;
 
-    // Delete these temporary files
+    // Delete the temporary output file
     fs.unlinkSync(mrdocsOutput);
-    fs.unlinkSync(cmakeListsPath);
 
     console.log(`Documentation generated successfully for panel ${panel.source}`)
     console.log(`====================================`)

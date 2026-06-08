@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>ISUHvaUKs8cDlb16bkwwPMFM2fE=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>cli</name>
+  <source>
+    <location>
+      <short-path>cli/parse.hpp</short-path>
+      <source-path>include/cli/parse.hpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>namespace</kind>
+  <id>ISUHvaUKs8cDlb16bkwwPMFM2fE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <functions>RZc5RnjC8A2SWydYYBW/TMo2c+M=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>parse</name>
+  <source>
+    <location>
+      <short-path>cli/parse.hpp</short-path>
+      <source-path>include/cli/parse.hpp</source-path>
+      <line-number>6</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>RZc5RnjC8A2SWydYYBW/TMo2c+M=</id>
+  <extraction>regular</extraction>
+  <parent>ISUHvaUKs8cDlb16bkwwPMFM2fE=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Parses command-line arguments into an option set.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>argc</name>
+  </param>
+  <param>
+    <pointer>
+      <pointer>
+        <named>
+          <name>
+            <kind>identifier</kind>
+            <identifier>char</identifier>
+          </name>
+        </named>
+      </pointer>
+    </pointer>
+    <name>argv</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

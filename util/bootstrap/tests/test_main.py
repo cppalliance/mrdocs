@@ -121,15 +121,24 @@ class TestBuildArgParser(unittest.TestCase):
         self.assertEqual(args.env_file, "/tmp/env")
 
     def test_run_config_options(self):
-        """--generate-run-configs and --no-run-configs should toggle the same dest."""
-        args1 = self.parser.parse_args(["--generate-run-configs"])
+        """--no-run-configs flips the default-on `generate_run_configs` off.
+
+        There is intentionally no affirmative `--generate-run-configs`:
+        the default is already True, so an explicit "yes" flag would
+        only reassert the default and add noise to `--help`.
+        """
+        args1 = self.parser.parse_args([])
         self.assertTrue(args1.generate_run_configs)
         args2 = self.parser.parse_args(["--no-run-configs"])
         self.assertFalse(args2.generate_run_configs)
 
     def test_build_tests_toggle(self):
-        """--build-tests and --no-build-tests should toggle."""
-        args1 = self.parser.parse_args(["--build-tests"])
+        """--no-build-tests flips the default-on `build_tests` off.
+
+        Same reasoning as `test_run_config_options`: only the negative
+        form exists because the default is already True.
+        """
+        args1 = self.parser.parse_args([])
         self.assertTrue(args1.build_tests)
         args2 = self.parser.parse_args(["--no-build-tests"])
         self.assertFalse(args2.build_tests)

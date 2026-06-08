@@ -1,0 +1,55 @@
+= Reference
+:mrdocs:
+
+[#resample]
+== resample
+
+Resamples an audio signal to a new sample rate&period;
+
+=== Synopsis
+
+Declared in `&lt;resample&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class Sample&gt;
+unsigned int
+resample(
+    Sample const* in,
+    unsigned int count,
+    double ratio,
+    Sample* out);
+----
+
+=== Return Value
+
+The number of samples written to `out`&period;
+
+=== Template Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *Sample*
+| The sample type, usually `float` or `short`&period;
+|===
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *in* [in]
+| The input samples&period;
+| *count* [in]
+| Number of input samples&period;
+| *ratio* [in]
+| Output rate divided by input rate&period;
+| *out* [out]
+| Buffer that receives the resampled signal&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,35 @@
+= Reference
+:mrdocs:
+
+[#httpd-start]
+== httpd::start
+
+Start the HTTP server on `port`&period;
+
+=== Synopsis
+
+Declared in `&lt;httpd&sol;server&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+start(int port);
+----
+
+[#httpd-stop]
+== httpd::stop
+
+Stop the running server&period;
+
+=== Synopsis
+
+Declared in `&lt;httpd&sol;server&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+stop();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

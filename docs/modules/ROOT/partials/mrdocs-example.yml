@@ -1,3 +1,17 @@
-source-root: ../include
-multipage: false
+## Where the documented code lives. Usually the repository root,
+## not the `include/` subdirectory: a header that pulls in a sibling
+## `src/foo.hpp` only resolves when both folders are below the root.
+source-root: ..
+
+## How MrDocs gets the right compile flags for the source files.
+## The simplest option: point at a `compile_commands.json` already
+## produced by CMake or another build system. The Inputs page
+## covers the alternatives (running CMake from MrDocs, or letting
+## MrDocs aggregate every public header for a header-only project).
+compilation-database: ../build/compile_commands.json
+
+## Output format and shape. `adoc` produces AsciiDoc the Antora
+## pipeline can pick up; `multipage: false` keeps everything in
+## one file.
 generator: adoc
+multipage: false

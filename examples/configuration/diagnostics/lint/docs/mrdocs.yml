@@ -1,0 +1,8 @@
+source-root: ..
+input:
+  - ../include
+warnings: true
+warn-if-undocumented: true
+warn-if-doc-error: true
+warn-broken-ref: true
+warn-as-error: false

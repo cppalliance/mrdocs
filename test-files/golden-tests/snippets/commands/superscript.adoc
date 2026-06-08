@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#power_of_two]
+== power&lowbar;of&lowbar;two
+
+Computes 2&circ;n&circ; in constant time&period;
+
+=== Synopsis
+
+Declared in `&lt;superscript&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned int
+power&lowbar;of&lowbar;two(unsigned int n);
+----
+
+=== Description
+
+Returns 1 when `n` is zero&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

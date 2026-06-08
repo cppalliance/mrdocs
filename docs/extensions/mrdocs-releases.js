@@ -161,6 +161,20 @@ module.exports = function (registry) {
             }
             const releases = JSON.parse(releasesResponse)
 
+            // Each install page is rendered once per component version.
+            // Show only the release whose tag matches that version, so
+            // v0.0.5's page shows v0.0.5 and develop's page shows none
+            // (develop is a branch, not a release). If no release matches,
+            // emit nothing so the page doesn't carry an empty table.
+            const pageVersion = parent.getDocument().getAttribute(
+                'page-component-version')
+            const matchingReleases = releases.filter((r) =>
+                r.name !== 'llvm-package'
+                && (!pageVersion || r.name === pageVersion))
+            if (matchingReleases.length === 0) {
+                return self.parseContent(parent, '')
+            }
+
             // Create table
             const apple_icon = `image:https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/apple.svg[Apple Releases,width=16,height=16]`
             const linux_icon = `image:https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/linux.svg[Linux Releases,width=16,height=16]`
@@ -170,9 +184,8 @@ module.exports = function (registry) {
             let text = '|===\n'
             text += `|          3+| ${windows_icon} Windows                 2+| ${linux_icon} Linux               2+| ${apple_icon} macOS                \n`
             text += `| Release    | ${package_icon} 7z   | ${package_icon} msi  | ${package_icon} zip  | ${package_icon} tar.xz  | ${package_icon} tar.gz  | ${package_icon} tar.xz  | ${package_icon} tar.gz  \n`
-            releases.sort((a, b) => getReleaseDate(b) - getReleaseDate(a));
-            for (const release of releases) {
-                if (release.name === 'llvm-package') continue
+            matchingReleases.sort((a, b) => getReleaseDate(b) - getReleaseDate(a));
+            for (const release of matchingReleases) {
                 const date = getReleaseDate(release)
                 text += `| ${release.html_url}[${release.name},window=_blank]\n\n${humanizeDate(date)} `
                 const assetSuffixes = ['win64.7z', 'win64.msi', 'win64.zip', 'Linux.tar.xz', 'Linux.tar.gz', 'Darwin.tar.xz', 'Darwin.tar.gz']

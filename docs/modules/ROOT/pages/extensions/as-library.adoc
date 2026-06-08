@@ -1,0 +1,98 @@
+= Mr.Docs as a Library
+:url-library: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/library
+:url-clang-tooling: https://clang.llvm.org/docs/LibTooling.html
+
+A {cpp} program can also link the cpp:mrdocs[mrdocs-core] library, drive corpus extraction itself, and pass the resulting cpp:Corpus[] to its own analysis. This is the alternative to use when the scripting extensions are not powerful enough, such as processing multiple codebases at once, embedding Mr.Docs's extractor in another {cpp} host (IDE plugin, static analyzer), or writing a custom cpp:Generator[]s with non-trivial {cpp} logic that depend on special system libraries.
+
+== Build integration
+
+cpp:mrdocs[mrdocs-core] is exported through a CMake package config:
+
+[source,cmake]
+----
+find_package(mrdocs REQUIRED CONFIG)
+add_executable(my_tool main.cpp)
+target_link_libraries(my_tool PRIVATE mrdocs::mrdocs-core)
+target_compile_features(my_tool PRIVATE cxx_std_23)
+----
+
+== Building a corpus
+
+The xref:reference:index.adoc[Library Reference] for `mrdocs-core` covers the public API for extracting and processing a corpus. A consumer typically drives extraction with:
+
+. Read an `mrdocs.yml` into a fully validated cpp:Config[].
+. Call cpp:Corpus::build[] with the resulting config.
+
+The compilation database is resolved from the configuration with the same rules Mr.Docs uses. LLVM and Clang are never exposed to the caller.
+
+The {url-library}/breaking-changes[`breaking-changes`^] example packages those steps in one helper:
+
+.`examples/library/breaking-changes/src/Corpus.cpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/src/Corpus.cpp[tag=load-corpus]
+----
+
+== Reading a corpus
+
+A cpp:Corpus[] is iterable and looks up symbols by name. The breaking-changes example walks the baseline corpus once, asks the candidate corpus for the matching symbol with cpp:Corpus::lookup[], and classifies each pair:
+
+- Symbols in v1 that are missing from v2 are *removed*;
+- the reverse are *added*;
+- same-name same-kind pairs go to a kind-specific comparator.
+
+.`examples/library/breaking-changes/src/Diff.cpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/src/Diff.cpp[tag=diff]
+----
+
+== Custom Generators
+
+You can subclass cpp:Generator[] to create new output formats that need to do something script generators cannot express, such as comparing multiple corpora, multi-pass analyzes, emitting binary formats, depending on system libraries. cpp:Generator::build[] writes the format to disk for the multi-file case, and cpp:Generator::buildOne[] is used for single-page output.
+
+The example's `BreakingChangesGenerator` holds a reference to the baseline corpus and runs the diff against whatever candidate corpus cpp:Generator::buildOne[] is invoked with:
+
+.`examples/library/breaking-changes/src/BreakingChangesGenerator.hpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/src/BreakingChangesGenerator.hpp[tag=generator-class]
+----
+
+The body of cpp:Generator::buildOne[] is short, the heavy lifting is the diff and the formatter:
+
+.`examples/library/breaking-changes/src/BreakingChangesGenerator.cpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/src/BreakingChangesGenerator.cpp[tag=build-one]
+----
+
+The example ships two test fixtures, each its own directory with an `mrdocs.yml` and a single `lib.cpp` that stands in for a small library:
+
+[tabs]
+======
+v1::
++
+.`examples/library/breaking-changes/test/v1/lib.cpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/test/v1/lib.cpp[]
+----
+
+v2::
++
+.`examples/library/breaking-changes/test/v2/lib.cpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/test/v2/lib.cpp[]
+----
+======
+
+Running the tool against those two fixtures produces the report through the generator's cpp:Generator::buildOne[]:
+
+.`examples/library/breaking-changes/test/expected.txt`
+[source,text]
+----
+include::example$examples/library/breaking-changes/test/expected.txt[]
+----
+

@@ -102,6 +102,7 @@ MrDocs uses the latter, as it provides full control over the AST traversal proce
 
 In LibTooling, once we have a <<compilation_database>>, we can create a `ClangTool` object to run the Clang frontend on a set of source files.
 
+.Driving the Clang AST from LibTooling
 [source,c++]
 ----
 clang::tooling::ClangTool Tool(compilationDatabase, sourceFiles);

@@ -1,0 +1,6 @@
+# tag::test-only[]
+includes:
+  - include
+# end::test-only[]
+exclude-patterns:
+  - '**/_generated/**'

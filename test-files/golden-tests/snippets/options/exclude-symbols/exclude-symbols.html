@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="jzon-validate">
+jzon::validate</h2>
+<div>
+<p>Validate that the document is well-formed JSON.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;jzon/parser.hpp&gt;</code></div>
+<pre><code class="source-code cpp">bool
+validate(char const* source);</code></pre>
+</div>
+<div>
+<h3>
+Description</h3>
+<p>Parses <code>source</code> without constructing a value tree, reporting only whether the input conforms to RFC 8259. Comments and trailing commas are rejected.</p>
+</div>
+<div>
+<h3>
+Return Value</h3>
+<code>true</code> if the document is syntactically valid JSON, <code>false</code> if any syntactic error is encountered.
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>source</strong></td>
+<td>A null-terminated UTF-8 JSON document.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

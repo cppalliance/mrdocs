@@ -110,7 +110,10 @@
   --example-border-color: var(--color-gray-70);
   --kbd-background: var(--panel-background);
   --kbd-border-color: var(--color-gray-10);
-  --pre-background: rgb(40, 44, 52);
+  /* GitHub Dark Dimmed canvas — slightly lighter than the standard
+   * Dark theme's near-black `#0d1117`, sits comfortably next to the
+   * page surface rather than fighting it. */
+  --pre-background: #202329;
   --pre-border-color: var(--panel-border-color);
   --pre-annotation-font-color: var(--color-gray-50);
   --quote-background: var(--panel-background);

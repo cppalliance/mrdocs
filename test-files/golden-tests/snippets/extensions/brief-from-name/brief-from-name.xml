@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>Wge37qnPEuTAAUZ7DaSX3goyC3w=</functions>
+    <functions>AFkC3lmu1wK3jIdSfD0b/IE3ooU=</functions>
+    <functions>A9BI8FBri/2GDsQPj8QYqXRq1HA=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>is_empty</name>
+  <source>
+    <location>
+      <short-path>brief-from-name.cpp</short-path>
+      <source-path>brief-from-name.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>Wge37qnPEuTAAUZ7DaSX3goyC3w=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns true if empty.</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The input examined for the empty property.</literal>
+      </text>
+      <name>s</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>s</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>is_palindrome</name>
+  <source>
+    <location>
+      <short-path>brief-from-name.cpp</short-path>
+      <source-path>brief-from-name.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>AFkC3lmu1wK3jIdSfD0b/IE3ooU=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns true if palindrome.</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The input examined for the palindrome property.</literal>
+      </text>
+      <name>s</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>s</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>is_prime</name>
+  <source>
+    <location>
+      <short-path>brief-from-name.cpp</short-path>
+      <source-path>brief-from-name.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>A9BI8FBri/2GDsQPj8QYqXRq1HA=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Returns true if prime.</literal>
+      </text>
+    </brief>
+    <param>
+      <kind>param</kind>
+      <text>
+        <kind>text</kind>
+        <literal>The input examined for the prime property.</literal>
+      </text>
+      <name>n</name>
+    </param>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>bool</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>int</identifier>
+      </name>
+    </named>
+    <name>n</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

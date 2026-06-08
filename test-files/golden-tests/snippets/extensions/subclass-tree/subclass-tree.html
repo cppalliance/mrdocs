@@ -1,0 +1,255 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="Circle">
+Circle</h2>
+<div>
+<p>A round shape.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;subclass-tree.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct Circle
+    : <a href="#Shape">Shape</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#Shape">Shape</a></code></td><td>The root of the shape hierarchy.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="Polygon">
+Polygon</h2>
+<div>
+<p>A shape with straight sides.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;subclass-tree.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct Polygon
+    : <a href="#Shape">Shape</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#Shape">Shape</a></code></td><td>The root of the shape hierarchy.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<div>
+<h2>
+Derived Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#Quadrilateral"><code>Quadrilateral</code></a>
+    </td><td>A four-sided polygon.</td></tr>
+<tr><td><a href="#Triangle"><code>Triangle</code></a>
+    </td><td>A three-sided polygon.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Quadrilateral">
+Quadrilateral</h2>
+<div>
+<p>A four-sided polygon.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;subclass-tree.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct Quadrilateral
+    : <a href="#Polygon">Polygon</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#Polygon">Polygon</a></code></td><td>A shape with straight sides.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<div>
+<h2>
+Derived Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#Square"><code>Square</code></a>
+    </td><td>A quadrilateral with equal sides.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Shape">
+Shape</h2>
+<div>
+<p>The root of the shape hierarchy.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;subclass-tree.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct Shape;</code></pre>
+</div>
+
+
+<div>
+<h2>
+Derived Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#Circle"><code>Circle</code></a>
+    </td><td>A round shape.</td></tr>
+<tr><td><a href="#Polygon"><code>Polygon</code></a>
+    </td><td>A shape with straight sides.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Square">
+Square</h2>
+<div>
+<p>A quadrilateral with equal sides.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;subclass-tree.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct Square
+    : <a href="#Quadrilateral">Quadrilateral</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#Quadrilateral">Quadrilateral</a></code></td><td>A four-sided polygon.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="Triangle">
+Triangle</h2>
+<div>
+<p>A three-sided polygon.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;subclass-tree.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct Triangle
+    : <a href="#Polygon">Polygon</a></code></pre>
+</div>
+<div>
+<h2>
+Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#Polygon">Polygon</a></code></td><td>A shape with straight sides.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

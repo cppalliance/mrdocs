@@ -1,0 +1,43 @@
+= Reference
+:mrdocs:
+
+[#deprecation_notice]
+== deprecation&lowbar;notice
+
+Logs a deprecation warning for the given symbol&period;
+
+=== Synopsis
+
+Declared in `&lt;copydetails&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+deprecation&lowbar;notice(char const* name);
+----
+
+=== Description
+
+Emits a one&hyphen;time warning to the diagnostic stream when a deprecated symbol is used&period; The warning includes the symbol name and the recommended replacement&period;
+
+[#info_log]
+== info&lowbar;log
+
+Logs an info&hyphen;level message&period;
+
+=== Synopsis
+
+Declared in `&lt;copydetails&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+info&lowbar;log(char const* msg);
+----
+
+=== Description
+
+Emits a one&hyphen;time warning to the diagnostic stream when a deprecated symbol is used&period; The warning includes the symbol name and the recommended replacement&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

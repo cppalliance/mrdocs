@@ -1,0 +1,47 @@
+= Reference
+:mrdocs:
+
+[#fast_hash]
+== fast&lowbar;hash
+
+A fast hash function over byte sequences&period;
+
+=== Synopsis
+
+Declared in `&lt;copybrief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned int
+fast&lowbar;hash(
+    char const* bytes,
+    unsigned int n);
+----
+
+=== Description
+
+Suitable for hash tables but not for cryptographic use&period;
+
+[#fast_hash_v2]
+== fast&lowbar;hash&lowbar;v2
+
+A fast hash function over byte sequences&period;
+
+=== Synopsis
+
+Declared in `&lt;copybrief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned int
+fast&lowbar;hash&lowbar;v2(
+    char const* bytes,
+    unsigned int n);
+----
+
+=== Description
+
+This implementation uses a wider accumulator and is measurably faster on long inputs&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

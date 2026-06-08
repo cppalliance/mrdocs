@@ -1,0 +1,33 @@
+= Reference
+:mrdocs:
+
+[#parse_status]
+== parse&lowbar;status
+
+Returns a status code describing the result of `parse`&period;
+
+=== Synopsis
+
+Declared in `&lt;table&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+parse&lowbar;status();
+----
+
+=== Description
+
+[%header]
+|===
+| Code | Meaning 
+| 0 | Success 
+| 1 | Syntax error 
+| 2 | I&sol;O error 
+|===
+=== Return Value
+
+a status code describing the result of `parse`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

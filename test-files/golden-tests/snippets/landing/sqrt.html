@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="sqrt">
+sqrt</h2>
+<div>
+<p>Compute the integer square root.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;sqrt.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;typename T&gt;
+[[nodiscard]]
+constexpr
+T
+sqrt(T value) noexcept
+requires std::is_integral_v&lt;T&gt;;</code></pre>
+</div>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>This function is defined as an <a href="https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects">Algorithm Function Object (AFO)</a>.</p>
+</div>
+</div>
+<div>
+<h3>
+Description</h3>
+<p>Returns the integer square root of <code>value</code> via bit manipulation.</p>
+<h2>
+Complexity</h2>
+<p>Logarithmic in <code>value</code>.</p>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>Returns zero for zero input.</p>
+</div>
+</div></div>
+<div>
+<h3>
+Return Value</h3>
+The integer square root of <code>value</code>.
+</div>
+<div>
+<h3>
+Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td>An integral type.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td>The integral value, which must be non-negative.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+Preconditions</h3>
+<ul>
+<li><code>value &gt;&#x3D; 0</code>.</li>
+</ul>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

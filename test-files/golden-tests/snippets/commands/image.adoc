@@ -1,0 +1,25 @@
+= Reference
+:mrdocs:
+
+[#status_widget]
+== status&lowbar;widget
+
+A widget showing a status indicator&period;
+
+=== Synopsis
+
+Declared in `&lt;image&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct status&lowbar;widget;
+----
+
+=== Description
+
+Markdown image&colon;
+
+HTML image&colon;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

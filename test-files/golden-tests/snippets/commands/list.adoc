@@ -1,0 +1,28 @@
+= Reference
+:mrdocs:
+
+[#connect]
+== connect
+
+Initializes the connection&period;
+
+=== Synopsis
+
+Declared in `&lt;list&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+connect();
+----
+
+=== Description
+
+The function performs three steps in order&colon;
+
+* Allocates the socket&period;
+* Performs the handshake&period;
+* Caches the credentials&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

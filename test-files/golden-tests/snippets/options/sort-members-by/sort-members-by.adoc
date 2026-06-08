@@ -1,0 +1,77 @@
+= Reference
+:mrdocs:
+
+[#widget]
+== widget
+
+Order members alphabetically by name (instead of the default declaration order)&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-hide[`hide`] 
+| Hide the widget&period;
+| link:#widget-refresh[`refresh`] 
+| Refresh the widget&period;
+| link:#widget-show[`show`] 
+| Show the widget&period;
+|===
+
+[#widget-hide]
+== link:#widget[widget]::hide
+
+Hide the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+hide();
+----
+
+[#widget-refresh]
+== link:#widget[widget]::refresh
+
+Refresh the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+refresh();
+----
+
+[#widget-show]
+== link:#widget[widget]::show
+
+Show the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+show();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,192 @@
+= Handlebars Extensions
+:page-aliases: extensions/handlebars-helpers.adoc, extensions/handlebars-templates.adoc
+
+
+Mr.Docs renders the documentation for the xref:generators/html.adoc[`html`] and xref:generators/adoc.adoc[`adoc`] generators from a tree of https://handlebarsjs.com/[Handlebars^] templates that ship under `<mrdocs-root>/share/mrdocs/addons/generator/<generator-name>`.
+
+[source,text]
+----
+addons/
+  generator/
+    html/          HTML-specific templates and helpers.
+    adoc/          AsciiDoc-specific templates and helpers.
+    common/        Shared partials and helpers
+----
+
+== Built-in Layout
+
+Each handlebars generator walks the symbol corpus and recursively renders `layouts/index.adoc.hbs` for each symbol. The layouts call `{{> ... }}` to include partials that render the symbol's name, signature, doc comment, and so on.
+
+[source,text]
+----
+addons/
+  generator/
+    html/
+        layouts/
+            index.adoc.hbs
+        partials/
+        ...
+    ...
+----
+
+These templates call *helpers* whenever they need more than a plain field interpolation: looking up a symbol's primary source location, lowercasing a string, joining a list, escaping a URL.
+
+[source,text]
+----
+addons/
+  generator/
+    html/
+        helpers/
+            my-function.js
+            my-other-function.lua
+            ...
+        ...
+    ...
+----
+
+Customizing the output is a matter of dropping replacement `.hbs` files or `.js` helpers into an addon directory. Under each generator directory, you'll find three subtrees that matter for customization:
+
+`layouts/`::
+The main top-level templates the generator picks. The `<generator>/layouts/index.adoc.hbs` is rendered for each symbol. In multipage mode, each page is then wrapped with `<generator>/layouts/wrapper.adoc.hbs`. In single-page mode, the wrapper is used only once to wrap a single page around the whole corpus. Set xref:configuration/reference.adoc#embedded_option[`embedded`] to skip the wrapper entirely and emit only the per-symbol body, for when the output is being included inside another document.
+
+`partials/`::
+The fragments those layouts include with `{{> ... }}`. Files are grouped by topic (`symbol/`, `doc/`, `type/`, `markup/`, `location/`). A symbol page is essentially a layout that calls `{{> symbol/qualified-name-title }}`, then `{{> symbol/signatures }}`, then renders the doc comment via `{{> doc/block/document }}`, and so on.
+
+`helpers/`::
+JavaScript or Lua files registered as Handlebars helpers. Anything in `common/helpers/` is registered for every template-driven generator; anything under `<format>/helpers/` is registered only when that format is the active one.
+
+The `common/` directory contains partials that are shared across generators, such as symbol signatures. The format-specific directories (`adoc/`, `html/`) ship only the partials for the markup that distinguishes the output between formats, such as link emission, code fencing, or table syntax. This makes it extremely easy to implement support for new output formats.
+
+== Customization
+
+Two configuration options control how Mr.Docs locates templates and helpers:
+
+xref:configuration/reference.adoc#addons_option[`addons`]::
+Replaces the *base* addons directory entirely. Pointing this at a copy of `share/mrdocs/addons` lets you rewrite the templates wholesale.
+
+xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`]::
+*Layers* extra directories on top of the base. Files in later supplemental directories override files from earlier ones and from the base addons. Use this to override a few templates or helpers without copying the entire tree.
+
+For most customizations `addons-supplemental` is the option you want: you create a small directory that mirrors the upstream layout for just the files you want to change, and Mr.Docs falls back to its built-in templates for everything else.
+
+== Overriding a template
+
+Suppose every code block in the rendered output should carry a small bit of chrome around it: a copy-to-clipboard button in the HTML output, a `Listing` caption in the AsciiDoc output. The base partial that wraps each code block lives at `generator/<format>/partials/markup/code-block.<format>.hbs`. Override only that one file, rather than rewriting any layout.
+
+. Create a directory next to your `mrdocs.yml` that mirrors the addons layout. Each override file lives at the same relative path under the supplemental directory as the upstream file does under `share/mrdocs/addons/`:
++
+[source,text]
+----
+docs/
+  mrdocs.yml
+  custom-addons/
+    generator/
+      html/
+        partials/
+          markup/
+            code-block.html.hbs
+      adoc/
+        partials/
+          markup/
+            code-block.adoc.hbs
+----
+
+. Put the customization in each `code-block.<format>.hbs`. The HTML version wraps the inner block in a copy-button container; the AsciiDoc version prepends a `.Listing` block title to each listing:
++
+[tabs]
+======
+HTML::
++
+.`custom-addons/generator/html/partials/markup/code-block.html.hbs`
+[source,handlebars]
+----
+include::example$snippets/extensions/override-code-block/addons/generator/html/partials/markup/code-block.html.hbs[]
+----
+
+AsciiDoc::
++
+.`custom-addons/generator/adoc/partials/markup/code-block.adoc.hbs`
+[source,adoc-handlebars]
+-----
+include::example$snippets/extensions/override-code-block/addons/generator/adoc/partials/markup/code-block.adoc.hbs[]
+-----
+======
+
+. Point `mrdocs.yml` at the directory:
++
+[source,yaml]
+----
+addons-supplemental:
+  - custom-addons
+----
+
+Run that against a small fixture:
+
+.`override-code-block.cpp`
+[source,cpp]
+----
+include::example$snippets/extensions/override-code-block/override-code-block.cpp[]
+----
+
+The base addons still provide every other partial; only `markup/code-block.<format>.hbs` is replaced. The rendered AsciiDoc page now shows the `Listing` caption above each synopsis block; the HTML page would carry the copy-button wrapper through the same mechanism:
+
+[.adoc-preview]
+========
+include::example$snippets/extensions/override-code-block/override-code-block.adoc[tags=!footer]
+========
+
+== Built-in helpers
+
+Mr.Docs registers the default helpers in C++ before any user code runs. They cover:
+
+* String utilities: `lower`, `upper`, `capitalize`, `replace`, `pad_start`, `repeat`, `strip`, and the rest of a Python-style string library.
+* Logical and math helpers: `eq`, `ne`, `and`, `or`, `not`, `add`, `sub`, `mul`, `div`.
+* Container helpers: `len`, `first`, `last`, `at`, `keys`, `values`, `filter_by`, `group_by`, `pluck`, `flatten`.
+* Antora-aware link helpers, most notably `relativize` for rewriting an absolute target into a path relative to the current page.
+* Mr.Docs-specific helpers like `primary_location`, which picks the source location Mr.Docs links to from a symbol's synopsis.
+
+The xref:extensions/dom-reference.adoc[DOM reference] documents the values that helpers receive (symbol fields, document blocks, type nodes) so a helper knows what shape it is reading.
+
+== Adding a helper
+
+A user helper is a JavaScript or Lua file that lives under an addons `helpers/` directory and is picked up automatically. The filename without extension becomes the helper name: `slug.js` registers a helper called `slug`, `markdown.lua` registers one called `markdown`, and so on. The file's top-level function (or its `module.exports` in JS) is the helper body.
+
+A small URL-slug helper, reusable across formats, lives under `common/helpers/`:
+
+.`addons/generator/common/helpers/slug.js`
+[source,javascript]
+----
+include::example$snippets/extensions/helper-slug/addons/generator/common/helpers/slug.js[]
+----
+
+Calling the helper from a template needs a partial override. The base `location/source.hbs` emits the "Declared in `<file>`" line at the top of every symbol page; the override appends a permalink-style anchor next to it, derived from the file path via `{{slug ...}}`:
+
+.`addons/generator/common/partials/location/source.hbs`
+[source,adoc-handlebars]
+----
+include::example$snippets/extensions/helper-slug/addons/generator/common/partials/location/source.hbs[]
+----
+
+Run that against a single-function fixture:
+
+.`helper-slug.cpp`
+[source,cpp]
+----
+include::example$snippets/extensions/helper-slug/helper-slug.cpp[]
+----
+
+Wire the addon directory up with the same `addons-supplemental` option used for templates:
+
+[source,yaml]
+----
+addons-supplemental:
+  - addons
+----
+
+Each symbol page now carries the anchor right next to its "Declared in" line, slugged from the file path the override passed to `{{slug ...}}`:
+
+[.adoc-preview]
+========
+include::example$snippets/extensions/helper-slug/helper-slug.adoc[tags=!footer]
+========
+

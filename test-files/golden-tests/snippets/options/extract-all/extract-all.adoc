@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#documented]
+== documented
+
+A documented function&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;all&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+documented();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

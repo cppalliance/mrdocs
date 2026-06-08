@@ -1,0 +1,19 @@
+= Reference
+:mrdocs:
+
+[#logger]
+== logger
+
+A logger compatible with the https://www.slf4j.org[SLF4J specification]&period;
+
+=== Synopsis
+
+Declared in `&lt;link&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct logger;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

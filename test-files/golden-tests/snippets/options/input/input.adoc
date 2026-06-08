@@ -1,0 +1,35 @@
+= Reference
+:mrdocs:
+
+[#av_packet_alloc]
+== av&lowbar;packet&lowbar;alloc
+
+Allocate a new packet on the heap&period;
+
+=== Synopsis
+
+Declared in `&lt;libavcodec&sol;avcodec&period;h&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+av&lowbar;packet&lowbar;alloc();
+----
+
+[#av_packet_free]
+== av&lowbar;packet&lowbar;free
+
+Release a packet allocated with `av&lowbar;packet&lowbar;alloc`&period;
+
+=== Synopsis
+
+Declared in `&lt;libavcodec&sol;avcodec&period;h&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+av&lowbar;packet&lowbar;free();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

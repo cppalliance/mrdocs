@@ -1,0 +1,28 @@
+= Reference
+:mrdocs:
+
+[#is_nonzero]
+== is&lowbar;nonzero
+
+Returns whether the input is *non&hyphen;zero*&period;
+
+=== Synopsis
+
+Declared in `&lt;strong&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+is&lowbar;nonzero(int x);
+----
+
+=== Description
+
+Useful as a predicate in algorithms&period;
+
+=== Return Value
+
+whether the input is *non&hyphen;zero*&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

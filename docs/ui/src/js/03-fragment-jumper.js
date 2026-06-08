@@ -3,8 +3,17 @@
 
   var article = document.querySelector('article.doc')
   if (!article) return
-  var toolbar = document.querySelector('.toolbar')
+  var navbar = document.querySelector('nav.navbar')
   var supportsScrollToOptions = 'scrollTo' in document.documentElement
+
+  // Returns the height of an element only when it's actually pinned to the
+  // top of the viewport (fixed or sticky). A statically-positioned element
+  // scrolls away with the content and shouldn't reserve space at the top.
+  function pinnedHeight (el) {
+    if (!el) return 0
+    var pos = window.getComputedStyle(el).position
+    return (pos === 'fixed' || pos === 'sticky') ? el.offsetHeight : 0
+  }
 
   function decodeFragment (hash) {
     return hash && (~hash.indexOf('%') ? decodeURIComponent(hash) : hash).slice(1)
@@ -21,8 +30,14 @@
       e.preventDefault()
     }
     var elementTop = computePosition(this, 0)
-    var toolbarHeight = toolbar ? toolbar.offsetHeight : 0
-    var y = elementTop - toolbarHeight
+    // Only subtract heights of bars that remain pinned to the top of the
+    // viewport after scrolling. The site navbar is `position: fixed`, so
+    // its height is the offset we need; the breadcrumb `.toolbar` is
+    // `position: static` and scrolls away, so it should not be subtracted.
+    // Add a small breathing-room gap so the heading is not glued to the
+    // navbar's bottom edge.
+    var ANCHOR_BREATHING_ROOM = 18
+    var y = elementTop - pinnedHeight(navbar) - ANCHOR_BREATHING_ROOM
     var instant = e === false && supportsScrollToOptions
     instant ? window.scrollTo({ left: 0, top: y, behavior: 'instant' }) : window.scrollTo(0, y)
 

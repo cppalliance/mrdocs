@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>i+MHOsF5x69ecgQjh9vzIGda6vY=</records>
+    <records>ugY0aYft02Y8rIzd4lBS1EhZl58=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>logger</name>
+  <source>
+    <location>
+      <short-path>extract-private-bases.cpp</short-path>
+      <source-path>extract-private-bases.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>i+MHOsF5x69ecgQjh9vzIGda6vY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A logger mixin.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>jivQ9qCR1293FgaPXpX5w535dbo=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>log</name>
+  <source>
+    <location>
+      <short-path>extract-private-bases.cpp</short-path>
+      <source-path>extract-private-bases.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>jivQ9qCR1293FgaPXpX5w535dbo=</id>
+  <extraction>regular</extraction>
+  <parent>i+MHOsF5x69ecgQjh9vzIGda6vY=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Write a message to the log.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <param>
+    <pointer>
+      <named>
+        <is-const>1</is-const>
+        <name>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </name>
+      </named>
+    </pointer>
+    <name>msg</name>
+  </param>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<record>
+  <name>widget</name>
+  <source>
+    <location>
+      <short-path>extract-private-bases.cpp</short-path>
+      <source-path>extract-private-bases.cpp</source-path>
+      <line-number>11</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>ugY0aYft02Y8rIzd4lBS1EhZl58=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A widget that privately inherits from </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>logger</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> for the logging implementation.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <base>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>i+MHOsF5x69ecgQjh9vzIGda6vY=</id>
+        <identifier>logger</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>3IGbXvNIOYYiGwmhFPFXh1GbrdU=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>show</name>
+  <source>
+    <location>
+      <short-path>extract-private-bases.cpp</short-path>
+      <source-path>extract-private-bases.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>3IGbXvNIOYYiGwmhFPFXh1GbrdU=</id>
+  <extraction>regular</extraction>
+  <parent>ugY0aYft02Y8rIzd4lBS1EhZl58=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Render the widget and write a log entry.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+</mrdocs>

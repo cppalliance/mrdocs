@@ -1,0 +1,193 @@
+= Reference
+:mrdocs:
+
+[#version]
+== version
+
+A semantic version `(major, minor)`&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct version
+    : &sol;&ast; implementation-defined &ast;&sol;
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `&sol;&ast; implementation-defined &ast;&sol;`
+| CRTP base that lifts `compare()` into `operator&equals;&equals;` and `operator!&equals;`&period;
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#version-2constructor[`version`]         [.small]#[constructor]#
+| Construct from major and minor numbers&period;
+| link:#version-compare[`compare`] 
+| Three&hyphen;way comparison against another version&period;
+| link:#version-operator_eq[`operator&equals;&equals;`] 
+| Equality operator
+| link:#version-operator_not_eq[`operator!&equals;`] 
+| Inequality operator
+|===
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#version-major[`major`] 
+| The major component&period;
+| link:#version-minor[`minor`] 
+| The minor component&period;
+|===
+
+[#version-2constructor]
+== link:#version[version]::version
+
+Construct from major and minor numbers&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+version(
+    int major,
+    int minor) noexcept;
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *major*
+| The value to construct from
+|===
+
+[#version-compare]
+== link:#version[version]::compare
+
+Three&hyphen;way comparison against another version&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+compare(link:#version[version] const& other) const noexcept;
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| A semantic version `(major, minor)`&period;
+|===
+
+[#version-operator_eq]
+== link:#version[version]::operator&equals;&equals;
+
+Equality operator
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(link:#version[version] const& other) const noexcept;
+----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The right operand
+|===
+
+[#version-operator_not_eq]
+== link:#version[version]::operator!&equals;
+
+Inequality operator
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator!&equals;(link:#version[version] const& other) const noexcept;
+----
+
+=== Return Value
+
+`true` if the objects are not equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The right operand
+|===
+
+[#version-major]
+== link:#version[version]::major
+
+The major component&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int major;
+----
+
+[#version-minor]
+== link:#version[version]::minor
+
+The minor component&period;
+
+=== Synopsis
+
+Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int minor;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

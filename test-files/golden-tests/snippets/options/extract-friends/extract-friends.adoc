@@ -1,0 +1,95 @@
+= Reference
+:mrdocs:
+
+[#point]
+== point
+
+A point in 2D&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct point;
+----
+
+=== Data Members
+
+[cols=1]
+|===
+| Name
+| link:#point-x[`x`] 
+| link:#point-y[`y`] 
+|===
+
+=== Friends
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#operator_eq[operator&equals;&equals;]`
+| Equality comparison, declared as a friend so it participates in ADL&period;
+|===
+
+[#point-x]
+== link:#point[point]::x
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double x;
+----
+
+[#point-y]
+== link:#point[point]::y
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double y;
+----
+
+[#operator_eq]
+== operator&equals;&equals;
+
+Equality comparison, declared as a friend so it participates in ADL&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    link:#point[point] a,
+    link:#point[point] b);
+----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *a*
+| The left operand
+| *b*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

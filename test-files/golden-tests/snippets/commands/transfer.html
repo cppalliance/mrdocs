@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="transfer">
+transfer</h2>
+<div>
+<p>Moves funds from one account to another.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;transfer.cpp&gt;</code></div>
+<pre><code class="source-code cpp">void
+transfer(
+    int from,
+    int to,
+    long amount);</code></pre>
+</div>
+<div>
+<h3>
+Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::invalid_argument</code></td>
+<td>If an account number is unknown.</td>
+</tr>
+<tr>
+<td><code>std::out_of_range</code></td>
+<td>If <code>from</code> cannot cover <code>amount</code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+Preconditions</h3>
+<ul>
+<li><code>amount</code> is positive.</li>
+<li><code>from</code> and <code>to</code> are different accounts.</li>
+</ul>
+</div>
+<div>
+<h3>
+Postconditions</h3>
+<ul>
+<li><code>from</code> falls by <code>amount</code> and <code>to</code> rises by the same.</li>
+</ul>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

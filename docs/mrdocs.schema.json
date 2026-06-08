@@ -3,7 +3,7 @@
   "properties": {
     "addons": {
       "default": "<mrdocs-root>/share/mrdocs/addons",
-      "description": "Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the `share/mrdocs/addons` directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.",
+      "description": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
       "title": "Path to the Addons directory",
       "type": "string"
     },
@@ -38,12 +38,12 @@
     },
     "auto-function-objects": {
       "default": true,
-      "description": "When true, Mr.Docs automatically detects function objects: variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members). When a variable is treated as a function object, only the operator() documentation is used; any doc comment (other than a @functionobject/@functor command) on the variable or the record is ignored.",
+      "description": "When true, Mr.Docs automatically detects algorithm function objects (informally known as niebloids): variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members); it may be placed on the variable or on the function-object record. When a variable is treated as an algorithm function object, its documentation comes from the record's operator() overloads, falling back to the variable's own doc comment when operator() is undocumented; the record's own doc comment is not used.",
       "enum": [
         true,
         false
       ],
-      "title": "Automatically detect function objects",
+      "title": "Automatically detect algorithm function objects",
       "type": "boolean"
     },
     "auto-relates": {
@@ -58,7 +58,7 @@
     },
     "base-url": {
       "default": "",
-      "description": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
+      "description": "The prefix for links to the source code. MrDocs joins it with the path of each source file to build the link.",
       "title": "Base URL for links to source code",
       "type": "string"
     },
@@ -70,9 +70,16 @@
     },
     "compilation-database": {
       "default": "",
-      "description": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, Mr.Docs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
+      "description": "The path to a compilation database, or to a build script that generates one. A compilation database is a JSON file of the compiler commands that build the source; MrDocs reads the compiler flags and source files from it to extract symbols. You can also pass a build script such as `CMakeLists.txt`: MrDocs then looks for CMake on `PATH` or in `CMAKE_ROOT`, runs the script, and uses the database it produces.",
       "title": "Path to the compilation database",
       "type": "string"
+    },
+    "concurrency": {
+      "default": 0,
+      "description": "The desired level of concurrency: 0 for hardware-suggested.",
+      "minimum": 0,
+      "title": "Number of threads to use",
+      "type": "integer"
     },
     "copycss": {
       "default": true,
@@ -114,7 +121,7 @@
     },
     "exclude-patterns": {
       "default": [],
-      "description": "File patterns to exclude. Files that match these patterns are not extracted even if they are in the list of include directories. The patterns are relative to the configuration file. A single * will match all files in the directory. Double ** will match all files in the directory and its subdirectories.",
+      "description": "Files matching these glob patterns are skipped, even when they sit inside an included directory. The patterns are relative to the configuration file. A single `*` matches everything in a directory; `**` matches everything in a directory and its subdirectories.",
       "items": {
         "type": "string"
       },
@@ -172,7 +179,7 @@
     },
     "extract-implicit-specializations": {
       "default": true,
-      "description": "When set to `true`, MrDocs extracts implicit template specializations used as base classes as dependencies. This allows MrDocs to extract metadata that can later be used to determine the members of the derived class, as specified by the `inherit-base-members` option.",
+      "description": "When set to `true`, MrDocs extracts implicit template specializations that appear as base classes, treating them as dependencies. This gives it the metadata it needs to resolve the derived class's inherited members, as controlled by the `inherit-base-members` option.",
       "enum": [
         true,
         false
@@ -243,7 +250,7 @@
         "*.c",
         "*.hxx"
       ],
-      "description": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
+      "description": "Only files whose names match these glob patterns are extracted. The patterns are relative to the input directories.",
       "items": {
         "type": "string"
       },
@@ -251,7 +258,7 @@
       "type": "array"
     },
     "generator": {
-      "default": "adoc",
+      "default": "html",
       "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, and `xml`; data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/.",
       "title": "Generator used to create the documentation",
       "type": "string"
@@ -288,7 +295,7 @@
     },
     "implementation-defined": {
       "default": [],
-      "description": "Symbols that match one of these filters are tagged as \"implementation-defined\" in the documentation, and so do symbols in scopes tagged as \"implementation-defined\". This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\". See the documentation for \"include-symbol\" for the pattern syntax.",
+      "description": "Symbols matching these filters, and symbols in scopes that match, are tagged \"implementation-defined\". Use it for symbols that belong to the project's private API. An \"implementation-defined\" symbol has no page of its own, and any reference to it renders as \"implementation-defined\". See `include-symbols` for the pattern syntax.",
       "items": {
         "type": "string"
       },
@@ -306,7 +313,7 @@
     },
     "includes": {
       "default": [],
-      "description": "Include paths. These paths are used to add directories to the include search path. The include search path is used to search for headers. The headers are used to provide declarations and definitions of symbols. The headers are part of the project and are checked for warnings and errors.",
+      "description": "Directories added to the header search path. Headers found there are part of the project and are checked for warnings and errors. Reach for this option when MrDocs cannot find a header your code includes.",
       "items": {
         "type": "string"
       },
@@ -453,7 +460,7 @@
     },
     "see-below": {
       "default": [],
-      "description": "Symbols that match one of these filters are tagged as \"see-below\" in the documentation, and so do symbols in scopes tagged as \"see-below\". This option is used to remove details about symbols that are considered part of the private API of the project but the user might need to interact with. In the documentation page for this symbol, the symbol is exposition only: the synopsis of the implementation is rendered as \"see-below\" and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual to explain the symbol. See the documentation for \"include-symbol\" for the pattern syntax.",
+      "description": "Symbols matching these filters, and symbols in scopes that match, are tagged \"see-below\" in the documentation. Use it for symbols that belong to the project's private API but that users still interact with. On such a symbol's page the implementation synopsis is rendered as \"see-below\" and the members of a scope, such as a namespace or record, are not listed, while the rest of the documentation appears as usual. See `include-symbols` for the pattern syntax.",
       "items": {
         "type": "string"
       },
@@ -570,7 +577,7 @@
     },
     "source-root": {
       "default": "<config-dir>",
-      "description": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths. This should typically be the root directory of the git project, as relative paths formed from it can be used to create links to these source files in the repository. Templates use the `base-url` option to create links to the source code.",
+      "description": "The root directory of the source tree. It is the default location for input files and the base for the relative paths MrDocs forms from absolute ones. Set it to the root of the git project so those relative paths can link back to the source files in the repository; templates build those links from the `base-url` option.",
       "title": "Path to the root directory of the source code",
       "type": "string"
     },
@@ -587,7 +594,7 @@
     },
     "stylesdir": {
       "default": "css",
-      "description": "Directory used to build the href for linked stylesheets when `linkcss` is true. Defaults to `css`. The directory is created under the output root when copying local styles (e.g. `css/mrdocs-default.css`).",
+      "description": "The directory MrDocs writes into the href of linked stylesheets when `linkcss` is true. Defaults to `css`. When local styles are copied, the directory is created under the output root, for example `css/mrdocs-default.css`.",
       "title": "Directory for linked stylesheets",
       "type": "string"
     },
@@ -602,7 +609,7 @@
     },
     "system-includes": {
       "default": [],
-      "description": "System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.",
+      "description": "Directories added to the system header search path. Headers found there are treated as system headers: they come from outside the project and are not checked for warnings or errors. The standard library and other external headers usually live here.",
       "items": {
         "type": "string"
       },
@@ -637,7 +644,7 @@
     },
     "verbose": {
       "default": false,
-      "description": "Verbose output. When set to true, MrDocs outputs additional information during the generation of the documentation.",
+      "description": "When set to true, MrDocs prints extra information as it generates the documentation.",
       "enum": [
         true,
         false

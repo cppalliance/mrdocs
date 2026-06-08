@@ -1,0 +1,76 @@
+= Reference
+:mrdocs:
+
+[#regex]
+== regex
+
+A compiled regular expression&period;
+
+=== Synopsis
+
+Declared in `&lt;regex&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class regex { /* see-below */ };
+----
+
+=== Description
+
+Holds the program built from a pattern and tests it against input text&period; Create one with `compile` rather than constructing it directly&period;
+
+[#bytecode]
+== bytecode
+
+Exposes a regex&apos;s compiled bytecode, for debugging&period;
+
+=== Synopsis
+
+Declared in `&lt;regex&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol; const&
+bytecode(link:#regex[regex] const& re);
+----
+
+=== Return Value
+
+The bytecode, in an implementation&hyphen;defined form&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *re*
+| A compiled regular expression&period;
+|===
+
+[#compile]
+== compile
+
+Compiles `pattern` into a regular expression&period;
+
+=== Synopsis
+
+Declared in `&lt;regex&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#regex[regex]
+compile(char const* pattern);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Return Value
+
+A compiled regular expression&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

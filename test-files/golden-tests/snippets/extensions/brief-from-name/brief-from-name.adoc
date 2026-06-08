@@ -1,0 +1,80 @@
+= Reference
+:mrdocs:
+
+[#is_empty]
+== is&lowbar;empty
+
+Returns true if empty&period;
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;name&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+is&lowbar;empty(char const* s);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *s*
+| The input examined for the empty property&period;
+|===
+
+[#is_palindrome]
+== is&lowbar;palindrome
+
+Returns true if palindrome&period;
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;name&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+is&lowbar;palindrome(char const* s);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *s*
+| The input examined for the palindrome property&period;
+|===
+
+[#is_prime]
+== is&lowbar;prime
+
+Returns true if prime&period;
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;name&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+is&lowbar;prime(int n);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *n*
+| The input examined for the prime property&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

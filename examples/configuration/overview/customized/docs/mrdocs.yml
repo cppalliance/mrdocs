@@ -1,0 +1,6 @@
+source-root: ..
+input:
+  - ../include
+generator: xml
+include-symbols:
+  - 'mylib::**'

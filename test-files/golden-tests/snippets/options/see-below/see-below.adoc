@@ -1,0 +1,56 @@
+= Reference
+:mrdocs:
+
+[#netz-buffer_view]
+== netz::buffer&lowbar;view
+
+A non&hyphen;owning view of a contiguous byte range&period;
+
+=== Synopsis
+
+Declared in `&lt;netz&sol;buffer&lowbar;view&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class buffer&lowbar;view { /* see-below */ };
+----
+
+=== Description
+
+Used as the parameter and return type for the framing helpers in `netz&colon;&colon;stream` and as the buffer surface presented to async read handlers&period; Stores a pointer and a length, and does not extend the lifetime of the storage it refers to&period;
+
+[#netz-first_packet]
+== netz::first&lowbar;packet
+
+Locate the first complete packet at the start of the buffer&period;
+
+=== Synopsis
+
+Declared in `&lt;netz&sol;stream&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#netz-buffer_view[buffer&lowbar;view]
+first&lowbar;packet(link:#netz-buffer_view[buffer&lowbar;view] input);
+----
+
+=== Description
+
+Scans `input` for a frame boundary&period; The returned view aliases the same memory as `input`, so the storage behind `input` must outlive the returned view&period;
+
+=== Return Value
+
+A view of the bytes belonging to the first packet, or an empty view if no complete packet is present yet&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *input*
+| Bytes received from the stream, up to the caller&apos;s current fill mark&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

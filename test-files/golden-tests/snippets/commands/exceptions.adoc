@@ -1,0 +1,30 @@
+= Reference
+:mrdocs:
+
+[#parse_int]
+== parse&lowbar;int
+
+Parses an integer from a string&period;
+
+=== Synopsis
+
+Declared in `&lt;exceptions&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+parse&lowbar;int(char const* text);
+----
+
+=== Exceptions
+
+[cols="1,4"]
+|===
+| Name
+| Thrown on
+| `std&colon;&colon;invalid&lowbar;argument`
+| when the text does not contain a valid integer representation&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

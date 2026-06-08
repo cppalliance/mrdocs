@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>KO72o+ATLjtXo3uHFCYGJg6/QPw=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>square</name>
+  <source>
+    <location>
+      <short-path>override-code-block.cpp</short-path>
+      <source-path>override-code-block.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>KO72o+ATLjtXo3uHFCYGJg6/QPw=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Square </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>value</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> and return the result.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>double</identifier>
+    </name>
+  </named>
+  <param>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <identifier>double</identifier>
+      </name>
+    </named>
+    <name>value</name>
+  </param>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

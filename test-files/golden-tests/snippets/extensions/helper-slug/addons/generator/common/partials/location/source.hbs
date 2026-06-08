@@ -1,0 +1,8 @@
+{{!--
+    Override of share/mrdocs/addons/generator/common/partials/location/source.hbs.
+    Appends a permalink-style anchor after "Declared in", built from
+    the file path via the `slug` helper.
+--}}
+Declared in {{#>markup/code~}}
+    {{ str "<" }}{{ dcl.shortPath }}{{ str ">" }}
+{{~/markup/code}}{{ str " " }}(anchor: {{#>markup/code}}{{slug dcl.shortPath}}{{/markup/code}})

@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="resample">
+resample</h2>
+<div>
+<p>Resamples an audio signal to a new sample rate.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;resample.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;class Sample&gt;
+unsigned int
+resample(
+    Sample const* in,
+    unsigned int count,
+    double ratio,
+    Sample* out);</code></pre>
+</div>
+<div>
+<h3>
+Return Value</h3>
+The number of samples written to <code>out</code>.
+</div>
+<div>
+<h3>
+Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sample</strong></td>
+<td>The sample type, usually <code>float</code> or <code>short</code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>in</strong> [in]</td>
+<td>The input samples.</td>
+</tr>
+<tr>
+<td><strong>count</strong> [in]</td>
+<td>Number of input samples.</td>
+</tr>
+<tr>
+<td><strong>ratio</strong> [in]</td>
+<td>Output rate divided by input rate.</td>
+</tr>
+<tr>
+<td><strong>out</strong> [out]</td>
+<td>Buffer that receives the resampled signal.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

@@ -1,0 +1,5 @@
+source-root: ..
+input:
+  - ../include
+log-level: info
+verbose: false

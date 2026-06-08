@@ -1,0 +1,66 @@
+= Reference
+:mrdocs:
+
+[#widget]
+== widget
+
+A class with both public and private members&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-show[`show`] 
+| Display the widget&period;
+|===
+
+=== Private Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget-count[`count`] 
+| An internal counter&period;
+|===
+
+[#widget-show]
+== link:#widget[widget]::show
+
+Display the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+show();
+----
+
+[#widget-count]
+== link:#widget[widget]::count
+
+An internal counter&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;private&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int count;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

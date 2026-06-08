@@ -68,8 +68,8 @@ jobs:
           python3 ./util/generate-yaml-schema.py --check
           npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
 
-      - name: Verify snippet .cpp files match golden tests
-        run: .github/scripts/verify-snippets.sh
+      - name: Check bootstrap options partial is up to date
+        run: python3 ./util/docs/generate_bootstrap_options.py --check
 
       # When the Coverage matrix entry was skipped because the develop cache is
       # warm, fetch develop's LCOV report and re-upload it tagged with the PR's

@@ -1,15 +1,14 @@
 [
   {
-    "category": "Command Line Options",
-    "command-line-only": true,
-    "brief": "Options that can only be provided via the command line",
-    "details": "The following options can be used to control the general behavior of Mr.Docs and can only be provided via the command line. These include options to specify inputs and the configuration file, which cannot be set on the configuration file itself.",
+    "category": "Inputs",
+    "brief": "Inputs, paths, and the toolchain used to compile them",
+    "details": "These options tell Mr.Docs which sources to read, where to write the result, and how to compile the code. They cover the command-line inputs and configuration file, the source root and output location, the compilation database, and the include paths, preprocessor defines, and standard-library and toolchain settings the compiler needs to parse the sources.",
     "options": [
       {
         "name": "cmd-line-inputs",
         "command-line-only": true,
         "brief": "Configuration or compilation database files",
-        "details": "The inputs are configuration files or compilation database files that used to generate the documentation. When the input ends with `mrdocs.yml`, it is interpreted as a configuration file, the file is read and the options are used to generate the documentation as if it was provided to the `config` option. When the input ends with `compilation_database.json` or `CMakeLists.txt`, it is interpreted as a compilation database file, the file is read and the compiler flags are used to generate the documentation as if it was provided to the `compilation-database` option.",
+        "details": "Positional inputs that drive the run. Each path is dispatched by file name: an input ending in `mrdocs.yml` is read as a configuration file, and an input ending in `compile_commands.json` or `CMakeLists.txt` is read as a compilation database. The dispatch is a convenience; prefer the explicit `config` and `compilation-database` flags so the invocation is unambiguous and easier to read in scripts and CI logs.",
         "type": "list<path>",
         "default": [],
         "command-line-sink": true,
@@ -26,52 +25,109 @@
         "name": "config",
         "command-line-only": true,
         "brief": "Mr.Docs configuration file",
-        "details": "The configuration file is a YAML file that contains the options used to generate the documentation. The configuration file is read and the options are used to generate the documentation. The configuration file can be used to specify the source code, the output directory, the compilation database, the generator, and the filters.",
+        "details": "A YAML file holding the options for the run: the source code, the output directory, the compilation database, the generator, and the filters. MrDocs reads it and applies the options it finds.",
         "type": "file-path",
         "default": "<cwd>/mrdocs.yml",
         "relative-to": "<cwd>",
         "required": true,
         "must-exist": true
-      }
-    ]
-  },
-  {
-    "category": "Paths",
-    "brief": "Paths to the source code and output directories",
-    "options": [
+      },
       {
         "name": "source-root",
         "brief": "Path to the root directory of the source code",
-        "details": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths. This should typically be the root directory of the git project, as relative paths formed from it can be used to create links to these source files in the repository. Templates use the `base-url` option to create links to the source code.",
+        "details": "The root directory of the source tree. It is the default location for input files and the base for the relative paths MrDocs forms from absolute ones. Set it to the root of the git project so those relative paths can link back to the source files in the repository; templates build those links from the `base-url` option.",
         "type": "dir-path",
         "default": "<config-dir>",
         "relative-to": "<config-dir>",
         "must-exist": true
       },
       {
-        "name": "output",
-        "brief": "Directory or file for generating output",
-        "details": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
-        "type": "path",
-        "default": "<config-dir>/reference-output",
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": false
-      },
-      {
         "name": "compilation-database",
         "brief": "Path to the compilation database",
-        "details": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, Mr.Docs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
+        "details": "The path to a compilation database, or to a build script that generates one. A compilation database is a JSON file of the compiler commands that build the source; MrDocs reads the compiler flags and source files from it to extract symbols. You can also pass a build script such as `CMakeLists.txt`: MrDocs then looks for CMake on `PATH` or in `CMAKE_ROOT`, runs the script, and uses the database it produces.",
         "type": "file-path",
         "default": "",
         "relative-to": "<config-dir>",
         "must-exist": true
+      },
+      {
+        "name": "cmake",
+        "brief": "CMake arguments when generating the compilation database from CMakeLists.txt",
+        "details": "When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "defines",
+        "brief": "Additional defines passed to the compiler",
+        "details": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
+        "name": "use-system-stdlib",
+        "brief": "Use the system C++ standard library",
+        "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "stdlib-includes",
+        "brief": "C++ Standard Library include paths",
+        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libcxx"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "use-system-libc",
+        "brief": "Use the system C standard library",
+        "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "libc-includes",
+        "brief": "Standard Library include paths",
+        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "system-includes",
+        "brief": "System include paths",
+        "details": "Directories added to the system header search path. Headers found there are treated as system headers: they come from outside the project and are not checked for warnings or errors. The standard library and other external headers usually live here.",
+        "type": "list<path>",
+        "relative-to": "<config-dir>",
+        "default": [],
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "includes",
+        "brief": "Include paths",
+        "details": "Directories added to the header search path. Headers found there are part of the project and are checked for warnings and errors. Reach for this option when MrDocs cannot find a header your code includes.",
+        "type": "list<path>",
+        "default": [],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
       }
     ]
   },
   {
     "category": "Filters",
-    "brief": "Filters to include or exclude files and symbols from the documentation",
+    "brief": "Which symbols are documented, and which are hidden",
+    "details": "These options decide which symbols enter the documentation corpus and how the ones that do appear. They filter by qualified name, by category (private members, undocumented declarations, friends, anonymous namespaces, and so on), by location on disk, and by marking specific symbols as private without dropping them from the corpus.",
     "options": [
       {
         "name": "input",
@@ -95,7 +151,7 @@
       {
         "name": "file-patterns",
         "brief": "File patterns to include",
-        "details": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
+        "details": "Only files whose names match these glob patterns are extracted. The patterns are relative to the input directories.",
         "type": "list<path-glob>",
         "default": [
           "*.hpp",
@@ -123,7 +179,7 @@
       {
         "name": "exclude-patterns",
         "brief": "File patterns to exclude",
-        "details": "File patterns to exclude. Files that match these patterns are not extracted even if they are in the list of include directories. The patterns are relative to the configuration file. A single * will match all files in the directory. Double ** will match all files in the directory and its subdirectories.",
+        "details": "Files matching these glob patterns are skipped, even when they sit inside an included directory. The patterns are relative to the configuration file. A single `*` matches everything in a directory; `**` matches everything in a directory and its subdirectories.",
         "type": "list<path-glob>",
         "relative-to": "<config-dir>",
         "default": []
@@ -146,80 +202,24 @@
       {
         "name": "see-below",
         "brief": "Exposition only symbols rendered as \"see-below\".",
-        "details": "Symbols that match one of these filters are tagged as \"see-below\" in the documentation, and so do symbols in scopes tagged as \"see-below\". This option is used to remove details about symbols that are considered part of the private API of the project but the user might need to interact with. In the documentation page for this symbol, the symbol is exposition only: the synopsis of the implementation is rendered as \"see-below\" and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual to explain the symbol. See the documentation for \"include-symbol\" for the pattern syntax.",
+        "details": "Symbols matching these filters, and symbols in scopes that match, are tagged \"see-below\" in the documentation. Use it for symbols that belong to the project's private API but that users still interact with. On such a symbol's page the implementation synopsis is rendered as \"see-below\" and the members of a scope, such as a namespace or record, are not listed, while the rest of the documentation appears as usual. See `include-symbols` for the pattern syntax.",
         "type": "list<symbol-glob>",
         "default": []
       },
       {
         "name": "implementation-defined",
         "brief": "Symbols rendered as \"implementation-defined\"",
-        "details": "Symbols that match one of these filters are tagged as \"implementation-defined\" in the documentation, and so do symbols in scopes tagged as \"implementation-defined\". This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\". See the documentation for \"include-symbol\" for the pattern syntax.",
+        "details": "Symbols matching these filters, and symbols in scopes that match, are tagged \"implementation-defined\". Use it for symbols that belong to the project's private API. An \"implementation-defined\" symbol has no page of its own, and any reference to it renders as \"implementation-defined\". See `include-symbols` for the pattern syntax.",
         "type": "list<symbol-glob>",
         "default": []
       },
       {
         "name": "auto-function-objects",
-        "brief": "Automatically detect function objects",
-        "details": "When true, Mr.Docs automatically detects function objects: variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members). When a variable is treated as a function object, only the operator() documentation is used; any doc comment (other than a @functionobject/@functor command) on the variable or the record is ignored.",
-        "type": "bool",
-        "default": true
-      }
-    ]
-  },
-  {
-    "category": "Semantic Parsing",
-    "brief": "Options to control how the source code is parsed",
-    "details": "Mr.Docs uses libclang to parse the source code and extract symbols. The following options control how the source code is parsed.",
-    "options": [
-      {
-        "name": "missing-include-prefixes",
-        "brief": "Include path prefixes allowed to be missing",
-        "details": "Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use \"llvm/\" to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the \"missing-include-shims\" option.",
-        "type": "list<string>",
-        "default": []
-      },
-      {
-        "name": "missing-include-shims",
-        "brief": "Shims for forgiven missing include files",
-        "details": "Specifies a map of include file paths to shim contents. If a missing include file matches a forgiven prefix, MrDocs will use the shim content from this map as the file contents. If no shim is provided for a forgiven file, an empty file is used by default.",
-        "type": "map<string,string>",
-        "default": {}
-      }
-    ]
-  },
-  {
-    "category": "Comment Parsing",
-    "brief": "Options to control how comments are parsed",
-    "details": "Mr.Docs extracts metadata from the comments in the source code. The following options control how comments are parsed.",
-    "options": [
-      {
-        "name": "auto-brief",
-        "brief": "Use the first line of the comment as the brief",
-        "details": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+        "brief": "Automatically detect algorithm function objects",
+        "details": "When true, Mr.Docs automatically detects algorithm function objects (informally known as niebloids): variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members); it may be placed on the variable or on the function-object record. When a variable is treated as an algorithm function object, its documentation comes from the record's operator() overloads, falling back to the variable's own doc comment when operator() is undocumented; the record's own doc comment is not used.",
         "type": "bool",
         "default": true
       },
-      {
-        "name": "auto-relates",
-        "brief": "Automatically find non-member functions",
-        "details": "When set to `true`, Mr.Docs automatically finds non-member functions that are related to the current class.",
-        "type": "bool",
-        "default": true
-      },
-      {
-        "name": "auto-function-metadata",
-        "brief": "Automatically provide missing documentation for special functions and trivial metadata",
-        "details": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
-        "type": "bool",
-        "default": true
-      }
-    ]
-  },
-  {
-    "category": "Metadata Extraction",
-    "brief": "Metadata and C++ semantic constructs to extract",
-    "details": "MrDocs extracts metadata and C++ semantic constructs from the source code to create the documentation. Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE. The following options control the extraction of metadata and C++ semantic constructs.",
-    "options": [
       {
         "name": "extract-all",
         "brief": "Extract all symbols",
@@ -277,6 +277,27 @@
         "default": false
       },
       {
+        "name": "extract-implicit-specializations",
+        "brief": "Implicit template specializations used as base classes are extracted as dependencies",
+        "details": "When set to `true`, MrDocs extracts implicit template specializations that appear as base classes, treating them as dependencies. This gives it the metadata it needs to resolve the derived class's inherited members, as controlled by the `inherit-base-members` option.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "extract-friends",
+        "brief": "Extraction policy for friend functions and classes",
+        "details": "Determine whether friend functions and classes should be extracted. When set to `true`, MrDocs extracts friend functions and classes. When set to `false`, friend functions and classes are not extracted.",
+        "type": "bool",
+        "default": true
+      }
+    ]
+  },
+  {
+    "category": "Extraction",
+    "brief": "How extracted symbols are arranged and what MrDocs infers from them",
+    "details": "These options control how the documentation set is presented once the filters have decided what enters it: which inherited members are shown on a class page, the order members appear in, how related declarations are grouped (overload sets, SFINAE expressions, function objects), what MrDocs infers from doc comments (briefs, relations, function metadata), and tolerance for headers the compiler cannot find.",
+    "options": [
+      {
         "name": "inherit-base-members",
         "brief": "Determine how derived classes inherit base members",
         "details": "Determine how derived classes inherit members of base classes. When set to `never`, derived classes do not inherit members of base classes and only the relationship is stored. When set to `reference`, derived classes list members of base classes but references are still linked to the base class. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency. When set to `copy-all`, a copy is created for each base symbol as if it was declared in the derived class. If the base class is a dependency, the extraction mode is copied from the new parent.",
@@ -288,20 +309,6 @@
           "copy-all"
         ],
         "default": "copy-dependencies"
-      },
-      {
-        "name": "extract-implicit-specializations",
-        "brief": "Implicit template specializations used as base classes are extracted as dependencies",
-        "details": "When set to `true`, MrDocs extracts implicit template specializations used as base classes as dependencies. This allows MrDocs to extract metadata that can later be used to determine the members of the derived class, as specified by the `inherit-base-members` option.",
-        "type": "bool",
-        "default": true
-      },
-      {
-        "name": "extract-friends",
-        "brief": "Extraction policy for friend functions and classes",
-        "details": "Determine whether friend functions and classes should be extracted. When set to `true`, MrDocs extracts friend functions and classes. When set to `false`, friend functions and classes are not extracted.",
-        "type": "bool",
-        "default": true
       },
       {
         "name": "sort-members",
@@ -366,14 +373,7 @@
         "details": "When set to `true`, relational operators are sorted last in the list of members of a record or namespace.",
         "type": "bool",
         "default": true
-      }
-    ]
-  },
-  {
-    "category": "Semantic Constructs",
-    "brief": "C++ semantic constructs to extract",
-    "details": "Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE.",
-    "options": [
+      },
       {
         "name": "sfinae",
         "brief": "Detect and reduce SFINAE expressions",
@@ -387,19 +387,65 @@
         "details": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type. The documentation for this new symbol comes from the union of non-ambiguous metadata from the functions.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "missing-include-prefixes",
+        "brief": "Include path prefixes allowed to be missing",
+        "details": "Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use \"llvm/\" to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the \"missing-include-shims\" option.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
+        "name": "missing-include-shims",
+        "brief": "Shims for forgiven missing include files",
+        "details": "Specifies a map of include file paths to shim contents. If a missing include file matches a forgiven prefix, MrDocs will use the shim content from this map as the file contents. If no shim is provided for a forgiven file, an empty file is used by default.",
+        "type": "map<string,string>",
+        "default": {}
+      },
+      {
+        "name": "auto-brief",
+        "brief": "Use the first line of the comment as the brief",
+        "details": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "auto-relates",
+        "brief": "Automatically find non-member functions",
+        "details": "When set to `true`, Mr.Docs automatically finds non-member functions that are related to the current class.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "auto-function-metadata",
+        "brief": "Automatically provide missing documentation for special functions and trivial metadata",
+        "details": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
+        "type": "bool",
+        "default": true
       }
     ]
   },
   {
-    "category": "Generators",
+    "category": "Output",
     "brief": "Generators to create the documentation and their options",
+    "details": "",
     "options": [
+      {
+        "name": "output",
+        "brief": "Directory or file for generating output",
+        "details": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
+        "type": "path",
+        "default": "<config-dir>/reference-output",
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": false
+      },
       {
         "name": "generator",
         "brief": "Generator used to create the documentation",
         "details": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, and `xml`; data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/.",
         "type": "string",
-        "default": "adoc"
+        "default": "html"
       },
       {
         "name": "multipage",
@@ -411,14 +457,14 @@
       {
         "name": "base-url",
         "brief": "Base URL for links to source code",
-        "details": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
+        "details": "The prefix for links to the source code. MrDocs joins it with the path of each source file to build the link.",
         "type": "string",
         "default": ""
       },
       {
         "name": "addons",
         "brief": "Path to the Addons directory",
-        "details": "Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the `share/mrdocs/addons` directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.",
+        "details": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
         "type": "path",
         "default": "<mrdocs-root>/share/mrdocs/addons",
         "relative-to": "<config-dir>",
@@ -495,7 +541,7 @@
       {
         "name": "stylesdir",
         "brief": "Directory for linked stylesheets",
-        "details": "Directory used to build the href for linked stylesheets when `linkcss` is true. Defaults to `css`. The directory is created under the output root when copying local styles (e.g. `css/mrdocs-default.css`).",
+        "details": "The directory MrDocs writes into the href of linked stylesheets when `linkcss` is true. Defaults to `css`. When local styles are copied, the directory is created under the output root, for example `css/mrdocs-default.css`.",
         "type": "string",
         "default": "css"
       },
@@ -516,92 +562,14 @@
     ]
   },
   {
-    "category": "Build options",
-    "brief": "Options for building the source code",
-    "details": "When MrDocs is responsible to running the build scripts and generating the compilation database, these options are used to build the source code.",
-    "options": [
-      {
-        "name": "cmake",
-        "brief": "CMake arguments when generating the compilation database from CMakeLists.txt",
-        "details": "When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.",
-        "type": "string",
-        "default": ""
-      },
-      {
-        "name": "defines",
-        "brief": "Additional defines passed to the compiler",
-        "details": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
-        "type": "list<string>",
-        "default": []
-      },
-      {
-        "name": "use-system-stdlib",
-        "brief": "Use the system C++ standard library",
-        "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
-        "type": "bool",
-        "default": true
-      },
-      {
-        "name": "stdlib-includes",
-        "brief": "C++ Standard Library include paths",
-        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libcxx"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
-        "name": "use-system-libc",
-        "brief": "Use the system C standard library",
-        "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
-        "type": "bool",
-        "default": true
-      },
-      {
-        "name": "libc-includes",
-        "brief": "Standard Library include paths",
-        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
-        "name": "system-includes",
-        "brief": "System include paths",
-        "details": "System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.",
-        "type": "list<path>",
-        "relative-to": "<config-dir>",
-        "default": [],
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
-        "name": "includes",
-        "brief": "Include paths",
-        "details": "Include paths. These paths are used to add directories to the include search path. The include search path is used to search for headers. The headers are used to provide declarations and definitions of symbols. The headers are part of the project and are checked for warnings and errors.",
-        "type": "list<path>",
-        "default": [],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      }
-    ]
-  },
-  {
-    "category": "Warnings",
-    "brief": "Warnings and progress messages",
+    "category": "Diagnostics",
+    "brief": "Warnings, logging, and error handling",
+    "details": "These options control the diagnostics Mr.Docs emits as it runs: the warnings it reports about undocumented or malformed documentation, the logging verbosity and report file, the concurrency it uses, and how it behaves when it encounters errors.",
     "options": [
       {
         "name": "verbose",
         "brief": "Verbose output",
-        "details": "Verbose output. When set to true, MrDocs outputs additional information during the generation of the documentation.",
+        "details": "When set to true, MrDocs prints extra information as it generates the documentation.",
         "type": "bool",
         "default": false
       },
@@ -685,16 +653,9 @@
         "details": "When set to `true`, MrDocs treats warnings as errors and stops the generation of the documentation.",
         "type": "bool",
         "default": false
-      }
-    ]
-  },
-  {
-    "category": "Miscellaneous",
-    "brief": "Miscellaneous options",
-    "options": [
+      },
       {
         "name": "concurrency",
-        "command-line-only": true,
         "brief": "Number of threads to use",
         "details": "The desired level of concurrency: 0 for hardware-suggested.",
         "type": "unsigned",

@@ -1,0 +1,3 @@
+inherit-base-members: copy-dependencies
+implementation-defined:
+  - 'detail::**'

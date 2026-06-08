@@ -1,0 +1,59 @@
+= Generators
+:page-aliases: generators.adoc
+
+A *generator* turns the extracted symbol corpus into rendered documentation. Mr.Docs ships three:
+
+|===
+|Format |When to pick it
+
+|xref:generators/html.adoc[HTML]
+|The default. Self-contained pages with a bundled stylesheet, ready to serve from any static host. Pick this for a documentation site without an outer build pipeline.
+
+|xref:generators/adoc.adoc[AsciiDoc]
+|Source for https://asciidoc.org/[AsciiDoc^] tooling and https://antora.org/[Antora^] documentation. Pick this when the reference is folded into a larger documentation site, or when you want full control over the final HTML through https://asciidoctor.org/[Asciidoctor^].
+
+|xref:generators/xml.adoc[XML]
+|Structured intermediate format. Pick this when a downstream tool wants every symbol field, when you want to diff the corpus across releases, or when you're testing the corpus shape directly.
+|===
+
+Pick one through the xref:configuration/reference.adoc#generator_option[`generator`] option:
+
+[source,yaml]
+----
+generator: html
+----
+
+Or on the command line, where the flag wins over the file:
+
+[source,bash]
+----
+mrdocs --config=path/to/mrdocs.yml --generator=html
+----
+
+== Choosing between formats
+
+Each format trades *redundancy* (how much duplicated or unstructured information lives in the output) against *convenience* (how readily the output is usable without further tooling).
+
+[mermaid]
+....
+quadrantChart
+    title Output format trade-off
+    x-axis Low redundancy --> High redundancy
+    y-axis Low convenience --> High convenience
+    Ideal: [0.04, 0.96] radius: 4, color: #cccccc, stroke-color: #cccccc, stroke-width: 1px
+    HTML: [0.88, 0.94]
+    AsciiDoc: [0.78, 0.78]
+    Custom Templates: [0.5, 0.6]
+    Data-Driven Generators: [0.36, 0.5]
+    Custom Generators: [0.2, 0.3]
+    XML: [0.05, 0.12]
+    Clang AST: [0.88, 0.06] radius: 5, color: #f1c7c7, stroke-color: #f1c7c7, stroke-width: 1px
+....
+
+- *xref:generators/adoc.adoc[AsciiDoc]* and *xref:generators/html.adoc[HTML]* cluster in the top-right: high convenience (Antora consumes the AsciiDoc natively, the HTML opens straight in a browser) at the cost of more structural overhead per symbol.
+- *xref:extensions/handlebars-extensions.adoc[Custom Templates]* let you sit anywhere along the diagonal without leaving the built-in formats: keep the `html` or `adoc` generator and write the Handlebars overrides that move the trade-off to where your project needs it.
+- *xref:extensions/data-driven-generators.adoc[Data-Driven Generators]* sit close to Custom Templates on the chart: the same Handlebars machinery, but pointed at a *new* output format declared by a manifest (Markdown, RST, anything else you want a generator for) instead of customizing the built-in `html` or `adoc` output.
+- *Custom Generators* go further down toward XML: a generator implemented entirely in code (C++ or a script), with full control over the bytes it writes. Useful when the format you need does not fit a Handlebars-and-manifest description, at the cost of being the most work to build and maintain.
+- *xref:generators/xml.adoc[XML]* sits in the bottom-left: low redundancy (one terse element per field) and low convenience for direct consumption. The right choice when a downstream tool wants every symbol field.
+- *https://clang.llvm.org/docs/IntroductionToTheClangAST.html[Clang AST^]* (bottom-right) and the *Ideal* marker (top-left) frame the chart, neither is something Mr.Docs ships. The AST is what Mr.Docs reads, dense but unworkable on its own. The Ideal point is the theoretical "low redundancy and high convenience" target no single format reaches.
+

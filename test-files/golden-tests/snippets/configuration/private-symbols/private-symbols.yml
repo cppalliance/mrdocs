@@ -1,0 +1,9 @@
+# tag::test-only[]
+includes:
+  - include
+# end::test-only[]
+implementation-defined:
+  - 'logr::detail::**'
+  - 'logr::*_impl'
+see-below:
+  - 'logr::log_record'

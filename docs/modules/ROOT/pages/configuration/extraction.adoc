@@ -1,0 +1,256 @@
+= Extraction
+
+The xref:configuration/filters.adoc[filters] are the gate at the front of the pipeline. They decide which symbols enter the corpus. The options on this page are the next stage: they decide how MrDocs interprets and arranges the symbols that survived the filters. Which inherited members appear on a class page, the order members are listed in, how related declarations are grouped (overload sets, SFINAE expressions, function objects), what MrDocs infers from doc comments (briefs, relations, function metadata), and the escape hatches for headers the compiler cannot find. The xref:configuration/reference.adoc#_extraction_options_reference[Extraction reference] lists every option.
+
+== Ordering members
+
+By default, members appear alphabetically within each kind. The `sort-members` family overrides that order when you want a more conventional grouping (constructors first, destructors first, conversions and relational operators last, and so on).
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/sort-members/sort-members.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/sort-members/sort-members.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/sort-members/sort-members.adoc[tags=!footer]
+========
+
+The other sort switches (xref:configuration/reference.adoc#sort-members-ctors-1st_option[`sort-members-ctors-1st`], xref:configuration/reference.adoc#sort-members-dtors-1st_option[`sort-members-dtors-1st`], xref:configuration/reference.adoc#sort-members-assignment-1st_option[`sort-members-assignment-1st`], xref:configuration/reference.adoc#sort-members-conversion-last_option[`sort-members-conversion-last`], xref:configuration/reference.adoc#sort-members-relational-last_option[`sort-members-relational-last`]) refine which member kinds float to the top or sink to the bottom. xref:configuration/reference.adoc#sort-members-by_option[`sort-members-by`] and xref:configuration/reference.adoc#sort-namespace-members-by_option[`sort-namespace-members-by`] pick between alphabetical and declaration order.
+
+== Overload sets
+
+A C++ overload set is many functions sharing a name. xref:configuration/reference.adoc#overloads_option[`overloads`] merges them into a single page so the reader sees the whole set at once instead of one page per signature:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/overloads/overloads.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/overloads/overloads.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/overloads/overloads.adoc[tags=!footer]
+========
+
+== SFINAE constraints
+
+xref:configuration/reference.adoc#sfinae_option[`sfinae`] rewrites SFINAE constraints into a readable form instead of the raw `enable_if` machinery:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/sfinae/sfinae.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/sfinae/sfinae.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/sfinae/sfinae.adoc[tags=!footer]
+========
+
+== Algorithm function objects
+
+xref:configuration/reference.adoc#auto-function-objects_option[`auto-function-objects`] detects the https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)^] idiom and presents the variable's page as if it were a function, using the call operator's doc comment, parameters, and return type:
+
+.`include/numerics/clamp.hpp`
+[source,cpp]
+----
+include::example$snippets/options/auto-function-objects/include/numerics/clamp.hpp[tag=body]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/auto-function-objects/auto-function-objects.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/auto-function-objects/auto-function-objects.adoc[tags=!footer]
+========
+
+TIP: When auto-detection misses an AFO (the call-operator type has extra members, or the variable is not the only AFO-shaped constant in its scope), tag the variable with the xref:commands/reference.adoc#cmd-function-object[`@functionobject`] doc-comment command. Same effect, declared next to the symbol rather than left to inference.
+
+== Inferred metadata
+
+MrDocs fills several kinds of metadata from the signature when the doc comment leaves them out. Each kind is governed by its own switch.
+
+=== Briefs
+
+By default, the first sentence of a doc comment becomes the brief and the rest becomes the detailed description. xref:configuration/reference.adoc#auto-brief_option[`auto-brief`] is on by default; turn it off if you want every brief written explicitly with xref:commands/reference.adoc#cmd-summary[`@brief`].
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/auto-brief/auto-brief.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/auto-brief/auto-brief.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/auto-brief/auto-brief.adoc[tags=!footer]
+========
+
+=== Non-member functions
+
+The "non-member functions" section on a class page is very useful to gather free functions that operate on the class, but it is a pain to maintain by hand. xref:configuration/reference.adoc#auto-relates_option[`auto-relates`] is on by default to do the work for you. It looks for free functions that take the class as a parameter or return it and lists them under the class's "Non-Member Functions" section, without needing any explicit tagging in the doc comment.
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/auto-relates/auto-relates.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/auto-relates/auto-relates.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/auto-relates/auto-relates.adoc[tags=!footer]
+========
+
+=== Function metadata
+
+xref:configuration/reference.adoc#auto-function-metadata_option[`auto-function-metadata`] (on by default) fills in function documentation that authors typically omit because the result is mechanical or repetitive: the brief of a copy constructor, the parameter doc on `operator==`, the return value of a conversion operator. MrDocs writes the boilerplate so the hand-written comments can focus on what is actually unique to each function.
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/auto-function-metadata/auto-function-metadata.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/auto-function-metadata/auto-function-metadata.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/auto-function-metadata/auto-function-metadata.adoc[tags=!footer]
+========
+
+Several inferences in one example:
+
+* The copy and move constructors, the destructor, the copy assignment operator, and `operator==` get full briefs ("Copy constructor", "Destructor", and so on) even though the source did not write one.
+* None of those declarations name their parameter either, but MrDocs picks names from the function's role: `other` for the single-parameter constructors and `operator=`, `rhs` for the binary `operator==`.
+* The parameter docs are filled the same way ("The object to copy construct from", "The right operand"). `operator=` and `operator==` get return-value entries derived from their conventional contract ("Reference to the current object", "`true` if the objects are equal, `false` otherwise").
+* `vec2::magnitude` has only a brief in the source, but the brief begins with "Returns", so MrDocs lifts the rest of the sentence into the `@return` entry.
+* And `vec2::translated`, an ordinary member function with only a brief, picks up `vec2`'s own brief ("A 2D vector.") for both its `delta` parameter and its return value, because no role-based rule applies and the type itself is documented.
+
+== Inherited members
+
+When a class inherits from another, xref:configuration/reference.adoc#inherit-base-members_option[`inherit-base-members`] determines how the inherited members should appear in the documentation.
+
+`never`: The strictest setting lists the base relationship but does not repeat the base's members on the derived page. This is the style used by cppreference. Readers follow the link to the base to see what they inherited:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/configuration/inherited-members-never/inherited-members-never.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/configuration/inherited-members-never/inherited-members-never.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/configuration/inherited-members-never/inherited-members-never.adoc[tags=!footer]
+========
+
+``circle``'s page lists only its own constructor. The inherited `draw` is reachable through the link to `shape`. This is the model https://en.cppreference.com[cppreference^] uses for the standard library. Technically correct, but most library docs do not want it: a reader landing on `circle` has to chase a link to find out what they can call on it.
+
+`reference`: lists the inherited members directly on the derived class's page. Each entry links back to the member of the base class, so the base class is the source of truth:
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/configuration/inherited-members-reference/inherited-members-reference.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/configuration/inherited-members-reference/inherited-members-reference.adoc[tags=!footer]
+========
+
+`draw` is now visible in ``circle``'s Member Functions table, alongside the constructor. Its link points at `shape::draw`, so there is no duplicate page. This is the natural choice when every base class lives in the corpus and has its own page.
+
+`copy-dependencies` (the default) is meant to handle specializations more gracefully. The motivation for this option is that two patterns break the `reference` model:
+
+* Implicit template specializations. `class version: public detail::comparable<version>` references `detail::comparable<version>`, which the user did not write explicitly. MrDocs cannot point to a "see the base" link on a page that does not exist and creating a reference to the primary template `detail::comparable<T>` is not helpful because the reader cannot see the inherited members without following the link and mentally substituting `version` for `T`.
+* Bases that are not in the corpus at all (a private detail header, an excluded vendor class, a system header). There is nowhere for the link to go.
+
+In both cases, the `reference` option would leave the inherited members invisible or create a reference to a primary template that's semantically hard to interpret. The default, `copy-dependencies`, behaves like `reference` when the base is already in the corpus. However, it uses the {cpp} compiler to actually instantiate the members for other cases, and copies the members of the instantiated base class into the derived page when the base is a *dependency*, so they are documented in place with the concrete operand types substituted in:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/configuration/inherited-members-specialization/inherited-members-specialization.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/configuration/inherited-members-specialization/inherited-members-specialization.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/configuration/inherited-members-specialization/inherited-members-specialization.adoc[tags=!footer]
+========
+
+The configuration marks the `detail` namespace as xref:configuration/filters.adoc#_implementation_details[implementation-defined], so neither the primary template `detail::comparable` nor any of its symbols have a page of their own and every reference to one of them renders as `+/* implementation-defined */+`. ``version``'s base class in the rendered synopsis is exactly that placeholder. The specialization `detail::comparable<version>` is therefore a pure dependency. `copy-dependencies` reaches into that instantiated base and copies its members onto ``version``'s page: `operator==` and `operator!=` appear in ``version``'s Member Functions table, with the parameter type rewritten to `version const&` and the boilerplate brief, parameter doc, and return value supplied by xref:#_function_metadata[`auto-function-metadata`]. The reader gets the full API of `version` in one place, with nothing referring outwardly to a base that has no page.
+
+This is one of the larger gaps between MrDocs and other tools. Other tools could at most document the primary `comparable<T>` and report the inheritance, but the implicit specialization `comparable<version>` is not an entity that can be introspected without a compiler. The inherited operators silently disappear from ``version``'s page, and the Boost.Operators / CRTP idiom becomes invisible in the rendered docs. MrDocs treats the specialization as a first-class dependency and copies the resolved members into the derived class.
+
+`copy-all`: The last possible setting copies every base member into every derived page, regardless of whether the base is in the corpus. It flattens the documentation: a reader on a derived page sees the full surface inline, with no need to follow base-class links. The price is duplication: the same member is documented on every class that inherits it.
+
+== Missing headers
+
+The platform for a documentation build often doesn't have the same dependencies and system libraries available. If a header is genuinely unavailable, the xref:migration-notes.adoc#handling-dependencies[Migration Notes] walk through the practical solutions. One of them is defining shims for these dependencies. The other options can be specified in the configuration file.
+
+xref:configuration/reference.adoc#missing-include-shims_option[`missing-include-shims`] lets you describe stub contents for individual headers directly in the configuration file (the key is the include path, the value is the file body MrDocs presents to the compiler):
+
+[source,yaml]
+----
+include::example$configuration/parsing-missing-include-shims.yml[]
+----
+
+xref:configuration/reference.adoc#missing-include-prefixes_option[`missing-include-prefixes`] tells MrDocs which include paths to forgive when they cannot be found, so the surrounding code parses anyway:
+
+[source,yaml]
+----
+include::example$configuration/parsing-missing-include-prefixes.yml[]
+----
+
+Reach for these only when you need to. They are the answer to "MrDocs can't find this header and I cannot install it"; if you can adjust the compilation database, that is the better path.

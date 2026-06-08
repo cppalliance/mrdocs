@@ -1,0 +1,37 @@
+= Reference
+:mrdocs:
+
+[#max_of]
+== max&lowbar;of
+
+Returns the larger of two values&period;
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;parameters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+T const&
+max&lowbar;of(
+    T const& a,
+    T const& b);
+----
+
+=== Return Value
+
+the larger of two values&period;
+
+=== Template Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *T*
+| A type that supports `operator&lt;`&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

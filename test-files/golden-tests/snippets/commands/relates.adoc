@@ -1,0 +1,91 @@
+= Reference
+:mrdocs:
+
+[#pixel]
+== pixel
+
+A pixel record&period;
+
+=== Synopsis
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct pixel;
+----
+
+=== Data Members
+
+[cols=1]
+|===
+| Name
+| link:#pixel-x[`x`] 
+| link:#pixel-y[`y`] 
+|===
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#distance[`distance`]
+| Computes the Euclidean distance between two pixels&period;
+|===
+
+[#pixel-x]
+== link:#pixel[pixel]::x
+
+=== Synopsis
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int x;
+----
+
+[#pixel-y]
+== link:#pixel[pixel]::y
+
+=== Synopsis
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int y;
+----
+
+[#distance]
+== distance
+
+Computes the Euclidean distance between two pixels&period;
+
+=== Synopsis
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+distance(
+    link:#pixel[pixel] const& a,
+    link:#pixel[pixel] const& b);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *a*
+| A pixel record&period;
+| *b*
+| A pixel record&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,22 @@
+= Reference
+:mrdocs:
+
+[#add]
+== add
+
+A small function the no&hyphen;op extensions iterate over without changing&period;
+
+=== Synopsis
+
+Declared in `&lt;entry&hyphen;point&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+add(
+    int x,
+    int y);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

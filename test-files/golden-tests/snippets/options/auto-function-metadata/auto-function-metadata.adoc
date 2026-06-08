@@ -1,0 +1,273 @@
+= Reference
+:mrdocs:
+
+[#vec2]
+== vec2
+
+A 2D vector&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct vec2;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#vec2-2constructor-0f[`vec2`]         [.small]#[constructor]#
+| Construct from `x` and `y` components&period;
+| link:#vec2-2destructor[`&#126;vec2`] [.small]#[destructor]#
+| Destructor
+| link:#vec2-operator_assign[`operator&equals;`] 
+| Copy assignment operator
+| link:#vec2-magnitude[`magnitude`] 
+| Returns the Euclidean length of the vector&period;
+| link:#vec2-translated[`translated`] 
+| Translate this vector by `delta`&period;
+| link:#vec2-operator_eq[`operator&equals;&equals;`] 
+| Equality operator
+|===
+
+[#vec2-2constructor-0f]
+== link:#vec2[vec2]::vec2
+
+Construct from `x` and `y` components&period;
+
+=== Synopses
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+Copy constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#vec2-2constructor-0c[vec2](link:#vec2[vec2] const& other);
+----
+
+[.small]#link:#vec2-2constructor-0c[_» more&period;&period;&period;_]#
+
+Move constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#vec2-2constructor-05[vec2](link:#vec2[vec2]&& other) noexcept;
+----
+
+[.small]#link:#vec2-2constructor-05[_» more&period;&period;&period;_]#
+
+Construct from `x` and `y` components&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#vec2-2constructor-04[vec2](
+    double x,
+    double y);
+----
+
+[.small]#link:#vec2-2constructor-04[_» more&period;&period;&period;_]#
+
+[#vec2-2constructor-0c]
+== link:#vec2[vec2]::vec2
+
+Copy constructor
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+vec2(link:#vec2[vec2] const& other);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The object to copy construct from
+|===
+
+[#vec2-2constructor-05]
+== link:#vec2[vec2]::vec2
+
+Move constructor
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+vec2(link:#vec2[vec2]&& other) noexcept;
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The object to move construct from
+|===
+
+[#vec2-2constructor-04]
+== link:#vec2[vec2]::vec2
+
+Construct from `x` and `y` components&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+vec2(
+    double x,
+    double y);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *x*
+| The value to construct from
+|===
+
+[#vec2-2destructor]
+== link:#vec2[vec2]::&#126;vec2
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;vec2();
+----
+
+[#vec2-operator_assign]
+== link:#vec2[vec2]::operator&equals;
+
+Copy assignment operator
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#vec2[vec2]&
+operator&equals;(link:#vec2[vec2] const& other);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *other*
+| The object to copy assign from
+|===
+
+[#vec2-magnitude]
+== link:#vec2[vec2]::magnitude
+
+Returns the Euclidean length of the vector&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+magnitude() const;
+----
+
+=== Return Value
+
+the Euclidean length of the vector&period;
+
+[#vec2-translated]
+== link:#vec2[vec2]::translated
+
+Translate this vector by `delta`&period;
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#vec2[vec2]
+translated(link:#vec2[vec2] const& delta) const;
+----
+
+=== Return Value
+
+A 2D vector&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *delta*
+| A 2D vector&period;
+|===
+
+[#vec2-operator_eq]
+== link:#vec2[vec2]::operator&equals;&equals;
+
+Equality operator
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;function&hyphen;metadata&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(link:#vec2[vec2] const& rhs) const;
+----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *rhs*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,6 @@
+source-root: ..
+input:
+  - ../include
+missing-include-shims:
+  fmt/format.h: |
+    namespace fmt { template <class...> struct format_string {}; }

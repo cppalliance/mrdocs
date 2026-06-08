@@ -1,0 +1,26 @@
+= Reference
+:mrdocs:
+
+[#connect_to]
+== connect&lowbar;to
+
+Connects to a remote endpoint&period;
+
+=== Synopsis
+
+Declared in `&lt;summary&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+connect&lowbar;to(
+    char const* host,
+    int port);
+----
+
+=== Description
+
+Establishes a TCP connection to the given host and port and returns a handle for subsequent operations&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

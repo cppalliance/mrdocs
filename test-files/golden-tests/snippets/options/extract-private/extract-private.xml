@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>ugY0aYft02Y8rIzd4lBS1EhZl58=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>widget</name>
+  <source>
+    <location>
+      <short-path>extract-private.cpp</short-path>
+      <source-path>extract-private.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>ugY0aYft02Y8rIzd4lBS1EhZl58=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class with both public and private members.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>class</key-kind>
+  <record-interface>
+    <record-tranche>
+      <functions>3IGbXvNIOYYiGwmhFPFXh1GbrdU=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+      <variables>R521LVpoLjrhAEWsE4J/M3JmDP8=</variables>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>show</name>
+  <source>
+    <location>
+      <short-path>extract-private.cpp</short-path>
+      <source-path>extract-private.cpp</source-path>
+      <line-number>6</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>3IGbXvNIOYYiGwmhFPFXh1GbrdU=</id>
+  <extraction>regular</extraction>
+  <parent>ugY0aYft02Y8rIzd4lBS1EhZl58=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Display the widget.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<variable>
+  <name>count</name>
+  <source>
+    <location>
+      <short-path>extract-private.cpp</short-path>
+      <source-path>extract-private.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>R521LVpoLjrhAEWsE4J/M3JmDP8=</id>
+  <extraction>regular</extraction>
+  <parent>ugY0aYft02Y8rIzd4lBS1EhZl58=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>An internal counter.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-record-field>1</is-record-field>
+</variable>
+</mrdocs>
