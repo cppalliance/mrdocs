@@ -49,7 +49,7 @@ jobs:
           python3 -m coverage xml -o bootstrap-coverage.xml
 
       - name: Upload Bootstrap Coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           files: bootstrap-coverage.xml
           flags: bootstrap
@@ -103,7 +103,7 @@ jobs:
 
       - name: Coverage replay (upload to codecov)
         if: inputs.coverage-replay
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           files: ${{ env.LCOV_PATH }}
           flags: cpp
