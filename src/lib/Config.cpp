@@ -226,10 +226,14 @@ struct PublicSettingsVisitor {
             if (auto expBaseDir = getBaseDir(absPattern, dirs, self, usingDefault, opts);
                 expBaseDir)
             {
-                // Make the pattern absolute relative to the base directory
+                // Make the pattern absolute relative to the base directory.
+                // The join uses the OS-native separator (backslashes on
+                // Windows), so re-POSIX-ify the result; PathGlobPattern::match
+                // splits on `/` and `**` would otherwise be stopped by `\`.
                 std::string baseDir = *expBaseDir;
                 baseDir = files::makePosixStyle(baseDir);
                 absPattern = files::makeAbsolute(pattern, baseDir);
+                absPattern = files::makePosixStyle(absPattern);
                 MRDOCS_TRY(value, PathGlobPattern::create(absPattern));
             }
         }
