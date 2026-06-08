@@ -179,6 +179,16 @@ describe("scopesTouched", () => {
     it("returns an empty set when no paths are given", () => {
         expect(scopesTouched([])).toEqual(new Set());
     });
+
+    // examples/** is its own scope; it does not get rolled into source.
+    it("classifies paths under examples/ as the examples scope", () => {
+        const scopes = scopesTouched([
+            "examples/library/breaking-changes/src/main.cpp",
+            "examples/configuration/inputs/extra-includes/docs/mrdocs.yml",
+            "examples/generators/data-driven/md/simple.cpp",
+        ]);
+        expect(scopes).toEqual(new Set(["examples"]));
+    });
 });
 
 describe("isCodeChange", () => {
@@ -201,6 +211,10 @@ describe("isCodeChange", () => {
 
     it("is true when third-party is touched", () => {
         expect(isCodeChange(new Set(["third-party"]))).toBe(true);
+    });
+
+    it("is true when examples are touched", () => {
+        expect(isCodeChange(new Set(["examples"]))).toBe(true);
     });
 
     // Meta scopes do not justify rebuilding the binary.
