@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-03[`S0`] 
@@ -55,7 +55,7 @@ struct S0;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-03-M0[`M0`] 
@@ -102,7 +102,7 @@ struct link:#S0-03[S0]&lt;short&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-09-M0[`M0`] 
@@ -149,7 +149,7 @@ struct link:#S0-03[S0]&lt;void&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-00-M0[`M0`] 

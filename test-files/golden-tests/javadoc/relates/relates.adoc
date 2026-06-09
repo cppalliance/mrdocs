@@ -42,8 +42,7 @@ struct A;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f[`f`]
 | A brief for f&period;
 |===

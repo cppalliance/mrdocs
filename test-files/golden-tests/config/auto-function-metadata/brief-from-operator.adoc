@@ -17,6 +17,7 @@
 | A dumb ostream class
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -25,6 +26,7 @@
 | link:#operator_lshift[`operator&lt;&lt;`] 
 | Stream insertion operator
 |===
+
 
 [#A]
 == A
@@ -64,6 +66,7 @@ struct X;
 | link:#X-operator_plus_eq[`operator&plus;&equals;`] 
 | Addition assignment operator
 |===
+
 
 [#X-operator_assign-0a]
 == link:#X[X]::operator&equals;
@@ -130,8 +133,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy assign from
 |===
@@ -159,8 +161,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move assign from
 |===
@@ -188,8 +189,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to copy assign from
 |===
@@ -217,8 +217,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -241,8 +240,7 @@ struct ostream;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_lshift[`operator&lt;&lt;`]
 | Stream insertion operator
 |===
@@ -272,8 +270,7 @@ Reference to the current output stream
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *os*
 | An output stream
 | *x*

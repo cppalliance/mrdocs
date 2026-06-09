@@ -6,13 +6,14 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
 | link:#string_type[`string&lowbar;type`] 
 | link:#string_view_type[`string&lowbar;view&lowbar;type`] 
 |===
+
 
 [#A]
 == A
@@ -38,6 +39,7 @@ struct A;
 | link:#A-2conversion-00[`operator string&lowbar;view&lowbar;type`] 
 | Convert A to a string
 |===
+
 
 [#A-operator_assign-04]
 == link:#A[A]::operator&equals;
@@ -78,8 +80,7 @@ A representation of the string
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The string to convert
 |===
@@ -107,8 +108,7 @@ A representation of the string
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The string to convert
 |===
@@ -136,8 +136,7 @@ A representation of the string
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The string to convert
 |===

@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T[`T`] 
@@ -38,8 +38,7 @@ struct T;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#f[f]`
 | f
 |===
@@ -60,8 +59,7 @@ struct U;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#f[f]`
 | f
 |===

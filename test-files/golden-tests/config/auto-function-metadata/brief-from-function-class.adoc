@@ -15,6 +15,7 @@
 | Test class
 |===
 
+
 [#A]
 == A
 
@@ -57,6 +58,7 @@ struct X;
 | link:#X-2conversion-0b[`operator int`] 
 | Conversion to `int`
 |===
+
 
 [#X-2constructor-08]
 == link:#X[X]::X
@@ -164,8 +166,7 @@ X(link:#X[X] const& other) = default;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -189,8 +190,7 @@ X(link:#X[X]&& other) = default;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -213,8 +213,7 @@ X(int value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -237,8 +236,7 @@ X(link:#A[A] const& value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to copy construct from
 |===
@@ -261,8 +259,7 @@ X(link:#A[A]&& value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to move construct from
 |===

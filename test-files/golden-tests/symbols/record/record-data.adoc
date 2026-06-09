@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T[`T`] 
@@ -30,7 +30,7 @@ struct T;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T-i[`i`] 
@@ -115,7 +115,7 @@ struct U;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#U-t[`t`] 
@@ -147,7 +147,7 @@ class V;
 
 === Protected Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#V-j[`j`] 
@@ -155,7 +155,7 @@ class V;
 
 === Private Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#V-i[`i`] 
@@ -212,7 +212,7 @@ struct W;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#W-buf[`buf`] 
@@ -247,7 +247,7 @@ struct X;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#X-Q[`Q`] 
@@ -255,7 +255,7 @@ struct X;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#X-x0[`x0`] 

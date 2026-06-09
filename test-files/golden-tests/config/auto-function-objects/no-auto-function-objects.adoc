@@ -6,11 +6,12 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example[`example`] 
 |===
+
 
 [#example]
 == example
@@ -24,6 +25,7 @@
 | Would be auto&hyphen;detected, but auto&hyphen;function&hyphen;objects is false&period; Should remain a regular variable&period;
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -33,13 +35,15 @@
 | Function call operator&period;
 |===
 
+
 === Variables
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example-auto_var[`auto&lowbar;var`] 
 |===
+
 
 [#example-auto_fn]
 == link:#example[example]::auto&lowbar;fn
@@ -63,6 +67,7 @@ struct auto&lowbar;fn;
 | link:#example-auto_fn-operator_call[`operator()`] 
 | Function call operator&period;
 |===
+
 
 [#example-auto_fn-operator_call]
 == link:#example[example]::link:#example-auto_fn[auto&lowbar;fn]::operator()

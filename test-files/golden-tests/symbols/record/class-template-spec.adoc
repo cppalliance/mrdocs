@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e[`A`] 
@@ -35,7 +35,7 @@ struct A;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-f[`f`] 
@@ -69,7 +69,7 @@ struct link:#A-0e[A]&lt;int&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00-g[`g`] 
@@ -103,7 +103,7 @@ struct link:#A-0e[A]&lt;long&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0c-h[`h`] 
@@ -137,7 +137,7 @@ struct B;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B-00-f[`f`] 
@@ -171,7 +171,7 @@ struct link:#B-00[B]&lt;T&&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B-06-h[`h`] 
@@ -205,7 +205,7 @@ struct link:#B-00[B]&lt;T*&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B-07-g[`g`] 
@@ -241,7 +241,7 @@ struct C;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C-0f-f[`f`] 
@@ -275,7 +275,7 @@ struct link:#C-0f[C]&lt;int, int&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C-0a-g[`g`] 
@@ -309,7 +309,7 @@ struct link:#C-0f[C]&lt;T*, int&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C-0e-h[`h`] 

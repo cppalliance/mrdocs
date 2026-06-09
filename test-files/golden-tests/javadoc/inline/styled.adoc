@@ -13,6 +13,7 @@
 | Brief for A
 |===
 
+
 [#A]
 == A
 
@@ -42,6 +43,7 @@ We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
 | Compare function
 |===
 
+
 [#A-compare]
 == link:#A[A]::compare
 
@@ -65,8 +67,7 @@ compare(link:#A[A] const& other) const noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The other object to compare against&period;
 |===

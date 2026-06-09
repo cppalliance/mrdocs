@@ -26,8 +26,7 @@ A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&perio
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *data*
 | The bytes to encode&period;
 | *n*
@@ -59,8 +58,7 @@ A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&perio
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *data*
 | The bytes to encode&period;
 | *n*

@@ -6,32 +6,35 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
 |===
 
+
 === Using Declarations
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#f[`f`] 
 | link:#g[`g`] 
 |===
 
+
 [#A]
 == A
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-f[`f`] 
 | link:#A-g[`g`] 
 |===
+
 
 [#A-f]
 == link:#A[A]::f
@@ -73,11 +76,12 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols="1"]
 |===
 | Name
-| link:#A-f[A::f]
+| link:#A-f[`f`] 
 |===
+
 [#g]
 == g
 
@@ -92,10 +96,11 @@ using A::g;
 
 === Introduced Symbols
 
-[cols=1]
+[cols="1"]
 |===
 | Name
-| link:#A-g[A::g]
+| link:#A-g[`g`] 
 |===
+
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

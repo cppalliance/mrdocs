@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T01[`T01`] 
@@ -43,7 +43,7 @@ struct T01;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T01-f[`f`] 
@@ -76,7 +76,7 @@ struct T02;
 
 === Static Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T02-f[`f`] 
@@ -110,7 +110,7 @@ struct T03;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T03-f[`f`] 
@@ -143,7 +143,7 @@ struct T04;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T04-f[`f`] 
@@ -176,7 +176,7 @@ struct T05;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T05-f[`f`] 
@@ -209,7 +209,7 @@ struct T06;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T06-f[`f`] 
@@ -243,7 +243,7 @@ struct T08;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T08-f[`f`] 
@@ -276,7 +276,7 @@ struct T09;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T09-f[`f`] 
@@ -309,7 +309,7 @@ struct T10;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T10-f[`f`] 
@@ -342,7 +342,7 @@ struct T11;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T11-f[`f`] 
@@ -375,7 +375,7 @@ struct T12;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T12-f[`f`] 
@@ -408,7 +408,7 @@ struct T13;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T13-f[`f`]  [.small]#[virtual]#
@@ -442,7 +442,7 @@ struct T14;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T14-f[`f`]  [.small]#[virtual]#
@@ -452,9 +452,8 @@ struct T14;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#T17[`T17`]
+| Name| Description
+| link:#T17[`T17`] 
 | 
 |===
 
@@ -486,7 +485,7 @@ struct T15;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T15-f[`f`] 
@@ -519,7 +518,7 @@ struct T16;
 
 === Static Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T16-f[`f`] 
@@ -556,15 +555,14 @@ struct T17
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#T14[T14]`
 | 
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T17-f[`f`]  [.small]#[virtual]#
@@ -598,7 +596,7 @@ struct U;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#U-f1[`f1`] 
@@ -607,7 +605,7 @@ struct U;
 
 === Static Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#U-f2[`f2`] 
@@ -617,9 +615,8 @@ struct U;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#V[`V`]
+| Name| Description
+| link:#V[`V`] 
 | 
 |===
 
@@ -683,15 +680,14 @@ struct V
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#U[U]`
 | 
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#U-f1[`f1`] 
@@ -700,7 +696,7 @@ struct V
 
 === Static Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#U-f2[`f2`] 

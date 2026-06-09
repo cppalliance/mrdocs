@@ -6,7 +6,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#f[`f`] 
@@ -38,8 +38,7 @@ f(int x0);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x0*
 | An integer `x0`
 |===
@@ -63,8 +62,7 @@ g(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x1*
 | An integer `x1`
 | *y1* [in]
@@ -90,8 +88,7 @@ h(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x2*
 | An integer `x2`
 | *y2* [out]
@@ -117,8 +114,7 @@ i(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x3* [in]
 | An integer `x3`
 | *y3* [out]
@@ -144,8 +140,7 @@ j(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x4*
 | An integer `x4`
 | *y4* [inout]
@@ -172,8 +167,7 @@ k(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x5* [out]
 | An integer `x5`
 | *y5* [in]
@@ -203,8 +197,7 @@ l(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x6* [out]
 | An integer `x6`
 | *y6*
@@ -232,8 +225,7 @@ m(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x7* [in]
 | An integer `x7`
 | *y7* [out]
@@ -257,8 +249,7 @@ n(int x8);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x8* [in]
 | An integer `x8`
 |===
@@ -280,8 +271,7 @@ o(int x9);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x9* [in]
 | An integer `x9`
 | *x9* [out]

@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C0[`C0`] 
@@ -31,7 +31,7 @@ struct C0;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C0-N0[`N0`] 
@@ -39,7 +39,7 @@ struct C0;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C0-w[`w`] 
@@ -61,7 +61,7 @@ struct N0;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C0-N0-z[`z`] 
@@ -129,7 +129,7 @@ struct C1;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C1-N1[`N1`] 
@@ -137,7 +137,7 @@ struct C1;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C1-w[`w`] 
@@ -158,7 +158,7 @@ struct N1;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C1-N1-x[`x`] 
@@ -229,7 +229,7 @@ struct C2;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C2-N2[`N2`] 
@@ -237,7 +237,7 @@ struct C2;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C2-v[`v`] 
@@ -258,7 +258,7 @@ struct N2;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C2-N2-w[`w`] 
@@ -342,7 +342,7 @@ struct C3;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C3-v[`v`] 

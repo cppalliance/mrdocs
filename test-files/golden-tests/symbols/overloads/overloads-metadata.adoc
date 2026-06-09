@@ -13,6 +13,7 @@
 | Test function
 |===
 
+
 [#f-0c]
 == f
 
@@ -67,8 +68,7 @@ link:#f-02[f](
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | Describe the exception
 | `std&colon;&colon;logic&lowbar;error`
@@ -84,8 +84,7 @@ link:#f-02[f](
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *A*
 | Describe A
 | *B*
@@ -96,8 +95,7 @@ link:#f-02[f](
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 | *b*
@@ -140,8 +138,7 @@ f(int a);
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | Describe the exception
 |===
@@ -154,8 +151,7 @@ The number corresponding to a
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *A*
 | Describe A
 |===
@@ -164,8 +160,7 @@ The number corresponding to a
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -207,8 +202,7 @@ The number corresponding to a
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a again
 |===
@@ -241,8 +235,7 @@ f(
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;logic&lowbar;error`
 | Describe the exception
 |===
@@ -255,8 +248,7 @@ The number corresponding to a and b
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *A*
 | Describe A again
 | *B*
@@ -267,8 +259,7 @@ The number corresponding to a and b
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a again
 | *b*

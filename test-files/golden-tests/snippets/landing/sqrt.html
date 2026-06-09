@@ -6,94 +6,72 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="sqrt">
-sqrt</h2>
-<div>
-<p>Compute the integer square root.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;sqrt.cpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="sqrt">sqrt</h2>
+<div class="brief">
+<p>Compute the integer square root.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;sqrt.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 [[nodiscard]]
 constexpr
 T
 sqrt(T value) noexcept
 requires std::is_integral_v&lt;T&gt;;</code></pre>
-</div>
+</div><!-- /synopsis -->
 <div class="admonition">
 <h4>NOTE</h4>
 <div>
 <p>This function is defined as an <a href="https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects">Algorithm Function Object (AFO)</a>.</p>
 </div>
 </div>
-<div>
-<h3>
-Description</h3>
+<div class="description">
+<h3>Description</h3>
 <p>Returns the integer square root of <code>value</code> via bit manipulation.</p>
-<h2>
-Complexity</h2>
+<h3>Complexity</h3>
 <p>Logarithmic in <code>value</code>.</p>
 <div class="admonition">
 <h4>NOTE</h4>
 <div>
 <p>Returns zero for zero input.</p>
 </div>
-</div></div>
-<div>
-<h3>
-Return Value</h3>
-The integer square root of <code>value</code>.
-</div>
-<div>
-<h3>
-Template Parameters</h3>
-<table>
+</div></div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The integer square root of <code>value</code>.</p>
+</div><!-- /return-value -->
+<div class="template-parameters">
+<h3>Template Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>T</strong></td>
-<td>An integral type.</td>
-</tr>
+<tr><td><strong>T</strong></td><td>An integral type.</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /template-parameters -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>value</strong></td>
-<td>The integral value, which must be non-negative.</td>
-</tr>
+<tr><td><strong>value</strong></td><td>The integral value, which must be non-negative.</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Preconditions</h3>
+</div><!-- /parameters -->
+<div class="preconditions">
+<h3>Preconditions</h3>
 <ul>
 <li><code>value &gt;&#x3D; 0</code>.</li>
 </ul>
-</div>
-</div>
+</div><!-- /preconditions -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

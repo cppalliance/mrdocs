@@ -28,9 +28,8 @@ struct figure;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#square[`square`]
+| Name| Description
+| link:#square[`square`] 
 | A square&period;
 |===
 
@@ -68,8 +67,7 @@ struct square
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#figure[figure]`
 | A drawable figure&period;
 |===
@@ -104,8 +102,7 @@ square(double side);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *side*
 | The value to construct from
 |===

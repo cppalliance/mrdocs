@@ -1,0 +1,52 @@
+{{!--
+    Renders a table cell's data value.
+
+    Routes by `this.$meta.type` (and `this.$meta.bases`) to existing
+    print partials. The cell partial does not know about column index;
+    the consumer is expected to extract the right sub-tree per column
+    so each cell receives a self-describing data value with its own
+    `$meta.type`.
+
+    Format-specific syntax is delegated to the existing primitives
+    (`markup/code`, `markup/a`, `markup/b`), so this partial lives in
+    `common/` and is shared across generators.
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{~#if (eq $meta.type "BaseInfo")~}}
+{{#>markup/code}}{{> type/declarator type}}{{/markup/code}}
+{{~else if (eq $meta.type "FriendInfo")~}}
+{{~#if id~}}
+{{#>markup/code}}{{> symbol/qualified-name id}}{{/markup/code}}
+{{~else if type~}}
+{{#>markup/code}}{{> type/declarator type}}{{/markup/code}}
+{{~/if~}}
+{{~else if (contains $meta.bases "Type")~}}
+{{#>markup/code}}{{> type/declarator .}}{{/markup/code}}
+{{~else if (eq $meta.type "ReferenceInline")~}}
+{{> doc/inline/reference .}}
+{{~else if (eq $meta.type "BriefBlock")~}}
+{{> doc/block/inline-brief .}}
+{{~else if (or (eq $meta.type "ParamBlock") (eq $meta.type "TParamBlock"))~}}
+{{#>markup/b}}{{name}}{{/markup/b}}{{#if direction}} [{{direction}}]{{/if}}
+{{~else if (or (eq $meta.type "Name") (contains $meta.bases "Name"))~}}
+{{~#if id.url~}}
+{{#>markup/a href=id.url}}{{#>markup/code}}{{> type/name-info-text .}}{{/markup/code}}{{/markup/a}}
+{{~else if url~}}
+{{#>markup/a href=url}}{{#>markup/code}}{{> type/name-info-text .}}{{/markup/code}}{{/markup/a}}
+{{~else~}}
+{{> type/name-info-text .}}
+{{~/if~}}
+{{~else if (contains $meta.bases "Symbol")~}}
+{{~#if url~}}
+{{#>markup/a href=url}}{{#>markup/code}}{{> symbol/name-text .}}{{/markup/code}}{{/markup/a}} {{> symbol/special-function-suffix .}}
+{{~else~}}
+{{#>markup/code}}{{> symbol/name-text .}}{{/markup/code}} {{> symbol/special-function-suffix .}}
+{{~/if~}}
+{{~else if (is_array .)~}}
+{{#each .}}{{> doc/inline}}{{/each}}
+{{~else if (contains $meta.bases "Block")~}}
+{{> doc/block .}}
+{{~else if (is_string .)~}}
+{{this}}
+{{~/if~}}

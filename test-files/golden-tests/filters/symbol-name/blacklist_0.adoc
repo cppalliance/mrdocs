@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N0[`N0`] 
@@ -19,7 +19,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N0-f0[`f0`] 
@@ -43,7 +43,7 @@ f0();
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N4-N5[`N5`] 
@@ -55,7 +55,7 @@ f0();
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N4-N5-f1[`f1`] 
@@ -79,7 +79,7 @@ f1();
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N4-N6-f1[`f1`] 
@@ -103,7 +103,7 @@ f1();
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N7-N9[`N9`] 
@@ -114,7 +114,7 @@ f1();
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N7-N9-g0[`g0`] 

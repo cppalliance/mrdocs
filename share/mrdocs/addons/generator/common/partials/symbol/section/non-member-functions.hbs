@@ -1,0 +1,11 @@
+{{! Non-member (related) functions listed via @relates. }}
+{{#if symbol.doc.related}}
+{{#> markup/section name="non-member-functions"}}
+{{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=symbol.doc.related
+    columns=(arr "." "id.doc.brief") }}
+{{/markup/section}}
+{{/if}}

@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#std[`std`] 
@@ -14,7 +14,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -25,7 +25,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#std-hash-03[`hash`] 
@@ -60,7 +60,7 @@ class link:#std-hash-03[hash]&lt;link:#A[A]&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#std-hash-08-operator_call[`operator()`] 
@@ -95,8 +95,7 @@ class A;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#std-hash-08[std::hash&lt;A&gt;]`
 | 
 |===

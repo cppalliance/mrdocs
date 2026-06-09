@@ -1,0 +1,18 @@
+{{! Symbols introduced by a using-declaration. }}
+{{#if symbol.shadowDeclarations}}
+{{#> markup/section name="introduced-symbols"}}
+{{#> markup/dynamic-level-h }}Introduced Symbols{{/markup/dynamic-level-h~}}
+{{#if (any_of_by symbol.shadowDeclarations "doc")}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=symbol.shadowDeclarations
+    columns=(arr "." "doc.brief") }}
+{{else}}
+{{> markup/table
+    headers=(arr "Name")
+    items=symbol.shadowDeclarations
+    columns=(arr ".") }}
+{{/if}}
+{{/markup/section}}
+{{/if}}

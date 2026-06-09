@@ -1,20 +1,21 @@
 {{!--
-    Renders a heading element with an optional ID attribute.
+    Renders an AsciiDoc heading at the given absolute level.
 
-    This partial generates a heading element (`h1`, `h2`, etc.) based on the provided level.
-    If an ID is provided, it will be included as an anchor for the heading.
+    `level` is the absolute heading level (1 = `=`, 2 = `==`, 3 = `===`, ...),
+    matching `markup/h.html.hbs`'s convention so consumers pass the same
+    number in both formats.
 
     Parameters:
-        - partial block: The content to be rendered inside the heading element.
-        - level: The level of the heading element (1, 2, etc.).
-        - id: An optional ID attribute for the heading element.
+        - partial block: heading text.
+        - level: heading level (1, 2, ...).  Defaults to 1.
+        - id:    optional anchor.
 
     Example:
-        {{> markup/h level=2 id="section-id" }}Section Title{{/markup/h}}
+        {{#> markup/h level=2 id="section-id" }}Section Title{{/markup/h}}
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{#if id}}[#{{{id}}}]
 {{/if}}
-={{{select level (repeat "=" level) (select @root.config.multipage "==" "=")}}} {{> @partial-block }}
+{{{repeat "=" (or level 1)}}} {{> @partial-block }}
 

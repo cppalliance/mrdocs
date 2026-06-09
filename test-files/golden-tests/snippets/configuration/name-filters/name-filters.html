@@ -6,129 +6,93 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="jzon-value">
-jzon::value</h2>
-<div>
-<p>A parsed JSON document.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;jzon/parser.hpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="jzon-value">jzon::value</h2>
+<div class="brief">
+<p>A parsed JSON document.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;jzon/parser.hpp&gt;</code></p>
 <pre><code class="source-code cpp">class value;</code></pre>
-</div>
-
-
-<div>
-<h2>
-Non-Member Functions</h2>
-<table>
+</div><!-- /synopsis -->
+<div class="non-member-functions">
+<h3>Non-Member Functions</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
 <tr><td><a href="#jzon-parse"><code>parse</code></a></td><td>Parse a JSON document.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="jzon-parse">
-jzon::parse</h2>
-<div>
-<p>Parse a JSON document.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;jzon/parser.hpp&gt;</code></div>
+</div><!-- /non-member-functions -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="jzon-parse">jzon::parse</h2>
+<div class="brief">
+<p>Parse a JSON document.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;jzon/parser.hpp&gt;</code></p>
 <pre><code class="source-code cpp"><a href="#jzon-value">value</a>
 parse(char const* source);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>Validates <code>source</code> and returns the resulting value tree.</p>
-</div>
-<div>
-<h3>
-Return Value</h3>
-A parsed JSON document.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>A parsed JSON document.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>source</strong></td>
-<td>A null-terminated UTF-8 JSON document.</td>
-</tr>
+<tr><td><strong>source</strong></td><td>A null-terminated UTF-8 JSON document.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="jzon-validate">
-jzon::validate</h2>
-<div>
-<p>Validate that the document is well-formed JSON.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;jzon/parser.hpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="jzon-validate">jzon::validate</h2>
+<div class="brief">
+<p>Validate that the document is well-formed JSON.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;jzon/parser.hpp&gt;</code></p>
 <pre><code class="source-code cpp">bool
 validate(char const* source);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>Parses <code>source</code> without constructing a value tree, reporting only whether the input conforms to RFC 8259.</p>
-</div>
-<div>
-<h3>
-Return Value</h3>
-<code>true</code> if the document is syntactically valid JSON.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>true</code> if the document is syntactically valid JSON.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>source</strong></td>
-<td>A null-terminated UTF-8 JSON document.</td>
-</tr>
+<tr><td><strong>source</strong></td><td>A null-terminated UTF-8 JSON document.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

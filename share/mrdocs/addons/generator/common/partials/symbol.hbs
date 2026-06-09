@@ -1,0 +1,36 @@
+{{!--
+    Renders the documentation for a symbol.
+
+    Each section is its own partial under `symbol/section/`; sections
+    self-skip when their data is empty.  Reordering or replacing a
+    section is a one-line edit here.
+
+    Expected Context: {Root Context Object}
+
+    Example:
+        {{> symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#> markup/section name="symbol"}}
+{{> symbol/section/header}}
+{{> symbol/section/synopsis}}
+{{> symbol/section/function-object-admonition}}
+{{> symbol/section/description}}
+{{> symbol/section/base-classes}}
+{{> symbol/section/protected-base-classes}}
+{{> symbol/section/members}}
+{{> symbol/section/friends}}
+{{> symbol/section/using-directives}}
+{{> symbol/section/non-member-functions}}
+{{> symbol/section/derived-classes}}
+{{> symbol/section/introduced-symbols}}
+{{> symbol/section/exceptions}}
+{{> symbol/section/return-value}}
+{{> symbol/section/template-parameters}}
+{{> symbol/section/parameters}}
+{{> symbol/section/preconditions}}
+{{> symbol/section/postconditions}}
+{{> symbol/section/see-also}}
+{{> symbol/section/recursive-index}}
+{{/markup/section}}

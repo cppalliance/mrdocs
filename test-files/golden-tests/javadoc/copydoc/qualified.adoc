@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N[`N`] 
@@ -26,7 +26,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N-A[`A`] 
@@ -46,7 +46,7 @@ struct A;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N-A-B[`B`] 
@@ -178,8 +178,7 @@ link:#N-A-f-07[f](link:#param_t[param&lowbar;t&lt;7&gt;] a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -207,8 +206,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -236,8 +234,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -265,8 +262,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -294,8 +290,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -323,8 +318,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -352,8 +346,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -381,8 +374,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -410,8 +402,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -451,8 +442,7 @@ link:#N-A-g-06c[g](int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -480,8 +470,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -509,8 +498,7 @@ Function with same number of parameters but different types&period; This should 
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Fundamental type parameter
 |===
@@ -550,8 +538,7 @@ link:#N-A-h-06[h](int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -579,8 +566,7 @@ Documentation for the reference function
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Qualified param
 |===
@@ -608,8 +594,7 @@ Function with same number of parameters but different types&period; This should 
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Fundamental type parameter
 |===

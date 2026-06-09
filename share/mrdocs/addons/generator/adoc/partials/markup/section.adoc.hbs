@@ -1,0 +1,14 @@
+{{!--
+    Wraps a logical page section.
+
+    AsciiDoc has no DOM-style wrapper that scopes styling over multiple
+    blocks (the `[.role]` attribute attaches only to the next block,
+    not to everything that follows), so this variant just passes the
+    body through.  The `name` and `id` parameters are accepted for
+    parity with the HTML variant and reserved for future use.
+
+    Parameters:
+        name: optional CSS class / AsciiDoc role for the section.
+        id:   optional HTML id / AsciiDoc anchor for the section.
+--}}
+{{> @partial-block }}

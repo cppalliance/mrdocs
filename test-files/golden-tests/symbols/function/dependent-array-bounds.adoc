@@ -37,8 +37,7 @@ f(T(& arr)[N]);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *arr*
 | An array&period;
 |===
@@ -65,8 +64,7 @@ g(T const(& arr)[N]);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *arr*
 | An array&period;
 |===

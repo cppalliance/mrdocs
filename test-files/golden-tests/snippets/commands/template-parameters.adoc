@@ -27,8 +27,7 @@ the larger of two values&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | A type that supports `operator&lt;`&period;
 |===

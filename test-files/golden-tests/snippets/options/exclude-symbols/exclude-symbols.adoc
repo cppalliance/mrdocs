@@ -28,8 +28,7 @@ Parses `source` without constructing a value tree, reporting only whether the in
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *source*
 | A null&hyphen;terminated UTF&hyphen;8 JSON document&period;
 |===

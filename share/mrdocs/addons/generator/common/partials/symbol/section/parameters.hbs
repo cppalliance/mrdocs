@@ -1,0 +1,11 @@
+{{! Function parameters (@param). }}
+{{#if symbol.doc.params}}
+{{#> markup/section name="parameters"}}
+{{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=symbol.doc.params
+    columns=(arr "." "children") }}
+{{/markup/section}}
+{{/if}}

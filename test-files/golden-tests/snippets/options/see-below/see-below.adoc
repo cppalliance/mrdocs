@@ -46,8 +46,7 @@ A view of the bytes belonging to the first packet, or an empty view if no comple
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *input*
 | Bytes received from the stream, up to the caller&apos;s current fill mark&period;
 |===

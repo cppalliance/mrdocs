@@ -6,74 +6,54 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="netz-buffer_view">
-netz::buffer_view</h2>
-<div>
-<p>A non-owning view of a contiguous byte range.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;netz/buffer_view.hpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="netz-buffer_view">netz::buffer_view</h2>
+<div class="brief">
+<p>A non-owning view of a contiguous byte range.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;netz/buffer_view.hpp&gt;</code></p>
 <pre><code class="source-code cpp">class buffer_view { /* see-below */ };</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>Used as the parameter and return type for the framing helpers in <code>netz::stream</code> and as the buffer surface presented to async read handlers. Stores a pointer and a length, and does not extend the lifetime of the storage it refers to.</p>
-</div>
-
-
-</div>
-<div>
-<div>
-<h2 id="netz-first_packet">
-netz::first_packet</h2>
-<div>
-<p>Locate the first complete packet at the start of the buffer.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;netz/stream.hpp&gt;</code></div>
+</div><!-- /description -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="netz-first_packet">netz::first_packet</h2>
+<div class="brief">
+<p>Locate the first complete packet at the start of the buffer.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;netz/stream.hpp&gt;</code></p>
 <pre><code class="source-code cpp"><a href="#netz-buffer_view">buffer_view</a>
 first_packet(<a href="#netz-buffer_view">buffer_view</a> input);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>Scans <code>input</code> for a frame boundary. The returned view aliases the same memory as <code>input</code>, so the storage behind <code>input</code> must outlive the returned view.</p>
-</div>
-<div>
-<h3>
-Return Value</h3>
-A view of the bytes belonging to the first packet, or an empty view if no complete packet is present yet.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>A view of the bytes belonging to the first packet, or an empty view if no complete packet is present yet.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>input</strong></td>
-<td>Bytes received from the stream, up to the caller&#x27;s current fill mark.</td>
-</tr>
+<tr><td><strong>input</strong></td><td>Bytes received from the stream, up to the caller&#x27;s current fill mark.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

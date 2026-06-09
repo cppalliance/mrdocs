@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -15,7 +15,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#f[`f`] 
@@ -35,7 +35,7 @@ struct A;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-g[`g`] 
@@ -71,8 +71,7 @@ struct B
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `decltype(f())`
 | 
 |===

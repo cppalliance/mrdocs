@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
 |===
+
 
 [#A]
 == A
@@ -41,6 +42,7 @@ struct A;
 | link:#A-2conversion-01[`operator double`] 
 | Implicit conversion to double
 |===
+
 
 [#A-2constructor-0f]
 == link:#A[A]::A
@@ -114,8 +116,7 @@ A(char value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -138,8 +139,7 @@ A(double value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -163,8 +163,7 @@ A(int value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -189,8 +188,7 @@ A(U value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to construct from
 |===

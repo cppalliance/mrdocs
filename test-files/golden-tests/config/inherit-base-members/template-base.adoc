@@ -47,11 +47,10 @@ class base;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#concrete_derived[`concrete&lowbar;derived`]
+| Name| Description
+| link:#concrete_derived[`concrete&lowbar;derived`] 
 | A non&hyphen;template that inherits from a concrete specialization&period;
-| link:#derived[`derived`]
+| link:#derived[`derived`] 
 | A class template that inherits from `base&lt;T&gt;`&period;
 |===
 
@@ -89,8 +88,7 @@ operator&lsqb;&rsqb;(int n);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *n*
 | The right operand
 |===
@@ -114,15 +112,14 @@ class concrete&lowbar;derived
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#base-06[base&lt;int&gt;]`
 | A class template base&period;
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#concrete_derived-method[`method`] 
@@ -175,8 +172,7 @@ class derived
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#base-06[base&lt;T&gt;]`
 | A class template base&period;
 |===
@@ -226,8 +222,7 @@ operator&lsqb;&rsqb;(int n);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *n*
 | The right operand
 |===

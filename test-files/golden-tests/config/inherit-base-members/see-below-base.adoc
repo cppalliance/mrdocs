@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#see_below_ns[`see&lowbar;below&lowbar;ns`] 
@@ -14,7 +14,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#derived_see[`derived&lowbar;see`] 
@@ -25,7 +25,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#see_below_ns-base_see[`base&lowbar;see`] 
@@ -60,8 +60,7 @@ struct derived&lowbar;see
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#see_below_ns-base_see[see&lowbar;below&lowbar;ns::base&lowbar;see]`
 | 
 |===

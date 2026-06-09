@@ -13,6 +13,7 @@
 | The return type of the function
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -21,6 +22,7 @@
 | link:#getR[`getR`] 
 | Test function
 |===
+
 
 [#R]
 == R
@@ -40,8 +42,7 @@ struct R;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#getR[`getR`]
 | Test function
 |===

@@ -17,19 +17,19 @@ struct point;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#point-x[`x`] 
 | link:#point-y[`y`] 
 |===
 
+
 === Friends
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#operator_eq[operator&equals;&equals;]`
 | Equality comparison, declared as a friend so it participates in ADL&period;
 |===
@@ -83,8 +83,7 @@ operator&equals;&equals;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The left operand
 | *b*

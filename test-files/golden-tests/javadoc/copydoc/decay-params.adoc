@@ -15,6 +15,7 @@
 | `foo` overloads
 |===
 
+
 [#bar]
 == bar
 
@@ -43,8 +44,7 @@ A boolean value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | An array of integers&period;
 |===
@@ -100,8 +100,7 @@ A boolean value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | An integer&period;
 |===
@@ -148,8 +147,7 @@ foo(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | An integer&period;
 |===
@@ -182,8 +180,7 @@ A boolean value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | An array of integers&period;
 |===

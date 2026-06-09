@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T[`T`] 
@@ -14,7 +14,7 @@
 
 === Variables
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#i[`i`] 

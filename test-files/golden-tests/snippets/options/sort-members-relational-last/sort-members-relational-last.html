@@ -6,142 +6,103 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="value">
-value</h2>
-<div>
-<p>A class whose relational operators sit at the bottom of the member list.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="value">value</h2>
+<div class="brief">
+<p>A class whose relational operators sit at the bottom of the member list.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></p>
 <pre><code class="source-code cpp">struct value;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#value-get"><code>get</code></a> </td><td>Get the underlying integer.</td></tr><tr>
-<td><a href="#value-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality comparison.</td></tr><tr>
-<td><a href="#value-operator_lt"><code>operator&lt;</code></a> </td><td>Less-than comparison.</td></tr>
+<tr><td><a href="#value-get"><code>get</code></a> </td><td>Get the underlying integer.</td></tr>
+<tr><td><a href="#value-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality comparison.</td></tr>
+<tr><td><a href="#value-operator_lt"><code>operator&lt;</code></a> </td><td>Less-than comparison.</td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="value-get">
-value::get</h2>
-<div>
-<p>Get the underlying integer.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="value-get"><a href="#value">value</a>::get</h2>
+<div class="brief">
+<p>Get the underlying integer.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></p>
 <pre><code class="source-code cpp">int
 get() const;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-the underlying integer.
-</div>
-</div>
-<div>
-<div>
-<h2 id="value-operator_eq">
-value::operator&#x3D;&#x3D;</h2>
-<div>
-<p>Equality comparison.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>the underlying integer.</p>
+</div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="value-operator_eq"><a href="#value">value</a>::operator&#x3D;&#x3D;</h2>
+<div class="brief">
+<p>Equality comparison.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></p>
 <pre><code class="source-code cpp">bool
 operator&#x3D;&#x3D;(<a href="#value">value</a> const& rhs) const;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-<code>true</code> if the objects are equal, <code>false</code> otherwise
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>true</code> if the objects are equal, <code>false</code> otherwise</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>rhs</strong></td>
-<td>The right operand</td>
-</tr>
+<tr><td><strong>rhs</strong></td><td>The right operand</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="value-operator_lt">
-value::operator&lt;</h2>
-<div>
-<p>Less-than comparison.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="value-operator_lt"><a href="#value">value</a>::operator&lt;</h2>
+<div class="brief">
+<p>Less-than comparison.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;sort-members-relational-last.cpp&gt;</code></p>
 <pre><code class="source-code cpp">bool
 operator&lt;(<a href="#value">value</a> const& rhs) const;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-<code>true</code> if the left object is less than the right object, <code>false</code> otherwise
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>true</code> if the left object is less than the right object, <code>false</code> otherwise</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>rhs</strong></td>
-<td>The right operand</td>
-</tr>
+<tr><td><strong>rhs</strong></td><td>The right operand</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

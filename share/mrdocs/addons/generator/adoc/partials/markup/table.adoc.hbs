@@ -1,4 +1,39 @@
-[{{#if cols}}cols={{#if (eq cols 2)}}"1,4"{{else}}{{cols}}{{/if}}{{/if}}]
+{{!--
+    Renders a table from structured data for AsciiDoc.
+
+    Parameters:
+        headers: array of header cell strings (e.g. (arr "Name" "Description")).
+                 Optional; if absent, no header row is emitted.
+        items:   array of source items; one item per row.
+        columns: array of dotted paths into each item; one path per
+                 column. Use "." to mean "the item itself". Each
+                 extracted value is dispatched through markup/cell,
+                 which routes by `$meta.type` to the appropriate
+                 print partial.
+        weights: optional array of relative column weights, e.g.
+                 (arr 1 4) for a 1:4 ratio.  Format-agnostic data;
+                 each format renders it as appropriate (AsciiDoc
+                 emits `[cols="1,4"]`; HTML lets CSS handle widths).
+
+    Example:
+        {{> markup/table
+            weights=(arr 1 4)
+            headers=(arr "Name" "Description")
+            items=(filter_by symbol.bases "isPublic")
+            columns=(arr "type" "type.name.id.doc.brief") }}
+
+    A trailing blank line follows so the next block parses cleanly.
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+[cols="{{#if weights}}{{#each weights}}{{#unless @first}},{{/unless}}{{this}}{{/each}}{{else}}{{#each columns}}{{#unless @first}},{{/unless}}1{{/each}}{{/if}}"]
 |===
-{{> @partial-block }}
+{{#if headers}}{{#each headers}}| {{this}}{{/each}}
+{{/if~}}
+{{#each items as | row |}}
+{{#each ../columns as | col |~}}
+| {{> markup/cell (lookup row col)}}
+{{/each~}}
+{{/each~}}
 |===
+

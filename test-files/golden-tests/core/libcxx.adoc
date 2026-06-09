@@ -13,6 +13,7 @@
 | Computes the square root of an integral value&period;
 |===
 
+
 [#sqrt]
 == sqrt
 
@@ -38,8 +39,7 @@ This function calculates the square root of a given integral value using bit man
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;invalid&lowbar;argument`
 | if the input value is negative&period;
 |===
@@ -52,8 +52,7 @@ The square root of the input value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | The type of the input value&period; Must be an integral type&period;
 |===
@@ -62,8 +61,7 @@ The square root of the input value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The integral value to compute the square root of&period;
 |===

@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#R0[`R0`] 
@@ -75,15 +75,14 @@ struct R0
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S0-0cf[S0&lt;1&gt;]`
 | 
 |===
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-0cf-S1[`S1`] 
@@ -106,8 +105,7 @@ struct R1
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S0-09-S1[S0&lt;2&gt;::S1]`
 | 
 |===
@@ -129,8 +127,7 @@ struct R2
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S0-073[S0&lt;3&gt;]`
 | 
 |===
@@ -152,7 +149,7 @@ struct S0;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-0cf-S1[`S1`] 
@@ -162,9 +159,8 @@ struct S0;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#R0[`R0`]
+| Name| Description
+| link:#R0[`R0`] 
 | 
 |===
 
@@ -195,7 +191,7 @@ struct link:#S0-0cf[S0]&lt;2&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-09-S1[`S1`] 
@@ -217,9 +213,8 @@ struct S1;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#R1[`R1`]
+| Name| Description
+| link:#R1[`R1`] 
 | 
 |===
 
@@ -240,9 +235,8 @@ struct link:#S0-0cf[S0]&lt;3&gt;;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#R2[`R2`]
+| Name| Description
+| link:#R2[`R2`] 
 | 
 |===
 
@@ -261,7 +255,7 @@ struct link:#S0-0cf[S0]&lt;5&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S0-0e-S1[`S1`] 

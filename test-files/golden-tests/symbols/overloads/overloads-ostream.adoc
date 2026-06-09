@@ -6,31 +6,34 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#left_shift[`left&lowbar;shift`] 
 | link:#ostream[`ostream`] 
 |===
 
+
 [#left_shift]
 == left&lowbar;shift
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#left_shift-A[`A`] 
 |===
 
+
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#left_shift-operator_lshift[`operator&lt;&lt;`] 
 |===
+
 
 [#left_shift-A]
 == link:#left_shift[left&lowbar;shift]::A
@@ -52,6 +55,7 @@ class A;
 | link:#left_shift-A-operator_lshift-00[`operator&lt;&lt;`] 
 | Left shift operators
 |===
+
 
 [#left_shift-A-operator_lshift-00]
 == link:#left_shift[left&lowbar;shift]::link:#left_shift-A[A]::operator&lt;&lt;
@@ -107,8 +111,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *shift*
 | The right operand
 |===
@@ -136,8 +139,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *shift*
 | The right operand
 |===
@@ -162,13 +164,14 @@ operator&lt;&lt;(
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#ostream-B[`B`] 
 | link:#ostream-C[`C`] 
 | link:#ostream-OStream[`OStream`] 
 |===
+
 
 === Functions
 
@@ -178,6 +181,7 @@ operator&lt;&lt;(
 | link:#ostream-operator_lshift-0f[`operator&lt;&lt;`] 
 | Stream insertion operators
 |===
+
 
 [#ostream-B]
 == link:#ostream[ostream]::B
@@ -195,8 +199,7 @@ class B;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#ostream-operator_lshift-0d[ostream::operator&lt;&lt;]`
 | Stream insertion operator
 |===
@@ -229,8 +232,7 @@ class OStream;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#ostream-operator_lshift-0a[`operator&lt;&lt;`]
 | Stream insertion operator
 | link:#ostream-operator_lshift-0d[`operator&lt;&lt;`]
@@ -297,8 +299,7 @@ Reference to the current output stream
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *os*
 | An output stream
 | *value*
@@ -330,8 +331,7 @@ Reference to the current output stream
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *os*
 | An output stream
 | *value*

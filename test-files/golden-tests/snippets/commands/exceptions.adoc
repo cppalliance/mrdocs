@@ -20,8 +20,7 @@ parse&lowbar;int(char const* text);
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;invalid&lowbar;argument`
 | when the text does not contain a valid integer representation&period;
 |===

@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
 |===
+
 
 [#A]
 == A
@@ -26,12 +27,13 @@ struct A;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-const_iterator[`const&lowbar;iterator`] 
 | link:#A-iterator[`iterator`] 
 |===
+
 
 === Member Functions
 
@@ -49,6 +51,7 @@ struct A;
 | link:#A-rvalue[`rvalue`] 
 | An rvalue reference to A
 |===
+
 
 [#A-const_iterator]
 == link:#A[A]::const&lowbar;iterator

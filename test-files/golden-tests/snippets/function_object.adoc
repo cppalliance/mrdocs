@@ -29,8 +29,7 @@ The absolute value of x&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | The input value&period;
 |===

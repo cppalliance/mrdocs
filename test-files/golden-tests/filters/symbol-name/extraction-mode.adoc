@@ -15,6 +15,7 @@
 | A see&hyphen;below namespace
 |===
 
+
 === Namespace Aliases
 
 [cols="1,4"]
@@ -28,6 +29,7 @@
 | Namespace alias to form a dependency on the see&hyphen;below namespace
 |===
 
+
 === Types
 
 [cols="1,4"]
@@ -38,6 +40,7 @@
 | link:#see_below[`see&lowbar;below`] 
 | A see&hyphen;below symbol in the global namespace
 |===
+
 
 === Functions
 
@@ -53,6 +56,7 @@
 | link:#get_see_below[`get&lowbar;see&lowbar;below`] 
 | A function to get a see&hyphen;below symbol in the global namespace
 |===
+
 
 [#regular_ns]
 == regular&lowbar;ns
@@ -70,6 +74,7 @@ A regular namespace with different filters for members
 | A symbol that passes the see&hyphen;below filter
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -84,6 +89,7 @@ A regular namespace with different filters for members
 | link:#regular_ns-get_see_below[`get&lowbar;see&lowbar;below`] 
 | A function to get a see&hyphen;below symbol
 |===
+
 
 [#regular_ns-regular]
 == link:#regular_ns[regular&lowbar;ns]::regular
@@ -112,12 +118,12 @@ The symbol should have a page as usual
 | Child of a regular symbol extracted as regular
 |===
 
+
 === Non-Member Functions
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#regular_ns-get_regular[`get&lowbar;regular`]
 | A function to get a regular symbol
 |===
@@ -144,6 +150,7 @@ struct also&lowbar;regular;
 | link:#regular_ns-regular-also_regular-regular_as_well[`regular&lowbar;as&lowbar;well`] 
 | Grandchild of a regular symbol extracted as regular
 |===
+
 
 [#regular_ns-regular-also_regular-regular_as_well]
 == link:#regular_ns[regular&lowbar;ns]::link:#regular_ns-regular[regular]::link:#regular_ns-regular-also_regular[also&lowbar;regular]::regular&lowbar;as&lowbar;well
@@ -289,6 +296,7 @@ The documentation page for these symbols should include the see&hyphen;below com
 | See&hyphen;below symbol in a see&hyphen;below namespace
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -299,6 +307,7 @@ The documentation page for these symbols should include the see&hyphen;below com
 | link:#see_below_ns-get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
 | A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
 |===
+
 
 [#see_below_ns-regular]
 == link:#see_below_ns[see&lowbar;below&lowbar;ns]::regular
@@ -455,12 +464,12 @@ This symbol should have a page as usual&period;
 | Child of a regular symbol&colon; should be traversed as usual
 |===
 
+
 === Non-Member Functions
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#get_regular[`get&lowbar;regular`]
 | A function to get a regular symbol in the global namespace
 |===
@@ -487,6 +496,7 @@ struct also&lowbar;regular;
 | link:#regular-also_regular-regular_as_well[`regular&lowbar;as&lowbar;well`] 
 | Grandchild of a regular symbol&colon; should be traversed as usual
 |===
+
 
 [#regular-also_regular-regular_as_well]
 == link:#regular[regular]::link:#regular-also_regular[also&lowbar;regular]::regular&lowbar;as&lowbar;well

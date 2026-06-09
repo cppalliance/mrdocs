@@ -1,0 +1,11 @@
+{{! Derived classes. }}
+{{#if symbol.derived}}
+{{#> markup/section name="derived-classes"}}
+{{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=symbol.derived
+    columns=(arr "." "doc.brief") }}
+{{/markup/section}}
+{{/if}}

@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#pair[`pair`] 
 |===
+
 
 === Functions
 
@@ -22,6 +23,7 @@
 | link:#g[`g`] 
 | A function with multiple return values&period;
 |===
+
 
 [#pair]
 == pair
@@ -40,19 +42,19 @@ struct pair;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#pair-first[`first`] 
 | link:#pair-second[`second`] 
 |===
 
+
 === Non-Member Functions
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#g[`g`]
 | A function with multiple return values&period;
 |===

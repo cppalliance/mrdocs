@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e[`A`] 
@@ -31,7 +31,7 @@ struct A;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-B[`B`] 
@@ -40,7 +40,7 @@ struct A;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-f[`f`] 
@@ -61,7 +61,7 @@ struct B;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-B-g[`g`] 
@@ -95,7 +95,7 @@ struct C;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-C-h[`h`] 
@@ -142,7 +142,7 @@ struct link:#A-0e[A]&lt;bool&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0f-B[`B`] 
@@ -153,7 +153,7 @@ struct link:#A-0e[A]&lt;bool&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0f-f[`f`] 
@@ -200,7 +200,7 @@ struct link:#A-0e-C[C]&lt;double*&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0f-C-01-j[`j`] 
@@ -234,7 +234,7 @@ struct link:#A-0e-C[C]&lt;U*&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0f-C-0c-j[`j`] 
@@ -281,7 +281,7 @@ struct link:#A-0e[A]&lt;int&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-000-B-03[`B`] 
@@ -291,7 +291,7 @@ struct link:#A-0e[A]&lt;int&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-000-f[`f`] 
@@ -325,7 +325,7 @@ struct link:#A-0e-B[B]&lt;long&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-000-B-09-g[`g`] 
@@ -385,7 +385,7 @@ struct link:#A-0e[A]&lt;short&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00b-B[`B`] 
@@ -394,7 +394,7 @@ struct link:#A-0e[A]&lt;short&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00b-f[`f`] 
@@ -428,7 +428,7 @@ struct C;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00b-C-i[`i`] 
@@ -474,7 +474,7 @@ struct D;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#D-E-0e[`E`] 
@@ -496,7 +496,7 @@ struct E;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#D-E-0e-k[`k`] 
@@ -530,7 +530,7 @@ struct link:#D-E-0e[E]&lt;int&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#D-E-0d-k[`k`] 

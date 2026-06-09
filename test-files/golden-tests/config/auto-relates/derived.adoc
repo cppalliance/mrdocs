@@ -57,8 +57,7 @@ struct A
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#ABase[ABase]`
 | A base class for non&hyphen;member functions
 |===
@@ -67,8 +66,7 @@ struct A
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`]
 | A non&hyphen;member function of ABase
 | link:#f2[`f2`]
@@ -99,8 +97,7 @@ struct ABase;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`]
 | A non&hyphen;member function of ABase
 | link:#f2[`f2`]
@@ -119,11 +116,10 @@ struct ABase;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#A[`A`]
+| Name| Description
+| link:#A[`A`] 
 | A concrete implementation for ABase
-| link:#AView[`AView`]
+| link:#AView[`AView`] 
 | A view of A
 |===
 
@@ -146,8 +142,7 @@ struct AView
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#ABase[ABase]`
 | A base class for non&hyphen;member functions
 |===
@@ -156,8 +151,7 @@ struct AView
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`]
 | A non&hyphen;member function of ABase
 | link:#f2[`f2`]
@@ -174,9 +168,8 @@ struct AView
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#AView2[`AView2`]
+| Name| Description
+| link:#AView2[`AView2`] 
 | Another view of A
 |===
 
@@ -203,8 +196,7 @@ Used to test indirect derived classes
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#AView[AView]`
 | A view of A
 |===
@@ -213,8 +205,7 @@ Used to test indirect derived classes
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`]
 | A non&hyphen;member function of ABase
 | link:#f2[`f2`]

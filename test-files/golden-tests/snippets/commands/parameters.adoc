@@ -23,8 +23,7 @@ copy&lowbar;bytes(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *dst* [out]
 | The destination buffer&period; Must be at least `n` bytes long&period;
 | *src* [in]

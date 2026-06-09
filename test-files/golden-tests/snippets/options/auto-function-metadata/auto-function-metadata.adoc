@@ -34,6 +34,7 @@ struct vec2;
 | Equality operator
 |===
 
+
 [#vec2-2constructor-0f]
 == link:#vec2[vec2]::vec2
 
@@ -93,8 +94,7 @@ vec2(link:#vec2[vec2] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -117,8 +117,7 @@ vec2(link:#vec2[vec2]&& other) noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -143,8 +142,7 @@ vec2(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | The value to construct from
 |===
@@ -186,8 +184,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy assign from
 |===
@@ -234,8 +231,7 @@ A 2D vector&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *delta*
 | A 2D vector&period;
 |===
@@ -263,8 +259,7 @@ operator&equals;&equals;(link:#vec2[vec2] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===

@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#fmt[`fmt`] 
@@ -17,7 +17,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#fmt-path[`path`] 
@@ -40,8 +40,7 @@ struct path
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `std::path`
 | 
 |===

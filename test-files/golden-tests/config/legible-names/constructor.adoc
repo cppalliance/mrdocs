@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#X[`X`] 
@@ -124,8 +124,7 @@ X(link:#X[X] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -148,8 +147,7 @@ X(link:#X[X]&& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -172,8 +170,7 @@ X(double value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -196,8 +193,7 @@ X(int value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===

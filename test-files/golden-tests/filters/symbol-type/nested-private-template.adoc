@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#range[`range`] 
@@ -27,7 +27,7 @@ class range;
 
 === Private Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#range-impl-0e[`impl`] 

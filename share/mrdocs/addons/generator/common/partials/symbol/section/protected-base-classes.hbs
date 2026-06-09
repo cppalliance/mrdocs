@@ -1,0 +1,11 @@
+{{! Protected base classes. }}
+{{#if (any_of_by symbol.bases "isProtected")}}
+{{#> markup/section name="protected-base-classes"}}
+{{#> markup/dynamic-level-h }}Protected Base Classes{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=(filter_by symbol.bases "isProtected")
+    columns=(arr "type" "type.name.id.doc.brief") }}
+{{/markup/section}}
+{{/if}}

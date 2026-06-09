@@ -20,8 +20,7 @@ is&lowbar;empty(char const* s);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *s*
 | The input examined for the empty property&period;
 |===
@@ -45,8 +44,7 @@ is&lowbar;palindrome(char const* s);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *s*
 | The input examined for the palindrome property&period;
 |===
@@ -70,8 +68,7 @@ is&lowbar;prime(int n);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *n*
 | The input examined for the prime property&period;
 |===

@@ -42,8 +42,7 @@ The bytecode, in an implementation&hyphen;defined form&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *re*
 | A compiled regular expression&period;
 |===

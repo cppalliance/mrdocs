@@ -19,8 +19,7 @@ struct request;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#format_request[`format&lowbar;request`]
 | Format `r` as the wire&hyphen;format text of an HTTP request&period;
 | link:#parse_request[`parse&lowbar;request`]
@@ -45,8 +44,7 @@ struct user;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#format_user[`format&lowbar;user`]
 | Format `u` as the canonical wire&hyphen;format text of a user&period;
 | link:#parse_user[`parse&lowbar;user`]
@@ -72,8 +70,7 @@ format&lowbar;request(link:#request[request] const& r);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *r*
 | An HTTP request as a structured value&period;
 |===
@@ -101,8 +98,7 @@ format&lowbar;user(link:#user[user] const& u);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *u*
 | A user record&period;
 |===

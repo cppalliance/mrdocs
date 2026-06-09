@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#boost[`boost`] 
@@ -17,7 +17,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#boost-mysql[`mysql`] 
@@ -28,7 +28,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#boost-mysql-writable_field_traits-07[`writable&lowbar;field&lowbar;traits`] 

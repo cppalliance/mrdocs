@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T[`T`] 
 |===
+
 
 [#T]
 == T
@@ -26,22 +27,24 @@ struct T;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T-U1[`U1`] 
 | link:#T-U2[`U2`] 
 |===
 
+
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T-f1[`f1`] 
 | link:#T-f2[`f2`] 
 | link:#T-f3[`f3`] 
 |===
+
 
 === Protected Member Functions
 
@@ -55,6 +58,7 @@ struct T;
 | link:#T-g3[`g3`] 
 | brief&hyphen;g3
 |===
+
 
 [#T-U1]
 == link:#T[T]::U1
@@ -180,8 +184,7 @@ the separator
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | any old number
 |===

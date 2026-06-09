@@ -1,0 +1,8 @@
+{{! Synopsis: where the symbol is declared plus its signature(s). }}
+{{#unless (eq symbol.kind "namespace")}}
+{{#> markup/section name="synopsis"}}
+{{#> markup/dynamic-level-h }}{{#if (ne symbol.kind "overloads")}}Synopsis{{else}}Synopses{{/if}}{{/markup/dynamic-level-h~}}
+{{#> markup/p}}{{>location/source dcl=(primary_location symbol)}}{{/markup/p}}
+{{> symbol/signatures symbol }}
+{{/markup/section}}
+{{/unless}}

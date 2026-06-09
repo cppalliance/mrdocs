@@ -37,8 +37,7 @@ A copy of `v`, `lo`, or `hi`, whichever lies within the range&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | A type comparable with `operator&lt;`&period;
 |===
@@ -47,8 +46,7 @@ A copy of `v`, `lo`, or `hi`, whichever lies within the range&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *v*
 | The value to constrain&period;
 | *lo*

@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#enable_if-03[`enable&lowbar;if`] 
@@ -64,7 +64,7 @@ struct enable&lowbar;if;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#enable_if-03-type[`type`] 
@@ -110,7 +110,7 @@ struct is&lowbar;match;
 
 === Enums
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#is_match-_04enum[`Unnamed enum`] 
@@ -130,7 +130,7 @@ enum Unnamed enum;
 
 === Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | `value` 

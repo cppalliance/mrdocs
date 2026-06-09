@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -14,7 +14,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B[`B`] 
@@ -22,7 +22,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#g[`g`] 
@@ -33,7 +33,7 @@
 
 === Enums
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-E[`E`] 

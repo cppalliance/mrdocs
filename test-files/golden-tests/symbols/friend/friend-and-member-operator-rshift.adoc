@@ -15,6 +15,7 @@
 | A stand&hyphen;in for a stream type used by the extraction operator&period;
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -23,6 +24,7 @@
 | link:#operator_rshift[`operator&gt;&gt;`] 
 | Stream extraction operator (friend &sol; free function)&period;
 |===
+
 
 [#dynamic_bitset]
 == dynamic&lowbar;bitset
@@ -52,12 +54,12 @@ Reduced from Boost&period;DynamicBitset&colon; a member bitwise right&hyphen;shi
 | Bitwise right&hyphen;shift operator (member)&period;
 |===
 
+
 === Friends
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#operator_rshift[operator&gt;&gt;]`
 | Stream extraction operator (friend &sol; free function)&period;
 |===
@@ -85,8 +87,7 @@ Reference to the current object&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *n*
 | The shift amount&period;
 |===
@@ -109,8 +110,7 @@ struct istream;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_rshift[`operator&gt;&gt;`]
 | Stream extraction operator (friend &sol; free function)&period;
 |===
@@ -140,8 +140,7 @@ Reference to the input stream&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *is*
 | The input stream&period;
 | *bs*

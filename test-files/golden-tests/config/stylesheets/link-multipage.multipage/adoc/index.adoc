@@ -7,7 +7,7 @@
 :linkcss:
 == Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | xref:ns.adoc[`ns`] 

@@ -25,12 +25,12 @@ struct box;
 | The contained value&period;
 |===
 
+
 === Non-Member Functions
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#make_int_box[`make&lowbar;int&lowbar;box`]
 | Uses `box&lt;int&gt;`&period; With `extract&hyphen;implicit&hyphen;specializations&colon; true`, that implicit instantiation shows up in the docs as `box&lt;int&gt;` alongside the primary template&period;
 |===
