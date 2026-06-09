@@ -98,6 +98,11 @@ DoGenerateAction(
         CorpusImpl::build(config, compilationDatabase));
     if (corpus->empty())
     {
+        if (settings.errorOnEmptyCorpus)
+        {
+            report::error("Corpus is empty, not generating docs");
+            return Unexpected(Error("Corpus is empty, not generating docs"));
+        }
         report::warn("Corpus is empty, not generating docs");
         return {};
     }

@@ -655,6 +655,13 @@
         "default": false
       },
       {
+        "name": "error-on-empty-corpus",
+        "brief": "Treat an empty corpus as an error",
+        "details": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. An empty corpus usually means no symbols were extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",
+        "type": "bool",
+        "default": true
+      },
+      {
         "name": "concurrency",
         "brief": "Number of threads to use",
         "details": "The desired level of concurrency: 0 for hardware-suggested.",
