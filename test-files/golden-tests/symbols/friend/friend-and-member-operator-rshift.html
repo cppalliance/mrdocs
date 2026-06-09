@@ -1,0 +1,226 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">
+Global Namespace</h2>
+</div>
+<h2>
+Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#dynamic_bitset"><code>dynamic_bitset</code></a> </td><td>A class template with two unrelated <code>operator&gt;&gt;</code>.</td></tr><tr>
+<td><a href="#istream"><code>istream</code></a> </td><td>A stand-in for a stream type used by the extraction operator.</td></tr>
+</tbody>
+</table>
+
+<h2>
+Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#operator_rshift"><code>operator&gt;&gt;</code></a> </td><td>Stream extraction operator (friend / free function).</td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="dynamic_bitset">
+dynamic_bitset</h2>
+<div>
+<p>A class template with two unrelated <code>operator&gt;&gt;</code>.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;friend-and-member-operator-rshift.cpp&gt;</code></div>
+<pre><code class="source-code cpp">template&lt;class Block&gt;
+class dynamic_bitset;</code></pre>
+</div>
+<div>
+<h3>
+Description</h3>
+<p>Reduced from Boost.DynamicBitset: a member bitwise right-shift operator and a friend stream extraction operator. The friend declaration is essential to trigger the anchor collision (#919), where both operators were assigned the same AsciiDoctor section id.</p>
+</div>
+<h2>
+Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#dynamic_bitset-operator_rshift"><code>operator&gt;&gt;</code></a> </td><td>Bitwise right-shift operator (member).</td></tr>
+</tbody>
+</table>
+
+
+
+<div>
+<h2>
+Friends</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><a href="#operator_rshift">operator&gt;&gt;</a></code></td>
+<td>Stream extraction operator (friend / free function).</td>
+</tr>
+|===
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="dynamic_bitset-operator_rshift">
+dynamic_bitset::operator&gt;&gt;</h2>
+<div>
+<p>Bitwise right-shift operator (member).</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;friend-and-member-operator-rshift.cpp&gt;</code></div>
+<pre><code class="source-code cpp"><a href="#dynamic_bitset">dynamic_bitset</a>&
+operator&gt;&gt;(int n);</code></pre>
+</div>
+<div>
+<h3>
+Return Value</h3>
+Reference to the current object.
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>n</strong></td>
+<td>The shift amount.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="istream">
+istream</h2>
+<div>
+<p>A stand-in for a stream type used by the extraction operator.</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;friend-and-member-operator-rshift.cpp&gt;</code></div>
+<pre><code class="source-code cpp">struct istream;</code></pre>
+</div>
+
+
+<div>
+<h2>
+Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#operator_rshift"><code>operator&gt;&gt;</code></a></td><td>Stream extraction operator (friend / free function).</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="operator_rshift">
+operator&gt;&gt;</h2>
+<div>
+<p>Stream extraction operator (friend / free function).</p>
+</div>
+</div>
+<div>
+<h3>
+Synopsis</h3>
+<div>
+Declared in <code>&lt;friend-and-member-operator-rshift.cpp&gt;</code></div>
+<pre><code class="source-code cpp"><a href="#istream">istream</a>&
+operator&gt;&gt;(
+    <a href="#istream">istream</a>& is,
+    <a href="#dynamic_bitset">dynamic_bitset&lt;B&gt;</a>& bs);</code></pre>
+</div>
+<div>
+<h3>
+Return Value</h3>
+Reference to the input stream.
+</div>
+<div>
+<h3>
+Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>is</strong></td>
+<td>The input stream.</td>
+</tr>
+<tr>
+<td><strong>bs</strong></td>
+<td>The bitset to read into.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>
