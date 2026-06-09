@@ -549,6 +549,19 @@ if (MRDOCS_BUILD_TESTS)
     endforeach ()
 
     #-------------------------------------------------
+    # Script-driven generator example
+    #-------------------------------------------------
+    add_test(
+        NAME mrdocs-generator-script-driven-search-index
+        COMMAND bash run.sh
+                --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
+                --output=${CMAKE_CURRENT_BINARY_DIR}/generator-examples/search-index/reference-output
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/examples/generators/script-driven/search-index
+    )
+    set_property(TEST mrdocs-generator-script-driven-search-index PROPERTY
+        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+
+    #-------------------------------------------------
     # Library-usage examples
     #
     # Standalone C++ programs that demonstrate MrDocs as a library.

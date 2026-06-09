@@ -71,6 +71,8 @@ antora:
           strip_page_wrapper: true
         - source: examples/generators/data-driven
           target: data-driven-generators
+        - source: examples/generators/script-driven
+          target: script-driven-generators
         - source: examples
           target: examples
     - require: ./extensions/commands-registry-extension.js

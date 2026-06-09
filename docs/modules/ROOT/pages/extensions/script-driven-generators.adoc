@@ -49,28 +49,22 @@ Unlike a corpus-transform extension, whose hook is optional, a generator must de
 
 == Example: a search index
 
-This generator emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
+A complete, runnable example lives at `examples/generators/script-driven/search-index/`. It emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce.
 
+The manifest names the script:
+
+.`addons/generator/search-index/mrdocs-generator.yml`
+[source,yaml]
+----
+include::example$script-driven-generators/search-index/addons/generator/search-index/mrdocs-generator.yml[]
+----
+
+The script itself:
+
+.`addons/generator/search-index/generate.lua`
 [source,lua]
 ----
--- Quote a string as a JSON value.
-local function json_string(s)
-  s = s:gsub('\\', '\\\\'):gsub('"', '\\"')
-  return '"' .. s .. '"'
-end
-
-function generate(corpus, output)
-  local entries = {}
-  for _, sym in ipairs(corpus.symbols) do
-    local name = sym.name or ""
-    if name ~= "" then
-      entries[#entries + 1] =
-        '{"name":' .. json_string(name) ..
-        ',"url":' .. json_string(sym._id .. ".html") .. "}"
-    end
-  end
-  output.write(
-    "search-index.json",
-    "[" .. table.concat(entries, ",") .. "]")
-end
+include::example$script-driven-generators/search-index/addons/generator/search-index/generate.lua[]
 ----
+
+Select it with `--generator=search-index`; it writes search-index.json into the output directory.
