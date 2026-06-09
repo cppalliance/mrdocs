@@ -150,3 +150,17 @@ template <typename T>
 std::enable_if_t<std::is_integral_v<T>, T>
 sqrt(T value);
 
+// Regression guard for the bundled clang resource directory.
+//
+// `::max_align_t` is supplied only by clang's builtin <stddef.h>, which lives
+// in the clang resource directory. The bundled libc-stubs deliberately leaves
+// it to the compiler in C++ mode (see headers/libc-stubs/stddef.h: it defines
+// `__no_need_max_align_t` for C++11+ on non-Apple, non-MSVC targets), and
+// libc++ pulls it in via `using ::max_align_t` while parsing <memory_resource>.
+// If the resource directory is missing from an install, this no longer
+// compiles, which is the failure that broke downstream builds. Keep an explicit
+// use so the dependency stays exercised even if libc++ stops touching
+// max_align_t while parsing its own headers. This is placed after sqrt so the
+// documented declarations keep their line numbers in the golden fixtures.
+static_assert(alignof(std::max_align_t) >= alignof(char));
+

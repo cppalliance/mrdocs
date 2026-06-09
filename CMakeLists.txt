@@ -412,12 +412,15 @@ endif()
 
 # Replicate the clang resource directory structure within our own build,
 # so that libclang will find it when executing directly from the build directory.
-# The installed binary will use runtime path resolution to locate the resource directory
-# relative to the executable, so both LLVM and MrDocs must be installed to the same prefix.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib/clang")
 set(RESOURCE_DIR "lib/clang/${Clang_VERSION_MAJOR}")
 file(CREATE_LINK "${LLVM_BINARY_DIR}/${RESOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/${RESOURCE_DIR}" SYMBOLIC)
+if (NOT EXISTS "${LLVM_BINARY_DIR}/${RESOURCE_DIR}/include")
+    message(FATAL_ERROR
+            "Clang resource headers (${LLVM_BINARY_DIR}/${RESOURCE_DIR}/include) do not exist.\n"
+            "Please provide an LLVM install that contains the clang resource directory.\n")
+endif()
 
 #-------------------------------------------------
 #
@@ -827,6 +830,9 @@ if (MRDOCS_INSTALL)
             FILES_MATCHING PATTERN "*")
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs/
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libc-stubs
+            FILES_MATCHING PATTERN "*")
+    install(DIRECTORY ${LLVM_BINARY_DIR}/${RESOURCE_DIR}/include
+            DESTINATION ${RESOURCE_DIR}
             FILES_MATCHING PATTERN "*")
 
     foreach (share_mrdocs_dir addons)
