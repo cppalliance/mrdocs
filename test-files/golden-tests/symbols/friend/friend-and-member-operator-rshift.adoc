@@ -1,0 +1,152 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#dynamic_bitset[`dynamic&lowbar;bitset`] 
+| A class template with two unrelated `operator&gt;&gt;`&period;
+| link:#istream[`istream`] 
+| A stand&hyphen;in for a stream type used by the extraction operator&period;
+|===
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#operator_rshift[`operator&gt;&gt;`] 
+| Stream extraction operator (friend &sol; free function)&period;
+|===
+
+[#dynamic_bitset]
+== dynamic&lowbar;bitset
+
+A class template with two unrelated `operator&gt;&gt;`&period;
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;and&hyphen;member&hyphen;operator&hyphen;rshift&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class Block&gt;
+class dynamic&lowbar;bitset;
+----
+
+=== Description
+
+Reduced from Boost&period;DynamicBitset&colon; a member bitwise right&hyphen;shift operator and a friend stream extraction operator&period; The friend declaration is essential to trigger the anchor collision (&num;919), where both operators were assigned the same AsciiDoctor section id&period;
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#dynamic_bitset-operator_rshift[`operator&gt;&gt;`] 
+| Bitwise right&hyphen;shift operator (member)&period;
+|===
+
+=== Friends
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `link:#operator_rshift[operator&gt;&gt;]`
+| Stream extraction operator (friend &sol; free function)&period;
+|===
+
+[#dynamic_bitset-operator_rshift]
+== link:#dynamic_bitset[dynamic&lowbar;bitset]::operator&gt;&gt;
+
+Bitwise right&hyphen;shift operator (member)&period;
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;and&hyphen;member&hyphen;operator&hyphen;rshift&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#dynamic_bitset[dynamic&lowbar;bitset]&
+operator&gt;&gt;(int n);
+----
+
+=== Return Value
+
+Reference to the current object&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *n*
+| The shift amount&period;
+|===
+
+[#istream]
+== istream
+
+A stand&hyphen;in for a stream type used by the extraction operator&period;
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;and&hyphen;member&hyphen;operator&hyphen;rshift&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct istream;
+----
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name
+| Description
+| link:#operator_rshift[`operator&gt;&gt;`]
+| Stream extraction operator (friend &sol; free function)&period;
+|===
+
+[#operator_rshift]
+== operator&gt;&gt;
+
+Stream extraction operator (friend &sol; free function)&period;
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;and&hyphen;member&hyphen;operator&hyphen;rshift&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#istream[istream]&
+operator&gt;&gt;(
+    link:#istream[istream]& is,
+    link:#dynamic_bitset[dynamic&lowbar;bitset&lt;B&gt;]& bs);
+----
+
+=== Return Value
+
+Reference to the input stream&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| *is*
+| The input stream&period;
+| *bs*
+| The bitset to read into&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
