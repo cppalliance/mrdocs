@@ -13,6 +13,7 @@
 | A function that uses auto
 |===
 
+
 [#f]
 == f
 
@@ -36,8 +37,7 @@ The result&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to use&period;
 |===

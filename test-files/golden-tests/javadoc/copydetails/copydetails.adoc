@@ -17,6 +17,7 @@
 | Source doc function
 |===
 
+
 [#dest]
 == dest
 
@@ -53,8 +54,7 @@ A nice integer
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *A*
 | The template parameter A&period;
 | *B*
@@ -65,8 +65,7 @@ A nice integer
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The parameter a&period;
 | *b*
@@ -121,8 +120,7 @@ Parameter b is not copied because it doesn&apos;t exist in the destination funct
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | Overwrites the exception&period;
 |===
@@ -135,8 +133,7 @@ An integer meaning something else&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *A*
 | Overwrites the template parameter A&period;
 | *C*
@@ -149,8 +146,7 @@ An integer meaning something else&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Overwrites the parameter a&period;
 | *c*
@@ -199,8 +195,7 @@ This is the documentation from the source function&period;
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | If something goes wrong&period;
 |===
@@ -213,8 +208,7 @@ A nice integer
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *A*
 | The template parameter A&period;
 | *B*
@@ -225,8 +219,7 @@ A nice integer
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The parameter a&period;
 | *b*

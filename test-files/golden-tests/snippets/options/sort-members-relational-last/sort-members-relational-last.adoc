@@ -28,6 +28,7 @@ struct value;
 | Less&hyphen;than comparison&period;
 |===
 
+
 [#value-get]
 == link:#value[value]::get
 
@@ -70,8 +71,7 @@ operator&equals;&equals;(link:#value[value] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -99,8 +99,7 @@ operator&lt;(link:#value[value] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===

@@ -1,0 +1,15 @@
+{{! Return value(s) (@returns). Single returns render inline; multiples render as a list. }}
+{{#if symbol.doc.returns}}
+{{#> markup/section name="return-value"}}
+{{#> markup/dynamic-level-h }}Return Value{{/markup/dynamic-level-h~}}
+{{#if (eq (size symbol.doc.returns) 1)}}
+{{#> markup/p}}{{> doc/block/returns symbol.doc.returns.[0]}}{{/markup/p}}
+{{else}}
+{{#> markup/ul}}
+{{#each symbol.doc.returns}}
+{{#> markup/li}}{{> doc/block/returns .}}{{/markup/li}}
+{{/each}}
+{{/markup/ul}}
+{{/if}}
+{{/markup/section}}
+{{/if}}

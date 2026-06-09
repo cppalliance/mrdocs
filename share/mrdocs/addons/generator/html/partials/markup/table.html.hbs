@@ -1,4 +1,32 @@
-<table style="table-layout: fixed; width: 100%;">
-{{> @partial-block }}
+{{!--
+    Renders a table from structured data for HTML.
 
+    Parameters:
+        headers: array of header cell strings (e.g. (arr "Name" "Description")).
+                 Optional; if absent, no header row is emitted.
+        items:   array of source items; one item per row.
+        columns: array of dotted paths into each item; one path per
+                 column. Use "." to mean "the item itself". Each
+                 extracted value is dispatched through markup/cell,
+                 which routes by `$meta.type` to the appropriate
+                 print partial.
+        weights: accepted for parity with other formats; HTML ignores
+                 column-weight hints (browsers handle widths via CSS).
+
+    Example:
+        {{> markup/table
+            weights=(arr 1 4)
+            headers=(arr "Name" "Description")
+            items=(filter_by symbol.bases "isPublic")
+            columns=(arr "type" "type.name.id.doc.brief") }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+<table style="table-layout: fixed; width: 100%;">
+{{#if headers}}<thead>
+<tr>{{#each headers}}<th>{{this}}</th>{{/each}}</tr>
+</thead>
+{{/if}}<tbody>
+{{#each items as | row |}}<tr>{{#each ../columns as | col |}}<td>{{> markup/cell (lookup row col)}}</td>{{/each}}</tr>
+{{/each}}</tbody>
 </table>

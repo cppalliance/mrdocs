@@ -1,0 +1,11 @@
+{{! Preconditions (@pre). }}
+{{#if symbol.doc.preconditions}}
+{{#> markup/section name="preconditions"}}
+{{#> markup/dynamic-level-h }}Preconditions{{/markup/dynamic-level-h~}}
+{{#> markup/ul}}
+{{#each symbol.doc.preconditions}}
+{{#> markup/li}}{{>doc/block .}}{{/markup/li}}
+{{/each}}
+{{/markup/ul}}
+{{/markup/section}}
+{{/if}}

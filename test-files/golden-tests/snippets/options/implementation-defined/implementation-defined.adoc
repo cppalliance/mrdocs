@@ -39,8 +39,7 @@ An opaque RAII token whose lifetime governs how long the pair stays attached&per
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *key*
 | The context name surfaced on each log line&period;
 | *value*

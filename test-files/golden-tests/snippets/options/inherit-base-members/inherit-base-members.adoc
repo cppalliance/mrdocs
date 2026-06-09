@@ -20,8 +20,7 @@ struct circle
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#shape[shape]`
 | A base shape with one operation&period;
 |===
@@ -56,8 +55,7 @@ circle(double r);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *r*
 | The value to construct from
 |===
@@ -104,9 +102,8 @@ struct shape;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#circle[`circle`]
+| Name| Description
+| link:#circle[`circle`] 
 | A circle&period; The `draw` from `shape` is inherited and listed on the circle&apos;s page too&period;
 |===
 

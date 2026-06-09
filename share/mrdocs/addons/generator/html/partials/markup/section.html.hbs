@@ -1,0 +1,15 @@
+{{!--
+    Wraps a logical page section.
+
+    Emits a `<div>` so stylesheets can target whole sections (the
+    `name` parameter becomes the `class` attribute and `id` becomes
+    the `id` attribute).  A closing `<!-- /name -->` comment follows
+    the `</div>` so the source is easier to read.
+
+    Parameters:
+        name: optional CSS class for the section.
+        id:   optional HTML id / anchor for the section.
+--}}
+<div{{#if id}} id="{{id}}"{{/if}}{{#if name}} class="{{name}}"{{/if}}>
+{{> @partial-block }}
+</div>{{#if name}}<!-- /{{name}} -->{{/if}}

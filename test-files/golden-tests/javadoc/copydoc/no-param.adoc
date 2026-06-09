@@ -17,6 +17,7 @@
 | Brief from `foo()`
 |===
 
+
 [#copyFromNoParam]
 == copyFromNoParam
 
@@ -108,8 +109,7 @@ A boolean value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *ch*
 | A character&period;
 |===
@@ -166,8 +166,7 @@ A boolean value&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *ch*
 | A character&period;
 |===

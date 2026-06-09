@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#regular[`regular`] 
@@ -14,7 +14,7 @@
 
 === Variables
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#absolute_uri_rule[`absolute&lowbar;uri&lowbar;rule`] 
@@ -26,7 +26,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#regular-absolute_uri_rule_t[`absolute&lowbar;uri&lowbar;rule&lowbar;t`] 

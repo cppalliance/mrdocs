@@ -37,8 +37,7 @@ struct T;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Z[Z]`
 | Friend class Z brief
 |===
@@ -61,8 +60,7 @@ struct U;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#T[T]`
 | Struct T brief
 |===
@@ -85,8 +83,7 @@ struct V;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#U[U]`
 | Struct U brief
 |===

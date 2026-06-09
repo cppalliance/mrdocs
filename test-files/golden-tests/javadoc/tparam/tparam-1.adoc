@@ -33,8 +33,7 @@ f0();
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | Template parameter `T`
 |===
@@ -63,8 +62,7 @@ desc
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | type
 |===

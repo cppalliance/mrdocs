@@ -1,0 +1,11 @@
+{{! Friend declarations. }}
+{{#if symbol.friends}}
+{{#> markup/section name="friends"}}
+{{#> markup/dynamic-level-h }}Friends{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=symbol.friends
+    columns=(arr "." "id.doc.brief") }}
+{{/markup/section}}
+{{/if}}

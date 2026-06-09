@@ -62,7 +62,7 @@ enum E1 : char;
 
 === Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | `e2` 
@@ -112,7 +112,7 @@ enum class E3 : char;
 
 === Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | `e6` 

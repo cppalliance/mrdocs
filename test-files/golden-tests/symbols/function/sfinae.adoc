@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B[`B`] 
@@ -59,7 +59,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B-C[`C`] 
@@ -81,8 +81,7 @@ struct C;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f3[`&colon;&colon;f3`]
 | Enabling a specified return type in another namespace
 |===
@@ -139,7 +138,7 @@ struct S;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S-02-store[`store`] 
@@ -175,7 +174,7 @@ struct link:#S-02[S]&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S-08-store[`store`] 

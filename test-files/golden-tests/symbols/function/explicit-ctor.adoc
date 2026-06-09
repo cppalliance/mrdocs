@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Explicit[`Explicit`] 
@@ -125,8 +125,7 @@ Explicit(link:#Explicit[Explicit] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -150,8 +149,7 @@ Explicit(link:#Explicit[Explicit]&& other) noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -284,8 +282,7 @@ ExplicitExpression(link:#ExplicitExpression[ExplicitExpression] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -309,8 +306,7 @@ ExplicitExpression(link:#ExplicitExpression[ExplicitExpression]&& other) noexcep
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -442,8 +438,7 @@ ExplicitFalse(link:#ExplicitFalse[ExplicitFalse] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -467,8 +462,7 @@ ExplicitFalse(link:#ExplicitFalse[ExplicitFalse]&& other) noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -600,8 +594,7 @@ ExplicitTrue(link:#ExplicitTrue[ExplicitTrue] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -625,8 +618,7 @@ ExplicitTrue(link:#ExplicitTrue[ExplicitTrue]&& other) noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===

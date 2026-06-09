@@ -1,0 +1,11 @@
+{{! Template parameters (@tparam). }}
+{{#if symbol.doc.tparams}}
+{{#> markup/section name="template-parameters"}}
+{{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=symbol.doc.tparams
+    columns=(arr "." "children") }}
+{{/markup/section}}
+{{/if}}

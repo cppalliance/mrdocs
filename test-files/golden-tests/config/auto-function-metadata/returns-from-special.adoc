@@ -19,6 +19,7 @@
 | A fake output stream
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -44,6 +45,7 @@
 | Three&hyphen;way comparison operator
 |===
 
+
 [#A]
 == A
 
@@ -62,8 +64,7 @@ struct A;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_not[`operator!`]
 | Negation operator
 | link:#operator_not_eq[`operator!&equals;`]
@@ -141,6 +142,7 @@ struct X;
 | Three&hyphen;way comparison operator
 |===
 
+
 [#X-operator_assign-0a]
 == link:#X[X]::operator&equals;
 
@@ -195,8 +197,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to copy assign from
 |===
@@ -224,8 +225,7 @@ Rvalue reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to move assign from
 |===
@@ -253,8 +253,7 @@ Another instance of the object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -356,8 +355,7 @@ operator&equals;&equals;(link:#X[X] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -385,8 +383,7 @@ operator!&equals;(link:#X[X] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -414,8 +411,7 @@ operator&lt;(link:#X[X] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -443,8 +439,7 @@ operator&lt;&equals;(link:#X[X] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -472,8 +467,7 @@ operator&gt;(link:#X[X] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -501,8 +495,7 @@ operator&gt;&equals;(link:#X[X] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -530,8 +523,7 @@ The relative order of the objects
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -554,8 +546,7 @@ struct ostream;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_lshift[`operator&lt;&lt;`]
 | Stream insertion operator
 |===
@@ -585,8 +576,7 @@ Reference to the current output stream
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *os*
 | An output stream
 | *value*
@@ -616,8 +606,7 @@ operator!(link:#A[A] const& value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The operand
 |===
@@ -647,8 +636,7 @@ operator&equals;&equals;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*
@@ -680,8 +668,7 @@ operator!&equals;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*
@@ -713,8 +700,7 @@ operator&lt;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*
@@ -746,8 +732,7 @@ operator&lt;&equals;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*
@@ -779,8 +764,7 @@ operator&gt;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*
@@ -812,8 +796,7 @@ operator&gt;&equals;(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*
@@ -845,8 +828,7 @@ The relative order of the objects
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left operand
 | *rhs*

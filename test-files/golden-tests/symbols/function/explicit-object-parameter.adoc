@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Optional[`Optional`] 
@@ -26,7 +26,7 @@ struct Optional;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Optional-value-0c[`value`] 

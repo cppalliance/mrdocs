@@ -26,6 +26,7 @@ struct widget;
 | Refresh the widget&period;
 |===
 
+
 [#widget-operator_assign-00]
 == link:#widget[widget]::operator&equals;
 
@@ -80,8 +81,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy assign from
 |===
@@ -109,8 +109,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move assign from
 |===

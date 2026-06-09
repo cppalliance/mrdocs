@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#M[`M`] 
@@ -15,7 +15,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#foo[`foo`] 
@@ -26,7 +26,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#M-D[`D`] 
@@ -49,7 +49,7 @@ class D;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#N-C[`C`] 

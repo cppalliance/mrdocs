@@ -6,109 +6,77 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="index">
-Global Namespace</h2>
-</div>
-<h2>
-Functions</h2>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+<h3>Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#sqrt"><code>sqrt</code></a> </td><td>Computes the square root of an integral value.</td></tr>
+<tr><td><a href="#sqrt"><code>sqrt</code></a> </td><td>Computes the square root of an integral value.</td></tr>
 </tbody>
 </table>
 
-</div>
-<div>
-<div>
-<h2 id="sqrt">
-sqrt</h2>
-<div>
-<p>Computes the square root of an integral value.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;libcxx.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="sqrt">sqrt</h2>
+<div class="brief">
+<p>Computes the square root of an integral value.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;libcxx.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 T
 sqrt(T value)
 requires std::is_integral_v&lt;T&gt;;</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>This function calculates the square root of a given integral value using bit manipulation.</p>
-</div>
-<div>
-<h3>
-Exceptions</h3>
-<table>
+</div><!-- /description -->
+<div class="exceptions">
+<h3>Exceptions</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Thrown on</th>
-</tr>
+<tr><th>Name</th><th>Thrown on</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><code>std::invalid_argument</code></td>
-<td>if the input value is negative.</td>
-</tr>
+<tr><td><code>std::invalid_argument</code></td><td>if the input value is negative.</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Return Value</h3>
-The square root of the input value.
-</div>
-<div>
-<h3>
-Template Parameters</h3>
-<table>
+</div><!-- /exceptions -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The square root of the input value.</p>
+</div><!-- /return-value -->
+<div class="template-parameters">
+<h3>Template Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>T</strong></td>
-<td>The type of the input value. Must be an integral type.</td>
-</tr>
+<tr><td><strong>T</strong></td><td>The type of the input value. Must be an integral type.</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /template-parameters -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>value</strong></td>
-<td>The integral value to compute the square root of.</td>
-</tr>
+<tr><td><strong>value</strong></td><td>The integral value to compute the square root of.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

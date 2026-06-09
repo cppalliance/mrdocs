@@ -2,6 +2,7 @@
 /.vs
 /.vscode
 /.run
+/.claude
 /launch.vs.json
 /CMakeUserPresets.json
 /CMakeSettings.json

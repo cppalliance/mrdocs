@@ -1,25 +1,24 @@
 {{!--
-    Renders a heading element with a dynamic level and an optional ID attribute.
+    Renders a heading whose level depends on the layout mode.
 
-    This partial generates a heading element (`h1`, `h2`, etc.) based on the provided level.
-    The level is determined by the `multipage` configuration option, where
-    the level is incremented by 1 if the `multipage` option is disabled
-    because in single page documentation, the symbol title is rendered at level 2.
-
-    If an ID is provided, it will be included as an anchor for the heading.
+    `level` (default 1) is the relative level inside the symbol page.
+    When `multipage` is disabled the wrapper supplies an outer page
+    title at level 1, so all sections shift down by one to make room.
+    Either way the heading number matches `markup/h`'s absolute
+    convention (level N -> N `=` chars in AsciiDoc, `<hN>` in HTML).
 
     Parameters:
-        - partial block: The content to be rendered inside the heading element.
-        - level: The level of the heading element (1, 2, etc.).
-        - id: An optional ID attribute for the heading element.
+        - partial block: heading text.
+        - level: relative heading level (1, 2, ...).  Defaults to 1.
+        - id:    optional anchor.
 
     Example:
-        {{> markup/dynamic-level-h level=2 id="section-id" }}Section Title{{/markup/h}}
+        {{#> markup/dynamic-level-h level=2 id="section-id" }}Title{{/markup/dynamic-level-h}}
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{#> markup/h
-    level=(add (or level 1) (select @root.config.multipage 0 1))
+    level=(add (or level 1) (select @root.config.multipage 1 2))
     id=id
 }}
 {{> @partial-block }}

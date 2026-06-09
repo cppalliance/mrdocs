@@ -40,7 +40,7 @@ struct S;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S-x[`x`] 

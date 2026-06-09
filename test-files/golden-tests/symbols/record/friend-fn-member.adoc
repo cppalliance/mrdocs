@@ -6,12 +6,13 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#U[`U`] 
 | link:#X[`X`] 
 |===
+
 
 [#U]
 == U
@@ -29,8 +30,7 @@ struct U;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#X-foo[X::foo]`
 | Friend member&hyphen;function
 | `link:#X-2destructor[X::&#126;X]`
@@ -63,6 +63,7 @@ struct X;
 | link:#X-foo[`foo`] 
 | Friend member&hyphen;function
 |===
+
 
 [#X-2constructor]
 == link:#X[X]::X
@@ -115,8 +116,7 @@ char&ast;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *i*
 | Description of i
 |===

@@ -15,6 +15,7 @@
 | Auxiliary class
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -27,6 +28,7 @@
 | link:#sameBrief-07[`sameBrief`] 
 | Function with same brief
 |===
+
 
 [#A]
 == A
@@ -57,12 +59,12 @@ struct A;
 | Unary minus operators
 |===
 
+
 === Non-Member Functions
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_plus-0d[`operator&plus;`]
 | Unary operator for A
 |===
@@ -100,8 +102,7 @@ link:#A-2constructor-01[A](int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -138,8 +139,7 @@ A(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -183,8 +183,7 @@ link:#A-operator_assign-06[operator&equals;](int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -212,8 +211,7 @@ operator&equals;(link:#A[A] const& a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -241,8 +239,7 @@ operator&equals;(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe b
 |===
@@ -286,8 +283,7 @@ link:#A-operator_plus-0e[operator&plus;](link:#A[A] const& a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -315,8 +311,7 @@ operator&plus;(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -344,8 +339,7 @@ operator&plus;(link:#A[A] const& a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -435,8 +429,7 @@ Result
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -459,8 +452,7 @@ struct B;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_plus-06[`operator&plus;`]
 | Unary operator for B
 |===
@@ -500,8 +492,7 @@ link:#no_way_to_infer_this_brief-01[no&lowbar;way&lowbar;to&lowbar;infer&lowbar;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -540,8 +531,7 @@ no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -604,8 +594,7 @@ Result
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The operand
 |===
@@ -633,8 +622,7 @@ Result
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The operand
 |===
@@ -676,8 +664,7 @@ link:#sameBrief-0e[sameBrief](
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 | *b*
@@ -703,8 +690,7 @@ sameBrief(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a
 |===
@@ -730,8 +716,7 @@ sameBrief(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | Describe a again
 | *b*

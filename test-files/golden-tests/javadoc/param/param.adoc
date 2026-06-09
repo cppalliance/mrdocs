@@ -6,7 +6,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#f[`f`] 
@@ -32,8 +32,7 @@ f(int x);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | An integer `x`
 |===
@@ -57,8 +56,7 @@ g(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | An integer `x`
 | *y*
@@ -85,8 +83,7 @@ h(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | An integer `x`
 | *y*
@@ -116,8 +113,7 @@ i(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *w*
 | An integer `w`
 | *x*

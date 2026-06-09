@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T[`T`] 
 |===
+
 
 [#T]
 == T
@@ -32,6 +33,7 @@ struct T;
 | link:#T-operator_plus[`operator&plus;`] 
 | Unary plus operator
 |===
+
 
 [#T-operator_plus]
 == link:#T[T]::operator&plus;

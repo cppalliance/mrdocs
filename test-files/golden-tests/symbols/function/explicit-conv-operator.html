@@ -6,234 +6,173 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="index">
-Global Namespace</h2>
-</div>
-<h2>
-Types</h2>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+<h3>Types</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-</tr>
+<tr><th>Name</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#Explicit"><code>Explicit</code></a> </td></tr><tr>
-<td><a href="#ExplicitExpression"><code>ExplicitExpression</code></a> </td></tr><tr>
-<td><a href="#ExplicitFalse"><code>ExplicitFalse</code></a> </td></tr><tr>
-<td><a href="#ExplicitTrue"><code>ExplicitTrue</code></a> </td></tr>
+<tr><td><a href="#Explicit"><code>Explicit</code></a> </td></tr>
+<tr><td><a href="#ExplicitExpression"><code>ExplicitExpression</code></a> </td></tr>
+<tr><td><a href="#ExplicitFalse"><code>ExplicitFalse</code></a> </td></tr>
+<tr><td><a href="#ExplicitTrue"><code>ExplicitTrue</code></a> </td></tr>
 </tbody>
 </table>
 
-</div>
-<div>
-<div>
-<h2 id="Explicit">
-Explicit</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Explicit">Explicit</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">struct Explicit;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#Explicit-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
+<tr><td><a href="#Explicit-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="Explicit-2conversion">
-Explicit::operator bool</h2>
-<div>
-<p>Conversion to <code>bool</code></p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Explicit-2conversion"><a href="#Explicit">Explicit</a>::operator bool</h2>
+<div class="brief">
+<p>Conversion to <code>bool</code></p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">explicit
 operator bool();</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-The object converted to <code>bool</code>
-</div>
-</div>
-<div>
-<div>
-<h2 id="ExplicitExpression">
-ExplicitExpression</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The object converted to <code>bool</code></p>
+</div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="ExplicitExpression">ExplicitExpression</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;bool B&gt;
 struct ExplicitExpression;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#ExplicitExpression-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
+<tr><td><a href="#ExplicitExpression-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="ExplicitExpression-2conversion">
-ExplicitExpression::operator bool</h2>
-<div>
-<p>Conversion to <code>bool</code></p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="ExplicitExpression-2conversion"><a href="#ExplicitExpression">ExplicitExpression</a>::operator bool</h2>
+<div class="brief">
+<p>Conversion to <code>bool</code></p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">explicit(B)
 operator bool();</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-The object converted to <code>bool</code>
-</div>
-</div>
-<div>
-<div>
-<h2 id="ExplicitFalse">
-ExplicitFalse</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The object converted to <code>bool</code></p>
+</div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="ExplicitFalse">ExplicitFalse</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">struct ExplicitFalse;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#ExplicitFalse-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
+<tr><td><a href="#ExplicitFalse-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="ExplicitFalse-2conversion">
-ExplicitFalse::operator bool</h2>
-<div>
-<p>Conversion to <code>bool</code></p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="ExplicitFalse-2conversion"><a href="#ExplicitFalse">ExplicitFalse</a>::operator bool</h2>
+<div class="brief">
+<p>Conversion to <code>bool</code></p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">explicit(false)
 operator bool();</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-The object converted to <code>bool</code>
-</div>
-</div>
-<div>
-<div>
-<h2 id="ExplicitTrue">
-ExplicitTrue</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The object converted to <code>bool</code></p>
+</div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="ExplicitTrue">ExplicitTrue</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">struct ExplicitTrue;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#ExplicitTrue-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
+<tr><td><a href="#ExplicitTrue-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="ExplicitTrue-2conversion">
-ExplicitTrue::operator bool</h2>
-<div>
-<p>Conversion to <code>bool</code></p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="ExplicitTrue-2conversion"><a href="#ExplicitTrue">ExplicitTrue</a>::operator bool</h2>
+<div class="brief">
+<p>Conversion to <code>bool</code></p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;explicit-conv-operator.cpp&gt;</code></p>
 <pre><code class="source-code cpp">explicit(true)
 operator bool();</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-The object converted to <code>bool</code>
-</div>
-</div>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The object converted to <code>bool</code></p>
+</div><!-- /return-value -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

@@ -34,7 +34,7 @@
 
 === Using Namespace Directives
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#regular_ns[`regular&lowbar;ns`]
@@ -53,7 +53,7 @@ Should decay to see&hyphen;below
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#mixed_ns-SeeBelowStructA[`SeeBelowStructA`] 
@@ -78,7 +78,7 @@ Should decay to regular
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#mixed_regular_ns-RegularStructA[`RegularStructA`] 
@@ -116,7 +116,7 @@ Regular namespace
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#regular_ns-A[`A`] 
@@ -141,7 +141,7 @@ Should decay to see&hyphen;below
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#see_below_ns-SeeBelowStructA[`SeeBelowStructA`] 

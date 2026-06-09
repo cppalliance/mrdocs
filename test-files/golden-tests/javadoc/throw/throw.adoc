@@ -32,8 +32,7 @@ f();
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;length&lowbar;error`
 | `dest&lowbar;size &lt; ipv4&lowbar;address&colon;&colon;max&lowbar;str&lowbar;len`
 |===

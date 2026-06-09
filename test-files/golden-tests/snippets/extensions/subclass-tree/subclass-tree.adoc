@@ -20,8 +20,7 @@ struct Circle
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Shape[Shape]`
 | The root of the shape hierarchy&period;
 |===
@@ -45,8 +44,7 @@ struct Polygon
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Shape[Shape]`
 | The root of the shape hierarchy&period;
 |===
@@ -55,11 +53,10 @@ struct Polygon
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#Quadrilateral[`Quadrilateral`]
+| Name| Description
+| link:#Quadrilateral[`Quadrilateral`] 
 | A four&hyphen;sided polygon&period;
-| link:#Triangle[`Triangle`]
+| link:#Triangle[`Triangle`] 
 | A three&hyphen;sided polygon&period;
 |===
 
@@ -82,8 +79,7 @@ struct Quadrilateral
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Polygon[Polygon]`
 | A shape with straight sides&period;
 |===
@@ -92,9 +88,8 @@ struct Quadrilateral
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#Square[`Square`]
+| Name| Description
+| link:#Square[`Square`] 
 | A quadrilateral with equal sides&period;
 |===
 
@@ -116,11 +111,10 @@ struct Shape;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#Circle[`Circle`]
+| Name| Description
+| link:#Circle[`Circle`] 
 | A round shape&period;
-| link:#Polygon[`Polygon`]
+| link:#Polygon[`Polygon`] 
 | A shape with straight sides&period;
 |===
 
@@ -143,8 +137,7 @@ struct Square
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Quadrilateral[Quadrilateral]`
 | A four&hyphen;sided polygon&period;
 |===
@@ -168,8 +161,7 @@ struct Triangle
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Polygon[Polygon]`
 | A shape with straight sides&period;
 |===

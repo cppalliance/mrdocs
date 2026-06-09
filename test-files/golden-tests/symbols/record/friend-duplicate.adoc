@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -15,7 +15,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#f[`f`] 
@@ -37,8 +37,7 @@ class A;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#f[f]`
 | 
 | `link:#B[B]`

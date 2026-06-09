@@ -34,8 +34,7 @@ f(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter&period;
 | *b*

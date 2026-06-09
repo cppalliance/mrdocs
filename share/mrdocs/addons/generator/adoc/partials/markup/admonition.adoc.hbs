@@ -1,0 +1,12 @@
+{{!--
+    Admonition block (note / warning / tip / important / caution).
+
+    Parameters:
+        kind: admonition kind (lowercase: "note", "warning", "tip", ...).
+              The partial upper-cases it for the AsciiDoc syntax.
+--}}
+[{{upper kind}}]
+====
+{{> @partial-block }}
+
+====

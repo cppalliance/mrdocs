@@ -18,8 +18,7 @@ struct Widget;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | xref:alpha/beta/make_widget.adoc[`make&lowbar;widget`]
 | Factory living under a nested namespace
 | xref:alpha/use_widget.adoc[`&colon;&colon;alpha&colon;&colon;use&lowbar;widget`]

@@ -6,64 +6,47 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="logr-scoped_context">
-logr::scoped_context</h2>
-<div>
-<p>Attach a key/value pair to every log line in the current scope.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;logr/log.hpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="logr-scoped_context">logr::scoped_context</h2>
+<div class="brief">
+<p>Attach a key/value pair to every log line in the current scope.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;logr/log.hpp&gt;</code></p>
 <pre><code class="source-code cpp">/* implementation-defined */
 scoped_context(
     char const* key,
     char const* value);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>The context stays attached until the returned token is destroyed. Hold it in <code>auto</code>; nested contexts stack and unwind in reverse order.</p>
-<h2>
-Example</h2>
+<h3>Example</h3>
 <pre><code class="language-cpp">
 void handle_request(request const&amp; req) {
     auto ctx = logr::scoped_context("request_id", req.id);
     do_work(req);
 }
-</code></pre></div>
-<div>
-<h3>
-Return Value</h3>
-An opaque RAII token whose lifetime governs how long the pair stays attached. The type is implementation-defined; store it in <code>auto</code>.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</code></pre></div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>An opaque RAII token whose lifetime governs how long the pair stays attached. The type is implementation-defined; store it in <code>auto</code>.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>key</strong></td>
-<td>The context name surfaced on each log line.</td>
-</tr>
-<tr>
-<td><strong>value</strong></td>
-<td>The context value surfaced on each log line.</td>
-</tr>
+<tr><td><strong>key</strong></td><td>The context name surfaced on each log line.</td></tr>
+<tr><td><strong>value</strong></td><td>The context value surfaced on each log line.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

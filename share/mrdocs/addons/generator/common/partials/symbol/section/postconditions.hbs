@@ -1,0 +1,11 @@
+{{! Postconditions (@post). }}
+{{#if symbol.doc.postconditions}}
+{{#> markup/section name="postconditions"}}
+{{#> markup/dynamic-level-h }}Postconditions{{/markup/dynamic-level-h~}}
+{{#> markup/ul}}
+{{#each symbol.doc.postconditions}}
+{{#> markup/li}}{{>doc/block .}}{{/markup/li}}
+{{/each}}
+{{/markup/ul}}
+{{/markup/section}}
+{{/if}}

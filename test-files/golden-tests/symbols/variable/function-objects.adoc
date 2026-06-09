@@ -6,24 +6,26 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example[`example`] 
 | link:#external[`external`] 
 |===
 
+
 [#example]
 == example
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example-detail[`detail`] 
 | link:#example-impl[`impl`] 
 |===
+
 
 === Types
 
@@ -47,6 +49,7 @@
 | link:#example-template_ctor_fn[`template&lowbar;ctor&lowbar;fn`] 
 | Not auto&hyphen;detected&colon; has a template constructor&period;
 |===
+
 
 === Functions
 
@@ -95,6 +98,7 @@
 | Hidden overload&period;
 |===
 
+
 === Variables
 
 [cols="1,4"]
@@ -111,6 +115,7 @@
 | link:#example-template_ctor_fo[`template&lowbar;ctor&lowbar;fo`] 
 | 
 |===
+
 
 [#example-detail]
 == link:#example[example]::detail
@@ -140,6 +145,7 @@ struct host;
 | link:#example-host-invoke[`invoke`] 
 | Invoke the operation&period;
 |===
+
 
 [#example-host-invoke]
 == link:#example[example]::link:#example-host[host]::invoke
@@ -181,11 +187,12 @@ struct host&lowbar;private;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example-host_private-invoke_fn[`invoke&lowbar;fn`] 
 |===
+
 
 [#example-host_private-invoke_fn]
 == link:#example[example]::link:#example-host_private[host&lowbar;private]::invoke&lowbar;fn
@@ -207,6 +214,7 @@ struct invoke&lowbar;fn;
 | link:#example-host_private-invoke_fn-operator_call[`operator()`] 
 | Invoke the operation&period;
 |===
+
 
 [#example-host_private-invoke_fn-operator_call]
 == link:#example[example]::link:#example-host_private[host&lowbar;private]::link:#example-host_private-invoke_fn[invoke&lowbar;fn]::operator()
@@ -250,6 +258,7 @@ struct host&lowbar;protected;
 | Invoke the operation&period;
 |===
 
+
 [#example-host_protected-invoke]
 == link:#example[example]::link:#example-host_protected[host&lowbar;protected]::invoke
 
@@ -290,11 +299,12 @@ struct no&lowbar;call&lowbar;fn;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example-no_call_fn-other[`other`] 
 |===
+
 
 [#example-no_call_fn-other]
 == link:#example[example]::link:#example-no_call_fn[no&lowbar;call&lowbar;fn]::other
@@ -325,12 +335,13 @@ struct not&lowbar;detected&lowbar;fn;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#example-not_detected_fn-operator_call[`operator()`] 
 | link:#example-not_detected_fn-other[`other`] 
 |===
+
 
 [#example-not_detected_fn-operator_call]
 == link:#example[example]::link:#example-not_detected_fn[not&lowbar;detected&lowbar;fn]::operator()
@@ -401,6 +412,7 @@ A template operator&equals; is not a special member function per the C&plus;&plu
 | Template&hyphen;assign overload&period;
 |===
 
+
 [#example-template_assign_fn-operator_assign]
 == link:#example[example]::link:#example-template_assign_fn[template&lowbar;assign&lowbar;fn]::operator&equals;
 
@@ -425,8 +437,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to assign from
 |===
@@ -478,6 +489,7 @@ A template constructor is not a special member function per the C&plus;&plus; st
 | link:#example-template_ctor_fn-operator_call[`operator()`] 
 | Template&hyphen;ctor overload&period;
 |===
+
 
 [#example-template_ctor_fn-2constructor-07]
 == link:#example[example]::link:#example-template_ctor_fn[template&lowbar;ctor&lowbar;fn]::template&lowbar;ctor&lowbar;fn
@@ -546,8 +558,7 @@ template&lowbar;ctor&lowbar;fn(U value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to construct from
 |===
@@ -649,8 +660,7 @@ True if a is less than b&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first value&period;
 | *b*
@@ -687,8 +697,7 @@ True if a is less than b&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first value&period;
 | *b*
@@ -868,8 +877,7 @@ The result&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | The input&period;
 |===
@@ -915,8 +923,7 @@ A number&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *begin*
 | The beginning of the range&period;
 | *end*
@@ -977,8 +984,7 @@ A number&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *begin*
 | The beginning of the range&period;
 | *end*
@@ -1075,8 +1081,7 @@ This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *first*
 | The beginning of the range&period;
 | *last*
@@ -1112,8 +1117,7 @@ The result&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *val*
 | The value to process&period;
 |===
@@ -1258,6 +1262,7 @@ constexpr link:#example-template_ctor_fn[template&lowbar;ctor&lowbar;fn] templat
 | A class template from an unrelated namespace&period; Auto&hyphen;detection should skip it because templates from non&hyphen;enclosing scopes are excluded (prevents false positives like std&colon;&colon;hash&lt;T&gt;)&period;
 |===
 
+
 [#external-hash_like]
 == link:#external[external]::hash&lowbar;like
 
@@ -1275,11 +1280,12 @@ struct hash&lowbar;like;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#external-hash_like-operator_call[`operator()`] 
 |===
+
 
 [#external-hash_like-operator_call]
 == link:#external[external]::link:#external-hash_like[hash&lowbar;like]::operator()

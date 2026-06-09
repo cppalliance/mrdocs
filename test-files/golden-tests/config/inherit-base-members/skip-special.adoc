@@ -21,6 +21,7 @@
 | Should inherit functions as protected&period;
 |===
 
+
 [#base]
 == base
 
@@ -38,8 +39,7 @@ class base
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#base_base[base&lowbar;base]`
 | 
 |===
@@ -65,6 +65,7 @@ class base
 | This function should be indirectly inherited by derived classes&period;
 |===
 
+
 === Protected Member Functions
 
 [cols="1,4"]
@@ -78,13 +79,13 @@ class base
 | This function should be shadowed by derived classes&period;
 |===
 
+
 === Derived Classes
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#derived[`derived`]
+| Name| Description
+| link:#derived[`derived`] 
 | 
 |===
 
@@ -233,13 +234,13 @@ class base&lowbar;base;
 | This function should be indirectly inherited by derived classes&period;
 |===
 
+
 === Derived Classes
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#base[`base`]
+| Name| Description
+| link:#base[`base`] 
 | 
 |===
 
@@ -319,8 +320,7 @@ class derived
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#base[base]`
 | 
 | `excluded&lowbar;base`
@@ -352,6 +352,7 @@ class derived
 | This function should be inherited by derived classes&period;
 |===
 
+
 === Protected Member Functions
 
 [cols="1,4"]
@@ -368,6 +369,7 @@ class derived
 | link:#derived-do_shadowed[`do&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
 |===
+
 
 [#derived-2constructor]
 == link:#derived[derived]::derived
@@ -501,6 +503,7 @@ class private&lowbar;derived
 | This function should shadow the base class function&period;
 |===
 
+
 [#private_derived-2constructor]
 == link:#private_derived[private&lowbar;derived]::private&lowbar;derived
 
@@ -579,8 +582,7 @@ class protected&lowbar;derived
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#base[base]`
 | 
 | `excluded&lowbar;base`
@@ -601,6 +603,7 @@ class protected&lowbar;derived
 | link:#protected_derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
 |===
+
 
 === Protected Member Functions
 
@@ -630,6 +633,7 @@ class protected&lowbar;derived
 | link:#protected_derived-excluded_inherited[`excluded&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
 |===
+
 
 [#protected_derived-2constructor]
 == link:#protected_derived[protected&lowbar;derived]::protected&lowbar;derived

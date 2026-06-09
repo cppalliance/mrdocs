@@ -29,8 +29,7 @@ The number of samples written to `out`&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *Sample*
 | The sample type, usually `float` or `short`&period;
 |===
@@ -39,8 +38,7 @@ The number of samples written to `out`&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *in* [in]
 | The input samples&period;
 | *count* [in]

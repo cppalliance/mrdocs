@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -27,7 +27,7 @@ struct A;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-B[`B`] 
@@ -48,7 +48,7 @@ struct B;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-B-f[`f`] 

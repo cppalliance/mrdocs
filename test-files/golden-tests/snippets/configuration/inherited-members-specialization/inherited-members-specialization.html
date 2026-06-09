@@ -6,255 +6,183 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="version">
-version</h2>
-<div>
-<p>A semantic version <code>(major, minor)</code>.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="version">version</h2>
+<div class="brief">
+<p>A semantic version <code>(major, minor)</code>.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">struct version
     : /* implementation-defined */</code></pre>
-</div>
-<div>
-<h2>
-Base Classes</h2>
-<table>
+</div><!-- /synopsis -->
+<div class="base-classes">
+<h3>Base Classes</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
 <tr><td><code>/* implementation-defined */</code></td><td>CRTP base that lifts <code>compare()</code> into <code>operator&#x3D;&#x3D;</code> and <code>operator!&#x3D;</code>.</td></tr>
 </tbody>
 </table>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /base-classes -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#version-2constructor"><code>version</code></a>         <span class="small">[constructor]</span></td><td>Construct from major and minor numbers.</td></tr><tr>
-<td><a href="#version-compare"><code>compare</code></a> </td><td>Three-way comparison against another version.</td></tr><tr>
-<td><a href="#version-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality operator</td></tr><tr>
-<td><a href="#version-operator_not_eq"><code>operator!&#x3D;</code></a> </td><td>Inequality operator</td></tr>
+<tr><td><a href="#version-2constructor"><code>version</code></a>         <span class="small">[constructor]</span></td><td>Construct from major and minor numbers.</td></tr>
+<tr><td><a href="#version-compare"><code>compare</code></a> </td><td>Three-way comparison against another version.</td></tr>
+<tr><td><a href="#version-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality operator</td></tr>
+<tr><td><a href="#version-operator_not_eq"><code>operator!&#x3D;</code></a> </td><td>Inequality operator</td></tr>
 </tbody>
 </table>
 
-<h2>
-Data Members</h2>
+<h3>Data Members</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#version-major"><code>major</code></a> </td><td>The major component.</td></tr><tr>
-<td><a href="#version-minor"><code>minor</code></a> </td><td>The minor component.</td></tr>
+<tr><td><a href="#version-major"><code>major</code></a> </td><td>The major component.</td></tr>
+<tr><td><a href="#version-minor"><code>minor</code></a> </td><td>The minor component.</td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="version-2constructor">
-version::version</h2>
-<div>
-<p>Construct from major and minor numbers.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="version-2constructor"><a href="#version">version</a>::version</h2>
+<div class="brief">
+<p>Construct from major and minor numbers.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">version(
     int major,
     int minor) noexcept;</code></pre>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>major</strong></td>
-<td>The value to construct from</td>
-</tr>
+<tr><td><strong>major</strong></td><td>The value to construct from</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="version-compare">
-version::compare</h2>
-<div>
-<p>Three-way comparison against another version.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="version-compare"><a href="#version">version</a>::compare</h2>
+<div class="brief">
+<p>Three-way comparison against another version.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">int
 compare(<a href="#version">version</a> const& other) const noexcept;</code></pre>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>other</strong></td>
-<td>A semantic version <code>(major, minor)</code>.</td>
-</tr>
+<tr><td><strong>other</strong></td><td>A semantic version <code>(major, minor)</code>.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="version-operator_eq">
-version::operator&#x3D;&#x3D;</h2>
-<div>
-<p>Equality operator</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="version-operator_eq"><a href="#version">version</a>::operator&#x3D;&#x3D;</h2>
+<div class="brief">
+<p>Equality operator</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">bool
 operator&#x3D;&#x3D;(<a href="#version">version</a> const& other) const noexcept;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-<code>true</code> if the objects are equal, <code>false</code> otherwise
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>true</code> if the objects are equal, <code>false</code> otherwise</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>other</strong></td>
-<td>The right operand</td>
-</tr>
+<tr><td><strong>other</strong></td><td>The right operand</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="version-operator_not_eq">
-version::operator!&#x3D;</h2>
-<div>
-<p>Inequality operator</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="version-operator_not_eq"><a href="#version">version</a>::operator!&#x3D;</h2>
+<div class="brief">
+<p>Inequality operator</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">bool
 operator!&#x3D;(<a href="#version">version</a> const& other) const noexcept;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-<code>true</code> if the objects are not equal, <code>false</code> otherwise
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>true</code> if the objects are not equal, <code>false</code> otherwise</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>other</strong></td>
-<td>The right operand</td>
-</tr>
+<tr><td><strong>other</strong></td><td>The right operand</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="version-major">
-version::major</h2>
-<div>
-<p>The major component.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="version-major"><a href="#version">version</a>::major</h2>
+<div class="brief">
+<p>The major component.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">int major;</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="version-minor">
-version::minor</h2>
-<div>
-<p>The minor component.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="version-minor"><a href="#version">version</a>::minor</h2>
+<div class="brief">
+<p>The minor component.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;inherited-members-specialization.cpp&gt;</code></p>
 <pre><code class="source-code cpp">int minor;</code></pre>
-</div>
-</div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

@@ -23,8 +23,7 @@ transfer(
 
 [cols="1,4"]
 |===
-| Name
-| Thrown on
+| Name| Thrown on
 | `std&colon;&colon;invalid&lowbar;argument`
 | If an account number is unknown&period;
 | `std&colon;&colon;out&lowbar;of&lowbar;range`

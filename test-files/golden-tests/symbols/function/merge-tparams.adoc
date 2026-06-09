@@ -35,8 +35,7 @@ f();
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | The first template parameter&period;
 | *U*

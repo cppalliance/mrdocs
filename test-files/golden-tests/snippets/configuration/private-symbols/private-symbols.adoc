@@ -48,8 +48,7 @@ An opaque RAII token whose lifetime governs how long the pair stays attached&per
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *key*
 | The context name surfaced on each log line&period;
 | *value*
@@ -85,8 +84,7 @@ logr::set_encoder(logr::make_json_encoder());
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *enc*
 | The library&apos;s private encoder representation&period;
 |===

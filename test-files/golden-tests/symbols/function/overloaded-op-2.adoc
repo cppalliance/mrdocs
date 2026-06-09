@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#T[`T`] 
 |===
+
 
 [#T]
 == T
@@ -32,6 +33,7 @@ struct T;
 | link:#T-operator_plus[`operator&plus;`] 
 | Addition operator
 |===
+
 
 [#T-operator_plus]
 == link:#T[T]::operator&plus;
@@ -56,8 +58,7 @@ Another instance of the object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===

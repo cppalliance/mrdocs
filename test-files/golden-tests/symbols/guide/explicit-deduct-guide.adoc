@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#X-0e[`X`] 
@@ -14,7 +14,7 @@
 
 === Deduction Guides
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#X-0d[`X&lt;0&gt;`] 

@@ -6,56 +6,42 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="vec2">
-vec2</h2>
-<div>
-<p>A 2D vector.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+<div class="symbol">
+<div class="header">
+<h2 id="vec2">vec2</h2>
+<div class="brief">
+<p>A 2D vector.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">struct vec2;</code></pre>
-</div>
-<h2>
-Member Functions</h2>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#vec2-2constructor-0f"><code>vec2</code></a>         <span class="small">[constructor]</span></td><td>Construct from <code>x</code> and <code>y</code> components.</td></tr><tr>
-<td><a href="#vec2-2destructor"><code>~vec2</code></a> <span class="small">[destructor]</span></td><td>Destructor</td></tr><tr>
-<td><a href="#vec2-operator_assign"><code>operator&#x3D;</code></a> </td><td>Copy assignment operator</td></tr><tr>
-<td><a href="#vec2-magnitude"><code>magnitude</code></a> </td><td>Returns the Euclidean length of the vector.</td></tr><tr>
-<td><a href="#vec2-translated"><code>translated</code></a> </td><td>Translate this vector by <code>delta</code>.</td></tr><tr>
-<td><a href="#vec2-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality operator</td></tr>
+<tr><td><a href="#vec2-2constructor-0f"><code>vec2</code></a>         <span class="small">[constructor]</span></td><td>Construct from <code>x</code> and <code>y</code> components.</td></tr>
+<tr><td><a href="#vec2-2destructor"><code>~vec2</code></a> <span class="small">[destructor]</span></td><td>Destructor</td></tr>
+<tr><td><a href="#vec2-operator_assign"><code>operator&#x3D;</code></a> </td><td>Copy assignment operator</td></tr>
+<tr><td><a href="#vec2-magnitude"><code>magnitude</code></a> </td><td>Returns the Euclidean length of the vector.</td></tr>
+<tr><td><a href="#vec2-translated"><code>translated</code></a> </td><td>Translate this vector by <code>delta</code>.</td></tr>
+<tr><td><a href="#vec2-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality operator</td></tr>
 </tbody>
 </table>
 
-
-
-</div>
-<div>
-<div>
-<h2 id="vec2-2constructor-0f">
-vec2::vec2</h2>
-<div>
-<p>Construct from <code>x</code> and <code>y</code> components.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopses</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-2constructor-0f"><a href="#vec2">vec2</a>::vec2</h2>
+<div class="brief">
+<p>Construct from <code>x</code> and <code>y</code> components.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopses</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <p>Copy constructor</p>
 <pre><code class="source-code cpp"><a href="#vec2-2constructor-0c">vec2</a>(<a href="#vec2">vec2</a> const& other);</code></pre>
 <span class="small"><a href="#vec2-2constructor-0c"><em>» more...</em></a></span>
@@ -70,270 +56,192 @@ Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
     double y);</code></pre>
 <span class="small"><a href="#vec2-2constructor-04"><em>» more...</em></a></span>
 
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-2constructor-0c">
-vec2::vec2</h2>
-<div>
-<p>Copy constructor</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-2constructor-0c"><a href="#vec2">vec2</a>::vec2</h2>
+<div class="brief">
+<p>Copy constructor</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">vec2(<a href="#vec2">vec2</a> const& other);</code></pre>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>other</strong></td>
-<td>The object to copy construct from</td>
-</tr>
+<tr><td><strong>other</strong></td><td>The object to copy construct from</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-2constructor-05">
-vec2::vec2</h2>
-<div>
-<p>Move constructor</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-2constructor-05"><a href="#vec2">vec2</a>::vec2</h2>
+<div class="brief">
+<p>Move constructor</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">vec2(<a href="#vec2">vec2</a>&& other) noexcept;</code></pre>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>other</strong></td>
-<td>The object to move construct from</td>
-</tr>
+<tr><td><strong>other</strong></td><td>The object to move construct from</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-2constructor-04">
-vec2::vec2</h2>
-<div>
-<p>Construct from <code>x</code> and <code>y</code> components.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-2constructor-04"><a href="#vec2">vec2</a>::vec2</h2>
+<div class="brief">
+<p>Construct from <code>x</code> and <code>y</code> components.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">vec2(
     double x,
     double y);</code></pre>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>x</strong></td>
-<td>The value to construct from</td>
-</tr>
+<tr><td><strong>x</strong></td><td>The value to construct from</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-2destructor">
-vec2::~vec2</h2>
-<div>
-<p>Destructor</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-2destructor"><a href="#vec2">vec2</a>::~vec2</h2>
+<div class="brief">
+<p>Destructor</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">~vec2();</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-operator_assign">
-vec2::operator&#x3D;</h2>
-<div>
-<p>Copy assignment operator</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-operator_assign"><a href="#vec2">vec2</a>::operator&#x3D;</h2>
+<div class="brief">
+<p>Copy assignment operator</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp"><a href="#vec2">vec2</a>&
 operator&#x3D;(<a href="#vec2">vec2</a> const& other);</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-Reference to the current object
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>Reference to the current object</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>other</strong></td>
-<td>The object to copy assign from</td>
-</tr>
+<tr><td><strong>other</strong></td><td>The object to copy assign from</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-magnitude">
-vec2::magnitude</h2>
-<div>
-<p>Returns the Euclidean length of the vector.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-magnitude"><a href="#vec2">vec2</a>::magnitude</h2>
+<div class="brief">
+<p>Returns the Euclidean length of the vector.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">double
 magnitude() const;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-the Euclidean length of the vector.
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-translated">
-vec2::translated</h2>
-<div>
-<p>Translate this vector by <code>delta</code>.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>the Euclidean length of the vector.</p>
+</div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-translated"><a href="#vec2">vec2</a>::translated</h2>
+<div class="brief">
+<p>Translate this vector by <code>delta</code>.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp"><a href="#vec2">vec2</a>
 translated(<a href="#vec2">vec2</a> const& delta) const;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-A 2D vector.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>A 2D vector.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>delta</strong></td>
-<td>A 2D vector.</td>
-</tr>
+<tr><td><strong>delta</strong></td><td>A 2D vector.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="vec2-operator_eq">
-vec2::operator&#x3D;&#x3D;</h2>
-<div>
-<p>Equality operator</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="vec2-operator_eq"><a href="#vec2">vec2</a>::operator&#x3D;&#x3D;</h2>
+<div class="brief">
+<p>Equality operator</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;auto-function-metadata.cpp&gt;</code></p>
 <pre><code class="source-code cpp">bool
 operator&#x3D;&#x3D;(<a href="#vec2">vec2</a> const& rhs) const;</code></pre>
-</div>
-<div>
-<h3>
-Return Value</h3>
-<code>true</code> if the objects are equal, <code>false</code> otherwise
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p><code>true</code> if the objects are equal, <code>false</code> otherwise</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>rhs</strong></td>
-<td>The right operand</td>
-</tr>
+<tr><td><strong>rhs</strong></td><td>The right operand</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

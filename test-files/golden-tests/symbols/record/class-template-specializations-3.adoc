@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e[`A`] 
@@ -32,7 +32,7 @@ struct A;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-B-07[`B`] 
@@ -54,7 +54,7 @@ struct B;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-B-07-C[`C`] 
@@ -115,7 +115,7 @@ struct link:#A-0e-B-07[B]&lt;double&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0e-B-00-C[`C`] 
@@ -176,7 +176,7 @@ struct link:#A-0e[A]&lt;float&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-01-B-07[`B`] 
@@ -211,7 +211,7 @@ struct link:#A-0e-B-07[B]&lt;double&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-01-B-08-C[`C`] 
@@ -272,7 +272,7 @@ struct link:#A-0e[A]&lt;long&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0c-B-0b[`B`] 
@@ -295,7 +295,7 @@ struct B;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0c-B-0b-C[`C`] 
@@ -356,7 +356,7 @@ struct link:#A-0c-B-0b[B]&lt;double&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0c-B-0d-C[`C`] 
@@ -417,7 +417,7 @@ struct link:#A-0c-B-0b[B]&lt;float&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-0c-B-08-C[`C`] 
@@ -478,7 +478,7 @@ struct link:#A-0e[A]&lt;short&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00-B-0e[`B`] 
@@ -514,7 +514,7 @@ struct link:#A-0e-B-07[B]&lt;double&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00-B-07-C[`C`] 
@@ -575,7 +575,7 @@ struct link:#A-0e-B-07[B]&lt;void&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-00-B-00-C[`C`] 
@@ -636,7 +636,7 @@ struct link:#A-0e[A]&lt;unsigned int&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-07-B-03a[`B`] 
@@ -672,7 +672,7 @@ struct link:#A-0e-B-07[B]&lt;double&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-07-B-03e-C[`C`] 
@@ -733,7 +733,7 @@ struct link:#A-0e-B-07[B]&lt;float&gt;;
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-07-B-05-C[`C`] 
@@ -793,7 +793,7 @@ struct E;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#E-m0[`m0`] 

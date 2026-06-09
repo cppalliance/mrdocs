@@ -1,0 +1,18 @@
+{{!--
+    Admonition block (note / warning / tip / important / caution).
+
+    Emits a `<div class="admonition">` with an `<h4>` header so the
+    same hooks AsciiDoc admonitions render with are available to
+    HTML stylesheets.  Body is wrapped in `<p>` to mirror the typical
+    single-paragraph AsciiDoc admonition.
+
+    Parameters:
+        kind: admonition kind (lowercase: "note", "warning", "tip", ...).
+              The partial upper-cases it for display.
+--}}
+<div class="admonition">
+<h4>{{upper kind}}</h4>
+<div>
+<p>{{> @partial-block }}</p>
+</div>
+</div>

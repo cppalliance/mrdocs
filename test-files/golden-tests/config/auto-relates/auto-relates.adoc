@@ -50,8 +50,7 @@ class A;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f1[`f1`]
 | A non&hyphen;member function of A
 | link:#f2[`f2`]

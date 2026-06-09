@@ -13,6 +13,7 @@
 | A record with non&hyphen;member functions
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -23,6 +24,7 @@
 | link:#operator_eq[`operator&equals;&equals;`] 
 | Friend function not listed as non&hyphen;member
 |===
+
 
 [#A]
 == A
@@ -42,8 +44,7 @@ class A;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#operator_eq[operator&equals;&equals;]`
 | Friend function not listed as non&hyphen;member
 |===
@@ -52,8 +53,7 @@ class A;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#to_string[`to&lowbar;string`]
 | Non&hyphen;member function of A
 |===
@@ -81,8 +81,7 @@ The string representation of the object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The object to stringify
 |===
@@ -116,8 +115,7 @@ Friends are already listed in the class definition&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *lhs*
 | The left&hyphen;hand side of the comparison
 | *rhs*

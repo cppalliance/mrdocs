@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -89,11 +89,10 @@ using A::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#A-f-05[A::f]
+| Name| Description
+| link:#A-f-05[`f`] 
 | A record
-| link:#A-f-01[A::f]
+| link:#A-f-01[`f`] 
 | A function
 |===
 

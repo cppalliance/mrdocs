@@ -82,8 +82,7 @@ g0(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | one
 | *a*
@@ -109,8 +108,7 @@ g1(int a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | one
 | *b*
@@ -137,8 +135,7 @@ h0();
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | one
 | *T*
@@ -165,8 +162,7 @@ h1();
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | one
 | *U*

@@ -6,86 +6,64 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="index">
-Global Namespace</h2>
-</div>
-<h2>
-Functions</h2>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+<h3>Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th><th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#bar"><code>bar</code></a> </td><td>Brief from <code>foo()</code></td></tr><tr>
-<td><a href="#foo-02"><code>foo</code></a> </td><td><code>foo</code> overloads</td></tr>
+<tr><td><a href="#bar"><code>bar</code></a> </td><td>Brief from <code>foo()</code></td></tr>
+<tr><td><a href="#foo-02"><code>foo</code></a> </td><td><code>foo</code> overloads</td></tr>
 </tbody>
 </table>
 
-</div>
-<div>
-<div>
-<h2 id="bar">
-bar</h2>
-<div>
-<p>Brief from <code>foo()</code></p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;decay-params.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="bar">bar</h2>
+<div class="brief">
+<p>Brief from <code>foo()</code></p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;decay-params.cpp&gt;</code></p>
 <pre><code class="source-code cpp">constexpr
 bool
 bar(int* a);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>This is the function original documentation for the foo function with an array parameter.</p>
-</div>
-<div>
-<h3>
-Return Value</h3>
-A boolean value.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>A boolean value.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>a</strong></td>
-<td>An array of integers.</td>
-</tr>
+<tr><td><strong>a</strong></td><td>An array of integers.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="foo-02">
-foo</h2>
-<div>
-<p><code>foo</code> overloads</p>
-</div>
-</div>
-<div>
-<h3>
-Synopses</h3>
-<div>
-Declared in <code>&lt;decay-params.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="foo-02">foo</h2>
+<div class="brief">
+<p><code>foo</code> overloads</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopses</h3>
+<p>Declared in <code>&lt;decay-params.cpp&gt;</code></p>
 <p>We should not copy this doc</p>
 <pre><code class="source-code cpp">void
 <a href="#foo-0c">foo</a>();</code></pre>
@@ -102,139 +80,101 @@ bool
 <a href="#foo-0e">foo</a>(int a[3]);</code></pre>
 <span class="small"><a href="#foo-0e"><em>» more...</em></a></span>
 
-</div>
-<div>
-<h3>
-Return Value</h3>
-A boolean value.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>A boolean value.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>a</strong></td>
-<td>An integer.</td>
-</tr>
+<tr><td><strong>a</strong></td><td>An integer.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="foo-0c">
-foo</h2>
-<div>
-<p>We should not copy this doc</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;decay-params.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="foo-0c">foo</h2>
+<div class="brief">
+<p>We should not copy this doc</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;decay-params.cpp&gt;</code></p>
 <pre><code class="source-code cpp">void
 foo();</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p><code>bar</code> should not copy this documentation just because it has the same name and is simpler.</p>
-</div>
-</div>
-<div>
-<div>
-<h2 id="foo-01">
-foo</h2>
-<div>
-<p>We should not copy this doc</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;decay-params.cpp&gt;</code></div>
+</div><!-- /description -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="foo-01">foo</h2>
+<div class="brief">
+<p>We should not copy this doc</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;decay-params.cpp&gt;</code></p>
 <pre><code class="source-code cpp">void
 foo(int a);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p><code>bar</code> should not copy this documentation just because it has the same number of parameters.</p>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>a</strong></td>
-<td>An integer.</td>
-</tr>
+<tr><td><strong>a</strong></td><td>An integer.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="foo-0e">
-foo</h2>
-<div>
-<p>Brief from <code>foo()</code></p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;decay-params.cpp&gt;</code></div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="foo-0e">foo</h2>
+<div class="brief">
+<p>Brief from <code>foo()</code></p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;decay-params.cpp&gt;</code></p>
 <pre><code class="source-code cpp">constexpr
 bool
 foo(int a[3]);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>This is the function original documentation for the foo function with an array parameter.</p>
-</div>
-<div>
-<h3>
-Return Value</h3>
-A boolean value.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>A boolean value.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>a</strong></td>
-<td>An array of integers.</td>
-</tr>
+<tr><td><strong>a</strong></td><td>An array of integers.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

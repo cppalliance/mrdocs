@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Explicit[`Explicit`] 
@@ -14,6 +14,7 @@
 | link:#ExplicitFalse[`ExplicitFalse`] 
 | link:#ExplicitTrue[`ExplicitTrue`] 
 |===
+
 
 [#Explicit]
 == Explicit
@@ -35,6 +36,7 @@ struct Explicit;
 | link:#Explicit-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
+
 
 [#Explicit-2conversion]
 == link:#Explicit[Explicit]::operator bool
@@ -77,6 +79,7 @@ struct ExplicitExpression;
 | Conversion to `bool`
 |===
 
+
 [#ExplicitExpression-2conversion]
 == link:#ExplicitExpression[ExplicitExpression]::operator bool
 
@@ -117,6 +120,7 @@ struct ExplicitFalse;
 | Conversion to `bool`
 |===
 
+
 [#ExplicitFalse-2conversion]
 == link:#ExplicitFalse[ExplicitFalse]::operator bool
 
@@ -156,6 +160,7 @@ struct ExplicitTrue;
 | link:#ExplicitTrue-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
+
 
 [#ExplicitTrue-2conversion]
 == link:#ExplicitTrue[ExplicitTrue]::operator bool

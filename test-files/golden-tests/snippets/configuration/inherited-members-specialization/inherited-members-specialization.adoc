@@ -20,8 +20,7 @@ struct version
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `&sol;&ast; implementation-defined &ast;&sol;`
 | CRTP base that lifts `compare()` into `operator&equals;&equals;` and `operator!&equals;`&period;
 |===
@@ -41,6 +40,7 @@ struct version
 | Inequality operator
 |===
 
+
 === Data Members
 
 [cols="1,4"]
@@ -51,6 +51,7 @@ struct version
 | link:#version-minor[`minor`] 
 | The minor component&period;
 |===
+
 
 [#version-2constructor]
 == link:#version[version]::version
@@ -72,8 +73,7 @@ version(
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *major*
 | The value to construct from
 |===
@@ -97,8 +97,7 @@ compare(link:#version[version] const& other) const noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | A semantic version `(major, minor)`&period;
 |===
@@ -126,8 +125,7 @@ operator&equals;&equals;(link:#version[version] const& other) const noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The right operand
 |===
@@ -155,8 +153,7 @@ operator!&equals;(link:#version[version] const& other) const noexcept;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The right operand
 |===

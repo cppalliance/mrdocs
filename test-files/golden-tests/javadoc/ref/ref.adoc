@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -14,7 +14,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#F[`F`] 
@@ -81,7 +81,7 @@ See link:#A-f1[`&colon;&colon;A&colon;&colon;f1`]
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-B-f2[`f2`] 
@@ -114,7 +114,7 @@ struct C;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-C-f3[`f3`] 
@@ -125,9 +125,8 @@ struct C;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#A-D[`D`]
+| Name| Description
+| link:#A-D[`D`] 
 | 
 |===
 
@@ -174,8 +173,7 @@ struct D
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#A-C[C]`
 | 
 |===
@@ -191,7 +189,7 @@ struct D
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-C-f3[`f3`] 
@@ -264,7 +262,7 @@ struct F;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#F-operator_assign[`operator&equals;`] 

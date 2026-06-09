@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Base[`Base`] 
@@ -31,15 +31,14 @@ class Base
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#ConstBase[ConstBase]`
 | 
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Base-foo-04[`foo`] 
@@ -49,9 +48,8 @@ class Base
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#C[`C`]
+| Name| Description
+| link:#C[`C`] 
 | 
 |===
 
@@ -123,15 +121,14 @@ class C
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#Base[Base]`
 | 
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Base-foo-04[`foo`] 
@@ -151,7 +148,7 @@ class ConstBase;
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#ConstBase-foo[`foo`] 
@@ -161,9 +158,8 @@ class ConstBase;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#Base[`Base`]
+| Name| Description
+| link:#Base[`Base`] 
 | 
 |===
 

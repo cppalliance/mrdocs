@@ -28,6 +28,7 @@ struct value;
 | Convert to `int` for arithmetic contexts&period;
 |===
 
+
 [#value-get]
 == link:#value[value]::get
 

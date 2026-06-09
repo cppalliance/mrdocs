@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A1[`A1`] 
@@ -59,8 +59,7 @@ class A3 final
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#B1[B1]`
 | 
 | `link:#B2[B2]`
@@ -83,9 +82,8 @@ class B1;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#A3[`A3`]
+| Name| Description
+| link:#A3[`A3`] 
 | 
 |===
 
@@ -105,9 +103,8 @@ class B2;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#A3[`A3`]
+| Name| Description
+| link:#A3[`A3`] 
 | 
 |===
 

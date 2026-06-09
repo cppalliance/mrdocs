@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#derived[`derived`] 
@@ -29,8 +29,7 @@ struct derived
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `&sol;&ast; implementation-defined &ast;&sol;`
 | 
 |===

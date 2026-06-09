@@ -26,7 +26,7 @@
 
 === Enums
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#testEnum[`testEnum`] 
@@ -89,8 +89,7 @@ struct Q;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#g-09c[`&colon;&colon;g`]
 | Qualified identifier param function
 |===
@@ -124,8 +123,7 @@ struct A;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#g-05[`g`]
 | struct param function
 |===
@@ -155,8 +153,7 @@ This reference uses the `this` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -186,8 +183,7 @@ Documentation for a function with an explicit object parameter&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *self*
 | The object to operate on
 | *a*
@@ -213,8 +209,7 @@ struct paramType;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#f-00[`f`]
 | Reference function&period;
 | link:#f-010[`f`]
@@ -251,8 +246,7 @@ enum testEnum;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#g-04c[`g`]
 | Enum param function
 |===
@@ -380,8 +374,7 @@ link:#f-081[f](link:#paramType[paramType&lt;9&gt;] a);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of f
 |===
@@ -430,8 +423,7 @@ This function uses a reference with no parameters&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of f
 |===
@@ -461,8 +453,7 @@ This reference uses the `void` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of f
 |===
@@ -492,8 +483,7 @@ This reference uses the `&period;&period;&period;` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -523,8 +513,7 @@ This reference uses the `int` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -554,8 +543,7 @@ This reference uses the `auto` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -585,8 +573,7 @@ This reference uses the `decltype` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -616,8 +603,7 @@ This reference uses the `struct` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -647,8 +633,7 @@ This reference uses the `enum` keyword&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -678,8 +663,7 @@ This reference uses the qualified identifier `N&colon;&colon;M&colon;&colon;Q`&p
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -776,8 +760,7 @@ link:#g-0c[g](
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 | *b*
@@ -807,8 +790,7 @@ Documentation for a function with a struct parameter&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -836,8 +818,7 @@ Documentation for a function with a qualified identifier parameter&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -865,8 +846,7 @@ Documentation for a function with an `auto` parameter&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -894,8 +874,7 @@ Documentation for the variadic function&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -923,8 +902,7 @@ Documentation for the non&hyphen;variadic function&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -952,8 +930,7 @@ Documentation for a function with an enum parameter&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 |===
@@ -983,8 +960,7 @@ Documentation for a function with a `decltype` parameter&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *a*
 | The first parameter of g
 | *b*

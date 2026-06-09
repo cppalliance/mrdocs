@@ -17,7 +17,7 @@ struct point;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#point-x[`x`] 
@@ -28,8 +28,7 @@ struct point;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#print[`print`]
 | Print a point to stdout&period;
 |===
@@ -81,8 +80,7 @@ The free function takes `point` as its only parameter, so it gets attached to `p
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *p*
 | A two&hyphen;dimensional point&period;
 |===

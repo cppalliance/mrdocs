@@ -1,18 +1,32 @@
-{{#>markup/table cols=(select includeBrief 2 1)}}
-{{#>markup/thead}}
-{{#>markup/tr~}}
-{{#>markup/th}}Name{{/markup/th}}{{#if includeBrief}}{{#>markup/th}}Description{{/markup/th}}{{/if}}
-{{/markup/tr}}
-{{/markup/thead}}
-{{#>markup/tbody}}
-{{#if isName}}
-{{#each members}}
-{{> symbol/detail/members-table-row . includeBrief=false isName=true}}
-{{/each}}
-{{ else }}
-{{#each (filter_by members "isRegular" "isSeeBelow")}}
-{{> symbol/detail/members-table-row . includeBrief=../includeBrief isName=false}}
-{{/each}}
-{{/if}}
-{{/markup/tbody}}
-{{/markup/table}}
+{{!--
+    Renders a members table via the data-level markup/table partial.
+
+    Routes each cell through markup/cell which dispatches by
+    `$meta.type`: Symbols render through symbol/qualified-name
+    (wrapped in markup/code) and Names render through type/name-info-text
+    (linked via markup/a when a url is present).
+
+    Parameters:
+        members:       array of Symbol or Name items.
+        isName:        true when items are Names (no doc.brief).
+        includeBrief:  when true, a second column with the brief is emitted.
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if isName~}}
+{{> markup/table
+    headers=(arr "Name")
+    items=members
+    columns=(arr ".") }}
+{{~else if includeBrief~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Description")
+    items=(filter_by members "isRegular" "isSeeBelow")
+    columns=(arr "." "doc.brief") }}
+{{~else~}}
+{{> markup/table
+    headers=(arr "Name")
+    items=(filter_by members "isRegular" "isSeeBelow")
+    columns=(arr ".") }}
+{{~/if}}

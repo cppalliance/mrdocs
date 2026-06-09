@@ -34,8 +34,7 @@ This class represents a person with a name and an age&period; This is the inform
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#greet[`greet`]
 | A function to greet a person
 |===
@@ -91,8 +90,7 @@ This function takes a person and prints a greeting message&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *p*
 | The person to greet
 |===

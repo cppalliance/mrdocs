@@ -17,6 +17,7 @@
 | A dumb ostream class
 |===
 
+
 === Functions
 
 [cols="1,4"]
@@ -29,6 +30,7 @@
 | link:#operator_not[`operator!`] 
 | Negation operator
 |===
+
 
 [#A]
 == A
@@ -67,12 +69,12 @@ struct X;
 | Addition operator
 |===
 
+
 === Non-Member Functions
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_not[`operator!`]
 | Negation operator
 | link:#operator_minus[`operator&hyphen;`]
@@ -102,8 +104,7 @@ Another instance of the object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | The right operand
 |===
@@ -126,8 +127,7 @@ struct ostream;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#operator_lshift[`operator&lt;&lt;`]
 | Stream insertion operator
 |===
@@ -157,8 +157,7 @@ Test class
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | The left operand
 | *y*
@@ -190,8 +189,7 @@ Reference to the current output stream
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *os*
 | An output stream
 | *x*
@@ -221,8 +219,7 @@ Test class
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *x*
 | The operand
 |===

@@ -6,32 +6,35 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#LongName[`LongName`] 
 |===
 
+
 === Using Declarations
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#S1[`S1`] 
 | link:#S2[`S2`] 
 |===
 
+
 [#LongName]
 == LongName
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#LongName-S1[`S1`] 
 | link:#LongName-S2[`S2`] 
 |===
+
 
 [#LongName-S1]
 == link:#LongName[LongName]::S1
@@ -71,11 +74,12 @@ using LongName::S1;
 
 === Introduced Symbols
 
-[cols=1]
+[cols="1"]
 |===
 | Name
-| link:#LongName-S1[LongName::S1]
+| link:#LongName-S1[`S1`] 
 |===
+
 [#S2]
 == S2
 
@@ -90,10 +94,11 @@ using LongName::S2;
 
 === Introduced Symbols
 
-[cols=1]
+[cols="1"]
 |===
 | Name
-| link:#LongName-S2[LongName::S2]
+| link:#LongName-S2[`S2`] 
 |===
+
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

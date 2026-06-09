@@ -6,11 +6,12 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#Z[`Z`] 
 |===
+
 
 [#Z]
 == Z
@@ -48,6 +49,7 @@ struct Z;
 | link:#Z-operator_3way[`operator&lt;&equals;&gt;`] 
 | Three&hyphen;way comparison operator
 |===
+
 
 [#Z-2constructor-00]
 == link:#Z[Z]::Z
@@ -110,8 +112,7 @@ Z(int value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -216,8 +217,7 @@ operator&equals;&equals;(link:#Z[Z] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -245,8 +245,7 @@ operator!&equals;(link:#Z[Z] const& rhs) const;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===
@@ -274,8 +273,7 @@ The relative order of the objects
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *rhs*
 | The right operand
 |===

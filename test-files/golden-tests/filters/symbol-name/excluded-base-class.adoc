@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -17,7 +17,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-D[`D`] 
@@ -41,15 +41,14 @@ class D
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `B::C`
 | 
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-D-f[`f`] 
@@ -129,15 +128,14 @@ class E
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `B::C`
 | 
 |===
 
 === Member Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-E-f[`f`] 

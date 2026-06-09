@@ -27,6 +27,7 @@
 | This struct inherits from A, B, C, D, E, and F in various ways,
 |===
 
+
 [#A]
 == A
 
@@ -50,13 +51,13 @@ struct A;
 | Public member function f taking a Tag&lt;0&gt;&period;
 |===
 
+
 === Derived Classes
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#U[`U`]
+| Name| Description
+| link:#U[`U`] 
 | This struct inherits from A, B, C, D, E, and F in various ways,
 |===
 
@@ -102,13 +103,13 @@ struct B;
 | Protected member function f taking a Tag&lt;1&gt;&period;
 |===
 
+
 === Derived Classes
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#U[`U`]
+| Name| Description
+| link:#U[`U`] 
 | This struct inherits from A, B, C, D, E, and F in various ways,
 |===
 
@@ -150,6 +151,7 @@ struct C;
 | Public member function f taking a Tag&lt;2&gt;&period;
 |===
 
+
 [#C-f]
 == link:#C[C]::f
 
@@ -187,6 +189,7 @@ struct D;
 | link:#D-f[`f`] 
 | Protected member function f taking a Tag&lt;3&gt;&period;
 |===
+
 
 [#D-f]
 == link:#D[D]::f
@@ -226,6 +229,7 @@ struct E;
 | Public member function f taking a Tag&lt;4&gt;&period;
 |===
 
+
 [#E-f]
 == link:#E[E]::f
 
@@ -263,6 +267,7 @@ struct F;
 | link:#F-f[`f`] 
 | Protected member function f taking a Tag&lt;5&gt;&period;
 |===
+
 
 [#F-f]
 == link:#F[F]::f
@@ -320,8 +325,7 @@ The documentation of this struct should include the function f twice&colon; once
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#A[A]`
 | This struct will be inherited as public
 | `link:#B[B]`
@@ -332,8 +336,7 @@ The documentation of this struct should include the function f twice&colon; once
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#C[C]`
 | This struct will be inherited as protected
 | `link:#D[D]`
@@ -348,6 +351,7 @@ The documentation of this struct should include the function f twice&colon; once
 | link:#A-f[`f`] 
 | Public member function f taking a Tag&lt;0&gt;&period;
 |===
+
 
 === Using Declarations
 
@@ -380,6 +384,7 @@ The documentation of this struct should include the function f twice&colon; once
 | Bring all the F&colon;&colon;f functions into U&period;
 |===
 
+
 === Protected Member Functions
 
 [cols="1,4"]
@@ -388,6 +393,7 @@ The documentation of this struct should include the function f twice&colon; once
 | link:#U-f-07[`f`] 
 | `f` overloads
 |===
+
 
 [#U-U-0a]
 == link:#U[U]::U
@@ -491,11 +497,11 @@ using A::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#A-f[A::f]
+| Name| Description
+| link:#A-f[`f`] 
 | Public member function f taking a Tag&lt;0&gt;&period;
 |===
+
 [#U-f-0be]
 == link:#U[U]::f
 
@@ -514,11 +520,11 @@ using B::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#B-f[B::f]
+| Name| Description
+| link:#B-f[`f`] 
 | Protected member function f taking a Tag&lt;1&gt;&period;
 |===
+
 [#U-f-0f]
 == link:#U[U]::f
 
@@ -537,11 +543,11 @@ using C::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#C-f[C::f]
+| Name| Description
+| link:#C-f[`f`] 
 | Public member function f taking a Tag&lt;2&gt;&period;
 |===
+
 [#U-f-009]
 == link:#U[U]::f
 
@@ -560,11 +566,11 @@ using D::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#D-f[D::f]
+| Name| Description
+| link:#D-f[`f`] 
 | Protected member function f taking a Tag&lt;3&gt;&period;
 |===
+
 [#U-f-0bd]
 == link:#U[U]::f
 
@@ -583,11 +589,11 @@ using E::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#E-f[E::f]
+| Name| Description
+| link:#E-f[`f`] 
 | Public member function f taking a Tag&lt;4&gt;&period;
 |===
+
 [#U-f-02]
 == link:#U[U]::f
 
@@ -606,11 +612,11 @@ using F::f;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#F-f[F::f]
+| Name| Description
+| link:#F-f[`f`] 
 | Protected member function f taking a Tag&lt;5&gt;&period;
 |===
+
 [#U-f-07]
 == link:#U[U]::f
 

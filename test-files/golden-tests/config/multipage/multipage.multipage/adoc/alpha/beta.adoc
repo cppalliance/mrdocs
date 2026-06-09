@@ -12,6 +12,7 @@
 | Widget with its own page
 |===
 
+
 == Functions
 
 [cols="1,4"]
@@ -20,6 +21,7 @@
 | xref:alpha/beta/make_widget.adoc[`make&lowbar;widget`] 
 | Factory living under a nested namespace
 |===
+
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

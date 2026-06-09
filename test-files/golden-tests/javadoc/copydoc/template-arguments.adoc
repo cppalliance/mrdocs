@@ -6,7 +6,7 @@
 
 === Namespaces
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -97,8 +97,7 @@ using B&lowbar;t = link:#A-B-08[B&lt;T, I&gt;];
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | The type parameter&period;
 |===
@@ -152,8 +151,7 @@ using C&lowbar;t = link:#A-C-05[C&lt;T, B&gt;];
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | The type parameter&period;
 |===
@@ -179,8 +177,7 @@ struct B;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | The type parameter&period;
 | *int*
@@ -238,8 +235,7 @@ struct C;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *T*
 | The type parameter&period;
 | *bool*

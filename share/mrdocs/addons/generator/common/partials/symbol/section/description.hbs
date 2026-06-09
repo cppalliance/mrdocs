@@ -1,0 +1,11 @@
+{{! Description block from the symbol's doc comment (skipped when traversing the global namespace and when the description starts with its own heading). }}
+{{#unless traversing-global-namespace}}
+{{#if symbol.doc.document}}
+{{#> markup/section name="description"}}
+{{#unless (eq (lookup (first symbol.doc.document) "kind") "heading") }}
+{{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h~}}
+{{~/unless}}
+{{> doc/block/document symbol.doc.document }}
+{{/markup/section}}
+{{/if}}
+{{/unless}}

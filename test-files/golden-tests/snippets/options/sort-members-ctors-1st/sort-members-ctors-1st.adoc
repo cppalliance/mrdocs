@@ -89,8 +89,7 @@ widget(char const* label);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *label*
 | The value to construct from
 |===

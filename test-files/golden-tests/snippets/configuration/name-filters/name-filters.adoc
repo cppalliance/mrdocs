@@ -19,8 +19,7 @@ class value;
 
 [cols="1,4"]
 |===
-| Name
-| Description
+| Name| Description
 | link:#jzon-parse[`parse`]
 | Parse a JSON document&period;
 |===
@@ -52,8 +51,7 @@ A parsed JSON document&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *source*
 | A null&hyphen;terminated UTF&hyphen;8 JSON document&period;
 |===
@@ -85,8 +83,7 @@ Parses `source` without constructing a value tree, reporting only whether the in
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *source*
 | A null&hyphen;terminated UTF&hyphen;8 JSON document&period;
 |===

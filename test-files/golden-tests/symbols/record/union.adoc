@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A[`A`] 
@@ -27,7 +27,7 @@ union A;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#A-x[`x`] [.small]#[variant member]#
@@ -72,7 +72,7 @@ struct B;
 
 === Data Members
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#B-x[`x`] [.small]#[variant member]#

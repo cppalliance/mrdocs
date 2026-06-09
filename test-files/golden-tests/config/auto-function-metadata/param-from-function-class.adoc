@@ -15,6 +15,7 @@
 | Test class
 |===
 
+
 [#A]
 == A
 
@@ -53,6 +54,7 @@ struct X;
 | link:#X-operator_assign-0a[`operator&equals;`] 
 | Assignment operators
 |===
+
 
 [#X-2constructor-08]
 == link:#X[X]::X
@@ -131,8 +133,7 @@ X(link:#X[X] const& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy construct from
 |===
@@ -155,8 +156,7 @@ X(link:#X[X]&& other);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move construct from
 |===
@@ -179,8 +179,7 @@ X(int value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to construct from
 |===
@@ -203,8 +202,7 @@ X(link:#A[A] const& value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to copy construct from
 |===
@@ -227,8 +225,7 @@ X(link:#A[A]&& value);
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to move construct from
 |===
@@ -320,8 +317,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to copy assign from
 |===
@@ -349,8 +345,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *other*
 | The object to move assign from
 |===
@@ -378,8 +373,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The value to assign from
 |===
@@ -407,8 +401,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to copy assign from
 |===
@@ -436,8 +429,7 @@ Reference to the current object
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *value*
 | The object to move assign from
 |===

@@ -1,0 +1,11 @@
+{{! Exceptions thrown by the function (@throws). }}
+{{#if symbol.doc.exceptions}}
+{{#> markup/section name="exceptions"}}
+{{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h~}}
+{{> markup/table
+    weights=(arr 1 4)
+    headers=(arr "Name" "Thrown on")
+    items=symbol.doc.exceptions
+    columns=(arr "exception" "children") }}
+{{/markup/section}}
+{{/if}}

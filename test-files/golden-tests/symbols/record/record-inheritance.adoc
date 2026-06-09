@@ -6,7 +6,7 @@
 
 === Types
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#C0[`C0`] 
@@ -43,9 +43,8 @@ class C0;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#C2[`C2`]
+| Name| Description
+| link:#C2[`C2`] 
 | 
 |===
 
@@ -79,8 +78,7 @@ class C2
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#C0[C0]`
 | 
 |===
@@ -102,8 +100,7 @@ class C3
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#C0[C0]`
 | 
 |===
@@ -138,9 +135,8 @@ class C5
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#C7[`C7`]
+| Name| Description
+| link:#C7[`C7`] 
 | 
 |===
 
@@ -161,9 +157,8 @@ class C6
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#C7[`C7`]
+| Name| Description
+| link:#C7[`C7`] 
 | 
 |===
 
@@ -185,8 +180,7 @@ class C7
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#C5[C5]`
 | 
 | `link:#C6[C6]`
@@ -209,9 +203,8 @@ struct S0;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#S2[`S2`]
+| Name| Description
+| link:#S2[`S2`] 
 | 
 |===
 
@@ -231,9 +224,8 @@ struct S1;
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#S3[`S3`]
+| Name| Description
+| link:#S3[`S3`] 
 | 
 |===
 
@@ -254,8 +246,7 @@ struct S2
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S0[S0]`
 | 
 |===
@@ -264,9 +255,8 @@ struct S2
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#S4[`S4`]
+| Name| Description
+| link:#S4[`S4`] 
 | 
 |===
 
@@ -287,8 +277,7 @@ struct S3
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S1[S1]`
 | 
 |===
@@ -297,9 +286,8 @@ struct S3
 
 [cols="1,4"]
 |===
-|Name|Description
-
-| link:#S4[`S4`]
+| Name| Description
+| link:#S4[`S4`] 
 | 
 |===
 
@@ -321,8 +309,7 @@ struct S4
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S2[S2]`
 | 
 | `link:#S3[S3]`
@@ -347,8 +334,7 @@ struct S5
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `link:#S1[S1]`
 | 
 |===
@@ -371,8 +357,7 @@ struct S6
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | `Ts&period;&period;&period;`
 | 
 |===

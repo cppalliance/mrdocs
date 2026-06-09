@@ -28,8 +28,7 @@ Whether `n` is prime&period;
 
 [cols="1,4"]
 |===
-|Name|Description
-
+| Name| Description
 | *n*
 | The number to test
 |===
