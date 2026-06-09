@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#y]
+== y
+
+A test variable named &apos;y&apos;
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&hyphen;anonymous&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+extern
+&sol;&ast; implementation-defined &ast;&sol; y;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>hXdr5xeKBS872hwPIMvzIIFfkwc=</records>
+    <variables>Lo7T5HXxKsvJRXrSAP14aBAoVCE=</variables>
+  </namespace-tranche>
+</namespace>
+<record>
+  <source>
+    <location>
+      <short-path>implementation-defined-anonymous.cpp</short-path>
+      <source-path>implementation-defined-anonymous.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>8</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>hXdr5xeKBS872hwPIMvzIIFfkwc=</id>
+  <extraction>implementation-defined</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>y</name>
+  <source>
+    <location>
+      <short-path>implementation-defined-anonymous.cpp</short-path>
+      <source-path>implementation-defined-anonymous.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>Lo7T5HXxKsvJRXrSAP14aBAoVCE=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A test variable named &apos;y&apos;</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <id>hXdr5xeKBS872hwPIMvzIIFfkwc=</id>
+    </name>
+  </named>
+</variable>
+</mrdocs>
