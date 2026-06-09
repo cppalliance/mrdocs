@@ -110,6 +110,16 @@
       "title": "Output an embeddable document",
       "type": "boolean"
     },
+    "error-on-empty-corpus": {
+      "default": true,
+      "description": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. An empty corpus usually means no symbols were extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Treat an empty corpus as an error",
+      "type": "boolean"
+    },
     "exclude": {
       "default": [],
       "description": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`.",
