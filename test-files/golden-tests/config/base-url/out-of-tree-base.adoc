@@ -1,0 +1,94 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#test[`test`] 
+|===
+
+[#test]
+== test
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#test-InTree[`InTree`] 
+| A class declared in&hyphen;tree that inherits an out&hyphen;of&hyphen;tree base&period;
+|===
+
+[#test-InTree]
+== link:#test[test]::InTree
+
+A class declared in&hyphen;tree that inherits an out&hyphen;of&hyphen;tree base&period;
+
+=== Synopsis
+
+Declared in `&lt;https://example.com/src/out-of-tree-base.cpp#L12[out&hyphen;of&hyphen;tree&hyphen;base&period;cpp]&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct InTree
+    : ExternalBase
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+|Name|Description
+
+| `ExternalBase`
+| 
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#test-InTree-externalMethod[`externalMethod`] 
+| A member function inherited from the out&hyphen;of&hyphen;tree base&period;
+| link:#test-InTree-inTreeMethod[`inTreeMethod`] 
+| A member function declared in&hyphen;tree&period;
+|===
+
+[#test-InTree-externalMethod]
+== link:#test[test]::link:#test-InTree[InTree]::externalMethod
+
+A member function inherited from the out&hyphen;of&hyphen;tree base&period;
+
+=== Synopsis
+
+Declared in `&lt;external&lowbar;base&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+externalMethod();
+----
+
+[#test-InTree-inTreeMethod]
+== link:#test[test]::link:#test-InTree[InTree]::inTreeMethod
+
+A member function declared in&hyphen;tree&period;
+
+=== Synopsis
+
+Declared in `&lt;https://example.com/src/out-of-tree-base.cpp#L15[out&hyphen;of&hyphen;tree&hyphen;base&period;cpp]&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+inTreeMethod();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

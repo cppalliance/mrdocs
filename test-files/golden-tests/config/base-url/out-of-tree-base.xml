@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>2ojNymM2/7QaiSYB3jBfRS4jiDI=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>test</name>
+  <source>
+    <location>
+      <short-path>out-of-tree-base.cpp</short-path>
+      <source-path>out-of-tree-base.cpp</source-path>
+      <line-number>9</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>namespace</kind>
+  <id>2ojNymM2/7QaiSYB3jBfRS4jiDI=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <namespace-tranche>
+    <records>BmCrcf+XE+ozOs7VIbREWw02pf0=</records>
+    <records>yXfQfCJQf6SvVQYn4gaA2krC8tk=</records>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>InTree</name>
+  <source>
+    <location>
+      <short-path>out-of-tree-base.cpp</short-path>
+      <source-path>out-of-tree-base.cpp</source-path>
+      <line-number>12</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>yXfQfCJQf6SvVQYn4gaA2krC8tk=</id>
+  <extraction>regular</extraction>
+  <parent>2ojNymM2/7QaiSYB3jBfRS4jiDI=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A class declared in-tree that inherits an out-of-tree base.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <base>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>BmCrcf+XE+ozOs7VIbREWw02pf0=</id>
+        <identifier>ExternalBase</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+      <functions>r2FT8w6tN0syeB7bck2xfwAZX28=</functions>
+      <functions>1DlxDyIhnIUKFbQOs4tQMjoMTgM=</functions>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<function>
+  <name>externalMethod</name>
+  <source>
+    <location>
+      <short-path>external_base.hpp</short-path>
+      <line-number>10</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>r2FT8w6tN0syeB7bck2xfwAZX28=</id>
+  <extraction>regular</extraction>
+  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A member function inherited from the out-of-tree base.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+<function>
+  <name>inTreeMethod</name>
+  <source>
+    <location>
+      <short-path>out-of-tree-base.cpp</short-path>
+      <source-path>out-of-tree-base.cpp</source-path>
+      <line-number>15</line-number>
+      <column-number>5</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>1DlxDyIhnIUKFbQOs4tQMjoMTgM=</id>
+  <extraction>regular</extraction>
+  <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A member function declared in-tree.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+  <is-record-method>1</is-record-method>
+</function>
+</mrdocs>
