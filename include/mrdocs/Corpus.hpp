@@ -99,10 +99,28 @@ public:
 
     /** Whether the corpus contains any symbols.
 
+        The global namespace is a regular symbol in our model and is
+        always present after a successful build, so a corpus is empty
+        only in degenerate cases where not even the global namespace was
+        extracted. To detect the common "nothing was extracted" case,
+        compare @ref size against 1.
+
         @return true if the corpus is empty, otherwise false.
     */
     bool
     empty() const noexcept;
+
+    /** Return the number of symbols in the corpus.
+
+        The global namespace is always counted when present, so a size of
+        1 means no declaration other than the global namespace was
+        extracted.
+
+        @return The number of symbols in the corpus.
+    */
+    virtual
+    std::size_t
+    size() const noexcept = 0;
 
     /** Return the Symbol for the matching string in a given context.
 

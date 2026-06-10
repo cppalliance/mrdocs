@@ -96,7 +96,10 @@ DoGenerateAction(
     MRDOCS_TRY(
         std::unique_ptr<Corpus> corpus,
         CorpusImpl::build(config, compilationDatabase));
-    if (corpus->empty())
+    // The global namespace is always extracted, so a size of 1 means no
+    // declaration other than the global namespace was found. Treat that
+    // the same as a truly empty corpus here.
+    if (corpus->size() <= 1)
     {
         if (settings.errorOnEmptyCorpus)
         {
