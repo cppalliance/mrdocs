@@ -89,6 +89,7 @@ def main() -> int:
         generate_clion=installer.options.generate_clion_run_configs,
         generate_vscode=installer.options.generate_vscode_run_configs,
         generate_vs=installer.options.generate_vs_run_configs,
+        generate_justfile=installer.options.generate_justfile_run_configs,
         dry_run=installer.options.dry_run,
         ui=installer.ui,
     )

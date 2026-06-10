@@ -72,6 +72,7 @@ class InstallOptions:
     generate_clion_run_configs: bool = True
     generate_vscode_run_configs: bool = field(default_factory=lambda: not is_windows())
     generate_vs_run_configs: bool = field(default_factory=is_windows)
+    generate_justfile_run_configs: bool = True
 
     # Information to create pretty printer configs
     generate_pretty_printer_configs: bool = True

@@ -47,6 +47,64 @@ def _cli_flag_for_dest() -> Dict[str, str]:
 # Variable expansion pattern for $var and ${var} syntax
 _VAR_PATTERN = re.compile(r"\$(\w+)|\${([^}]+)}")
 
+# A generated per-preset entry name looks like "<base> (<preset>)".
+_PRESET_SUFFIX = re.compile(r"^(.*) \(([^()]+)\)$")
+
+
+def is_stale_preset_entry(name, generated_bases, valid_presets) -> bool:
+    """True when ``name`` is a generator-owned per-preset entry whose preset
+    is no longer present.
+
+    An entry is pruned only when its base name (the part before the trailing
+    " (preset)") is one we still generate AND the preset token is not in the
+    current preset set. This never matches user-authored entries, whose base
+    names are not in ``generated_bases``.
+    """
+    if not name:
+        return False
+    m = _PRESET_SUFFIX.match(name)
+    if not m:
+        return False
+    base, token = m.group(1), m.group(2)
+    return base in generated_bases and token not in valid_presets
+
+
+def load_preset_names(source_dir: str) -> list:
+    """Read configure preset names from CMakeUserPresets.json (best effort)."""
+    path = os.path.join(source_dir, "CMakeUserPresets.json")
+    data = load_json_file(path) or {}
+    return [p.get("name") for p in data.get("configurePresets", []) if p.get("name")]
+
+
+def _read_cmake_cache_var(build_dir: str, var: str) -> str:
+    """Return a variable's value from a build's CMakeCache.txt, or ''."""
+    path = os.path.join(build_dir, "CMakeCache.txt")
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as f:
+            for line in f:
+                key = line.split("=", 1)[0].split(":", 1)[0].strip()
+                if key == var and "=" in line:
+                    return line.split("=", 1)[1].strip()
+    except OSError:
+        pass
+    return ""
+
+
+def stdlib_includes_dir(source_dir: str, build_dir: str) -> str:
+    """Resolve the libc++ include directory mrdocs needs (`--stdlib-includes`).
+
+    Prefer the configured `LIBCXX_DIR` from the build's CMakeCache.txt (the
+    exact value the golden-test ctest targets use); fall back to the documented
+    third-party install convention so a recipe still has a path before the
+    build is configured.
+    """
+    cached = _read_cmake_cache_var(build_dir, "LIBCXX_DIR")
+    if cached:
+        return cached
+    preset = os.path.basename(build_dir.rstrip("/\\"))
+    return os.path.join(source_dir, "build", "third-party", "install", preset,
+                        "llvm", "include", "c++", "v1")
+
 
 def expand_with(s: str, mapping: Dict[str, Any]) -> str:
     """Replace $var and ${var} placeholders in a string using mapping."""
@@ -130,36 +188,41 @@ def get_dynamic_run_configs(
 
     configs.extend([
         {
-            "name": "MrDocs Bootstrap Help",
+            "name": "Bootstrap Help",
+            "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
             "args": ["--help"],
             "cwd": options.source_dir
         },
         {
-            "name": f"MrDocs Bootstrap Update ({bootstrap_refresh_config_name})",
+            "name": f"Bootstrap Update ({bootstrap_refresh_config_name})",
+            "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
-            "folder": "MrDocs Bootstrap Update",
+            "folder": "Bootstrap Update",
             "args": bootstrap_args,
             "cwd": options.source_dir
         },
         {
-            "name": f"MrDocs Bootstrap Refresh ({bootstrap_refresh_config_name})",
+            "name": f"Bootstrap Refresh ({bootstrap_refresh_config_name})",
+            "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
-            "folder": "MrDocs Bootstrap Refresh",
+            "folder": "Bootstrap Refresh",
             "args": bootstrap_args + ["--non-interactive"],
             "cwd": options.source_dir
         },
         {
-            "name": "MrDocs Bootstrap Refresh All",
+            "name": "Bootstrap Refresh All",
+            "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
-            "folder": "MrDocs Bootstrap Refresh",
+            "folder": "Bootstrap Refresh",
             "args": ["--refresh-all"],
             "cwd": options.source_dir
         },
         {
-            "name": f"MrDocs Generate Config Info ({bootstrap_refresh_config_name})",
+            "name": f"Generate Config Info ({bootstrap_refresh_config_name})",
+            "group": "Codegen",
             "script": os.path.join(options.source_dir, "util", "generate-config-info.py"),
-            "folder": "MrDocs Generate Config Info",
+            "folder": "Generate Config Info",
             "args": [
                 os.path.join(options.source_dir, "src", "lib", "ConfigOptions.json"),
                 os.path.join(options.build_dir)
@@ -167,9 +230,10 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": "MrDocs Generate Config Info (docs)",
+            "name": "Generate Config Info (docs)",
+            "group": "Codegen",
             "script": os.path.join(options.source_dir, "util", "generate-config-info.py"),
-            "folder": "MrDocs Generate Config Info",
+            "folder": "Generate Config Info",
             "args": [
                 os.path.join(options.source_dir, "src", "lib", "ConfigOptions.json"),
                 os.path.join(options.source_dir, "docs", "config-headers")
@@ -177,21 +241,24 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": "MrDocs Generate YAML Schema",
+            "name": "Generate YAML Schema",
+            "group": "Codegen",
             "script": os.path.join(options.source_dir, "util", "generate-yaml-schema.py"),
             "args": [],
             "cwd": options.source_dir
         },
         {
-            "name": "MrDocs Reformat Source Files",
+            "name": "Reformat Source Files",
+            "group": "Develop",
             "script": os.path.join(options.source_dir, "util", "reformat.py"),
             "args": [],
             "cwd": options.source_dir
         },
         {
-            "name": "MrDocs Render Docs",
+            "name": "Render Docs",
+            "group": "Documentation",
             "script": "npx",
-            "folder": "MrDocs Render Docs",
+            "folder": "Render Docs",
             "args": [
                 "antora",
                 "--fetch",
@@ -205,9 +272,10 @@ def get_dynamic_run_configs(
             },
         },
         {
-            "name": "MrDocs Render Docs (No Reference)",
+            "name": "Render Docs (No Reference)",
+            "group": "Documentation",
             "script": "npx",
-            "folder": "MrDocs Render Docs",
+            "folder": "Render Docs",
             "args": [
                 "antora",
                 "--fetch",
@@ -224,16 +292,18 @@ def get_dynamic_run_configs(
             },
         },
         {
-            "name": "MrDocs Build Docs UI Bundle",
+            "name": "Build Docs UI Bundle",
+            "group": "Documentation",
             "script": "npx",
-            "folder": "MrDocs Render Docs",
+            "folder": "Render Docs",
             "args": ["gulp", "bundle"],
             "cwd": os.path.join(options.source_dir, "docs", "ui"),
         },
         {
-            "name": "MrDocs Test Getting-Started Examples",
+            "name": "Test Getting-Started Examples",
+            "group": "Documentation",
             "script": os.path.join(options.source_dir, "util", "docs", "test_getting_started.sh"),
-            "folder": "MrDocs Render Docs",
+            "folder": "Render Docs",
             "args": [],
             "cwd": options.source_dir,
             "env": {
@@ -252,6 +322,7 @@ def get_dynamic_run_configs(
                 if os.path.exists(mrdocs_config):
                     configs.append({
                         "name": f"Boost.{lib.title()} Documentation",
+                        "group": "Documentation",
                         "target": "mrdocs",
                         "folder": "Boost Documentation",
                         "program": os.path.join(options.build_dir, "mrdocs"),
@@ -272,7 +343,8 @@ def get_dynamic_run_configs(
     # XML / RelaxNG tasks requiring Java and libxml2
     if java_path:
         configs.append({
-            "name": "MrDocs Generate RelaxNG Schema",
+            "name": "Generate RelaxNG Schema",
+            "group": "Codegen",
             "script": java_path,
             "args": [
                 "-jar",
@@ -294,7 +366,8 @@ def get_dynamic_run_configs(
                         if file.endswith(".xml") and not file.endswith(".bad.xml"):
                             xml_sources.append(os.path.join(root, file))
                 configs.append({
-                    "name": "MrDocs XML Lint with RelaxNG Schema",
+                    "name": "XML Lint with RelaxNG Schema",
+                    "group": "Test",
                     "script": libxml2_xmllint_executable,
                     "args": [
                         "--dropdtd",
@@ -307,7 +380,8 @@ def get_dynamic_run_configs(
                 })
             else:
                 configs.append({
-                    "name": "MrDocs XML Lint with RelaxNG Schema",
+                    "name": "XML Lint with RelaxNG Schema",
+                    "group": "Test",
                     "script": "find",
                     "args": [
                         xml_sources_dir,
@@ -337,13 +411,15 @@ def generate_run_configs(
     generate_clion: bool = True,
     generate_vscode: bool = True,
     generate_vs: bool = False,
+    generate_justfile: bool = True,
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ):
     """
     Generate run configurations for all enabled IDEs.
 
-    This function loads the base configuration from share/run_configs.json,
+    This function loads the base configuration from the bootstrap manifest
+    (util/bootstrap/src/configs/run_configs.json),
     filters them based on requirements, adds dynamic configurations, and
     generates the appropriate IDE-specific config files.
 
@@ -355,6 +431,7 @@ def generate_run_configs(
         generate_clion: If True, generate CLion configurations.
         generate_vscode: If True, generate VSCode configurations.
         generate_vs: If True, generate Visual Studio configurations.
+        generate_justfile: If True, generate a justfile.
         dry_run: If True, only print what would be done.
         ui: TextUI instance for output.
     """
@@ -367,17 +444,26 @@ def generate_run_configs(
     if compiler_info is None:
         compiler_info = {}
 
-    # Load defaults from share/run_configs.json
-    defaults_path = os.path.join(options.source_dir, "share", "run_configs.json")
+    # Load the run-configuration manifest. It ships with the bootstrap
+    # package (next to this module) rather than under share/, since it is
+    # dev-tooling data specific to bootstrap, not a generic runtime asset.
+    defaults_path = os.path.join(os.path.dirname(__file__), "run_configs.json")
     defaults = load_json_file(defaults_path) or {}
 
     configs: List[Dict[str, Any]] = defaults.get("configs", [])
 
     if not configs:
-        raise RuntimeError("No run configurations found in share/run_configs.json; add configs to proceed.")
+        raise RuntimeError(f"No run configurations found in {defaults_path}; add configs to proceed.")
 
-    # Define token replacements
+    # Define token replacements. run_configs.json uses the
+    # `mrdocs_`-prefixed placeholders (${mrdocs_build_dir} etc.); the
+    # unprefixed aliases are kept for backwards compatibility with any
+    # config or test that still references $build_dir/$source_dir.
     tokens = {
+        "mrdocs_build_dir": options.build_dir,
+        "mrdocs_src_dir": options.source_dir,
+        "mrdocs_install_dir": options.install_dir,
+        "mrdocs_stdlib_includes": stdlib_includes_dir(options.source_dir, options.build_dir),
         "build_dir": options.build_dir,
         "source_dir": options.source_dir,
         "install_dir": options.install_dir,
@@ -419,12 +505,15 @@ def generate_run_configs(
     )
     configs.extend(dynamic_configs)
 
-    # Determine which IDEs to target based on defaults
-    target_vscode = bool(defaults.get("vscode", True))
-    target_clion = bool(defaults.get("clion", True))
-    target_vs = bool(defaults.get("vs", True))
+    # Which IDEs/tools to generate for is a bootstrap option, not part of the
+    # run-configuration data, so it comes from the generate_* flags (which are
+    # driven by InstallOptions), not from the manifest.
 
-    if target_clion and generate_clion:
+    # Presets currently known to the project. Generators use this to prune
+    # entries left over from presets that no longer exist.
+    all_presets = load_preset_names(options.source_dir)
+
+    if generate_clion:
         from .clion import generate_clion_run_configs
         ui.info("Generating CLion run configurations...")
         run_config_dir = options.jetbrains_run_config_dir or os.path.join(options.source_dir, ".run")
@@ -434,11 +523,12 @@ def generate_run_configs(
             build_dir=options.build_dir,
             preset=options.preset,
             run_config_dir=run_config_dir,
+            all_presets=all_presets,
             dry_run=dry_run,
             ui=ui,
         )
 
-    if target_vscode and generate_vscode:
+    if generate_vscode:
         from .vscode import generate_vscode_run_configs
         ui.info("Generating Visual Studio Code run configurations...")
         generate_vscode_run_configs(
@@ -448,11 +538,12 @@ def generate_run_configs(
             preset=options.preset,
             ninja_path=options.ninja_path,
             compiler_info=compiler_info,
+            all_presets=all_presets,
             dry_run=dry_run,
             ui=ui,
         )
 
-    if target_vs and generate_vs:
+    if generate_vs:
         from .visual_studio import generate_visual_studio_run_configs
         ui.info("Generating Visual Studio run configurations...")
         generate_visual_studio_run_configs(
@@ -460,6 +551,20 @@ def generate_run_configs(
             source_dir=options.source_dir,
             build_dir=options.build_dir,
             preset=options.preset,
+            all_presets=all_presets,
+            dry_run=dry_run,
+            ui=ui,
+        )
+
+    if generate_justfile:
+        from .justfile import generate_justfile_run_configs
+        ui.info("Generating justfile...")
+        generate_justfile_run_configs(
+            configs=configs,
+            source_dir=options.source_dir,
+            build_dir=options.build_dir,
+            preset=options.preset,
+            all_presets=all_presets,
             dry_run=dry_run,
             ui=ui,
         )

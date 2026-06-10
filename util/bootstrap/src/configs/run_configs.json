@@ -1,0 +1,293 @@
+{
+  "configs": [
+    {
+      "name": "Test",
+      "id": "test",
+      "group": "Test",
+      "depends": ["Unit Tests", "Golden Tests"]
+    },
+    {
+      "name": "Unit Tests",
+      "group": "Test",
+      "target": "mrdocs-test",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": ["--unit=true"],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Golden Tests",
+      "id": "golden-tests",
+      "group": "Test",
+      "depends": ["Golden Tests (XML)", "Golden Tests (ADOC)", "Golden Tests (HTML)"]
+    },
+    {
+      "name": "Golden Tests (XML)",
+      "group": "Test",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=test",
+        "--generator=xml",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Golden Tests (ADOC)",
+      "group": "Test",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=test",
+        "--generator=adoc",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Golden Tests (HTML)",
+      "group": "Test",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=test",
+        "--generator=html",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Update Golden Tests",
+      "id": "update-golden-tests",
+      "group": "Codegen",
+      "depends": ["Update Golden Tests (XML)", "Update Golden Tests (ADOC)", "Update Golden Tests (HTML)"]
+    },
+    {
+      "name": "Update Golden Tests (XML)",
+      "group": "Codegen",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=update",
+        "--generator=xml",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Update Golden Tests (ADOC)",
+      "group": "Codegen",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=update",
+        "--generator=adoc",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Update Golden Tests (HTML)",
+      "group": "Codegen",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=update",
+        "--generator=html",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Create Golden Tests",
+      "id": "create-golden-tests",
+      "group": "Codegen",
+      "depends": ["Create Golden Tests (XML)", "Create Golden Tests (ADOC)", "Create Golden Tests (HTML)"]
+    },
+    {
+      "name": "Create Golden Tests (XML)",
+      "group": "Codegen",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=create",
+        "--generator=xml",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Create Golden Tests (ADOC)",
+      "group": "Codegen",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=create",
+        "--generator=adoc",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Create Golden Tests (HTML)",
+      "group": "Codegen",
+      "target": "mrdocs-test",
+      "folder": "Golden Tests",
+      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
+      "args": [
+        "${mrdocs_src_dir}/test-files/golden-tests",
+        "--unit=false",
+        "--action=create",
+        "--generator=html",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--log-level=warn"
+      ],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Remove Bad Test Files",
+      "group": "Test",
+      "script": "${mrdocs_src_dir}/test-files/golden-tests/remove_bad_files.${docs_script_ext}",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}/test-files/golden-tests"
+    },
+    {
+      "name": "Version",
+      "group": "Run",
+      "target": "mrdocs",
+      "program": "${mrdocs_build_dir}/bin/mrdocs",
+      "args": ["--version"]
+    },
+    {
+      "name": "Help",
+      "group": "Run",
+      "target": "mrdocs",
+      "program": "${mrdocs_build_dir}/bin/mrdocs",
+      "args": ["--help"]
+    },
+    {
+      "name": "Self-Reference",
+      "group": "Documentation",
+      "target": "mrdocs",
+      "program": "${mrdocs_build_dir}/bin/mrdocs",
+      "args": [
+        "../CMakeLists.txt",
+        "--config=${mrdocs_src_dir}/docs/mrdocs.yml",
+        "--output=${mrdocs_src_dir}/docs/modules/reference/pages",
+        "--generator=adoc",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--tagfile=reference.tag.xml",
+        "--multipage=true",
+        "--concurrency=${num_cores}",
+        "--log-level=debug"
+      ]
+    },
+    {
+      "name": "Build Local Docs",
+      "group": "Documentation",
+      "script": "${mrdocs_src_dir}/docs/build_local_docs.${docs_script_ext}",
+      "needs_target": "mrdocs",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}/docs",
+      "env": {
+        "MRDOCS_ROOT": "${mrdocs_install_dir}"
+      }
+    },
+    {
+      "name": "Build Docs",
+      "group": "Documentation",
+      "script": "${mrdocs_src_dir}/docs/build_docs.${docs_script_ext}",
+      "needs_target": "mrdocs",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}/docs",
+      "env": {
+        "MRDOCS_ROOT": "${mrdocs_install_dir}"
+      }
+    },
+    {
+      "name": "Build UI Bundle",
+      "group": "Documentation",
+      "script": "${mrdocs_src_dir}/docs/ui/build.${docs_script_ext}",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}/docs/ui"
+    },
+    {
+      "name": "Render Landing Page",
+      "group": "Documentation",
+      "script": "${mrdocs_src_dir}/docs/website/render.js",
+      "folder": "Render Landing Page",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}/docs/website",
+      "env": {
+        "NODE_ENV": "production",
+        "MRDOCS_ROOT": "${mrdocs_install_dir}"
+      }
+    },
+    {
+      "name": "Clean Install Website Dependencies",
+      "group": "Documentation",
+      "script": "npm",
+      "args": ["ci"],
+      "cwd": "${mrdocs_src_dir}/docs/website"
+    },
+    {
+      "name": "Install Website Dependencies",
+      "group": "Documentation",
+      "script": "npm",
+      "args": ["install"],
+      "cwd": "${mrdocs_src_dir}/docs/website"
+    }
+  ]
+}

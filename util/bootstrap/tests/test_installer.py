@@ -31,6 +31,55 @@ def _make_installer(**cmd_line_overrides):
     return inst
 
 
+class TestRefreshAll(unittest.TestCase):
+    """refresh_all replays saved IDE configs robustly."""
+
+    def _setup(self, tmp, configs):
+        import json
+        vscode = os.path.join(tmp, ".vscode")
+        os.makedirs(vscode, exist_ok=True)
+        with open(os.path.join(vscode, "launch.json"), "w") as f:
+            json.dump({"version": "0.2.0", "configurations": configs}, f)
+        return MrDocsInstaller(
+            cmd_line_args={"non_interactive": True, "plain_ui": True},
+            source_dir=tmp,
+        )
+
+    def test_drops_unrecognized_saved_args(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inst = self._setup(tmp, [{
+                "name": "Bootstrap Refresh (debug-macos)",
+                "args": ["--build-type", "Debug", "--no-remove-build-dir",
+                         "--recipe-filter", "jerryscript", "--non-interactive"],
+            }])
+            with patch("subprocess.run") as mock_run:
+                inst.refresh_all()
+            self.assertEqual(mock_run.call_count, 1)
+            cmd = mock_run.call_args[0][0]
+            self.assertNotIn("--no-remove-build-dir", cmd)
+            self.assertIn("--recipe-filter", cmd)
+            self.assertIn("jerryscript", cmd)
+
+    def test_continues_after_a_failing_config(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as tmp:
+            inst = self._setup(tmp, [
+                {"name": "Bootstrap Refresh (a)", "args": ["--build-type", "Debug"]},
+                {"name": "Bootstrap Refresh (b)", "args": ["--build-type", "Release"]},
+            ])
+            calls = []
+
+            def fake_run(cmd, **kw):
+                calls.append(cmd)
+                if len(calls) == 1:
+                    raise subprocess.CalledProcessError(2, cmd)
+                return MagicMock()
+
+            with patch("subprocess.run", side_effect=fake_run):
+                inst.refresh_all()  # must not raise despite the first failure
+            self.assertEqual(len(calls), 2)
+
+
 class TestExpandPlaceholders(unittest.TestCase):
     """Tests for _expand_placeholders covering all transform types."""
 

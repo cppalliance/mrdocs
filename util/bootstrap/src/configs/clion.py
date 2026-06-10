@@ -45,6 +45,7 @@ def generate_clion_run_configs(
     build_dir: str,
     preset: str,
     run_config_dir: Optional[str] = None,
+    all_presets: Optional[List[str]] = None,
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ):
@@ -69,9 +70,16 @@ def generate_clion_run_configs(
     ensure_dir(run_config_dir, dry_run=dry_run, ui=ui)
 
     for config in configs:
+        # Interface/aggregate configs (depends-only, no target or script) are
+        # a justfile concept; CLion has nothing to emit for them.
+        if 'target' not in config and 'script' not in config:
+            continue
         config_name = config["name"]
         run_config_path = os.path.join(run_config_dir, f"{config_name}.run.xml")
         root = ET.Element("component", name="ProjectRunConfigurationManager")
+        # Ownership marker so stale generated files can be pruned later
+        # without ever deleting hand-authored run configurations.
+        root.append(ET.Comment(" mrdocs:generated "))
 
         if 'target' in config:
             # CMake target configuration
@@ -268,3 +276,21 @@ def generate_clion_run_configs(
             write_text(run_config_path, xml_content + "\n", dry_run=True, ui=ui)
         else:
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
+
+    # Prune generator-owned run-config files for configs that no longer
+    # exist. Only files carrying the ownership marker are removed; files a
+    # user created by hand are left untouched.
+    if not dry_run and os.path.isdir(run_config_dir):
+        valid_files = {f"{config['name']}.run.xml" for config in configs}
+        for fname in os.listdir(run_config_dir):
+            if not fname.endswith(".run.xml") or fname in valid_files:
+                continue
+            path = os.path.join(run_config_dir, fname)
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    content = f.read()
+            except OSError:
+                continue
+            if "mrdocs:generated" in content:
+                os.remove(path)
+                ui.info(f"Removed stale run configuration: {fname}")
