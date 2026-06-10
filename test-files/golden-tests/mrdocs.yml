@@ -1,6 +1,13 @@
 concurrency: 1
 source-root: .
 multipage: false
+# Golden tests verify generated output, not documentation completeness, and
+# many fixtures are minimal inputs with undocumented params/returns. Silence
+# the documentation-completeness warnings tree-wide so real signal (e.g. the
+# HTML-malformation warnings the javadoc fixtures exercise) isn't drowned out.
 warn-if-undocumented: false
+warn-no-paramdoc: false
+warn-unnamed-param: false
+warn-if-undoc-enum-val: false
 tagfile: ""
 no-default-styles: true
