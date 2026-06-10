@@ -1,6 +1,9 @@
 # tag::test-only[]
 includes:
   - include
+# This snippet deliberately excludes private symbols, so doc references to
+# them cannot resolve; silence the broken-reference warning for it.
+warn-broken-ref: false
 # end::test-only[]
 implementation-defined:
   - 'logr::detail::**'
