@@ -4,7 +4,7 @@
 [#index]
 == Global namespace
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -12,6 +12,7 @@
 | link:#enable_if_t[`enable&lowbar;if&lowbar;t`] 
 | link:#if_enable_t[`if&lowbar;enable&lowbar;t`] 
 |===
+
 
 === Functions
 
@@ -21,6 +22,7 @@
 | link:#f1[`f1`] 
 | link:#f2[`f2`] 
 |===
+
 
 [#enable_if_t]
 == enable&lowbar;if&lowbar;t

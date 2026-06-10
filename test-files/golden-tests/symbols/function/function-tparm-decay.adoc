@@ -4,7 +4,7 @@
 [#index]
 == Global namespace
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -12,6 +12,7 @@
 | link:#T[`T`] 
 | link:#U[`U`] 
 |===
+
 
 === Functions
 
@@ -23,6 +24,7 @@
 | link:#h[`h`] 
 | link:#i[`i`] 
 |===
+
 
 [#T]
 == T

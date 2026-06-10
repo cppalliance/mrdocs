@@ -13,6 +13,7 @@
 | link:#Derived[`Derived`] 
 |===
 
+
 [#Base]
 == Base
 
@@ -26,13 +27,14 @@ template&lt;class T&gt;
 class Base;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
 | Name
 | link:#Base-V[`V`] 
 |===
+
 
 [#Base-V]
 == link:#Base[Base]::V

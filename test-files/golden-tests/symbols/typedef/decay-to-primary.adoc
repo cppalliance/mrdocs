@@ -12,9 +12,18 @@
 | link:#S0-03[`S0`] 
 | link:#S0-09[`S0&lt;short&gt;`] 
 | link:#S0-00[`S0&lt;void&gt;`] 
+|===
+
+
+=== Type Aliases
+
+[cols="1"]
+|===
+| Name
 | link:#A0[`A0`] 
 | link:#A1[`A1`] 
 |===
+
 
 [#A0]
 == A0
@@ -53,7 +62,7 @@ template&lt;typename T&gt;
 struct S0;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -61,6 +70,7 @@ struct S0;
 | link:#S0-03-M0[`M0`] 
 | link:#S0-03-M1[`M1`] 
 |===
+
 
 [#S0-03-M0]
 == link:#S0-03[S0]::M0
@@ -100,7 +110,7 @@ template&lt;&gt;
 struct link:#S0-03[S0]&lt;short&gt;;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -108,6 +118,7 @@ struct link:#S0-03[S0]&lt;short&gt;;
 | link:#S0-09-M0[`M0`] 
 | link:#S0-09-M1[`M1`] 
 |===
+
 
 [#S0-09-M0]
 == link:#S0-09[S0&lt;short&gt;]::M0
@@ -147,7 +158,7 @@ template&lt;&gt;
 struct link:#S0-03[S0]&lt;void&gt;;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -155,6 +166,7 @@ struct link:#S0-03[S0]&lt;void&gt;;
 | link:#S0-00-M0[`M0`] 
 | link:#S0-00-M1[`M1`] 
 |===
+
 
 [#S0-00-M0]
 == link:#S0-00[S0&lt;void&gt;]::M0
