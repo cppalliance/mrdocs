@@ -85,7 +85,7 @@ For any partial or helper, the lookup walks these directories from lowest to hig
 . `<addons>/generator/<parent>/` (for each ancestor in the chain, root-most first)
 . `<addons>/generator/<id>/`
 
-An own file overrides the parent's, and the parent's overrides `common/`. Inheritance walks the chain recursively, so when `latex extends md` and `md extends html` and `html` itself stands alone, the chain for `latex` resolves to `[common, html, md, latex]`. A cycle, or a parent id that is not installed, terminates the walk silently.
+An own file overrides the parent's, and the parent's overrides `common/`. Inheritance walks the chain recursively, so when `tex extends md` and `md extends html` and `html` itself stands alone, the chain for `tex` resolves to `[common, html, md, tex]`. A cycle, or a parent id that is not installed, terminates the walk silently.
 ====
 
 The two examples below stack on each other:
@@ -108,10 +108,10 @@ include::example$data-driven-generators/md/addons/generator/md/mrdocs-generator.
 
 LaTeX::
 +
-.`addons/generator/latex/mrdocs-generator.yml`
+.`addons/generator/tex/mrdocs-generator.yml`
 [source,yaml]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/mrdocs-generator.yml[]
+include::example$data-driven-generators/tex/addons/generator/tex/mrdocs-generator.yml[]
 ----
 ======
 
@@ -135,16 +135,16 @@ include::example$data-driven-generators/md/addons/generator/md/layouts/index.md.
 
 LaTeX::
 +
-.`addons/generator/latex/layouts/wrapper.latex.hbs`
+.`addons/generator/tex/layouts/wrapper.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/layouts/wrapper.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/layouts/wrapper.tex.hbs[]
 ----
 +
-.`addons/generator/latex/layouts/index.latex.hbs`
+.`addons/generator/tex/layouts/index.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/layouts/index.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/layouts/index.tex.hbs[]
 ----
 ======
 
@@ -186,34 +186,34 @@ include::example$data-driven-generators/md/addons/generator/md/partials/markup/c
 
 LaTeX::
 +
-.`addons/generator/latex/partials/markup/strong.latex.hbs`
+.`addons/generator/tex/partials/markup/strong.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/strong.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/strong.tex.hbs[]
 ----
 +
-.`addons/generator/latex/partials/markup/em.latex.hbs`
+.`addons/generator/tex/partials/markup/em.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/em.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/em.tex.hbs[]
 ----
 +
-.`addons/generator/latex/partials/markup/code.latex.hbs`
+.`addons/generator/tex/partials/markup/code.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/code.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/code.tex.hbs[]
 ----
 +
-.`addons/generator/latex/partials/markup/h.latex.hbs`
+.`addons/generator/tex/partials/markup/h.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/h.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/h.tex.hbs[]
 ----
 +
-.`addons/generator/latex/partials/markup/code-block.latex.hbs`
+.`addons/generator/tex/partials/markup/code-block.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/latex/addons/generator/latex/partials/markup/code-block.latex.hbs[]
+include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/code-block.tex.hbs[]
 ----
 ======
 
@@ -239,10 +239,10 @@ include::example$data-driven-generators/md/simple.md[]
 
 LaTeX::
 +
-.`simple.latex`
+.`simple.tex`
 [source,latex]
 ----
-include::example$data-driven-generators/latex/simple.latex[]
+include::example$data-driven-generators/tex/simple.tex[]
 ----
 ======
 
