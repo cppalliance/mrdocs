@@ -12,8 +12,17 @@
 | link:#A[`A`] 
 | link:#B[`B`] 
 | link:#D[`D`] 
+|===
+
+
+=== Type Aliases
+
+[cols="1"]
+|===
+| Name
 | link:#C[`C`] 
 |===
+
 
 [#C]
 == C
@@ -69,13 +78,14 @@ template&lt;typename T&gt;
 struct D;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
 | Name
 | link:#D-E[`E`] 
 |===
+
 
 [#D-E]
 == link:#D[D]::E

@@ -4,13 +4,14 @@
 [#index]
 == Global namespace
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
 | Name
 | link:#A[`A`] 
 |===
+
 
 [#A]
 == A

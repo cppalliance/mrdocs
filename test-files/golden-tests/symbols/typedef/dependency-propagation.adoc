@@ -12,6 +12,7 @@
 | link:#N[`N`] 
 |===
 
+
 === Types
 
 [cols="1"]
@@ -19,6 +20,7 @@
 | Name
 | link:#E[`E`] 
 |===
+
 
 [#N]
 == N
@@ -30,9 +32,18 @@
 | Name
 | link:#N-A-03[`A`] 
 | link:#N-D[`D`] 
+|===
+
+
+=== Type Aliases
+
+[cols="1"]
+|===
+| Name
 | link:#N-B[`B`] 
 | link:#N-C[`C`] 
 |===
+
 
 [#N-B]
 == link:#N[N]::B

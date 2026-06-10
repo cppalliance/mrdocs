@@ -17,7 +17,8 @@
 {{#if is-namespace}}
 {{>symbol/members-table members=tranche.namespaces title="Namespaces"}}
 {{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
-{{>symbol/members-table members=(concat tranche.records tranche.typedefs) title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=tranche.records title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=tranche.typedefs title=(concat (select label (concat label " ") "") "Type Aliases")}}
 {{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
 {{>symbol/members-table members=tranche.functions title="Functions"}}
 {{>symbol/members-table members=tranche.variables title="Variables"}}
@@ -26,7 +27,8 @@
 {{>symbol/members-table members=tranche.usings title=(concat (select label (concat label " ") "") "Using Declarations")}}
 {{else}}
 {{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
-{{>symbol/members-table members=(concat tranche.records tranche.typedefs) title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=tranche.records title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=tranche.typedefs title=(concat (select label (concat label " ") "") "Type Aliases")}}
 {{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
 {{>symbol/members-table members=tranche.functions title=(concat (select label (concat label " ") "") "Member Functions")}}
 {{>symbol/members-table members=tranche.staticFunctions title=(concat (select label (concat label " ") "") "Static Member Functions")}}

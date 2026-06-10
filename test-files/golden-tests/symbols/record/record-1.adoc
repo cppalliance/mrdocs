@@ -25,7 +25,7 @@ Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 struct T;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===

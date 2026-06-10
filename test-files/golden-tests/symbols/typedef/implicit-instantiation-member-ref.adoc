@@ -11,9 +11,18 @@
 | Name
 | link:#S0-03[`S0`] 
 | link:#S0-00[`S0&lt;void&gt;`] 
+|===
+
+
+=== Type Aliases
+
+[cols="1"]
+|===
+| Name
 | link:#A5[`A5`] 
 | link:#A9[`A9`] 
 |===
+
 
 [#A5]
 == A5
@@ -60,6 +69,7 @@ struct S0;
 | link:#S0-03-S2[`S2`] 
 |===
 
+
 [#S0-03-S2]
 == link:#S0-03[S0]::S2
 
@@ -73,7 +83,7 @@ template&lt;typename U&gt;
 struct S2;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -81,6 +91,7 @@ struct S2;
 | link:#S0-03-S2-M2[`M2`] 
 | link:#S0-03-S2-M3[`M3`] 
 |===
+
 
 [#S0-03-S2-M2]
 == link:#S0-03[S0]::link:#S0-03-S2[S2]::M2
@@ -129,6 +140,7 @@ struct link:#S0-03[S0]&lt;void&gt;;
 | link:#S0-00-S2-02[`S2&lt;char&gt;`] 
 |===
 
+
 [#S0-00-S2-0d]
 == link:#S0-00[S0&lt;void&gt;]::S2
 
@@ -155,7 +167,7 @@ template&lt;&gt;
 struct link:#S0-03-S2[S2]&lt;char&gt;;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
@@ -163,6 +175,7 @@ struct link:#S0-03-S2[S2]&lt;char&gt;;
 | link:#S0-00-S2-02-M2[`M2`] 
 | link:#S0-00-S2-02-M3[`M3`] 
 |===
+
 
 [#S0-00-S2-02-M2]
 == link:#S0-00[S0&lt;void&gt;]::link:#S0-00-S2-02[S2&lt;char&gt;]::M2

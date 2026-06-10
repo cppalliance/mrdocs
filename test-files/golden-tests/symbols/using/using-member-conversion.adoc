@@ -13,6 +13,14 @@
 | This struct will be inherited as public
 | link:#Y[`Y`] 
 | This struct inherits from X
+|===
+
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
 | link:#fun_ptr[`fun&lowbar;ptr`] 
 | A pointer to function typedef
 |===

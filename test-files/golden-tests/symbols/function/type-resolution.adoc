@@ -11,10 +11,19 @@
 | Name
 | link:#A[`A`] 
 | link:#B[`B`] 
+|===
+
+
+=== Type Aliases
+
+[cols="1"]
+|===
+| Name
 | link:#C[`C`] 
 | link:#D[`D`] 
 | link:#E[`E`] 
 |===
+
 
 === Functions
 
@@ -67,6 +76,7 @@
 | link:#j7[`j7`] 
 | link:#j8[`j8`] 
 |===
+
 
 [#C]
 == C

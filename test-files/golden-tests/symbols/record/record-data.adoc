@@ -16,6 +16,7 @@
 | link:#X[`X`] 
 |===
 
+
 [#T]
 == T
 
@@ -39,6 +40,7 @@ struct T;
 | link:#T-l[`l`] 
 | link:#T-m[`m`] 
 |===
+
 
 [#T-i]
 == link:#T[T]::i
@@ -121,6 +123,7 @@ struct U;
 | link:#U-t[`t`] 
 |===
 
+
 [#U-t]
 == link:#U[U]::t
 
@@ -153,6 +156,7 @@ class V;
 | link:#V-j[`j`] 
 |===
 
+
 === Private Data Members
 
 [cols="1"]
@@ -161,6 +165,7 @@ class V;
 | link:#V-i[`i`] 
 | link:#V-k[`k`] 
 |===
+
 
 [#V-j]
 == link:#V[V]::j
@@ -218,6 +223,7 @@ struct W;
 | link:#W-buf[`buf`] 
 |===
 
+
 [#W-buf]
 == link:#W[W]::buf
 
@@ -245,13 +251,14 @@ template&lt;
 struct X;
 ----
 
-=== Types
+=== Type Aliases
 
 [cols="1"]
 |===
 | Name
 | link:#X-Q[`Q`] 
 |===
+
 
 === Data Members
 
@@ -264,6 +271,7 @@ struct X;
 | link:#X-x3[`x3`] 
 | link:#X-x4[`x4`] 
 |===
+
 
 [#X-Q]
 == link:#X[X]::Q
