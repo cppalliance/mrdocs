@@ -1,0 +1,10 @@
+{{!--
+    Admonition rendered as a bold header followed by the body.
+    Parameters:
+        kind: lowercase admonition kind ("note", "warning", "tip", ...).
+              The partial upper-cases it for the printed marker.
+--}}
+\textbf{ {{~upper kind~}} }
+
+{{> @partial-block }}
+

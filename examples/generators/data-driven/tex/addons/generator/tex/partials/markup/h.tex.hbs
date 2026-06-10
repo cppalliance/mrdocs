@@ -1,0 +1,18 @@
+{{!--
+    LaTeX heading.
+
+    The article class only defines `\section`, `\subsection`,
+    `\subsubsection`, `\paragraph`, `\subparagraph` -- no level above
+    `\section`.  The common symbol templates use level=2 for the
+    symbol top title (matching the HTML convention where the wrapper
+    supplies h1 and the symbol title sits at h2), so we shift one
+    level down here: level<=2 maps to `\section`, level=3 to
+    `\subsection`, level=4 to `\subsubsection`, and anything deeper
+    to `\paragraph`.
+--}}
+{{#if (or (eq (or level 3) 1) (eq (or level 3) 2))}}\section{ {{~> @partial-block ~}} }
+{{else if (eq (or level 3) 3)}}\subsection{ {{~> @partial-block ~}} }
+{{else if (eq (or level 3) 4)}}\subsubsection{ {{~> @partial-block ~}} }
+{{else}}\paragraph{ {{~> @partial-block ~}} }
+{{/if}}
+

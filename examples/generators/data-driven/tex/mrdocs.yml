@@ -1,6 +1,6 @@
 addons-supplemental:
   - addons
-generator: latex
+generator: tex
 multipage: false
 show-namespaces: false
 warn-if-undocumented: false

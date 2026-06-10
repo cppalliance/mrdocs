@@ -1,7 +1,8 @@
 = Generators
 :page-aliases: generators.adoc
+:url-data-driven: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/generators/data-driven
 
-A *generator* turns the extracted symbol corpus into rendered documentation. Mr.Docs ships three:
+A *generator* turns the extracted symbol corpus into rendered documentation. Mr.Docs ships three built-in formats:
 
 |===
 |Format |When to pick it
@@ -15,6 +16,12 @@ A *generator* turns the extracted symbol corpus into rendered documentation. Mr.
 |xref:generators/xml.adoc[XML]
 |Structured intermediate format. Pick this when a downstream tool wants every symbol field, when you want to diff the corpus across releases, or when you're testing the corpus shape directly.
 |===
+
+Defining a new output format via xref:extensions/data-driven-generators.adoc[Data-Driven Generators] is also very cheap. The repository includes a few ready-to-use starting points:
+
+* {url-data-driven}/md[Markdown^]: GitHub-Flavored Markdown with HTML fallback for the cases GFM cannot express.
+* {url-data-driven}/tex[LaTeX^]: `article`-class LaTeX with `tabular` tables.
+* {url-data-driven}/jsonl[JSON Lines^]: One JSON object per symbol for a search index.
 
 Pick one through the xref:configuration/reference.adoc#generator_option[`generator`] option:
 

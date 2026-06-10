@@ -1,0 +1,14 @@
+{{!--
+    Renders a table from structured data as a GFM pipe-table.
+    `weights` is accepted for parity with other formats but ignored
+    (GFM pipe-tables have no column-weight syntax; renderers size
+    columns based on cell content).
+--}}
+{{#if headers~}}
+| {{#each headers}}{{this}} | {{/each}}
+| {{#each headers}}--- | {{/each}}
+{{/if~}}
+{{#each items as | row |~}}
+| {{#each ../columns as | col |}}{{> markup/cell (lookup row col)}} | {{/each}}
+{{/each~}}
+

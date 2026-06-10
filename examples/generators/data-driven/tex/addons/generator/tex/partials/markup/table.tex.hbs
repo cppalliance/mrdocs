@@ -1,0 +1,16 @@
+{{!--
+    Renders a table from structured data as a LaTeX `tabular`.
+    `weights` is accepted for parity with other formats; LaTeX maps
+    each weight to a left-aligned column.  (A future refinement could
+    use `p{width}` to honour the weights as relative widths.)
+--}}
+\begin{tabular}{ {{~#each columns~}}l{{~/each~}} }
+{{#if headers~}}
+{{#each headers}}\textbf{ {{~this~}} }{{#unless @last}} & {{/unless}}{{/each}} \\
+\hline
+{{/if~}}
+{{#each items as | row |~}}
+{{#each ../columns as | col |}}{{> markup/cell (lookup row col)}}{{#unless @last}} & {{/unless}}{{/each}} \\
+{{/each~}}
+\end{tabular}
+

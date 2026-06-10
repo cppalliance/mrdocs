@@ -539,7 +539,7 @@ if (MRDOCS_BUILD_TESTS)
     # into them and demand expected files in their own formats.
     #-------------------------------------------------
     set(MRDOCS_TEMPLATE_ONLY_ROOT "${PROJECT_SOURCE_DIR}/examples/generators/data-driven")
-    foreach (template_only IN ITEMS md latex jsonl)
+    foreach (template_only IN ITEMS md tex jsonl)
         add_test(NAME mrdocs-golden-tests-${template_only}
             COMMAND
                 mrdocs-test
