@@ -86,6 +86,14 @@ public:
     iterator
     end() const noexcept override;
 
+    /** Return the number of symbols in the corpus.
+    */
+    std::size_t
+    size() const noexcept override
+    {
+        return info_.size();
+    }
+
     /** Return the Info with the specified symbol ID.
 
         If the id does not exist, the behavior is undefined.
