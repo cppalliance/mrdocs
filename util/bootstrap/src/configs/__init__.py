@@ -21,4 +21,5 @@ from .run_configs import *
 from .clion import *
 from .vscode import *
 from .visual_studio import *
+from .justfile import *
 from .pretty_printers import *

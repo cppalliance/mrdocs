@@ -14,6 +14,7 @@
 import json
 import os
 import sys
+import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 from io import StringIO
@@ -778,7 +779,7 @@ class TestGenerateVSTaskConfigs(unittest.TestCase):
     @patch("src.configs.visual_studio.load_json_file", return_value=None)
     @patch("src.configs.visual_studio.ensure_dir")
     def test_relaxng_schema_task(self, mock_ensure, mock_load, mock_write):
-        configs = [{"name": "MrDocs Generate RelaxNG Schema", "script": "trang"}]
+        configs = [{"name": "Generate RelaxNG Schema", "script": "trang"}]
         generate_visual_studio_run_configs(
             configs, "/src", "/src/build", "release", dry_run=False, ui=_ui()
         )
@@ -790,7 +791,7 @@ class TestGenerateVSTaskConfigs(unittest.TestCase):
     @patch("src.configs.visual_studio.load_json_file", return_value=None)
     @patch("src.configs.visual_studio.ensure_dir")
     def test_xml_lint_task(self, mock_ensure, mock_load, mock_write):
-        configs = [{"name": "MrDocs XML Lint with RelaxNG Schema", "script": "xmllint"}]
+        configs = [{"name": "XML Lint with RelaxNG Schema", "script": "xmllint"}]
         generate_visual_studio_run_configs(
             configs, "/src", "/src/build", "release", dry_run=False, ui=_ui()
         )
@@ -887,6 +888,135 @@ class TestGenerateVSJSLaunchConfig(unittest.TestCase):
         # JS is NOT in launch configs for VS (only target and .py)
         self.assertEqual(len(launch_data["configurations"]), 0)
         self.assertEqual(len(tasks_data["tasks"]), 1)
+
+
+# ── Pruning of stale per-preset entries (US-008) ─────────────────────
+
+
+class TestVSCodePruning(unittest.TestCase):
+    """VSCode: prune generated entries for removed presets, keep user ones."""
+
+    @patch("src.configs.vscode.write_text")
+    @patch("src.configs.vscode.load_json_file")
+    @patch("src.configs.vscode.ensure_dir")
+    def test_prunes_stale_preset_launch(self, mock_ensure, mock_load, mock_write):
+        existing_launch = {"version": "0.2.0", "configurations": [
+            {"name": "mrdocs (old-preset)", "type": "cppdbg"},
+            {"name": "mrdocs (release)", "type": "cppdbg"},
+            {"name": "My Custom Thing", "type": "cppdbg"},
+        ]}
+        existing_tasks = {"version": "2.0.0", "tasks": [
+            {"label": "CMake Build mrdocs (old-preset)"},
+        ]}
+        mock_load.side_effect = [existing_launch, existing_tasks]
+        configs = [{"name": "mrdocs", "target": "mrdocs"}]
+        generate_vscode_run_configs(
+            configs, "/src", "/src/build", "release",
+            all_presets=["release"], dry_run=False, ui=_ui(),
+        )
+        launch_data = json.loads(mock_write.call_args_list[0][0][1])
+        names = [c["name"] for c in launch_data["configurations"]]
+        self.assertNotIn("mrdocs (old-preset)", names)   # pruned
+        self.assertIn("mrdocs (release)", names)          # current preset kept
+        self.assertIn("My Custom Thing", names)           # user entry kept
+        tasks_data = json.loads(mock_write.call_args_list[1][0][1])
+        labels = [t["label"] for t in tasks_data["tasks"]]
+        self.assertNotIn("CMake Build mrdocs (old-preset)", labels)
+
+
+class TestVSPruning(unittest.TestCase):
+    """Visual Studio: prune generated entries for removed presets."""
+
+    @patch("src.configs.visual_studio.write_text")
+    @patch("src.configs.visual_studio.load_json_file")
+    @patch("src.configs.visual_studio.ensure_dir")
+    def test_prunes_stale_preset_launch(self, mock_ensure, mock_load, mock_write):
+        existing_launch = {"version": "0.2.1", "defaults": {}, "configurations": [
+            {"name": "app (old)"},
+            {"name": "Keep Me"},
+        ]}
+        existing_tasks = {"version": "0.2.1", "tasks": []}
+        mock_load.side_effect = [existing_launch, existing_tasks]
+        configs = [{"name": "app", "target": "app"}]
+        generate_visual_studio_run_configs(
+            configs, "/src", "/src/build", "release",
+            all_presets=["release"], dry_run=False, ui=_ui(),
+        )
+        launch_data = json.loads(mock_write.call_args_list[0][0][1])
+        names = [c["name"] for c in launch_data["configurations"]]
+        self.assertNotIn("app (old)", names)   # pruned (base 'app' is a target)
+        self.assertIn("Keep Me", names)        # user entry kept
+
+
+class TestClionPruning(unittest.TestCase):
+    """CLion: delete marked stale files, keep user files and current ones."""
+
+    def test_prunes_marked_stale_files_only(self):
+        d = tempfile.mkdtemp()
+        # A previously generated (marked) file for a config no longer present.
+        with open(os.path.join(d, "Old Thing.run.xml"), "w", encoding="utf-8") as f:
+            f.write('<component name="ProjectRunConfigurationManager">'
+                    '<!-- mrdocs:generated --></component>')
+        # A user-authored file without the marker.
+        with open(os.path.join(d, "User Thing.run.xml"), "w", encoding="utf-8") as f:
+            f.write('<component name="ProjectRunConfigurationManager"></component>')
+        configs = [{"name": "Keep", "target": "mrdocs"}]
+        generate_clion_run_configs(
+            configs, "/src", "/src/build", "release",
+            run_config_dir=d, dry_run=False, ui=_ui(),
+        )
+        present = set(os.listdir(d))
+        self.assertNotIn("Old Thing.run.xml", present)  # marked + stale -> removed
+        self.assertIn("User Thing.run.xml", present)    # unmarked -> kept
+        self.assertIn("Keep.run.xml", present)          # current -> written
+
+    def test_generated_files_carry_marker(self):
+        d = tempfile.mkdtemp()
+        generate_clion_run_configs(
+            [{"name": "Keep", "target": "mrdocs"}], "/src", "/src/build", "release",
+            run_config_dir=d, dry_run=False, ui=_ui(),
+        )
+        with open(os.path.join(d, "Keep.run.xml"), encoding="utf-8") as f:
+            self.assertIn("mrdocs:generated", f.read())
+
+
+class TestAggregateConfigsSkipped(unittest.TestCase):
+    """Interface/aggregate configs (no target/script) are justfile-only and
+    must be skipped by the IDE generators (not emitted as empty entries)."""
+
+    @patch("src.configs.vscode.write_text")
+    @patch("src.configs.vscode.load_json_file", return_value=None)
+    @patch("src.configs.vscode.ensure_dir")
+    def test_vscode_skips_aggregate(self, mock_ensure, mock_load, mock_write):
+        configs = [{"name": "MrDocs Test", "depends": ["MrDocs Unit Tests"]}]
+        generate_vscode_run_configs(configs, "/src", "/src/build", "release",
+                                    dry_run=False, ui=_ui())
+        launch = json.loads(mock_write.call_args_list[0][0][1])
+        tasks = json.loads(mock_write.call_args_list[1][0][1])
+        names = [c.get("name") for c in launch["configurations"]]
+        labels = [t.get("label") for t in tasks["tasks"]]
+        self.assertNotIn("MrDocs Test", names)
+        self.assertNotIn("MrDocs Test", labels)
+
+    @patch("src.configs.visual_studio.write_text")
+    @patch("src.configs.visual_studio.load_json_file", return_value=None)
+    @patch("src.configs.visual_studio.ensure_dir")
+    def test_vs_skips_aggregate(self, mock_ensure, mock_load, mock_write):
+        configs = [{"name": "MrDocs Test", "depends": ["MrDocs Unit Tests"]}]
+        generate_visual_studio_run_configs(configs, "/src", "/src/build", "release",
+                                           dry_run=False, ui=_ui())
+        launch = json.loads(mock_write.call_args_list[0][0][1])
+        tasks = json.loads(mock_write.call_args_list[1][0][1])
+        self.assertEqual(launch["configurations"], [])
+        self.assertEqual(tasks["tasks"], [])
+
+    @patch("src.configs.clion.write_text")
+    @patch("src.configs.clion.ensure_dir")
+    def test_clion_skips_aggregate(self, mock_ensure, mock_write):
+        configs = [{"name": "MrDocs Test", "depends": ["MrDocs Unit Tests"]}]
+        generate_clion_run_configs(configs, "/src", "/src/build", "release",
+                                   dry_run=True, ui=_ui())
+        mock_write.assert_not_called()
 
 
 if __name__ == "__main__":

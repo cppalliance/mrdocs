@@ -245,9 +245,6 @@ class TestGenerateRunConfigs(unittest.TestCase):
             "configs": [
                 {"name": "Test Config", "script": "$source_dir/test.py", "args": []}
             ],
-            "clion": True,
-            "vscode": True,
-            "vs": True,
         }
         data.update(overrides)
         return data
@@ -264,6 +261,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
             generate_run_configs(
                 self.opts, self.defaults,
                 generate_clion=True, generate_vscode=False, generate_vs=False,
+                generate_justfile=False,
                 ui=self.ui,
             )
             mock_clion_fn.assert_called_once()
@@ -279,6 +277,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
             generate_run_configs(
                 self.opts, self.defaults,
                 generate_clion=False, generate_vscode=True, generate_vs=False,
+                generate_justfile=False,
                 ui=self.ui,
             )
             mock_vscode_fn.assert_called_once()
@@ -294,21 +293,26 @@ class TestGenerateRunConfigs(unittest.TestCase):
             generate_run_configs(
                 self.opts, self.defaults,
                 generate_clion=False, generate_vscode=False, generate_vs=True,
+                generate_justfile=False,
                 ui=self.ui,
             )
             mock_vs_fn.assert_called_once()
 
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")
-    def test_skips_ide_when_disabled_in_json(self, mock_load, _mock_dyn):
-        mock_load.return_value = self._base_json(clion=False, vscode=False, vs=False)
-        # No IDE generator should be imported/called
-        generate_run_configs(
-            self.opts, self.defaults,
-            generate_clion=True, generate_vscode=True, generate_vs=True,
-            ui=self.ui,
-        )
-        # If we get here without error, no generators were called
+    def test_dispatches_to_justfile(self, mock_load, _mock_dyn):
+        mock_load.return_value = self._base_json()
+        mock_fn = MagicMock()
+        mock_mod = MagicMock()
+        mock_mod.generate_justfile_run_configs = mock_fn
+        with patch.dict("sys.modules", {"src.configs.justfile": mock_mod}):
+            generate_run_configs(
+                self.opts, self.defaults,
+                generate_clion=False, generate_vscode=False, generate_vs=False,
+                generate_justfile=True,
+                ui=self.ui,
+            )
+            mock_fn.assert_called_once()
 
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")
@@ -318,6 +322,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
         generate_run_configs(
             self.opts, self.defaults,
             generate_clion=False, generate_vscode=False, generate_vs=False,
+            generate_justfile=False,
             ui=self.ui,
         )
 
@@ -335,9 +340,45 @@ class TestGenerateRunConfigs(unittest.TestCase):
             generate_run_configs(
                 self.opts, self.defaults,
                 generate_clion=True, generate_vscode=False, generate_vs=False,
+                generate_justfile=False,
                 ui=self.ui,
             )
         self.assertIn("/src/test.py", captured["configs"][0]["script"])
+
+    @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
+    @patch("src.configs.run_configs.load_json_file")
+    def test_mrdocs_prefixed_tokens_expand(self, mock_load, _mock_dyn):
+        """The mrdocs_* placeholders used in run_configs.json expand
+        to real paths rather than passing through literally."""
+        data = self._base_json()
+        data["configs"] = [{
+            "name": "Tokened",
+            "target": "mrdocs",
+            "program": "${mrdocs_build_dir}/mrdocs",
+            "args": [
+                "${mrdocs_src_dir}/test-files",
+                "--output=${mrdocs_install_dir}/out",
+            ],
+        }]
+        mock_load.return_value = data
+        captured = {}
+        def fake_clion(configs, **kw):
+            captured["configs"] = configs
+        mock_mod = MagicMock()
+        mock_mod.generate_clion_run_configs = fake_clion
+        with patch.dict("sys.modules", {"src.configs.clion": mock_mod}):
+            generate_run_configs(
+                self.opts, self.defaults,
+                generate_clion=True, generate_vscode=False, generate_vs=False,
+                generate_justfile=False,
+                ui=self.ui,
+            )
+        cfg = captured["configs"][0]
+        self.assertEqual(cfg["program"], "/src/build/release/mrdocs")
+        self.assertEqual(cfg["args"][0], "/src/test-files")
+        self.assertEqual(cfg["args"][1], "--output=/src/install/release/out")
+        for value in [cfg["program"], *cfg["args"]]:
+            self.assertNotIn("${mrdocs_", value)
 
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")
@@ -355,6 +396,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
             generate_run_configs(
                 opts, self.defaults,
                 generate_clion=True, generate_vscode=False, generate_vs=False,
+                generate_justfile=False,
                 ui=self.ui,
             )
         names = [c["name"] for c in captured["configs"]]
@@ -376,6 +418,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
             generate_run_configs(
                 opts, self.defaults,
                 generate_clion=True, generate_vscode=False, generate_vs=False,
+                generate_justfile=False,
                 ui=self.ui,
             )
         names = [c["name"] for c in captured["configs"]]
@@ -392,6 +435,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
                 self.opts, self.defaults,
                 package_roots=pkg_roots,
                 generate_clion=False, generate_vscode=False, generate_vs=False,
+                generate_justfile=False,
                 ui=self.ui,
             )
             # get_dynamic_run_configs should receive libxml2_root
@@ -408,6 +452,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
             self.opts, self.defaults,
             package_roots=None, compiler_info=None,
             generate_clion=False, generate_vscode=False, generate_vs=False,
+            generate_justfile=False,
             ui=self.ui,
         )
 

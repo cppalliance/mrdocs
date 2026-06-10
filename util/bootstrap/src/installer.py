@@ -635,6 +635,7 @@ class MrDocsInstaller:
             generate_clion=self.options.generate_clion_run_configs,
             generate_vscode=self.options.generate_vscode_run_configs,
             generate_vs=self.options.generate_vs_run_configs,
+            generate_justfile=self.options.generate_justfile_run_configs,
             dry_run=self.options.dry_run,
             ui=self.ui,
         )
@@ -1021,6 +1022,22 @@ class MrDocsInstaller:
             ui=self.ui,
         )
 
+    def _resolve_build_install_dirs(self):
+        """Expand and set build_dir/install_dir from their placeholders.
+
+        Idempotent: only fills values that are not already set. Run configs
+        are generated before MrDocs is built, so the run-config generator
+        relies on this having been called first; otherwise build_dir is empty
+        and preset-derived paths (e.g. `--stdlib-includes`) collapse.
+        """
+        build_dir = self._expand_placeholders(self.default_options.build_dir)
+        install_dir = self._expand_placeholders(self.default_options.install_dir)
+
+        if not self.options.build_dir:
+            self.options.build_dir = build_dir
+        if not self.options.system_install and not self.options.install_dir:
+            self.options.install_dir = install_dir
+
     def install_mrdocs(self):
         """Configure, build, and install MrDocs."""
         if self.options.skip_build:
@@ -1035,15 +1052,7 @@ class MrDocsInstaller:
             ui=self.ui,
         )
 
-        # Expand build_dir and install_dir
-        build_dir = self._expand_placeholders(self.default_options.build_dir)
-        install_dir = self._expand_placeholders(self.default_options.install_dir)
-
-        # Set them if not already set
-        if not self.options.build_dir:
-            self.options.build_dir = build_dir
-        if not self.options.system_install and not self.options.install_dir:
-            self.options.install_dir = install_dir
+        self._resolve_build_install_dirs()
 
         extra_args = []
         if not self.options.system_install and self.options.install_dir:
@@ -1148,7 +1157,7 @@ class MrDocsInstaller:
         # Filter configurations for bootstrap refresh
         bootstrap_refresh_configs = [
             cfg for cfg in configs if
-            cfg.get("name", "").startswith("MrDocs Bootstrap Refresh (") and cfg.get("name", "").endswith(")")
+            cfg.get("name", "").startswith("Bootstrap Refresh (") and cfg.get("name", "").endswith(")")
         ]
 
         if not bootstrap_refresh_configs:
@@ -1161,6 +1170,14 @@ class MrDocsInstaller:
             # Try running as module
             bootstrap_script = None
 
+        # Saved configurations can go stale across bootstrap versions (a flag
+        # that existed when they were written may have since been removed).
+        # Validate each config's args against the current parser, drop any it
+        # no longer recognizes, and keep going if one config still fails, so a
+        # single stale entry never aborts the whole refresh.
+        from . import __main__ as bootstrap_main
+        parser = bootstrap_main.build_arg_parser()
+
         for config in bootstrap_refresh_configs:
             config_name = config['name']
             if use_vscode:
@@ -1168,14 +1185,33 @@ class MrDocsInstaller:
             else:
                 args = shlex.split(config.get("scriptArguments", ""))
 
+            try:
+                _, unknown = parser.parse_known_args(args)
+            except SystemExit:
+                unknown = []
+            if unknown:
+                dropped = set(unknown)
+                args = [a for a in args if a not in dropped]
+                self.ui.info(
+                    f"  (ignoring arguments no longer recognized by bootstrap: "
+                    f"{' '.join(sorted(dropped))})"
+                )
+
             self.ui.info(f"Refreshing configuration '{config_name}':")
             for arg in args:
                 self.ui.info(f"  * {arg}")
 
             if bootstrap_script:
-                subprocess.run([current_python_interpreter_path, bootstrap_script] + args, check=True)
+                cmd = [current_python_interpreter_path, bootstrap_script] + args
             else:
-                subprocess.run([current_python_interpreter_path, "-m", "util.bootstrap"] + args, check=True)
+                cmd = [current_python_interpreter_path, "-m", "util.bootstrap"] + args
+            try:
+                subprocess.run(cmd, check=True)
+            except subprocess.CalledProcessError as exc:
+                self.ui.info(
+                    f"Configuration '{config_name}' failed (exit {exc.returncode}); "
+                    f"continuing with the rest."
+                )
 
     def _dry_comment(self, text: str):
         """Print a shell comment to stdout when in dry-run mode.
@@ -1309,6 +1345,10 @@ class MrDocsInstaller:
 
         # Generate IDE configs
         if self.options.generate_run_configs:
+            # Run configs reference build_dir/install_dir, which are only
+            # expanded during the build step below; resolve them first so
+            # preset-derived paths (e.g. --stdlib-includes) are correct.
+            self._resolve_build_install_dirs()
             self.ui.subsection("Generating IDE configurations")
             self._dry_comment("Generate IDE run configurations")
             self.generate_configs()

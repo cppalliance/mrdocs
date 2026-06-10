@@ -22,6 +22,7 @@ from typing import Optional, List, Dict, Any
 
 from ..core.filesystem import ensure_dir, write_text, load_json_file
 from ..core.ui import TextUI, get_default_ui
+from .run_configs import is_stale_preset_entry
 
 
 def replace_with_placeholders(config: Dict[str, Any], source_dir: str) -> None:
@@ -53,6 +54,7 @@ def generate_vscode_run_configs(
     preset: str,
     ninja_path: Optional[str] = None,
     compiler_info: Optional[Dict[str, str]] = None,
+    all_presets: Optional[List[str]] = None,
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ):
@@ -93,6 +95,10 @@ def generate_vscode_run_configs(
     bootstrap_refresh_config_name = preset or "debug"
 
     for config in configs:
+        # Interface/aggregate configs (depends-only, no target or script) are
+        # a justfile concept; the IDE generators have nothing to emit for them.
+        if 'target' not in config and 'script' not in config:
+            continue
         is_python_script = 'script' in config and config['script'].endswith('.py')
         is_js_script = 'script' in config and config['script'].endswith('.js')
         is_config = 'target' in config or is_python_script or is_js_script
@@ -232,6 +238,21 @@ def generate_vscode_run_configs(
         }
         replace_with_placeholders(cmake_build_task, source_dir)
         vs_tasks_by_name[cmake_build_task["label"]] = cmake_build_task
+
+    # Prune entries left over from presets that no longer exist. Only
+    # generator-owned per-preset entries are considered (their base name is
+    # one we still produce); user-added entries are never touched.
+    valid_presets = set(all_presets or []) | {preset, bootstrap_refresh_config_name}
+    launch_bases = {config["name"] for config in configs if "target" in config}
+    task_bases = {f"CMake Configure"} | {f"CMake Build {t}" for t in unique_targets}
+    vs_configs_by_name = {
+        name: cfg for name, cfg in vs_configs_by_name.items()
+        if not is_stale_preset_entry(name, launch_bases, valid_presets)
+    }
+    vs_tasks_by_name = {
+        label: task for label, task in vs_tasks_by_name.items()
+        if not is_stale_preset_entry(label, task_bases, valid_presets)
+    }
 
     # Write back all configs
     launch_data["configurations"] = list(vs_configs_by_name.values())

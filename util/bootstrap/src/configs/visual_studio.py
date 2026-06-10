@@ -22,6 +22,7 @@ from typing import Optional, List, Dict, Any
 
 from ..core.filesystem import ensure_dir, write_text, load_json_file
 from ..core.ui import TextUI, get_default_ui
+from .run_configs import is_stale_preset_entry
 
 
 def vs_config_type(config: Dict[str, Any]) -> Optional[str]:
@@ -52,6 +53,7 @@ def generate_visual_studio_run_configs(
     source_dir: str,
     build_dir: str,
     preset: str,
+    all_presets: Optional[List[str]] = None,
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ):
@@ -104,6 +106,10 @@ def generate_visual_studio_run_configs(
         return ""
 
     for config in configs:
+        # Interface/aggregate configs (depends-only, no target or script) are
+        # a justfile concept; the IDE generators have nothing to emit for them.
+        if 'target' not in config and 'script' not in config:
+            continue
         is_python_script = 'script' in config and config['script'].endswith('.py')
         is_config = 'target' in config or is_python_script
 
@@ -161,12 +167,26 @@ def generate_visual_studio_run_configs(
             elif new_task["command"] == "npm" and "workingDirectory" in new_task:
                 new_task["appliesTo"] = os.path.join(new_task["workingDirectory"], "package.json")
                 new_task["appliesTo"] = rel_to_mrdocs_dir(new_task["appliesTo"], source_dir)
-            elif new_task["taskLabel"] == "MrDocs Generate RelaxNG Schema":
+            elif new_task["taskLabel"] == "Generate RelaxNG Schema":
                 new_task["appliesTo"] = "mrdocs.rnc"
-            elif new_task["taskLabel"] == "MrDocs XML Lint with RelaxNG Schema":
+            elif new_task["taskLabel"] == "XML Lint with RelaxNG Schema":
                 new_task["appliesTo"] = "mrdocs.rng"
 
             vs_tasks_by_name[new_task["taskLabel"]] = new_task
+
+    # Prune entries left over from presets that no longer exist. Matches the
+    # VS Code generator: only generator-owned per-preset entries (base name
+    # still produced) are removed; user entries are left alone.
+    valid_presets = set(all_presets or []) | {preset}
+    launch_bases = {config["name"] for config in configs if "target" in config}
+    vs_configs_by_name = {
+        name: cfg for name, cfg in vs_configs_by_name.items()
+        if not is_stale_preset_entry(name, launch_bases, valid_presets)
+    }
+    vs_tasks_by_name = {
+        label: task for label, task in vs_tasks_by_name.items()
+        if not is_stale_preset_entry(label, launch_bases, valid_presets)
+    }
 
     # Write back all configs
     launch_data["configurations"] = list(vs_configs_by_name.values())

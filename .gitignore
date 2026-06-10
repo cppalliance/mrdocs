@@ -3,6 +3,7 @@
 /.vscode
 /.run
 /.claude
+/justfile
 /launch.vs.json
 /CMakeUserPresets.json
 /CMakeSettings.json

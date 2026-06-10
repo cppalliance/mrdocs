@@ -334,14 +334,26 @@ class TestIsRecipeUpToDate(unittest.TestCase):
             self.assertIn("platform", result)
             self.assertIn("changed", result)
 
-    def test_old_content_hash_triggers_rebuild(self):
-        """Stamp with old content_hash format should trigger rebuild."""
+    def test_old_format_stamp_with_matching_ref_is_up_to_date(self):
+        """An old-format stamp (no build_params) with a matching ref means the
+        dependency is already installed at the right version, so it should be
+        treated as up to date rather than forcing an expensive rebuild just to
+        migrate the stamp format."""
         with tempfile.TemporaryDirectory() as td:
             r = _make_recipe(install_dir=td)
             stamp = recipe_stamp_path(r)
             with open(stamp, "w") as f:
                 json.dump({"version": "1.0", "ref": "abc", "content_hash": "old"}, f)
-            self.assertIn("old format", is_recipe_up_to_date(r, "abc"))
+            self.assertEqual(is_recipe_up_to_date(r, "abc"), "")
+
+    def test_old_format_stamp_with_changed_ref_triggers_rebuild(self):
+        """A ref change still forces a rebuild even for an old-format stamp."""
+        with tempfile.TemporaryDirectory() as td:
+            r = _make_recipe(install_dir=td)
+            stamp = recipe_stamp_path(r)
+            with open(stamp, "w") as f:
+                json.dump({"version": "1.0", "ref": "abc", "content_hash": "old"}, f)
+            self.assertIn("ref changed", is_recipe_up_to_date(r, "xyz"))
 
 
 class TestBuildParams(unittest.TestCase):

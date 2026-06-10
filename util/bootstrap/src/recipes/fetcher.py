@@ -128,11 +128,12 @@ def is_recipe_up_to_date(
     # "build_params" with recipe fields mixed in -- treat as stale.
     stored_params = data.get("build_params")
     if stored_params is None:
-        # Old-format stamps (with content_hash instead of build_params)
-        # can't be compared field-by-field. Treat as stale so the stamp
-        # gets rewritten in the new format.
-        has_keys = [k for k in data if k not in ("name", "version", "ref")]
-        return f"stamp uses old format (has: {has_keys})"
+        # Old-format stamps (name/version/ref only, predating the build_params
+        # field) can't be compared field-by-field. The ref already matched
+        # above and the dependency is installed, so treat it as up to date:
+        # forcing a full rebuild of an installed dependency just to migrate the
+        # stamp format would be far more expensive than the check is worth.
+        return ""
     current_params = _build_params(sanitizer, cc, cxx, cflags, cxxflags, ldflags)
     for key in set(list(stored_params.keys()) + list(current_params.keys())):
         old_val = stored_params.get(key)
