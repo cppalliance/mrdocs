@@ -42,62 +42,28 @@ ConfigImpl(access_token, ThreadPool& threadPool)
 
 bool
 ConfigImpl::
-shouldVisitSymbol(llvm::StringRef filePath) const noexcept
-{
-    if (settings_.input.empty())
-    {
-        return true;
-    }
-    for (auto& p: settings_.input)
-    {
-        // Exact match
-        if (filePath == p)
-        {
-            return true;
-        }
-        // Prefix match
-        if (filePath.starts_with(p))
-        {
-            bool const validPattern = std::ranges::any_of(
-                    settings_.filePatterns,
-                    [&](PathGlobPattern const &pattern) {
-                        return pattern.match(filePath);
-                    });
-            if (validPattern)
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool
-ConfigImpl::
 shouldExtractFromFile(
     llvm::StringRef filePath,
     std::string& prefixPath) const noexcept
 {
-    namespace path = llvm::sys::path;
-
-    SmallPathString temp;
-    if(! files::isAbsolute(filePath))
-    {
-        temp = files::makePosixStyle(
+    // Resolve the file to an absolute POSIX path.
+    std::string const abs = files::isAbsolute(filePath)
+        ? files::makePosixStyle(filePath)
+        : files::makePosixStyle(
             files::makeAbsolute(filePath, settings_.configDir()));
-    }
-    else
-    {
-        temp = filePath;
-    }
-    if(! path::replace_path_prefix(temp,
-            settings_.sourceRoot, "", path::Style::posix))
-        return false;
     MRDOCS_ASSERT(files::isDirsy(settings_.sourceRoot));
-    prefixPath.assign(
-        settings_.sourceRoot.begin(),
-        settings_.sourceRoot.end());
-    return true;
+    // Inclusion is generous: the file is under `source-root` if it matches
+    // as written or by its real (symlink-resolved) location. NOTE: this
+    // method currently has no callers; it is kept consistent with the
+    // inclusion policy for any future use.
+    if (files::isResolvedSubpathOf(abs, settings_.sourceRoot))
+    {
+        prefixPath.assign(
+            settings_.sourceRoot.begin(),
+            settings_.sourceRoot.end());
+        return true;
+    }
+    return false;
 }
 
 //------------------------------------------------

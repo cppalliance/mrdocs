@@ -125,15 +125,6 @@ public:
     //
     //--------------------------------------------
 
-    /** Returns true if the translation unit should be visited.
-
-        @param filePath The posix-style full path
-        to the file being processed.
-    */
-    bool
-    shouldVisitSymbol(
-        llvm::StringRef filePath) const noexcept;
-
     /** Returns true if the file should be visited.
 
         If the file is visited, then prefix is

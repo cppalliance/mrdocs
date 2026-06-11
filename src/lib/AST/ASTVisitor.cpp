@@ -2935,35 +2935,57 @@ bool
 ASTVisitor::
 checkFileFilters(std::string_view const symbolPath) const
 {
-    // Don't extract declarations that fail the input filter
-    auto startsWithSymbolPath = [&](std::string const& inputDir)
-    {
-        return files::startsWith(symbolPath, inputDir);
-    };
+    // Inclusion is generous: a file counts as being inside an input
+    // directory when its path matches as written or by its real
+    // (symlink-resolved) location. This recognizes files reached through a
+    // symlinked directory without dropping anything that
+    // already matched as written.
     if (config_->recursive)
     {
         MRDOCS_CHECK_OR(
             config_->input.empty() ||
-            std::ranges::any_of(config_->input, startsWithSymbolPath),
+            std::ranges::any_of(config_->input,
+                [&](std::string const& inputDir)
+                {
+                    return files::isResolvedSubpathOf(symbolPath, inputDir);
+                }),
             false);
     }
     else
     {
+        // Resolve the symbol's parent lazily: the filesystem lookup only
+        // happens when a literal match fails, so a tree with no symlinks
+        // pays no extra cost.
+        std::string const symbolParentDir = files::getParentDir(symbolPath);
+        Optional<std::string> symbolParentDirReal;
+        auto parentDirReal = [&]() -> std::string const&
+        {
+            if (!symbolParentDirReal)
+            {
+                symbolParentDirReal = files::makeRealPath(symbolParentDir);
+            }
+            return *symbolParentDirReal;
+        };
         MRDOCS_CHECK_OR(
             config_->input.empty() ||
             std::ranges::any_of(config_->input,
-                [symbolParentDir = files::getParentDir(symbolPath)]
-                (std::string const& inputDir)
+                [&](std::string const& inputDir)
                 {
-                    return inputDir == symbolParentDir;
+                    return inputDir == symbolParentDir
+                        || files::makeRealPath(inputDir) == parentDirReal();
                 }),
             false);
     }
 
-    // Don't extract declarations that fail the exclude filter
+    // Exclusion is strict: match the written path only, so a symlinked alias
+    // of an excluded file is not excluded.
     MRDOCS_CHECK_OR(
         config_->exclude.empty() ||
-        std::ranges::none_of(config_->exclude, startsWithSymbolPath),
+        std::ranges::none_of(config_->exclude,
+            [&](std::string const& excludeDir)
+            {
+                return files::isSubpathOf(symbolPath, excludeDir);
+            }),
         false);
 
     // Don't extract declarations that fail the exclude pattern filter
@@ -3470,38 +3492,58 @@ buildFileInfo(std::string_view path)
         file_info.full_path = files::makePosixStyle(file_info.full_path);
     }
 
-    // Attempts to get a relative path for the prefix
-    auto tryGetRelativePosixPath = [&file_info](std::string_view const prefix)
-        -> Optional<std::string_view>
+    // The recorded path stays exactly as written: a file reached through a
+    // symlink keeps its as-written name. For locating the relative path we
+    // resolve symlinks generously, so a file spelled through a symlinked
+    // directory is still matched against a `source-root` or include directory
+    // that uses the real path. The real form is computed only on demand, so
+    // the common (no-symlink) case pays no filesystem call.
+    Optional<std::string> realFullPath;
+    auto realFull = [&]() -> std::string const&
     {
-        if (files::startsWith(file_info.full_path, prefix))
+        if (!realFullPath)
         {
-            std::string_view res = file_info.full_path;
-            res.remove_prefix(prefix.size());
-            if (res.starts_with('/'))
-            {
-                res.remove_prefix(1);
-            }
-            return res;
+            realFullPath = files::makeRealPath(file_info.full_path);
         }
-        return std::nullopt;
+        return *realFullPath;
     };
 
-    auto tryGetRelativePath = [&tryGetRelativePosixPath](std::string_view const prefix)
-        -> Optional<std::string_view>
+    // Strip `prefix` from `full`, returning the relative remainder.
+    auto stripPrefix = [](std::string_view const full,
+                          std::string_view const prefix)
+        -> Optional<std::string>
+    {
+        if (!files::isSubpathOf(full, prefix))
+        {
+            return std::nullopt;
+        }
+        std::string_view res = full;
+        res.remove_prefix(prefix.size());
+        if (res.starts_with('/'))
+        {
+            res.remove_prefix(1);
+        }
+        return std::string(res);
+    };
+
+    // Get the path relative to `prefix`, matching generously: the file may be
+    // under `prefix` as written, or only after resolving symlinks on both
+    // sides. The relative remainder is kept as written.
+    auto tryGetRelativePath =
+        [&](std::string_view const prefix) -> Optional<std::string>
     {
         if (!files::isAbsolute(prefix))
         {
             return std::nullopt;
         }
-        if (files::isPosixStyle(prefix))
+        std::string const posixPrefix = files::isPosixStyle(prefix)
+            ? std::string(prefix)
+            : files::makePosixStyle(prefix);
+        if (auto rel = stripPrefix(file_info.full_path, posixPrefix))
         {
-            // If already posix, we use the string view directly
-            // to avoid creating a new string for the check
-            return tryGetRelativePosixPath(prefix);
+            return rel;
         }
-        std::string const posixPrefix = files::makePosixStyle(prefix);
-        return tryGetRelativePosixPath(posixPrefix);
+        return stripPrefix(realFull(), files::makeRealPath(posixPrefix));
     };
 
     // Populate file relative to source-root

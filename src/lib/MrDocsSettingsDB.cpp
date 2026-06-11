@@ -40,9 +40,9 @@ MrDocsSettingsDB::MrDocsSettingsDB(ConfigImpl const& config)
             {
                 return {};
             }
-            // Check file or directories in path that should be skipped
+            // Check a file or directory in a path that should be skipped
             if (std::ranges::any_of(s.exclude, [&](std::string const& excludePath) {
-                return files::startsWith(path, excludePath);
+                return files::isSubpathOf(path, excludePath);
             }))
             {
                 return {};
