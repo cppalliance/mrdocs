@@ -6,31 +6,32 @@
 // anyone writing `@see` by hand.
 
 function partnerName(name) {
+    var partner = null;
     if (name.indexOf("parse_") === 0) {
-        return "format_" + name.slice(6);
+        partner = "format_" + name.slice(6);
+    } else if (name.indexOf("format_") === 0) {
+        partner = "parse_" + name.slice(7);
     }
-    if (name.indexOf("format_") === 0) {
-        return "parse_" + name.slice(7);
-    }
-    return null;
+    return partner;
 }
 
-function transform_corpus(corpus) {
+register_transform(function(corpus) {
     for (var i = 0; i < corpus.symbols.length; ++i) {
         var s = corpus.symbols[i];
-        if (s.kind !== "function") { continue; }
-        var pname = partnerName(s.name);
-        if (!pname) { continue; }
-        var partner = corpus.lookup(pname);
-        if (!partner) { continue; }
-        s.doc = {
-            sees: [{
-                children: [{
-                    kind: "reference",
-                    literal: pname,
-                    id: partner.id
-                }]
-            }]
-        };
+        if (s.kind === "function") {
+            var pname = partnerName(s.name);
+            var partner = pname ? corpus.lookup(pname) : null;
+            if (partner) {
+                s.doc = {
+                    sees: [{
+                        children: [{
+                            kind: "reference",
+                            literal: pname,
+                            id: partner.id
+                        }]
+                    }]
+                };
+            }
+        }
     }
-}
+});

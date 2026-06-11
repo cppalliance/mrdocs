@@ -15,8 +15,8 @@ namespace mrdocs {
 
 class CorpusImpl;
 
-/** Build the `corpus` argument passed to a script's
-    `transform_corpus(corpus)` entry point.
+/** Build the `corpus` argument passed to each registered corpus
+    transform.
 
     The returned value is a small object:
 

@@ -3,10 +3,10 @@
 -- overwrites the primary root's, so this is the name that must
 -- appear in the rendered output.
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     for _, sym in ipairs(corpus.symbols) do
         if sym.kind == "function" then
             sym.name = "from_supplemental"
         end
     end
-end
+end)

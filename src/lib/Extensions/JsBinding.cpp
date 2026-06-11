@@ -17,8 +17,63 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
+
+#include <cstddef>
+#include <string>
 
 namespace mrdocs {
+
+namespace {
+
+// Bind `register_transform` as the script-facing entry point before the
+// script runs. A JavaScript function bridges to a `dom::Function`, so
+// each registered callable is captured as a DOM value in `transforms`,
+// in registration order. The collector outlives every invocation because
+// the script (which does the registering) runs while it is in scope.
+void
+registerJsExtensionApi(js::Scope& scope, dom::Array& transforms)
+{
+    scope.setGlobal(
+        "register_transform",
+        dom::Value(dom::makeVariadicInvocable(
+            [&transforms](dom::Array const& args)
+                -> Expected<dom::Value, Error>
+            {
+                Expected<dom::Value, Error> result;
+                if (args.empty() || !args.get(0).isFunction())
+                {
+                    result = Unexpected(Error(
+                        "register_transform: expected a function argument"));
+                }
+                else
+                {
+                    transforms.push_back(args.get(0));
+                }
+                return result;
+            })));
+}
+
+// Invoke one registered transform with the corpus, tagging any failure
+// with the script path for context.
+Expected<void>
+invokeTransform(
+    dom::Value const& transform,
+    dom::Value const& corpus,
+    std::string const& scriptPath)
+{
+    Expected<dom::Value> invoked = transform.getFunction().try_invoke(corpus);
+    Expected<void> result;
+    if (!invoked.has_value())
+    {
+        result = Unexpected(formatError(
+            "extension '{}': {}",
+            scriptPath, invoked.error().message()));
+    }
+    return result;
+}
+
+} // (anon)
 
 Expected<void>
 runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
@@ -28,6 +83,9 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
 
     js::registerStdGlobals(scope);
 
+    dom::Array transforms;
+    registerJsExtensionApi(scope, transforms);
+
     // The corpus argument is a small navigable object: an array of
     // per-symbol proxies plus `get(id)` / `lookup(name)` functions.
     // Everything else a script does runs through that proxy: direct
@@ -35,27 +93,34 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
     dom::Value corpusValue = buildCorpusDom(corpus);
 
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
-    if (Expected<void> exp = scope.script(script); !exp)
-    {
-        return Unexpected(formatError(
-            "extension '{}': {}",
-            scriptPath, exp.error().message()));
-    }
 
-    Expected<js::Value> fn = scope.getGlobal("transform_corpus");
-    if (!fn || !fn->isFunction())
+    // Running the script is what calls `register_transform`.
+    Expected<void> result = scope.script(script);
+    if (!result.has_value())
     {
-        return {};
-    }
-
-    Expected<js::Value> result = fn->call(corpusValue);
-    if (!result)
-    {
-        return Unexpected(formatError(
+        result = Unexpected(formatError(
             "extension '{}': {}",
             scriptPath, result.error().message()));
     }
-    return {};
+    else if (transforms.empty())
+    {
+        // A discovered script that registers nothing is almost always a
+        // mistake (a misspelled `register_transform`, or a guard that
+        // skipped it), so flag it rather than silently doing nothing.
+        report::warn("extension '{}' registered nothing", scriptPath);
+    }
+
+    // Invoke each declared transform with the corpus, in registration
+    // order, stopping at the first failure.
+    for (std::size_t i = 0; i < transforms.size(); ++i)
+    {
+        if (result.has_value())
+        {
+            result = invokeTransform(
+                transforms.get(i), corpusValue, scriptPath);
+        }
+    }
+    return result;
 }
 
 } // mrdocs

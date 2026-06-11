@@ -7,26 +7,25 @@
 // sentence on every declaration. Anything an author already wrote is
 // preserved: only missing fields are filled in.
 
-function transform_corpus(corpus) {
+register_transform(function(corpus) {
     for (var i = 0; i < corpus.symbols.length; ++i) {
         var sym = corpus.symbols[i];
-        if (sym.kind !== "function") { continue; }
-        if (sym.name.indexOf("is_") !== 0) { continue; }
+        if (sym.kind === "function" && sym.name.indexOf("is_") === 0) {
+            if (!sym.doc) { sym.doc = {}; }
 
-        if (!sym.doc) { sym.doc = {}; }
+            var subject = sym.name.slice(3).replace(/_/g, " ");
 
-        var subject = sym.name.slice(3).replace(/_/g, " ");
+            if (!sym.doc.brief) {
+                sym.doc.brief = "Returns true if " + subject + ".";
+            }
 
-        if (!sym.doc.brief) {
-            sym.doc.brief = "Returns true if " + subject + ".";
-        }
-
-        if (sym.params.length === 1
-            && (!sym.doc.params || sym.doc.params.length === 0)) {
-            sym.doc.params = [{
-                name: sym.params[0].name,
-                children: "The input examined for the " + subject + " property."
-            }];
+            if (sym.params.length === 1
+                && (!sym.doc.params || sym.doc.params.length === 0)) {
+                sym.doc.params = [{
+                    name: sym.params[0].name,
+                    children: "The input examined for the " + subject + " property."
+                }];
+            }
         }
     }
-}
+});

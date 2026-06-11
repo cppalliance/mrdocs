@@ -7,7 +7,7 @@
 -- sentence on every declaration. Anything an author already wrote is
 -- preserved: only missing fields are filled in.
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     for _, sym in ipairs(corpus.symbols) do
         if sym.kind == "function"
            and sym.name:sub(1, 3) == "is_" then
@@ -31,4 +31,4 @@ function transform_corpus(corpus)
             end
         end
     end
-end
+end)

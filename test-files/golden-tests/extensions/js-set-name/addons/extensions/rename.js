@@ -7,7 +7,7 @@
 // proxy's `set` trap forwards each assignment into the live C++
 // Symbol via reflection.
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
 {
     for (var i = 0; i < corpus.symbols.length; ++i)
     {
@@ -25,4 +25,4 @@ function transform_corpus(corpus)
             };
         }
     }
-}
+});

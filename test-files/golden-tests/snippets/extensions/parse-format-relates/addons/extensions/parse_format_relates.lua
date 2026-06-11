@@ -6,16 +6,16 @@
 -- anyone writing `@see` by hand.
 
 local function partnerName(name)
+    local partner = nil
     if name:sub(1, 6) == "parse_" then
-        return "format_" .. name:sub(7)
+        partner = "format_" .. name:sub(7)
+    elseif name:sub(1, 7) == "format_" then
+        partner = "parse_" .. name:sub(8)
     end
-    if name:sub(1, 7) == "format_" then
-        return "parse_" .. name:sub(8)
-    end
-    return nil
+    return partner
 end
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     for _, s in ipairs(corpus.symbols) do
         if s.kind == "function" then
             local pname = partnerName(s.name)
@@ -37,4 +37,4 @@ function transform_corpus(corpus)
             end
         end
     end
-end
+end)

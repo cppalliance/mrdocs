@@ -16,7 +16,7 @@ Both scripting languages reach the same `mrdocs` API. The choice is a trade-off,
 
 == Accessing the corpus
 
-A script extends Mr.Docs by defining a function named `transform_corpus(corpus)`. Mr.Docs calls it once per loaded script with a flat read-only view of the corpus. A script that doesn't define `transform_corpus` is silently ignored at this step.
+A script extends Mr.Docs by calling `register_transform(fn)` with a function that takes the corpus. Mr.Docs invokes each registered function once, in registration order, with a flat view of the corpus. A script can register several transforms, or none at all; if it registers nothing, Mr.Docs warns that the script had no effect and moves on.
 
 [tabs]
 ======
@@ -48,7 +48,7 @@ JavaScript::
 .`addons/extensions/count_by_kind.js`
 [source,javascript]
 ----
-function transform_corpus(corpus) {
+register_transform(function(corpus) {
     var counts = {};
     for (var i = 0; i < corpus.symbols.length; ++i) {
         var k = corpus.symbols[i].kind;
@@ -57,7 +57,7 @@ function transform_corpus(corpus) {
     for (var k in counts) {
         console.log(k + ": " + counts[k]);
     }
-}
+});
 ----
 
 Lua::
@@ -65,7 +65,7 @@ Lua::
 .`addons/extensions/count_by_kind.lua`
 [source,lua]
 ----
-function transform_corpus(corpus)
+register_transform(function(corpus)
     local counts = {}
     for _, sym in ipairs(corpus.symbols) do
         counts[sym.kind] = (counts[sym.kind] or 0) + 1
@@ -73,7 +73,7 @@ function transform_corpus(corpus)
     for k, v in pairs(counts) do
         print(k .. ": " .. v)
     end
-end
+end)
 ----
 ======
 

@@ -18,12 +18,12 @@
 
 namespace mrdocs {
 
-/** Return the extension scripts across every addon root.
+/** Return the extension entry scripts across every addon root.
 
-    Walks `<root>/extensions/` under each addon root and gathers every
-    `.lua` and `.js` file, sorted alphabetically by full path. The two
-    languages are interleaved so behavior doesn't depend on which
-    language a user happens to write in - only on file names.
+    Walks the immediate children of the extensions/ directory under each
+    addon root: a .lua or .js file is an extension. The result is sorted
+    alphabetically by full path, interleaving the two languages so
+    behavior depends only on file names.
 */
 Expected<std::vector<std::string>>
 collectExtensionScripts(Config const& config);

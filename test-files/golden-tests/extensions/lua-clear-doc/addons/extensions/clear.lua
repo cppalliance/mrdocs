@@ -3,10 +3,10 @@
 -- doc-comment so the rendered output contains no doc-comment block
 -- for it.
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     for _, sym in ipairs(corpus.symbols) do
         if sym.kind == "function" then
             sym.doc = nil
         end
     end
-end
+end)

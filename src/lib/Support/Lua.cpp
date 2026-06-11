@@ -1555,6 +1555,42 @@ invokeHelperRef(
     return result;
 }
 
+// Invoke the registry-anchored function with every argument (there is no
+// Handlebars options object to strip), converting the Lua result back to
+// a `dom::Value`. Errors from `lua_pcall` surface as `Unexpected`.
+static
+Expected<dom::Value, Error>
+invokeRef(
+    std::shared_ptr<LuaHelperHandle> const& handle,
+    dom::Array const& args)
+{
+    Scope scope(handle->ctx);
+    Access A(scope);
+
+    lua_rawgeti(A, LUA_REGISTRYINDEX, handle->ref);
+
+    std::size_t const narg = args.size();
+    for (std::size_t i = 0; i < narg; ++i)
+    {
+        Param p(args.get(i));
+        Access::push(p, scope);
+    }
+
+    // A default-constructed `Expected` holds a value; both branches below
+    // overwrite it, so the default is never observed.
+    Expected<dom::Value, Error> result;
+    if (lua_pcall(A, static_cast<int>(narg), 1, 0) == LUA_OK)
+    {
+        result = luaToDom(A, lua_gettop(A));
+        lua_pop(A, 1);
+    }
+    else
+    {
+        result = Unexpected(luaM_popError(A));
+    }
+    return result;
+}
+
 } // detail
 
 Expected<void, Error>
@@ -1615,6 +1651,18 @@ registerHelper(
             }));
 
     return {};
+}
+
+dom::Function
+makeCallable(Context ctx, int ref)
+{
+    auto handle = std::make_shared<detail::LuaHelperHandle>(
+        std::move(ctx), ref);
+    return dom::makeVariadicInvocable(
+        [handle](dom::Array const& args) -> Expected<dom::Value, Error>
+        {
+            return detail::invokeRef(handle, args);
+        });
 }
 
 //------------------------------------------------
