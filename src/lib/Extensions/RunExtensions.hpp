@@ -20,24 +20,20 @@ class CorpusImpl;
 
 /** Run user-provided extension scripts against the corpus.
 
-    Extensions live in <addon>/extensions/<name>.{lua,js} for each
-    addon root declared in the configuration (primary `addons` plus
-    `addons-supplemental`). Each script may export a function named
-    `transform_corpus(corpus)`; the function is invoked once with a flat
-    DOM view of the corpus that the script can read, and may mutate the
-    corpus by calling functions on the pre-registered `mrdocs` global
-    table or object:
+    Extensions are discovered under each addon root's extensions/
+    directory (the primary addons plus addons-supplemental): a .lua or
+    .js file is an extension. Each script declares corpus transforms by
+    calling `register_transform(fn)`; every registered function is
+    invoked once, in registration order, with a navigable DOM view of the
+    corpus. A transform reads the corpus through that view and mutates it
+    by assigning to symbol fields (for example `sym.name = "..."`), which
+    writes through to the live symbol.
 
-    - `mrdocs.set(symbol_id, field, value)` - assign a new value to
-      one of the allowlisted fields of a symbol. The setter validates
-      its arguments and raises an error on misuse.
-
-    Any uncaught error inside a script aborts the build. Scripts are run
-    in alphabetical order by file path, with the two languages
-    interleaved so behavior doesn't depend on which language a user
-    chose. Extensions intentionally fire after all finalizers and
-    before any generator runs, so mutations are visible to every
-    output format.
+    Any uncaught error inside a script aborts the build. Scripts run in
+    alphabetical order by full path, with the two languages interleaved so
+    behavior doesn't depend on which language a user chose. Extensions
+    fire after all finalizers and before any generator runs, so mutations
+    are visible to every output format.
 */
 Expected<void>
 runExtensions(CorpusImpl& corpus);

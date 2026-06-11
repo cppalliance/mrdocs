@@ -9,15 +9,17 @@
 function listSubclasses(corpus, sym, indent) {
     for (var i = 0; i < sym.derived.length; ++i) {
         var child = corpus.get(sym.derived[i]);
-        if (!child) { continue; }
-        console.log(indent + child.name);
-        listSubclasses(corpus, child, indent + "  ");
+        if (child) {
+            console.log(indent + child.name);
+            listSubclasses(corpus, child, indent + "  ");
+        }
     }
 }
 
-function transform_corpus(corpus) {
+register_transform(function(corpus) {
     var base = corpus.lookup("Shape");
-    if (!base) { return; }
-    console.log(base.name);
-    listSubclasses(corpus, base, "  ");
-}
+    if (base) {
+        console.log(base.name);
+        listSubclasses(corpus, base, "  ");
+    }
+});

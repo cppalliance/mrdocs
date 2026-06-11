@@ -21,10 +21,12 @@ class CorpusImpl;
 
 /** Run one JavaScript extension script against the corpus.
 
-    Builds a fresh JS context, exposes the `mrdocs` global object,
-    evaluates the script, and invokes `transform_corpus(corpus)` if
-    defined. A script that defines no such function is silently
-    skipped, so an empty `.js` file is valid.
+    Build a fresh JS context, evaluate the script, and run every corpus
+    transform it declares by calling `register_transform(fn)`. Each
+    registered function is invoked once, in registration order, with a
+    navigable DOM view of the corpus that it can read and mutate in place.
+    A script that registers nothing causes a warning and otherwise has no
+    effect, so an empty .js file is tolerated.
 */
 Expected<void>
 runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath);

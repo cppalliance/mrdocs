@@ -26,7 +26,7 @@
 -- This fixture omits the lookup and uses a bare identifier so the
 -- test is self-contained.
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     for _, sym in ipairs(corpus.symbols) do
         if sym.kind == "function" and sym.name == "target_function" then
             sym.returnType = {
@@ -38,4 +38,4 @@ function transform_corpus(corpus)
             }
         end
     end
-end
+end)

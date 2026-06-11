@@ -16,9 +16,10 @@ local function listSubclasses(corpus, sym, indent)
     end
 end
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     local base = corpus.lookup("Shape")
-    if not base then return end
-    print(base.name)
-    listSubclasses(corpus, base, "  ")
-end
+    if base then
+        print(base.name)
+        listSubclasses(corpus, base, "  ")
+    end
+end)

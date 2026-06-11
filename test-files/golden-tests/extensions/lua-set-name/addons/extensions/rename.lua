@@ -6,7 +6,7 @@
 -- corpus.symbols is a regular Lua sequence: 1-indexed, with `#` and
 -- `ipairs`/`pairs` support.
 
-function transform_corpus(corpus)
+register_transform(function(corpus)
     for _, sym in ipairs(corpus.symbols) do
         if sym.kind == "function" then
             sym.name = "renamed_" .. sym.name
@@ -20,4 +20,4 @@ function transform_corpus(corpus)
             }
         end
     end
-end
+end)

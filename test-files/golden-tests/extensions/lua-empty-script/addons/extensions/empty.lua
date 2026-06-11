@@ -1,3 +1,3 @@
--- Intentionally empty: no `transform_corpus` defined. The docs
--- promise that MrDocs silently skips such scripts so a file can be
--- empty during development without breaking the build.
+-- Intentionally empty: registers no transform. MrDocs warns that the
+-- script had no effect but still completes the build, so a file can be
+-- empty during development.

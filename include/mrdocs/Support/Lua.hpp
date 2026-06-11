@@ -674,6 +674,27 @@ registerHelper(
     Context& ctx,
     std::string_view script);
 
+/** Expose a registry-anchored Lua function as a dom::Function.
+
+    `ref` must be a reference obtained from
+    `luaL_ref(L, LUA_REGISTRYINDEX)` for a function value, where `L` is
+    `ctx`'s native state. The returned function invokes that Lua function,
+    marshalling its arguments and result as DOM values, so a Lua callable
+    can be held and called like any other @ref dom::Function.
+
+    The returned function takes ownership of the reference and keeps the
+    context alive: the Lua function is released (`luaL_unref`) when the
+    last copy of the returned function is destroyed. The anchor lives in
+    the registry, so no Lua global is introduced.
+
+    @param ctx The context whose registry holds the function.
+    @param ref The `luaL_ref` reference to the function.
+    @return A dom::Function that calls the anchored Lua function.
+*/
+[[nodiscard]] MRDOCS_DECL
+dom::Function
+makeCallable(Context ctx, int ref);
+
 } // lua
 } // mrdocs
 
