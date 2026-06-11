@@ -132,7 +132,7 @@
       {
         "name": "input",
         "brief": "Input directories to extract symbols from",
-        "details": "Input directories to extract. Only symbols defined in files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
+        "details": "Input directories to extract. Only symbols defined in files in these directories are extracted. The paths are relative to the mrdocs configuration file. Inclusion is generous about symlinks: a file counts as being inside an input directory when its path matches the directory either as written or by its real (symlink-resolved) location.",
         "type": "list<path>",
         "must-exist": false,
         "should-exist": true,
@@ -169,7 +169,7 @@
       {
         "name": "exclude",
         "brief": "Input directories to exclude",
-        "details": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`.",
+        "details": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`. Exclusion is strict about symlinks: it matches the file path only as written and does not resolve symlinks.",
         "type": "list<path>",
         "must-exist": false,
         "should-exist": true,

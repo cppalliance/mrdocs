@@ -114,7 +114,7 @@ forEachFile(
 
 //------------------------------------------------
 
-/** Filesystem helpers (join, temp, canonicalize) used throughout MrDocs.
+/** Filesystem helpers (join, temp, real-path resolution) used throughout MrDocs.
 
     The `files` namespace centralizes cross-platform path manipulation so CLI,
     generators, and tests can share the same normalization and staging logic.
@@ -340,6 +340,29 @@ MRDOCS_DECL
 bool
 isPosixStyle(std::string_view pathName);
 
+/** Return the real, symlink-resolved form of a path.
+
+    Resolves every symbolic link and `.`/`..` component in `pathName`
+    to the file's actual on-disk location and returns it in POSIX
+    style (forward slashes). The same file can be named by many paths
+    (through symlinks, `..`, or a directory that is itself a link);
+    this collapses all of those spellings to one real path, so two
+    paths that refer to the same file produce the same result.
+
+    If the path cannot be resolved, for example because it does not
+    exist on disk, is a virtual or in-memory file, or has not been
+    created yet, the input is returned unchanged apart from POSIX
+    normalization. Callers can therefore always fall back to comparing
+    the path as written, and this function never fails.
+
+    @param pathName The absolute or relative path to a directory or file.
+    @return The real POSIX path, or the POSIX-normalized input if it
+        cannot be resolved.
+*/
+MRDOCS_DECL
+std::string
+makeRealPath(std::string_view pathName);
+
 /** Return the filename with a new or different extension.
 
     @param fileName The absolute or relative path
@@ -493,22 +516,52 @@ Expected<void>
 createDirectory(
     std::string_view pathName);
 
-/** Checks if the given path starts with the specified prefix.
+/** Checks whether the given path lies within the specified prefix.
 
-    This function compares the beginning of the `pathName` with the `prefix`.
-    It returns true if `pathName` starts with `prefix`. The comparison is case-sensitive.
+    It returns true if `pathName` is `prefix` or lies underneath it. The
+    comparison walks whole path segments rather than characters, so `/abc`
+    contains `/abc/def` but not `/abcdef`. The comparison is case-sensitive.
 
     Unlike a direct string comparison, this function also accepts differences in the slashes used to separate paths.
     Therefore, it returns true even when the slashes used in `pathName` and `prefix` are not the same.
     The function accepts both forward slashes ("/") and backslashes ("\").
 
+    It does not resolve symbolic links; use @ref isResolvedSubpathOf when
+    symlink equivalence matters.
+
     @param pathName A string view representing the path to be checked.
     @param prefix A string view representing the prefix to be checked against the path.
-    @return A boolean value. Returns true if `pathName` starts with `prefix`, false otherwise.
+    @return A boolean value. Returns true if `pathName` lies within `prefix`, false otherwise.
 */
 MRDOCS_DECL
 bool
-startsWith(
+isSubpathOf(
+    std::string_view pathName,
+    std::string_view prefix);
+
+/** Checks whether the given path lies within the specified prefix, tolerating symlinks.
+
+    This behaves like @ref isSubpathOf, but also returns true when `pathName`
+    lies within `prefix` only after resolving symbolic links on both sides
+    (see @ref makeRealPath). It recognizes a file reached through a symlinked
+    directory while `prefix` refers to the real path, or vice versa.
+
+    Matching is generous: a lexical match alone is enough, and resolving
+    symlinks only ever adds matches, so anything @ref isSubpathOf accepts is
+    still accepted. This makes it suitable for inclusion decisions. Prefer
+    the strict @ref isSubpathOf for exclusion decisions, so that a symlinked
+    alias of an excluded file is not excluded.
+
+    The symlink resolution performs filesystem lookups, so it is reached only
+    when the lexical comparison fails; paths with no symlinks pay no extra cost.
+
+    @param pathName A string view representing the path to be checked.
+    @param prefix A string view representing the prefix to be checked against the path.
+    @return A boolean value. Returns true if `pathName` lies within `prefix` as written or after resolving symlinks, false otherwise.
+*/
+MRDOCS_DECL
+bool
+isResolvedSubpathOf(
     std::string_view pathName,
     std::string_view prefix);
 } // files

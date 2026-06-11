@@ -15,6 +15,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
+#include <algorithm>
 #include <fstream>
 
 
@@ -272,6 +273,60 @@ makePosixStyle(std::string_view pathName)
     return std::string(result);
 }
 
+std::string
+makeRealPath(std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+
+    if (pathName.empty())
+    {
+        return std::string(pathName);
+    }
+    SmallPathString resolved;
+    if (fs::real_path(pathName, resolved))
+    {
+        // The path does not exist or cannot be resolved (for example a
+        // virtual or in-memory file, or a path that has not been created
+        // yet). Leave it untouched apart from POSIX normalization so callers
+        // can always fall back to comparing the path as written.
+        return makePosixStyle(pathName);
+    }
+    return makePosixStyle(resolved.str());
+}
+
+bool
+isResolvedSubpathOf(
+    std::string_view pathName,
+    std::string_view prefix)
+{
+    namespace fs = llvm::sys::fs;
+
+    // Cheap path first: the literal spelling already matches.
+    if (isSubpathOf(pathName, prefix))
+    {
+        return true;
+    }
+    // Otherwise compare the real (symlink-resolved) locations, so a file
+    // reached through a symlinked directory still counts as being under
+    // `prefix`. Resolve into a stack buffer rather than allocating: on
+    // failure (a virtual or non-existent path) fall back to the path as
+    // written, which is what isSubpathOf already rejected, so the result
+    // stays correct. isSubpathOf is slash-insensitive, so the resolved
+    // paths need no POSIX normalization before comparing.
+    auto resolve = [](std::string_view p, SmallPathString& buf)
+        -> std::string_view
+    {
+        if (fs::real_path(p, buf))
+        {
+            buf.assign(p.begin(), p.end());
+        }
+        return std::string_view(buf.data(), buf.size());
+    };
+    SmallPathString pathBuf;
+    SmallPathString prefixBuf;
+    return isSubpathOf(resolve(pathName, pathBuf), resolve(prefix, prefixBuf));
+}
+
 bool
 isPosixStyle(std::string_view pathName)
 {
@@ -456,26 +511,33 @@ createDirectory(
 }
 
 bool
-startsWith(
+isSubpathOf(
     std::string_view pathName,
     std::string_view prefix)
 {
-    auto itPath = pathName.begin();
-    auto itPrefix = prefix.begin();
-    while (itPath != pathName.end() && itPrefix != prefix.end()) {
-        if (*itPath != *itPrefix) {
-            char pathChar = (*itPath == '\\') ? '/' : *itPath;
-            char prefixChar = (*itPrefix == '\\') ? '/' : *itPrefix;
-            if (pathChar != prefixChar)
-            {
-                return false;
-            }
-        }
-        ++itPath;
-        ++itPrefix;
+    // Find the first position where the two paths diverge, treating a forward
+    // slash and a backslash as the same separator.
+    auto const [itPath, itPrefix] = std::ranges::mismatch(
+        pathName, prefix,
+        [](char const a, char const b)
+        {
+            return (a == '\\' ? '/' : a) == (b == '\\' ? '/' : b);
+        });
+    if (itPrefix != prefix.end())
+    {
+        // `prefix` couldn't be fully matched
+        return false;
     }
-    // Have we consumed the whole prefix?
-    return itPrefix == prefix.end() && (itPath == pathName.end() || *itPath == '/' || *itPath == '\\');
+    // the path matched completely
+    if (itPath == pathName.end())
+    {
+        return true;
+    }
+    // The path has extra characters after the prefix and it still
+    // counts as a subpath, but only if the next character is a separator.
+    // That is so that, for example, `/abc` is a subpath of `/abc` but
+    // `/abcdef` is not.
+    return *itPath == '/' || *itPath == '\\';
 }
 
 } // files
