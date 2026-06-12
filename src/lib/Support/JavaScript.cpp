@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -462,6 +463,15 @@ struct Context::Impl {
     // Flag set while cleanup/jerry_cleanup is running to suppress deleters.
     bool cleaning_up = false;
 
+    // Number of live `js::Context` instances (the original plus any copies)
+    // sharing this interpreter. The interpreter is torn down when this
+    // reaches zero. JS function values converted to a `dom::Function` only
+    // weakly reference the interpreter, so keeping one runnable past its
+    // originating `Context` means holding a `Context` copy elsewhere (the
+    // corpus does this for a registered generator). Atomic because the last
+    // reference may be released from any thread.
+    std::atomic<int> context_refs{0};
+
     // Serialize access to this JerryScript context (single-threaded engine).
     mutable std::recursive_mutex mtx;
 
@@ -675,15 +685,34 @@ lockContext(std::shared_ptr<Context::Impl> const& impl)
     return ContextActivation(impl);
 }
 
-Context::Context() : impl_(std::make_shared<Impl>()) {}
+Context::Context() : impl_(std::make_shared<Impl>())
+{
+    impl_->context_refs.store(1, std::memory_order_relaxed);
+}
 
-Context::Context(Context const& other) noexcept = default;
+Context::Context(Context const& other) noexcept
+    : impl_(other.impl_)
+{
+    if (impl_)
+    {
+        impl_->context_refs.fetch_add(1, std::memory_order_relaxed);
+    }
+}
 
 Context::~Context()
 {
-    // Clean up the JerryScript context before releasing impl_.
-    // DomValueHolder objects keep shared_ptr<Impl>, so cleanup breaks that cycle.
-    if (impl_)
+    // Tear the interpreter down once the last `Context` referencing it goes
+    // away (`context_refs` counts live `Context` instances and their copies).
+    // A `dom::Function` obtained from a JS value holds only a weak reference,
+    // so it never keeps the interpreter alive on its own; code that needs such
+    // a function to outlive this `Context` (a corpus that stores a
+    // `register_generator` function) keeps a `Context` copy alive instead. The
+    // `DomValueHolder` / `FunctionHolder` objects keep a `shared_ptr<Impl>`, so
+    // the interpreter owns them through a cycle; `cleanup()` breaks that cycle
+    // by tearing down the holders, which is why teardown is explicit here
+    // rather than left to `~Impl`.
+    if (impl_ &&
+        impl_->context_refs.fetch_sub(1, std::memory_order_acq_rel) == 1)
     {
         impl_->cleanup();
     }
@@ -2085,9 +2114,21 @@ toDomValue(jerry_value_t v, std::shared_ptr<Context::Impl> const& impl)
             delete h;
         });
 
+        // The function value does not own the interpreter: it captures a weak
+        // reference and locks it on each call. Code that needs the function to
+        // outlive the `Context` that produced it (a corpus that stores a
+        // `register_generator` function) keeps a `js::Context` alive
+        // separately; if nothing does, a later call reports an error rather
+        // than using a freed interpreter.
         return dom::makeVariadicInvocable(
-            [fnHandle,
-             impl](dom::Array const& args) -> Expected<dom::Value, Error> {
+            [fnHandle, weak_impl = std::weak_ptr<Context::Impl>(impl)](
+                dom::Array const& args) -> Expected<dom::Value, Error> {
+            std::shared_ptr<Context::Impl> impl = weak_impl.lock();
+            if (!impl || !impl->alive || !impl->jerry_ctx)
+            {
+                return Unexpected(Error(
+                    "JavaScript interpreter is no longer available"));
+            }
             auto lock = lockContext(impl);
             std::vector<jerry_value_t> jsArgs;
             jsArgs.reserve(args.size());
