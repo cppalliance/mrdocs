@@ -33,10 +33,6 @@ namespace mrdocs::hbs {
        (the built-in `common/` is the canonical example) don't declare
        a manifest and are skipped.
 
-    3. Its manifest does not name a `script`. A manifest with a `script`
-       key declares a script-driven generator, which is installed by
-       `discoverScriptGenerators` instead, so it is skipped here.
-
     For each accepted directory, a `HandlebarsGenerator` is constructed
     with id, file extension, and display name all set to `<name>`, and
     installed into the global registry. Escape rules are read from

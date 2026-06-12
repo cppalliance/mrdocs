@@ -9,32 +9,26 @@
 //
 
 #include "ScriptGenerator.hpp"
-#include "ScriptRunner.hpp"
 #include "OutputSink.hpp"
-#include <lib/Gen/GeneratorManifest.hpp>
-#include <lib/Gen/hbs/AddonPaths.hpp>
+
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
-#include <mrdocs/Support/Path.hpp>
-#include <memory>
-#include <string>
-#include <string_view>
+
 #include <utility>
-#include <vector>
 
 namespace mrdocs::script {
 
 namespace {
 
-// Build the read-only corpus DOM a `generate(corpus, output)` entry
-// point receives. This mirrors what an extension script sees: a
-// `symbols` array of lazy per-symbol objects, each tagged with its flat
-// `_id` so a script can form stable per-symbol URLs.
+// Build the read-only corpus the generator's `ctx.corpus` exposes: a
+// `symbols` array of the same per-symbol objects the templates see, each
+// tagged with its flat `_id` so a generator can form stable per-symbol
+// URLs.
 dom::Value
-buildScriptCorpus(Corpus const& corpus, DomCorpus const& domCorpus)
+buildGeneratorCorpus(Corpus const& corpus, DomCorpus const& domCorpus)
 {
     dom::Array symbols;
     for (Symbol const& sym : corpus)
@@ -48,100 +42,76 @@ buildScriptCorpus(Corpus const& corpus, DomCorpus const& domCorpus)
     return dom::Value(std::move(corpusObj));
 }
 
+// Build the `ctx.output` object and its `write(path, contents)` method.
+// The method is a DOM invocable that routes to the sink; the same value
+// is callable from both Lua and JavaScript, so one output API serves
+// either language. The sink outlives the call (a local in
+// `runScriptGenerator`), so capturing it by pointer is safe.
+dom::Value
+buildOutputApi(OutputSink& sink)
+{
+    OutputSink* sinkPtr = &sink;
+    dom::Object api;
+    api.set("write", dom::Value(dom::makeVariadicInvocable(
+        [sinkPtr](dom::Array const& args) -> Expected<dom::Value, Error>
+        {
+            Expected<dom::Value, Error> result;
+            if (args.size() < 2 ||
+                !args.get(0).isString() ||
+                !args.get(1).isString())
+            {
+                result = Unexpected(Error(
+                    "output.write: expected (string path, string contents)"));
+            }
+            else if (Expected<void> wrote = sinkPtr->write(
+                         args.get(0).getString().get(),
+                         args.get(1).getString().get());
+                     !wrote)
+            {
+                result = Unexpected(wrote.error());
+            }
+            else
+            {
+                result = dom::Value();
+            }
+            return result;
+        })));
+    return dom::Value(std::move(api));
+}
+
+// Assemble the single `ctx` object the generator receives.
+dom::Value
+buildGeneratorContext(
+    Corpus const& corpus, DomCorpus const& domCorpus, OutputSink& sink)
+{
+    dom::Object ctx;
+    ctx.set("corpus", buildGeneratorCorpus(corpus, domCorpus));
+    ctx.set("output", buildOutputApi(sink));
+    ctx.set("config", dom::Value(corpus.config.object()));
+    return dom::Value(std::move(ctx));
+}
+
 } // (anon)
 
-ScriptGenerator::
-ScriptGenerator(std::string id, std::string scriptPath, dom::Object params)
-    : id_(std::move(id))
-    , scriptPath_(std::move(scriptPath))
-    , params_(std::move(params))
-{
-}
-
-std::string_view
-ScriptGenerator::
-id() const noexcept
-{
-    return id_;
-}
-
-std::string_view
-ScriptGenerator::
-displayName() const noexcept
-{
-    return id_;
-}
-
-std::string_view
-ScriptGenerator::
-fileExtension() const noexcept
-{
-    // A script-driven generator names its own output files, so there's
-    // no single extension. Report the id for diagnostics.
-    return id_;
-}
-
 Expected<void>
-ScriptGenerator::
-build(std::string_view outputPath, Corpus const& corpus) const
+runScriptGenerator(
+    dom::Function const& generate,
+    std::string_view id,
+    Corpus const& corpus,
+    std::string_view outputPath)
 {
     OutputSink sink(outputPath);
     DomCorpus domCorpus(corpus);
-    dom::Value corpusValue = buildScriptCorpus(corpus, domCorpus);
-    dom::Value const config(corpus.config.object());
-    dom::Value const params(params_);
+    dom::Value ctx = buildGeneratorContext(corpus, domCorpus, sink);
+
+    Expected<dom::Value> invoked = generate.try_invoke(ctx);
     Expected<void> result;
-    if (scriptPath_.ends_with(".lua"))
-    {
-        result = runLuaGenerator(
-            corpusValue, scriptPath_, sink, config, params);
-    }
-    else if (scriptPath_.ends_with(".js"))
-    {
-        result = runJsGenerator(
-            corpusValue, scriptPath_, sink, config, params);
-    }
-    else
+    if (!invoked)
     {
         result = Unexpected(formatError(
-            "generator '{}': script '{}' must be a .lua or .js file",
-            id_, scriptPath_));
+            "generator '{}': {}", id, invoked.error().message()));
     }
     return result;
-}
-
-Expected<void>
-ScriptGenerator::
-buildOne(std::ostream&, Corpus const&) const
-{
-    return Unexpected(formatError(
-        "generator '{}' is script-driven and does not support "
-        "single-page output", id_));
-}
-
-Expected<void>
-discoverScriptGenerators(Config::Settings const& settings)
-{
-    MRDOCS_TRY(
-        std::vector<DiscoveredManifest> found,
-        discoverGeneratorManifests(hbs::addon_paths::addonRoots(settings)));
-    for (DiscoveredManifest const& d : found)
-    {
-        // Only manifests that name a `script` are script-driven
-        // generators; the data-driven pass installs the rest.
-        // First-writer-wins, exactly as the data-driven pass: a
-        // duplicate id is a silent skip, and we never pass a `null`.
-        if (d.manifest.script)
-        {
-            std::string const name(files::getFileName(d.dir));
-            std::string scriptPath =
-                files::appendPath(d.dir, *d.manifest.script);
-            (void)installGenerator(
-                std::make_unique<ScriptGenerator>(
-                    name, std::move(scriptPath), d.manifest.params));
-        }
-    }
-    return {};
 }
 
 } // mrdocs::script

@@ -20,19 +20,24 @@
 #include <mrdocs/Support/Report.hpp>
 
 #include <cstddef>
+#include <memory>
 #include <string>
 
 namespace mrdocs {
 
 namespace {
 
-// Bind `register_transform` as the script-facing entry point before the
-// script runs. A JavaScript function bridges to a `dom::Function`, so
-// each registered callable is captured as a DOM value in `transforms`,
-// in registration order. The collector outlives every invocation because
-// the script (which does the registering) runs while it is in scope.
+// Bind the `register_transform` and `register_generator` entry points
+// before the script runs. A JavaScript function bridges to a
+// `dom::Function`: transforms are captured in `transforms` (invoked once
+// the script has run), generators are handed to the corpus, which keeps
+// them runnable past this VM's lifetime.
 void
-registerJsExtensionApi(js::Scope& scope, dom::Array& transforms)
+registerJsExtensionApi(
+    js::Scope& scope,
+    CorpusImpl& corpus,
+    dom::Array& transforms,
+    std::size_t& generators)
 {
     scope.setGlobal(
         "register_transform",
@@ -52,17 +57,41 @@ registerJsExtensionApi(js::Scope& scope, dom::Array& transforms)
                 }
                 return result;
             })));
+
+    scope.setGlobal(
+        "register_generator",
+        dom::Value(dom::makeVariadicInvocable(
+            [&corpus, &generators](dom::Array const& args)
+                -> Expected<dom::Value, Error>
+            {
+                Expected<dom::Value, Error> result;
+                if (args.size() < 2 ||
+                    !args.get(0).isString() ||
+                    !args.get(1).isFunction())
+                {
+                    result = Unexpected(Error(
+                        "register_generator: expected (string id, function)"));
+                }
+                else
+                {
+                    corpus.registerScriptGenerator(
+                        std::string(args.get(0).getString().get()),
+                        args.get(1).getFunction());
+                    ++generators;
+                }
+                return result;
+            })));
 }
 
-// Invoke one registered transform with the corpus, tagging any failure
-// with the script path for context.
+// Invoke one registered transform with the `ctx` object, tagging any
+// failure with the script path for context.
 Expected<void>
 invokeTransform(
     dom::Value const& transform,
-    dom::Value const& corpus,
+    dom::Value const& ctx,
     std::string const& scriptPath)
 {
-    Expected<dom::Value> invoked = transform.getFunction().try_invoke(corpus);
+    Expected<dom::Value> invoked = transform.getFunction().try_invoke(ctx);
     Expected<void> result;
     if (!invoked.has_value())
     {
@@ -84,13 +113,17 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
     js::registerStdGlobals(scope);
 
     dom::Array transforms;
-    registerJsExtensionApi(scope, transforms);
+    // Generators are owned by the corpus, not held here, so this counts
+    // them only to tell whether the script registered anything at all.
+    std::size_t generators = 0;
+    registerJsExtensionApi(scope, corpus, transforms, generators);
 
-    // The corpus argument is a small navigable object: an array of
-    // per-symbol proxies plus `get(id)` / `lookup(name)` functions.
-    // Everything else a script does runs through that proxy: direct
-    // reads via reflection, direct writes that mutate the live Symbol.
-    dom::Value corpusValue = buildCorpusDom(corpus);
+    // Each transform receives one `ctx` object: `ctx.corpus` is the
+    // navigable corpus (an array of per-symbol proxies plus
+    // `get(id)` / `lookup(name)`), `ctx.config` the generation config.
+    // Everything a script does runs through that proxy: direct reads via
+    // reflection, direct writes that mutate the live Symbol.
+    dom::Value ctxValue = buildTransformContext(corpus);
 
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
 
@@ -102,11 +135,12 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
             "extension '{}': {}",
             scriptPath, result.error().message()));
     }
-    else if (transforms.empty())
+    else if (transforms.empty() && generators == 0)
     {
         // A discovered script that registers nothing is almost always a
-        // mistake (a misspelled `register_transform`, or a guard that
-        // skipped it), so flag it rather than silently doing nothing.
+        // mistake (a misspelled `register_transform` / `register_generator`,
+        // or a guard that skipped it), so flag it rather than silently
+        // doing nothing.
         report::warn("extension '{}' registered nothing", scriptPath);
     }
 
@@ -117,8 +151,17 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
         if (result.has_value())
         {
             result = invokeTransform(
-                transforms.get(i), corpusValue, scriptPath);
+                transforms.get(i), ctxValue, scriptPath);
         }
+    }
+
+    // A generator registered above holds only a weak reference to this
+    // VM, so hand the corpus a strong reference. That keeps the VM, and
+    // therefore the generator, alive past this run until the corpus is
+    // destroyed.
+    if (generators > 0)
+    {
+        corpus.keepScriptVmAlive(std::make_shared<js::Context>(ctx));
     }
     return result;
 }

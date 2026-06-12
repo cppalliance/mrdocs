@@ -15,8 +15,7 @@ namespace mrdocs {
 
 class CorpusImpl;
 
-/** Build the `corpus` argument passed to each registered corpus
-    transform.
+/** Build the `ctx.corpus` object seen by extension scripts.
 
     The returned value is a small object:
 
@@ -32,6 +31,18 @@ class CorpusImpl;
 */
 dom::Value
 buildCorpusDom(CorpusImpl& corpus);
+
+/** Build the `ctx` argument passed to each registered corpus transform.
+
+    A transform receives one object so new capabilities can be added
+    without changing its signature:
+
+    - `ctx.corpus` -- the navigable corpus (see @ref buildCorpusDom) the
+      transform reads and mutates in place.
+    - `ctx.config` -- the generation configuration.
+*/
+dom::Value
+buildTransformContext(CorpusImpl& corpus);
 
 } // mrdocs
 

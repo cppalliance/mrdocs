@@ -15,12 +15,12 @@ function partnerName(name) {
     return partner;
 }
 
-register_transform(function(corpus) {
-    for (var i = 0; i < corpus.symbols.length; ++i) {
-        var s = corpus.symbols[i];
+register_transform(function(ctx) {
+    for (var i = 0; i < ctx.corpus.symbols.length; ++i) {
+        var s = ctx.corpus.symbols[i];
         if (s.kind === "function") {
             var pname = partnerName(s.name);
-            var partner = pname ? corpus.lookup(pname) : null;
+            var partner = pname ? ctx.corpus.lookup(pname) : null;
             if (partner) {
                 s.doc = {
                     sees: [{

@@ -7,9 +7,9 @@
 // sentence on every declaration. Anything an author already wrote is
 // preserved: only missing fields are filled in.
 
-register_transform(function(corpus) {
-    for (var i = 0; i < corpus.symbols.length; ++i) {
-        var sym = corpus.symbols[i];
+register_transform(function(ctx) {
+    for (var i = 0; i < ctx.corpus.symbols.length; ++i) {
+        var sym = ctx.corpus.symbols[i];
         if (sym.kind === "function" && sym.name.indexOf("is_") === 0) {
             if (!sym.doc) { sym.doc = {}; }
 

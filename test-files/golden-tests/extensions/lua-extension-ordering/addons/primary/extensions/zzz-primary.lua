@@ -5,8 +5,8 @@
 -- so this script runs FIRST; its rename is overwritten by the
 -- supplemental's.
 
-register_transform(function(corpus)
-    for _, sym in ipairs(corpus.symbols) do
+register_transform(function(ctx)
+    for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" then
             sym.name = "from_primary"
         end

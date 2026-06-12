@@ -15,12 +15,12 @@ local function partnerName(name)
     return partner
 end
 
-register_transform(function(corpus)
-    for _, s in ipairs(corpus.symbols) do
+register_transform(function(ctx)
+    for _, s in ipairs(ctx.corpus.symbols) do
         if s.kind == "function" then
             local pname = partnerName(s.name)
             if pname then
-                local partner = corpus.lookup(pname)
+                local partner = ctx.corpus.lookup(pname)
                 if partner then
                     s.doc = {
                         sees = {

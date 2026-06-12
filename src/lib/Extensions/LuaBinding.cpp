@@ -18,6 +18,7 @@
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 
+#include <cstddef>
 #include <string>
 #include <utility>
 #include <vector>
@@ -31,16 +32,20 @@ namespace mrdocs {
 
 namespace {
 
-// Collects the corpus transforms an extension declares through
-// `register_transform`. Each registered Lua function is anchored in the
-// Lua registry (never a global) and exposed as a `dom::Function` over the
-// live corpus, so both scripting languages funnel through one call path.
-// The collector rides as the `register_transform` closure's single
-// upvalue.
+// Backing state for an extension's `register_*` calls. Transforms are
+// collected here and invoked once the chunk has run; generators are handed
+// straight to the corpus, which owns them past this VM's lifetime. Each
+// registered Lua function is anchored in the Lua registry (never a global)
+// and exposed as a `dom::Function`. This struct rides as the
+// `register_transform` / `register_generator` closures' single upvalue.
 struct LuaRegistrations
 {
     lua::Context* ctx = nullptr;
+    CorpusImpl* corpus = nullptr;
     std::vector<dom::Function> transforms;
+    // Generators are owned by the corpus, not held here, so this counts
+    // them only to tell whether the script registered anything at all.
+    std::size_t generators = 0;
 };
 
 // `register_transform(fn)`: anchor `fn` in the registry and record it as
@@ -65,28 +70,61 @@ luaRegisterTransform(lua_State* L)
     return result;
 }
 
-// Bind `register_transform` as the script-facing entry point before the
-// chunk runs, the same way a script generator's `output` object is bound.
-// The collector pointer is carried as the closure's single upvalue.
+// `register_generator(id, fn)`: anchor `fn` in the registry and hand it to
+// the corpus under `id`. The corpus keeps it runnable until a generator is
+// selected and run, long after this chunk's stack has unwound.
+int
+luaRegisterGenerator(lua_State* L)
+{
+    LuaRegistrations* regs = static_cast<LuaRegistrations*>(
+        lua_touserdata(L, lua_upvalueindex(1)));
+    int result = 0;
+    if (lua_type(L, 1) != LUA_TSTRING || lua_type(L, 2) != LUA_TFUNCTION)
+    {
+        result = luaL_error(L,
+            "register_generator: expected (string id, function)");
+    }
+    else
+    {
+        std::size_t len = 0;
+        char const* data = lua_tolstring(L, 1, &len);
+        std::string id(data, len);
+        lua_pushvalue(L, 2);
+        int const ref = luaL_ref(L, LUA_REGISTRYINDEX);
+        regs->corpus->registerScriptGenerator(
+            std::move(id), lua::makeCallable(*regs->ctx, ref));
+        ++regs->generators;
+    }
+    return result;
+}
+
+// Bind the `register_transform` and `register_generator` entry points
+// before the chunk runs. The shared registrations pointer is carried as
+// each closure's single upvalue.
 void
-registerLuaExtensionApi(lua::Context& ctx, LuaRegistrations& regs)
+registerLuaExtensionApi(
+    lua::Context& ctx, CorpusImpl& corpus, LuaRegistrations& regs)
 {
     regs.ctx = &ctx;
+    regs.corpus = &corpus;
     lua_State* L = static_cast<lua_State*>(ctx.nativeState());
     lua_pushlightuserdata(L, &regs);
     lua_pushcclosure(L, &luaRegisterTransform, 1);
     lua_setglobal(L, "register_transform");
+    lua_pushlightuserdata(L, &regs);
+    lua_pushcclosure(L, &luaRegisterGenerator, 1);
+    lua_setglobal(L, "register_generator");
 }
 
-// Invoke one registered transform with the corpus, tagging any failure
-// with the script path for context.
+// Invoke one registered transform with the `ctx` object, tagging any
+// failure with the script path for context.
 Expected<void>
 invokeTransform(
     dom::Function const& transform,
-    dom::Value const& corpus,
+    dom::Value const& ctx,
     std::string const& scriptPath)
 {
-    Expected<dom::Value> invoked = transform.try_invoke(corpus);
+    Expected<dom::Value> invoked = transform.try_invoke(ctx);
     Expected<void> result;
     if (!invoked.has_value())
     {
@@ -104,16 +142,17 @@ runOneLuaExtension(CorpusImpl& corpus, std::string const& scriptPath)
 {
     lua::Context ctx;
     LuaRegistrations regs;
-    registerLuaExtensionApi(ctx, regs);
+    registerLuaExtensionApi(ctx, corpus, regs);
 
     lua::Scope scope(ctx);
 
-    // The corpus argument is a small navigable object: an array of
-    // per-symbol proxies plus `get(id)` / `lookup(name)` functions.
+    // Each transform receives one `ctx` object: `ctx.corpus` is the
+    // navigable corpus (an array of per-symbol proxies plus
+    // `get(id)` / `lookup(name)`), `ctx.config` the generation config.
     // Reads run through reflection on the live C++ Symbol; writes
-    // (`sym.name = "..."`) mutate that Symbol directly through the
-    // `__newindex` metamethod's `dom::Object::set` path.
-    dom::Value corpusValue = buildCorpusDom(corpus);
+    // (`ctx.corpus.symbols[i].name = "..."`) mutate that Symbol directly
+    // through the `__newindex` metamethod's `dom::Object::set` path.
+    dom::Value ctxValue = buildTransformContext(corpus);
 
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
     MRDOCS_TRY(lua::Function chunk, scope.loadChunk(script, scriptPath));
@@ -123,9 +162,10 @@ runOneLuaExtension(CorpusImpl& corpus, std::string const& scriptPath)
     MRDOCS_TRY(chunk.call());
 
     // A discovered script that registers nothing is almost always a
-    // mistake (a misspelled `register_transform`, or a guard that skipped
-    // it), so flag it rather than silently doing nothing.
-    if (regs.transforms.empty())
+    // mistake (a misspelled `register_transform` / `register_generator`,
+    // or a guard that skipped it), so flag it rather than silently doing
+    // nothing.
+    if (regs.transforms.empty() && regs.generators == 0)
     {
         report::warn("extension '{}' registered nothing", scriptPath);
     }
@@ -137,7 +177,7 @@ runOneLuaExtension(CorpusImpl& corpus, std::string const& scriptPath)
     {
         if (result.has_value())
         {
-            result = invokeTransform(transform, corpusValue, scriptPath);
+            result = invokeTransform(transform, ctxValue, scriptPath);
         }
     }
     return result;

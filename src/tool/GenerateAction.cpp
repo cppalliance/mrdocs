@@ -55,31 +55,18 @@ DoGenerateAction(
     //
     // --------------------------------------------------------------
     // Each <addon>/generator/<name>/ directory that ships a
-    // mrdocs-generator.yml is registered as an additional generator
-    // before the user-requested generator is looked up below. A manifest
-    // that declares `escape` rules is a data-driven Handlebars generator;
-    // a manifest that names a `script` is a script-driven generator.
+    // mrdocs-generator.yml with `escape` rules is registered as a
+    // data-driven Handlebars generator, ready alongside the built-ins
+    // when the requested generator is selected after extraction. A
+    // script-defined generator is declared differently: an extension
+    // registers it on the corpus while it is built, so it is resolved
+    // from the corpus rather than here.
     MRDOCS_TRY(hbs::discoverDataDrivenGenerators(config->settings()));
-    MRDOCS_TRY(script::discoverScriptGenerators(config->settings()));
 
-    // --------------------------------------------------------------
-    //
-    // Load generator
-    //
-    // --------------------------------------------------------------
-    auto& settings = config->settings();
-    std::vector<Generator const*> generators;
-    for (auto const& genId : settings.generator.values)
-    {
-        MRDOCS_TRY(
-            Generator const& generator,
-            findGenerator(genId),
-            formatError(
-                "the Generator \"{}\" was not found",
-                genId));
-        generators.push_back(&generator);
-    }
-    MRDOCS_CHECK(!generators.empty(), "No generator was specified");
+    Config::Settings const& settings = config->settings();
+    MRDOCS_CHECK(settings.output, "The output path argument is missing");
+    MRDOCS_CHECK(
+        !settings.generator.values.empty(), "No generator was specified");
 
     // --------------------------------------------------------------
     //
@@ -117,19 +104,43 @@ DoGenerateAction(
     // Generate docs
     //
     // --------------------------------------------------------------
-    // Normalize outputPath path
-    MRDOCS_CHECK(settings.output, "The output path argument is missing");
     report::info("Generating docs");
-    // Each generator resolves its own output from the configuration and
-    // writes whatever files it needs; GenerateAction just runs each one.
-    for (Generator const* generator : generators)
+    // Each configured generator shares the same output directory;
+    // GenerateAction does not route per-generator output, so each one
+    // resolves its own (single vs multipage, file vs directory) against
+    // it. For a given id a generator an extension registered on the
+    // corpus with register_generator wins over a built-in or data-driven
+    // one: it owns the whole emit through the script runner, while a
+    // registry generator renders the corpus page by page.
+    CorpusImpl const& corpusImpl = static_cast<CorpusImpl const&>(*corpus);
+    for (std::string const& genId : settings.generator.values)
     {
         using clock_type = std::chrono::steady_clock;
         auto const start_time = clock_type::now();
-        MRDOCS_TRY(generator->build(*corpus));
+        dom::Function const* scriptGenerator =
+            corpusImpl.findScriptGenerator(genId);
+        if (scriptGenerator != nullptr)
+        {
+            std::string const outputDir = files::normalizePath(
+                files::makeAbsolute(
+                    corpus->config->output,
+                    corpus->config->configDir()));
+            MRDOCS_TRY(script::runScriptGenerator(
+                *scriptGenerator, genId, *corpus, outputDir));
+        }
+        else
+        {
+            MRDOCS_TRY(
+                Generator const& generator,
+                findGenerator(genId),
+                formatError(
+                    "the Generator \"{}\" was not found",
+                    genId));
+            MRDOCS_TRY(generator.build(*corpus));
+        }
         report::info(
             "Generated {} documentation in {}",
-            generator->displayName(),
+            genId,
             format_duration(clock_type::now() - start_time));
     }
 

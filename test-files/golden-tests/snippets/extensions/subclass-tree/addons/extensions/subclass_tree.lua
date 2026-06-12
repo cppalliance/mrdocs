@@ -1,10 +1,10 @@
 -- Print the inheritance subtree rooted at a named class.
 --
--- `corpus.lookup(name)` resolves the entry point once. From there the
+-- `ctx.corpus.lookup(name)` resolves the entry point once. From there the
 -- only way down the tree is by id: each record carries a `derived`
--- list of base16 ids, and `corpus.get(id)` turns each id back into a
+-- list of base16 ids, and `ctx.corpus.get(id)` turns each id back into a
 -- live symbol proxy. The recursion walks the graph that single-pass
--- iteration over `corpus.symbols` cannot reconstruct.
+-- iteration over `ctx.corpus.symbols` cannot reconstruct.
 
 local function listSubclasses(corpus, sym, indent)
     for _, id in ipairs(sym.derived) do
@@ -16,10 +16,10 @@ local function listSubclasses(corpus, sym, indent)
     end
 end
 
-register_transform(function(corpus)
-    local base = corpus.lookup("Shape")
+register_transform(function(ctx)
+    local base = ctx.corpus.lookup("Shape")
     if base then
         print(base.name)
-        listSubclasses(corpus, base, "  ")
+        listSubclasses(ctx.corpus, base, "  ")
     end
 end)

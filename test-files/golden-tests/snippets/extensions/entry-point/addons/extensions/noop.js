@@ -1,3 +1,3 @@
-register_transform(function(corpus) {
-    // walk corpus.symbols, assign to the fields you want to change
+register_transform(function(ctx) {
+    // walk ctx.corpus.symbols, assign to the fields you want to change
 });

@@ -483,6 +483,7 @@ if (MRDOCS_BUILD_TESTS)
             "${PROJECT_BINARY_DIR}/src"
             )
     target_link_libraries(mrdocs-test PUBLIC mrdocs-core)
+    target_link_libraries(mrdocs-test PRIVATE Lua::lua)
     if (MRDOCS_CLANG)
         target_compile_options(mrdocs-test PRIVATE -Wno-covered-switch-default)
     endif ()
