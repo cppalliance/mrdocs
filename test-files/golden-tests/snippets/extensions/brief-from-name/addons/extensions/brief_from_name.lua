@@ -7,8 +7,8 @@
 -- sentence on every declaration. Anything an author already wrote is
 -- preserved: only missing fields are filled in.
 
-register_transform(function(corpus)
-    for _, sym in ipairs(corpus.symbols) do
+register_transform(function(ctx)
+    for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function"
            and sym.name:sub(1, 3) == "is_" then
             if not sym.doc then sym.doc = {} end

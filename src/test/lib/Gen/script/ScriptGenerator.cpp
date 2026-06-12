@@ -8,47 +8,32 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Gen/GeneratorManifest.hpp>
 #include <lib/Gen/script/OutputSink.hpp>
 #include <lib/Gen/script/ScriptGenerator.hpp>
-#include <lib/Gen/script/ScriptRunner.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Generator.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
+#include <mrdocs/Support/Lua.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <test_suite/test_suite.hpp>
-#include <fstream>
 #include <string>
 #include <string_view>
-#include <utility>
+
+extern "C" {
+#include <lua.h>
+#include <lauxlib.h>
+}
 
 namespace mrdocs::script {
 
 namespace {
 
-// Write `content` verbatim to `path`. Pre-existing files are truncated.
-void
-writeFile(std::string_view path, std::string_view content)
-{
-    std::ofstream os(std::string{path}, std::ios::binary | std::ios::trunc);
-    os.write(content.data(),
-             static_cast<std::streamsize>(content.size()));
-}
-
-// The `config` and `params` arguments a generator receives. Tests that
-// exercise only the `corpus` and `output` path pass empty objects.
-dom::Value
-emptyObject()
-{
-    return dom::Value(dom::Object());
-}
-
-// A minimal `Config` whose `object()` returns a canned DOM object. It
-// lets a `build()`-level test assert what `generate` sees as `config`
-// without creating a real `ConfigImpl`.
+// A minimal `Config` whose `object()` returns a canned DOM object, so a
+// test can assert what a generator sees as `ctx.config` without building
+// a real `ConfigImpl`.
 struct StubConfig
     : Config
 {
@@ -73,9 +58,9 @@ struct StubConfig
     }
 };
 
-// An empty corpus: `build()` iterates no symbols, so it never reflects
-// a real `Symbol`; it carries only the `Config` that `build()` reads
-// `config` from.
+// An empty corpus: the runner iterates no symbols, so `ctx.corpus.symbols`
+// is an empty array. It carries only the `Config` the runner reads
+// `ctx.config` from.
 struct StubCorpus
     : Corpus
 {
@@ -125,51 +110,51 @@ struct StubCorpus
     }
 };
 
-// A two-symbol corpus shaped like what `generate(corpus, output)` sees:
-// a `symbols` array whose entries carry a `name` and a flat `_id`.
-dom::Value
-makeCorpus()
+// Load `src`, which must define a global `generate(ctx)`, and return it as
+// a callable `dom::Function`. The function is self-owning: it anchors the
+// chunk in the Lua registry and carries a copy of the context, so it
+// outlives the local VM here exactly as a `register_generator` function
+// outlives the extension that declared it.
+dom::Function
+makeLuaGenerator(std::string_view src)
 {
-    dom::Object foo;
-    foo.set("name", std::string("foo"));
-    foo.set("_id", std::string("0001"));
-    dom::Object bar;
-    bar.set("name", std::string("bar"));
-    bar.set("_id", std::string("0002"));
-    dom::Array symbols;
-    symbols.emplace_back(dom::Value(std::move(foo)));
-    symbols.emplace_back(dom::Value(std::move(bar)));
-    dom::Object corpus;
-    corpus.set("symbols", std::move(symbols));
-    return dom::Value(std::move(corpus));
+    lua::Context ctx;
+    lua::Scope scope(ctx);
+    Expected<lua::Function> chunk =
+        scope.loadChunk(std::string(src), "generator.lua");
+    BOOST_TEST(chunk.has_value());
+    if (chunk)
+    {
+        BOOST_TEST(chunk->call().has_value());
+    }
+    lua_State* L = static_cast<lua_State*>(ctx.nativeState());
+    lua_getglobal(L, "generate");
+    int const ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    return lua::makeCallable(ctx, ref);
 }
 
-// A Lua generator that emits one aggregated artifact across all symbols,
-// the canonical thing a per-page generator cannot produce.
-constexpr std::string_view luaIndex = R"LUA(
-function generate(corpus, output)
-  local parts = {}
-  for _, sym in ipairs(corpus.symbols) do
-    parts[#parts + 1] = '{"name":"' .. sym.name .. '","id":"' .. sym._id .. '"}'
-  end
-  output.write("search-index.json", "[" .. table.concat(parts, ",") .. "]")
-end
-)LUA";
+// The JavaScript counterpart of `makeLuaGenerator`. A JS function holds only
+// a weak reference to its interpreter, so - exactly as a corpus does for a
+// `register_generator` function - the caller must keep the VM alive for as
+// long as it intends to call the generator. `JsGenerator::keepAlive` does
+// that; dropping it tears the interpreter down. (A Lua callable instead
+// carries its own VM, so `makeLuaGenerator` needs no such companion.)
+struct JsGenerator
+{
+    dom::Function generate;
+    js::Context keepAlive;
+};
 
-// The same generator in JavaScript, using the global-function shape.
-constexpr std::string_view jsIndex = R"JS(
-function generate(corpus, output) {
-  var parts = [];
-  for (var i = 0; i < corpus.symbols.length; i++) {
-    var s = corpus.symbols[i];
-    parts.push('{"name":"' + s.name + '","id":"' + s._id + '"}');
-  }
-  output.write("search-index.json", "[" + parts.join(",") + "]");
+JsGenerator
+makeJsGenerator(std::string_view src)
+{
+    js::Context ctx;
+    js::Scope scope(ctx);
+    BOOST_TEST(scope.script(std::string(src)).has_value());
+    Expected<js::Value> fn = scope.getGlobal("generate");
+    BOOST_TEST(fn.has_value());
+    return JsGenerator{fn->getFunction(), ctx};
 }
-)JS";
-
-constexpr std::string_view expectedJson =
-    R"([{"name":"foo","id":"0001"},{"name":"bar","id":"0002"}])";
 
 } // (anon)
 
@@ -218,248 +203,143 @@ struct ScriptGeneratorTest
     }
 
     //
-    // runLuaGenerator / runJsGenerator
+    // runScriptGenerator
     //
 
-    void
-    testLuaGenerator()
+    // Run `generate` over an empty stub corpus, writing into `outDir`, and
+    // return whether it succeeded.
+    static Expected<void>
+    runOver(
+        dom::Function const& generate,
+        std::string_view outDir)
     {
-        ScopedTempDirectory td("mrdocs-scriptgen");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "g.lua");
-        writeFile(script, luaIndex);
-        std::string const outDir = files::appendPath(td.path(), "out");
-        OutputSink sink(outDir);
-
-        Expected<void> result = runLuaGenerator(
-            makeCorpus(), script, sink, emptyObject(), emptyObject());
-        BOOST_TEST(result.has_value());
-        Expected<std::string> got =
-            files::getFileText(files::appendPath(outDir, "search-index.json"));
-        BOOST_TEST(got.has_value());
-        if (got)
-        {
-            BOOST_TEST(*got == expectedJson);
-        }
-    }
-
-    void
-    testJsGenerator()
-    {
-        ScopedTempDirectory td("mrdocs-scriptgen");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "g.js");
-        writeFile(script, jsIndex);
-        std::string const outDir = files::appendPath(td.path(), "out");
-        OutputSink sink(outDir);
-
-        Expected<void> result = runJsGenerator(
-            makeCorpus(), script, sink, emptyObject(), emptyObject());
-        BOOST_TEST(result.has_value());
-        Expected<std::string> got =
-            files::getFileText(files::appendPath(outDir, "search-index.json"));
-        BOOST_TEST(got.has_value());
-        if (got)
-        {
-            BOOST_TEST(*got == expectedJson);
-        }
-    }
-
-    void
-    testLuaReadsMissingFieldAsNil()
-    {
-        // A symbol object without a `name` field: `get("name")` yields
-        // `Undefined`, which Lua must marshal as `nil` rather than abort.
-        // The global namespace has no name, so a real corpus hits this.
-        dom::Object noName;
-        noName.set("_id", std::string("0009"));
-        dom::Array symbols;
-        symbols.emplace_back(dom::Value(std::move(noName)));
-        dom::Object corpusObj;
-        corpusObj.set("symbols", std::move(symbols));
-        dom::Value const corpus(std::move(corpusObj));
-
-        ScopedTempDirectory td("mrdocs-scriptgen");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "g.lua");
-        writeFile(script, R"LUA(
-function generate(corpus, output)
-  local s = corpus.symbols[1]
-  output.write("out.txt", "name=" .. (s.name or "NONE"))
-end
-)LUA");
-        std::string const outDir = files::appendPath(td.path(), "out");
-        OutputSink sink(outDir);
-
-        Expected<void> result = runLuaGenerator(
-            corpus, script, sink, emptyObject(), emptyObject());
-        BOOST_TEST(result.has_value());
-        Expected<std::string> got =
-            files::getFileText(files::appendPath(outDir, "out.txt"));
-        BOOST_TEST(got.has_value());
-        if (got)
-        {
-            BOOST_TEST(*got == "name=NONE");
-        }
-    }
-
-    void
-    testMissingGenerateIsError()
-    {
-        ScopedTempDirectory td("mrdocs-scriptgen");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "empty.lua");
-        writeFile(script, "-- this script defines no generate function\n");
-        OutputSink sink(files::appendPath(td.path(), "out"));
-        // A generator must define `generate`; its absence is an error.
-        BOOST_TEST(!runLuaGenerator(
-            makeCorpus(), script, sink, emptyObject(), emptyObject())
-                .has_value());
-    }
-
-    void
-    testLuaReceivesConfigAndParams()
-    {
-        ScopedTempDirectory td("mrdocs-scriptgen");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "g.lua");
-        writeFile(script, R"LUA(
-function generate(corpus, output, config, params)
-  output.write("o.txt", tostring(config.multipage) .. "|" .. params.greeting)
-end
-)LUA");
-        std::string const outDir = files::appendPath(td.path(), "out");
-        OutputSink sink(outDir);
-
-        dom::Object config;
-        config.set("multipage", true);
-        dom::Object params;
-        params.set("greeting", std::string("hi"));
-        Expected<void> result = runLuaGenerator(
-            makeCorpus(), script, sink,
-            dom::Value(std::move(config)), dom::Value(std::move(params)));
-        BOOST_TEST(result.has_value());
-        Expected<std::string> got =
-            files::getFileText(files::appendPath(outDir, "o.txt"));
-        BOOST_TEST(got.has_value());
-        if (got)
-        {
-            BOOST_TEST(*got == "true|hi");
-        }
-    }
-
-    void
-    testJsReceivesConfigAndParams()
-    {
-        ScopedTempDirectory td("mrdocs-scriptgen");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "g.js");
-        writeFile(script, R"JS(
-function generate(corpus, output, config, params) {
-  output.write("o.txt", String(config.multipage) + "|" + params.greeting);
-}
-)JS");
-        std::string const outDir = files::appendPath(td.path(), "out");
-        OutputSink sink(outDir);
-
-        dom::Object config;
-        config.set("multipage", true);
-        dom::Object params;
-        params.set("greeting", std::string("hi"));
-        Expected<void> result = runJsGenerator(
-            makeCorpus(), script, sink,
-            dom::Value(std::move(config)), dom::Value(std::move(params)));
-        BOOST_TEST(result.has_value());
-        Expected<std::string> got =
-            files::getFileText(files::appendPath(outDir, "o.txt"));
-        BOOST_TEST(got.has_value());
-        if (got)
-        {
-            BOOST_TEST(*got == "true|hi");
-        }
-    }
-
-    // The full `build()` path: `config` comes from
-    // `corpus.config.object()` and `params` from the generator's
-    // manifest, both reaching the script.
-    void
-    testBuildPassesConfigAndParams()
-    {
-        ScopedTempDirectory td("mrdocs-scriptgen-build");
-        BOOST_TEST(td);
-        std::string const script = files::appendPath(td.path(), "g.lua");
-        writeFile(script, R"LUA(
-function generate(corpus, output, config, params)
-  output.write("o.txt", tostring(config.multipage) .. "|" .. params.greeting)
-end
-)LUA");
-
         StubConfig config;
         config.configObject.set("multipage", true);
         StubCorpus corpus(config);
+        return runScriptGenerator(generate, "selftest", corpus, outDir);
+    }
 
-        dom::Object params;
-        params.set("greeting", std::string("hi"));
-        ScriptGenerator gen("build-selftest", script, std::move(params));
-
+    void
+    testLuaGeneratorWrites()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
         std::string const outDir = files::appendPath(td.path(), "out");
-        Expected<void> result = gen.build(outDir, corpus);
-        BOOST_TEST(result.has_value());
+        dom::Function gen = makeLuaGenerator(R"LUA(
+function generate(ctx)
+  ctx.output.write("from-lua.txt", "hello from lua")
+end
+)LUA");
+        BOOST_TEST(runOver(gen, outDir).has_value());
         Expected<std::string> got =
-            files::getFileText(files::appendPath(outDir, "o.txt"));
+            files::getFileText(files::appendPath(outDir, "from-lua.txt"));
         BOOST_TEST(got.has_value());
         if (got)
         {
-            BOOST_TEST(*got == "true|hi");
+            BOOST_TEST(*got == "hello from lua");
         }
     }
 
-    //
-    // discoverScriptGenerators
-    //
-
     void
-    testDiscoveryRegistersScriptGenerator()
+    testJsGeneratorWrites()
     {
-        ScopedTempDirectory td("mrdocs-scriptgen-disc");
+        ScopedTempDirectory td("mrdocs-scriptgen");
         BOOST_TEST(td);
-        // Lay out <addons>/generator/<id>/ with a script manifest. The id
-        // is unusual so it does not collide with the process-global
-        // registry shared across the test binary.
-        std::string const id = "mrdocs-script-generator-selftest";
-        std::string const genDir =
-            files::appendPath(td.path(), "generator", id);
-        BOOST_TEST(files::createDirectory(genDir).has_value());
-        writeFile(
-            files::appendPath(genDir, "mrdocs-generator.yml"),
-            "script: g.lua\n");
-        writeFile(files::appendPath(genDir, "g.lua"), luaIndex);
-
-        Config::Settings settings;
-        settings.addons = std::string(td.path());
-        BOOST_TEST(discoverScriptGenerators(settings).has_value());
-        BOOST_TEST(findGenerator(id) != nullptr);
-    }
-
-    void
-    testManifestParamsParsed()
-    {
-        ScopedTempDirectory td("mrdocs-scriptgen-manifest");
-        BOOST_TEST(td);
-        std::string const yml =
-            files::appendPath(td.path(), "mrdocs-generator.yml");
-        writeFile(yml, "script: g.lua\nparams:\n  greeting: hi\n");
-        Expected<GeneratorManifest> manifest = loadGeneratorManifest(yml);
-        BOOST_TEST(manifest.has_value());
-        if (manifest)
+        std::string const outDir = files::appendPath(td.path(), "out");
+        JsGenerator gen = makeJsGenerator(R"JS(
+function generate(ctx) {
+  ctx.output.write("from-js.txt", "hello from js");
+}
+)JS");
+        BOOST_TEST(runOver(gen.generate, outDir).has_value());
+        Expected<std::string> got =
+            files::getFileText(files::appendPath(outDir, "from-js.txt"));
+        BOOST_TEST(got.has_value());
+        if (got)
         {
-            dom::Value const greeting = manifest->params.get("greeting");
-            BOOST_TEST(greeting.isString());
-            if (greeting.isString())
-            {
-                BOOST_TEST(greeting.getString().get() == "hi");
-            }
+            BOOST_TEST(*got == "hello from js");
         }
+    }
+
+    void
+    testGeneratorReceivesConfig()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        std::string const outDir = files::appendPath(td.path(), "out");
+        // `ctx.config` is the resolved configuration; `runOver` sets
+        // `multipage` to true on it.
+        dom::Function gen = makeLuaGenerator(R"LUA(
+function generate(ctx)
+  ctx.output.write("config.txt", tostring(ctx.config.multipage))
+end
+)LUA");
+        BOOST_TEST(runOver(gen, outDir).has_value());
+        Expected<std::string> got =
+            files::getFileText(files::appendPath(outDir, "config.txt"));
+        BOOST_TEST(got.has_value());
+        if (got)
+        {
+            BOOST_TEST(*got == "true");
+        }
+    }
+
+    void
+    testGeneratorIteratesCorpus()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        std::string const outDir = files::appendPath(td.path(), "out");
+        // `ctx.corpus.symbols` is iterable; over the empty stub corpus it
+        // yields nothing, so the aggregated artifact is an empty list.
+        dom::Function gen = makeLuaGenerator(R"LUA(
+function generate(ctx)
+  local parts = {}
+  for _, sym in ipairs(ctx.corpus.symbols) do
+    parts[#parts + 1] = sym.name
+  end
+  ctx.output.write("index.txt", "[" .. table.concat(parts, ",") .. "]")
+end
+)LUA");
+        BOOST_TEST(runOver(gen, outDir).has_value());
+        Expected<std::string> got =
+            files::getFileText(files::appendPath(outDir, "index.txt"));
+        BOOST_TEST(got.has_value());
+        if (got)
+        {
+            BOOST_TEST(*got == "[]");
+        }
+    }
+
+    void
+    testWriteEscapeIsError()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        std::string const outDir = files::appendPath(td.path(), "out");
+        // A write that escapes the output directory fails in the sink, and
+        // the failure surfaces back through the script as a runner error.
+        dom::Function gen = makeLuaGenerator(R"LUA(
+function generate(ctx)
+  ctx.output.write("../escaped.txt", "no")
+end
+)LUA");
+        BOOST_TEST(!runOver(gen, outDir).has_value());
+    }
+
+    void
+    testGeneratorErrorIsReported()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        std::string const outDir = files::appendPath(td.path(), "out");
+        // An error raised inside the generator is reported, not swallowed.
+        dom::Function gen = makeLuaGenerator(R"LUA(
+function generate(ctx)
+  error("boom")
+end
+)LUA");
+        BOOST_TEST(!runOver(gen, outDir).has_value());
     }
 
     void
@@ -468,15 +348,12 @@ end
         testSinkWritesUnderRoot();
         testSinkRejectsAbsolutePath();
         testSinkRejectsEscape();
-        testLuaGenerator();
-        testJsGenerator();
-        testLuaReadsMissingFieldAsNil();
-        testMissingGenerateIsError();
-        testLuaReceivesConfigAndParams();
-        testJsReceivesConfigAndParams();
-        testBuildPassesConfigAndParams();
-        testDiscoveryRegistersScriptGenerator();
-        testManifestParamsParsed();
+        testLuaGeneratorWrites();
+        testJsGeneratorWrites();
+        testGeneratorReceivesConfig();
+        testGeneratorIteratesCorpus();
+        testWriteEscapeIsError();
+        testGeneratorErrorIsReported();
     }
 };
 

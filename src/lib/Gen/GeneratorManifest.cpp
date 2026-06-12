@@ -9,7 +9,6 @@
 //
 
 #include "GeneratorManifest.hpp"
-#include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/Casting.h>
@@ -28,58 +27,6 @@ scalarText(llvm::yaml::ScalarNode& node)
     llvm::SmallString<32> buf;
     llvm::StringRef const text = node.getValue(buf);
     return std::string(text.data(), text.size());
-}
-
-// Forward declaration for the recursive conversion below.
-dom::Value yamlToDom(llvm::yaml::Node* node);
-
-// Add one key/value pair of a YAML mapping to `obj`, recursing on the
-// value. A non-scalar key is skipped.
-void
-addMappingEntry(llvm::yaml::KeyValueNode& entry, dom::Object& obj)
-{
-    llvm::yaml::ScalarNode* const keyNode =
-        llvm::dyn_cast_or_null<llvm::yaml::ScalarNode>(entry.getKey());
-    if (keyNode)
-    {
-        obj.set(scalarText(*keyNode), yamlToDom(entry.getValue()));
-    }
-}
-
-// Convert a YAML node to a DOM value.
-dom::Value
-yamlToDom(llvm::yaml::Node* node)
-{
-    dom::Value result(nullptr);
-    if (node && !llvm::isa<llvm::yaml::NullNode>(node))
-    {
-        if (llvm::yaml::ScalarNode* const scalar =
-                llvm::dyn_cast<llvm::yaml::ScalarNode>(node))
-        {
-            result = dom::Value(scalarText(*scalar));
-        }
-        else if (llvm::yaml::SequenceNode* const sequence =
-                llvm::dyn_cast<llvm::yaml::SequenceNode>(node))
-        {
-            dom::Array array;
-            for (llvm::yaml::Node& element : *sequence)
-            {
-                array.emplace_back(yamlToDom(&element));
-            }
-            result = dom::Value(std::move(array));
-        }
-        else if (llvm::yaml::MappingNode* const mapping =
-                llvm::dyn_cast<llvm::yaml::MappingNode>(node))
-        {
-            dom::Object object;
-            for (llvm::yaml::KeyValueNode& entry : *mapping)
-            {
-                addMappingEntry(entry, object);
-            }
-            result = dom::Value(std::move(object));
-        }
-    }
-    return result;
 }
 
 // Parse a YAML mapping whose entries are non-empty byte-sequence keys
@@ -151,34 +98,6 @@ parseTopLevelEntry(
             else
             {
                 result = parseEscape(*escNode, manifest, yamlPath);
-            }
-        }
-        else if (key == "script")
-        {
-            llvm::yaml::ScalarNode* const valNode =
-                llvm::dyn_cast_or_null<llvm::yaml::ScalarNode>(pair.getValue());
-            if (!valNode)
-            {
-                result = Unexpected(formatError(
-                    "{}: 'script' must be a scalar", yamlPath));
-            }
-            else
-            {
-                manifest.script = scalarText(*valNode);
-            }
-        }
-        else if (key == "params")
-        {
-            llvm::yaml::MappingNode* const paramsNode =
-                llvm::dyn_cast_or_null<llvm::yaml::MappingNode>(pair.getValue());
-            if (!paramsNode)
-            {
-                result = Unexpected(formatError(
-                    "{}: 'params' must be a mapping", yamlPath));
-            }
-            else
-            {
-                manifest.params = yamlToDom(paramsNode).getObject();
             }
         }
         else if (key == "extends")

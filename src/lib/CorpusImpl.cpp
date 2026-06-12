@@ -1111,4 +1111,36 @@ CorpusImpl::finalize()
     }
 }
 
+void
+CorpusImpl::
+registerScriptGenerator(std::string id, dom::Function fn)
+{
+    if (findScriptGenerator(id) == nullptr)
+    {
+        scriptGenerators_.emplace_back(std::move(id), std::move(fn));
+    }
+}
+
+dom::Function const*
+CorpusImpl::
+findScriptGenerator(std::string_view id) const noexcept
+{
+    dom::Function const* result = nullptr;
+    for (auto const& entry : scriptGenerators_)
+    {
+        if (result == nullptr && std::string_view(entry.first) == id)
+        {
+            result = &entry.second;
+        }
+    }
+    return result;
+}
+
+void
+CorpusImpl::
+keepScriptVmAlive(std::shared_ptr<void> keepAlive)
+{
+    scriptVmKeepAlives_.push_back(std::move(keepAlive));
+}
+
 } // mrdocs

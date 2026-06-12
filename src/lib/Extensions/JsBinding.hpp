@@ -21,12 +21,14 @@ class CorpusImpl;
 
 /** Run one JavaScript extension script against the corpus.
 
-    Build a fresh JS context, evaluate the script, and run every corpus
-    transform it declares by calling `register_transform(fn)`. Each
-    registered function is invoked once, in registration order, with a
-    navigable DOM view of the corpus that it can read and mutate in place.
-    A script that registers nothing causes a warning and otherwise has no
-    effect, so an empty .js file is tolerated.
+    Build a fresh JS context and evaluate the script. The script declares
+    corpus transforms with `register_transform(fn)` and output generators
+    with `register_generator(id, fn)`, in either combination. Each transform
+    is invoked once, in registration order, with a navigable DOM view of the
+    corpus it can read and mutate in place; each generator is handed to the
+    corpus to run later, once one is selected. A script that registers
+    nothing causes a warning and otherwise has no effect, so an empty .js
+    file is tolerated.
 */
 Expected<void>
 runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath);

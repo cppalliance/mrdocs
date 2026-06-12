@@ -20,14 +20,19 @@
 #include <lib/Support/Debug.hpp>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <functional>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <set>
 #include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 namespace mrdocs {
 
@@ -55,6 +60,22 @@ class CorpusImpl final : public Corpus
     // The key represents the context symbol ID.
     // The value is another map from the name to the Info.
     std::map<SymbolID, UnorderedStringMap<Symbol const*>> lookupCache_;
+
+    // Output generators an extension script defined via
+    // `register_generator(id, fn)`. Each `fn` is a `dom::Function` that
+    // stays runnable until this corpus is destroyed (after extensions run,
+    // when a generator is selected). Its scripting VM is kept alive either
+    // by the function itself or by a matching entry in
+    // `scriptVmKeepAlives_`. First registration of an id wins; later ones
+    // are ignored.
+    std::vector<std::pair<std::string, dom::Function>> scriptGenerators_;
+
+    // Strong references to scripting VMs that back `scriptGenerators_` but
+    // are only weakly held by the generator functions themselves (the
+    // JavaScript backend works this way). Keeping a reference here lets
+    // such a generator outlive the extension run that defined it, up to
+    // this corpus's destruction.
+    std::vector<std::shared_ptr<void>> scriptVmKeepAlives_;
 
     friend class Corpus;
     friend class BaseMembersFinalizer;
@@ -194,6 +215,29 @@ public:
     */
     void
     finalize();
+
+    /** Register a script-defined output generator.
+
+        Called from an extension's `register_generator(id, fn)`. The first
+        registration of a given id wins; later ones are ignored.
+    */
+    void
+    registerScriptGenerator(std::string id, dom::Function fn);
+
+    /** Return the script-defined generator with this id, or `nullptr`.
+    */
+    dom::Function const*
+    findScriptGenerator(std::string_view id) const noexcept;
+
+    /** Keep a scripting VM alive for the lifetime of this corpus.
+
+        A generator registered via `register_generator` may hold only a
+        weak reference to the VM that defined it. The extension binding
+        hands the VM over here so it outlives the extension run and stays
+        usable when the generator is selected.
+    */
+    void
+    keepScriptVmAlive(std::shared_ptr<void> keepAlive);
 
 private:
     /** Return the Info with the specified symbol ID.

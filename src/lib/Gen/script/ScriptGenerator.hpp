@@ -11,90 +11,44 @@
 #ifndef MRDOCS_LIB_GEN_SCRIPT_SCRIPTGENERATOR_HPP
 #define MRDOCS_LIB_GEN_SCRIPT_SCRIPTGENERATOR_HPP
 
-#include <mrdocs/Config.hpp>
+#include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Expected.hpp>
-#include <iosfwd>
-#include <string>
 #include <string_view>
 
 namespace mrdocs::script {
 
-/** A generator whose output is produced by a user script.
+/** Run a script-defined output generator.
 
-    A script-driven generator hands the whole emit to a Lua or
-    JavaScript entry point of the form
-    `generate(corpus, output, config, params)`: the script traverses the
-    corpus and writes whatever files it wants through the `output`
-    object, optionally reading the resolved `config` and its own
-    `params`. Because the script owns the output structure, it can
-    produce shapes the per-page generators cannot, such as a single
-    artifact aggregated across all symbols (a search index, for example).
-*/
-class ScriptGenerator
-    : public Generator
-{
-    std::string id_;
-    // The absolute path to the Lua or JavaScript entry script.
-    std::string scriptPath_;
-    // The generator's own parameters, from the manifest's `params`
-    // mapping; passed to the entry script as its `params` argument.
-    dom::Object params_;
+    A generator declared with `register_generator(id, fn)` is a
+    `dom::Function` that owns the whole emit. Invoke it with one `ctx`
+    object, mirroring the shape a transform receives:
 
-public:
-    /** Construct a script-driven generator.
+    @li `ctx.corpus` is the read-only corpus, a `symbols` array of the
+        same per-symbol objects the templates see, each tagged with its
+        flat `_id` so the generator can form stable per-symbol URLs.
 
-        @param id The generator id, used to select it on the command
-            line.
-        @param scriptPath The absolute path to the entry script.
-        @param params The generator's own parameters, from its manifest.
-    */
-    ScriptGenerator(
-        std::string id,
-        std::string scriptPath,
-        dom::Object params);
+    @li `ctx.output` exposes `write(path, contents)`, resolved under the
+        output directory; a path that escapes it is rejected.
 
-    std::string_view
-    id() const noexcept override;
+    @li `ctx.config` is the resolved configuration, as templates see it.
 
-    std::string_view
-    displayName() const noexcept override;
+    The function is language-agnostic: a `dom::Function` self-owns its
+    scripting VM, so one call drives a Lua or a JavaScript generator
+    without the host knowing which.
 
-    std::string_view
-    fileExtension() const noexcept override;
-
-    /** Run the entry script, which owns the whole emit.
-    */
-    Expected<void>
-    build(
-        std::string_view outputPath,
-        Corpus const& corpus) const override;
-
-    /** Reject single-page output.
-
-        A script-driven generator owns its output structure and writes
-        whatever files it wants, so there is no single-stream form.
-    */
-    Expected<void>
-    buildOne(
-        std::ostream& os,
-        Corpus const& corpus) const override;
-};
-
-/** Discover script-driven generators and install them.
-
-    For each configured addon root, walk the immediate subdirectories of
-    <root>/generator/. A subdirectory becomes a script-driven generator
-    when its `mrdocs-generator.yml` names an entry script. The generator
-    id, used to select it on the command line, is the subdirectory name.
-
-    Should be called once after the configuration is resolved and before
-    a generator is looked up by id.
+    @param generate The registered generator function.
+    @param id The generator id, used to tag diagnostics.
+    @param corpus The finalized corpus to emit.
+    @param outputPath The output directory the generator writes under.
 */
 Expected<void>
-discoverScriptGenerators(Config::Settings const& settings);
+runScriptGenerator(
+    dom::Function const& generate,
+    std::string_view id,
+    Corpus const& corpus,
+    std::string_view outputPath);
 
 } // mrdocs::script
 

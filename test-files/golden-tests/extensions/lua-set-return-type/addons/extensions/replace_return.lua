@@ -7,7 +7,7 @@
 -- to the concept's documentation page):
 --
 --   local awaitable_id = nil
---   for _, s in ipairs(corpus.symbols) do
+--   for _, s in ipairs(ctx.corpus.symbols) do
 --       if s.kind == "concept" and s.name == "Awaitable" then
 --           awaitable_id = s.id
 --           break
@@ -26,8 +26,8 @@
 -- This fixture omits the lookup and uses a bare identifier so the
 -- test is self-contained.
 
-register_transform(function(corpus)
-    for _, sym in ipairs(corpus.symbols) do
+register_transform(function(ctx)
+    for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" and sym.name == "target_function" then
             sym.returnType = {
                 kind = "named",

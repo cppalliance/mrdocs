@@ -151,4 +151,13 @@ buildCorpusDom(CorpusImpl& corpus)
     return dom::Value(std::move(corpusObj));
 }
 
+dom::Value
+buildTransformContext(CorpusImpl& corpus)
+{
+    dom::Object ctx;
+    ctx.set("corpus", buildCorpusDom(corpus));
+    ctx.set("config", dom::Value(corpus.config.object()));
+    return dom::Value(std::move(ctx));
+}
+
 } // mrdocs

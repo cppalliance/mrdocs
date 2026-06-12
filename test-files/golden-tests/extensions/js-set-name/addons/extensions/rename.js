@@ -7,11 +7,11 @@
 // proxy's `set` trap forwards each assignment into the live C++
 // Symbol via reflection.
 
-register_transform(function(corpus)
+register_transform(function(ctx)
 {
-    for (var i = 0; i < corpus.symbols.length; ++i)
+    for (var i = 0; i < ctx.corpus.symbols.length; ++i)
     {
-        var sym = corpus.symbols[i];
+        var sym = ctx.corpus.symbols[i];
         if (sym.kind === "function")
         {
             sym.name = "renamed_" + sym.name;

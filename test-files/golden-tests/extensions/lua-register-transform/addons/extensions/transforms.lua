@@ -3,16 +3,16 @@
 -- transforms. The first renames every function; the second rewrites
 -- its brief.
 
-register_transform(function(corpus)
-    for _, sym in ipairs(corpus.symbols) do
+register_transform(function(ctx)
+    for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" then
             sym.name = "renamed_" .. sym.name
         end
     end
 end)
 
-register_transform(function(corpus)
-    for _, sym in ipairs(corpus.symbols) do
+register_transform(function(ctx)
+    for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" then
             sym.doc = {
                 brief = {
