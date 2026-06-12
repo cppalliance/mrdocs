@@ -8,6 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <lib/ConfigImpl.hpp>
+#include <lib/CorpusImpl.hpp>
+#include <lib/Extensions/JsBinding.hpp>
+#include <lib/Extensions/LuaBinding.hpp>
 #include <lib/Gen/script/OutputSink.hpp>
 #include <lib/Gen/script/ScriptGenerator.hpp>
 #include <lib/Support/Path.hpp>
@@ -19,6 +23,9 @@
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <test_suite/test_suite.hpp>
+#include <cstdint>
+#include <fstream>
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -154,6 +161,35 @@ makeJsGenerator(std::string_view src)
     Expected<js::Value> fn = scope.getGlobal("generate");
     BOOST_TEST(fn.has_value());
     return JsGenerator{fn->getFunction(), ctx};
+}
+
+// Write `content` verbatim to `path`. Pre-existing files are truncated.
+void
+writeFile(std::string_view path, std::string_view content)
+{
+    std::ofstream os(std::string{path}, std::ios::binary | std::ios::trunc);
+    os.write(content.data(),
+             static_cast<std::streamsize>(content.size()));
+}
+
+// A generator function that ignores its argument and returns `value`, so two
+// registrations can be told apart by what the resolved one returns.
+dom::Function
+makeConstGenerator(std::int64_t value)
+{
+    return dom::makeVariadicInvocable(
+        [value](dom::Array const&) -> Expected<dom::Value, Error>
+        {
+            return dom::Value(value);
+        });
+}
+
+// An empty in-memory configuration. The ThreadPool is stored by reference,
+// so the caller must keep it alive at least as long as the config.
+std::shared_ptr<ConfigImpl const>
+makeConfig(ThreadPool& pool)
+{
+    return std::make_shared<ConfigImpl>(ConfigImpl::access_token{}, pool);
 }
 
 } // (anon)
@@ -342,6 +378,63 @@ end
         BOOST_TEST(!runOver(gen, outDir).has_value());
     }
 
+    //
+    // register_generator: corpus host and the script bindings
+    //
+
+    void
+    testHostKeepsFirstRegistration()
+    {
+        ThreadPool pool;
+        CorpusImpl corpus(makeConfig(pool));
+
+        // The first registration of an id wins; a later one is ignored.
+        corpus.registerScriptGenerator("a", makeConstGenerator(1));
+        corpus.registerScriptGenerator("a", makeConstGenerator(2));
+
+        BOOST_TEST(corpus.findScriptGenerator("missing") == nullptr);
+        dom::Function const* found = corpus.findScriptGenerator("a");
+        BOOST_TEST(found != nullptr);
+        if (found)
+        {
+            Expected<dom::Value> got = found->try_invoke(dom::Value());
+            BOOST_TEST(got.has_value());
+            if (got)
+            {
+                BOOST_TEST(got->getInteger() == 1);
+            }
+        }
+    }
+
+    void
+    testRegisterGeneratorLua()
+    {
+        ThreadPool pool;
+        CorpusImpl corpus(makeConfig(pool));
+        ScopedTempDirectory td("mrdocs-reggen");
+        BOOST_TEST(td);
+        // A Lua extension that registers a generator leaves it findable on
+        // the corpus by its id, and does not warn about registering nothing.
+        std::string const script = files::appendPath(td.path(), "gen.lua");
+        writeFile(script, "register_generator(\"my-gen\", function(ctx) end)\n");
+        BOOST_TEST(runOneLuaExtension(corpus, script).has_value());
+        BOOST_TEST(corpus.findScriptGenerator("my-gen") != nullptr);
+    }
+
+    void
+    testRegisterGeneratorJs()
+    {
+        ThreadPool pool;
+        CorpusImpl corpus(makeConfig(pool));
+        ScopedTempDirectory td("mrdocs-reggen");
+        BOOST_TEST(td);
+        // The JavaScript counterpart.
+        std::string const script = files::appendPath(td.path(), "gen.js");
+        writeFile(script, "register_generator(\"my-gen\", function(ctx) {});\n");
+        BOOST_TEST(runOneJsExtension(corpus, script).has_value());
+        BOOST_TEST(corpus.findScriptGenerator("my-gen") != nullptr);
+    }
+
     void
     run()
     {
@@ -354,6 +447,9 @@ end
         testGeneratorIteratesCorpus();
         testWriteEscapeIsError();
         testGeneratorErrorIsReported();
+        testHostKeepsFirstRegistration();
+        testRegisterGeneratorLua();
+        testRegisterGeneratorJs();
     }
 };
 
