@@ -193,6 +193,9 @@ function toTypeStr(type) {
     if (type === 'string') {
         return 'string'
     }
+    if (type === 'string-list') {
+        return 'string or list of strings'
+    }
     if (type === 'int') {
         return 'integer'
     }

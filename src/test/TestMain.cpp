@@ -44,7 +44,7 @@ void DoTestAction(char const** argv)
         }
     }
 
-    TestRunner runner(testArgs.generator);
+    TestRunner runner;
     for (auto const& inputPath: testPaths)
     {
         runner.checkPath(inputPath, argv);

@@ -64,12 +64,18 @@ DoGenerateAction(
     //
     // --------------------------------------------------------------
     auto& settings = config->settings();
-    MRDOCS_TRY(
-        Generator const& generator,
-        findGenerator(settings.generator),
-        formatError(
-            "the Generator \"{}\" was not found",
-            settings.generator));
+    std::vector<Generator const*> generators;
+    for (auto const& genId : settings.generator.values)
+    {
+        MRDOCS_TRY(
+            Generator const& generator,
+            findGenerator(genId),
+            formatError(
+                "the Generator \"{}\" was not found",
+                genId));
+        generators.push_back(&generator);
+    }
+    MRDOCS_CHECK(!generators.empty(), "No generator was specified");
 
     // --------------------------------------------------------------
     //
@@ -118,7 +124,15 @@ DoGenerateAction(
     // Normalize outputPath path
     MRDOCS_CHECK(settings.output, "The output path argument is missing");
     report::info("Generating docs");
-    MRDOCS_TRY(generator.build(*corpus));
+    // Each generator decides how to resolve its own output (single vs
+    // multipage, directory vs file, existing target, and whether other
+    // generators share the output). GenerateAction does not have enough
+    // information to route per-generator output here, so it just builds
+    // each one against the configured output.
+    for (Generator const* generator : generators)
+    {
+        MRDOCS_TRY(generator->build(*corpus));
+    }
 
     // --------------------------------------------------------------
     //

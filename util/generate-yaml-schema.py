@@ -56,6 +56,15 @@ def to_yaml_schema_type(option: Option) -> SchemaType:
         return {"type": "integer", "minimum": 0}
     if option_type in ["string", "file-path", "dir-path", "path"]:
         return {"type": "string"}
+    if option_type == "string-list":
+        # Accept a single scalar (also covers the comma-separated form)
+        # or a sequence of strings.
+        return {
+            "anyOf": [
+                {"type": "string"},
+                {"type": "array", "items": {"type": "string"}},
+            ]
+        }
     if option_type == "enum":
         assert "values" in option
         return {"enum": option["values"]}

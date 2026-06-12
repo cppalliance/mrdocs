@@ -22,7 +22,9 @@ enum Action : int;
 enum class OutputMode
 {
     SinglePage,
-    Multipage
+    Multipage,
+    // Extraction-only run (the no-op generator): no expected output.
+    None
 };
 
 /** Expected output layout for a single test (single-page or multipage). */

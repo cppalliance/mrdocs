@@ -28,6 +28,10 @@ extern
 std::unique_ptr<Generator>
 makeHTMLGenerator();
 
+extern
+std::unique_ptr<Generator>
+makeNoopGenerator();
+
 GeneratorRegistry::
 ~GeneratorRegistry() noexcept = default;
 
@@ -47,6 +51,7 @@ GeneratorRegistryImpl()
     insert(makeAdocGenerator());
     insert(makeXMLGenerator());
     insert(makeHTMLGenerator());
+    insert(makeNoopGenerator());
 }
 
 Generator const*

@@ -38,12 +38,7 @@
 namespace mrdocs {
 
 TestRunner::
-TestRunner(std::string_view generator)
-    : genId_(generator)
-{
-    // The generator is looked up per-test in `handleFile`; after that,
-    // test's mrdocs.yml has been loaded and addon discovery has run.
-}
+TestRunner() = default;
 
 namespace {
 
@@ -117,6 +112,10 @@ makeRootSettings(
     Config::Settings dirSettings;
     testArgs.apply(dirSettings, dirs, argv);
     dirSettings.multipage = false;
+    if (dirSettings.generator.empty())
+    {
+        dirSettings.generator = StringList({"xml"});
+    }
     return loadDirSettings(inputDir, std::move(dirSettings), dirs);
 }
 
@@ -190,47 +189,63 @@ handleFile(
     {
         return report::error("{}: \"{}\"", discovered.error(), filePath);
     }
-    Generator const* gen = findGenerator(genId_);
-    if (!gen)
+
+    // The generator(s) come from the test's merged configuration. Accept
+    // the comma-separated form and fall back to a single xml run.
+    StringList genList = loaded->settings.generator;
+    genList.splitCommaSeparated();
+    if (genList.empty())
     {
-        return report::error(
-            "{}: the Generator \"{}\" was not found", filePath, genId_);
+        genList.values.push_back("xml");
     }
 
-    Expected<ResolvedLayout> resolved = buildTestLayout(
-        filePath, *std::move(loaded), gen->fileExtension(), dirs_, testArgs.action);
-    if (!resolved)
+    for (std::string const& genId : genList.values)
     {
-        return report::error("{}: \"{}\"", resolved.error(), filePath);
-    }
-    Config::Settings fileSettings = std::move(resolved->settings);
-    TestLayout layout = std::move(resolved->layout);
+        Generator const* gen = findGenerator(genId);
+        if (!gen)
+        {
+            report::error(
+                "{}: the Generator \"{}\" was not found", filePath, genId);
+            continue;
+        }
 
-    auto expConfig = ConfigImpl::load(fileSettings, dirs_, threadPool_);
-    if (!expConfig)
-    {
-        return report::error("{}: \"{}\"", expConfig.error(), filePath);
-    }
-    std::shared_ptr<ConfigImpl const> config = *expConfig;
+        Expected<ResolvedLayout> resolved = buildTestLayout(
+            filePath, *loaded, gen->fileExtension(), dirs_, testArgs.action);
+        if (!resolved)
+        {
+            report::error("{}: \"{}\"", resolved.error(), filePath);
+            continue;
+        }
+        Config::Settings fileSettings = std::move(resolved->settings);
+        TestLayout layout = std::move(resolved->layout);
 
-    auto runWith = [&](std::vector<std::string> command)
-    {
-        auto const db = makeSingleFileDB(filePath, std::move(command));
-        std::unordered_map<std::string, std::vector<std::string>>
-            defaultIncludePaths = {
-                {    "clang", { MRDOCS_TEST_FILES_DIR "/include" } },
-                { "clang-cl", { MRDOCS_TEST_FILES_DIR "/include" } },
+        auto expConfig = ConfigImpl::load(fileSettings, dirs_, threadPool_);
+        if (!expConfig)
+        {
+            report::error("{}: \"{}\"", expConfig.error(), filePath);
+            continue;
+        }
+        std::shared_ptr<ConfigImpl const> config = *expConfig;
+
+        auto runWith = [&](std::vector<std::string> command)
+        {
+            auto const db = makeSingleFileDB(filePath, std::move(command));
+            std::unordered_map<std::string, std::vector<std::string>>
+                defaultIncludePaths = {
+                    {    "clang", { MRDOCS_TEST_FILES_DIR "/include" } },
+                    { "clang-cl", { MRDOCS_TEST_FILES_DIR "/include" } },
+            };
+            MrDocsCompilationDatabase compilations(
+                llvm::StringRef(files::getParentDir(filePath)),
+                db,
+                config,
+                defaultIncludePaths);
+            handleCompilationDatabase(filePath, *gen, compilations, config, layout);
         };
-        MrDocsCompilationDatabase compilations(
-            llvm::StringRef(files::getParentDir(filePath)),
-            db,
-            config,
-            defaultIncludePaths);
-        handleCompilationDatabase(filePath, *gen, compilations, config, layout);
-    };
 
-    runWith({ "clang", "-std=c++23" });
-    runWith({ "clang-cl", "/std:c++23preview" });
+        runWith({ "clang", "-std=c++23" });
+        runWith({ "clang-cl", "/std:c++23preview" });
+    }
 }
 
 void
@@ -246,6 +261,15 @@ TestRunner::handleCompilationDatabase(
     if (!corpus)
     {
         return report::error("{}: \"{}\"", corpus.error(), filePath);
+    }
+
+    if (layout.mode == OutputMode::None)
+    {
+        // No-op generator: extraction succeeded and any diagnostics have
+        // already been reported. There is no expected output to compare.
+        report::info("\"{}\" extracted", filePath);
+        ++results.expectedDocsMatching;
+        return;
     }
 
     if (layout.mode == OutputMode::SinglePage)
