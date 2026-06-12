@@ -25,6 +25,10 @@ on:
     branches:
       - develop
 
+  # merge_group runs on the queue's speculative commit (this PR rebased
+  # on top of every PR ahead of it in the queue).
+  merge_group:
+
 
 concurrency:
   group: ${{format('{0}:{1}', github.repository, github.ref)}}

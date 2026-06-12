@@ -87,26 +87,26 @@ jobs:
 
       - name: Install packages
         if: inputs.should-publish
-        uses: alandefreitas/cpp-actions/package-install@v1.9.4
+        uses: alandefreitas/cpp-actions/package-install@v1.9.5
         with:
           apt-get: rsync git
 
       - name: Clone MrDocs
         if: inputs.should-publish
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           fetch-tags: true
 
       - name: Install Node.js
         if: inputs.should-publish
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
       - name: Download all platform packages
         if: inputs.should-publish
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: release-packages-*
           path: packages
@@ -114,14 +114,14 @@ jobs:
 
       - name: Download website (Linux)
         if: inputs.should-publish
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Website Linux
           path: build/website
 
       - name: Download demos (Linux)
         if: inputs.should-publish
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name) && format('-{0}', github.ref_name)) || '' }}-Linux
           path: .
@@ -175,7 +175,7 @@ jobs:
       - name: Download previous demos (tags only)
         if: inputs.should-publish && startsWith(github.ref, 'refs/tags/')
         id: download-prev-demos
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         continue-on-error: true
         with:
           name: demos-develop-Linux
@@ -188,7 +188,7 @@ jobs:
 
       - name: Upload demo diff (tags only)
         if: inputs.should-publish && startsWith(github.ref, 'refs/tags/') && steps.compare-demos.outputs.diff == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: demos-diff
           path: demos-diff
@@ -196,7 +196,7 @@ jobs:
 
       - name: Publish website to GitHub Pages
         if: inputs.should-publish
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: build/website
@@ -225,7 +225,7 @@ jobs:
 
       - name: Create changelog
         if: inputs.should-publish
-        uses: alandefreitas/cpp-actions/create-changelog@v1.9.4
+        uses: alandefreitas/cpp-actions/create-changelog@v1.9.5
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -251,7 +251,7 @@ jobs:
 
       - name: Create consolidated GitHub Release
         if: inputs.should-publish
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: packages/MrDocs-*-*.*
           fail_on_unmatched_files: true
