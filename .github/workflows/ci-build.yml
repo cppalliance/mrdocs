@@ -35,17 +35,17 @@ jobs:
     env: ${{ matrix.env }}
     steps:
       - name: Container Bootstrap
-        uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.4
+        uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.5
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.4
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.5
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.9.4
+        uses: alandefreitas/cpp-actions/package-install@v1.9.5
         id: package-install
         with:
           packages: ${{ matrix.install }}
@@ -53,11 +53,11 @@ jobs:
           apt-get-sources: ${{ matrix.coverage && 'deb https://apt.llvm.org/noble/ llvm-toolchain-noble-21 main' || '' }}
 
       - name: Clone MrDocs
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore LLVM Cache
         id: llvm-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: build/third-party/install/llvm
           key: ${{ matrix.llvm-cache-key }}
@@ -111,13 +111,13 @@ jobs:
           contains(env.BOOTSTRAP_REBUILT, 'llvm')
           && (github.event_name != 'pull_request'
               || github.event.pull_request.head.repo.full_name == github.repository)
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: build/third-party/install/llvm
           key: ${{ matrix.llvm-cache-key }}
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.4
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -129,7 +129,6 @@ jobs:
           generator: Ninja
           build-type: ${{ matrix.build-type }}
           install-prefix: .local
-          extra-args: -D MRDOCS_EXPENSIVE_TESTS=${{ matrix.is-bottleneck && 'OFF' || 'ON' }}
           export-compile-commands: true
           run-tests: true
           install: true
@@ -142,7 +141,7 @@ jobs:
       # Upload packages for ci-releases.yml to pick up
       - name: Upload GitHub Release Artifacts
         if: matrix.is-release-build == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.mrdocs-release-package-artifact }}
           path: |
@@ -151,7 +150,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.9.4
+        uses: alandefreitas/cpp-actions/flamegraph@v1.9.5
         if: matrix.time-trace
         with:
           build-dir: build
@@ -160,7 +159,7 @@ jobs:
       - name: Process Coverage
         id: process-coverage
         if: matrix.coverage
-        uses: alandefreitas/cpp-actions/process-coverage@v1.9.4
+        uses: alandefreitas/cpp-actions/process-coverage@v1.9.5
         with:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           build-dir: build
@@ -177,7 +176,7 @@ jobs:
           github.event_name == 'push' &&
           github.ref_name == 'develop' &&
           steps.process-coverage.outputs.lcov-file != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-develop
           path: ${{ steps.process-coverage.outputs.lcov-file }}

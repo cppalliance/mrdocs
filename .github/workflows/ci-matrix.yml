@@ -31,7 +31,7 @@ jobs:
       submatrices: ${{ steps.cpp-matrix.outputs.submatrices }}
     steps:
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.9.4
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.9.5
         id: cpp-matrix
         with:
           compilers: |
@@ -110,14 +110,10 @@ jobs:
             mrdocs-package-generators: {{select (ieq os 'windows') "7Z ZIP WIX" "TGZ TXZ"}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
 
-            # Bottleneck builds: skip expensive tests that ended up being redundant to save CI time
-            is-bottleneck: {{#if (or msan (and (ieq compiler 'apple-clang') (or asan ubsan))) }}true{{/if}}
-
           submatrices: |
             releases: {{ieq is-release-build 'true'}}
             # `coverage` is a raw boolean factor (undefined on non-Coverage rows),
-            # so `ieq` would crash. Wrap in `#if` like the `is-bottleneck` extra-value
-            # above to handle undefined cleanly.
+            # so `ieq` would crash. Wrap in `#if` to handle the undefined case cleanly.
             coverage: {{#if coverage}}true{{/if}}
             releases-and-coverage: {{#if (or (ieq is-release-build 'true') coverage)}}true{{/if}}
           trace-commands: true

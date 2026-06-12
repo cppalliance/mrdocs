@@ -45,25 +45,25 @@ jobs:
       contents: read
     steps:
       - name: Container Bootstrap
-        uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.4
+        uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.5
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.9.4
+        uses: alandefreitas/cpp-actions/package-install@v1.9.5
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git rsync
 
       - name: Clone MrDocs
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.4
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.5
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -73,7 +73,7 @@ jobs:
       # when we built this run, develop-release fallback otherwise.
       - name: Download MrDocs package (fresh build)
         if: ${{ !inputs.use-develop-binaries }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ matrix.mrdocs-release-package-artifact }}
           path: packages
@@ -128,7 +128,7 @@ jobs:
           cp -vr build/site/* ../build/docs-local
 
       - name: Upload Website as Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Website ${{ runner.os }}
           path: build/website

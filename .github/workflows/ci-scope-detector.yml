@@ -81,12 +81,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
@@ -99,6 +99,7 @@ jobs:
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           BASE_REF: ${{ github.base_ref }}
+          MERGE_GROUP_BASE_SHA: ${{ github.event.merge_group.base_sha }}
           PR_BODY: ${{ github.event.pull_request.body }}
           PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
         run: |
@@ -116,6 +117,14 @@ jobs:
           # a full matrix on pushes regardless of which files changed.
           if [[ "$GITHUB_EVENT_NAME" == 'pull_request' ]]; then
             merge_base=$(git merge-base "origin/$BASE_REF" HEAD)
+            git diff --name-only "$merge_base" HEAD > changed-files.txt
+          elif [[ "$GITHUB_EVENT_NAME" == 'merge_group' ]]; then
+            # The queue tests the speculative commit (HEAD = the queued PR(s)
+            # rebased on top of everything ahead of them in the queue). Diff
+            # against the base the group was cut from so the same code/non-code
+            # scope rules apply here as on the PR itself: a code-touching queue
+            # entry runs the full matrix, a docs-only one stays reduced.
+            merge_base="$MERGE_GROUP_BASE_SHA"
             git diff --name-only "$merge_base" HEAD > changed-files.txt
           else
             merge_base="$(git rev-parse HEAD)"
