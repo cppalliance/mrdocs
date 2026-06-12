@@ -81,7 +81,21 @@ struct PublicSettingsVisitor {
         ReferenceDirectories const& dirs,
         PublicSettings::OptionProperties const& opts) const {
         using DT = std::decay_t<T>;
-        if constexpr (std::ranges::range<DT>)
+        if constexpr (std::same_as<DT, StringList>)
+        {
+            bool const useDefault =
+                value.empty() && std::holds_alternative<StringList>(opts.defaultValue);
+            if (useDefault)
+            {
+                value = std::get<StringList>(opts.defaultValue);
+            }
+            // Accept the comma-separated scalar form (e.g. "xml,adoc").
+            value.splitCommaSeparated();
+            MRDOCS_CHECK(!value.empty() || !opts.required,
+                formatError("`{}` option is required", name));
+            return {};
+        }
+        else if constexpr (std::ranges::range<DT>)
         {
             bool const useDefault = value.empty() && std::holds_alternative<DT>(opts.defaultValue);
             if (useDefault) {

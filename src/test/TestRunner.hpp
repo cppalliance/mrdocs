@@ -56,10 +56,6 @@ struct TestResults
 class TestRunner
 {
     ThreadPool threadPool_;
-    /// Id of the chosen generator. Resolved per-test (after each test's
-    /// settings load) so that data-driven generators contributed via
-    /// addons-supplemental are picked up correctly.
-    std::string genId_;
     ReferenceDirectories dirs_;
 
     /** Run a single .cpp test file with inherited directory settings. */
@@ -77,8 +73,8 @@ class TestRunner
 public:
     TestResults results;
 
-    /** Construct a runner for the chosen generator id. */
-    TestRunner(std::string_view generator);
+    /// Construct a runner.
+    TestRunner();
 
     /** Execute a compilation/database run for one test input. */
     void

@@ -93,6 +93,7 @@ def get_valid_option_values():
         'int',
         'enum',
         'string',
+        'string-list',
         'file-path',
         'dir-path',
         'path',
@@ -296,6 +297,7 @@ def generate_public_settings_hpp(config):
 
     headers = [
         '<mrdocs/Support/Glob.hpp>',
+        '<mrdocs/Support/StringList.hpp>',
         '<mrdocs/Support/Error.hpp>',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<string>',
@@ -689,6 +691,7 @@ def generate_public_settings_cpp(config):
         '<mrdocs/Support/Error.hpp>',
         '<mrdocs/Support/Path.hpp>',
         '"lib/Support/Yaml.hpp"',
+        '"lib/Support/StringListYaml.hpp"',
         '<llvm/Support/YAMLTraits.h>',
         '<thread>',
         '<utility>'
@@ -1026,7 +1029,7 @@ struct std::formatter<llvm::cl::opt<T>>
     for option in flat_config_options(config):
         camel_name = to_camel_case(option['name'])
         option_contents = ''
-        if option["type"].startswith('list<'):
+        if option["type"].startswith('list<') or option["type"] == 'string-list':
            option_contents += f'if (!this->{camel_name}.empty())\n'
         else:
            option_contents += f'if (keyIsSet({escape_as_cpp_string(option["name"])}))\n'
@@ -1048,6 +1051,8 @@ struct std::formatter<llvm::cl::opt<T>>
             option_contents += f'    {{\n'
             option_contents += f'        return Unexpected(formatError("`{option["name"]}` option: invalid value: {{}}", this->{camel_name}));\n'
             option_contents += f'    }}\n'
+        elif option["type"] == 'string-list':
+            option_contents += f'    s.{camel_name}.values.assign(this->{camel_name}.begin(), this->{camel_name}.end());\n'
         elif option["type"] in ['list<path-glob>', 'list<symbol-glob>']:
             cpp_type = 'PathGlobPattern' if option["type"] == 'list<path-glob>' else 'SymbolGlobPattern'
             option_contents += f'    s.{camel_name}.clear();\n'
@@ -1119,6 +1124,8 @@ def to_cpp_type(option):
         return 'unsigned'
     if option_type in ['string', 'file-path', 'dir-path', 'path']:
         return 'std::string'
+    if option_type == 'string-list':
+        return 'StringList'
     if option_type in ['path-glob']:
         return 'PathGlobPattern'
     if option_type in ['symbol-glob']:
@@ -1152,7 +1159,7 @@ def to_toolargs_type(option):
         return 'llvm::cl::opt<unsigned>'
     if option_type in ['string', 'file-path', 'dir-path', 'path', 'enum']:
         return 'llvm::cl::opt<std::string>'
-    if option_type in ['list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>', 'list<path-glob>', 'list<symbol-glob>']:
+    if option_type in ['string-list', 'list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>', 'list<path-glob>', 'list<symbol-glob>']:
         return 'llvm::cl::list<std::string>'
     if option_type in ['map<string,string>']:
         return 'llvm::cl::list<std::string>'
@@ -1195,7 +1202,7 @@ def to_cpp_default_value(option, replace_reference_dir=None):
         option_values = option['values']
         cat_name = get_enum_category_name(option_values)
         return f'{to_pascal_case(cat_name)}::{to_pascal_case(option_default)}'
-    if option_type in ['list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>']:
+    if option_type in ['string-list', 'list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>']:
         if not option_default:
             return None
         return '{' + ', '.join([f'"{str(s)}"' for s in option_default]) + '}'

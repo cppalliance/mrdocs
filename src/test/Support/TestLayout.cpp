@@ -72,6 +72,27 @@ buildTestLayout(
 
     TestLayout layout;
     layout.hasFileConfig = hasFileConfig;
+
+    // The no-op generator has no file extension and produces no output.
+    // Run extraction only: normalize the settings and skip all expected
+    // output computation and validation.
+    if (generatorExtension.empty())
+    {
+        layout.mode = OutputMode::None;
+        if (auto exp = fileSettings.normalize(dirs); !exp)
+        {
+            return Unexpected(exp.error());
+        }
+        if (!hasTagfileOverride)
+        {
+            fileSettings.tagfile.clear();
+        }
+        return ResolvedLayout{
+            std::move(fileSettings),
+            std::move(layout)
+        };
+    }
+
     layout.expectedSinglePath = pathWithExtension(filePath, generatorExtension).str();
     layout.multipageRoot = pathWithExtension(filePath, "multipage").str();
     layout.multipageFormatRoot = files::appendPath(layout.multipageRoot, generatorExtension);
