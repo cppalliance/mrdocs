@@ -246,6 +246,6 @@ include::example$data-driven-generators/tex/simple.tex[]
 ----
 ======
 
-To build the output structure yourself, e.g. one file per namespace or a single aggregated artifact like a search index, hand the whole emit to a script instead of rendering one page per symbol. See xref:extensions/script-driven-generators.adoc[Script-driven generators].
+To build the output structure yourself, e.g. one file per namespace or a single aggregated artifact like a search index, hand the whole emit to a script instead of rendering one page per symbol. See the xref:extensions/corpus-extensions.adoc#generators[generators] section of the extensions page.
 
 
