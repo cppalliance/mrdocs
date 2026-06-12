@@ -18,11 +18,6 @@
       "name": "Golden Tests",
       "id": "golden-tests",
       "group": "Test",
-      "depends": ["Golden Tests (XML)", "Golden Tests (ADOC)", "Golden Tests (HTML)"]
-    },
-    {
-      "name": "Golden Tests (XML)",
-      "group": "Test",
       "target": "mrdocs-test",
       "folder": "Golden Tests",
       "program": "${mrdocs_build_dir}/bin/mrdocs-test",
@@ -30,43 +25,6 @@
         "${mrdocs_src_dir}/test-files/golden-tests",
         "--unit=false",
         "--action=test",
-        "--generator=xml",
-        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
-        "--stdlib-includes=${mrdocs_stdlib_includes}",
-        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
-        "--log-level=warn"
-      ],
-      "requires": ["build_tests"]
-    },
-    {
-      "name": "Golden Tests (ADOC)",
-      "group": "Test",
-      "target": "mrdocs-test",
-      "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
-      "args": [
-        "${mrdocs_src_dir}/test-files/golden-tests",
-        "--unit=false",
-        "--action=test",
-        "--generator=adoc",
-        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
-        "--stdlib-includes=${mrdocs_stdlib_includes}",
-        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
-        "--log-level=warn"
-      ],
-      "requires": ["build_tests"]
-    },
-    {
-      "name": "Golden Tests (HTML)",
-      "group": "Test",
-      "target": "mrdocs-test",
-      "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
-      "args": [
-        "${mrdocs_src_dir}/test-files/golden-tests",
-        "--unit=false",
-        "--action=test",
-        "--generator=html",
         "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
         "--stdlib-includes=${mrdocs_stdlib_includes}",
         "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
@@ -78,11 +36,6 @@
       "name": "Update Golden Tests",
       "id": "update-golden-tests",
       "group": "Codegen",
-      "depends": ["Update Golden Tests (XML)", "Update Golden Tests (ADOC)", "Update Golden Tests (HTML)"]
-    },
-    {
-      "name": "Update Golden Tests (XML)",
-      "group": "Codegen",
       "target": "mrdocs-test",
       "folder": "Golden Tests",
       "program": "${mrdocs_build_dir}/bin/mrdocs-test",
@@ -90,43 +43,6 @@
         "${mrdocs_src_dir}/test-files/golden-tests",
         "--unit=false",
         "--action=update",
-        "--generator=xml",
-        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
-        "--stdlib-includes=${mrdocs_stdlib_includes}",
-        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
-        "--log-level=warn"
-      ],
-      "requires": ["build_tests"]
-    },
-    {
-      "name": "Update Golden Tests (ADOC)",
-      "group": "Codegen",
-      "target": "mrdocs-test",
-      "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
-      "args": [
-        "${mrdocs_src_dir}/test-files/golden-tests",
-        "--unit=false",
-        "--action=update",
-        "--generator=adoc",
-        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
-        "--stdlib-includes=${mrdocs_stdlib_includes}",
-        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
-        "--log-level=warn"
-      ],
-      "requires": ["build_tests"]
-    },
-    {
-      "name": "Update Golden Tests (HTML)",
-      "group": "Codegen",
-      "target": "mrdocs-test",
-      "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
-      "args": [
-        "${mrdocs_src_dir}/test-files/golden-tests",
-        "--unit=false",
-        "--action=update",
-        "--generator=html",
         "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
         "--stdlib-includes=${mrdocs_stdlib_includes}",
         "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
@@ -138,11 +54,6 @@
       "name": "Create Golden Tests",
       "id": "create-golden-tests",
       "group": "Codegen",
-      "depends": ["Create Golden Tests (XML)", "Create Golden Tests (ADOC)", "Create Golden Tests (HTML)"]
-    },
-    {
-      "name": "Create Golden Tests (XML)",
-      "group": "Codegen",
       "target": "mrdocs-test",
       "folder": "Golden Tests",
       "program": "${mrdocs_build_dir}/bin/mrdocs-test",
@@ -150,43 +61,6 @@
         "${mrdocs_src_dir}/test-files/golden-tests",
         "--unit=false",
         "--action=create",
-        "--generator=xml",
-        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
-        "--stdlib-includes=${mrdocs_stdlib_includes}",
-        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
-        "--log-level=warn"
-      ],
-      "requires": ["build_tests"]
-    },
-    {
-      "name": "Create Golden Tests (ADOC)",
-      "group": "Codegen",
-      "target": "mrdocs-test",
-      "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
-      "args": [
-        "${mrdocs_src_dir}/test-files/golden-tests",
-        "--unit=false",
-        "--action=create",
-        "--generator=adoc",
-        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
-        "--stdlib-includes=${mrdocs_stdlib_includes}",
-        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
-        "--log-level=warn"
-      ],
-      "requires": ["build_tests"]
-    },
-    {
-      "name": "Create Golden Tests (HTML)",
-      "group": "Codegen",
-      "target": "mrdocs-test",
-      "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/bin/mrdocs-test",
-      "args": [
-        "${mrdocs_src_dir}/test-files/golden-tests",
-        "--unit=false",
-        "--action=create",
-        "--generator=html",
         "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
         "--stdlib-includes=${mrdocs_stdlib_includes}",
         "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",

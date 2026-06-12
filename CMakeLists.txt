@@ -31,7 +31,6 @@ option(MRDOCS_PACKAGE "Build install package" ON)
 option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOCS_BUILD_STRICT_TESTS "Enable strict tests" ON)
-option(MRDOCS_EXPENSIVE_TESTS "Register expensive tests (adoc/html golden, self-doc)" ON)
 
 # When strict tests are on, optional test dependencies become required
 if (MRDOCS_BUILD_STRICT_TESTS)
@@ -489,44 +488,38 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    foreach (testgenerator IN ITEMS xml adoc html)
-        if (MRDOCS_EXPENSIVE_TESTS OR testgenerator STREQUAL "xml")
-            add_test(NAME mrdocs-golden-tests-${testgenerator}
+
+    #-------------------------------------------------
+    # Golden tests
+    #
+    # A single run walks test-files/golden-tests and runs each test with
+    # the generator(s) declared in its own configuration (directory
+    # mrdocs.yml / per-file <name>.yml), defaulting to xml. No --generator
+    # is passed on the command line, so each test controls its own format.
+    #-------------------------------------------------
+    add_test(NAME mrdocs-golden-tests
+        COMMAND
+            mrdocs-test
+            --unit=false
+            --action=test
+            "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
+            "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            "--stdlib-includes=${LIBCXX_DIR}"
+            "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+            --log-level=warn
+    )
+    foreach (action IN ITEMS test create update)
+        add_custom_target(mrdocs-${action}-test-fixtures-all
             COMMAND
                 mrdocs-test
                 --unit=false
-                --action=test
+                --action=${action}
                 "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                --generator=${testgenerator}
                 "--stdlib-includes=${LIBCXX_DIR}"
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                 --log-level=warn
-        )
-        endif()
-        foreach (action IN ITEMS test create update)
-            add_custom_target(
-                mrdocs-${action}-test-fixtures-${testgenerator}
-                COMMAND
-                    mrdocs-test
-                    --unit=false
-                    --action=${action}
-                    "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
-                    "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                    --generator=${testgenerator}
-                    "--stdlib-includes=${LIBCXX_DIR}"
-                    "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                    --log-level=warn
-                DEPENDS mrdocs-test
-            )
-        endforeach ()
-    endforeach()
-    foreach (action IN ITEMS test create update)
-        add_custom_target(mrdocs-${action}-test-fixtures-all
-            DEPENDS
-                mrdocs-${action}-test-fixtures-xml
-                mrdocs-${action}-test-fixtures-adoc
-                mrdocs-${action}-test-fixtures-html
+            DEPENDS mrdocs-test
         )
     endforeach ()
 
@@ -583,27 +576,22 @@ if (MRDOCS_BUILD_TESTS)
     # Self-documentation test (warn-as-error toggled by strict flag)
     #-------------------------------------------------
     set(MRDOCS_SELF_DOC_OUTPUT "${CMAKE_BINARY_DIR}/docs/self-reference")
-    set(MRDOCS_SELF_DOC_TAGFILE "${MRDOCS_SELF_DOC_OUTPUT}/reference.tag.xml")
 
-    if (MRDOCS_EXPENSIVE_TESTS)
-        add_test(NAME mrdocs-self-doc
-            COMMAND
-                mrdocs
-                "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
-                    "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
-                    "--output=${MRDOCS_SELF_DOC_OUTPUT}"
-                    --generator=adoc
-                    "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                    "--stdlib-includes=${LIBCXX_DIR}"
-                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                    "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                    "--tagfile=${MRDOCS_SELF_DOC_TAGFILE}"
-                    --multipage=true
-                    --concurrency=16
-                    --log-level=debug
-                    $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
-            )
-    endif()
+    add_test(NAME mrdocs-self-doc
+        COMMAND
+            mrdocs
+            "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
+                "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
+                "--output=${MRDOCS_SELF_DOC_OUTPUT}"
+                --generator=noop
+                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                "--stdlib-includes=${LIBCXX_DIR}"
+                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+                --concurrency=16
+                --log-level=debug
+                $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
+        )
 
     #-------------------------------------------------
     # XML lint
@@ -644,9 +632,7 @@ if (MRDOCS_BUILD_TESTS)
     #
     # Each lives at examples/configuration/<page>/<example>/ and ships
     # a docs/mrdocs.yml, a run.sh, and the minimum source the
-    # demonstrated option needs to exercise. These run on every CI
-    # build (no MRDOCS_EXPENSIVE_TESTS gate) because they don't invoke
-    # CMake.
+    # demonstrated option needs to exercise.
     #-------------------------------------------------
     set(_config_examples
         "inputs/extra-includes"
@@ -678,36 +664,32 @@ if (MRDOCS_BUILD_TESTS)
     # Each starter project under examples/getting-started/ is invoked
     # exactly as the user-facing docs in usage.adoc instruct, and each
     # fixture under examples/dependencies/ is exercised with the same
-    # mrdocs invocation those docs use. Gated on MRDOCS_EXPENSIVE_TESTS
-    # because the cmake / cmake-header-only variants invoke CMake's
-    # configure step, which itself isn't sanitized.
+    # mrdocs invocation those docs use.
     #-------------------------------------------------
-    if (MRDOCS_EXPENSIVE_TESTS)
-        foreach (example IN ITEMS compilation-database cmake cmake-header-only scanned)
-            set(_example_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/getting-started/${example}")
-            set(_example_out "${CMAKE_CURRENT_BINARY_DIR}/getting-started/${example}/reference-output")
-            add_test(
-                NAME mrdocs-getting-started-${example}
-                COMMAND bash run.sh
-                        --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
-                        --output=${_example_out}
-                WORKING_DIRECTORY ${_example_src}
-            )
-            set_property(TEST mrdocs-getting-started-${example} PROPERTY
-                ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
-        endforeach ()
-        foreach (example IN ITEMS find shim-files shim-snippets accept-missing)
-            set(_example_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/dependencies/${example}")
-            set(_example_out "${CMAKE_CURRENT_BINARY_DIR}/dependencies/${example}/reference-output")
-            add_test(
-                NAME mrdocs-dependencies-${example}
-                COMMAND mrdocs docs/mrdocs.yml
-                        --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
-                        --output ${_example_out}
-                WORKING_DIRECTORY ${_example_src}
-            )
-        endforeach ()
-    endif()
+    foreach (example IN ITEMS compilation-database cmake cmake-header-only scanned)
+        set(_example_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/getting-started/${example}")
+        set(_example_out "${CMAKE_CURRENT_BINARY_DIR}/getting-started/${example}/reference-output")
+        add_test(
+            NAME mrdocs-getting-started-${example}
+            COMMAND bash run.sh
+                    --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
+                    --output=${_example_out}
+            WORKING_DIRECTORY ${_example_src}
+        )
+        set_property(TEST mrdocs-getting-started-${example} PROPERTY
+            ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+    endforeach ()
+    foreach (example IN ITEMS find shim-files shim-snippets accept-missing)
+        set(_example_src "${CMAKE_CURRENT_SOURCE_DIR}/examples/dependencies/${example}")
+        set(_example_out "${CMAKE_CURRENT_BINARY_DIR}/dependencies/${example}/reference-output")
+        add_test(
+            NAME mrdocs-dependencies-${example}
+            COMMAND mrdocs docs/mrdocs.yml
+                    --addons=${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/addons
+                    --output ${_example_out}
+            WORKING_DIRECTORY ${_example_src}
+        )
+    endforeach ()
 endif()
 
 #-------------------------------------------------
