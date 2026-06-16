@@ -598,18 +598,27 @@ domObject_push_metatable(
     [](lua_State* L)
     {
         Access A(L);
-        auto& obj = domObject_get(A, 1);
-        auto key = luaM_getstring(A, 2);
-        dom::Value value = luaValueToDom(L, 3);
-        try
+        // `lua_error` longjmps to the enclosing `pcall` and skips any
+        // pending C++ destructor on this frame, so scope the locals and
+        // stage the error message before raising.
+        bool raised = false;
         {
-            obj.set(key, std::move(value));
+            auto& obj = domObject_get(A, 1);
+            auto key = luaM_getstring(A, 2);
+            dom::Value value = luaValueToDom(L, 3);
+            try
+            {
+                obj.set(key, std::move(value));
+            }
+            catch (std::exception const& ex)
+            {
+                luaL_where(A, 1);
+                lua_pushstring(A, ex.what());
+                lua_concat(A, 2);
+                raised = true;
+            }
         }
-        catch (std::exception const& ex)
-        {
-            return luaL_error(L, "%s", ex.what());
-        }
-        return 0;
+        return raised ? lua_error(A) : 0;
     });
     lua_settable(A, -3);
 
@@ -740,20 +749,32 @@ domFunction_push_metatable(
     {
         Access A(L);
         int const top = lua_gettop(A);
-        dom::Array args;
-        for (int i = 2; i <= top; ++i)
+        // `lua_error` longjmps to the enclosing `pcall` and skips any
+        // pending C++ destructor on this frame, so stage the outcome -
+        // the result value, or a location-prefixed error message, on the
+        // Lua stack - and let every local here be destroyed before
+        // raising.
+        bool raised = false;
         {
-            args.push_back(luaValueToDom(L, i));
+            dom::Array args;
+            for (int i = 2; i <= top; ++i)
+            {
+                args.push_back(luaValueToDom(L, i));
+            }
+            Expected<dom::Value> result = domFunction_get(A, 1).call(args);
+            if (result)
+            {
+                domValue_push(A, *result);
+            }
+            else
+            {
+                luaL_where(A, 1);
+                lua_pushstring(A, result.error().reason().c_str());
+                lua_concat(A, 2);
+                raised = true;
+            }
         }
-        dom::Function fn = domFunction_get(A, 1);
-        Expected<dom::Value> result = fn.call(args);
-        if (! result)
-        {
-            return luaL_error(L, "%s",
-                result.error().reason().c_str());
-        }
-        domValue_push(A, *result);
-        return 1;
+        return raised ? lua_error(A) : 1;
     });
     lua_settable(A, -3);
 
