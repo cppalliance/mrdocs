@@ -109,7 +109,7 @@ DoGenerateAction(
     // GenerateAction does not route per-generator output, so each one
     // resolves its own (single vs multipage, file vs directory) against
     // it. For a given id a generator an extension registered on the
-    // corpus with register_generator wins over a built-in or data-driven
+    // corpus with mrdocs.register_generator wins over a built-in or data-driven
     // one: it owns the whole emit through the script runner, while a
     // registry generator renders the corpus page by page.
     CorpusImpl const& corpusImpl = static_cast<CorpusImpl const&>(*corpus);

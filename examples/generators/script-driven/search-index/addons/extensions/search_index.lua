@@ -2,8 +2,8 @@
 -- aggregates every symbol into a single search-index.json, the kind of
 -- artifact the per-page generators cannot produce.
 --
--- `register_generator(id, fn)` declares it next to any
--- `register_transform` a script might also declare; selecting
+-- `mrdocs.register_generator(id, fn)` declares it next to any
+-- `mrdocs.register_transform` a script might also declare; selecting
 -- `generator: <id>` runs `fn` with one `ctx`. `ctx.corpus.symbols` is
 -- every symbol (each tagged with a flat `_id` so the generator can form
 -- stable per-symbol URLs) and `ctx.output.write` emits files under the
@@ -15,7 +15,7 @@ local function json_string(s)
   return '"' .. s .. '"'
 end
 
-register_generator("search-index", function(ctx)
+mrdocs.register_generator("search-index", function(ctx)
   local entries = {}
   for _, sym in ipairs(ctx.corpus.symbols) do
     local name = sym.name or ""

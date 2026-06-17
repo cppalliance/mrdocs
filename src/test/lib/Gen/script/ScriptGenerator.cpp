@@ -120,7 +120,7 @@ struct StubCorpus
 // Load `src`, which must define a global `generate(ctx)`, and return it as
 // a callable `dom::Function`. The function is self-owning: it anchors the
 // chunk in the Lua registry and carries a copy of the context, so it
-// outlives the local VM here exactly as a `register_generator` function
+// outlives the local VM here exactly as a `mrdocs.register_generator` function
 // outlives the extension that declared it.
 dom::Function
 makeLuaGenerator(std::string_view src)
@@ -140,11 +140,12 @@ makeLuaGenerator(std::string_view src)
     return lua::makeCallable(ctx, ref);
 }
 
-// The JavaScript counterpart of `makeLuaGenerator`. A JS function holds only
-// a weak reference to its interpreter, so - exactly as a corpus does for a
-// `register_generator` function - the caller must keep the VM alive for as
-// long as it intends to call the generator. `JsGenerator::keepAlive` does
-// that; dropping it tears the interpreter down. (A Lua callable instead
+// The JavaScript counterpart of `makeLuaGenerator`. A JS function holds
+// only a weak reference to its interpreter, so - exactly as a corpus does
+// for a `mrdocs.register_generator` function - the caller must keep the VM
+// alive for as long as it intends to call the generator.
+// `JsGenerator::keepAlive` does that; dropping it tears the interpreter
+// down. (A Lua callable instead
 // carries its own VM, so `makeLuaGenerator` needs no such companion.)
 struct JsGenerator
 {
@@ -379,7 +380,7 @@ end
     }
 
     //
-    // register_generator: corpus host and the script bindings
+    // mrdocs.register_generator: corpus host and the script bindings
     //
 
     void
@@ -416,7 +417,7 @@ end
         // A Lua extension that registers a generator leaves it findable on
         // the corpus by its id, and does not warn about registering nothing.
         std::string const script = files::appendPath(td.path(), "gen.lua");
-        writeFile(script, "register_generator(\"my-gen\", function(ctx) end)\n");
+        writeFile(script, "mrdocs.register_generator(\"my-gen\", function(ctx) end)\n");
         BOOST_TEST(runOneLuaExtension(corpus, script).has_value());
         BOOST_TEST(corpus.findScriptGenerator("my-gen") != nullptr);
     }
@@ -430,7 +431,7 @@ end
         BOOST_TEST(td);
         // The JavaScript counterpart.
         std::string const script = files::appendPath(td.path(), "gen.js");
-        writeFile(script, "register_generator(\"my-gen\", function(ctx) {});\n");
+        writeFile(script, "mrdocs.register_generator(\"my-gen\", function(ctx) {});\n");
         BOOST_TEST(runOneJsExtension(corpus, script).has_value());
         BOOST_TEST(corpus.findScriptGenerator("my-gen") != nullptr);
     }

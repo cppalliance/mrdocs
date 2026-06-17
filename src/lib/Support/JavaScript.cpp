@@ -706,9 +706,10 @@ Context::~Context()
     // A `dom::Function` obtained from a JS value holds only a weak reference,
     // so it never keeps the interpreter alive on its own; code that needs such
     // a function to outlive this `Context` (a corpus that stores a
-    // `register_generator` function) keeps a `Context` copy alive instead. The
-    // `DomValueHolder` / `FunctionHolder` objects keep a `shared_ptr<Impl>`, so
-    // the interpreter owns them through a cycle; `cleanup()` breaks that cycle
+    // `mrdocs.register_generator` function) keeps a `Context` copy alive
+    // instead. The `DomValueHolder` / `FunctionHolder` objects keep a
+    // `shared_ptr<Impl>`, so the interpreter owns them through a cycle;
+    // `cleanup()` breaks that cycle
     // by tearing down the holders, which is why teardown is explicit here
     // rather than left to `~Impl`.
     if (impl_ &&
@@ -2117,7 +2118,7 @@ toDomValue(jerry_value_t v, std::shared_ptr<Context::Impl> const& impl)
         // The function value does not own the interpreter: it captures a weak
         // reference and locks it on each call. Code that needs the function to
         // outlive the `Context` that produced it (a corpus that stores a
-        // `register_generator` function) keeps a `js::Context` alive
+        // `mrdocs.register_generator` function) keeps a `js::Context` alive
         // separately; if nothing does, a later call reports an error rather
         // than using a freed interpreter.
         return dom::makeVariadicInvocable(

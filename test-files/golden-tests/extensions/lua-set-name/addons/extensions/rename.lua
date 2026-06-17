@@ -6,7 +6,7 @@
 -- ctx.corpus.symbols is a regular Lua sequence: 1-indexed, with `#` and
 -- `ipairs`/`pairs` support.
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
     for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" then
             sym.name = "renamed_" .. sym.name

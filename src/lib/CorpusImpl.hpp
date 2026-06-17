@@ -62,7 +62,7 @@ class CorpusImpl final : public Corpus
     std::map<SymbolID, UnorderedStringMap<Symbol const*>> lookupCache_;
 
     // Output generators an extension script defined via
-    // `register_generator(id, fn)`. Each `fn` is a `dom::Function` that
+    // `mrdocs.register_generator(id, fn)`. Each `fn` is a `dom::Function` that
     // stays runnable until this corpus is destroyed (after extensions run,
     // when a generator is selected). Its scripting VM is kept alive either
     // by the function itself or by a matching entry in
@@ -218,8 +218,8 @@ public:
 
     /** Register a script-defined output generator.
 
-        Called from an extension's `register_generator(id, fn)`. The first
-        registration of a given id wins; later ones are ignored.
+        Called from an extension's `mrdocs.register_generator(id, fn)`.
+        The first registration of a given id wins; later ones are ignored.
     */
     void
     registerScriptGenerator(std::string id, dom::Function fn);
@@ -231,7 +231,7 @@ public:
 
     /** Keep a scripting VM alive for the lifetime of this corpus.
 
-        A generator registered via `register_generator` may hold only a
+        A generator registered via `mrdocs.register_generator` may hold only a
         weak reference to the VM that defined it. The extension binding
         hands the VM over here so it outlives the extension run and stays
         usable when the generator is selected.
