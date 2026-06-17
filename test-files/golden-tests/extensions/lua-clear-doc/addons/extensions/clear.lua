@@ -3,7 +3,7 @@
 -- doc-comment so the rendered output contains no doc-comment block
 -- for it.
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
     for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" then
             sym.doc = nil

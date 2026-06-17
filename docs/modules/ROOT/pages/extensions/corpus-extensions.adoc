@@ -5,7 +5,7 @@ An extension is a Lua or JavaScript script that runs as part of a Mr.Docs build 
 * A *corpus transform* rewrites metadata across many symbols at once: backfill briefs from a naming convention, tag symbols by group, mark generated code as "see below" in the output. Transforms run between extraction and rendering, so every generator sees the change.
 * A *generator* owns the whole emit: instead of rendering one page per symbol, it traverses the corpus and writes whatever files it wants. That lets it produce shapes the per-page generators cannot, such as a single artifact aggregated across every symbol.
 
-A script declares a transform with `register_transform(fn)` and a generator with `register_generator(id, fn)`. Either way the registered function receives a single context object, `ctx`.
+A script declares a transform with `mrdocs.register_transform(fn)` and a generator with `mrdocs.register_generator(id, fn)`. Either way the registered function receives a single context object, `ctx`.
 
 == Languages and addon locations
 
@@ -33,7 +33,7 @@ A script can register any number of transforms and generators, or none at all. I
 [#corpus-transforms]
 == Corpus transforms
 
-A transform is a function passed to `register_transform`. Mr.Docs invokes each registered function once, in registration order, with the `ctx` object. A flat view of the corpus reaches the script through `ctx.corpus`.
+A transform is a function passed to `mrdocs.register_transform`. Mr.Docs invokes each registered function once, in registration order, with the `ctx` object. A flat view of the corpus reaches the script through `ctx.corpus`.
 
 [tabs]
 ======
@@ -65,7 +65,7 @@ JavaScript::
 .`addons/extensions/count_by_kind.js`
 [source,javascript]
 ----
-register_transform(function(ctx) {
+mrdocs.register_transform(function(ctx) {
     var counts = {};
     for (var i = 0; i < ctx.corpus.symbols.length; ++i) {
         var k = ctx.corpus.symbols[i].kind;
@@ -82,7 +82,7 @@ Lua::
 .`addons/extensions/count_by_kind.lua`
 [source,lua]
 ----
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
     local counts = {}
     for _, sym in ipairs(ctx.corpus.symbols) do
         counts[sym.kind] = (counts[sym.kind] or 0) + 1
@@ -225,7 +225,7 @@ Notice in this example that `s.doc.sees` receives a list of polymorphic types th
 
 The built-in generators render one page per symbol. When you need a different output structure, e.g. one file per namespace, or a single artifact aggregated across every symbol such as a search index, that page-per-symbol shape cannot express it. A generator hands the whole emit to the script instead: it traverses the corpus and writes whatever files it wants. No C++ and no templates are involved.
 
-A script declares a generator with `register_generator(id, fn)`. The `id` is the name you select on the command line with `--generator=<id>`; a registered generator takes precedence over a built-in of the same name. Selecting a generator is a request for output, so its function does the work directly, the page-per-symbol fallback the built-ins provide does not apply.
+A script declares a generator with `mrdocs.register_generator(id, fn)`. The `id` is the name you select on the command line with `--generator=<id>`; a registered generator takes precedence over a built-in of the same name. Selecting a generator is a request for output, so its function does the work directly, the page-per-symbol fallback the built-ins provide does not apply.
 
 The function receives the same `ctx` a transform does, plus `ctx.output`:
 

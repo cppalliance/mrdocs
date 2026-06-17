@@ -5,7 +5,7 @@
 -- so this script runs FIRST; its rename is overwritten by the
 -- supplemental's.
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
     for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" then
             sym.name = "from_primary"

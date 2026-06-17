@@ -21,7 +21,7 @@ namespace mrdocs::script {
 
 /** Run a script-defined output generator.
 
-    A generator declared with `register_generator(id, fn)` is a
+    A generator declared with `mrdocs.register_generator(id, fn)` is a
     `dom::Function` that owns the whole emit. Invoke it with one `ctx`
     object, mirroring the shape a transform receives:
 

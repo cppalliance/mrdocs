@@ -23,7 +23,7 @@ class CorpusImpl;
     Extensions are discovered under each addon root's extensions/
     directory (the primary addons plus addons-supplemental): a .lua or
     .js file is an extension. Each script declares corpus transforms by
-    calling `register_transform(fn)`; every registered function is
+    calling `mrdocs.register_transform(fn)`; every registered function is
     invoked once, in registration order, with a navigable DOM view of the
     corpus. A transform reads the corpus through that view and mutates it
     by assigning to symbol fields (for example `sym.name = "..."`), which

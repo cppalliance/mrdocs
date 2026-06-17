@@ -48,7 +48,7 @@ struct LuaRegistrations
     std::size_t generators = 0;
 };
 
-// `register_transform(fn)`: anchor `fn` in the registry and record it as
+// `mrdocs.register_transform(fn)`: anchor `fn` in the registry and record it as
 // a callable, so the host can invoke it once the chunk has run.
 int
 luaRegisterTransform(lua_State* L)
@@ -59,7 +59,7 @@ luaRegisterTransform(lua_State* L)
     if (lua_type(L, 1) != LUA_TFUNCTION)
     {
         result = luaL_error(L,
-            "register_transform: expected a function argument");
+            "mrdocs.register_transform: expected a function argument");
     }
     else
     {
@@ -70,9 +70,10 @@ luaRegisterTransform(lua_State* L)
     return result;
 }
 
-// `register_generator(id, fn)`: anchor `fn` in the registry and hand it to
-// the corpus under `id`. The corpus keeps it runnable until a generator is
-// selected and run, long after this chunk's stack has unwound.
+// `mrdocs.register_generator(id, fn)`: anchor `fn` in the registry and
+// hand it to the corpus under `id`. The corpus keeps it runnable until a
+// generator is selected and run, long after this chunk's stack has
+// unwound.
 int
 luaRegisterGenerator(lua_State* L)
 {
@@ -82,7 +83,7 @@ luaRegisterGenerator(lua_State* L)
     if (lua_type(L, 1) != LUA_TSTRING || lua_type(L, 2) != LUA_TFUNCTION)
     {
         result = luaL_error(L,
-            "register_generator: expected (string id, function)");
+            "mrdocs.register_generator: expected (string id, function)");
     }
     else
     {
@@ -98,9 +99,9 @@ luaRegisterGenerator(lua_State* L)
     return result;
 }
 
-// Bind the `register_transform` and `register_generator` entry points
-// before the chunk runs. The shared registrations pointer is carried as
-// each closure's single upvalue.
+// Install the `mrdocs` global carrying the `register_transform` and
+// `register_generator` entry points before the chunk runs. The shared
+// registrations pointer is carried as each closure's single upvalue.
 void
 registerLuaExtensionApi(
     lua::Context& ctx, CorpusImpl& corpus, LuaRegistrations& regs)
@@ -108,12 +109,14 @@ registerLuaExtensionApi(
     regs.ctx = &ctx;
     regs.corpus = &corpus;
     lua_State* L = static_cast<lua_State*>(ctx.nativeState());
+    lua_newtable(L);
     lua_pushlightuserdata(L, &regs);
     lua_pushcclosure(L, &luaRegisterTransform, 1);
-    lua_setglobal(L, "register_transform");
+    lua_setfield(L, -2, "register_transform");
     lua_pushlightuserdata(L, &regs);
     lua_pushcclosure(L, &luaRegisterGenerator, 1);
-    lua_setglobal(L, "register_generator");
+    lua_setfield(L, -2, "register_generator");
+    lua_setglobal(L, "mrdocs");
 }
 
 // Invoke one registered transform with the `ctx` object, tagging any
@@ -158,11 +161,12 @@ runOneLuaExtension(CorpusImpl& corpus, std::string const& scriptPath)
     MRDOCS_TRY(lua::Function chunk, scope.loadChunk(script, scriptPath));
 
     // Running the chunk's top-level code is what calls
-    // `register_transform`; the chunk's own return value is unused.
+    // `mrdocs.register_transform`; the chunk's own return value is unused.
     MRDOCS_TRY(chunk.call());
 
     // A discovered script that registers nothing is almost always a
-    // mistake (a misspelled `register_transform` / `register_generator`,
+    // mistake (a misspelled `mrdocs.register_transform` /
+    // `mrdocs.register_generator`,
     // or a guard that skipped it), so flag it rather than silently doing
     // nothing.
     if (regs.transforms.empty() && regs.generators == 0)

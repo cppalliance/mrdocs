@@ -22,10 +22,11 @@ class CorpusImpl;
 /** Run one JavaScript extension script against the corpus.
 
     Build a fresh JS context and evaluate the script. The script declares
-    corpus transforms with `register_transform(fn)` and output generators
-    with `register_generator(id, fn)`, in either combination. Each transform
-    is invoked once, in registration order, with a navigable DOM view of the
-    corpus it can read and mutate in place; each generator is handed to the
+    corpus transforms with `mrdocs.register_transform(fn)` and output
+    generators with `mrdocs.register_generator(id, fn)`, in either
+    combination. Each transform is invoked once, in registration order,
+    with a navigable DOM view of the corpus it can read and mutate in
+    place; each generator is handed to the
     corpus to run later, once one is selected. A script that registers
     nothing causes a warning and otherwise has no effect, so an empty .js
     file is tolerated.

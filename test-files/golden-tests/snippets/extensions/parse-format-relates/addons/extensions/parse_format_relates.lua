@@ -15,7 +15,7 @@ local function partnerName(name)
     return partner
 end
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
     for _, s in ipairs(ctx.corpus.symbols) do
         if s.kind == "function" then
             local pname = partnerName(s.name)

@@ -26,7 +26,7 @@
 -- This fixture omits the lookup and uses a bare identifier so the
 -- test is self-contained.
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
     for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function" and sym.name == "target_function" then
             sym.returnType = {

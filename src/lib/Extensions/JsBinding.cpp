@@ -27,11 +27,11 @@ namespace mrdocs {
 
 namespace {
 
-// Bind the `register_transform` and `register_generator` entry points
-// before the script runs. A JavaScript function bridges to a
-// `dom::Function`: transforms are captured in `transforms` (invoked once
-// the script has run), generators are handed to the corpus, which keeps
-// them runnable past this VM's lifetime.
+// Install the `mrdocs` global carrying the `register_transform` and
+// `register_generator` entry points before the script runs. A JavaScript
+// function bridges to a `dom::Function`: transforms are captured in
+// `transforms` (invoked once the script has run), generators are handed to
+// the corpus, which keeps them runnable past this VM's lifetime.
 void
 registerJsExtensionApi(
     js::Scope& scope,
@@ -39,7 +39,8 @@ registerJsExtensionApi(
     dom::Array& transforms,
     std::size_t& generators)
 {
-    scope.setGlobal(
+    dom::Object api;
+    api.set(
         "register_transform",
         dom::Value(dom::makeVariadicInvocable(
             [&transforms](dom::Array const& args)
@@ -49,7 +50,8 @@ registerJsExtensionApi(
                 if (args.empty() || !args.get(0).isFunction())
                 {
                     result = Unexpected(Error(
-                        "register_transform: expected a function argument"));
+                        "mrdocs.register_transform: expected a function "
+                        "argument"));
                 }
                 else
                 {
@@ -58,7 +60,7 @@ registerJsExtensionApi(
                 return result;
             })));
 
-    scope.setGlobal(
+    api.set(
         "register_generator",
         dom::Value(dom::makeVariadicInvocable(
             [&corpus, &generators](dom::Array const& args)
@@ -70,7 +72,8 @@ registerJsExtensionApi(
                     !args.get(1).isFunction())
                 {
                     result = Unexpected(Error(
-                        "register_generator: expected (string id, function)"));
+                        "mrdocs.register_generator: expected (string id, "
+                        "function)"));
                 }
                 else
                 {
@@ -81,6 +84,8 @@ registerJsExtensionApi(
                 }
                 return result;
             })));
+
+    scope.setGlobal("mrdocs", dom::Value(std::move(api)));
 }
 
 // Invoke one registered transform with the `ctx` object, tagging any
@@ -127,7 +132,7 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
 
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
 
-    // Running the script is what calls `register_transform`.
+    // Running the script is what calls `mrdocs.register_transform`.
     Expected<void> result = scope.script(script);
     if (!result.has_value())
     {
@@ -138,7 +143,8 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
     else if (transforms.empty() && generators == 0)
     {
         // A discovered script that registers nothing is almost always a
-        // mistake (a misspelled `register_transform` / `register_generator`,
+        // mistake (a misspelled `mrdocs.register_transform` /
+        // `mrdocs.register_generator`,
         // or a guard that skipped it), so flag it rather than silently
         // doing nothing.
         report::warn("extension '{}' registered nothing", scriptPath);

@@ -1,9 +1,9 @@
-// Declare two corpus transforms with `register_transform`. Both run, in
+// Declare two corpus transforms with `mrdocs.register_transform`. Both run, in
 // registration order, so one extension can contribute several
 // transforms. The first renames every function; the second rewrites
 // its brief. Mirrors the lua-register-transform fixture on the JS path.
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
 {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i)
     {
@@ -15,7 +15,7 @@ register_transform(function(ctx)
     }
 });
 
-register_transform(function(ctx)
+mrdocs.register_transform(function(ctx)
 {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i)
     {
