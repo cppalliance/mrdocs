@@ -31,7 +31,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>15</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -58,7 +58,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>24</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -85,7 +85,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>30</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -162,7 +162,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>36</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -264,7 +264,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -316,7 +316,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>18</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -393,7 +393,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>52</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace-alias</kind>
@@ -422,7 +422,7 @@
       <source-path>no-extract-empty-namespaces.cpp</source-path>
       <line-number>46</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace-alias</kind>

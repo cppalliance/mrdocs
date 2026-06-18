@@ -103,13 +103,13 @@
       <source-path>see-below-base.cpp</source-path>
       <line-number>6</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>nOVGo4vrMcebHm4Ap0P9O3FPudg=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>J1syoWzn2cGgGxt+fceKEo2Jpzc=</parent>
   <doc-comment>
     <brief>
@@ -127,7 +127,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>own</name>
@@ -150,6 +150,6 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

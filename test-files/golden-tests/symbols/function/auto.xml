@@ -17,9 +17,9 @@
     <location>
       <short-path>auto.cpp</short-path>
       <source-path>auto.cpp</source-path>
-      <line-number>6</line-number>
+      <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

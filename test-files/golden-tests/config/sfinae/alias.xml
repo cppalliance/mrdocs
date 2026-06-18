@@ -35,7 +35,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <constant-tparam>
       <kind>constant</kind>
@@ -75,7 +75,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>

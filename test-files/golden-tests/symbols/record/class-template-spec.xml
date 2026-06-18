@@ -50,8 +50,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>AKwlChAOi+0ttIAPsD7uitS+gk0=</specializations>
-  <specializations>y/8TvVlacBAIG2ds2aYgZE+zGUU=</specializations>
 </record>
 <function>
   <name>f</name>
@@ -74,7 +72,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>A</name>
@@ -112,7 +110,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>g</name>
@@ -135,7 +132,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>A</name>
@@ -173,7 +170,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>h</name>
@@ -196,7 +192,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>B</name>
@@ -229,8 +225,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=</specializations>
-  <specializations>dydGCFMdrM4nOwuv3RCXqg2KCUA=</specializations>
 </record>
 <function>
   <name>f</name>
@@ -253,7 +247,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>B</name>
@@ -298,7 +292,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>h</name>
@@ -321,7 +314,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>B</name>
@@ -366,7 +359,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>g</name>
@@ -389,7 +381,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>C</name>
@@ -427,8 +419,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>qrcrkE8Br83XKNMh95Dvwpph/M8=</specializations>
-  <specializations>6zS87fCNnLtFfHbRWEmcdeAT1Zg=</specializations>
 </record>
 <function>
   <name>f</name>
@@ -451,7 +441,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>C</name>
@@ -498,7 +488,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>g</name>
@@ -521,7 +510,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>C</name>
@@ -575,7 +564,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>h</name>
@@ -598,6 +586,6 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

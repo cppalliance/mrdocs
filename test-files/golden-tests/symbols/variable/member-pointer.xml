@@ -21,7 +21,7 @@
       <source-path>member-pointer.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -69,7 +69,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>y</name>
@@ -91,7 +91,7 @@
       <identifier>double</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>mp_double</name>
@@ -101,7 +101,7 @@
       <source-path>member-pointer.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>
@@ -142,7 +142,7 @@
       <source-path>member-pointer.cpp</source-path>
       <line-number>9</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>

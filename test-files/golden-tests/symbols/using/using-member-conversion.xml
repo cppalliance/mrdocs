@@ -21,7 +21,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -47,7 +47,7 @@
       </named>
     </function>
   </pointer>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <record>
   <name>X</name>
@@ -57,7 +57,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -93,7 +93,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -124,8 +124,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>Y</name>
@@ -135,7 +135,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -180,7 +180,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -211,8 +211,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <using>
   <name>operator void(*)()</name>
@@ -222,7 +222,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>15</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -258,7 +258,7 @@
       <source-path>using-member-conversion.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -289,7 +289,7 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 </mrdocs>

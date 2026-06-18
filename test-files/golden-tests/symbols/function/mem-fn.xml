@@ -74,7 +74,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T02</name>
@@ -122,7 +122,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T03</name>
@@ -170,7 +170,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T04</name>
@@ -218,7 +218,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T05</name>
@@ -266,8 +266,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>T06</name>
@@ -315,7 +315,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T08</name>
@@ -363,7 +363,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T09</name>
@@ -411,7 +411,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T10</name>
@@ -459,8 +459,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-trailing-return>1</has-trailing-return>
-  <is-record-method>1</is-record-method>
+  <has-trailing-return/>
+  <is-record-method/>
 </function>
 <record>
   <name>T11</name>
@@ -508,8 +508,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-trailing-return>1</has-trailing-return>
-  <is-record-method>1</is-record-method>
+  <has-trailing-return/>
+  <is-record-method/>
 </function>
 <record>
   <name>T12</name>
@@ -557,8 +557,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-variadic>1</is-variadic>
-  <is-record-method>1</is-record-method>
+  <is-variadic/>
+  <is-record-method/>
 </function>
 <record>
   <name>T13</name>
@@ -606,9 +606,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-virtual-as-written>1</is-virtual-as-written>
+  <is-record-method/>
+  <is-virtual/>
+  <is-virtual-as-written/>
 </function>
 <record>
   <name>T14</name>
@@ -657,10 +657,10 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-virtual-as-written>1</is-virtual-as-written>
-  <is-pure>1</is-pure>
+  <is-record-method/>
+  <is-virtual/>
+  <is-virtual-as-written/>
+  <is-pure/>
 </function>
 <record>
   <name>T15</name>
@@ -708,8 +708,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-volatile>1</is-volatile>
+  <is-record-method/>
+  <is-volatile/>
 </function>
 <record>
   <name>T16</name>
@@ -757,7 +757,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>T17</name>
@@ -814,9 +814,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-override-attr>1</has-override-attr>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
+  <has-override-attr/>
+  <is-record-method/>
+  <is-virtual/>
 </function>
 <record>
   <name>U</name>
@@ -867,11 +867,11 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-variadic>1</is-variadic>
-  <has-trailing-return>1</has-trailing-return>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
-  <is-volatile>1</is-volatile>
+  <is-variadic/>
+  <has-trailing-return/>
+  <is-record-method/>
+  <is-const/>
+  <is-volatile/>
 </function>
 <function>
   <name>f3</name>
@@ -894,12 +894,12 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-virtual-as-written>1</is-virtual-as-written>
-  <is-pure>1</is-pure>
-  <is-const>1</is-const>
-  <is-volatile>1</is-volatile>
+  <is-record-method/>
+  <is-virtual/>
+  <is-virtual-as-written/>
+  <is-pure/>
+  <is-const/>
+  <is-volatile/>
 </function>
 <function>
   <name>f2</name>
@@ -922,8 +922,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-trailing-return>1</has-trailing-return>
-  <is-record-method>1</is-record-method>
+  <has-trailing-return/>
+  <is-record-method/>
 </function>
 <record>
   <name>V</name>
@@ -982,11 +982,11 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-variadic>1</is-variadic>
-  <has-trailing-return>1</has-trailing-return>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
-  <is-volatile>1</is-volatile>
+  <is-variadic/>
+  <has-trailing-return/>
+  <is-record-method/>
+  <is-const/>
+  <is-volatile/>
 </function>
 <function>
   <name>f3</name>
@@ -1009,11 +1009,11 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-override-attr>1</has-override-attr>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-const>1</is-const>
-  <is-volatile>1</is-volatile>
+  <has-override-attr/>
+  <is-record-method/>
+  <is-virtual/>
+  <is-const/>
+  <is-volatile/>
 </function>
 <function>
   <name>f2</name>
@@ -1036,7 +1036,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-trailing-return>1</has-trailing-return>
-  <is-record-method>1</is-record-method>
+  <has-trailing-return/>
+  <is-record-method/>
 </function>
 </mrdocs>

@@ -36,7 +36,7 @@
       <identifier>S0</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>A1</name>
@@ -69,7 +69,7 @@
       </name>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <record>
   <name>S0</name>
@@ -103,8 +103,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</specializations>
-  <specializations>nM49pHyBLj9V6pphxxYAxi4tXXc=</specializations>
 </record>
 <typedef>
   <name>M0</name>
@@ -126,7 +124,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>M1</name>
@@ -149,7 +147,7 @@
       <identifier>S0</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -195,7 +193,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <typedef>
   <name>M0</name>
@@ -217,7 +214,7 @@
       <identifier>short</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>M1</name>
@@ -240,7 +237,7 @@
       <identifier>S0</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -286,7 +283,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <typedef>
   <name>M0</name>
@@ -308,7 +304,7 @@
       <identifier>void</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>M1</name>
@@ -331,7 +327,7 @@
       <identifier>S0</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>

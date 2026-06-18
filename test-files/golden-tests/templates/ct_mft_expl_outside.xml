@@ -43,7 +43,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>AKwlChAOi+0ttIAPsD7uitS+gk0=</specializations>
 </record>
 <function>
   <name>f</name>
@@ -73,8 +72,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <specializations>fjcm9F09lrCrLSgw6Swqw9KOBlM=</specializations>
+  <is-record-method/>
 </function>
 <record>
   <name>A</name>
@@ -112,7 +110,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <overloads>
   <name>f</name>
@@ -172,7 +169,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -207,7 +204,6 @@
     <primary>fycIFVnUjGsczEihLemEC7pcV4w=</primary>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <is-record-method/>
 </function>
 </mrdocs>

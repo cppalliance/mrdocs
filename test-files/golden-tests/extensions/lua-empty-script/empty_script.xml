@@ -19,7 +19,7 @@
       <source-path>empty_script.cpp</source-path>
       <line-number>4</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -31,7 +31,18 @@
       <kind>brief</kind>
       <text>
         <kind>text</kind>
-        <literal>A function untouched by any extension - the test verifies that loading an extension that registers no transform completes the build cleanly and leaves the corpus alone.</literal>
+        <literal>A function untouched by any extension - the test verifies that loading an extension file that does NOT define </literal>
+      </text>
+      <code>
+        <kind>code</kind>
+        <text>
+          <kind>text</kind>
+          <literal>transform_corpus</literal>
+        </text>
+      </code>
+      <text>
+        <kind>text</kind>
+        <literal> completes the build cleanly and leaves the corpus alone.</literal>
       </text>
     </brief>
   </doc-comment>

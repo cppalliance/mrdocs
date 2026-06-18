@@ -55,28 +55,28 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>conditional-explicit.cpp</short-path>
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>7</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>conditional-explicit.cpp</short-path>
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>11</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>conditional-explicit.cpp</short-path>
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>15</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -112,7 +112,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>11</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -152,7 +152,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>A</name>
@@ -162,7 +162,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -202,7 +202,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>A</name>
@@ -212,7 +212,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>7</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -252,7 +252,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>A</name>
@@ -262,7 +262,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>15</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -309,7 +309,7 @@
     </type-tparam>
   </template>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator </name>
@@ -319,7 +319,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>32</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -363,8 +363,8 @@
     </type-tparam>
   </template>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator bool</name>
@@ -374,7 +374,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -411,8 +411,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator char</name>
@@ -422,7 +422,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -459,8 +459,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator double</name>
@@ -470,7 +470,7 @@
       <source-path>conditional-explicit.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -507,7 +507,7 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 </mrdocs>

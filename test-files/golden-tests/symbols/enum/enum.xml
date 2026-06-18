@@ -22,7 +22,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum</kind>
@@ -56,7 +56,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>11</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>
@@ -89,7 +89,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>16</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>
@@ -174,7 +174,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>29</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum</kind>
@@ -197,7 +197,7 @@
       </text>
     </brief>
   </doc-comment>
-  <scoped>1</scoped>
+  <scoped/>
   <named>
     <name>
       <kind>identifier</kind>
@@ -215,7 +215,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>
@@ -247,7 +247,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>40</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>
@@ -285,7 +285,7 @@
   <id>sSur7Z1606gfBcxeK64ws2daEXI=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
-  <scoped>1</scoped>
+  <scoped/>
   <named>
     <name>
       <kind>identifier</kind>

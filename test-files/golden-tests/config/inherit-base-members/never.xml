@@ -24,7 +24,7 @@
       <source-path>never.cpp</source-path>
       <line-number>30</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -74,7 +74,7 @@
       <source-path>never.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -107,7 +107,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_shadowed</name>
@@ -117,7 +117,7 @@
       <source-path>never.cpp</source-path>
       <line-number>37</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -150,7 +150,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>derived_shadowed</name>
@@ -160,7 +160,7 @@
       <source-path>never.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -193,7 +193,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_inherited</name>
@@ -203,7 +203,7 @@
       <source-path>never.cpp</source-path>
       <line-number>46</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -236,7 +236,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_shadowed</name>
@@ -246,7 +246,7 @@
       <source-path>never.cpp</source-path>
       <line-number>44</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -279,7 +279,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -289,7 +289,7 @@
       <source-path>never.cpp</source-path>
       <line-number>42</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -322,7 +322,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>base_base</name>
@@ -332,7 +332,7 @@
       <source-path>never.cpp</source-path>
       <line-number>20</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -369,7 +369,7 @@
       <source-path>never.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -402,7 +402,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_base_inherited</name>
@@ -412,7 +412,7 @@
       <source-path>never.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -445,7 +445,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>derived</name>
@@ -455,7 +455,7 @@
       <source-path>never.cpp</source-path>
       <line-number>50</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -509,7 +509,7 @@
       <source-path>never.cpp</source-path>
       <line-number>56</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -542,7 +542,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -552,7 +552,7 @@
       <source-path>never.cpp</source-path>
       <line-number>59</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -585,7 +585,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>private_derived</name>
@@ -595,7 +595,7 @@
       <source-path>never.cpp</source-path>
       <line-number>76</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -649,7 +649,7 @@
       <source-path>never.cpp</source-path>
       <line-number>82</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -682,7 +682,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -692,7 +692,7 @@
       <source-path>never.cpp</source-path>
       <line-number>85</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -725,7 +725,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>protected_derived</name>
@@ -735,7 +735,7 @@
       <source-path>never.cpp</source-path>
       <line-number>63</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -789,7 +789,7 @@
       <source-path>never.cpp</source-path>
       <line-number>69</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -822,7 +822,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -832,7 +832,7 @@
       <source-path>never.cpp</source-path>
       <line-number>72</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -865,6 +865,6 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

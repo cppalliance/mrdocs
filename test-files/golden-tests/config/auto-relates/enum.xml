@@ -24,7 +24,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -70,7 +70,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -126,7 +126,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>3</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum</kind>
@@ -157,7 +157,7 @@
       <id>A2a7UAC5PSe7I2i+o1xdNPwaS1s=</id>
     </reference>
   </doc-comment>
-  <scoped>1</scoped>
+  <scoped/>
   <named>
     <name>
       <kind>identifier</kind>
@@ -173,7 +173,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>19</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -218,7 +218,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>31</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -268,7 +268,7 @@
       <source-path>enum.cpp</source-path>
       <line-number>25</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

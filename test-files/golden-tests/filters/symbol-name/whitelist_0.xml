@@ -22,7 +22,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>3</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -57,7 +57,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>7</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -96,7 +96,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>16</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -143,7 +143,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>33</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -178,7 +178,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>38</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -221,7 +221,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -256,7 +256,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>47</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -295,7 +295,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>57</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -330,7 +330,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>65</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -366,7 +366,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>83</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -401,7 +401,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>88</line-number>
       <column-number>13</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -451,7 +451,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>73</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -486,7 +486,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>78</line-number>
       <column-number>13</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -536,7 +536,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>105</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -579,7 +579,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>113</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -621,7 +621,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>116</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -651,7 +651,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f0_WL</name>
@@ -661,7 +661,7 @@
       <source-path>whitelist_0.cpp</source-path>
       <line-number>109</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -691,6 +691,6 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

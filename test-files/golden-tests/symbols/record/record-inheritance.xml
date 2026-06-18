@@ -206,7 +206,7 @@
         <identifier>C0</identifier>
       </name>
     </named>
-    <is-virtual>1</is-virtual>
+    <is-virtual/>
   </base>
   <derived>RoJyFLcF4tn+I7Xvlv0H+vBkIE4=</derived>
   <record-interface>
@@ -241,7 +241,7 @@
         <identifier>C1</identifier>
       </name>
     </named>
-    <is-virtual>1</is-virtual>
+    <is-virtual/>
   </base>
   <derived>RoJyFLcF4tn+I7Xvlv0H+vBkIE4=</derived>
   <record-interface>
@@ -522,13 +522,13 @@
     <type-tparam>
       <kind>type</kind>
       <name>Ts</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
   <base>
     <named>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <name>
         <kind>identifier</kind>
         <identifier>Ts</identifier>

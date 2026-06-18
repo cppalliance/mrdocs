@@ -19,7 +19,7 @@
       <source-path>show-enum-constants-false.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum</kind>
@@ -35,7 +35,7 @@
       </text>
     </brief>
   </doc-comment>
-  <scoped>1</scoped>
+  <scoped/>
   <named>
     <name>
       <kind>identifier</kind>
@@ -54,7 +54,7 @@
       <source-path>show-enum-constants-false.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>
@@ -79,7 +79,7 @@
       <source-path>show-enum-constants-false.cpp</source-path>
       <line-number>6</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>
@@ -104,7 +104,7 @@
       <source-path>show-enum-constants-false.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>

@@ -20,7 +20,7 @@
       <source-path>decay-params.cpp</source-path>
       <line-number>35</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -93,21 +93,21 @@
       <source-path>decay-params.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>decay-params.cpp</short-path>
       <source-path>decay-params.cpp</source-path>
       <line-number>18</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>decay-params.cpp</short-path>
       <source-path>decay-params.cpp</source-path>
       <line-number>29</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -160,7 +160,7 @@
       <source-path>decay-params.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -206,7 +206,7 @@
       <source-path>decay-params.cpp</source-path>
       <line-number>18</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -269,7 +269,7 @@
       <source-path>decay-params.cpp</source-path>
       <line-number>29</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

@@ -36,7 +36,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>U</name>
@@ -53,13 +53,13 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <function>
   <name>f</name>
@@ -218,7 +218,7 @@
             </name>
           </named>
           <named>
-            <is-const>1</is-const>
+            <is-const/>
             <name>
               <kind>identifier</kind>
               <identifier>bool</identifier>

@@ -44,14 +44,14 @@
       <source-path>using-function-after.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-function-after.cpp</short-path>
       <source-path>using-function-after.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -92,7 +92,7 @@
       <source-path>using-function-after.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -146,7 +146,7 @@
       <source-path>using-function-after.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -186,7 +186,7 @@
       <source-path>using-function-after.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -222,7 +222,7 @@
       <source-path>using-function-after.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

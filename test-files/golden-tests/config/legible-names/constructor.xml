@@ -126,7 +126,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -168,7 +168,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
@@ -179,7 +179,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -231,7 +231,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -287,7 +287,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -343,6 +343,6 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

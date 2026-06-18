@@ -60,7 +60,7 @@
   <kind>function</kind>
   <id>i2Kh9WfDseks8Lnr/kapVaR9r4g=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <l-value-reference>
     <named>
@@ -71,7 +71,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>B</name>
@@ -129,6 +129,6 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

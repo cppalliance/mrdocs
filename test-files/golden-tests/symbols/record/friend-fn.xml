@@ -47,7 +47,7 @@
       <source-path>friend-fn.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

@@ -23,7 +23,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>15</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -66,14 +66,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>18</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -115,7 +115,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>18</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -138,7 +138,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>A</name>
@@ -148,7 +148,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -188,7 +188,7 @@
     <name>a</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>operator=</name>
@@ -198,14 +198,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>31</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -260,7 +260,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>31</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -306,7 +306,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -317,7 +317,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator=</name>
@@ -327,7 +327,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -380,7 +380,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>operator+</name>
@@ -390,14 +390,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>47</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>54</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -450,7 +450,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>54</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -501,7 +501,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator+</name>
@@ -511,7 +511,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>47</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -555,7 +555,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -566,7 +566,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>operator-</name>
@@ -576,14 +576,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>64</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>73</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -625,7 +625,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>64</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -663,7 +663,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator-</name>
@@ -673,7 +673,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>73</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -721,7 +721,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -732,7 +732,7 @@
     <name>rhs</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>B</name>
@@ -742,7 +742,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>77</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -781,14 +781,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>93</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>99</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -837,7 +837,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>93</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -869,7 +869,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>99</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -918,14 +918,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>83</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>89</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -966,7 +966,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>83</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1011,7 +1011,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -1031,7 +1031,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>89</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1076,7 +1076,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
@@ -1096,14 +1096,14 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-brief.cpp</short-path>
       <source-path>overloads-brief.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -1153,7 +1153,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1202,7 +1202,7 @@
       <source-path>overloads-brief.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

@@ -76,12 +76,6 @@
   <id>h2j8f921HD+Fyaokcs4ndGM/yNk=</id>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <deprecated-attribute>
-    <name>deprecated</name>
-  </deprecated-attribute>
-  <maybe-unused-attribute>
-    <name>maybe_unused</name>
-  </maybe-unused-attribute>
   <named>
     <name>
       <kind>identifier</kind>
@@ -90,7 +84,11 @@
     </name>
   </named>
   <initializer>Empty{}</initializer>
-  <is-record-field>1</is-record-field>
+  <attributes>deprecated</attributes>
+  <attributes>maybe_unused</attributes>
+  <is-maybe-unused/>
+  <is-deprecated/>
+  <is-record-field/>
 </variable>
 <variable>
   <name>i</name>
@@ -112,6 +110,6 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 </mrdocs>

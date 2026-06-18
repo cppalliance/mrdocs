@@ -90,7 +90,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>foo</name>
@@ -121,7 +121,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>foo</name>
@@ -182,7 +182,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>foo</name>
@@ -221,7 +221,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>foo</name>
@@ -290,7 +290,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>foo</name>
@@ -337,7 +337,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>foo</name>
@@ -414,7 +414,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>foo</name>
@@ -469,6 +469,6 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

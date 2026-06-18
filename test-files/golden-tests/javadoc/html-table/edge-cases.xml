@@ -21,7 +21,7 @@
       <source-path>edge-cases.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -77,7 +77,7 @@
       <source-path>edge-cases.cpp</source-path>
       <line-number>27</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -133,7 +133,7 @@
       <source-path>edge-cases.cpp</source-path>
       <line-number>42</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -144,7 +144,7 @@
     <table>
       <kind>table</kind>
       <table-row>
-        <is-header>1</is-header>
+        <is-header/>
         <table-cell>
           <text>
             <kind>text</kind>

@@ -43,7 +43,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>AKwlChAOi+0ttIAPsD7uitS+gk0=</specializations>
 </record>
 <record>
   <name>B</name>
@@ -91,7 +90,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>A</name>
@@ -129,7 +128,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -183,6 +181,6 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

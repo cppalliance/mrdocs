@@ -48,10 +48,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>C6fFmGgpPJ7jgwKJA98mfx5cxts=</specializations>
-  <specializations>GFV3P/JtfrnQwjOLVfI9VbJpd9U=</specializations>
-  <specializations>eeh34/7lF7rCmE7zXKBrUC7mz3A=</specializations>
-  <specializations>y/8TvVlacBAIG2ds2aYgZE+zGUU=</specializations>
 </record>
 <record>
   <name>B</name>
@@ -86,12 +82,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>AmrHzqMyGcAD714oirSEx/XCTwk=</specializations>
-  <specializations>Ax52oDYNHKdb/kayrTPXtP7EnLo=</specializations>
-  <specializations>Pna+OT/o27zekcoRTFxKtb5m+BQ=</specializations>
-  <specializations>X9RyjucPb3aRFUq3aZCNE4g/ZVE=</specializations>
-  <specializations>fSC2izK+T4vA4Kndw3xNjCTDpoQ=</specializations>
-  <specializations>gNJJgsCrBHI+de6/WxRWfc6QUSQ=</specializations>
 </record>
 <record>
   <name>C</name>
@@ -147,8 +137,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>E3rBDckOC8QkP+2YLNtbMxg69mc=</specializations>
-  <specializations>8gtdVs8Zc/2hE1ugmc5SJaowDrk=</specializations>
 </record>
 <record>
   <name>D</name>
@@ -185,7 +173,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -225,7 +212,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -281,11 +267,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>FQCRWOnd4VbpVowmyiWSRR2l2cA=</specializations>
-  <specializations>P+rxL5vI4ct+gzn9YkO97Pt7Ras=</specializations>
-  <specializations>rzmzIDLemEwnRqvVCiQsLO9rHE4=</specializations>
-  <specializations>2n2EC+ZzX4R61vVgqMqWD1h4Fqc=</specializations>
-  <specializations>9bJvdwRZpk2+HRV+Az3lOybs1Wc=</specializations>
 </record>
 <record>
   <name>D</name>
@@ -322,7 +303,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>A</name>
@@ -361,7 +341,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -432,7 +411,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -524,7 +502,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>A</name>
@@ -564,7 +541,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -605,8 +581,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>jvnZWmA3eB78JX83nJawhD8NGhw=</specializations>
-  <specializations>3fOXhba/en8Im2gUSThzllitRc0=</specializations>
 </record>
 <record>
   <name>C</name>
@@ -662,8 +636,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>NNxnP63PrqW2AkyLFpJx0uaNuTk=</specializations>
-  <specializations>vu+upAyFdAr9NpomAT9maDrr5VU=</specializations>
 </record>
 <record>
   <name>D</name>
@@ -700,7 +672,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -740,7 +711,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -832,7 +802,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -872,7 +841,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -964,7 +932,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>A</name>
@@ -1004,7 +971,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -1075,7 +1041,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -1167,7 +1132,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -1207,7 +1171,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -1263,7 +1226,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>eYdoT3vlHlbkG+t3+ckhZAqrnlY=</specializations>
 </record>
 <record>
   <name>D</name>
@@ -1300,7 +1262,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>A</name>
@@ -1340,7 +1301,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -1411,7 +1371,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -1503,7 +1462,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -1543,7 +1501,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -1635,7 +1592,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>E</name>
@@ -1702,7 +1658,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m1</name>
@@ -1730,7 +1686,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m10</name>
@@ -1763,7 +1719,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m11</name>
@@ -1796,7 +1752,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m12</name>
@@ -1829,7 +1785,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m13</name>
@@ -1862,7 +1818,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m14</name>
@@ -1895,7 +1851,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m2</name>
@@ -1923,7 +1879,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m3</name>
@@ -1951,7 +1907,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m4</name>
@@ -1979,7 +1935,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m5</name>
@@ -2012,7 +1968,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m6</name>
@@ -2045,7 +2001,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m7</name>
@@ -2078,7 +2034,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m8</name>
@@ -2111,7 +2067,7 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>m9</name>
@@ -2144,6 +2100,6 @@
       </name>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 </mrdocs>

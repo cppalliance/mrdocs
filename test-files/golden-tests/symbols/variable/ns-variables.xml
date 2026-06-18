@@ -65,7 +65,7 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>j</name>
@@ -88,7 +88,7 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-constinit>1</is-constinit>
+  <is-constinit/>
 </variable>
 <variable>
   <name>k</name>
@@ -117,7 +117,7 @@
     </name>
   </named>
   <initializer>1</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>l</name>
@@ -146,7 +146,7 @@
     </name>
   </named>
   <initializer>1</initializer>
-  <is-constinit>1</is-constinit>
+  <is-constinit/>
 </variable>
 <variable>
   <name>pi</name>
@@ -213,7 +213,7 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-thread-local>1</is-thread-local>
+  <is-thread-local/>
 </variable>
 <variable>
   <name>x1</name>
@@ -236,7 +236,7 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-thread-local>1</is-thread-local>
+  <is-thread-local/>
 </variable>
 <variable>
   <name>x2</name>
@@ -259,7 +259,7 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-constexpr>1</is-constexpr>
-  <is-thread-local>1</is-thread-local>
+  <is-constexpr/>
+  <is-thread-local/>
 </variable>
 </mrdocs>

@@ -81,7 +81,7 @@
       <identifier>A</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>D</name>
@@ -104,7 +104,7 @@
       <identifier>B</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>E</name>
@@ -127,7 +127,7 @@
       <identifier>B</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -249,7 +249,7 @@
   </named>
   <param>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -315,7 +315,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -382,7 +382,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -452,7 +452,7 @@
     <pointer>
       <pointer>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -487,9 +487,9 @@
   <param>
     <pointer>
       <pointer>
-        <is-const>1</is-const>
+        <is-const/>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -554,7 +554,7 @@
   </named>
   <param>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
@@ -620,7 +620,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
@@ -687,7 +687,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
@@ -757,7 +757,7 @@
     <pointer>
       <pointer>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
@@ -792,9 +792,9 @@
   <param>
     <pointer>
       <pointer>
-        <is-const>1</is-const>
+        <is-const/>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
@@ -859,7 +859,7 @@
   </named>
   <param>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>specialization</kind>
         <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
@@ -925,7 +925,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>specialization</kind>
           <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
@@ -992,7 +992,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>specialization</kind>
           <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
@@ -1062,7 +1062,7 @@
     <pointer>
       <pointer>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>specialization</kind>
             <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
@@ -1097,9 +1097,9 @@
   <param>
     <pointer>
       <pointer>
-        <is-const>1</is-const>
+        <is-const/>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>specialization</kind>
             <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
@@ -1164,7 +1164,7 @@
   </named>
   <param>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
@@ -1230,7 +1230,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
@@ -1297,7 +1297,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
@@ -1367,7 +1367,7 @@
     <pointer>
       <pointer>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
@@ -1402,9 +1402,9 @@
   <param>
     <pointer>
       <pointer>
-        <is-const>1</is-const>
+        <is-const/>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <id>LXTs1uTCF/vevZU29QYVICehLFQ=</id>
@@ -1469,7 +1469,7 @@
   </named>
   <param>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>specialization</kind>
         <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
@@ -1535,7 +1535,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>specialization</kind>
           <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
@@ -1602,7 +1602,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>specialization</kind>
           <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
@@ -1672,7 +1672,7 @@
     <pointer>
       <pointer>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>specialization</kind>
             <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>
@@ -1707,9 +1707,9 @@
   <param>
     <pointer>
       <pointer>
-        <is-const>1</is-const>
+        <is-const/>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>specialization</kind>
             <id>ikh/cWe22atB10u7UsOKS5W39CA=</id>

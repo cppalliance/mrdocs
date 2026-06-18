@@ -20,7 +20,7 @@
       <source-path>dependent-array-bounds.cpp</source-path>
       <line-number>4</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -91,7 +91,7 @@
       <source-path>dependent-array-bounds.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -125,7 +125,7 @@
     <l-value-reference>
       <array>
         <named>
-          <is-const>1</is-const>
+          <is-const/>
           <name>
             <kind>identifier</kind>
             <identifier>T</identifier>

@@ -35,7 +35,7 @@
       <identifier>A</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -164,7 +164,7 @@
       <identifier>B</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>

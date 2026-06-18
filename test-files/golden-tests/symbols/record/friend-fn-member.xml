@@ -102,7 +102,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>~X</name>
@@ -134,7 +134,7 @@
     </name>
   </named>
   <func-class>destructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>foo</name>
@@ -144,7 +144,7 @@
       <source-path>friend-fn-member.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -193,6 +193,6 @@
     <name>i</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

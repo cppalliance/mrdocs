@@ -101,8 +101,8 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-explicit-object-member-function>1</is-explicit-object-member-function>
-  <is-record-method>1</is-record-method>
+  <is-explicit-object-member-function/>
+  <is-record-method/>
 </function>
 <function>
   <name>value</name>
@@ -150,7 +150,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-explicit-object-member-function>1</is-explicit-object-member-function>
-  <is-record-method>1</is-record-method>
+  <is-explicit-object-member-function/>
+  <is-record-method/>
 </function>
 </mrdocs>

@@ -19,7 +19,7 @@
       <source-path>returns-from-brief.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -56,7 +56,7 @@
       <source-path>returns-from-brief.cpp</source-path>
       <line-number>9</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -86,7 +86,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>front</name>
@@ -96,7 +96,7 @@
       <source-path>returns-from-brief.cpp</source-path>
       <line-number>5</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -126,8 +126,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>size</name>
@@ -137,7 +137,7 @@
       <source-path>returns-from-brief.cpp</source-path>
       <line-number>13</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -167,7 +167,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 </mrdocs>

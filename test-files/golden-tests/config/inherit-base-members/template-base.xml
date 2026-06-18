@@ -22,7 +22,7 @@
       <source-path>template-base.cpp</source-path>
       <line-number>9</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -67,7 +67,7 @@
       <source-path>template-base.cpp</source-path>
       <line-number>17</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -92,7 +92,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator[]</name>
@@ -102,7 +102,7 @@
       <source-path>template-base.cpp</source-path>
       <line-number>14</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -144,7 +144,7 @@
     <name>n</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>concrete_derived</name>
@@ -154,7 +154,7 @@
       <source-path>template-base.cpp</source-path>
       <line-number>27</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -204,7 +204,7 @@
   <kind>function</kind>
   <id>9X0U5wi8aI04GBZwYXOMit+BPNs=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
   <l-value-reference>
     <named>
@@ -215,7 +215,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator[]</name>
@@ -230,7 +230,7 @@
   <kind>function</kind>
   <id>fJuJ+E/X6B4WdSCqYQX0onTsvhs=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
   <l-value-reference>
     <named>
@@ -250,7 +250,7 @@
     <name>n</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>derived</name>
@@ -260,7 +260,7 @@
       <source-path>template-base.cpp</source-path>
       <line-number>21</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -323,13 +323,13 @@
       <source-path>template-base.cpp</source-path>
       <line-number>17</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>w8SzajsNCB5ck0YpsMvHduC9g1E=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>VmATJ/H4380dpA0mtYd7uf/hcZA=</parent>
   <doc-comment>
     <brief>
@@ -349,7 +349,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator[]</name>
@@ -359,13 +359,13 @@
       <source-path>template-base.cpp</source-path>
       <line-number>14</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>vt7li1a/kZQyCXxHvrdak2VBJQw=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>VmATJ/H4380dpA0mtYd7uf/hcZA=</parent>
   <doc-comment>
     <brief>
@@ -402,6 +402,6 @@
     <name>n</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

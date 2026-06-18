@@ -46,7 +46,7 @@
       <name>ListType</name>
       <type-tparam>
         <kind>type</kind>
-        <is-parameter-pack>1</is-parameter-pack>
+        <is-parameter-pack/>
         <key-kind>class</key-kind>
       </type-tparam>
     </template-tparam>

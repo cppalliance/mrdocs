@@ -44,14 +44,14 @@
       <source-path>operator-param.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>operator-param.cpp</short-path>
       <source-path>operator-param.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -101,7 +101,7 @@
       <source-path>operator-param.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -156,8 +156,8 @@
     <name>ch</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator()</name>
@@ -167,7 +167,7 @@
       <source-path>operator-param.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -221,7 +221,7 @@
     <name>ch</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 </mrdocs>

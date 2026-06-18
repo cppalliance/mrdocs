@@ -44,7 +44,7 @@
       <source-path>para-1.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -67,7 +67,7 @@
       <source-path>para-1.cpp</source-path>
       <line-number>17</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -90,7 +90,7 @@
       <source-path>para-1.cpp</source-path>
       <line-number>27</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

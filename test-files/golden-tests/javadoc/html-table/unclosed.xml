@@ -22,7 +22,7 @@
       <source-path>unclosed.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -61,7 +61,7 @@
       <source-path>unclosed.cpp</source-path>
       <line-number>13</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -93,7 +93,7 @@
       <source-path>unclosed.cpp</source-path>
       <line-number>19</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -125,7 +125,7 @@
       <source-path>unclosed.cpp</source-path>
       <line-number>25</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

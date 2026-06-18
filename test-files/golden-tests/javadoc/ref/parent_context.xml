@@ -92,7 +92,7 @@
       <source-path>parent_context.cpp</source-path>
       <line-number>14</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>

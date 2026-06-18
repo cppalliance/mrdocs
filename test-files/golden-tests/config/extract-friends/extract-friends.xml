@@ -67,7 +67,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</specializations>
 </record>
 <record>
   <name>hash</name>
@@ -106,7 +105,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>operator()</name>
@@ -131,7 +129,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -142,8 +140,8 @@
     <name>rhs</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>A</name>

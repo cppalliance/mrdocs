@@ -62,7 +62,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>25</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -92,7 +92,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
@@ -116,7 +116,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>16</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -170,7 +170,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -218,7 +218,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -248,7 +248,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
@@ -290,7 +290,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>36</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -320,7 +320,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>
@@ -344,7 +344,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>3</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -388,7 +388,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -418,7 +418,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -437,7 +437,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>31</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -467,7 +467,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>OK8gV4cJbIGaWnFVpW0/DO1qdUI=</id>

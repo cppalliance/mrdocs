@@ -24,7 +24,7 @@
       <source-path>param-duplicate.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -70,7 +70,7 @@
       <source-path>param-duplicate.cpp</source-path>
       <line-number>11</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -116,7 +116,7 @@
       <source-path>param-duplicate.cpp</source-path>
       <line-number>17</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -173,7 +173,7 @@
       <source-path>param-duplicate.cpp</source-path>
       <line-number>23</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -230,7 +230,7 @@
       <source-path>param-duplicate.cpp</source-path>
       <line-number>29</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -285,7 +285,7 @@
       <source-path>param-duplicate.cpp</source-path>
       <line-number>36</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

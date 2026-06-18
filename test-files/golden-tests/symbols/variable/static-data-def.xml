@@ -107,7 +107,7 @@
     </name>
   </named>
   <initializer>1</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>v2</name>
@@ -136,8 +136,8 @@
     </name>
   </named>
   <initializer>2</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>v3</name>
@@ -160,14 +160,14 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <initializer>3</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>v4</name>
@@ -190,7 +190,7 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
@@ -219,7 +219,7 @@
     </name>
   </named>
   <initializer>5</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>v6</name>
@@ -236,14 +236,14 @@
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <initializer>6</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>v7</name>
@@ -266,8 +266,8 @@
     </name>
   </named>
   <initializer>7</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <record>
   <name>B</name>
@@ -316,14 +316,14 @@
   <extraction>regular</extraction>
   <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <initializer>0</initializer>
-  <is-thread-local>1</is-thread-local>
+  <is-thread-local/>
 </variable>
 <variable>
   <name>x1</name>
@@ -346,9 +346,9 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
-  <is-thread-local>1</is-thread-local>
+  <is-inline/>
+  <is-constexpr/>
+  <is-thread-local/>
 </variable>
 <function>
   <name>f</name>

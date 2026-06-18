@@ -24,7 +24,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>152</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -52,7 +52,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>154</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -80,7 +80,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>156</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -119,7 +119,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>64</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -160,7 +160,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>80</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -227,7 +227,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>g</name>
@@ -237,7 +237,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>73</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -304,8 +304,8 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-explicit-object-member-function>1</is-explicit-object-member-function>
-  <is-record-method>1</is-record-method>
+  <is-explicit-object-member-function/>
+  <is-record-method/>
 </function>
 <record>
   <name>paramType</name>
@@ -315,7 +315,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -428,70 +428,70 @@
       <source-path>param-types.cpp</source-path>
       <line-number>9</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>19</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>28</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>53</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>60</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>97</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>114</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>130</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>148</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>173</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -548,7 +548,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>9</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -587,7 +587,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>19</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -657,7 +657,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>28</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -738,7 +738,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>53</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -819,7 +819,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>60</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -900,7 +900,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>97</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -981,7 +981,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>114</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1073,7 +1073,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>130</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1154,7 +1154,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>148</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1235,7 +1235,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>173</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1316,49 +1316,49 @@
       <source-path>param-types.cpp</source-path>
       <line-number>37</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>46</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
-      <line-number>90</line-number>
+      <line-number>91</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>107</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>123</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>141</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
       <line-number>166</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -1420,7 +1420,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>123</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1482,7 +1482,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>166</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1552,9 +1552,9 @@
     <location>
       <short-path>param-types.cpp</short-path>
       <source-path>param-types.cpp</source-path>
-      <line-number>90</line-number>
+      <line-number>91</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1621,7 +1621,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>37</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1668,7 +1668,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-variadic>1</is-variadic>
+  <is-variadic/>
 </function>
 <function>
   <name>g</name>
@@ -1678,7 +1678,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>46</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1734,7 +1734,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>141</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1796,7 +1796,7 @@
       <source-path>param-types.cpp</source-path>
       <line-number>107</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

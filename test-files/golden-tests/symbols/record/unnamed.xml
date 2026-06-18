@@ -60,8 +60,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <source>
@@ -70,7 +70,7 @@
       <source-path>unnamed.cpp</source-path>
       <line-number>7</line-number>
       <column-number>8</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -105,7 +105,7 @@
       <source-path>unnamed.cpp</source-path>
       <line-number>9</line-number>
       <column-number>3</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>
@@ -127,7 +127,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <function>
   <name>F</name>
@@ -160,7 +160,7 @@
       <source-path>unnamed.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>
@@ -191,7 +191,7 @@
       <source-path>unnamed.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>

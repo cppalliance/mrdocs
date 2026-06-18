@@ -86,7 +86,7 @@
   <kind>function</kind>
   <id>BcIYmKdVh0f6TsMPCA/M0Cmr9VI=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
   <named>
     <name>
@@ -95,7 +95,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>g</name>
@@ -118,9 +118,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-override-attr>1</has-override-attr>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
+  <has-override-attr/>
+  <is-record-method/>
+  <is-virtual/>
 </function>
 <function>
   <name>h</name>
@@ -143,9 +143,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-override-attr>1</has-override-attr>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
+  <has-override-attr/>
+  <is-record-method/>
+  <is-virtual/>
 </function>
 <function>
   <name>i</name>
@@ -168,7 +168,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>E</name>
@@ -225,7 +225,7 @@
   <kind>function</kind>
   <id>e7VYD0d5BKg0c6yEn8zt92t304s=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
     <name>
@@ -234,7 +234,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>g</name>
@@ -249,7 +249,7 @@
   <kind>function</kind>
   <id>JgPp0cAF/suYYKB1RQalvRP+hjk=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
   <named>
     <name>
@@ -258,9 +258,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-virtual-as-written>1</is-virtual-as-written>
+  <is-record-method/>
+  <is-virtual/>
+  <is-virtual-as-written/>
 </function>
 <function>
   <name>h</name>
@@ -283,9 +283,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <has-override-attr>1</has-override-attr>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
+  <has-override-attr/>
+  <is-record-method/>
+  <is-virtual/>
 </function>
 <function>
   <name>i</name>
@@ -308,6 +308,6 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

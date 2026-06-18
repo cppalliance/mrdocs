@@ -20,7 +20,7 @@
       <source-path>tparam-1.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -67,14 +67,14 @@
       <source-path>tparam-1.cpp</source-path>
       <line-number>6</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>tparam-1.cpp</short-path>
       <source-path>tparam-1.cpp</source-path>
       <line-number>15</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

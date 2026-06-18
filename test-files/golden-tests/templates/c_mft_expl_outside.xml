@@ -88,8 +88,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <specializations>veV2posfyuimiNezTTVnomiz6tY=</specializations>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -124,7 +123,6 @@
     <primary>6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=</primary>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <is-record-method/>
 </function>
 </mrdocs>

@@ -24,7 +24,7 @@
       <source-path>return-type.cpp</source-path>
       <line-number>3</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -73,7 +73,7 @@
       <source-path>return-type.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -119,7 +119,7 @@
       <source-path>return-type.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -175,7 +175,7 @@
       <source-path>return-type.cpp</source-path>
       <line-number>19</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -220,7 +220,7 @@
       <source-path>return-type.cpp</source-path>
       <line-number>31</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -270,7 +270,7 @@
       <source-path>return-type.cpp</source-path>
       <line-number>25</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

@@ -26,7 +26,7 @@
       <source-path>class-template-array-spec.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -86,7 +86,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>BImCLyzY3azoxv/pd8PtoMYhX4k=</specializations>
 </record>
 <record>
   <name>A</name>
@@ -159,6 +158,5 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 </mrdocs>

@@ -28,7 +28,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -96,7 +96,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>3</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -162,7 +162,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>11</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -231,7 +231,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>17</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -306,7 +306,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>21</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -351,7 +351,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
@@ -370,7 +370,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>25</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -433,7 +433,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>29</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -478,7 +478,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>1UVucZDP6eIb7JzDqwaczKQV7qw=</id>
@@ -497,7 +497,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>33</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -560,7 +560,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>37</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -604,7 +604,7 @@
   </named>
   <param>
     <pointer>
-      <is-const>1</is-const>
+      <is-const/>
       <named>
         <name>
           <kind>identifier</kind>
@@ -624,7 +624,7 @@
       <source-path>derived.cpp</source-path>
       <line-number>41</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

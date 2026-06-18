@@ -35,7 +35,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -70,7 +70,7 @@
       <identifier>_Res</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -130,7 +130,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>6f4GHawhlUckr08SJkt7su9cIDY=</specializations>
 </record>
 <typedef>
   <name>type</name>
@@ -152,7 +151,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <record>
   <name>enable_if</name>
@@ -198,7 +197,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>is_match</name>

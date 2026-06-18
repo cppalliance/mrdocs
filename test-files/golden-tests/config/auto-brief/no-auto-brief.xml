@@ -49,7 +49,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>69</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -82,7 +82,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>47</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -115,7 +115,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>59</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -138,7 +138,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>54</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -173,7 +173,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>103</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -205,7 +205,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>82</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -237,7 +237,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>87</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -269,7 +269,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>92</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -308,7 +308,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>76</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -340,7 +340,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>134</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -380,7 +380,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>119</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -420,7 +420,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>124</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -459,7 +459,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -491,7 +491,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>16</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -530,7 +530,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>23</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -569,7 +569,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>174</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -592,7 +592,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>164</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -615,7 +615,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>169</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -638,7 +638,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>42</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -661,7 +661,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>64</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -684,7 +684,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>37</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -707,7 +707,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>97</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -730,7 +730,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>114</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -762,7 +762,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>129</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -785,7 +785,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>109</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -808,7 +808,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>142</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -831,7 +831,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>31</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -892,7 +892,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>159</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -925,7 +925,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>149</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -957,7 +957,7 @@
       <source-path>no-auto-brief.cpp</source-path>
       <line-number>154</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
