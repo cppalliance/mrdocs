@@ -64,7 +64,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <record>
   <name>Derived</name>

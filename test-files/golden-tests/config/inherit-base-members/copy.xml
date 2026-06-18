@@ -24,7 +24,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>30</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -76,13 +76,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>kuwWLj5gwO5grGVaKw+6QPB7t2k=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
   <doc-comment>
     <brief>
@@ -110,7 +110,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_inherited</name>
@@ -120,7 +120,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -153,7 +153,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_shadowed</name>
@@ -163,7 +163,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>37</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -196,7 +196,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>derived_shadowed</name>
@@ -206,7 +206,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -239,7 +239,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_base_inherited</name>
@@ -249,13 +249,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>QFvlG37sjpI5QZrNwpdQ06VrrSM=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>sk8HTAQHhzXfZej4IJliADonAJQ=</parent>
   <doc-comment>
     <brief>
@@ -283,7 +283,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_inherited</name>
@@ -293,7 +293,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>46</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -326,7 +326,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_shadowed</name>
@@ -336,7 +336,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>44</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -369,7 +369,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -379,7 +379,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>42</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -412,7 +412,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>base_base</name>
@@ -422,7 +422,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>20</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -459,7 +459,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -492,7 +492,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_base_inherited</name>
@@ -502,7 +502,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -535,7 +535,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>derived</name>
@@ -545,7 +545,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>50</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -609,13 +609,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>Tt5J064ctbXRBv/qZbRJxCebPs0=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -643,7 +643,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_inherited</name>
@@ -653,13 +653,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>Ew/9fVRXcBGEFLrWpdrt3lktMto=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -687,7 +687,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_shadowed</name>
@@ -697,13 +697,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>37</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>VrpbGEQk6hRwzmAJBudLSCOZh7Y=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -731,7 +731,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>derived_shadowed</name>
@@ -741,7 +741,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>56</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -774,7 +774,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_base_inherited</name>
@@ -784,13 +784,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>3vFJsBKleDdECAQKJp6m7566RQQ=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -818,7 +818,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -828,7 +828,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>59</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -861,7 +861,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>excluded_inherited</name>
@@ -871,13 +871,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>9</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>P1Eq799RJkNMSTci+0jy+ZejsyU=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -898,7 +898,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_inherited</name>
@@ -908,13 +908,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>46</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>J8r4aXb9++EldZDgHmv2rU2GhW0=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -942,7 +942,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_shadowed</name>
@@ -952,13 +952,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>44</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>TeAnpSrYd1HafyFwmcm4jG6bj2w=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -986,7 +986,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -996,13 +996,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>42</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>1BMmFoheKBz9kYkFKzXHyfWZMQg=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -1030,7 +1030,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_excluded_inherited</name>
@@ -1040,13 +1040,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>16</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>oW3pQYXjjv2wrXIwIceF6Xd8nTA=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -1067,7 +1067,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_shadowed</name>
@@ -1077,13 +1077,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>IYnrJp6ur6C+AiuhFl5x1YPnxkM=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
   <doc-comment>
     <brief>
@@ -1104,7 +1104,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>private_derived</name>
@@ -1114,7 +1114,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>76</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1168,7 +1168,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>82</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1201,7 +1201,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -1211,7 +1211,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>85</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1244,7 +1244,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>protected_derived</name>
@@ -1254,7 +1254,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>63</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1319,7 +1319,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>69</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1352,7 +1352,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -1362,7 +1362,7 @@
       <source-path>copy.cpp</source-path>
       <line-number>72</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1395,7 +1395,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_base_inherited</name>
@@ -1405,13 +1405,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>23</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>fmeE0HcB3oP1daboxYZOH/pxDwU=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1439,7 +1439,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_inherited</name>
@@ -1449,13 +1449,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>vIj2+WtgSIJo5ner9NMU/5gSQaE=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1483,7 +1483,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>base_shadowed</name>
@@ -1493,13 +1493,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>37</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>8yYxCHdO5GHsa9EDJUegzWA1gsM=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1527,7 +1527,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>derived_shadowed</name>
@@ -1537,13 +1537,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>9BTAtv04iyibbbELEv2rF8AH+Uc=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1571,7 +1571,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_base_inherited</name>
@@ -1581,13 +1581,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>Jif8i0TqV0aN5cctSlCwsvdid/s=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1615,7 +1615,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_inherited</name>
@@ -1625,13 +1625,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>46</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>99dMSYjVFm3pIP2+aQ+9NrCmzuI=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1659,7 +1659,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_base_shadowed</name>
@@ -1669,13 +1669,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>44</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>P4XIUNZt183bxiDCnXrNw4kbmkg=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1703,7 +1703,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_derived_shadowed</name>
@@ -1713,13 +1713,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>42</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>ZJGKp3yoIaFScOAN2naqfrJMlQQ=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1747,7 +1747,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_excluded_inherited</name>
@@ -1757,13 +1757,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>16</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>KdkXQxu2xOfAXegJgCMmLcFq8MM=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1784,7 +1784,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>do_shadowed</name>
@@ -1794,13 +1794,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>UysvazUbtV39Omg33c9Me+Gri/M=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1821,7 +1821,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>excluded_inherited</name>
@@ -1831,13 +1831,13 @@
       <source-path>copy.cpp</source-path>
       <line-number>9</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>H8wEIL8+8s3iNqadfPsH1HWRQU4=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>KpfFXd3FeSffU3rGswegSIkkCrM=</parent>
   <doc-comment>
     <brief>
@@ -1858,6 +1858,6 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

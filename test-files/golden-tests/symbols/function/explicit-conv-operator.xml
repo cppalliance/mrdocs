@@ -90,7 +90,7 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>ExplicitExpression</name>
@@ -180,7 +180,7 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>ExplicitFalse</name>
@@ -258,7 +258,7 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>ExplicitTrue</name>
@@ -336,6 +336,6 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

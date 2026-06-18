@@ -20,7 +20,7 @@
       <source-path>using-function-excluded.cpp</source-path>
       <line-number>13</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>

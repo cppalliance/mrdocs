@@ -38,7 +38,7 @@
       <source-path>out-of-tree-base.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -82,13 +82,13 @@
       <short-path>external_base.hpp</short-path>
       <line-number>10</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
   <id>r2FT8w6tN0syeB7bck2xfwAZX28=</id>
   <extraction>regular</extraction>
-  <is-copy-from-inherited>1</is-copy-from-inherited>
+  <is-copy-from-inherited/>
   <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
   <doc-comment>
     <brief>
@@ -106,7 +106,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>inTreeMethod</name>
@@ -116,7 +116,7 @@
       <source-path>out-of-tree-base.cpp</source-path>
       <line-number>15</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -139,6 +139,6 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

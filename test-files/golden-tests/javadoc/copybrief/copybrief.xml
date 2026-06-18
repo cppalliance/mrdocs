@@ -21,7 +21,7 @@
       <source-path>copybrief.cpp</source-path>
       <line-number>4</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -53,7 +53,7 @@
       <source-path>copybrief.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -86,7 +86,7 @@
       <source-path>copybrief.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

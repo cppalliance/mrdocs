@@ -28,7 +28,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>4</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -77,7 +77,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -150,7 +150,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>16</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -223,7 +223,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>22</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -296,7 +296,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>28</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -369,7 +369,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>35</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -466,7 +466,7 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>42</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -571,14 +571,14 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>47</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-direction.cpp</short-path>
       <source-path>param-direction.cpp</source-path>
       <line-number>52</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -651,14 +651,14 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>57</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-direction.cpp</short-path>
       <source-path>param-direction.cpp</source-path>
       <line-number>62</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -707,14 +707,14 @@
       <source-path>param-direction.cpp</source-path>
       <line-number>67</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>param-direction.cpp</short-path>
       <source-path>param-direction.cpp</source-path>
       <line-number>72</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

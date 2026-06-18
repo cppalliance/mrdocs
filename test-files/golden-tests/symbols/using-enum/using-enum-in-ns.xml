@@ -44,7 +44,7 @@
   <id>a5uhL/8g9ACd/JSUdADFNrjlrmA=</id>
   <extraction>regular</extraction>
   <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <scoped>1</scoped>
+  <scoped/>
   <named>
     <name>
       <kind>identifier</kind>
@@ -61,7 +61,7 @@
       <source-path>using-enum-in-ns.cpp</source-path>
       <line-number>5</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>enum-constant</kind>

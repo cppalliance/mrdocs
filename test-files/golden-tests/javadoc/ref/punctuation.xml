@@ -65,7 +65,7 @@
       <source-path>punctuation.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

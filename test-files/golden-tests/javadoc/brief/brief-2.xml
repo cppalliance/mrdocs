@@ -24,7 +24,7 @@
       <source-path>brief-2.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -56,7 +56,7 @@
       <source-path>brief-2.cpp</source-path>
       <line-number>9</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -88,7 +88,7 @@
       <source-path>brief-2.cpp</source-path>
       <line-number>13</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -120,14 +120,14 @@
       <source-path>brief-2.cpp</source-path>
       <line-number>17</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>brief-2.cpp</short-path>
       <source-path>brief-2.cpp</source-path>
       <line-number>22</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -166,7 +166,7 @@
       <source-path>brief-2.cpp</source-path>
       <line-number>27</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -198,7 +198,7 @@
       <source-path>brief-2.cpp</source-path>
       <line-number>34</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

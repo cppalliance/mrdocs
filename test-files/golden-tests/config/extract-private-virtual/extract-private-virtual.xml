@@ -58,9 +58,9 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-virtual-as-written>1</is-virtual-as-written>
+  <is-record-method/>
+  <is-virtual/>
+  <is-virtual-as-written/>
 </function>
 <function>
   <name>g</name>
@@ -83,8 +83,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-virtual>1</is-virtual>
-  <is-virtual-as-written>1</is-virtual-as-written>
+  <is-record-method/>
+  <is-virtual/>
+  <is-virtual-as-written/>
 </function>
 </mrdocs>

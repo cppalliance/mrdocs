@@ -48,14 +48,14 @@
       <source-path>conversion.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>conversion.cpp</short-path>
       <source-path>conversion.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -107,7 +107,7 @@
       <source-path>conversion.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -150,7 +150,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>aQ5vERa/ROUuSctnkS1VsKSt48E=</id>
@@ -161,7 +161,7 @@
     <name>other</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator=</name>
@@ -171,7 +171,7 @@
       <source-path>conversion.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -215,7 +215,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>EulqVl/v48vv9XjENaufduUwZKI=</id>
@@ -226,7 +226,7 @@
     <name>other</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator string_type</name>
@@ -236,7 +236,7 @@
       <source-path>conversion.cpp</source-path>
       <line-number>9</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -267,8 +267,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator string_view_type</name>
@@ -278,7 +278,7 @@
       <source-path>conversion.cpp</source-path>
       <line-number>13</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -310,8 +310,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>string_type</name>

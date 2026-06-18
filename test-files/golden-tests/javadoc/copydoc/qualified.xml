@@ -90,56 +90,56 @@
       <source-path>qualified.cpp</source-path>
       <line-number>27</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>30</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>33</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>36</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>56</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>59</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>62</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>65</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -188,7 +188,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>27</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -237,7 +237,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -247,7 +247,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>30</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -296,7 +296,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -306,7 +306,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>33</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -355,7 +355,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -365,7 +365,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>36</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -414,7 +414,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -424,7 +424,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>56</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -473,7 +473,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -483,7 +483,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>59</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -532,7 +532,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -542,7 +542,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>62</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -591,7 +591,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -601,7 +601,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>65</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -650,7 +650,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>g</name>
@@ -660,14 +660,14 @@
       <source-path>qualified.cpp</source-path>
       <line-number>16</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>24</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -716,7 +716,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>24</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -764,7 +764,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>g</name>
@@ -774,7 +774,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>16</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -821,7 +821,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>h</name>
@@ -831,14 +831,14 @@
       <source-path>qualified.cpp</source-path>
       <line-number>45</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualified.cpp</short-path>
       <source-path>qualified.cpp</source-path>
       <line-number>53</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -887,7 +887,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>53</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -945,7 +945,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>h</name>
@@ -955,7 +955,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>45</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1002,7 +1002,7 @@
     <name>a</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>param_t</name>
@@ -1012,7 +1012,7 @@
       <source-path>qualified.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>

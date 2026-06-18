@@ -98,14 +98,14 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualifiers.cpp</short-path>
       <source-path>qualifiers.cpp</source-path>
       <line-number>21</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -156,7 +156,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>12</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -194,7 +194,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>begin</name>
@@ -204,7 +204,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>21</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -242,8 +242,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>cbegin</name>
@@ -253,7 +253,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>25</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -292,8 +292,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>crvalue</name>
@@ -303,7 +303,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>57</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -337,8 +337,8 @@
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <overloads>
   <name>ref</name>
@@ -348,28 +348,28 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>31</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualifiers.cpp</short-path>
       <source-path>qualifiers.cpp</source-path>
       <line-number>37</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualifiers.cpp</short-path>
       <source-path>qualifiers.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>qualifiers.cpp</short-path>
       <source-path>qualifiers.cpp</source-path>
       <line-number>49</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -415,7 +415,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>31</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -448,7 +448,7 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ref</name>
@@ -458,7 +458,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>37</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -491,7 +491,7 @@
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ref</name>
@@ -501,7 +501,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -526,7 +526,7 @@
   </doc-comment>
   <l-value-reference>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -535,8 +535,8 @@
     </named>
   </l-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>ref</name>
@@ -546,7 +546,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>49</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -571,7 +571,7 @@
   </doc-comment>
   <r-value-reference>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -580,8 +580,8 @@
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>rvalue</name>
@@ -591,7 +591,7 @@
       <source-path>qualifiers.cpp</source-path>
       <line-number>53</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -625,6 +625,6 @@
     </named>
   </r-value-reference>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

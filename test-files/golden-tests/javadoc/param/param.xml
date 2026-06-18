@@ -22,7 +22,7 @@
       <source-path>param.cpp</source-path>
       <line-number>4</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -71,7 +71,7 @@
       <source-path>param.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -144,7 +144,7 @@
       <source-path>param.cpp</source-path>
       <line-number>17</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -241,7 +241,7 @@
       <source-path>param.cpp</source-path>
       <line-number>25</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

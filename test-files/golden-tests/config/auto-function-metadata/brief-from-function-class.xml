@@ -20,7 +20,7 @@
       <source-path>brief-from-function-class.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -54,7 +54,7 @@
       <source-path>brief-from-function-class.cpp</source-path>
       <line-number>6</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -169,9 +169,9 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -213,7 +213,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
@@ -224,9 +224,9 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -278,9 +278,9 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -336,7 +336,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -385,7 +385,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -396,7 +396,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>X</name>
@@ -455,7 +455,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>~X</name>
@@ -487,7 +487,7 @@
     </name>
   </named>
   <func-class>destructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator A</name>
@@ -534,8 +534,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator int</name>
@@ -588,7 +588,7 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 </mrdocs>

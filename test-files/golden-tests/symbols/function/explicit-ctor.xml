@@ -122,7 +122,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>Explicit</name>
@@ -164,7 +164,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>bonobNKGOblPVcRjxpiPan4nYnc=</id>
@@ -175,7 +175,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>Explicit</name>
@@ -227,7 +227,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>Explicit</name>
@@ -275,7 +275,7 @@
     </named>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>ExplicitExpression</name>
@@ -397,7 +397,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitExpression</name>
@@ -439,7 +439,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</id>
@@ -450,7 +450,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitExpression</name>
@@ -502,7 +502,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitExpression</name>
@@ -550,7 +550,7 @@
     </named>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>ExplicitFalse</name>
@@ -660,7 +660,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitFalse</name>
@@ -702,7 +702,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</id>
@@ -713,7 +713,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitFalse</name>
@@ -765,7 +765,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitFalse</name>
@@ -813,7 +813,7 @@
     </named>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>ExplicitTrue</name>
@@ -923,7 +923,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitTrue</name>
@@ -965,7 +965,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>htdCGapMsdazR1XkXoanrOCkvDE=</id>
@@ -976,7 +976,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitTrue</name>
@@ -1028,7 +1028,7 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>ExplicitTrue</name>
@@ -1076,6 +1076,6 @@
     </named>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

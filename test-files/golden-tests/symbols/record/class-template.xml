@@ -95,7 +95,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>w</name>
@@ -117,7 +117,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>x</name>
@@ -140,7 +140,7 @@
       <identifier>S</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>y</name>
@@ -162,7 +162,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <record>
   <name>C1</name>
@@ -245,7 +245,7 @@
       <identifier>S</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>y</name>
@@ -267,7 +267,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>z</name>
@@ -289,7 +289,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>w</name>
@@ -311,7 +311,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <record>
   <name>C2</name>
@@ -402,7 +402,7 @@
       <identifier>S</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>x</name>
@@ -424,7 +424,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>y</name>
@@ -446,7 +446,7 @@
       <identifier>U</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>z</name>
@@ -468,7 +468,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>v</name>
@@ -490,7 +490,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <record>
   <name>C3</name>
@@ -550,7 +550,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <record>
   <name>S</name>

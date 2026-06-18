@@ -20,7 +20,7 @@
       <source-path>brief-1.cpp</source-path>
       <line-number>30</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -63,7 +63,7 @@
       <source-path>brief-1.cpp</source-path>
       <line-number>39</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

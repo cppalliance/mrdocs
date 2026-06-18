@@ -106,7 +106,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>99</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -155,7 +155,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>105</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -185,8 +185,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <namespace>
   <name>impl</name>
@@ -214,7 +214,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>223</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -256,7 +256,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>228</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -286,8 +286,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <source>
@@ -296,7 +296,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>153</line-number>
       <column-number>11</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -331,7 +331,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>158</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -361,8 +361,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>all_special_fn</name>
@@ -372,7 +372,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>275</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -473,9 +473,9 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>all_special_fn</name>
@@ -517,7 +517,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>mZtv21AdBSGdGVNkTV5gNP0Hn/s=</id>
@@ -528,9 +528,9 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>all_special_fn</name>
@@ -582,9 +582,9 @@
     <name>other</name>
   </param>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>~all_special_fn</name>
@@ -616,9 +616,9 @@
     </name>
   </named>
   <func-class>destructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <overloads>
   <name>operator=</name>
@@ -706,7 +706,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>mZtv21AdBSGdGVNkTV5gNP0Hn/s=</id>
@@ -717,9 +717,9 @@
     <name>other</name>
   </param>
   <func-class>normal</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>operator=</name>
@@ -781,9 +781,9 @@
     <name>other</name>
   </param>
   <func-class>normal</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>operator()</name>
@@ -793,7 +793,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>287</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -823,8 +823,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>by_value_assign_fn</name>
@@ -834,7 +834,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>314</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -927,7 +927,7 @@
     <name>other</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator()</name>
@@ -937,7 +937,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>321</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -967,8 +967,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>compare_fn</name>
@@ -978,7 +978,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>168</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1027,7 +1027,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>176</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1075,7 +1075,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -1087,7 +1087,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -1097,8 +1097,8 @@
     <name>b</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>default_ctor_with_all_defaults_fn</name>
@@ -1108,7 +1108,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>296</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1184,7 +1184,7 @@
     <default>0</default>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator()</name>
@@ -1194,7 +1194,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>303</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1224,8 +1224,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>documented_struct_fn</name>
@@ -1235,7 +1235,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>204</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1277,7 +1277,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>209</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1307,8 +1307,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>explicit_fn</name>
@@ -1318,7 +1318,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>118</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1361,7 +1361,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>127</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1379,7 +1379,7 @@
   </doc-comment>
   <pointer>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <identifier>char</identifier>
@@ -1387,8 +1387,8 @@
     </named>
   </pointer>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator()</name>
@@ -1398,7 +1398,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>123</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1428,8 +1428,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>host</name>
@@ -1439,7 +1439,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>137</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1500,7 +1500,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>144</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1530,8 +1530,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>invoke</name>
@@ -1541,7 +1541,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>144</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1581,7 +1581,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>408</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1641,7 +1641,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>415</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1671,8 +1671,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>host_protected</name>
@@ -1682,7 +1682,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>390</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1743,7 +1743,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>397</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1773,8 +1773,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>invoke</name>
@@ -1784,7 +1784,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>397</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1824,7 +1824,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>471</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1860,7 +1860,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>480</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1883,7 +1883,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator()</name>
@@ -1893,7 +1893,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>476</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1923,8 +1923,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>mixed_members_fn</name>
@@ -1934,7 +1934,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>246</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1985,7 +1985,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>252</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2032,8 +2032,8 @@
     <name>x</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>reset</name>
@@ -2043,7 +2043,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>259</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2066,7 +2066,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <variable>
   <name>value</name>
@@ -2076,7 +2076,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>256</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>
@@ -2098,7 +2098,7 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <record>
   <name>multi_overload_fn</name>
@@ -2108,7 +2108,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>34</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2143,14 +2143,14 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>function-objects.cpp</short-path>
       <source-path>function-objects.cpp</source-path>
       <line-number>47</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -2207,7 +2207,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2237,8 +2237,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator()</name>
@@ -2248,7 +2248,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>47</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2296,7 +2296,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>char</identifier>
@@ -2308,7 +2308,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>char</identifier>
@@ -2318,8 +2318,8 @@
     <name>end</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>nested_record_fn</name>
@@ -2329,7 +2329,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>428</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2364,7 +2364,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>433</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2394,8 +2394,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>no_call_fn</name>
@@ -2405,7 +2405,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>448</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2453,8 +2453,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>not_detected_fn</name>
@@ -2464,7 +2464,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>63</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2513,8 +2513,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>other</name>
@@ -2537,8 +2537,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>ordinary_type</name>
@@ -2548,7 +2548,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>58</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2582,7 +2582,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>19</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2617,7 +2617,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2647,8 +2647,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>template_assign_fn</name>
@@ -2658,7 +2658,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>374</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2757,7 +2757,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator()</name>
@@ -2767,7 +2767,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>382</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2797,8 +2797,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>template_call_fn</name>
@@ -2808,7 +2808,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>333</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -2850,7 +2850,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>339</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -2914,8 +2914,8 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>template_ctor_fn</name>
@@ -2925,7 +2925,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>352</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -3029,9 +3029,9 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-defaulted>1</is-defaulted>
-  <is-explicitly-defaulted>1</is-explicitly-defaulted>
-  <is-record-method>1</is-record-method>
+  <is-defaulted/>
+  <is-explicitly-defaulted/>
+  <is-record-method/>
 </function>
 <function>
   <name>template_ctor_fn</name>
@@ -3094,7 +3094,7 @@
     </type-tparam>
   </template>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator()</name>
@@ -3104,7 +3104,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>362</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3134,8 +3134,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>template_fn</name>
@@ -3145,7 +3145,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>78</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -3194,7 +3194,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>85</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3234,7 +3234,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -3244,8 +3244,8 @@
     <name>val</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>undocumented_fo_fn</name>
@@ -3293,8 +3293,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>undocumented_struct_fn</name>
@@ -3329,7 +3329,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>191</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3359,8 +3359,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>all_special_fo</name>
@@ -3370,7 +3370,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>287</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3410,7 +3410,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>321</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3450,7 +3450,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>176</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3498,7 +3498,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -3510,7 +3510,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -3530,7 +3530,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>176</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3578,7 +3578,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -3590,7 +3590,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -3610,7 +3610,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>303</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3650,7 +3650,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>105</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3697,7 +3697,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>209</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3737,7 +3737,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>191</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3777,7 +3777,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>123</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3817,7 +3817,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>476</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3857,7 +3857,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>252</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -3914,14 +3914,14 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>function-objects.cpp</short-path>
       <source-path>function-objects.cpp</source-path>
       <line-number>47</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -3985,7 +3985,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4025,7 +4025,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>47</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4073,7 +4073,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>char</identifier>
@@ -4085,7 +4085,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>char</identifier>
@@ -4105,7 +4105,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>433</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4145,7 +4145,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>54</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4177,7 +4177,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>24</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4217,7 +4217,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>339</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4291,7 +4291,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>85</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4331,7 +4331,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>T</identifier>
@@ -4381,7 +4381,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>158</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4421,7 +4421,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>228</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -4461,7 +4461,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>490</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>variable</kind>
@@ -4490,7 +4490,7 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>no_call_fo</name>
@@ -4514,7 +4514,7 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>not_detected</name>
@@ -4538,7 +4538,7 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>template_assign_fo</name>
@@ -4562,7 +4562,7 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>template_ctor_fo</name>
@@ -4586,7 +4586,7 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <namespace>
   <name>external</name>
@@ -4614,7 +4614,7 @@
       <source-path>function-objects.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -4678,7 +4678,7 @@
     <name>x</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 </mrdocs>

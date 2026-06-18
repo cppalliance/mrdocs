@@ -58,8 +58,8 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
-  <is-variant>1</is-variant>
+  <is-record-field/>
+  <is-variant/>
 </variable>
 <variable>
   <name>y</name>
@@ -81,8 +81,8 @@
       <identifier>bool</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
-  <is-variant>1</is-variant>
+  <is-record-field/>
+  <is-variant/>
 </variable>
 <record>
   <name>B</name>
@@ -131,8 +131,8 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
-  <is-variant>1</is-variant>
+  <is-record-field/>
+  <is-variant/>
 </variable>
 <variable>
   <name>y</name>
@@ -154,8 +154,8 @@
       <identifier>bool</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
-  <is-variant>1</is-variant>
+  <is-record-field/>
+  <is-variant/>
 </variable>
 <variable>
   <name>z</name>
@@ -177,6 +177,6 @@
       <identifier>int</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 </mrdocs>

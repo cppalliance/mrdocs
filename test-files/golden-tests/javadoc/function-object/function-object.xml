@@ -26,7 +26,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -61,7 +61,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>7</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -91,8 +91,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>doc_on_struct_fn</name>
@@ -102,7 +102,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>37</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -137,7 +137,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>42</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -167,8 +167,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>forced_fn</name>
@@ -178,7 +178,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>16</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -221,7 +221,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>25</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -239,7 +239,7 @@
   </doc-comment>
   <pointer>
     <named>
-      <is-const>1</is-const>
+      <is-const/>
       <name>
         <kind>identifier</kind>
         <identifier>char</identifier>
@@ -247,8 +247,8 @@
     </named>
   </pointer>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator()</name>
@@ -258,7 +258,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>21</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -288,8 +288,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>undocumented_fn</name>
@@ -324,7 +324,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>53</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -354,8 +354,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>auto_detected</name>
@@ -365,7 +365,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>7</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -405,7 +405,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>42</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -445,7 +445,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>53</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -485,7 +485,7 @@
       <source-path>function-object.cpp</source-path>
       <line-number>21</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

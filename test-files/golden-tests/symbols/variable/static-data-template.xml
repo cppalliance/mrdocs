@@ -78,8 +78,8 @@
     </type-tparam>
   </template>
   <initializer>0</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>x</name>
@@ -122,8 +122,8 @@
     </type-targ>
   </template>
   <initializer>2</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>x</name>
@@ -173,7 +173,7 @@
     </type-targ>
   </template>
   <initializer>1</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 </mrdocs>

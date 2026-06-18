@@ -57,7 +57,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
@@ -80,7 +80,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>T</identifier>
@@ -115,7 +115,7 @@
     </name>
   </named>
   <initializer>2</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>var_constexpr_t</name>
@@ -144,7 +144,7 @@
       <key-kind>class</key-kind>
     </type-tparam>
   </template>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>var_inline_const</name>
@@ -161,14 +161,14 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>int</identifier>
     </name>
   </named>
   <initializer>3</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>var_inline_const_t</name>
@@ -185,7 +185,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <is-const>1</is-const>
+    <is-const/>
     <name>
       <kind>identifier</kind>
       <identifier>T</identifier>
@@ -198,7 +198,7 @@
       <key-kind>class</key-kind>
     </type-tparam>
   </template>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>var_inline_constexpr</name>
@@ -221,8 +221,8 @@
     </name>
   </named>
   <initializer>1</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>var_inline_constexpr_t</name>
@@ -251,8 +251,8 @@
       <key-kind>class</key-kind>
     </type-tparam>
   </template>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>var_t</name>

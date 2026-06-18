@@ -125,7 +125,7 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 <variable>
   <name>regular_absolute_uri_rule</name>
@@ -154,6 +154,6 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 </mrdocs>

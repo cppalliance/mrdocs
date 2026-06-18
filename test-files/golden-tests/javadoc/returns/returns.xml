@@ -78,7 +78,7 @@
       <identifier>T</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <variable>
   <name>second</name>
@@ -100,7 +100,7 @@
       <identifier>U</identifier>
     </name>
   </named>
-  <is-record-field>1</is-record-field>
+  <is-record-field/>
 </variable>
 <function>
   <name>f</name>
@@ -110,7 +110,7 @@
       <source-path>returns.cpp</source-path>
       <line-number>5</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -149,7 +149,7 @@
       <source-path>returns.cpp</source-path>
       <line-number>18</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

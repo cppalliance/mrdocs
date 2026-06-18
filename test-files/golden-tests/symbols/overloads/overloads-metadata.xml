@@ -19,21 +19,21 @@
       <source-path>overloads-metadata.cpp</source-path>
       <line-number>14</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-metadata.cpp</short-path>
       <source-path>overloads-metadata.cpp</source-path>
       <line-number>32</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>overloads-metadata.cpp</short-path>
       <source-path>overloads-metadata.cpp</source-path>
       <line-number>43</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -178,7 +178,7 @@
       <source-path>overloads-metadata.cpp</source-path>
       <line-number>14</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -281,7 +281,7 @@
       <source-path>overloads-metadata.cpp</source-path>
       <line-number>43</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -354,7 +354,7 @@
       <source-path>overloads-metadata.cpp</source-path>
       <line-number>32</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

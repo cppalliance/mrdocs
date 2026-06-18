@@ -65,8 +65,8 @@
     </name>
   </named>
   <initializer>S{}</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
+  <is-inline/>
+  <is-constexpr/>
 </variable>
 <record>
   <name>T</name>
@@ -120,8 +120,8 @@
     </name>
   </named>
   <initializer>0</initializer>
-  <is-inline>1</is-inline>
-  <is-constexpr>1</is-constexpr>
-  <is-constinit>1</is-constinit>
+  <is-inline/>
+  <is-constexpr/>
+  <is-constinit/>
 </variable>
 </mrdocs>

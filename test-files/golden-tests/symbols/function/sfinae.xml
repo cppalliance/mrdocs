@@ -83,7 +83,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>67</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -129,7 +129,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>f80OzcD5UlgQ2KOvUj+MvoJcAFE=</specializations>
 </record>
 <record>
   <name>A</name>
@@ -139,7 +138,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>72</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -182,7 +181,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>S</name>
@@ -192,7 +190,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>75</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -239,7 +237,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>g0UNZpdodOU5mGCtcpviXd8o6Vk=</specializations>
 </record>
 <function>
   <name>store</name>
@@ -264,7 +261,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>void</identifier>
@@ -273,7 +270,7 @@
     </pointer>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>S</name>
@@ -283,7 +280,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>83</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -341,7 +338,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <function>
   <name>store</name>
@@ -366,7 +362,7 @@
   <param>
     <pointer>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>void</identifier>
@@ -375,7 +371,7 @@
     </pointer>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f1</name>
@@ -385,7 +381,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>4</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -435,7 +431,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>63</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -505,7 +501,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>9</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -555,7 +551,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>18</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -616,7 +612,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>23</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -666,7 +662,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>28</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -715,7 +711,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>33</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -764,7 +760,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>38</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -813,7 +809,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>42</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -862,7 +858,7 @@
       <source-path>sfinae.cpp</source-path>
       <line-number>47</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

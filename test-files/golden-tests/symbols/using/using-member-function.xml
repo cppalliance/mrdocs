@@ -26,7 +26,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -63,7 +63,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -102,7 +102,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>B</name>
@@ -112,7 +112,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>24</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -149,7 +149,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -181,7 +181,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>C</name>
@@ -191,7 +191,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>32</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -227,7 +227,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -259,7 +259,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>D</name>
@@ -269,7 +269,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>39</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -305,7 +305,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -337,7 +337,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>E</name>
@@ -347,7 +347,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>47</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -383,7 +383,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>50</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -415,7 +415,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>F</name>
@@ -425,7 +425,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>54</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -461,7 +461,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>58</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -493,7 +493,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>Tag</name>
@@ -503,7 +503,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -549,7 +549,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>67</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -640,7 +640,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -679,7 +679,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <using>
   <name>U</name>
@@ -689,7 +689,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>76</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -724,7 +724,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>78</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -759,7 +759,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>80</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -794,7 +794,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>82</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -829,7 +829,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>84</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -864,7 +864,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>86</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -899,7 +899,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>89</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -935,7 +935,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -974,7 +974,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <using>
   <name>f</name>
@@ -984,7 +984,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>91</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -1020,7 +1020,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1052,7 +1052,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <using>
   <name>f</name>
@@ -1062,7 +1062,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>93</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -1098,7 +1098,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1130,7 +1130,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <using>
   <name>f</name>
@@ -1140,7 +1140,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>95</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -1176,7 +1176,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1208,7 +1208,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <using>
   <name>f</name>
@@ -1218,7 +1218,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>97</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -1254,7 +1254,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>50</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1286,7 +1286,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <using>
   <name>f</name>
@@ -1296,7 +1296,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>99</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -1332,7 +1332,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>58</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1364,7 +1364,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <overloads>
   <name>f</name>
@@ -1374,21 +1374,21 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-member-function.cpp</short-path>
       <source-path>using-member-function.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-member-function.cpp</short-path>
       <source-path>using-member-function.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -1430,7 +1430,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1462,7 +1462,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -1472,7 +1472,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1504,7 +1504,7 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>f</name>
@@ -1514,7 +1514,7 @@
       <source-path>using-member-function.cpp</source-path>
       <line-number>43</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1546,6 +1546,6 @@
     </named>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

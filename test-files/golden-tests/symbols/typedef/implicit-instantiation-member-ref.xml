@@ -35,7 +35,7 @@
       <identifier>S0</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>A9</name>
@@ -78,7 +78,7 @@
       </name>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <record>
   <name>S0</name>
@@ -111,7 +111,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</specializations>
 </record>
 <record>
   <name>S2</name>
@@ -145,7 +144,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>LQDMND21bNwDyy/hE3qQoQzFLXY=</specializations>
 </record>
 <typedef>
   <name>M2</name>
@@ -167,7 +165,7 @@
       <identifier>U</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>M3</name>
@@ -190,7 +188,7 @@
       <identifier>S2</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -236,7 +234,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>S2</name>
@@ -306,7 +303,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <typedef>
   <name>M2</name>
@@ -328,7 +324,7 @@
       <identifier>char</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>M3</name>
@@ -351,7 +347,7 @@
       <identifier>S2</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>

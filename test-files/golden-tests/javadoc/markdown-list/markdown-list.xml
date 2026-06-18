@@ -26,7 +26,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>7</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -103,7 +103,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>17</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -234,7 +234,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>24</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -290,7 +290,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>32</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -376,7 +376,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>41</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -491,7 +491,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>49</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -556,7 +556,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>56</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -616,7 +616,7 @@
       <source-path>markdown-list.cpp</source-path>
       <line-number>63</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

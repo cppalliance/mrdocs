@@ -19,7 +19,7 @@
       <source-path>global-symbol-excluded.cpp</source-path>
       <line-number>6</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -47,7 +47,7 @@
       <source-path>global-symbol-excluded.cpp</source-path>
       <line-number>8</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>

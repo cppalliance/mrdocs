@@ -21,7 +21,7 @@
       <source-path>friend-and-member-operator-rshift.cpp</source-path>
       <line-number>10</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -84,7 +84,7 @@
       <source-path>friend-and-member-operator-rshift.cpp</source-path>
       <line-number>18</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -134,7 +134,7 @@
     <name>n</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <record>
   <name>istream</name>
@@ -144,7 +144,7 @@
       <source-path>friend-and-member-operator-rshift.cpp</source-path>
       <line-number>2</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -183,7 +183,7 @@
       <source-path>friend-and-member-operator-rshift.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

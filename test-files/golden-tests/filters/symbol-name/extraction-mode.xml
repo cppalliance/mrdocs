@@ -32,7 +32,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>202</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -66,7 +66,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>11</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -101,7 +101,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>59</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -142,7 +142,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>16</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -189,7 +189,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>18</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -224,7 +224,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>20</line-number>
       <column-number>13</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -258,7 +258,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -299,7 +299,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>102</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -339,7 +339,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>82</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -393,7 +393,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -445,7 +445,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>50</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -492,7 +492,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>121</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace</kind>
@@ -539,7 +539,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>155</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -587,7 +587,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>127</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -628,7 +628,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>145</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -669,7 +669,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>184</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -716,7 +716,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>164</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -770,7 +770,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>233</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace-alias</kind>
@@ -799,7 +799,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>215</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace-alias</kind>
@@ -829,7 +829,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>196</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>namespace-alias</kind>
@@ -866,7 +866,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>295</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -907,7 +907,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>251</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -954,7 +954,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>253</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -989,7 +989,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>255</line-number>
       <column-number>9</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1023,7 +1023,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>271</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -1071,7 +1071,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>313</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1111,7 +1111,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>304</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1165,7 +1165,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>263</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -1217,7 +1217,7 @@
       <source-path>extraction-mode.cpp</source-path>
       <line-number>290</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

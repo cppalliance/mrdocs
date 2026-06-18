@@ -73,8 +73,8 @@
     </brief>
   </doc-comment>
   <func-class>destructor</func-class>
-  <members>3rUOGQX7PF0sqknq7fJH2ekGT1c=</members>
-  <members>BOrpr6vl5NDQn5Gj3sEhohxrWPU=</members>
+  <members>x5T8zVxBVmg1ModTwgEAXcXWKDg=</members>
+  <members>uiH+ZSS+bYC5efGHgbdzlzXaV/o=</members>
   <named>
     <name>
       <kind>identifier</kind>
@@ -93,7 +93,7 @@
     </location>
   </source>
   <kind>function</kind>
-  <id>3rUOGQX7PF0sqknq7fJH2ekGT1c=</id>
+  <id>x5T8zVxBVmg1ModTwgEAXcXWKDg=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -113,7 +113,7 @@
   </named>
   <func-class>destructor</func-class>
   <requires>(sizeof(T) &gt; 4)</requires>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>~A</name>
@@ -126,7 +126,7 @@
     </location>
   </source>
   <kind>function</kind>
-  <id>BOrpr6vl5NDQn5Gj3sEhohxrWPU=</id>
+  <id>uiH+ZSS+bYC5efGHgbdzlzXaV/o=</id>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <doc-comment>
@@ -146,6 +146,6 @@
   </named>
   <func-class>destructor</func-class>
   <requires>(sizeof(T) &lt;= 4)</requires>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 </mrdocs>

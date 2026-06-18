@@ -25,9 +25,6 @@
   <id>e/hP0+mSSe5Ju83w/5pueMcFgLQ=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
-  <nodiscard-attribute>
-    <name>nodiscard</name>
-  </nodiscard-attribute>
   <named>
     <name>
       <kind>identifier</kind>
@@ -42,5 +39,7 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
+  <is-nodiscard/>
+  <attributes>nodiscard</attributes>
 </function>
 </mrdocs>

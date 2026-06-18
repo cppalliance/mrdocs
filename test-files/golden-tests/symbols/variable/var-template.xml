@@ -69,7 +69,7 @@
     </type-tparam>
   </template>
   <initializer>0</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>C</name>
@@ -103,7 +103,7 @@
     </type-targ>
   </template>
   <initializer>-1</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>C</name>
@@ -144,7 +144,7 @@
     </type-targ>
   </template>
   <initializer>sizeof(T)</initializer>
-  <is-inline>1</is-inline>
+  <is-inline/>
 </variable>
 <variable>
   <name>A</name>

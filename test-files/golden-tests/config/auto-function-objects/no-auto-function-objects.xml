@@ -40,7 +40,7 @@
       <source-path>no-auto-function-objects.cpp</source-path>
       <line-number>6</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -75,7 +75,7 @@
       <source-path>no-auto-function-objects.cpp</source-path>
       <line-number>11</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -105,8 +105,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <record>
   <name>explicit_fn</name>
@@ -116,7 +116,7 @@
       <source-path>no-auto-function-objects.cpp</source-path>
       <line-number>21</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -158,7 +158,7 @@
       <source-path>no-auto-function-objects.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -188,8 +188,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>explicit_var</name>
@@ -199,7 +199,7 @@
       <source-path>no-auto-function-objects.cpp</source-path>
       <line-number>26</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -253,6 +253,6 @@
     </name>
   </named>
   <initializer>{}</initializer>
-  <is-constexpr>1</is-constexpr>
+  <is-constexpr/>
 </variable>
 </mrdocs>

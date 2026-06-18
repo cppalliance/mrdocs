@@ -93,8 +93,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>NLoLTepRVq6Wm8kqUGSEoM03TKg=</specializations>
-  <specializations>1gG5jFtdo9Wauh4eNKJFnssDpFU=</specializations>
 </record>
 <record>
   <name>C</name>
@@ -140,7 +138,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -177,7 +174,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -214,8 +210,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>S+FvHbXPEwSCkNHoe9TC9L5a4Yk=</specializations>
-  <specializations>VwFE3CILPejPf11zTv20aat7w8Q=</specializations>
 </record>
 <record>
   <name>B</name>
@@ -261,7 +255,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -312,7 +305,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>A</name>
@@ -456,7 +448,7 @@
     </name>
   </named>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>Z</name>
@@ -512,7 +504,7 @@
     <name>value</name>
   </param>
   <func-class>constructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>~Z</name>
@@ -544,7 +536,7 @@
     </name>
   </named>
   <func-class>destructor</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>foo</name>
@@ -567,8 +559,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator bool</name>
@@ -621,8 +613,8 @@
     </name>
   </named>
   <func-class>conversion</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator!</name>
@@ -679,8 +671,8 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator==</name>
@@ -747,7 +739,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
@@ -758,8 +750,8 @@
     <name>rhs</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator!=</name>
@@ -826,7 +818,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
@@ -837,8 +829,8 @@
     <name>rhs</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
@@ -883,7 +875,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
@@ -894,8 +886,8 @@
     <name>rhs</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
-  <is-const>1</is-const>
+  <is-record-method/>
+  <is-const/>
 </function>
 <function>
   <name>h</name>
@@ -1038,7 +1030,6 @@
     </type-tparam>
   </template>
   <func-class>normal</func-class>
-  <specializations>5LjM4cXZ7IywLIZW1RtfpP7tNNk=</specializations>
 </function>
 <function>
   <name>g</name>
@@ -1097,7 +1088,6 @@
     <primary>PEedgXj8uxMWKd/yZk6yqAz6boU=</primary>
   </template>
   <func-class>normal</func-class>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </function>
 <function>
   <name>g</name>
@@ -1363,7 +1353,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -1453,7 +1443,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -1466,7 +1456,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -1556,7 +1546,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
@@ -1569,7 +1559,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>

@@ -110,13 +110,9 @@ XMLWriter::write(T const& value)
     using Type = std::decay_t<T>;
 
     // Primitives: write as text content
-    if constexpr (std::is_same_v<Type, bool>)
-    {
-        os_ << '1';
-    }
-    else if constexpr (std::is_same_v<Type, std::string> || 
-                       std::is_same_v<Type, dom::String> ||
-                       std::is_same_v<Type, llvm::StringRef>)
+    if constexpr (std::is_same_v<Type, std::string> ||
+                  std::is_same_v<Type, dom::String> ||
+                  std::is_same_v<Type, llvm::StringRef>)
     {
         os_ << xmlEscape(value);
     }
@@ -190,8 +186,14 @@ XMLWriter::writeElement(std::string_view tag, T const& value)
         os_ << xmlEscape(value.Written);
         os_ << "</" << tag << ">\n";
     }
-    else if constexpr (std::is_same_v<Type, bool> ||
-                  std::is_same_v<Type, std::string> ||
+    else if constexpr (std::is_same_v<Type, bool>)
+    {
+        // A false `bool` was skipped above. A true `bool` carries no
+        // text body: the element's presence alone encodes the value,
+        // so emit an empty element.
+        tags_.indent() << '<' << tag << "/>\n";
+    }
+    else if constexpr (std::is_same_v<Type, std::string> ||
                   std::is_same_v<Type, dom::String> ||
                   std::is_integral_v<Type> ||
                   std::is_same_v<Type, SymbolID> ||

@@ -38,9 +38,9 @@
   </named>
   <param>
     <l-value-reference>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <identifier>Ts</identifier>
@@ -53,7 +53,7 @@
     <type-tparam>
       <kind>type</kind>
       <name>Ts</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
@@ -81,7 +81,7 @@
   </named>
   <param>
     <pointer>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <named>
         <name>
           <kind>identifier</kind>
@@ -95,7 +95,7 @@
     <type-tparam>
       <kind>type</kind>
       <name>Ts</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
@@ -123,7 +123,7 @@
   </named>
   <param>
     <l-value-reference>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <named>
         <name>
           <kind>identifier</kind>
@@ -137,7 +137,7 @@
     <type-tparam>
       <kind>type</kind>
       <name>Ts</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
@@ -165,7 +165,7 @@
   </named>
   <param>
     <named>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <name>
         <kind>identifier</kind>
         <identifier>Ts</identifier>
@@ -177,7 +177,7 @@
     <type-tparam>
       <kind>type</kind>
       <name>Ts</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
@@ -205,7 +205,7 @@
   </named>
   <param>
     <r-value-reference>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <named>
         <name>
           <kind>identifier</kind>
@@ -219,7 +219,7 @@
     <type-tparam>
       <kind>type</kind>
       <name>Args</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>class</key-kind>
     </type-tparam>
   </template>
@@ -249,7 +249,7 @@
   </pointer>
   <param>
     <r-value-reference>
-      <is-pack-expansion>1</is-pack-expansion>
+      <is-pack-expansion/>
       <named>
         <name>
           <kind>identifier</kind>
@@ -268,7 +268,7 @@
     <type-tparam>
       <kind>type</kind>
       <name>Args</name>
-      <is-parameter-pack>1</is-parameter-pack>
+      <is-parameter-pack/>
       <key-kind>class</key-kind>
     </type-tparam>
   </template>

@@ -30,7 +30,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>class</key-kind>
-  <is-final>1</is-final>
+  <is-final/>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -62,7 +62,7 @@
       <key-kind>typename</key-kind>
     </type-tparam>
   </template>
-  <is-final>1</is-final>
+  <is-final/>
   <record-interface>
     <record-tranche>
     </record-tranche>
@@ -87,7 +87,7 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <key-kind>class</key-kind>
-  <is-final>1</is-final>
+  <is-final/>
   <base>
     <named>
       <name>

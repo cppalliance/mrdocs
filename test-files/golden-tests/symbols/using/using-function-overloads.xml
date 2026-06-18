@@ -38,21 +38,21 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-function-overloads.cpp</short-path>
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>6</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-function-overloads.cpp</short-path>
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -94,7 +94,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>6</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -126,7 +126,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -166,7 +166,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -214,7 +214,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>12</line-number>
       <column-number>1</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>using</kind>
@@ -250,21 +250,21 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-function-overloads.cpp</short-path>
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>6</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
     <location>
       <short-path>using-function-overloads.cpp</short-path>
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>overloads</kind>
@@ -306,7 +306,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>6</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -338,7 +338,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>4</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>
@@ -378,7 +378,7 @@
       <source-path>using-function-overloads.cpp</source-path>
       <line-number>8</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>function</kind>

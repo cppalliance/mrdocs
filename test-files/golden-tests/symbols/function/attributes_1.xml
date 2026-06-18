@@ -25,9 +25,6 @@
   <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
-  <nodiscard-attribute>
-    <name>nodiscard</name>
-  </nodiscard-attribute>
   <named>
     <name>
       <kind>identifier</kind>
@@ -35,5 +32,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
+  <is-nodiscard/>
+  <attributes>nodiscard</attributes>
 </function>
 </mrdocs>

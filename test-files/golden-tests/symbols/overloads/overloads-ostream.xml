@@ -155,7 +155,7 @@
     <name>shift</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator&lt;&lt;</name>
@@ -214,7 +214,7 @@
     <name>shift</name>
   </param>
   <func-class>normal</func-class>
-  <is-record-method>1</is-record-method>
+  <is-record-method/>
 </function>
 <function>
   <name>operator&lt;&lt;</name>
@@ -240,7 +240,7 @@
   <param>
     <l-value-reference>
       <named>
-        <is-const>1</is-const>
+        <is-const/>
         <name>
           <kind>identifier</kind>
           <id>mPR5L0+aXmfmkEAliRYGzCDx/No=</id>

@@ -49,7 +49,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>20</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -73,7 +73,7 @@
       <identifier>B</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>BInt2</name>
@@ -83,7 +83,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>28</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -107,7 +107,7 @@
       <identifier>B</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>B_t</name>
@@ -117,7 +117,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>11</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -149,7 +149,7 @@
       <identifier>B</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -176,7 +176,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>60</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -200,7 +200,7 @@
       <identifier>C</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>CIntTrue</name>
@@ -210,7 +210,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>48</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -234,7 +234,7 @@
       <identifier>C</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
 </typedef>
 <typedef>
   <name>C_t</name>
@@ -244,7 +244,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>39</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>typedef</kind>
@@ -276,7 +276,7 @@
       <identifier>C</identifier>
     </name>
   </named>
-  <is-using>1</is-using>
+  <is-using/>
   <template>
     <type-tparam>
       <kind>type</kind>
@@ -303,7 +303,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>7</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -364,8 +364,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>n2ekv7/9IraylJIibujZeExrML4=</specializations>
-  <specializations>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</specializations>
 </record>
 <record>
   <name>B</name>
@@ -375,7 +373,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>17</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -412,7 +410,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>B</name>
@@ -422,7 +419,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>25</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -463,7 +460,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -473,7 +469,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>35</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -534,8 +530,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <specializations>w5ssdgUOfKNpDbPFUfSYesxFAc8=</specializations>
-  <specializations>+AYNfv3bBiQwa6z9A60U/F7dvXE=</specializations>
 </record>
 <record>
   <name>C</name>
@@ -545,7 +539,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>57</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -587,7 +581,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>C</name>
@@ -597,7 +590,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>45</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
@@ -638,7 +631,6 @@
     <record-tranche>
     </record-tranche>
   </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
 </record>
 <record>
   <name>D</name>
@@ -648,7 +640,7 @@
       <source-path>template-arguments.cpp</source-path>
       <line-number>52</line-number>
       <column-number>5</column-number>
-      <documented>1</documented>
+      <documented/>
     </location>
   </source>
   <kind>record</kind>
