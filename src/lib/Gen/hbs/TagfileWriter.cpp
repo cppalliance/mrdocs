@@ -182,6 +182,23 @@ writeClassLike(
     tags_.write("filename", generateFilename(I));
     if constexpr (T::isRecord())
     {
+        // Write the nested class-like members of this record
+        corpus_->traverse(I, [this]<typename U>(U const& J)
+        {
+            if (!hbs::shouldGenerate(J, corpus_.getCorpus().config))
+            {
+                return;
+            }
+
+            if (!U::isNamespace() && !U::isFunction())
+            {
+                tags_.write(
+                    "class",
+                    corpus_->qualifiedName(J),
+                    {{"kind", "class"}});
+            }
+        });
+
         // Write the function-like members of this record
         corpus_->traverse(I, [this]<typename U>(U const& J)
         {
@@ -192,6 +209,25 @@ writeClassLike(
         });
     }
     tags_.close("compound");
+
+    if constexpr (T::isRecord())
+    {
+        // Write compound elements for the nested class-like members.
+        // Only recurse into members genuinely nested in this record
+        // (Parent == I.id). Inherited members that are merely referenced
+        // resolve to the base class page and are emitted as part of the
+        // base class compound, so recursing here would duplicate them.
+        corpus_->traverse(I, [this, &I]<typename U>(U const& J)
+        {
+            if constexpr (!U::isNamespace() && !U::isFunction())
+            {
+                if (J.Parent == I.id)
+                {
+                    this->operator()(J);
+                }
+            }
+        });
+    }
 }
 
 void
