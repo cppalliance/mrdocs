@@ -13,10 +13,14 @@
 #define MRDOCS_LIB_SUPPORT_PATH_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Path.h>
+#include <string>
+#include <string_view>
+#include <vector>
 
 
 namespace mrdocs {
@@ -27,19 +31,6 @@ namespace mrdocs {
     as data members of long-lived types.
 */
 using SmallPathString = llvm::SmallString<340>;
-
-/** Replaces backslashes with slashes if Windows in place.
-
-    @param path A path that is transformed to native format.
-
-    On Unix, this function is a no-op because backslashes
-    are valid path chracters.
-*/
-llvm::StringRef
-convert_to_slash(
-    llvm::SmallVectorImpl<char> &path,
-    llvm::sys::path::Style style =
-        llvm::sys::path::Style::native);
 
 /** A temporary file that is deleted when it goes out of scope.
 */
@@ -135,6 +126,17 @@ public:
     */
     ScopedTempDirectory(llvm::StringRef root, llvm::StringRef dir);
 
+    /** Move ownership of the created directory.
+
+        The moved-from object is left empty so it does not delete the
+        directory; the destination owns and eventually removes it.
+    */
+    ScopedTempDirectory(ScopedTempDirectory&& other) noexcept;
+    ScopedTempDirectory& operator=(ScopedTempDirectory&& other) noexcept;
+
+    ScopedTempDirectory(ScopedTempDirectory const&) = delete;
+    ScopedTempDirectory& operator=(ScopedTempDirectory const&) = delete;
+
     /** Returns `true` if the directory was created successfully.
     */
     operator bool() const
@@ -162,6 +164,34 @@ public:
     */
     operator std::string_view() const { return path(); }
 };
+
+/** Create a scratch directory in the first writable candidate location.
+
+    MrDocs needs a writable place for transient build artifacts (for
+    example the CMake build tree used to generate a compilation database).
+    Candidates are tried in order until one exists (or can be created) and
+    is writable, and a uniquely-named subdirectory is created inside it:
+
+    @li the directory named by the `MRDOCS_TEMP_DIR` environment variable;
+    @li the MrDocs user cache directory (`<os-cache>/mrdocs`);
+    @li the system temporary directory (which also honors `TMPDIR`,
+        `TMP`, and `TEMP`);
+    @li the caller-supplied `fallbacks`, in order, used last.
+
+    The returned directory is removed when the result goes out of scope.
+
+    @return The scratch directory, or an error if no candidate qualified.
+
+    @param subject A short label folded into the directory name so the
+    scratch directory is identifiable and unique.
+    @param fallbacks Extra base directories to try after the defaults,
+    such as the output or configuration directory.
+*/
+MRDOCS_DECL
+Expected<ScopedTempDirectory>
+makeScratchDirectory(
+    std::string_view subject,
+    std::vector<std::string> const& fallbacks = {});
 
 } // mrdocs
 

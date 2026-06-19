@@ -156,7 +156,7 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
     }
 
     // Handle the general case
-    std::string const fromDir = files::getParentDir(from);
+    std::string const fromDir(files::getParentDir(from));
     std::string relativePath = std::filesystem::path(to).lexically_relative(fromDir).generic_string();
     if (relativePath.empty())
     {
