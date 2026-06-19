@@ -11,11 +11,46 @@
 
 #include <lib/ConfigImpl.hpp>
 #include <mrdocs/Config.hpp>
+#include <mrdocs/Dom/Object.hpp>
+#include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <thread>
 
 namespace mrdocs {
+
+namespace {
+
+// Populate the free-form `generator-options` map from the config YAML.
+//
+// Its values are `dom::Object`, a dynamic tree, whereas llvm::yaml maps
+// each field to a statically-typed member. Rather than write recursive
+// custom traits to model that (which would duplicate the YAML-to-DOM
+// conversion `toDomObject` already does), the code generator deliberately
+// omits this field from the PublicSettings YAMLIO mapping, so
+// `PublicSettings::load` never touches it. It is read here from a DOM parse
+// of the same YAML instead.
+void
+loadGeneratorOptions(
+    Config::Settings& s,
+    std::string_view configYaml)
+{
+    MRDOCS_CHECK_OR(!configYaml.empty());
+    s.generatorOptions.clear();
+    dom::Object const obj = toDomObject(configYaml);
+    dom::Value const go = obj.get("generator-options");
+    MRDOCS_CHECK_OR(go.isObject());
+    go.getObject().visit(
+        [&s](dom::String const& key, dom::Value const& value)
+        {
+            MRDOCS_CHECK_OR(value.isObject());
+            s.generatorOptions.emplace(
+                std::string(std::string_view(key)),
+                value.getObject());
+        });
+}
+
+} // (anon)
 
 Config::
 Config() noexcept
@@ -46,6 +81,7 @@ load(
     s.mrdocsRootDir = dirs.mrdocsRoot;
     s.cwdDir = dirs.cwd;
     s.configYaml = configYaml;
+    loadGeneratorOptions(s, configYaml);
     return {};
 }
 

@@ -291,6 +291,15 @@
       "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, `xml`, and `noop` (which extracts but writes no output, useful for checking extraction warnings); data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/. This option accepts a single generator (`generator: xml`), a list (`generator: [xml, adoc]`), or a comma-separated string (`generator: \"xml,adoc\"`); when more than one is given the documentation is produced once per generator.",
       "title": "Generator(s) used to create the documentation"
     },
+    "generator-options": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "default": {},
+      "description": "An object whose keys are generator ids (for example, `adoc`, `html`, `xml`) and whose values are objects of settings for that generator. These settings typically take precedence over the top-level options for the same generator.",
+      "title": "Per-generator settings keyed by generator id",
+      "type": "object"
+    },
     "global-namespace-index": {
       "default": true,
       "description": "When set to true, the page for the global namespace will recursively list all symbols in the documentation, not just those in the global namespace. This makes the global namespace page act as an index for the entire project.",

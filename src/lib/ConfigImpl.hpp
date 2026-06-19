@@ -118,33 +118,18 @@ public:
     {
         return threadPool_;
     }
-
-    //--------------------------------------------
-    //
-    // Private Interface
-    //
-    //--------------------------------------------
-
-    /** Returns true if the file should be visited.
-
-        If the file is visited, then prefix is
-        set to the portion of the file path which
-        should be removed for matching files.
-
-        @param filePath A posix-style full or
-        relative path to the file being processed.
-        Relative paths are resolved against the
-        working directory.
-
-        @param prefix The prefix which should be
-        removed from subsequent matches.
-    */
-    bool
-    shouldExtractFromFile(
-        llvm::StringRef filePath,
-        std::string& prefix) const noexcept;
-
 };
+
+//------------------------------------------------
+
+/** Parse a YAML document into a DOM object.
+
+    Unknown keys are preserved and scalars are converted to the matching
+    DOM type (integer, then boolean, then null, otherwise string). The
+    result is empty when the YAML is empty or its root is not a mapping.
+*/
+dom::Object
+toDomObject(std::string_view yaml);
 
 //------------------------------------------------
 

@@ -26,45 +26,10 @@
 
 namespace mrdocs {
 
-namespace {
-
-dom::Object
-toDomObject(std::string_view configYaml);
-
-} // (anon)
-
 ConfigImpl::
 ConfigImpl(access_token, ThreadPool& threadPool)
     : threadPool_(threadPool)
 {}
-
-//------------------------------------------------
-
-bool
-ConfigImpl::
-shouldExtractFromFile(
-    llvm::StringRef filePath,
-    std::string& prefixPath) const noexcept
-{
-    // Resolve the file to an absolute POSIX path.
-    std::string const abs = files::isAbsolute(filePath)
-        ? files::makePosixStyle(filePath)
-        : files::makePosixStyle(
-            files::makeAbsolute(filePath, settings_.configDir()));
-    MRDOCS_ASSERT(files::isDirsy(settings_.sourceRoot));
-    // Inclusion is generous: the file is under `source-root` if it matches
-    // as written or by its real (symlink-resolved) location. NOTE: this
-    // method currently has no callers; it is kept consistent with the
-    // inclusion policy for any future use.
-    if (files::isResolvedSubpathOf(abs, settings_.sourceRoot))
-    {
-        prefixPath.assign(
-            settings_.sourceRoot.begin(),
-            settings_.sourceRoot.end());
-        return true;
-    }
-    return false;
-}
 
 //------------------------------------------------
 
@@ -179,6 +144,7 @@ toDom(llvm::yaml::Node* Value)
     }
     return nullptr;
 }
+} // (anon)
 
 /* Convert a YAML string to a DOM object.
 
@@ -219,7 +185,6 @@ toDomObject(std::string_view yaml)
     }
     return toDomObject(Object);
 }
-} // (anon)
 
 dom::Object const&
 ConfigImpl::
@@ -233,53 +198,54 @@ ConfigImpl::
 updateConfigDom()
 {
     SettingsImpl& s = this->settings_;
+    // Store values from the YAML string into the object
+    // This includes explicitly defined settings and extra values
     configObj_ = toDomObject(s.configYaml);
+    // Store settings that weren't explicitly defined in the YAML
     settings_.visit([this]<class T>(std::string_view name, T& value) {
-        if (!configObj_.exists(name))
+        MRDOCS_CHECK_OR(!configObj_.exists(name));
+        if constexpr (std::convertible_to<T, std::string_view>)
         {
-            if constexpr (std::convertible_to<T, std::string_view>)
+            configObj_.set(name, std::string(value));
+        }
+        else if constexpr (range_of_tuple_like<T>)
+        {
+            dom::Object obj;
+            auto keys = value | std::views::keys;
+            auto vals = value | std::views::values;
+            auto zip = std::views::zip(keys, vals);
+            for (auto const& [k, v] : zip)
             {
-                configObj_.set(name, std::string(value));
+                obj.set(k, v);
             }
-            else if constexpr (range_of_tuple_like<T>)
+            configObj_.set(name, std::move(obj));
+        }
+        else if constexpr (std::ranges::range<T>)
+        {
+            using ValueType = std::ranges::range_value_t<T>;
+            dom::Array arr;
+            for (auto const& v : value)
             {
-                dom::Object obj;
-                auto keys = value | std::views::keys;
-                auto vals = value | std::views::values;
-                auto zip = std::views::zip(keys, vals);
-                for (auto const& [k, v] : zip)
+                if constexpr (
+                    std::is_same_v<ValueType, PathGlobPattern> ||
+                    std::is_same_v<ValueType, SymbolGlobPattern>)
                 {
-                    obj.set(k, v);
+                    arr.emplace_back(v.pattern());
                 }
-                configObj_.set(name, std::move(obj));
-            }
-            else if constexpr (std::ranges::range<T>)
-            {
-                using ValueType = std::ranges::range_value_t<T>;
-                dom::Array arr;
-                for (auto const& v : value)
+                else
                 {
-                    if constexpr (
-                        std::is_same_v<ValueType, PathGlobPattern> ||
-                        std::is_same_v<ValueType, SymbolGlobPattern>)
-                    {
-                        arr.emplace_back(v.pattern());
-                    }
-                    else
-                    {
-                        arr.emplace_back(v);
-                    }
+                    arr.emplace_back(v);
                 }
-                configObj_.set(name, std::move(arr));
             }
-            else if constexpr (std::is_enum_v<T>)
-            {
-                configObj_.set(name, to_string(value));
-            }
-            else
-            {
-                configObj_.set(name, value);
-            }
+            configObj_.set(name, std::move(arr));
+        }
+        else if constexpr (std::is_enum_v<T>)
+        {
+            configObj_.set(name, to_string(value));
+        }
+        else
+        {
+            configObj_.set(name, value);
         }
     });
 }
