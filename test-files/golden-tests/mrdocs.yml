@@ -1,5 +1,8 @@
 concurrency: 1
 source-root: .
+# Default generator for fixtures that don't set their own; per-file
+# mrdocs.yml override it (e.g. generator: [adoc, html]).
+generator: xml
 multipage: false
 # Golden tests verify generated output, not documentation completeness, and
 # many fixtures are minimal inputs with undocumented params/returns. Silence

@@ -54,9 +54,7 @@ public:
     }
 
     Expected<void>
-    buildOne(
-        std::ostream&,
-        Corpus const&) const override
+    build(Corpus const&) const override
     {
         return {};
     }

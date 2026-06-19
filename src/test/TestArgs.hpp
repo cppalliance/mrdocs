@@ -11,19 +11,13 @@
 #ifndef MRDOCS_TEST_TESTARGS_HPP
 #define MRDOCS_TEST_TESTARGS_HPP
 
+#include "Action.hpp"
 #include <llvm/Support/CommandLine.h>
 #include <string>
 #include <tool/PublicToolArgs.hpp>
 
 
 namespace mrdocs {
-
-enum Action : int
-{
-    test,
-    create,
-    update,
-};
 
 /** Command line options and test settings.
 */

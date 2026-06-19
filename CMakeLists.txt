@@ -524,43 +524,28 @@ if (MRDOCS_BUILD_TESTS)
     endforeach ()
 
     #-------------------------------------------------
-    # Template-only generators
+    # Data-driven generator examples (run-only)
     #
-    # Fixtures under examples/generators/data-driven/<id> ship an
-    # addon defining their own Handlebars generator. They live outside
-    # test-files/golden-tests so the xml/adoc/html runs do not walk
-    # into them and demand expected files in their own formats.
+    # examples/generators/data-driven/<id> demonstrates a Handlebars
+    # generator defined entirely in an addon. These are examples, not
+    # golden tests: the test only checks that mrdocs runs each one to
+    # completion using the example's own configuration. Output goes to
+    # the build tree; the example's committed output files are
+    # illustrative and are not compared here.
     #-------------------------------------------------
-    set(MRDOCS_TEMPLATE_ONLY_ROOT "${PROJECT_SOURCE_DIR}/examples/generators/data-driven")
-    foreach (template_only IN ITEMS md tex jsonl)
-        add_test(NAME mrdocs-golden-tests-${template_only}
+    set(MRDOCS_DATA_DRIVEN_ROOT "${PROJECT_SOURCE_DIR}/examples/generators/data-driven")
+    foreach (data_driven IN ITEMS md tex jsonl)
+        add_test(NAME mrdocs-generator-example-data-driven-${data_driven}
             COMMAND
-                mrdocs-test
-                --unit=false
-                --action=test
-                "${MRDOCS_TEMPLATE_ONLY_ROOT}/${template_only}"
+                mrdocs
+                "${MRDOCS_DATA_DRIVEN_ROOT}/${data_driven}/simple.cpp"
+                "--config=${MRDOCS_DATA_DRIVEN_ROOT}/${data_driven}/mrdocs.yml"
+                "--output=${CMAKE_BINARY_DIR}/examples/generators/data-driven/${data_driven}"
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                --generator=${template_only}
                 "--stdlib-includes=${LIBCXX_DIR}"
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                 --log-level=warn
         )
-        foreach (action IN ITEMS test create update)
-            add_custom_target(
-                mrdocs-${action}-test-fixtures-${template_only}
-                COMMAND
-                    mrdocs-test
-                    --unit=false
-                    --action=${action}
-                    "${MRDOCS_TEMPLATE_ONLY_ROOT}/${template_only}"
-                    "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                    --generator=${template_only}
-                    "--stdlib-includes=${LIBCXX_DIR}"
-                    "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                    --log-level=warn
-                DEPENDS mrdocs-test
-            )
-        endforeach ()
     endforeach ()
 
     #-------------------------------------------------

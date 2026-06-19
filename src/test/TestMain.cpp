@@ -47,7 +47,10 @@ void DoTestAction(char const** argv)
     TestRunner runner;
     for (auto const& inputPath: testPaths)
     {
-        runner.checkPath(inputPath, argv);
+        if (auto r = runner.checkPath(inputPath, argv); !r)
+        {
+            report::error("{}: \"{}\"", r.error(), inputPath);
+        }
     }
     auto const& results = runner.results;
 

@@ -24,7 +24,6 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include <test/Support/TestLayout.hpp>
 
 
 namespace mrdocs {
@@ -39,10 +38,6 @@ struct TestResults
 
     // Number of directories visited
     std::atomic<std::size_t> numberOfDirs = 0;
-
-    TestResults() noexcept
-    {
-    }
 };
 
 //------------------------------------------------
@@ -56,41 +51,43 @@ struct TestResults
 class TestRunner
 {
     ThreadPool threadPool_;
-    ReferenceDirectories dirs_;
-
-    /** Run a single .cpp test file with inherited directory settings. */
-    void
-    handleFile(
-        llvm::StringRef filePath,
-        Config::Settings const& dirSettings);
-
-    /** Traverse a directory, applying configs and enqueueing .cpp tests. */
-    void
-    handleDir(
-        std::string dirPath,
-        Config::Settings const& dirSettings);
 
 public:
     TestResults results;
 
     /// Construct a runner.
-    TestRunner();
-
-    /** Execute a compilation/database run for one test input. */
-    void
-    handleCompilationDatabase(
-        llvm::StringRef filePath,
-        Generator const& gen,
-        MrDocsCompilationDatabase const& compilations,
-        std::shared_ptr<ConfigImpl const> const& config,
-        TestLayout const& layout);
+    TestRunner() = default;
 
     /** Check a single file, or a directory recursively.
 
         This function checks the specified path
         and blocks until completed.
     */
-    void checkPath(std::string inputPath, char const** argv);
+    Expected<void>
+    checkPath(std::string inputPath, char const** argv);
+
+private:
+    /** Traverse a directory, applying configs and enqueueing .cpp tests. */
+    Expected<void>
+    handleDir(
+        std::string dirPath,
+        Config::Settings const& dirSettings,
+        ReferenceDirectories const& dirs);
+
+    /** Run a single .cpp test file with inherited directory settings. */
+    Expected<void>
+    handleFile(
+        llvm::StringRef filePath,
+        Config::Settings const& dirSettings,
+        ReferenceDirectories const& dirs);
+
+    /** Execute a compilation/database run for one test input. */
+    Expected<void>
+    handleCompilationDatabase(
+        llvm::StringRef filePath,
+        Generator const& gen,
+        MrDocsCompilationDatabase const& compilations,
+        std::shared_ptr<ConfigImpl const> const& config);
 };
 
 } // mrdocs
