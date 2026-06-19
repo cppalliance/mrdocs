@@ -7,45 +7,33 @@
 #include "Comparison.hpp"
 #include "TextNormalization.hpp"
 #include "../TestRunner.hpp"
+#include "../TestArgs.hpp"
 #include <test_suite/diff.hpp>
-#include <lib/Gen/hbs/HandlebarsGenerator.hpp>
+#include <lib/Support/Generator.hpp>
 #include <lib/Support/Path.hpp>
 #include <lib/Support/Report.hpp>
+#include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error.hpp>
-#include "../TestArgs.hpp"
+#include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
-#include <llvm/Support/raw_ostream.h>
 #include <filesystem>
-#include <unordered_map>
+#include <map>
+#include <utility>
 #include <vector>
-#include <sstream>
 
 namespace mrdocs::test_support {
 
 namespace {
 
-/** Strip cwd prefix to make error paths shorter. */
-std::string
-relativeToCwd(
-    ReferenceDirectories const& dirs,
-    std::string_view path)
-{
-    std::string_view trimmed = path;
-    if (trimmed.starts_with(dirs.cwd))
-    {
-        trimmed.remove_prefix(dirs.cwd.size());
-        if (trimmed.starts_with("\\") || trimmed.starts_with("/"))
-        {
-            trimmed.remove_prefix(1);
-        }
-    }
-    return std::string(trimmed);
-}
+/** Collect the regular files under `root` as (relative name -> path).
 
+    Hidden files (a dot-prefixed segment, e.g. .DS_Store) are skipped so OS
+    artifacts stay out of comparisons.
+*/
 bool
 collectFiles(
     std::string const& root,
-    std::unordered_map<std::string, std::filesystem::path>& files)
+    std::map<std::string, std::filesystem::path>& files)
 {
     namespace fs = std::filesystem;
 
@@ -69,7 +57,6 @@ collectFiles(
             return false;
         }
 
-        // Ignore hidden files (e.g. .DS_Store) to keep OS artifacts out of comparisons.
         bool hidden = false;
         for (auto const& part : rel)
         {
@@ -112,204 +99,136 @@ copyDirectoryTree(
     return true;
 }
 
-Expected<void>
-writeFile(
-    llvm::StringRef filePath,
-    llvm::StringRef contents)
-{
-    std::error_code ec;
-    llvm::raw_fd_ostream os(
-        filePath, ec, llvm::sys::fs::OF_None);
-    MRDOCS_CHECK(!ec, ec);
-    os << contents;
-    MRDOCS_CHECK(!os.has_error(), os.error());
-    return {};
-}
-
 } // (anon)
 
 Expected<void>
-compareSinglePage(SinglePageArgs const& args)
+generateAndCompareOutput(CompareArgs const& args)
 {
+    namespace fs = std::filesystem;
     namespace path = llvm::sys::path;
 
-    report::debug("Generating documentation", args.filePath);
-    std::string generatedDocs;
-    if (auto exp = args.gen.buildOneString(generatedDocs, args.corpus); !exp)
-    {
-        return Unexpected(exp.error());
-    }
+    // The generator's output directory: where it writes, and where we read
+    // it back. Single-page vs multipage follows the config that drove the
+    // build; the expected-fixture paths derive from the input plus the
+    // generator's extension.
+    std::string const outputDir = getGeneratorOutputPath(args.gen, args.corpus);
+    bool const singlePage = !args.corpus.config->multipage;
+    std::string const expectedSinglePath =
+        files::withExtension(args.filePath, args.gen.fileExtension());
+    std::string const multipageFormatRoot = files::appendPath(
+        files::withExtension(args.filePath, "multipage"),
+        args.gen.fileExtension());
 
-    auto const format = guessOutputFormat(args.layout.expectedSinglePath);
-    std::string normalizedGenerated = normalizeForComparison(
-        generatedDocs, format);
-
-    // Generate tagfile for Handlebars
-    if (auto hbsGen = dynamic_cast<hbs::HandlebarsGenerator const*>(&args.gen))
-    {
-        report::debug("Generating tagfile", args.filePath);
-        std::stringstream ss;
-        if (auto exp = hbsGen->buildTagfile(ss, args.corpus); !exp)
-        {
-            return Unexpected(exp.error());
-        }
-    }
-
-    // Get expected documentation if it exists
-    std::unique_ptr<llvm::MemoryBuffer> expectedDocsBuf;
-    {
-        auto fileResult = llvm::MemoryBuffer::getFile(args.layout.expectedSinglePath, false, true, true);
-        if (fileResult)
-        {
-            expectedDocsBuf = std::move(fileResult.get());
-        } else if (fileResult.getError() != std::errc::no_such_file_or_directory)
-        {
-            return Unexpected(Error(fileResult.getError()));
-        }
-    }
-
-    // If no expected documentation file
-    if(!expectedDocsBuf)
-    {
-        if(args.action == Action::test)
-        {
-            return Unexpected(Error("missing test file"));
-        }
-
-        if(args.action == Action::create ||
-           args.action == Action::update)
-        {
-            if(auto exp = writeFile(args.layout.expectedSinglePath, generatedDocs); !exp)
-            {
-                return Unexpected(exp.error());
-            }
-            report::info("\"{}\" created", args.layout.expectedSinglePath);
-            ++args.results.expectedDocsWritten;
-            return {};
-        }
-    }
-
-    std::string const expectedDocs = normalizeForComparison(
-        expectedDocsBuf->getBuffer(), format);
-    if (normalizedGenerated == expectedDocs)
-    {
-        report::info("\"{}\" passed", args.filePath);
-        ++args.results.expectedDocsMatching;
-        return {};
-    }
-
-    if(
-        args.action == Action::test ||
-        args.action == Action::create)
-    {
-        auto relPath = relativeToCwd(args.dirs, args.filePath);
-        report::error("{}: \"{}\"",
-            Error("Incorrect results"), relPath);
-        auto res = test_suite::diffStrings(expectedDocs, normalizedGenerated);
-        report::error("{} lines added", res.added);
-        report::error("{} lines removed", res.removed);
-
-        report::error("Diff:\n{}", res.diff);
-
-        if(args.writeBad)
-        {
-            SmallPathString badPath(args.layout.expectedSinglePath);
-            path::replace_extension(badPath, llvm::Twine("bad.").concat(args.gen.fileExtension()));
-            if (auto exp = writeFile(badPath, generatedDocs); !exp)
-            {
-                return Unexpected(exp.error());
-            }
-            report::info("\"{}\" written", badPath);
-            report::error("Bad file diff (internal):\n{}", res.diff);
-        }
-    }
-    else if(args.action == Action::update)
-    {
-        bool const differs = expectedDocs != normalizedGenerated;
-        if (!differs && !args.forceUpdate)
-        {
-            report::info("\"{}\" unchanged", args.layout.expectedSinglePath);
-            ++args.results.expectedDocsMatching;
-            return {};
-        }
-
-        if (auto exp = writeFile(args.layout.expectedSinglePath, generatedDocs); !exp)
-        {
-            return Unexpected(exp.error());
-        }
-        report::info("\"{}\" {}", args.layout.expectedSinglePath, differs ? "updated" : "rewritten");
-        ++args.results.expectedDocsWritten;
-    }
-
-    return {};
-}
-
-Expected<void>
-compareMultipage(MultipageArgs const& args)
-{
-    if (args.layout.generatedOutputRoot.empty())
-    {
-        return Unexpected(Error("missing output directory for multipage run"));
-    }
-
-    // Prepare output directory
-    namespace fs = std::filesystem;
+    // Build into a clean output directory. The generator writes its files
+    // there; nothing past this point cares whether that is one file or a
+    // whole tree.
     std::error_code ec;
-    fs::remove_all(args.layout.generatedOutputRoot, ec);
+    fs::remove_all(outputDir, ec);
     ec.clear();
-    fs::create_directories(args.layout.generatedOutputRoot, ec);
+    fs::create_directories(outputDir, ec);
     if (ec)
     {
         return Unexpected(Error(ec));
     }
 
-    report::debug("Generating multipage documentation", args.layout.generatedOutputRoot);
-    if (auto exp = args.gen.build(args.layout.generatedOutputRoot, args.corpus); !exp)
+    report::debug("Generating documentation", args.filePath);
+    if (auto exp = args.gen.build(args.corpus); !exp)
     {
         return Unexpected(exp.error());
     }
 
-    auto expectedType = files::getFileType(args.layout.multipageFormatRoot);
-    if (!expectedType)
-    {
-        return Unexpected(expectedType.error());
-    }
-    bool const expectedExists =
-        expectedType.value() == files::FileType::directory;
+    // Gather the expected and generated files as (relative name -> path)
+    // pairs. Single-page maps only the primary document (ignoring any
+    // stylesheet or tagfile written beside it); multipage maps the whole
+    // tree on each side. From here on the two modes share one code path.
+    std::map<std::string, fs::path> expectedFiles;
+    std::map<std::string, fs::path> generatedFiles;
+    std::string fixturePath;   // expected file or snapshot dir, for messages
+    bool expectedExists = false;
 
+    if (singlePage)
+    {
+        MRDOCS_TRY(std::string const primary,
+            getSinglePageFullPath(
+                outputDir, args.gen.fileExtension()));
+        std::string const key{files::getFileName(expectedSinglePath)};
+        generatedFiles.emplace(key, fs::path(primary));
+        fixturePath = expectedSinglePath;
+        expectedExists = files::isRegularFile(expectedSinglePath);
+        if (expectedExists)
+        {
+            expectedFiles.emplace(key, fs::path(expectedSinglePath));
+        }
+    }
+    else
+    {
+        fixturePath = multipageFormatRoot;
+        expectedExists = files::isDirectory(multipageFormatRoot);
+        if (!collectFiles(outputDir, generatedFiles))
+        {
+            return Unexpected(Error("failed to read generated output"));
+        }
+        if (expectedExists &&
+            !collectFiles(multipageFormatRoot, expectedFiles))
+        {
+            return Unexpected(Error("failed to read expected snapshot"));
+        }
+    }
+
+    // Persist the freshly generated output as the fixture: copy the single
+    // primary document over the expected file, or mirror the whole tree.
+    auto writeFixture = [&]() -> bool
+    {
+        if (singlePage)
+        {
+            std::error_code copyEc;
+            fs::create_directories(
+                fs::path(expectedSinglePath).parent_path(), copyEc);
+            copyEc.clear();
+            fs::copy_file(generatedFiles.begin()->second,
+                expectedSinglePath,
+                fs::copy_options::overwrite_existing, copyEc);
+            if (copyEc)
+            {
+                report::error("{}: \"{}\"", Error(copyEc), expectedSinglePath);
+                return false;
+            }
+            return true;
+        }
+        return copyDirectoryTree(
+            outputDir, multipageFormatRoot);
+    };
+
+    // A missing fixture is an error under --action=test, otherwise it is
+    // created from the generated output.
     if (!expectedExists)
     {
         if (args.action == Action::test)
         {
-            return Unexpected(Error("missing multipage snapshot for generator"));
+            return Unexpected(Error(singlePage
+                ? "missing test file"
+                : "missing multipage snapshot for generator"));
         }
-
-        if (copyDirectoryTree(args.layout.generatedOutputRoot, args.layout.multipageFormatRoot))
+        if (writeFixture())
         {
-            report::info("\"{}\" created", args.layout.multipageFormatRoot);
+            report::info("\"{}\" created", fixturePath);
             ++args.results.expectedDocsWritten;
         }
         return {};
     }
 
-    std::unordered_map<std::string, std::filesystem::path> expectedFiles;
-    std::unordered_map<std::string, std::filesystem::path> generatedFiles;
-    if (!collectFiles(args.layout.multipageFormatRoot, expectedFiles))
-        return Unexpected(Error("failed to read expected multipage snapshot"));
-    if (!collectFiles(args.layout.generatedOutputRoot, generatedFiles))
-        return Unexpected(Error("failed to read generated multipage output"));
-
+    // Diff the two file sets.
     std::vector<std::string> missing;
     std::vector<std::string> unexpected;
     std::vector<std::pair<std::string, test_suite::DiffStringsResult>> changed;
 
-    for (auto const& [rel, path] : expectedFiles)
+    for (auto const& [rel, expectedPath] : expectedFiles)
     {
         if (!generatedFiles.contains(rel))
             missing.push_back(rel);
     }
 
-    for (auto const& [rel, path] : generatedFiles)
+    for (auto const& [rel, generatedPath] : generatedFiles)
     {
         auto it = expectedFiles.find(rel);
         if (it == expectedFiles.end())
@@ -324,17 +243,17 @@ compareMultipage(MultipageArgs const& args)
             report::error("{}: \"{}\"", expectedBuf.getError(), it->second.string());
             continue;
         }
-        auto generatedBuf = llvm::MemoryBuffer::getFile(path.string(), false, true, true);
+        auto generatedBuf = llvm::MemoryBuffer::getFile(generatedPath.string(), false, true, true);
         if (!generatedBuf)
         {
-            report::error("{}: \"{}\"", generatedBuf.getError(), path.string());
+            report::error("{}: \"{}\"", generatedBuf.getError(), generatedPath.string());
             continue;
         }
 
         auto const format = guessOutputFormat(rel);
-        auto expectedNormalized = normalizeForComparison(
+        auto const expectedNormalized = normalizeForComparison(
             expectedBuf.get()->getBuffer(), format);
-        auto generatedNormalized = normalizeForComparison(
+        auto const generatedNormalized = normalizeForComparison(
             generatedBuf.get()->getBuffer(), format);
         if (expectedNormalized != generatedNormalized)
         {
@@ -343,20 +262,20 @@ compareMultipage(MultipageArgs const& args)
         }
     }
 
-    bool const hasDiff = !missing.empty() || !unexpected.empty() || !changed.empty();
+    bool const hasDiff =
+        !missing.empty() || !unexpected.empty() || !changed.empty();
 
     if (args.action == Action::update)
     {
         if (!hasDiff && !args.forceUpdate)
         {
-            report::info("\"{}\" unchanged", args.layout.multipageFormatRoot);
+            report::info("\"{}\" unchanged", fixturePath);
             ++args.results.expectedDocsMatching;
             return {};
         }
-
-        if (copyDirectoryTree(args.layout.generatedOutputRoot, args.layout.multipageFormatRoot))
+        if (writeFixture())
         {
-            report::info("\"{}\" {}", args.layout.multipageFormatRoot, hasDiff ? "updated" : "rewritten");
+            report::info("\"{}\" {}", fixturePath, hasDiff ? "updated" : "rewritten");
             ++args.results.expectedDocsWritten;
         }
         return {};
@@ -364,30 +283,47 @@ compareMultipage(MultipageArgs const& args)
 
     if (!hasDiff)
     {
+        report::info("\"{}\" passed", args.filePath);
         ++args.results.expectedDocsMatching;
         return {};
     }
 
+    // action == test or create: report the differences. The fixture is left
+    // untouched (create only writes a fixture that was missing).
     for (auto const& rel : missing)
     {
-        report::error("{}: \"{}\"",
-            Error("missing expected file"),
-            files::appendPath(args.layout.multipageFormatRoot, rel));
+        report::error("{}: \"{}\"", Error("missing expected file"),
+            files::appendPath(fixturePath, rel));
     }
     for (auto const& rel : unexpected)
     {
-        report::error("{}: \"{}\"",
-            Error("unexpected generated file"),
-            files::appendPath(args.layout.generatedOutputRoot, rel));
+        report::error("{}: \"{}\"", Error("unexpected generated file"),
+            files::appendPath(outputDir, rel));
     }
     for (auto const& [rel, diff] : changed)
     {
-        report::error("{}: \"{}\"",
-            Error("Incorrect results"),
-            files::appendPath(args.layout.multipageFormatRoot, rel));
+        report::error("{}: \"{}\"", Error("Incorrect results"),
+            singlePage ? fixturePath : files::appendPath(fixturePath, rel));
         report::error("{} lines added", diff.added);
         report::error("{} lines removed", diff.removed);
         report::error("Diff:\n{}", diff.diff);
+    }
+
+    // Write the generated document beside the fixture for inspection
+    // (single-page only, matching the historical --bad behavior).
+    if (args.writeBad && singlePage && !changed.empty())
+    {
+        SmallPathString badPath(expectedSinglePath);
+        path::replace_extension(
+            badPath, llvm::Twine("bad.").concat(args.gen.fileExtension()));
+        std::error_code copyEc;
+        fs::copy_file(generatedFiles.begin()->second, std::string(badPath),
+            fs::copy_options::overwrite_existing, copyEc);
+        if (copyEc)
+        {
+            return Unexpected(Error(copyEc));
+        }
+        report::info("\"{}\" written", badPath);
     }
 
     return {};

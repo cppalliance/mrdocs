@@ -1,0 +1,4 @@
+# Marks this directory as a mrdocs test-suite root.
+# The test runner walks up to this file to replay the ancestor mrdocs.yml
+# chain, so a run pointed at a nested directory or a single .cpp reproduces
+# the configuration a full run from here would apply. Content is ignored.
