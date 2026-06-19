@@ -82,6 +82,13 @@ def to_yaml_schema_type(option: Option) -> SchemaType:
             "type": "object",
             "additionalProperties": {"type": "string"},
         }
+    if option_type in ['map<string,object>']:
+        # Keyed by generator id; each value is a free-form object of
+        # settings for that generator.
+        return {
+            "type": "object",
+            "additionalProperties": {"type": "object"},
+        }
     raise ValueError(
         f"to_yaml_schema_type: Cannot convert option type {option_type} to JSON/YAML schema type"
     )

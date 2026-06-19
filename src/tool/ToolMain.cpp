@@ -10,6 +10,7 @@
 //
 
 #include "ToolArgs.hpp"
+#include <lib/Support/CliOverride.hpp>
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Support/Path.hpp>
@@ -21,6 +22,7 @@
 #include <llvm/TargetParser/Host.h>
 #include <cstdlib>
 #include <ranges>
+#include <vector>
 
 extern int main(int argc, char const** argv);
 
@@ -113,8 +115,26 @@ mrdocs_main(int argc, char const** argv)
     });
 
     toolArgs.hideForeignOptions();
+
+    // Dotted overrides for object options (--<name>.<key>.<field>=<value>)
+    // address dynamic keys with no registered flag, so they are hidden from
+    // the llvm::cl parser here and applied later from the original argv.
+    std::vector<char const*> parsedArgv;
+    parsedArgv.reserve(static_cast<std::size_t>(argc) + 1);
+    auto const objectOptionNames = PublicToolArgs::objectOptionNames();
+    for (int i = 0; i < argc; ++i)
+    {
+        if (i > 0 && isDottedObjectOverride(argv[i], objectOptionNames))
+        {
+            continue;
+        }
+        parsedArgv.push_back(argv[i]);
+    }
+    parsedArgv.push_back(nullptr);
+
     if (!llvm::cl::ParseCommandLineOptions(
-        argc, argv, toolArgs.usageText))
+        static_cast<int>(parsedArgv.size()) - 1,
+        parsedArgv.data(), toolArgs.usageText))
     {
         return EXIT_FAILURE;
     }

@@ -103,7 +103,8 @@ def get_valid_option_values():
         'list<path>',
         'list<path-glob>',
         'list<symbol-glob>',
-        'map<string,string>'
+        'map<string,string>',
+        'map<string,object>'
     ]
     return valid_option_values
 
@@ -300,6 +301,7 @@ def generate_public_settings_hpp(config):
         '<mrdocs/Support/StringList.hpp>',
         '<mrdocs/Support/Error.hpp>',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
+        '<mrdocs/Dom/Object.hpp>',
         '<string>',
         '<vector>',
         '<optional>',
@@ -543,7 +545,9 @@ def generate_public_toolargs_hpp(config):
         '<mrdocs/Config.hpp>',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<llvm/Support/CommandLine.h>',
+        '<span>',
         '<string>',
+        '<string_view>',
     ]
     for header in headers:
         contents += f'#include {header}\n'
@@ -588,6 +592,9 @@ def generate_public_toolargs_hpp(config):
         contents += '    //--------------------------------------------\n\n'
 
         for option in category['options']:
+            # map<string,object> is configuration-file only (no command-line flag).
+            if option["type"] == 'map<string,object>':
+                continue
             contents += indent(generate_option_declaration(option, 'toolargs'), 4)
             contents += '\n\n'
 
@@ -600,7 +607,31 @@ def generate_public_toolargs_hpp(config):
     contents += '    {\n'
     flat_options = flat_config_options(config)
     for option in flat_options:
+        if option["type"] == 'map<string,object>':
+            continue
         contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
+    contents += '    }\n\n'
+
+    # Names of the map<string,object> options. These have no fixed flag;
+    # their nested keys are supplied as --<name>.<key>.<field>=<value> and
+    # must be stripped before the registered options are parsed.
+    object_option_names = [
+        option["name"] for option in flat_options
+        if option["type"] == 'map<string,object>'
+    ]
+    contents += '    /** Names of the options whose keys are set as\n'
+    contents += '        `--<name>.<key>.<field>=<value>` on the command line.\n'
+    contents += '     */\n'
+    contents += '    static\n'
+    contents += '    std::span<std::string_view const>\n'
+    contents += '    objectOptionNames()\n'
+    contents += '    {\n'
+    if object_option_names:
+        names = ', '.join(escape_as_cpp_string(n) for n in object_option_names)
+        contents += f'        static constexpr std::string_view names[] = {{ {names} }};\n'
+        contents += '        return names;\n'
+    else:
+        contents += '        return {};\n'
     contents += '    }\n\n'
 
     contents += '}; // struct PublicToolArgs\n\n'
@@ -799,7 +830,10 @@ def generate_public_settings_cpp(config):
     contents += '    {\n'
     for category in config:
         for option in category['options']:
-            if not option["command-line-only"]:
+            # map<string,object> holds free-form DOM values that do not parse
+            # through llvm::yaml; ConfigImpl populates the typed map from the
+            # config DOM it already parses instead.
+            if not option["command-line-only"] and option["type"] != 'map<string,object>':
                 contents += f'        // {option["brief"]}\n'
                 contents += f'        io.mapOptional("{option["name"]}", s.{to_camel_case(option["name"])});\n'
     contents += '    }\n'
@@ -937,6 +971,7 @@ def generate_public_toolargs_cpp(config):
         '"PublicToolArgs.hpp"',
         # '"Addons.hpp"',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
+        '<lib/Support/CliOverride.hpp>',
         '<lib/Support/Report.hpp>',
         '<lib/Support/Path.hpp>',
         '<cstddef>',
@@ -978,6 +1013,9 @@ struct std::formatter<llvm::cl::opt<T>>
     for category in config:
         contents += f'    // {category["category"]}\n'
         for option in category['options']:
+            # map<string,object> has no command-line flag (config-file only).
+            if option["type"] == 'map<string,object>':
+                continue
             has_suboptions = 'options' in option
             if has_suboptions:
                 contents += f'    , {to_camel_case(option["name"])}({to_camel_case(category["category"])}Cat)\n'
@@ -1027,6 +1065,12 @@ struct std::formatter<llvm::cl::opt<T>>
 
     contents += '    // Override any option explicitly set in the command line\n'
     for option in flat_config_options(config):
+        # map<string,object> has no fixed flag; its keys are dynamic, so
+        # nested overrides arrive as --<name>.<key>.<field>=<value> tokens
+        # and are merged onto the values already loaded from the config file.
+        if option["type"] == 'map<string,object>':
+            contents += f'    MRDOCS_TRY(applyDottedObjectOverrides(s.{to_camel_case(option["name"])}, {escape_as_cpp_string(option["name"])}, argv));\n\n'
+            continue
         camel_name = to_camel_case(option['name'])
         option_contents = ''
         if option["type"].startswith('list<') or option["type"] == 'string-list':
@@ -1142,6 +1186,8 @@ def to_cpp_type(option):
         return 'std::vector<SymbolGlobPattern>'
     if option_type in ['map<string,string>']:
         return 'std::map<std::string, std::string>'
+    if option_type in ['map<string,object>']:
+        return 'std::map<std::string, dom::Object>'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 
@@ -1218,6 +1264,10 @@ def to_cpp_default_value(option, replace_reference_dir=None):
         if not option_default:
             return None
         return '{' + ', '.join([f'{{"{str(k)}", "{str(v)}"}}' for [k, v] in option_default.items()]) + '}'
+    if option_type in ['map<string,object>']:
+        # Free-form per-generator values are populated from the config DOM,
+        # so there is no compile-time default to emit.
+        return None
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 

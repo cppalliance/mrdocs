@@ -457,6 +457,13 @@
         "default": ["html"]
       },
       {
+        "name": "generator-options",
+        "brief": "Per-generator settings keyed by generator id",
+        "details": "An object whose keys are generator ids (for example, `adoc`, `html`, `xml`) and whose values are objects of settings for that generator. These settings typically take precedence over the top-level options for the same generator.",
+        "type": "map<string,object>",
+        "default": {}
+      },
+      {
         "name": "multipage",
         "brief": "Generate a multipage documentation",
         "details": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",

@@ -217,6 +217,12 @@ function toTypeStr(type) {
     if (type.startsWith('list<')) {
         return 'list of ' + toTypeStr(type.substring(5, type.length - 1)) + 's'
     }
+    if (type === 'map<string,string>') {
+        return 'object of strings'
+    }
+    if (type === 'map<string,object>') {
+        return 'object of objects'
+    }
     return type
 }
 
