@@ -68,6 +68,12 @@
       "title": "CMake arguments when generating the compilation database from CMakeLists.txt",
       "type": "string"
     },
+    "cmake-build-dir": {
+      "default": "",
+      "description": "When the compilation database is generated from a CMakeLists.txt file, MrDocs runs CMake in a scratch directory and removes it afterward. Set this option to run that build in a fixed directory instead: it is used as given, reused across runs, and never removed, so you can inspect or reuse the generated build files. When unset, MrDocs picks a writable scratch directory automatically (honoring the `MRDOCS_TEMP_DIR` environment variable, then the user cache and system temporary directories).",
+      "title": "Directory for the CMake build that generates the compilation database",
+      "type": "string"
+    },
     "compilation-database": {
       "default": "",
       "description": "The path to a compilation database, or to a build script that generates one. A compilation database is a JSON file of the compiler commands that build the source; MrDocs reads the compiler flags and source files from it to extract symbols. You can also pass a build script such as `CMakeLists.txt`: MrDocs then looks for CMake on `PATH` or in `CMAKE_ROOT`, runs the script, and uses the database it produces.",

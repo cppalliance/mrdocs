@@ -82,17 +82,9 @@ DoGenerateAction(
     // Find or generate the compilation database
     //
     // --------------------------------------------------------------
-    ScopedTempDirectory tempDir(
-        config->settings().outputDir(),
-        ".temp");
-    if (tempDir.failed())
-    {
-        report::error("Failed to create temporary directory: {}", tempDir.error());
-        return Unexpected(tempDir.error());
-    }
     MRDOCS_TRY(
         MrDocsCompilationDatabase compilationDatabase,
-        generateCompilationDatabase(tempDir.path(), config));
+        generateCompilationDatabase(config));
 
     // --------------------------------------------------------------
     //
