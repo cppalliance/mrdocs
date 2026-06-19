@@ -418,6 +418,19 @@ namespace detail
 #    define MRDOCS_TRY(...) \
         MRDOCS_TRY_GET_MACRO(__VA_ARGS__, MRDOCS_TRY_MSG, MRDOCS_TRY_VAR, MRDOCS_TRY_VOID)(__VA_ARGS__)
 
+// Unwrap an expected-like result into a structured binding. The binding
+// names are wrapped in parentheses so the comma between them is not seen as
+// a macro-argument separator, e.g.
+// `MRDOCS_TRY_BIND((a, b), makePair())`.
+#    define MRDOCS_UNPAREN_(...) __VA_ARGS__
+#    define MRDOCS_UNPAREN(x)    MRDOCS_UNPAREN_ x
+#    define MRDOCS_TRY_BIND(names, expr)                   \
+        auto MRDOCS_UNIQUE_NAME = expr;                    \
+        if (::mrdocs::detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+            return Unexpected(::mrdocs::detail::error(MRDOCS_UNIQUE_NAME)); \
+        }                                                  \
+        auto [MRDOCS_UNPAREN(names)] = *std::move(MRDOCS_UNIQUE_NAME)
+
 /// Check existing expected-like type
 #    define MRDOCS_CHECK_VOID(var)                         \
         if (::mrdocs::detail::failed(var)) {                         \
@@ -452,6 +465,13 @@ namespace detail
         if (::mrdocs::detail::failed(var)) {                         \
             continue;                                      \
         }                                                  \
+        void(0)
+
+#    define MRDOCS_CHECK_OR_BREAK(var)     \
+        if (::mrdocs::detail::failed(var)) \
+        {                                  \
+            break;                         \
+        }                                  \
         void(0)
 
 #endif
