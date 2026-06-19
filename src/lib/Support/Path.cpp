@@ -13,9 +13,9 @@
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
 #include <algorithm>
+#include <cstdlib>
 #include <fstream>
 
 
@@ -23,20 +23,6 @@ namespace mrdocs {
 
 AnyFileVisitor::
 ~AnyFileVisitor() = default;
-
-//------------------------------------------------
-
-llvm::StringRef
-convert_to_slash(
-    llvm::SmallVectorImpl<char> &path,
-    llvm::sys::path::Style style)
-{
-    if (! llvm::sys::path::is_style_posix(style))
-    {
-        std::replace(path.begin(), path.end(), '\\', '/');
-    }
-    return {path.data(), path.size()};
-}
 
 //------------------------------------------------
 
@@ -167,11 +153,11 @@ normalizeDir(
     return normalizePath(pathName);
 }
 
-std::string
+std::string_view
 getParentDir(
     std::string_view pathName)
 {
-    return llvm::sys::path::parent_path(pathName).str();
+    return llvm::sys::path::parent_path(pathName);
 }
 
 std::string
@@ -179,12 +165,12 @@ getParentDir(
     std::string_view const pathName,
     unsigned const levels)
 {
-    std::string res(pathName);
+    std::string_view res = pathName;
     for (unsigned i = 0; i < levels; ++i)
     {
         res = getParentDir(res);
     }
-    return res;
+    return std::string(res);
 }
 
 std::string_view
@@ -442,7 +428,20 @@ isDirectory(
 }
 
 bool
-isLexicalDirectory(
+isRegularFile(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if (auto ec = fs::status(pathName, fileStatus))
+    {
+        return false;
+    }
+    return fileStatus.type() == fs::file_type::regular_file;
+}
+
+bool
+looksLikeDirectory(
     std::string_view pathName)
 {
     namespace fs = llvm::sys::fs;
@@ -451,10 +450,19 @@ isLexicalDirectory(
         ec ||
         fileStatus.type() == fs::file_type::file_not_found)
     {
+        // The path does not exist yet: guess from the last segment, which
+        // looks like a directory when it has no extension.
         auto const filename = getFileName(pathName);
         return !contains(filename, '.');
     }
     return fileStatus.type() == fs::file_type::directory_file;
+}
+
+bool
+looksLikeFile(
+    std::string_view pathName)
+{
+    return !looksLikeDirectory(pathName);
 }
 
 bool
@@ -566,10 +574,37 @@ ScopedTempFile(
 
 ScopedTempDirectory::
 ~ScopedTempDirectory() {
-    if (*this)
+    if (*this && !path_.empty())
     {
         llvm::sys::fs::remove_directories(path_);
     }
+}
+
+ScopedTempDirectory::
+ScopedTempDirectory(ScopedTempDirectory&& other) noexcept
+    : path_(std::move(other.path_))
+    , status_(other.status_)
+{
+    other.path_.clear();
+    other.status_ = ErrorStatus::CannotCreateDirectories;
+}
+
+ScopedTempDirectory&
+ScopedTempDirectory::
+operator=(ScopedTempDirectory&& other) noexcept
+{
+    if (this != &other)
+    {
+        if (*this && !path_.empty())
+        {
+            llvm::sys::fs::remove_directories(path_);
+        }
+        path_ = std::move(other.path_);
+        status_ = other.status_;
+        other.path_.clear();
+        other.status_ = ErrorStatus::CannotCreateDirectories;
+    }
+    return *this;
 }
 
 ScopedTempDirectory::
@@ -620,6 +655,56 @@ error() const
         return Error("Failed to create directories");
     }
     return Error();
+}
+
+Expected<ScopedTempDirectory>
+makeScratchDirectory(
+    std::string_view subject,
+    std::vector<std::string> const& fallbacks)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    // Build the ordered list of base directories to try.
+    std::vector<std::string> candidates;
+    if (char const* env = std::getenv("MRDOCS_TEMP_DIR"); env && *env)
+    {
+        candidates.emplace_back(env);
+    }
+    if (llvm::SmallString<128> cache; path::cache_directory(cache))
+    {
+        path::append(cache, "mrdocs");
+        candidates.emplace_back(cache.str());
+    }
+    if (llvm::SmallString<128> sys;
+        (path::system_temp_directory(true, sys), !sys.empty()))
+    {
+        candidates.emplace_back(sys.str());
+    }
+    candidates.insert(candidates.end(), fallbacks.begin(), fallbacks.end());
+
+    // A directory-name component that is identifiable and made unique by
+    // ScopedTempDirectory.
+    std::string const prefix =
+        "mrdocs-" + std::string(subject.empty() ? "scratch" : subject);
+
+    for (std::string const& base : candidates)
+    {
+        // The base must exist (create it if missing) and be writable.
+        if (base.empty() || fs::create_directories(base) || !fs::can_write(base))
+        {
+            continue;
+        }
+        llvm::SmallString<128> model(base);
+        path::append(model, prefix);
+        ScopedTempDirectory dir(model.str());
+        if (dir)
+        {
+            return dir;
+        }
+    }
+    return Unexpected(formatError(
+        "could not create a writable scratch directory for \"{}\"", subject));
 }
 
 } // mrdocs

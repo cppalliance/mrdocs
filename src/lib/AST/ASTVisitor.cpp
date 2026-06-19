@@ -2956,7 +2956,7 @@ checkFileFilters(std::string_view const symbolPath) const
         // Resolve the symbol's parent lazily: the filesystem lookup only
         // happens when a literal match fails, so a tree with no symlinks
         // pays no extra cost.
-        std::string const symbolParentDir = files::getParentDir(symbolPath);
+        std::string_view const symbolParentDir = files::getParentDir(symbolPath);
         Optional<std::string> symbolParentDirReal;
         auto parentDirReal = [&]() -> std::string const&
         {

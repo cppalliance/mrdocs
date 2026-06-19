@@ -218,8 +218,8 @@ normalizeDir(
 
 /** Return the parent directory.
 
-    If the parent directory is defined, the returned
-    path will always have a trailing separator.
+    The result is a view into `pathName` (like @ref getFileName), so it is
+    valid only while `pathName` is. Wrap it in a `std::string` to keep it.
 
     @param pathName The absolute or relative path
         to the directory or file.
@@ -227,7 +227,7 @@ normalizeDir(
         string if there is none.
 */
 MRDOCS_DECL
-std::string
+std::string_view
 getParentDir(
     std::string_view pathName);
 
@@ -461,25 +461,53 @@ bool
 isDirectory(
     std::string_view pathName);
 
-/** Determine lexically if a path is a directory.
+/** Determine if a path is a regular file.
 
-    This function determines if a path is a directory.
-
-    If the path does not exist, the function
-    determines lexically if the path represents
-    a directory. In this case, the function
-    returns true if the last path segment
-    contains a period, otherwise false.
+    Symbolic links are followed, so a link to a regular file counts as a
+    regular file.
 
     @param pathName The absolute or relative path
-    @return true if the path exists and is a directory,
-        or if the path does not exist and the last path
-        segment does not contain a period.
+    @return true if the path exists and is a regular file,
         false otherwise.
 */
 MRDOCS_DECL
 bool
-isLexicalDirectory(
+isRegularFile(
+    std::string_view pathName);
+
+/** Determine whether a path looks like a directory.
+
+    When the path exists, this reports whether it is a directory.
+    When it does not exist yet, it falls back to a lexical hint: the
+    path looks like a directory when its last segment has no extension
+    (contains no period), and like a file otherwise.
+
+    This is useful for output paths, which often do not exist when a
+    generator is deciding whether to treat the path as a file or a
+    directory.
+
+    @param pathName The absolute or relative path
+    @return true if the path exists and is a directory, or does not
+        exist and its last segment contains no period; false otherwise.
+*/
+MRDOCS_DECL
+bool
+looksLikeDirectory(
+    std::string_view pathName);
+
+/** Determine whether a path looks like a file.
+
+    The inverse of @ref looksLikeDirectory: when the path exists this
+    reports whether it is not a directory; when it does not exist yet
+    the path looks like a file when its last segment has an extension
+    (contains a period).
+
+    @param pathName The absolute or relative path
+    @return true when @ref looksLikeDirectory would return false.
+*/
+MRDOCS_DECL
+bool
+looksLikeFile(
     std::string_view pathName);
 
 /** Determine if a path exists

@@ -30,7 +30,7 @@ operator()(T const& I)
             // Open the output file
             // ===================================
             std::string const path = files::appendPath(outputPath_, builder.domCorpus.getURL(I));
-            std::string const dir = files::getParentDir(path);
+            std::string_view const dir(files::getParentDir(path));
             if (auto exp = files::createDirectory(dir); !exp)
             {
                 exp.error().Throw();
