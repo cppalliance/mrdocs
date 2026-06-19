@@ -45,14 +45,7 @@ struct NoopGenerator : Generator
     }
 
     Expected<void>
-    build(
-        std::string_view outputPath,
-        Corpus const& corpus) const override;
-
-    Expected<void>
-    buildOne(
-        std::ostream& os,
-        Corpus const& corpus) const override;
+    build(Corpus const& corpus) const override;
 };
 
 } // mrdocs::noop

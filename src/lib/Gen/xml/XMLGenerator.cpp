@@ -11,6 +11,7 @@
 
 #include "XMLGenerator.hpp"
 #include "XMLWriter.hpp"
+#include <lib/Support/Generator.hpp>
 #include <lib/Support/Radix.hpp>
 #include <lib/Support/RawOstream.hpp>
 #include <mrdocs/Metadata.hpp>
@@ -22,13 +23,19 @@ namespace xml {
 
 Expected<void>
 XMLGenerator::
-buildOne(
-    std::ostream& os,
-    Corpus const& corpus) const
+build(Corpus const& corpus) const
 {
-    namespace fs = llvm::sys::fs;
-    RawOstream raw_os(os);
-    return XMLWriter(raw_os, corpus).build();
+    // The XML generator emits a single file. Resolve the output location
+    // from the config and write the document into it (or into
+    // reference.xml when the output names a directory).
+    std::string const out = getGeneratorOutputPath(*this, corpus);
+    MRDOCS_TRY(std::string const fileName,
+        getSinglePageFullPath(out, fileExtension()));
+    return writeToFile(fileName, [&](std::ostream& os) -> Expected<void>
+    {
+        RawOstream raw_os(os);
+        return XMLWriter(raw_os, corpus).build();
+    });
 }
 
 } // xml

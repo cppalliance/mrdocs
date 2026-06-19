@@ -8,6 +8,7 @@
 #include "Diff.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 namespace mrdocs::example {
 
@@ -98,14 +99,18 @@ writeReport(std::ostream& os, DiffResult const& d)
 
 } // (anon)
 
-// tag::build-one[]
+// tag::build[]
+// build() does whatever the generator needs. This one is not a
+// file-producing documentation format: it diffs the baseline against the
+// candidate corpus and prints the report to stdout. A generator is free
+// to bring its output to the screen instead of writing files.
 Expected<void>
 BreakingChangesGenerator::
-buildOne(std::ostream& os, Corpus const& current) const
+build(Corpus const& current) const
 {
-    writeReport(os, diff(*baseline_, current));
+    writeReport(std::cout, diff(*baseline_, current));
     return {};
 }
-// end::build-one[]
+// end::build[]
 
 } // namespace mrdocs::example

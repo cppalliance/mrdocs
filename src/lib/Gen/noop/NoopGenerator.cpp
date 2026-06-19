@@ -15,21 +15,10 @@ namespace noop {
 
 Expected<void>
 NoopGenerator::
-build(
-    std::string_view,
-    Corpus const&) const
+build(Corpus const&) const
 {
     // Extraction has already happened by the time a generator runs;
     // the no-op generator deliberately writes nothing.
-    return {};
-}
-
-Expected<void>
-NoopGenerator::
-buildOne(
-    std::ostream&,
-    Corpus const&) const
-{
     return {};
 }
 

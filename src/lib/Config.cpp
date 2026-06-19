@@ -557,38 +557,7 @@ std::string
 Config::Settings::
 configDir() const
 {
-    return files::getParentDir(config);
-}
-
-/** Full path to the output directory
-
-    The reference directory for MrDocs
-    output and temporary files is the
-    output directory.
-
-    This is either the output option
-    (if already a directory) or
-    the parent directory of the output
-    option (if it is a file).
-
-    When the output option is a path
-    that does not exist, we determine
-    if it's a file or directory by
-    checking if the filename contains
-    a period.
-
-    This string will always be native style
-    and have a trailing directory separator.
-*/
-std::string
-Config::Settings::
-outputDir() const
-{
-    if (files::isLexicalDirectory(output))
-    {
-        return output;
-    }
-    return files::getParentDir(output);
+    return std::string(files::getParentDir(config));
 }
 
 } // mrdocs

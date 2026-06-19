@@ -99,6 +99,11 @@ public:
 class HandlebarsGenerator
     : public Generator
 {
+    std::string id_;
+    std::string fileExtension_;
+    std::string displayName_;
+    std::string extends_;
+
 public:
     struct StylesheetRef
     {
@@ -123,14 +128,6 @@ protected:
         their constructor; the base class drives `escape()` from it.
     */
     EscapeMap escapeMap_;
-
-private:
-    std::string id_;
-    std::string fileExtension_;
-    std::string displayName_;
-    std::string extends_;
-
-    Expected<StylesData> prepareStylesheets(Config const& config) const;
 
 public:
     /** Construct a Handlebars-based generator from data.
@@ -191,14 +188,7 @@ public:
     }
 
     Expected<void>
-    build(
-        std::string_view outputPath,
-        Corpus const& corpus) const override;
-
-    Expected<void>
-    buildOne(
-        std::ostream& os,
-        Corpus const& corpus) const override;
+    build(Corpus const& corpus) const override;
 
     /** Build a tagfile for the corpus.
     */
@@ -255,6 +245,23 @@ protected:
 
     /** Inline script used to load and run highlight.js from a CDN. */
     virtual std::string defaultHighlightScript() const;
+
+private:
+    // Collect the stylesheets and scripts a page references, as data only
+    // (no files are written). See the .cpp for details.
+    Expected<StylesData>
+    prepareStylesheets(Config const& config) const;
+
+    // Copy the non-external stylesheet files into `outputDir`, when the
+    // configuration asks for linked-and-copied CSS. Called by build() once
+    // the generator's output directory is known.
+    Expected<void>
+    copyStylesheets(Config const& config, std::string_view outputDir) const;
+
+    // Render the single-page form of the documentation to a stream.
+    // build() drives this, wrapping it with the file it opens.
+    Expected<void>
+    renderSinglePage(std::ostream& os, Corpus const& corpus) const;
 };
 
 } // hbs
