@@ -14,6 +14,7 @@
 #include "ToolArgs.hpp"
 #include <lib/CompilationDatabaseBuilder.hpp>
 #include <lib/ConfigImpl.hpp>
+#include <lib/Support/Chrono.hpp>
 #include <lib/CorpusImpl.hpp>
 #include <lib/Gen/hbs/DataDrivenGenerators.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
@@ -116,14 +117,17 @@ DoGenerateAction(
     // Normalize outputPath path
     MRDOCS_CHECK(settings.output, "The output path argument is missing");
     report::info("Generating docs");
-    // Each generator decides how to resolve its own output (single vs
-    // multipage, directory vs file, existing target, and whether other
-    // generators share the output). GenerateAction does not have enough
-    // information to route per-generator output here, so it just builds
-    // each one against the configured output.
+    // Each generator resolves its own output from the configuration and
+    // writes whatever files it needs; GenerateAction just runs each one.
     for (Generator const* generator : generators)
     {
+        using clock_type = std::chrono::steady_clock;
+        auto const start_time = clock_type::now();
         MRDOCS_TRY(generator->build(*corpus));
+        report::info(
+            "Generated {} documentation in {}",
+            generator->displayName(),
+            format_duration(clock_type::now() - start_time));
     }
 
     // --------------------------------------------------------------

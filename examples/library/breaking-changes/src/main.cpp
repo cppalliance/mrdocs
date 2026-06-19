@@ -90,11 +90,11 @@ int main(int argc, char const** argv)
         return 1;
     }
 
-    auto wrote = gen->buildOne(std::cout, **v2Corpus);
+    auto wrote = gen->build(**v2Corpus);
     if (!wrote)
     {
         std::fprintf(stderr,
-            "Generator::buildOne: %s\n",
+            "Generator::build: %s\n",
             wrote.error().reason().c_str());
         return 1;
     }

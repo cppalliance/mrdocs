@@ -18,6 +18,7 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include "TagfileWriter.hpp"
+#include <lib/Support/Generator.hpp>
 #include <lib/Support/RawOstream.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
@@ -111,44 +112,83 @@ HandlebarsGenerator(
     std::string const& displayName,
     EscapeMap escapeMap,
     std::string extends)
-    : escapeMap_(std::move(escapeMap))
-    , id_(id)
+    : id_(id)
     , fileExtension_(fileExtension)
     , displayName_(displayName)
     , extends_(std::move(extends))
+    , escapeMap_(std::move(escapeMap))
 {
+}
+
+/** Whether the generator renders a tree of pages rather than a single page.
+
+    @param config The configuration to read the flag from.
+    @param generatorId The id of the generator being rendered.
+*/
+bool
+rendersMultiPage(Config const& config, std::string_view generatorId)
+{
+    auto const& genOpts = config->generatorOptions;
+    if (auto const it = genOpts.find(std::string(generatorId));
+        it != genOpts.end())
+    {
+        if (dom::Value const m = it->second.get("multipage"); m.isBoolean())
+        {
+            return m.getBool();
+        }
+    }
+    return config->multipage;
 }
 
 Expected<void>
 HandlebarsGenerator::
-build(
-    std::string_view outputPath,
-    Corpus const& corpus) const
+build(Corpus const& corpus) const
 {
-    if (!corpus.config->multipage)
+    // Resolve where this generator writes (a directory for a multi-page
+    // render, a file or directory for a single document) from the config.
+    std::string const outputPath = getGeneratorOutputPath(*this, corpus);
+    std::string_view const configuredTagfile = corpus.config->tagfile;
+
+    // The tagfile and the copied stylesheets land in the same directory as
+    // the generator's output, so they never collide between generators.
+    auto writeTagfile = [&](std::string_view dir) -> Expected<void>
     {
-        MRDOCS_TRY(Generator::build(outputPath, corpus));
-        MRDOCS_CHECK_OR(!corpus.config->tagfile.empty(), {});
-        MRDOCS_TRY(buildTagfile(corpus.config->tagfile, corpus));
+        MRDOCS_CHECK_OR(!configuredTagfile.empty(), {});
+        std::string const tagfilePath = files::appendPath(
+            dir, files::getFileName(configuredTagfile));
+        return buildTagfile(tagfilePath, corpus);
+    };
+
+    if (!rendersMultiPage(corpus.config, id()))
+    {
+        // Single document: write it to the resolved file (a directory
+        // output becomes reference.<ext>), then the stylesheets and tagfile
+        // beside it.
+        MRDOCS_TRY(
+            std::string const file,
+            getSinglePageFullPath(outputPath, fileExtension()));
+        std::string const outDir(files::getParentDir(file));
+        MRDOCS_TRY(writeToFile(file, [&](std::ostream& os) -> Expected<void>
+        {
+            return renderSinglePage(os, corpus);
+        }));
+        MRDOCS_TRY(copyStylesheets(corpus.config, outDir));
+        MRDOCS_TRY(writeTagfile(outDir));
         return {};
     }
 
-    // Create corpus and executors
+    // Multi-page: one file per symbol inside the output directory.
     HandlebarsCorpus domCorpus{corpus, fileExtension()};
     prepareCorpus(domCorpus);
     MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(*this, domCorpus));
-
-    // Visit the corpus
     MultiPageVisitor visitor(ex, outputPath, corpus);
     visitor(corpus.globalNamespace());
-
-    // Wait for all executors to finish and check errors
     auto errors = ex.wait();
     MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
     report::info("Generated {} pages", visitor.count());
 
-    MRDOCS_CHECK_OR(!corpus.config->tagfile.empty(), {});
-    MRDOCS_TRY(buildTagfile(corpus.config->tagfile, corpus));
+    MRDOCS_TRY(copyStylesheets(corpus.config, outputPath));
+    MRDOCS_TRY(writeTagfile(outputPath));
     return {};
 }
 
@@ -161,7 +201,7 @@ buildTagfile(
     HandlebarsCorpus domCorpus{corpus, fileExtension()};
     prepareCorpus(domCorpus);
     RawOstream raw_os(os);
-    if (corpus.config->multipage)
+    if (rendersMultiPage(corpus.config, id()))
     {
         MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
                         domCorpus,
@@ -170,7 +210,8 @@ buildTagfile(
     }
     else
     {
-        // Get the name of the single page output file
+        // The single-page filename is the same regardless of which
+        // directory this generator writes to.
         auto const singlePagePath = getSinglePageFullPath(corpus.config->output, fileExtension());
         MRDOCS_CHECK_OR(singlePagePath, Unexpected(singlePagePath.error()));
         auto const singlePathFilename = files::getFileName(*singlePagePath);
@@ -189,7 +230,7 @@ buildTagfile(
     std::string_view const fileName,
     Corpus const& corpus) const
 {
-    std::string const dir = files::getParentDir(fileName);
+    std::string const dir(files::getParentDir(fileName));
     MRDOCS_TRY(files::createDirectory(dir));
     std::ofstream os;
     try
@@ -210,13 +251,13 @@ buildTagfile(
     }
     catch(std::exception const& ex)
     {
-        return Unexpected(formatError("buildOne threw \"{}\"", ex.what()));
+        return Unexpected(formatError("buildTagfile threw \"{}\"", ex.what()));
     }
 }
 
 Expected<void>
 HandlebarsGenerator::
-buildOne(
+renderSinglePage(
     std::ostream& os,
     Corpus const& corpus) const
 {
@@ -405,14 +446,25 @@ isRemote(std::string_view path)
     return path.starts_with("http://") || path.starts_with("https://");
 }
 
+/*  Collect the stylesheets and scripts a rendered page references.
+
+    This produces data only; copyStylesheets() writes any files. Each
+    stylesheet is either linked (recorded so its file can be copied next to
+    the output) or inlined (its contents read into inlineStyles for a
+    <style> block), depending on the `linkcss` option.
+
+    With no user `stylesheets` and default styles enabled, the built-in main
+    and highlight stylesheets and the highlight.js loader script are added.
+    Otherwise each `stylesheets` entry is used: a remote URL becomes an
+    external link (link mode only); a local path is resolved against the
+    config directory and linked or inlined.
+*/
 Expected<HandlebarsGenerator::StylesData>
 HandlebarsGenerator::
 prepareStylesheets(Config const& config) const
 {
     StylesData data;
-
     bool const linkMode = config->linkcss;
-    bool const copyCss = config->copycss;
 
     auto addInlineFromFile = [&](std::string const& path) -> Expected<void>
     {
@@ -421,105 +473,72 @@ prepareStylesheets(Config const& config) const
         return {};
     };
 
-    auto addLocalLink = [&](std::string const& sourcePath,
-                            std::string const& relPath)
+    // Record a local stylesheet: linked (its file is copied to
+    // `outputRelative` later) or inlined into the page.
+    auto linkOrInline = [&](std::string const& sourcePath,
+                            std::string const& outputRelative) -> Expected<void>
     {
-        StylesheetRef sheet;
-        sheet.sourcePath = sourcePath;
-        sheet.outputRelative = files::appendPath(config->stylesdir, relPath);
-        sheet.external = false;
-        data.stylesheets.push_back(std::move(sheet));
+        if (!linkMode)
+        {
+            return addInlineFromFile(sourcePath);
+        }
+        data.stylesheets.push_back(
+            StylesheetRef{sourcePath, outputRelative, false});
+        return {};
     };
 
-    std::vector<std::string> entries = config->stylesheets;
+    std::vector<std::string> const entries = config->stylesheets;
     if (entries.empty() && !config->noDefaultStyles)
     {
         data.hasDefaultStyles = true;
-        auto source = defaultStylesheetSource(config);
-        auto output = defaultStylesheetOutput(config);
+        auto const source = defaultStylesheetSource(config);
+        auto const output = defaultStylesheetOutput(config);
         if (!source.empty() && !output.empty())
         {
-            if (linkMode)
+            if (auto r = linkOrInline(source, output); !r)
             {
-                StylesheetRef sheet;
-                sheet.sourcePath = source;
-                sheet.outputRelative = output;
-                data.stylesheets.push_back(std::move(sheet));
-            }
-            else
-            {
-                auto res = addInlineFromFile(source);
-                if (!res)
-                {
-                    report::warn("Failed to read default stylesheet: {}", res.error());
-                }
+                report::warn("Failed to read default stylesheet: {}", r.error());
             }
         }
-
-        auto highlightSource = defaultHighlightStylesheetSource(config);
-        auto highlightOutput = defaultHighlightStylesheetOutput(config);
-        if (!highlightSource.empty() && !highlightOutput.empty())
+        auto const hlSource = defaultHighlightStylesheetSource(config);
+        auto const hlOutput = defaultHighlightStylesheetOutput(config);
+        if (!hlSource.empty() && !hlOutput.empty())
         {
-            if (linkMode)
+            auto const rel = files::appendPath(config->stylesdir, hlOutput);
+            if (auto r = linkOrInline(hlSource, rel); !r)
             {
-                addLocalLink(highlightSource, highlightOutput);
-            }
-            else
-            {
-                auto res = addInlineFromFile(highlightSource);
-                if (!res)
-                {
-                    report::warn("Failed to read highlight stylesheet: {}", res.error());
-                }
+                report::warn("Failed to read highlight stylesheet: {}", r.error());
             }
         }
-
         data.inlineScripts.push_back(defaultHighlightScript());
     }
 
     auto const baseDir = config->configDir();
-
     for (auto const& entry : entries)
     {
         if (entry.empty())
+        {
             continue;
-
+        }
         if (isRemote(entry))
         {
-            if (!linkMode)
-            {
-                return Unexpected(
-                    formatError("Remote stylesheet \"{}\" requires linkcss=true", entry));
-            }
-            StylesheetRef sheet;
-            sheet.outputRelative = entry;
-            sheet.external = true;
-            data.stylesheets.push_back(std::move(sheet));
+            MRDOCS_CHECK(linkMode, formatError(
+                "Remote stylesheet \"{}\" requires linkcss=true", entry));
+            data.stylesheets.push_back(StylesheetRef{"", entry, true});
             continue;
         }
-
-        std::string sourcePath = entry;
-        if (!files::isAbsolute(sourcePath))
-        {
-            sourcePath = files::makeAbsolute(sourcePath, baseDir);
-        }
-        sourcePath = files::makePosixStyle(sourcePath);
-
+        std::string sourcePath = files::makePosixStyle(
+            files::isAbsolute(entry)
+                ? entry
+                : files::makeAbsolute(entry, baseDir));
         MRDOCS_CHECK(
             files::exists(sourcePath),
             formatError("Stylesheet path does not exist: {}", sourcePath));
-
-        if (linkMode)
-        {
-            std::string rel = files::isAbsolute(entry)
-                ? std::string(files::getFileName(entry))
-                : files::makePosixStyle(entry);
-            addLocalLink(sourcePath, rel);
-        }
-        else
-        {
-            MRDOCS_TRY(addInlineFromFile(sourcePath));
-        }
+        std::string const rel = files::isAbsolute(entry)
+            ? std::string(files::getFileName(entry))
+            : files::makePosixStyle(entry);
+        MRDOCS_TRY(linkOrInline(
+            sourcePath, files::appendPath(config->stylesdir, rel)));
     }
 
     for (auto& sheet : data.stylesheets)
@@ -529,33 +548,44 @@ prepareStylesheets(Config const& config) const
             sheet.outputRelative = files::makePosixStyle(sheet.outputRelative);
         }
     }
+    return data;
+}
 
-    if (linkMode && copyCss)
+Expected<void>
+HandlebarsGenerator::
+copyStylesheets(Config const& config, std::string_view outputDir) const
+{
+    // Only linked-and-copied CSS lands on disk, and only when we have a
+    // directory to copy it into (the stream/embedded paths do not).
+    if (!config->linkcss || !config->copycss || outputDir.empty())
     {
-        for (auto const& sheet : data.stylesheets)
+        return {};
+    }
+    MRDOCS_TRY(StylesData const data, prepareStylesheets(config));
+    for (auto const& sheet : data.stylesheets)
+    {
+        if (sheet.external)
         {
-            if (sheet.external)
-                continue;
-            auto const targetPath =
-                files::appendPath(config->outputDir(), sheet.outputRelative);
-            MRDOCS_TRY(files::createDirectory(files::getParentDir(targetPath)));
-            std::error_code ec;
-            std::filesystem::copy_file(
+            continue;
+        }
+        auto const targetPath =
+            files::appendPath(outputDir, sheet.outputRelative);
+        MRDOCS_TRY(files::createDirectory(files::getParentDir(targetPath)));
+        std::error_code ec;
+        std::filesystem::copy_file(
+            sheet.sourcePath,
+            targetPath,
+            std::filesystem::copy_options::overwrite_existing,
+            ec);
+        MRDOCS_CHECK(
+            !ec,
+            formatError(
+                "Failed to copy stylesheet \"{}\" to \"{}\": {}",
                 sheet.sourcePath,
                 targetPath,
-                std::filesystem::copy_options::overwrite_existing,
-                ec);
-            MRDOCS_CHECK(
-                !ec,
-                formatError(
-                    "Failed to copy stylesheet \"{}\" to \"{}\": {}",
-                    sheet.sourcePath,
-                    targetPath,
-                    ec.message()));
-        }
+                ec.message()));
     }
-
-    return data;
+    return {};
 }
 
 void

@@ -42,9 +42,7 @@ struct XMLGenerator : Generator
     }
 
     Expected<void>
-    buildOne(
-        std::ostream& os,
-        Corpus const& corpus) const override;
+    build(Corpus const& corpus) const override;
 };
 
 } // mrdocs::xml

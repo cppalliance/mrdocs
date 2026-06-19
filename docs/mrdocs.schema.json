@@ -454,8 +454,8 @@
     },
     "output": {
       "default": "<config-dir>/reference-output",
-      "description": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
-      "title": "Directory or file for generating output",
+      "description": "The directory MrDocs generators write the documentation to, resolved relative to the configuration file. Each generator ultimately decides how to interpret this path. Multipage generators will typically use it as a directory. Single-page generators will typically also allow this to represent a file.",
+      "title": "Output directory for the generated documentation",
       "type": "string"
     },
     "overloads": {

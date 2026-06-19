@@ -17,12 +17,11 @@
 namespace mrdocs::example {
 
 // tag::generator-class[]
-// A Generator subclass that emits a breaking-change report when its
-// `buildOne(stream, current)` is invoked. The baseline corpus is
-// captured at construction; the candidate corpus is supplied per
-// call. Registering this generator into the process-global registry
-// under the id "breaking-changes" lets a caller look it up the same
-// way they would any built-in generator.
+// A Generator subclass that emits a breaking-change report. The baseline
+// corpus is captured at construction; the candidate corpus is supplied to
+// `build`, which diffs the two and prints the report. Registering this
+// generator into the process-global registry under the id
+// "breaking-changes" lets a caller look it up like any built-in generator.
 class BreakingChangesGenerator final : public Generator
 {
 public:
@@ -35,7 +34,7 @@ public:
     std::string_view fileExtension()const noexcept override;
 
     Expected<void>
-    buildOne(std::ostream& os, Corpus const& current) const override;
+    build(Corpus const& current) const override;
 
 private:
     Corpus const* baseline_;

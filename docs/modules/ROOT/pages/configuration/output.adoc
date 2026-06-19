@@ -23,9 +23,38 @@ include::example$snippets/options/generator/generator.yml[tags=!test-only]
 include::example$snippets/options/generator/generator.adoc[tags=!footer]
 ========
 
-xref:configuration/reference.adoc#output_option[`output`] is the directory (or, for a single-file generator, the file) MrDocs writes to. The default is `<config-dir>/reference-output`. It's very common to override this option in the site's pages directory from the CLI. MrDocs creates the directory if it does not exist.
+xref:configuration/reference.adoc#output_option[`output`] is the directory MrDocs writes the documentation to; the default is `<config-dir>/reference-output`. It's very common to override it from the CLI to point at the site's pages directory, and MrDocs creates the directory if it doesn't exist. Single-page generators can also point it at a file, as the <<output-paths,Output paths>> section explains.
 
 xref:configuration/reference.adoc#multipage_option[`multipage`] (on by default) writes one file per symbol so the result can be browsed page-by-page on a website. Turn it off for a one-shot dump or when the output will be embedded in a larger single document.
+
+[#output-paths]
+== Output paths
+
+Each xref:generators/index.adoc[generator] ultimately decides how to interpret this path. Most of the time, in practice, `output` is simply the output directory generators write their pages into. Single-page generators often also allow this parameter to represent a path to a file `reference.<ext>`.
+
+The same input under three configurations exemplifies the pattern:
+
+[cols="2,1,2",options="header"]
+|===
+| `generator` | `multipage` | `output` | Result
+
+| `html`
+| `true`
+| `site`
+| `site/` with one HTML file per symbol
+
+| `html`
+| -
+| `docs`
+| `docs/reference.xml`
+
+| `generator: xml`
+| -
+| `docs.xml`
+| `docs.xml`
+|===
+
+`generator` also allows multiple generators at once. When you run more than one generator from a single extraction, each writes into a subdirectory named after its id (for example `site/html` and `site/xml`) so they don't overwrite each other. A generator opts out by setting its own `output` under xref:configuration/reference.adoc#generator-options_option[`generator-options`], which replaces the top-level path and skips the per-generator subdirectory.
 
 == Showing and hiding
 

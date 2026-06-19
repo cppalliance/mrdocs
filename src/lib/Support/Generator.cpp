@@ -10,17 +10,17 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/AST/ExtractDocComment.hpp>
-#include <lib/Support/Chrono.hpp>
+#include <lib/Support/Generator.hpp>
 #include <lib/Support/GeneratorRegistryImpl.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <fstream>
-#include <sstream>
+#include <functional>
 
 
 namespace mrdocs {
@@ -28,47 +28,41 @@ namespace mrdocs {
 Generator::
 ~Generator() noexcept = default;
 
-/*  Default implementation of this function
-    assumes the output is single page, and emits
-    the file reference.ext using the extension
-    of the generator.
-*/
-Expected<void>
-Generator::
-build(
-    std::string_view outputPath,
-    Corpus const& corpus) const
+std::string
+getGeneratorOutputPath(
+    Generator const& generator,
+    Corpus const& corpus)
 {
-    auto const fileName = getSinglePageFullPath(outputPath, fileExtension());
-    MRDOCS_CHECK_OR(fileName, Unexpected(fileName.error()));
-    return buildOne(*fileName, corpus);
-}
-
-Expected<void>
-Generator::
-build(Corpus const& corpus) const
-{
-    using clock_type = std::chrono::steady_clock;
-    auto const start_time = clock_type::now();
-    std::string const absOutput = files::normalizePath(
-        files::makeAbsolute(
-            corpus.config->output,
+    // A per-generator `output` (under generator-options.<id>) is used as
+    // given. Otherwise the top-level `output` is used directly for a single
+    // generator, or a subdirectory named after the generator id when several
+    // run, so each writes into its own directory. All paths are resolved
+    // relative to the configuration file.
+    auto const& genOpts = corpus.config->generatorOptions;
+    auto const it = genOpts.find(std::string(generator.id()));
+    dom::Value const explicitOutput =
+        it != genOpts.end() ? it->second.get("output") : dom::Value();
+    if (explicitOutput.isString())
+    {
+        return files::normalizePath(files::makeAbsolute(
+            std::string_view(explicitOutput.getString()),
             corpus.config->configDir()));
-    MRDOCS_TRY(build(absOutput, corpus));
-    report::info(
-        "Generated {} documentation in {}",
-        this->displayName(),
-        format_duration(clock_type::now() - start_time));
-    return {};
+    }
+    std::string absOutput = files::normalizePath(files::makeAbsolute(
+        corpus.config->output, corpus.config->configDir()));
+    if (corpus.config->generator.values.size() > 1)
+    {
+        absOutput = files::appendPath(absOutput, generator.id());
+    }
+    return absOutput;
 }
 
 Expected<void>
-Generator::
-buildOne(
+writeToFile(
     std::string_view fileName,
-    Corpus const& corpus) const
+    std::function<Expected<void>(std::ostream&)> render)
 {
-    std::string dir = files::getParentDir(fileName);
+    std::string dir(files::getParentDir(fileName));
     MRDOCS_TRY(files::createDirectory(dir));
 
     std::ofstream os;
@@ -77,8 +71,7 @@ buildOne(
         os.open(std::string(fileName),
             std::ios_base::binary |
                 std::ios_base::out |
-                std::ios_base::trunc // | std::ios_base::noreplace
-            );
+                std::ios_base::trunc);
     }
     catch(std::exception const& ex)
     {
@@ -87,35 +80,12 @@ buildOne(
 
     try
     {
-        return buildOne(os, corpus);
+        return render(os);
     }
     catch(std::exception const& ex)
     {
-        return Unexpected(formatError("buildOne threw \"{}\"", ex.what()));
-    }
-}
-
-Expected<void>
-Generator::
-buildOneString(
-    std::string& dest,
-    Corpus const& corpus) const
-{
-    dest.clear();
-    std::stringstream ss;
-    try
-    {
-        MRDOCS_TRY(buildOne(ss, corpus));
-        dest = ss.str();
-        return {};
-    }
-    catch(Exception const& ex)
-    {
-        return Unexpected(ex.error());
-    }
-    catch(std::exception const& ex)
-    {
-        return Unexpected(formatError("buildOne threw \"{}\"", ex.what()));
+        return Unexpected(formatError("writing \"{}\" threw \"{}\"",
+            fileName, ex.what()));
     }
 }
 
@@ -127,32 +97,17 @@ getSinglePageFullPath(
     namespace path = llvm::sys::path;
     using SmallString = llvm::SmallString<0>;
 
-    SmallString ext(".");
-    ext += extension;
-
-    if (files::exists(outputPath))
+    // When the path looks like a file, it is the single page itself.
+    if (files::looksLikeFile(outputPath))
     {
-        // If the path exists and is a directory, append the default file
-        if (files::isDirectory(outputPath))
-        {
-            SmallString fileName(outputPath);
-            path::append(fileName, "reference");
-            path::replace_extension(fileName, ext);
-            return fileName.str().str();
-        }
-        // If the path exists and is a file, use it directly
         return std::string(outputPath);
     }
 
-    // If the path does not exist, check if it has an extension
+    // Otherwise the path is a directory and the single page is created
+    // inside it as reference.<ext>.
+    SmallString ext(".");
+    ext += extension;
     SmallString fileName(outputPath);
-    if (!path::extension(fileName).empty())
-    {
-        // Path has an extension, treat it as a file
-        return fileName.str().str();
-    }
-
-    // Path does not have an extension, assume it's a directory
     path::append(fileName, "reference");
     path::replace_extension(fileName, ext);
     return fileName.str().str();

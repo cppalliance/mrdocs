@@ -49,9 +49,9 @@ include::example$examples/library/breaking-changes/src/Diff.cpp[tag=diff]
 
 == Custom Generators
 
-You can subclass cpp:Generator[] to create new output formats that need to do something script generators cannot express, such as comparing multiple corpora, multi-pass analyzes, emitting binary formats, depending on system libraries. cpp:Generator::build[] writes the format to disk for the multi-file case, and cpp:Generator::buildOne[] is used for single-page output.
+You can subclass cpp:Generator[] to create new output formats that need to do something script generators cannot express, such as comparing multiple corpora, multi-pass analyzes, emitting binary formats, depending on system libraries. A generator does its work in cpp:Generator::build[], which receives the corpus (and through it the configuration) and is free to do whatever it needs: resolve its own output location and write files, or, as this example does, bring the result straight to the screen.
 
-The example's `BreakingChangesGenerator` holds a reference to the baseline corpus and runs the diff against whatever candidate corpus cpp:Generator::buildOne[] is invoked with:
+The example's `BreakingChangesGenerator` holds a reference to the baseline corpus and runs the diff against whatever candidate corpus cpp:Generator::build[] is invoked with:
 
 .`examples/library/breaking-changes/src/BreakingChangesGenerator.hpp`
 [source,cpp]
@@ -59,12 +59,12 @@ The example's `BreakingChangesGenerator` holds a reference to the baseline corpu
 include::example$examples/library/breaking-changes/src/BreakingChangesGenerator.hpp[tag=generator-class]
 ----
 
-The body of cpp:Generator::buildOne[] is short, the heavy lifting is the diff and the formatter:
+The body of cpp:Generator::build[] is short, the heavy lifting is the diff and the formatter:
 
 .`examples/library/breaking-changes/src/BreakingChangesGenerator.cpp`
 [source,cpp]
 ----
-include::example$examples/library/breaking-changes/src/BreakingChangesGenerator.cpp[tag=build-one]
+include::example$examples/library/breaking-changes/src/BreakingChangesGenerator.cpp[tag=build]
 ----
 
 The example ships two test fixtures, each its own directory with an `mrdocs.yml` and a single `lib.cpp` that stands in for a small library:
@@ -88,7 +88,7 @@ include::example$examples/library/breaking-changes/test/v2/lib.cpp[]
 ----
 ======
 
-Running the tool against those two fixtures produces the report through the generator's cpp:Generator::buildOne[]:
+Running the tool against those two fixtures produces the report through the generator's cpp:Generator::build[]:
 
 .`examples/library/breaking-changes/test/expected.txt`
 [source,text]

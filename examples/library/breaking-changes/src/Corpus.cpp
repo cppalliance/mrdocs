@@ -21,7 +21,7 @@ loadCorpusFromConfig(
 {
     Config::Settings settings;
     ReferenceDirectories localDirs = dirs;
-    localDirs.cwd = files::getParentDir(configPath);
+    localDirs.cwd = std::string(files::getParentDir(configPath));
     MRDOCS_TRY(Config::Settings::load_file(settings, configPath, localDirs));
     MRDOCS_TRY(settings.normalize(localDirs));
 
