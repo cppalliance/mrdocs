@@ -11,6 +11,7 @@
 #ifndef MRDOCS_LIB_MRDOCSCOMPILATIONDATABASE_HPP
 #define MRDOCS_LIB_MRDOCSCOMPILATIONDATABASE_HPP
 
+#include <lib/Support/Path.hpp>
 #include <mrdocs/Config.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 #include <llvm/ADT/StringMap.h>
@@ -39,6 +40,8 @@ class MrDocsCompilationDatabase
     std::vector<clang::tooling::CompileCommand> AllCommands_;
     llvm::StringMap<std::size_t> IndexByFile_;
     bool isClangCL_{};
+    // Scratch directories the compile commands point into
+    std::vector<ScopedTempDirectory> scratchDirs_;
 
 public:
     /**
@@ -59,6 +62,19 @@ public:
         CompilationDatabase const& inner,
         std::shared_ptr<Config const> const& config,
         std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
+
+    /** Take ownership of a scratch directory backing this database.
+
+        Some compile commands reference paths inside a temporary directory
+        (for example a CMake build tree generated to produce the database).
+        Clang reads those paths while extracting the corpus, so the
+        directory must outlive this database. Hand it here and it is removed
+        when the database is destroyed.
+
+        @param dir The scratch directory to keep alive.
+    */
+    void
+    keepAlive(ScopedTempDirectory&& dir);
 
     /** Get all compile commands for a file.
 

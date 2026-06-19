@@ -58,6 +58,15 @@
         "default": ""
       },
       {
+        "name": "cmake-build-dir",
+        "brief": "Directory for the CMake build that generates the compilation database",
+        "details": "When the compilation database is generated from a CMakeLists.txt file, MrDocs runs CMake in a scratch directory and removes it afterward. Set this option to run that build in a fixed directory instead: it is used as given, reused across runs, and never removed, so you can inspect or reuse the generated build files. When unset, MrDocs picks a writable scratch directory automatically (honoring the `MRDOCS_TEMP_DIR` environment variable, then the user cache and system temporary directories).",
+        "type": "path",
+        "default": "",
+        "relative-to": "<config-dir>",
+        "must-exist": false
+      },
+      {
         "name": "defines",
         "brief": "Additional defines passed to the compiler",
         "details": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",

@@ -539,6 +539,13 @@ MrDocsCompilationDatabase(
     }
 }
 
+void
+MrDocsCompilationDatabase::
+keepAlive(ScopedTempDirectory&& dir)
+{
+    scratchDirs_.push_back(std::move(dir));
+}
+
 std::vector<clang::tooling::CompileCommand>
 MrDocsCompilationDatabase::
 getCompileCommands(

@@ -16,6 +16,8 @@ TIP: xref:configuration/reference.adoc#compilation-database_option[`compilation-
 
 If MrDocs is invoking CMake on your behalf (the `compilation-database` value points at a `CMakeLists.txt`), xref:configuration/reference.adoc#cmake_option[`cmake`] passes extra arguments through to that CMake invocation — for example `'-D MY_PROJECT_TESTS=OFF'` to silence test targets while configuring for the docs build.
 
+By default, MrDocs runs the CMake build in a scratch directory and removes it afterward, automatically choosing a writable location (it honors the `MRDOCS_TEMP_DIR` environment variable, then the user cache and system temporary directories). Set xref:configuration/reference.adoc#cmake-build-dir_option[`cmake-build-dir`] to run the build in a fixed directory instead. That directory is reused between runs and never removed, which is useful when a CMake configure fails and you want to inspect the generated build files.
+
 == Extra includes and defines
 
 The compilation database carries most of the flags MrDocs needs, but you can add to them. xref:configuration/reference.adoc#includes_option[`includes`] and xref:configuration/reference.adoc#system-includes_option[`system-includes`] add directories to the header search path, and xref:configuration/reference.adoc#defines_option[`defines`] adds preprocessor definitions to every entry in the database. 

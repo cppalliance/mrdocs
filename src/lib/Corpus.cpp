@@ -34,14 +34,9 @@ build(std::shared_ptr<Config const> const& config)
     MRDOCS_CHECK(configImpl,
         "config was not produced by Config::load");
 
-    ScopedTempDirectory tempDir(
-        configImpl->settings().outputDir(),
-        ".temp");
-    MRDOCS_CHECK(!tempDir.failed(), tempDir.error());
-
     MRDOCS_TRY(
         MrDocsCompilationDatabase compilations,
-        generateCompilationDatabase(tempDir.path(), configImpl));
+        generateCompilationDatabase(configImpl));
 
     return CorpusImpl::build(configImpl, compilations);
 }

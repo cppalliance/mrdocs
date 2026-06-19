@@ -17,9 +17,10 @@
 
 namespace mrdocs {
 
+/** Build the compilation database described by the configuration.
+*/
 Expected<MrDocsCompilationDatabase>
 generateCompilationDatabase(
-    std::string_view tempDir,
     std::shared_ptr<ConfigImpl const> const& config);
 
 } // mrdocs
