@@ -1,0 +1,8 @@
+{{! Admonitions for attributes that describe a function's return behavior, rendered in the Return Value section. }}
+{{~#each symbol.attributes~}}
+{{~#if (eq kind "nodiscard")~}}
+{{#> markup/admonition kind="note"}}The return value {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/nodiscard" blank=true}}should not be discarded{{/markup/a}}{{#if reason}}: {{reason}}{{/if}}.{{/markup/admonition}}
+{{~else if (eq kind "noreturn")~}}
+{{#> markup/admonition kind="note"}}This function {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/noreturn" blank=true}}does not return{{/markup/a}}.{{/markup/admonition}}
+{{~/if~}}
+{{~/each~}}

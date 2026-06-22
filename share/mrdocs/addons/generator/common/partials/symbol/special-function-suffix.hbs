@@ -30,4 +30,12 @@
     {{~#if isVariant~}}
         {{#>markup/span class="small"}}[variant member]{{/markup/span}}
     {{~/if~}}
-{{~/if}}
+{{~/if~}}
+{{!-- Terse attribute tags. These apply to every symbol kind that carries the attribute. --}}
+{{~#each attributes~}}
+{{~#if (eq kind "deprecated")~}}
+    {{str ' '}}{{#>markup/span class="small"}}[deprecated]{{/markup/span}}
+{{~else if (eq kind "noreturn")~}}
+    {{str ' '}}{{#>markup/span class="small"}}[noreturn]{{/markup/span}}
+{{~/if~}}
+{{~/each~}}

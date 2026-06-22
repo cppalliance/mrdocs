@@ -64,22 +64,6 @@ struct VariableSymbol final
     */
     bool IsThreadLocal = false;
 
-    /** Raw attribute spellings attached to the variable.
-    */
-    std::vector<std::string> Attributes;
-
-    /** Whether the variable carries `[[maybe_unused]]`.
-    */
-    bool IsMaybeUnused = false;
-
-    /** Whether the variable is marked deprecated.
-    */
-    bool IsDeprecated = false;
-
-    /** Whether the variable uses [[no_unique_address]].
-    */
-    bool HasNoUniqueAddress = false;
-
     //--------------------------------------------
     // Record fields
     /** True if this variable is a data member of a record.
@@ -121,9 +105,8 @@ MRDOCS_DESCRIBE_STRUCT(
     VariableSymbol,
     (SymbolCommonBase<SymbolKind::Variable>),
     (Type, Template, Initializer, StorageClass, IsInline,
-     IsConstexpr, IsConstinit, IsThreadLocal, Attributes, IsMaybeUnused,
-     IsDeprecated, HasNoUniqueAddress, IsRecordField, IsMutable, IsVariant,
-     IsBitfield, BitfieldWidth)
+     IsConstexpr, IsConstinit, IsThreadLocal, IsRecordField, IsMutable,
+     IsVariant, IsBitfield, BitfieldWidth)
 )
 
 } // mrdocs

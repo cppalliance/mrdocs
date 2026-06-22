@@ -552,6 +552,11 @@ populate(Symbol& I, bool const isNew, DeclTy const* D)
     populate(I.doc, D);
     populate(I.Loc, D);
 
+    // Attributes are extracted for every symbol kind and may be spread
+    // across redeclarations, so collect them even when the symbol is
+    // not new (the helper deduplicates).
+    populateAttributes(I, D);
+
     // All other information is redundant if the symbol is not new
     MRDOCS_CHECK_OR(isNew);
 
@@ -893,7 +898,6 @@ populate(
     I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
     I.IsDeleted |= D->isDeleted();
     I.IsDeletedAsWritten |= D->isDeletedAsWritten();
-    I.IsNoReturn |= D->isNoReturn();
     I.HasOverrideAttr |= D->hasAttr<clang::OverrideAttr>();
 
     if (clang::ConstexprSpecKind const CSK = D->getConstexprKind();
@@ -907,7 +911,6 @@ populate(
         I.StorageClass = toStorageClassKind(SC);
     }
 
-    I.IsNodiscard |= D->hasAttr<clang::WarnUnusedResultAttr>();
     I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
 
     llvm::ArrayRef<clang::ParmVarDecl*> const params = D->parameters();
@@ -996,8 +999,6 @@ populate(
             }
         }
     }
-
-    populateAttributes(I, D);
 }
 
 void
@@ -1171,7 +1172,6 @@ populate(
         QT.removeLocalConst();
     }
     I.Type = toType(QT);
-    populateAttributes(I, D);
 }
 
 void
@@ -1216,10 +1216,6 @@ populate(
         I.IsBitfield = true;
         populate(I.BitfieldWidth, D->getBitWidth());
     }
-    I.HasNoUniqueAddress = D->hasAttr<clang::NoUniqueAddressAttr>();
-    I.IsDeprecated = D->hasAttr<clang::DeprecatedAttr>();
-    I.IsMaybeUnused = D->hasAttr<clang::UnusedAttr>();
-    populateAttributes(I, D);
 }
 
 void
@@ -1738,26 +1734,280 @@ populate(
         }));
 }
 
-template <std::derived_from<Symbol> InfoTy>
+namespace {
+// Split the text inside an attribute's parentheses into its individual
+// arguments, breaking on top-level commas while respecting nested
+// brackets and string/character literals.
+std::vector<std::string>
+splitAttributeArgs(std::string_view s)
+{
+    std::vector<std::string> args;
+    std::string cur;
+    int depth = 0;
+    bool inString = false;
+    bool inChar = false;
+    for (std::size_t i = 0; i < s.size(); ++i)
+    {
+        char const c = s[i];
+        if (inString || inChar)
+        {
+            cur += c;
+            if (c == '\\' && i + 1 < s.size())
+            {
+                cur += s[++i];
+            }
+            else if (inString && c == '"')
+            {
+                inString = false;
+            }
+            else if (inChar && c == '\'')
+            {
+                inChar = false;
+            }
+            continue;
+        }
+        switch (c)
+        {
+        case '"': inString = true; break;
+        case '\'': inChar = true; break;
+        case '(': case '[': case '{': ++depth; break;
+        case ')': case ']': case '}': --depth; break;
+        default: break;
+        }
+        if (c == ',' && depth == 0)
+        {
+            args.emplace_back(trim(cur));
+            cur.clear();
+            continue;
+        }
+        cur += c;
+    }
+    if (std::string_view const last = trim(cur); !last.empty())
+    {
+        args.emplace_back(last);
+    }
+    return args;
+}
+
+// Extract the argument tokens from an attribute's pretty-printed form.
+// Anchored on the attribute name, so the surrounding `[[ ]]` or
+// `__attribute__(( ))` wrapper does not matter.
+std::vector<std::string>
+attributeArgs(std::string_view pretty, std::string_view name)
+{
+    std::size_t const namePos = pretty.find(name);
+    if (namePos == std::string_view::npos)
+    {
+        return {};
+    }
+    std::size_t const open = pretty.find('(', namePos + name.size());
+    if (open == std::string_view::npos)
+    {
+        return {};
+    }
+    int depth = 0;
+    bool inString = false;
+    bool inChar = false;
+    std::size_t i = open;
+    for (; i < pretty.size(); ++i)
+    {
+        char const c = pretty[i];
+        if (inString || inChar)
+        {
+            if (c == '\\') { ++i; continue; }
+            if (inString && c == '"') { inString = false; }
+            else if (inChar && c == '\'') { inChar = false; }
+            continue;
+        }
+        if (c == '"') { inString = true; }
+        else if (c == '\'') { inChar = true; }
+        else if (c == '(') { ++depth; }
+        else if (c == ')') { if (--depth == 0) { break; } }
+    }
+    if (i >= pretty.size())
+    {
+        return {};
+    }
+    return splitAttributeArgs(pretty.substr(open + 1, i - open - 1));
+}
+
+// Map a Clang attribute kind to the mrdocs attribute kind for the
+// standard C++ attributes, identifying by kind rather than spelling.
+AttributeKind
+toAttributeKind(clang::attr::Kind const kind)
+{
+    switch (kind)
+    {
+    case clang::attr::CXX11NoReturn:
+    case clang::attr::C11NoReturn:       return AttributeKind::Noreturn;
+    case clang::attr::CarriesDependency: return AttributeKind::CarriesDependency;
+    case clang::attr::Deprecated:        return AttributeKind::Deprecated;
+    case clang::attr::FallThrough:       return AttributeKind::Fallthrough;
+    case clang::attr::Unused:            return AttributeKind::MaybeUnused;
+    case clang::attr::WarnUnusedResult:  return AttributeKind::Nodiscard;
+    case clang::attr::Likely:            return AttributeKind::Likely;
+    case clang::attr::Unlikely:          return AttributeKind::Unlikely;
+    case clang::attr::NoUniqueAddress:   return AttributeKind::NoUniqueAddress;
+    case clang::attr::CXXAssume:         return AttributeKind::Assume;
+    default:                             return AttributeKind::Other;
+    }
+}
+
+// The normalized standard spelling for a recognized attribute kind,
+// or empty for AttributeKind::Other.
+std::string_view
+standardAttributeName(AttributeKind const kind)
+{
+    switch (kind)
+    {
+    case AttributeKind::Noreturn:          return "noreturn";
+    case AttributeKind::CarriesDependency: return "carries_dependency";
+    case AttributeKind::Deprecated:        return "deprecated";
+    case AttributeKind::Fallthrough:       return "fallthrough";
+    case AttributeKind::MaybeUnused:       return "maybe_unused";
+    case AttributeKind::Nodiscard:         return "nodiscard";
+    case AttributeKind::Likely:            return "likely";
+    case AttributeKind::Unlikely:          return "unlikely";
+    case AttributeKind::NoUniqueAddress:   return "no_unique_address";
+    case AttributeKind::Assume:            return "assume";
+    case AttributeKind::Indeterminate:     return "indeterminate";
+    default:                               return {};
+    }
+}
+
+// Construct the concrete attribute object for a kind.
+Polymorphic<Attribute>
+makeAttribute(AttributeKind const kind)
+{
+    switch (kind)
+    {
+#define INFO(PascalName) case AttributeKind::PascalName: \
+        return Polymorphic<Attribute>(PascalName##Attribute{});
+#include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+} // (anon)
+
 void
 ASTVisitor::
-populateAttributes(InfoTy& I, clang::Decl const* D)
+populateAttributes(Symbol& I, clang::Decl const* D)
 {
-    if constexpr (requires { I.Attributes; })
+    auto collect = [&](clang::Decl const* Decl)
     {
-        MRDOCS_CHECK_OR(D->hasAttrs());
-        for (clang::Attr const* attr: D->getAttrs())
+        if (!Decl || !Decl->hasAttrs())
         {
-            clang::IdentifierInfo const* II = attr->getAttrName();
-            if (!II)
+            return;
+        }
+        for (clang::Attr const* attr: Decl->getAttrs())
+        {
+            // Skip attributes the compiler injected rather than the user wrote.
+            if (attr->isImplicit())
             {
                 continue;
             }
-            if (!contains(I.Attributes, II->getName()))
+
+            // Only surface attributes written with a real attribute syntax.
+            // This excludes context-sensitive keywords such as `override`
+            // and `final`, which Clang models as attributes but which are
+            // documented through their own dedicated fields.
+            if (!attr->isStandardAttributeSyntax() &&
+                !attr->isGNUAttribute() &&
+                !attr->isDeclspecAttribute())
             {
-                I.Attributes.emplace_back(II->getName());
+                continue;
+            }
+
+            AttributeKind const kind = toAttributeKind(attr->getKind());
+            Polymorphic<Attribute> attribute = makeAttribute(kind);
+
+            // The written name, with scope (e.g. `gnu::custom`). Recognized
+            // attributes are normalized to their standard spelling; others
+            // keep the written spelling.
+            std::string written;
+            if (clang::IdentifierInfo const* scope = attr->getScopeName())
+            {
+                written = scope->getName().str();
+                written += "::";
+            }
+            std::string spelledName;
+            if (clang::IdentifierInfo const* II = attr->getAttrName())
+            {
+                spelledName = II->getName().str();
+            }
+            else
+            {
+                spelledName = attr->getSpelling();
+            }
+            written += spelledName;
+
+            if (std::string_view const normalized = standardAttributeName(kind);
+                !normalized.empty())
+            {
+                attribute->Name = normalized;
+            }
+            else
+            {
+                attribute->Name = std::move(written);
+            }
+
+            // Render the attribute canonically and read its argument tokens.
+            // printPretty avoids the fragility of the source spelling (macros,
+            // raw strings, comments) and normalizes string literals.
+            std::string pretty;
+            {
+                llvm::raw_string_ostream os(pretty);
+                attr->printPretty(os, context_.getPrintingPolicy());
+            }
+            attribute->balancedTokens = attributeArgs(pretty, spelledName);
+            // printPretty renders an argument-less `[[deprecated]]` or
+            // `[[nodiscard]]` as `name("")`; treat a lone empty string
+            // literal as no arguments.
+            if (attribute->balancedTokens.size() == 1 &&
+                attribute->balancedTokens.front() == "\"\"")
+            {
+                attribute->balancedTokens.clear();
+            }
+
+            // Evaluated, typed arguments for the attributes that carry them.
+            if (auto const* DA = dyn_cast<clang::DeprecatedAttr>(attr))
+            {
+                attribute->asDeprecated().Message = DA->getMessage().str();
+            }
+            else if (auto const* NA = dyn_cast<clang::WarnUnusedResultAttr>(attr))
+            {
+                attribute->asNodiscard().Reason = NA->getMessage().str();
+            }
+            else if (kind == AttributeKind::Assume &&
+                     !attribute->balancedTokens.empty())
+            {
+                attribute->asAssume().Expression = attribute->balancedTokens.front();
+            }
+
+            // Suppress exact duplicates only (same kind, name, and tokens):
+            // the same attribute may appear on more than one redeclaration or
+            // on both a template and its templated declaration. A repeated
+            // attribute with different arguments is kept.
+            if (std::ranges::none_of(
+                    I.Attributes,
+                    [&](Polymorphic<Attribute> const& other)
+                    {
+                        return other == attribute;
+                    }))
+            {
+                I.Attributes.push_back(std::move(attribute));
             }
         }
+    };
+
+    collect(D);
+
+    // Attributes such as [[nodiscard]] or [[deprecated]] on a template
+    // are attached to the templated declaration, not the template itself.
+    if (auto const* TD = dyn_cast<clang::TemplateDecl>(D))
+    {
+        collect(TD->getTemplatedDecl());
     }
 }
 

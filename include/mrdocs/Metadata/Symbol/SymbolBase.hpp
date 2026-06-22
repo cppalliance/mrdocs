@@ -13,6 +13,8 @@
 #define MRDOCS_API_METADATA_SYMBOL_SYMBOLBASE_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/Metadata/Attributes.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Symbol/ExtractionMode.hpp>
@@ -89,6 +91,15 @@ struct MRDOCS_VISIBLE Symbol {
     /** The extracted documentation for this declaration.
     */
     Optional<DocComment> doc;
+
+    /** The C++ attributes attached to this declaration.
+
+        These are the attributes as written in the source,
+        e.g. `[[deprecated]]` or `[[nodiscard]]`, captured for
+        every symbol kind. See @ref Attribute for the per-attribute
+        name and arguments.
+    */
+    std::vector<Polymorphic<Attribute>> Attributes;
 
     //--------------------------------------------
 
@@ -177,7 +188,7 @@ MRDOCS_DESCRIBE_STRUCT(
     Symbol,
     (),
     (Name, Loc, Kind, id, Access,
-     Extraction, IsCopyFromInherited, Parent, doc)
+     Extraction, IsCopyFromInherited, Parent, doc, Attributes)
 )
 
 /** Map a Symbol to a dom::Object with computed extraction properties.

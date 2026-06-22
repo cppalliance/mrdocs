@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <namespaces>vpR4zjT6foxXlZ9V8mKO1WZYP60=</namespaces>
+  </namespace-tranche>
+</namespace>
+<namespace>
+  <name>legacy_ns</name>
+  <source>
+    <location>
+      <short-path>attributes.cpp</short-path>
+      <source-path>attributes.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>namespace</kind>
+  <id>vpR4zjT6foxXlZ9V8mKO1WZYP60=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <deprecated-attribute>
+    <name>deprecated</name>
+    <balanced-tokens>&quot;use modern&quot;</balanced-tokens>
+    <message>use modern</message>
+  </deprecated-attribute>
+  <namespace-tranche>
+    <functions>MGjnNpl1DGvioJk9Sr4NgYgDIAo=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>helper</name>
+  <source>
+    <location>
+      <short-path>attributes.cpp</short-path>
+      <source-path>attributes.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>5</column-number>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>MGjnNpl1DGvioJk9Sr4NgYgDIAo=</id>
+  <extraction>regular</extraction>
+  <parent>vpR4zjT6foxXlZ9V8mKO1WZYP60=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

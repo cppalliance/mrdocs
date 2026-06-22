@@ -27,5 +27,11 @@ This function does not return&period;
 
 ====
 
+=== Return Value
+
+[NOTE]
+====
+This function https://en.cppreference.com/cpp/language/attributes/noreturn[does not return^].
+====
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

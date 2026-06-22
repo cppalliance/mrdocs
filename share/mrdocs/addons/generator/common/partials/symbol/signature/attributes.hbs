@@ -1,0 +1,1 @@
+{{!-- Renders the symbol's C++ attributes as a `[[...]]` clause. Expects the symbol context (uses `attributes`). --}}{{~ str "[[" ~}}{{~#each attributes~}}{{~#unless @first}}, {{/unless~}}{{~ name ~}}{{~#if balancedTokens}}({{join ", " balancedTokens}}){{/if~}}{{~/each~}}{{~ str "]]" ~}}

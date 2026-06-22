@@ -729,10 +729,8 @@ private:
         std::vector<Polymorphic<TArg>>& result,
         clang::ASTTemplateArgumentListInfo const* args);
 
-    template <std::derived_from<Symbol> InfoTy>
-    static
     void
-    populateAttributes(InfoTy& I, clang::Decl const* D);
+    populateAttributes(Symbol& I, clang::Decl const* D);
 
     // =================================================
     // Populate function helpers

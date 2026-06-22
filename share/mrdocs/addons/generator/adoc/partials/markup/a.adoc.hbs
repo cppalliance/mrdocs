@@ -12,5 +12,5 @@
 {{~else if (starts_with href ".")~}}
     xref:{{{href}}}[{{> @partial-block }}]
 {{~else~}}
-    {{{href}}}[{{> @partial-block }}]
+    {{{href}}}[{{> @partial-block }}{{#if blank}}^{{/if}}]
 {{~/if~}}
