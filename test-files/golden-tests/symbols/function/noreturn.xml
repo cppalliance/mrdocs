@@ -55,6 +55,9 @@
   <id>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</id>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <noreturn-attribute>
+    <name>noreturn</name>
+  </noreturn-attribute>
   <named>
     <name>
       <kind>identifier</kind>
@@ -62,9 +65,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-no-return>1</is-no-return>
   <is-record-method>1</is-record-method>
-  <attributes>noreturn</attributes>
 </function>
 <function>
   <name>f2</name>
@@ -80,6 +81,9 @@
   <id>QjsWLydQujVa097RP8f2Lq3nLQ4=</id>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
+  <noreturn-attribute>
+    <name>noreturn</name>
+  </noreturn-attribute>
   <named>
     <name>
       <kind>identifier</kind>
@@ -87,9 +91,7 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-no-return>1</is-no-return>
   <is-record-method>1</is-record-method>
-  <attributes>noreturn</attributes>
 </function>
 <function>
   <name>f1</name>
@@ -105,6 +107,9 @@
   <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
+  <noreturn-attribute>
+    <name>noreturn</name>
+  </noreturn-attribute>
   <named>
     <name>
       <kind>identifier</kind>
@@ -112,7 +117,5 @@
     </name>
   </named>
   <func-class>normal</func-class>
-  <is-no-return>1</is-no-return>
-  <attributes>noreturn</attributes>
 </function>
 </mrdocs>

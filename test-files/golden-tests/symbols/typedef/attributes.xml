@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <typedefs>Nz16WgwQioPGG3IEr5zgZyHBaR4=</typedefs>
+  </namespace-tranche>
+</namespace>
+<typedef>
+  <name>extension_type</name>
+  <source>
+    <location>
+      <short-path>attributes.cpp</short-path>
+      <source-path>attributes.cpp</source-path>
+      <line-number>2</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>typedef</kind>
+  <id>Nz16WgwQioPGG3IEr5zgZyHBaR4=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <deprecated-attribute>
+    <name>deprecated</name>
+    <balanced-tokens>&quot;use extent_type&quot;</balanced-tokens>
+    <message>use extent_type</message>
+  </deprecated-attribute>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <is-using>1</is-using>
+</typedef>
+</mrdocs>

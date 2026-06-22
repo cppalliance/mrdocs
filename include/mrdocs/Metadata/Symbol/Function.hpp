@@ -73,18 +73,12 @@ struct FunctionSymbol final
     /** True when deleted as written (vs deduced).
     */
     bool IsDeletedAsWritten = false;
-    /** True when marked [[noreturn]] or equivalent.
-    */
-    bool IsNoReturn = false;
     /** True when annotated with override.
     */
     bool HasOverrideAttr = false;
     /** True when using a trailing return type.
     */
     bool HasTrailingReturn = false;
-    /** True when declared [[nodiscard]].
-    */
-    bool IsNodiscard = false;
     /** True when explicit object parameter syntax is used.
     */
     bool IsExplicitObjectMemberFunction = false;
@@ -97,9 +91,6 @@ struct FunctionSymbol final
     /** Storage class specifier.
     */
     StorageClassKind StorageClass = StorageClassKind::None;
-    /** Collected attributes attached to the declaration.
-    */
-    std::vector<std::string> Attributes;
 
     // CXXMethodDecl
     /** True when this is a non-static member function.
@@ -188,11 +179,11 @@ MRDOCS_DESCRIBE_STRUCT(
     (SymbolCommonBase<SymbolKind::Function>),
     (ReturnType, Params, Template, FuncClass, Noexcept, Requires,
      IsVariadic, IsDefaulted, IsExplicitlyDefaulted, IsDeleted,
-     IsDeletedAsWritten, IsNoReturn, HasOverrideAttr, HasTrailingReturn,
-     IsNodiscard, IsExplicitObjectMemberFunction, Constexpr,
+     IsDeletedAsWritten, HasOverrideAttr, HasTrailingReturn,
+     IsExplicitObjectMemberFunction, Constexpr,
      OverloadedOperator, StorageClass, IsRecordMethod, IsVirtual,
      IsVirtualAsWritten, IsPure, IsConst, IsVolatile, IsFinal,
-     RefQualifier, Explicit, Attributes, FunctionObjectImpl,
+     RefQualifier, Explicit, FunctionObjectImpl,
      IsListedOnPrimary, Specializations)
 )
 

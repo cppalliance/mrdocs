@@ -1,7 +1,8 @@
-{{! Return value(s) (@returns). Single returns render inline; multiples render as a list. }}
-{{#if symbol.doc.returns}}
+{{! Return value(s) (@returns) plus return-related attribute admonitions (nodiscard, noreturn). Single returns render inline; multiples render as a list. }}
+{{#if (or (size symbol.doc.returns) (contains_any (pluck symbol.attributes "kind") (arr "nodiscard" "noreturn")))}}
 {{#> markup/section name="return-value"}}
 {{#> markup/dynamic-level-h }}Return Value{{/markup/dynamic-level-h~}}
+{{#if symbol.doc.returns}}
 {{#if (eq (size symbol.doc.returns) 1)}}
 {{#> markup/p}}{{> doc/block/returns symbol.doc.returns.[0]}}{{/markup/p}}
 {{else}}
@@ -11,5 +12,7 @@
 {{/each}}
 {{/markup/ul}}
 {{/if}}
+{{/if}}
+{{> symbol/section/attribute-return-admonitions ~}}
 {{/markup/section}}
 {{/if}}

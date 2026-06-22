@@ -1,2 +1,2 @@
-enum {{#if scoped}}class {{/if}}{{>symbol/name-text .~}}
+enum {{#if scoped}}class {{/if}}{{#if attributes}}{{>symbol/signature/attributes}} {{/if}}{{>symbol/name-text .~}}
 {{#if underlyingType}} : {{>type/declarator underlyingType}}{{/if}};

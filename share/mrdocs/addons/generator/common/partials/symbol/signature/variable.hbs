@@ -1,4 +1,4 @@
-{{#if attributes}}{{ str "[[" }}{{join ", " attributes}}{{ str "]]" }}
+{{#if attributes}}{{>symbol/signature/attributes}}
 {{/if}}
 {{#if template}}{{>template/head template}}
 {{/if~}}

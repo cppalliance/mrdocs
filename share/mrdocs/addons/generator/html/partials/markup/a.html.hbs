@@ -1,5 +1,5 @@
 {{#if (eq href @root.symbol.url)~}}
     {{{> @partial-block }}}
 {{~else~}}
-    <a href="{{{relativize href}}}">{{> @partial-block }}</a>
+    <a href="{{{relativize href}}}"{{#if blank}} target="_blank" rel="noopener"{{/if}}>{{> @partial-block }}</a>
 {{~/if~}}

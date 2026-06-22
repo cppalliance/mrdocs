@@ -13,10 +13,11 @@
 //
 
 #include "XMLWriter.hpp"
-#include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Attributes.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
+#include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/EnumToString.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
 #include <string>
@@ -270,7 +271,20 @@ XMLWriter::writePolymorphic(T const& value)
             writeMembers(static_cast<Name##Type const&>(value)); \
             tags_.close(toKebabCase(#Name)); \
             break;
-        #include <mrdocs/Metadata/Type/TypeNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
+        default: MRDOCS_UNREACHABLE();
+        }
+    }
+    else if constexpr (std::is_base_of_v<::mrdocs::Attribute, T>)
+    {
+        switch (value.Kind)
+        {
+        #define INFO(Name) case ::mrdocs::AttributeKind::Name: \
+            tags_.open(toKebabCase(#Name) + "-attribute"); \
+            writeMembers(value.as##Name()); \
+            tags_.close(toKebabCase(#Name) + "-attribute"); \
+            break;
+#include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
         default: MRDOCS_UNREACHABLE();
         }
     }
@@ -283,7 +297,7 @@ XMLWriter::writePolymorphic(T const& value)
             writeMembers(static_cast<Name##TParam const&>(value)); \
             tags_.close(toKebabCase(#Name) + "-tparam"); \
             break;
-        #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
         default: MRDOCS_UNREACHABLE();
         }
     }
@@ -296,7 +310,7 @@ XMLWriter::writePolymorphic(T const& value)
             writeMembers(static_cast<Name##TArg const&>(value)); \
             tags_.close(toKebabCase(#Name) + "-targ"); \
             break;
-        #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
         default: MRDOCS_UNREACHABLE();
         }
     }
@@ -309,7 +323,7 @@ XMLWriter::writePolymorphic(T const& value)
             writeMembers(value.as##Name()); \
             tags_.close(toKebabCase(#Name)); \
             break;
-        #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
+#include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
         default: MRDOCS_UNREACHABLE();
         }
     }
@@ -322,7 +336,7 @@ XMLWriter::writePolymorphic(T const& value)
             writeMembers(value.as##Name()); \
             tags_.close(toKebabCase(#Name)); \
             break;
-        #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
+#include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
         default: MRDOCS_UNREACHABLE();
         }
     }

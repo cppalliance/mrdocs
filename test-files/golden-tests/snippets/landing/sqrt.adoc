@@ -43,6 +43,10 @@ Returns zero for zero input&period;
 
 The integer square root of `value`&period;
 
+[NOTE]
+====
+The return value https://en.cppreference.com/cpp/language/attributes/nodiscard[should not be discarded^].
+====
 === Template Parameters
 
 [cols="1,4"]

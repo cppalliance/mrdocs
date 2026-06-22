@@ -142,8 +142,56 @@ grammar
         element extraction { ExtractionMode }?,
         element is-copy-from-inherited { Bool }?,
         element parent { SymbolID }?,
-        DocComment?
+        DocComment?,
+        AnyAttribute*
     )
+
+    #---------------------------------------------
+    # Attributes (polymorphic)
+    #---------------------------------------------
+
+    AttributeBase =
+    (
+        element name { text }?,
+        element balanced-tokens { text }*
+    )
+
+    AnyAttribute =
+        OtherAttribute | NoreturnAttribute | CarriesDependencyAttribute |
+        DeprecatedAttribute | FallthroughAttribute | MaybeUnusedAttribute |
+        NodiscardAttribute | LikelyAttribute | UnlikelyAttribute |
+        NoUniqueAddressAttribute | AssumeAttribute | IndeterminateAttribute
+
+    OtherAttribute            = element other-attribute             { AttributeBase }
+    NoreturnAttribute         = element noreturn-attribute          { AttributeBase }
+    CarriesDependencyAttribute = element carries-dependency-attribute { AttributeBase }
+    FallthroughAttribute      = element fallthrough-attribute       { AttributeBase }
+    MaybeUnusedAttribute      = element maybe-unused-attribute      { AttributeBase }
+    LikelyAttribute           = element likely-attribute            { AttributeBase }
+    UnlikelyAttribute         = element unlikely-attribute          { AttributeBase }
+    NoUniqueAddressAttribute  = element no-unique-address-attribute { AttributeBase }
+    IndeterminateAttribute    = element indeterminate-attribute     { AttributeBase }
+
+    DeprecatedAttribute =
+        element deprecated-attribute
+        {
+            AttributeBase,
+            element message { text }?
+        }
+
+    NodiscardAttribute =
+        element nodiscard-attribute
+        {
+            AttributeBase,
+            element reason { text }?
+        }
+
+    AssumeAttribute =
+        element assume-attribute
+        {
+            AttributeBase,
+            element expression { text }?
+        }
 
     #---------------------------------------------
     # Types (polymorphic)
@@ -430,10 +478,8 @@ grammar
             element is-explicitly-defaulted { Bool }?,
             element is-deleted { Bool }?,
             element is-deleted-as-written { Bool }?,
-            element is-no-return { Bool }?,
             element has-override-attr { Bool }?,
             element has-trailing-return { Bool }?,
-            element is-nodiscard { Bool }?,
             element is-explicit-object-member-function { Bool }?,
             element constexpr { text }?,
             element overloaded-operator { text }?,
@@ -447,7 +493,6 @@ grammar
             element is-final { Bool }?,
             element ref-qualifier { text }?,
             element explicit { text }?,
-            element attributes { text }*,
             element function-object-impl { SymbolID }?,
             element is-listed-on-primary { Bool }?,
             element specializations { SymbolID }*
@@ -508,10 +553,6 @@ grammar
             element is-constexpr { Bool }?,
             element is-constinit { Bool }?,
             element is-thread-local { Bool }?,
-            element attributes { text }*,
-            element is-maybe-unused { Bool }?,
-            element is-deprecated { Bool }?,
-            element has-no-unique-address { Bool }?,
             element is-record-field { Bool }?,
             element is-mutable { Bool }?,
             element is-variant { Bool }?,

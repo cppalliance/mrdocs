@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Symbol/Enum.hpp>
 #include <mrdocs/Metadata/Symbol/Friend.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Metadata/Symbol/Param.hpp>
 #include <mrdocs/Metadata/Symbol/Record.hpp>
-#include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Type/NamedType.hpp>
 #include <mrdocs/Support/MergeReflectedType.hpp>
 #include <test_suite/test_suite.hpp>
@@ -327,11 +327,19 @@ struct MergeTest
 
     void test_func_attributes_dedup()
     {
+        auto makeNodiscard = []{
+            NodiscardAttribute a;
+            a.Name = "nodiscard";
+            return Polymorphic<Attribute>(a);
+        };
         auto dst = makeFunc();
-        dst.Attributes.push_back("nodiscard");
+        dst.Attributes.push_back(makeNodiscard());
         auto src = makeFunc();
-        src.Attributes.push_back("nodiscard");
-        src.Attributes.push_back("deprecated");
+        src.Attributes.push_back(makeNodiscard());
+        DeprecatedAttribute dep;
+        dep.Name = "deprecated";
+        dep.Message = "use bar";
+        src.Attributes.push_back(Polymorphic<Attribute>(dep));
 
         merge(dst, std::move(src));
         BOOST_TEST(dst.Attributes.size() == 2u);

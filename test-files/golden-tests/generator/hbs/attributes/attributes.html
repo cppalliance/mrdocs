@@ -1,0 +1,347 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+<h3>Types</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#Aligned"><code>Aligned</code></a> </td><td>An over-aligned type (a single, non-string attribute argument).</td></tr>
+<tr><td><a href="#Gadget"><code>Gadget</code></a> </td><td>A class whose members carry attributes, to exercise member-table tags.</td></tr>
+<tr><td><a href="#Gnu"><code>Gnu</code></a>  <span class="small">[deprecated]</span></td><td>A class deprecated via the GNU spelling, normalized to the standard form.</td></tr>
+<tr><td><a href="#Widget"><code>Widget</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated class.</td></tr>
+</tbody>
+</table>
+
+<h3>Type Aliases</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#extension_type"><code>extension_type</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated type alias (the motivating case from issue #1233).</td></tr>
+</tbody>
+</table>
+
+<h3>Enums</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#Color"><code>Color</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated scoped enum with a deprecated enumerator.</td></tr>
+</tbody>
+</table>
+
+<h3>Functions</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#annotated"><code>annotated</code></a> </td><td>A function carrying the same attribute twice with different arguments.</td></tr>
+<tr><td><a href="#checked"><code>checked</code></a> </td><td>A nodiscard function (an attribute with no arguments).</td></tr>
+<tr><td><a href="#compute"><code>compute</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated function with a message.</td></tr>
+<tr><td><a href="#log_message"><code>log_message</code></a> </td><td>A printf-like function (an attribute with multiple arguments).</td></tr>
+</tbody>
+</table>
+
+<h3>Variables</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#value"><code>value</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated variable.</td></tr>
+</tbody>
+</table>
+
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="extension_type">extension_type</h2>
+<div class="brief">
+<p>A deprecated type alias (the motivating case from issue #1233).</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">using extension_type [[deprecated(&quot;use extent_type&quot;)]] = int;</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use extent_type. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Aligned">Aligned</h2>
+<div class="brief">
+<p>An over-aligned type (a single, non-string attribute argument).</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">struct [[gnu::aligned(16)]] Aligned;</code></pre>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Gadget">Gadget</h2>
+<div class="brief">
+<p>A class whose members carry attributes, to exercise member-table tags.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">struct Gadget;</code></pre>
+</div><!-- /synopsis -->
+<h3>Member Functions</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#Gadget-fail"><code>fail</code></a>  <span class="small">[noreturn]</span></td><td>A member function that never returns.</td></tr>
+<tr><td><a href="#Gadget-run"><code>run</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated member function.</td></tr>
+</tbody>
+</table>
+
+<h3>Data Members</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#Gadget-field"><code>field</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated data member.</td></tr>
+</tbody>
+</table>
+
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Gadget-fail"><a href="#Gadget">Gadget</a>::fail</h2>
+<div class="brief">
+<p>A member function that never returns.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[noreturn]]
+void
+fail();</code></pre>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>This function <a href="https://en.cppreference.com/cpp/language/attributes/noreturn" target="_blank" rel="noopener">does not return</a>.</p>
+</div>
+</div></div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Gadget-run"><a href="#Gadget">Gadget</a>::run</h2>
+<div class="brief">
+<p>A deprecated member function.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use run2&quot;)]]
+void
+run();</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use run2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Gadget-field"><a href="#Gadget">Gadget</a>::field</h2>
+<div class="brief">
+<p>A deprecated data member.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated]]
+int field;</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Gnu">Gnu</h2>
+<div class="brief">
+<p>A class deprecated via the GNU spelling, normalized to the standard form.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">struct [[deprecated(&quot;use Gnu2&quot;)]] Gnu;</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use Gnu2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Widget">Widget</h2>
+<div class="brief">
+<p>A deprecated class.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">struct [[deprecated(&quot;use Widget2&quot;)]] Widget;</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use Widget2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="Color">Color</h2>
+<div class="brief">
+<p>A deprecated scoped enum with a deprecated enumerator.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">enum class [[deprecated(&quot;use Color2&quot;)]] Color : int;</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use Color2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div><h3>Members</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Red</code> </td></tr>
+<tr><td><code>Green</code>  <span class="small">[deprecated]</span></td></tr>
+<tr><td><code>Blue</code> </td></tr>
+</tbody>
+</table>
+
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="annotated">annotated</h2>
+<div class="brief">
+<p>A function carrying the same attribute twice with different arguments.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[clang::annotate(&quot;a&quot;), clang::annotate(&quot;b&quot;)]]
+void
+annotated();</code></pre>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="checked">checked</h2>
+<div class="brief">
+<p>A nodiscard function (an attribute with no arguments).</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[nodiscard]]
+int
+checked();</code></pre>
+</div><!-- /synopsis -->
+<div class="return-value">
+<h3>Return Value</h3>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>The return value <a href="https://en.cppreference.com/cpp/language/attributes/nodiscard" target="_blank" rel="noopener">should not be discarded</a>.</p>
+</div>
+</div></div><!-- /return-value -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="compute">compute</h2>
+<div class="brief">
+<p>A deprecated function with a message.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use compute2&quot;)]]
+int
+compute();</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use compute2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="log_message">log_message</h2>
+<div class="brief">
+<p>A printf-like function (an attribute with multiple arguments).</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[gnu::format(printf, 1, 2)]]
+void
+log_message(char const* fmt, ...);</code></pre>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="value">value</h2>
+<div class="brief">
+<p>A deprecated variable.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use value2&quot;)]]
+inline int value = 0;</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use value2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>

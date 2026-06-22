@@ -1,0 +1,22 @@
+{{! An admonition for each recognized standard attribute the symbol carries, linking to cppreference in passing. }}
+{{~#each symbol.attributes~}}
+{{~#if (eq kind "deprecated")~}}
+{{#> markup/admonition kind="warning"}}{{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/deprecated" blank=true}}Deprecated{{/markup/a}}{{#if message}}: {{message}}{{/if}}. Use of this entity is allowed but discouraged.{{/markup/admonition}}
+{{~else if (eq kind "maybe-unused")~}}
+{{#> markup/admonition kind="note"}}This entity {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/maybe_unused" blank=true}}may be unused{{/markup/a}}, and the compiler will not warn about it.{{/markup/admonition}}
+{{~else if (eq kind "no-unique-address")~}}
+{{#> markup/admonition kind="note"}}This member {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/no_unique_address" blank=true}}need not have an address distinct from all other non-static data members{{/markup/a}} of its class.{{/markup/admonition}}
+{{~else if (eq kind "carries-dependency")~}}
+{{#> markup/admonition kind="note"}}This {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/carries_dependency" blank=true}}carries a dependency{{/markup/a}} for release-consume ordering.{{/markup/admonition}}
+{{~else if (eq kind "fallthrough")~}}
+{{#> markup/admonition kind="note"}}The {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/fallthrough" blank=true}}fall-through{{/markup/a}} from the previous case label is intentional.{{/markup/admonition}}
+{{~else if (eq kind "likely")~}}
+{{#> markup/admonition kind="note"}}This path is {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/likely" blank=true}}more likely{{/markup/a}} to execute than the alternatives.{{/markup/admonition}}
+{{~else if (eq kind "unlikely")~}}
+{{#> markup/admonition kind="note"}}This path is {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/likely" blank=true}}less likely{{/markup/a}} to execute than the alternatives.{{/markup/admonition}}
+{{~else if (eq kind "assume")~}}
+{{#> markup/admonition kind="note"}}The expression{{#if expression}} `{{expression}}`{{/if}} is {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/assume" blank=true}}assumed{{/markup/a}} to always hold at this point.{{/markup/admonition}}
+{{~else if (eq kind "indeterminate")~}}
+{{#> markup/admonition kind="note"}}If it is not initialized, this object has an {{#> markup/a href="https://en.cppreference.com/cpp/language/attributes/indeterminate" blank=true}}indeterminate value{{/markup/a}}.{{/markup/admonition}}
+{{~/if~}}
+{{~/each~}}

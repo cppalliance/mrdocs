@@ -1,0 +1,357 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Aligned[`Aligned`] 
+| An over&hyphen;aligned type (a single, non&hyphen;string attribute argument)&period;
+| link:#Gadget[`Gadget`] 
+| A class whose members carry attributes, to exercise member&hyphen;table tags&period;
+| link:#Gnu[`Gnu`]  [.small]#[deprecated]#
+| A class deprecated via the GNU spelling, normalized to the standard form&period;
+| link:#Widget[`Widget`]  [.small]#[deprecated]#
+| A deprecated class&period;
+|===
+
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#extension_type[`extension&lowbar;type`]  [.small]#[deprecated]#
+| A deprecated type alias (the motivating case from issue &num;1233)&period;
+|===
+
+
+=== Enums
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Color[`Color`]  [.small]#[deprecated]#
+| A deprecated scoped enum with a deprecated enumerator&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#annotated[`annotated`] 
+| A function carrying the same attribute twice with different arguments&period;
+| link:#checked[`checked`] 
+| A nodiscard function (an attribute with no arguments)&period;
+| link:#compute[`compute`]  [.small]#[deprecated]#
+| A deprecated function with a message&period;
+| link:#log_message[`log&lowbar;message`] 
+| A printf&hyphen;like function (an attribute with multiple arguments)&period;
+|===
+
+
+=== Variables
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#value[`value`]  [.small]#[deprecated]#
+| A deprecated variable&period;
+|===
+
+
+[#extension_type]
+== extension&lowbar;type
+
+A deprecated type alias (the motivating case from issue &num;1233)&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using extension&lowbar;type &lsqb;&lsqb;deprecated(&quot;use extent&lowbar;type&quot;)&rsqb;&rsqb; = int;
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use extent&lowbar;type. Use of this entity is allowed but discouraged.
+====
+[#Aligned]
+== Aligned
+
+An over&hyphen;aligned type (a single, non&hyphen;string attribute argument)&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct &lsqb;&lsqb;gnu&colon;&colon;aligned(16)&rsqb;&rsqb; Aligned;
+----
+
+[#Gadget]
+== Gadget
+
+A class whose members carry attributes, to exercise member&hyphen;table tags&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Gadget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Gadget-fail[`fail`]  [.small]#[noreturn]#
+| A member function that never returns&period;
+| link:#Gadget-run[`run`]  [.small]#[deprecated]#
+| A deprecated member function&period;
+|===
+
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Gadget-field[`field`]  [.small]#[deprecated]#
+| A deprecated data member&period;
+|===
+
+
+[#Gadget-fail]
+== link:#Gadget[Gadget]::fail
+
+A member function that never returns&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;noreturn&rsqb;&rsqb;
+void
+fail();
+----
+
+=== Return Value
+
+[NOTE]
+====
+This function https://en.cppreference.com/cpp/language/attributes/noreturn[does not return^].
+====
+[#Gadget-run]
+== link:#Gadget[Gadget]::run
+
+A deprecated member function&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use run2&quot;)&rsqb;&rsqb;
+void
+run();
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use run2. Use of this entity is allowed but discouraged.
+====
+[#Gadget-field]
+== link:#Gadget[Gadget]::field
+
+A deprecated data member&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated&rsqb;&rsqb;
+int field;
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]. Use of this entity is allowed but discouraged.
+====
+[#Gnu]
+== Gnu
+
+A class deprecated via the GNU spelling, normalized to the standard form&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct &lsqb;&lsqb;deprecated(&quot;use Gnu2&quot;)&rsqb;&rsqb; Gnu;
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use Gnu2. Use of this entity is allowed but discouraged.
+====
+[#Widget]
+== Widget
+
+A deprecated class&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct &lsqb;&lsqb;deprecated(&quot;use Widget2&quot;)&rsqb;&rsqb; Widget;
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use Widget2. Use of this entity is allowed but discouraged.
+====
+[#Color]
+== Color
+
+A deprecated scoped enum with a deprecated enumerator&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum class &lsqb;&lsqb;deprecated(&quot;use Color2&quot;)&rsqb;&rsqb; Color : int;
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use Color2. Use of this entity is allowed but discouraged.
+====
+=== Members
+
+[cols="1"]
+|===
+| Name
+| `Red` 
+| `Green`  [.small]#[deprecated]#
+| `Blue` 
+|===
+
+
+[#annotated]
+== annotated
+
+A function carrying the same attribute twice with different arguments&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;clang&colon;&colon;annotate(&quot;a&quot;), clang&colon;&colon;annotate(&quot;b&quot;)&rsqb;&rsqb;
+void
+annotated();
+----
+
+[#checked]
+== checked
+
+A nodiscard function (an attribute with no arguments)&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;nodiscard&rsqb;&rsqb;
+int
+checked();
+----
+
+=== Return Value
+
+[NOTE]
+====
+The return value https://en.cppreference.com/cpp/language/attributes/nodiscard[should not be discarded^].
+====
+[#compute]
+== compute
+
+A deprecated function with a message&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use compute2&quot;)&rsqb;&rsqb;
+int
+compute();
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use compute2. Use of this entity is allowed but discouraged.
+====
+[#log_message]
+== log&lowbar;message
+
+A printf&hyphen;like function (an attribute with multiple arguments)&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;gnu&colon;&colon;format(printf, 1, 2)&rsqb;&rsqb;
+void
+log&lowbar;message(char const* fmt, &period;&period;&period;);
+----
+
+[#value]
+== value
+
+A deprecated variable&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use value2&quot;)&rsqb;&rsqb;
+inline int value = 0;
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use value2. Use of this entity is allowed but discouraged.
+====
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

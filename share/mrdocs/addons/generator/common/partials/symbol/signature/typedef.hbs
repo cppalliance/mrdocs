@@ -1,7 +1,7 @@
 {{#if isUsing~}}
     {{#if template}}{{>template/head template}}
     {{/if~}}
-    using {{name}} = {{>type/declarator type}}
+    using {{name}} {{#if attributes}}{{>symbol/signature/attributes}} {{/if}}= {{>type/declarator type}}
 {{~else~}}
     typedef {{>type/declarator type decl-name=name}}
 {{~/if}};
