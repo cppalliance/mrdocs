@@ -102,6 +102,9 @@ inline constexpr DomDescription kDomDescriptions[] = {
     {"Symbol", "loc",
      "Source location information for the symbol's declaration "
      "and definition."},
+    {"Symbol", "attributes",
+     "C++ attributes attached to the declaration, in source "
+     "order."},
 
     // ----- Symbol synthesized fields -------------------------------
     {"Symbol", "class",
@@ -190,13 +193,18 @@ inline constexpr DomDescription kDomDescriptions[] = {
     {"FunctionSymbol", "explicit",
      "Rendered `explicit` specifier (with optional condition) "
      "for constructors and conversion functions."},
-    {"FunctionSymbol", "attributes",
-     "Attributes attached to the declaration."},
     {"FunctionSymbol", "functionObjectImpl",
      "Identifier of the function object this function is the "
      "call-operator implementation of, when the "
      "`auto-function-objects` feature recognized it as such; "
      "empty otherwise."},
+    {"FunctionSymbol", "isListedOnPrimary",
+     "True when this is a function-template specialization "
+     "rendered under its primary template and suppressed from "
+     "the parent scope's listing."},
+    {"FunctionSymbol", "specializations",
+     "Identifiers of the function-template specializations whose "
+     "primary is this function template."},
 
     // ----- RecordSymbol --------------------------------------------
     {"RecordSymbol", "",
@@ -224,6 +232,16 @@ inline constexpr DomDescription kDomDescriptions[] = {
      "appear in the corpus."},
     {"RecordSymbol", "friends",
      "List of friend declarations attached to the record."},
+    {"RecordSymbol", "isListedOnPrimary",
+     "True when this is a record-template specialization "
+     "rendered under its primary template and suppressed from "
+     "the parent scope's listing."},
+    {"RecordSymbol", "specializations",
+     "Identifiers of the record-template specializations whose "
+     "primary is this record template."},
+    {"RecordSymbol", "deductionGuides",
+     "Identifiers of the deduction guides for this record "
+     "template."},
 
     // ----- NamespaceSymbol -----------------------------------------
     {"NamespaceSymbol", "",
@@ -889,6 +907,55 @@ inline constexpr DomDescription kDomDescriptions[] = {
      "inline container."},
     {"TextInline", "literal",
      "Verbatim text content."},
+
+    // ----- Attribute (base) ----------------------------------------
+    {"Attribute", "",
+     "A C++ attribute attached to a symbol. The concrete kinds "
+     "(`deprecated`, `nodiscard`, ...) extend this with their "
+     "evaluated arguments."},
+    {"Attribute", "kind",
+     "The attribute kind as a string (e.g. `\"deprecated\"`, "
+     "`\"no-unique-address\"`)."},
+    {"Attribute", "name",
+     "The attribute name in its normalized standard spelling "
+     "(e.g. `deprecated`); for the `other` kind, the spelling as "
+     "written, including any scope (e.g. `gnu::custom`)."},
+    {"Attribute", "balancedTokens",
+     "The attribute arguments as a balanced-token sequence; "
+     "empty for attributes that take no arguments."},
+
+    // ----- Attribute kinds -----------------------------------------
+    {"OtherAttribute", "",
+     "An attribute mrdocs does not recognize specially; `name` "
+     "holds the spelling as written."},
+    {"NoreturnAttribute", "",
+     "The `[[noreturn]]` attribute."},
+    {"CarriesDependencyAttribute", "",
+     "The `[[carries_dependency]]` attribute."},
+    {"DeprecatedAttribute", "",
+     "The `[[deprecated]]` attribute."},
+    {"DeprecatedAttribute", "message",
+     "The optional deprecation message."},
+    {"FallthroughAttribute", "",
+     "The `[[fallthrough]]` attribute."},
+    {"MaybeUnusedAttribute", "",
+     "The `[[maybe_unused]]` attribute."},
+    {"NodiscardAttribute", "",
+     "The `[[nodiscard]]` attribute."},
+    {"NodiscardAttribute", "reason",
+     "The optional reason the result must not be discarded."},
+    {"LikelyAttribute", "",
+     "The `[[likely]]` attribute."},
+    {"UnlikelyAttribute", "",
+     "The `[[unlikely]]` attribute."},
+    {"NoUniqueAddressAttribute", "",
+     "The `[[no_unique_address]]` attribute."},
+    {"AssumeAttribute", "",
+     "The `[[assume]]` attribute."},
+    {"AssumeAttribute", "expression",
+     "The assumed expression, as written."},
+    {"IndeterminateAttribute", "",
+     "The `[[indeterminate]]` attribute."},
 };
 
 } // namespace detail

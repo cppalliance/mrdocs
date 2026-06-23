@@ -443,6 +443,21 @@ polymorphicSchema<doc::Inline>()
     return makePolymorphicSchema<doc::Inline>(std::move(oneOf));
 }
 
+/** Specialization for the `Attribute` family (Noreturn, Deprecated,
+    Nodiscard, ...).
+
+    @return `{ "oneOf": [ $ref for each AttributeKind ] }`.
+*/
+template <>
+inline dom::Object
+polymorphicSchema<Attribute>()
+{
+    dom::Array oneOf;
+    #define INFO(X) oneOf.push_back(refSchema<X##Attribute>());
+    #include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
+    return makePolymorphicSchema<Attribute>(std::move(oneOf));
+}
+
 //------------------------------------------------
 // Register all type definitions
 //------------------------------------------------
@@ -490,6 +505,10 @@ registerAllDefs(dom::Object& defs)
     #define INFO(X) registerDef<doc::X##Inline>(defs);
     #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 
+    // Attribute variants
+    #define INFO(X) registerDef<X##Attribute>(defs);
+    #include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
+
     // Polymorphic union types
     defs.set("Type", polymorphicSchema<Type>());
     defs.set("Name", polymorphicSchema<Name>());
@@ -497,6 +516,7 @@ registerAllDefs(dom::Object& defs)
     defs.set("TArg", polymorphicSchema<TArg>());
     defs.set("Block", polymorphicSchema<doc::Block>());
     defs.set("Inline", polymorphicSchema<doc::Inline>());
+    defs.set("Attribute", polymorphicSchema<Attribute>());
 
     // Supporting types
     registerDef<Location>(defs);

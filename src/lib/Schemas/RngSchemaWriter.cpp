@@ -234,6 +234,7 @@ std::string refName()
         else if constexpr (std::is_same_v<V, mrdocs::TArg>) return "AnyTArg";
         else if constexpr (std::is_same_v<V, doc::Block>) return "BlockNode";
         else if constexpr (std::is_same_v<V, doc::Inline>) return "InlineNode";
+        else if constexpr (std::is_same_v<V, mrdocs::Attribute>) return "AnyAttribute";
         else return "text";
     }
     else if constexpr (describe::has_describe_members<Type>::value)
@@ -505,6 +506,7 @@ private:
     void emitNames();
     void emitTParams();
     void emitTArgs();
+    void emitAttributes();
     void emitSupportingTypes();
     void emitSymbols();
     void emitDocComment();
@@ -688,6 +690,19 @@ emitTArgs()
 
 void
 RngEmitter::
+emitAttributes()
+{
+    #define INFO(X) defineElement<X##Attribute>();
+    #include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
+
+    defineChoice("AnyAttribute", [&] {
+        #define INFO(X) emitRef(patternName<X##Attribute>());
+        #include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
+    });
+}
+
+void
+RngEmitter::
 emitSupportingTypes()
 {
     defineElement<TemplateInfo>();
@@ -768,6 +783,7 @@ build()
     emitNames();
     emitTParams();
     emitTArgs();
+    emitAttributes();
     emitSupportingTypes();
     emitSymbols();
     emitDocComment();
