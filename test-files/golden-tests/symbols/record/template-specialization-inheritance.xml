@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -37,11 +37,15 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>z/QEAP16LEoD3NlABxA6BOFpYpA=</id>
       <identifier>S0</identifier>
-    </name>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>4</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -60,16 +64,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>fzQKX2ygXfWjrcDi23o2CnGMkaY=</id>
       <identifier>S1</identifier>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>z/QEAP16LEoD3NlABxA6BOFpYpA=</id>
         <identifier>S0</identifier>
-      </name>
-    </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>5</value>
+        </constant-targ>
+      </specialization-name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -88,11 +96,15 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>flxREiXFL5ObY0xUAxojj+jvR54=</id>
       <identifier>S0</identifier>
-    </name>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>6</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -113,12 +125,17 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>z/QEAP16LEoD3NlABxA6BOFpYpA=</id>
         <identifier>S0</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>1</value>
+        </constant-targ>
+      </specialization-name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -142,6 +159,7 @@
   </source>
   <kind>record</kind>
   <id>2CQyWIWOAM25oQ1AdJcdT6hFqAE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>z/QEAP16LEoD3NlABxA6BOFpYpA=</parent>
   <key-kind>struct</key-kind>
@@ -171,17 +189,22 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>yY+X2/Fqu8ENz37/HFEJCBOSfVg=</id>
         <identifier>S1</identifier>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>z/QEAP16LEoD3NlABxA6BOFpYpA=</id>
           <identifier>S0</identifier>
-        </name>
-      </name>
+          <constant-targ>
+            <kind>constant</kind>
+            <value>2</value>
+          </constant-targ>
+        </specialization-name>
+      </identifier-name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -209,12 +232,17 @@
   <key-kind>struct</key-kind>
   <base>
     <named>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>c7NNZfjOZ8Ztuw0u26xL/h7UKvA=</id>
         <identifier>S0</identifier>
-      </name>
+        <constant-targ>
+          <kind>constant</kind>
+          <value>3</value>
+        </constant-targ>
+      </specialization-name>
     </named>
+    <access>public</access>
   </base>
   <record-interface>
     <record-tranche>
@@ -245,10 +273,10 @@
       <kind>constant</kind>
       <name>I</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
     <type-tparam>
@@ -257,10 +285,10 @@
       <type-targ>
         <kind>type</kind>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>void</identifier>
-          </name>
+          </identifier-name>
         </named>
       </type-targ>
       <key-kind>typename</key-kind>
@@ -293,6 +321,7 @@
   </source>
   <kind>record</kind>
   <id>2CQyWIWOAM25oQ1AdJcdT6hFqAE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>z/QEAP16LEoD3NlABxA6BOFpYpA=</parent>
   <key-kind>struct</key-kind>
@@ -350,6 +379,7 @@
   </source>
   <kind>record</kind>
   <id>yY+X2/Fqu8ENz37/HFEJCBOSfVg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>nJGs54s6oYf7fHzIpo0tyaCSH9M=</parent>
   <key-kind>struct</key-kind>
@@ -441,6 +471,7 @@
   </source>
   <kind>record</kind>
   <id>fzQKX2ygXfWjrcDi23o2CnGMkaY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>6Syw3aWFS3pfPUbWU7C8uCE7Jjc=</parent>
   <key-kind>struct</key-kind>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -8,7 +8,7 @@
   <id>//////////////////////////8=</id>
   <extraction>regular</extraction>
   <namespace-tranche>
-    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
+    <functions>GDxqxKc4bkmO2HKXdEn9Zgy37O8=</functions>
   </namespace-tranche>
 </namespace>
 <overloads>
@@ -22,17 +22,17 @@
     </location>
   </source>
   <kind>overloads</kind>
-  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <id>GDxqxKc4bkmO2HKXdEn9Zgy37O8=</id>
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <func-class>normal</func-class>
   <members>PmhXjCXUJYVnj/a7NhfjjSesyp0=</members>
   <members>ytuvwgqk+lakIfCF209MYkKEp4k=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -50,10 +50,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -80,19 +80,19 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>PmhXjCXUJYVnj/a7NhfjjSesyp0=</primary>

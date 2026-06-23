@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -49,10 +49,10 @@
   <extraction>regular</extraction>
   <parent>vpR4zjT6foxXlZ9V8mKO1WZYP60=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

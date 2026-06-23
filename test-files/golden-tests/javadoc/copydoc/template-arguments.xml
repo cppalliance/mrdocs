@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -67,11 +67,20 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>n2ekv7/9IraylJIibujZeExrML4=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>int</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -101,11 +110,24 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>int</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>2</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -143,11 +165,24 @@
     </t-param>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
       <identifier>B</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>I</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -160,10 +195,10 @@
       <kind>constant</kind>
       <name>I</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -194,11 +229,25 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
       <identifier>C</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
+            <identifier>D</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>true</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -228,11 +277,24 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
       <identifier>C</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>int</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>true</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -270,11 +332,24 @@
     </t-param>
   </doc-comment>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
       <identifier>C</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>T</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>B</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -287,10 +362,10 @@
       <kind>constant</kind>
       <name>B</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -349,10 +424,10 @@
         <value>0</value>
       </constant-targ>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -396,10 +471,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>jJtr0x+P2kzEfxAlp7Hjo5akJho=</primary>
@@ -443,10 +518,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <constant-targ>
@@ -519,10 +594,10 @@
         <value>false</value>
       </constant-targ>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -566,11 +641,11 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
           <identifier>D</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <constant-targ>
@@ -618,10 +693,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <constant-targ>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -55,16 +55,17 @@
   </source>
   <kind>overloads</kind>
   <id>AvAESYZFVvK3PiO4+x9D9ee81UQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <func-class>normal</func-class>
   <members>fycIFVnUjGsczEihLemEC7pcV4w=</members>
   <members>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</members>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
 </overloads>
 <function>
@@ -79,13 +80,14 @@
   </source>
   <kind>function</kind>
   <id>fycIFVnUjGsczEihLemEC7pcV4w=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-tparam>
@@ -110,22 +112,23 @@
   </source>
   <kind>function</kind>
   <id>TneA5Ayz4v/9oOUbbnRL1ybm8VM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <template>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>fycIFVnUjGsczEihLemEC7pcV4w=</primary>

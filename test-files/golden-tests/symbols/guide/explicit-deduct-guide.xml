@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -34,10 +34,10 @@
     <constant-tparam>
       <kind>constant</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -69,20 +69,25 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
-    </name>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>0</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>bool</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
+  <explicit>explicit</explicit>
 </guide>
 <guide>
   <name>X</name>
@@ -99,20 +104,25 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
-    </name>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>0</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>char</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
+  <explicit>explicit(true)</explicit>
 </guide>
 <guide>
   <name>X</name>
@@ -129,20 +139,25 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
-    </name>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>0</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>int</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
+  <explicit>explicit(false)</explicit>
 </guide>
 <guide>
   <name>X</name>
@@ -159,11 +174,15 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>7wllQWhGGsbbeoZVa3gh4d7bcq8=</id>
       <identifier>X</identifier>
-    </name>
+      <constant-targ>
+        <kind>constant</kind>
+        <value>0</value>
+      </constant-targ>
+    </specialization-name>
   </named>
   <template>
     <constant-tparam>
@@ -174,20 +193,21 @@
         <value>true</value>
       </constant-targ>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>long</identifier>
-      </name>
+      </identifier-name>
     </named>
   </param>
+  <explicit>explicit(B)</explicit>
 </guide>
 </mrdocs>

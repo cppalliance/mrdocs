@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -29,11 +29,20 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</id>
       <identifier>S0</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>void</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -52,31 +61,58 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</id>
       <identifier>M2</identifier>
-      <name>
+      <specialization-name>
         <kind>specialization</kind>
         <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
         <identifier>M3</identifier>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
           <identifier>M3</identifier>
-          <name>
+          <specialization-name>
             <kind>specialization</kind>
             <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
             <identifier>S2</identifier>
-            <name>
+            <identifier-name>
               <kind>identifier</kind>
               <id>1Z8U4eFyt2XClP+7afzwsuyeXAI=</id>
               <identifier>A5</identifier>
-            </name>
-          </name>
-        </name>
-      </name>
-    </name>
+            </identifier-name>
+            <type-targ>
+              <kind>type</kind>
+              <named>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>char</identifier>
+                </identifier-name>
+              </named>
+            </type-targ>
+          </specialization-name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
+        <type-targ>
+          <kind>type</kind>
+          <named>
+            <identifier-name>
+              <kind>identifier</kind>
+              <identifier>unsigned int</identifier>
+            </identifier-name>
+          </named>
+        </type-targ>
+      </specialization-name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -125,6 +161,7 @@
   </source>
   <kind>record</kind>
   <id>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</parent>
   <key-kind>struct</key-kind>
@@ -159,13 +196,14 @@
   </source>
   <kind>typedef</kind>
   <id>NnkA706kKqg/azveB/lExZwRfFI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>U</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -181,14 +219,24 @@
   </source>
   <kind>typedef</kind>
   <id>TBl15ml95lYP4APzAuH1VpGgjgs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</id>
       <identifier>S2</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>U</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -218,10 +266,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>P9+etXi0Ae+VNs1u8rYrHIbi6qE=</primary>
@@ -250,6 +298,7 @@
   </source>
   <kind>record</kind>
   <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
   <key-kind>struct</key-kind>
@@ -281,6 +330,7 @@
   </source>
   <kind>record</kind>
   <id>LQDMND21bNwDyy/hE3qQoQzFLXY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=</parent>
   <key-kind>struct</key-kind>
@@ -288,10 +338,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>char</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>gxI8lOzHEX5mX3u/0hCHnvUY1OM=</primary>
@@ -320,13 +370,14 @@
   </source>
   <kind>typedef</kind>
   <id>KI+cz9NSHQSZN2PnUoAaBtILqNQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>LQDMND21bNwDyy/hE3qQoQzFLXY=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>char</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -342,14 +393,24 @@
   </source>
   <kind>typedef</kind>
   <id>xu84aTnEsoVB4EugJR5m2weQzUE=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>LQDMND21bNwDyy/hE3qQoQzFLXY=</parent>
   <named>
-    <name>
+    <specialization-name>
       <kind>specialization</kind>
       <id>3bDJlUJg+Wg63OKbCChN7xs/THg=</id>
       <identifier>S2</identifier>
-    </name>
+      <type-targ>
+        <kind>type</kind>
+        <named>
+          <identifier-name>
+            <kind>identifier</kind>
+            <identifier>char</identifier>
+          </identifier-name>
+        </named>
+      </type-targ>
+    </specialization-name>
   </named>
   <is-using>1</is-using>
   <template>

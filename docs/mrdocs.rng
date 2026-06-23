@@ -746,6 +746,205 @@
       <ref name="TemplateTArg"/>
     </choice>
   </define>
+  <define name="OtherAttribute">
+    <element name="other-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="NoreturnAttribute">
+    <element name="noreturn-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="CarriesDependencyAttribute">
+    <element name="carries-dependency-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="DeprecatedAttribute">
+    <element name="deprecated-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+      <optional>
+        <element name="message">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="FallthroughAttribute">
+    <element name="fallthrough-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="MaybeUnusedAttribute">
+    <element name="maybe-unused-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="NodiscardAttribute">
+    <element name="nodiscard-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+      <optional>
+        <element name="reason">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="LikelyAttribute">
+    <element name="likely-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="UnlikelyAttribute">
+    <element name="unlikely-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="NoUniqueAddressAttribute">
+    <element name="no-unique-address-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="AssumeAttribute">
+    <element name="assume-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+      <optional>
+        <element name="expression">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="IndeterminateAttribute">
+    <element name="indeterminate-attribute">
+      <optional>
+        <element name="name">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="balanced-tokens">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="AnyAttribute">
+    <choice>
+      <ref name="OtherAttribute"/>
+      <ref name="NoreturnAttribute"/>
+      <ref name="CarriesDependencyAttribute"/>
+      <ref name="DeprecatedAttribute"/>
+      <ref name="FallthroughAttribute"/>
+      <ref name="MaybeUnusedAttribute"/>
+      <ref name="NodiscardAttribute"/>
+      <ref name="LikelyAttribute"/>
+      <ref name="UnlikelyAttribute"/>
+      <ref name="NoUniqueAddressAttribute"/>
+      <ref name="AssumeAttribute"/>
+      <ref name="IndeterminateAttribute"/>
+    </choice>
+  </define>
   <define name="TemplateInfo">
     <element name="template">
       <zeroOrMore>
@@ -1085,6 +1284,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <element name="is-inline">
           <ref name="Bool"/>
@@ -1146,6 +1348,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <element name="key-kind">
           <ref name="RecordKeyKind"/>
@@ -1182,6 +1387,21 @@
       </optional>
       <zeroOrMore>
         <ref name="FriendInfo"/>
+      </zeroOrMore>
+      <optional>
+        <element name="is-listed-on-primary">
+          <ref name="Bool"/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="specializations">
+          <ref name="SymbolID"/>
+        </element>
+      </zeroOrMore>
+      <zeroOrMore>
+        <element name="deduction-guides">
+          <ref name="SymbolID"/>
+        </element>
       </zeroOrMore>
     </element>
   </define>
@@ -1228,6 +1448,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <ref name="AnyType"/>
       </optional>
@@ -1278,22 +1501,12 @@
         </element>
       </optional>
       <optional>
-        <element name="is-no-return">
-          <ref name="Bool"/>
-        </element>
-      </optional>
-      <optional>
         <element name="has-override-attr">
           <ref name="Bool"/>
         </element>
       </optional>
       <optional>
         <element name="has-trailing-return">
-          <ref name="Bool"/>
-        </element>
-      </optional>
-      <optional>
-        <element name="is-nodiscard">
           <ref name="Bool"/>
         </element>
       </optional>
@@ -1352,16 +1565,21 @@
           <text/>
         </element>
       </optional>
-      <zeroOrMore>
-        <element name="attributes">
-          <text/>
-        </element>
-      </zeroOrMore>
       <optional>
         <element name="function-object-impl">
           <ref name="SymbolID"/>
         </element>
       </optional>
+      <optional>
+        <element name="is-listed-on-primary">
+          <ref name="Bool"/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="specializations">
+          <ref name="SymbolID"/>
+        </element>
+      </zeroOrMore>
     </element>
   </define>
   <define name="OverloadsSymbol">
@@ -1407,6 +1625,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <element name="func-class">
           <ref name="FunctionClass"/>
@@ -1465,6 +1686,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <element name="scoped">
           <ref name="Bool"/>
@@ -1523,6 +1747,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <element name="initializer">
           <text/>
@@ -1573,6 +1800,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <ref name="AnyType"/>
       </optional>
@@ -1629,6 +1859,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <ref name="AnyType"/>
       </optional>
@@ -1662,26 +1895,6 @@
       </optional>
       <optional>
         <element name="is-thread-local">
-          <ref name="Bool"/>
-        </element>
-      </optional>
-      <zeroOrMore>
-        <element name="attributes">
-          <text/>
-        </element>
-      </zeroOrMore>
-      <optional>
-        <element name="is-maybe-unused">
-          <ref name="Bool"/>
-        </element>
-      </optional>
-      <optional>
-        <element name="is-deprecated">
-          <ref name="Bool"/>
-        </element>
-      </optional>
-      <optional>
-        <element name="has-no-unique-address">
           <ref name="Bool"/>
         </element>
       </optional>
@@ -1755,6 +1968,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <ref name="AnyType"/>
       </optional>
@@ -1814,6 +2030,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <ref name="IdentifierName"/>
       </optional>
@@ -1862,6 +2081,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <element name="class">
           <ref name="UsingClass"/>
@@ -1920,6 +2142,9 @@
       <optional>
         <ref name="DocComment"/>
       </optional>
+      <zeroOrMore>
+        <ref name="AnyAttribute"/>
+      </zeroOrMore>
       <optional>
         <ref name="TemplateInfo"/>
       </optional>

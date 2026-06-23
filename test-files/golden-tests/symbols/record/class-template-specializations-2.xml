@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -67,10 +67,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>double</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
@@ -100,6 +100,7 @@
   </source>
   <kind>record</kind>
   <id>t1k8CaeFknlnAWQfa52he803Mcw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>bcCFiKKGBMnWrAf/IBu1R/sC07s=</parent>
   <key-kind>struct</key-kind>
@@ -135,6 +136,7 @@
   </source>
   <kind>record</kind>
   <id>GhbkOB/0KLVvGJAl1Q3aM43ZocQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>t1k8CaeFknlnAWQfa52he803Mcw=</parent>
   <key-kind>struct</key-kind>
@@ -168,6 +170,7 @@
   </source>
   <kind>record</kind>
   <id>TpBRSCUm33PjLoWxW50FZsR1GSM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>t1k8CaeFknlnAWQfa52he803Mcw=</parent>
   <key-kind>struct</key-kind>
@@ -181,10 +184,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -213,6 +216,7 @@
   </source>
   <kind>record</kind>
   <id>lKNoRiq1oi0XgdyuRlHKmVsSkus=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>TpBRSCUm33PjLoWxW50FZsR1GSM=</parent>
   <key-kind>struct</key-kind>
@@ -237,6 +241,7 @@
   </source>
   <kind>record</kind>
   <id>RdjbfZA0y514GFSR1pCAjUyfq24=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>bcCFiKKGBMnWrAf/IBu1R/sC07s=</parent>
   <key-kind>struct</key-kind>
@@ -244,10 +249,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>float</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>t1k8CaeFknlnAWQfa52he803Mcw=</primary>
@@ -276,6 +281,7 @@
   </source>
   <kind>record</kind>
   <id>ZbjwxkmALgjx71k6/JAk0jbwrlo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>RdjbfZA0y514GFSR1pCAjUyfq24=</parent>
   <key-kind>struct</key-kind>
@@ -308,6 +314,7 @@
   </source>
   <kind>record</kind>
   <id>zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>RdjbfZA0y514GFSR1pCAjUyfq24=</parent>
   <key-kind>struct</key-kind>
@@ -321,10 +328,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -352,6 +359,7 @@
   </source>
   <kind>record</kind>
   <id>flW1A8++hJYAIoinZHMJ/EargvI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>bcCFiKKGBMnWrAf/IBu1R/sC07s=</parent>
   <key-kind>struct</key-kind>
@@ -359,10 +367,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>short</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>t1k8CaeFknlnAWQfa52he803Mcw=</primary>
@@ -391,6 +399,7 @@
   </source>
   <kind>record</kind>
   <id>dJDN8VcF38oFGTOC/XblQpYtzWU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>flW1A8++hJYAIoinZHMJ/EargvI=</parent>
   <key-kind>struct</key-kind>
@@ -422,6 +431,7 @@
   </source>
   <kind>record</kind>
   <id>HzSR9lAhcaSZke6x6ggUIqnawQw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>flW1A8++hJYAIoinZHMJ/EargvI=</parent>
   <key-kind>struct</key-kind>
@@ -430,10 +440,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>int</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -468,6 +478,7 @@
   </source>
   <kind>record</kind>
   <id>UkRYUyzSKKaCbVo7DS8mUuPk5Qs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>HzSR9lAhcaSZke6x6ggUIqnawQw=</parent>
   <key-kind>struct</key-kind>
@@ -500,10 +511,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>long</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -534,6 +545,7 @@
   </source>
   <kind>record</kind>
   <id>aLeAk47i8rqZcwQtgQM7NQUE9Oo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>K6BawvzqAtXZLU2Hm0qPq6aGiS8=</parent>
   <key-kind>struct</key-kind>
@@ -565,6 +577,7 @@
   </source>
   <kind>record</kind>
   <id>3isZeaf80hT1/O3yko6EPBPmq8s=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>K6BawvzqAtXZLU2Hm0qPq6aGiS8=</parent>
   <key-kind>struct</key-kind>
@@ -572,10 +585,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=</primary>
@@ -602,6 +615,7 @@
   </source>
   <kind>record</kind>
   <id>WeO5ITJRmNS4Q90O2A5hmw/KZc8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>K6BawvzqAtXZLU2Hm0qPq6aGiS8=</parent>
   <key-kind>struct</key-kind>
@@ -610,10 +624,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>int</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -648,6 +662,7 @@
   </source>
   <kind>record</kind>
   <id>W4yrcTF+RN1qGXUi97b5Tcm2v60=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>WeO5ITJRmNS4Q90O2A5hmw/KZc8=</parent>
   <key-kind>struct</key-kind>
@@ -685,10 +700,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -719,6 +734,7 @@
   </source>
   <kind>record</kind>
   <id>XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>Nkvb8FA0/0YIpaybicEkWLwFOPo=</parent>
   <key-kind>struct</key-kind>
@@ -754,6 +770,7 @@
   </source>
   <kind>record</kind>
   <id>vuv6bo9spUYsHZ3uwTm6i6UxSNI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>Nkvb8FA0/0YIpaybicEkWLwFOPo=</parent>
   <key-kind>struct</key-kind>
@@ -761,10 +778,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=</primary>
@@ -791,6 +808,7 @@
   </source>
   <kind>record</kind>
   <id>HP4W/UatJ6BMg+LZKC5cQM4kCzw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>Nkvb8FA0/0YIpaybicEkWLwFOPo=</parent>
   <key-kind>struct</key-kind>
@@ -804,10 +822,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>U</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -836,6 +854,7 @@
   </source>
   <kind>record</kind>
   <id>qgS1WVyttKFsoadDE/OO4QyodlM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>HP4W/UatJ6BMg+LZKC5cQM4kCzw=</parent>
   <key-kind>struct</key-kind>

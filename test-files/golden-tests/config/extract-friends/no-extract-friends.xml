@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -88,11 +88,11 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>PJd7qch01fTpaC83fxeMwg+clc0=</primary>
@@ -120,28 +120,30 @@
   </source>
   <kind>function</kind>
   <id>oizNQDy8La+BwcGOBpMPC63TA5U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>unsigned long long</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <l-value-reference>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
           <identifier>A</identifier>
-        </name>
+        </identifier-name>
       </named>
     </l-value-reference>
     <name>rhs</name>
   </param>
   <func-class>normal</func-class>
+  <noexcept>noexcept</noexcept>
   <is-record-method>1</is-record-method>
   <is-const>1</is-const>
 </function>

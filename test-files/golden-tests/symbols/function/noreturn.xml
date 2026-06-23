@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -53,16 +53,17 @@
   </source>
   <kind>function</kind>
   <id>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <noreturn-attribute>
     <name>noreturn</name>
   </noreturn-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -79,18 +80,20 @@
   </source>
   <kind>function</kind>
   <id>QjsWLydQujVa097RP8f2Lq3nLQ4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <noreturn-attribute>
     <name>noreturn</name>
   </noreturn-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
+  <storage-class>static</storage-class>
   <is-record-method>1</is-record-method>
 </function>
 <function>
@@ -111,10 +114,10 @@
     <name>noreturn</name>
   </noreturn-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

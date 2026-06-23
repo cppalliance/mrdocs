@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -49,6 +49,7 @@
   </source>
   <kind>record</kind>
   <id>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <key-kind>struct</key-kind>
@@ -82,13 +83,14 @@
   </source>
   <kind>function</kind>
   <id>GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -105,6 +107,7 @@
   </source>
   <kind>record</kind>
   <id>FxMFFVpoV2/LOOndnkQ2gu3w69U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
   <key-kind>struct</key-kind>
@@ -112,10 +115,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>TqGFMDXDQ6ddt946aVDeyhY9Ij8=</primary>
@@ -143,13 +146,14 @@
   </source>
   <kind>function</kind>
   <id>nxkAf/oNulEWX8A/IPUHkew79Y4=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>FxMFFVpoV2/LOOndnkQ2gu3w69U=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

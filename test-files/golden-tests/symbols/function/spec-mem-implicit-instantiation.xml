@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -64,6 +64,7 @@
   </source>
   <kind>record</kind>
   <id>dKDSVrZun8skBV/NUCmJyCUOvJA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
@@ -97,13 +98,14 @@
   </source>
   <kind>function</kind>
   <id>P0HRKTdcNYA5qjhIXTqtJIxYItQ=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -120,6 +122,7 @@
   </source>
   <kind>record</kind>
   <id>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
@@ -154,13 +157,14 @@
   </source>
   <kind>function</kind>
   <id>5XAhWGI1AQuRh2DnECuhvkGU0qs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>UYi0dO2mWSf0nD8WRfX9JD1eJyw=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -177,13 +181,14 @@
   </source>
   <kind>function</kind>
   <id>c4jAAYDw9qnOxUCpXquNT7fALUY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -207,10 +212,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
@@ -242,6 +247,7 @@
   </source>
   <kind>record</kind>
   <id>6QY0PJXWe/WbREWJNqGWAxKfjl8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
@@ -273,6 +279,7 @@
   </source>
   <kind>record</kind>
   <id>CmGU1i/sBhCN4qrHoR7Et/3vN18=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
@@ -304,6 +311,7 @@
   </source>
   <kind>record</kind>
   <id>EyperGIiZ7cSv/PB2BApKjPRQVA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
@@ -312,10 +320,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>double</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -350,13 +358,14 @@
   </source>
   <kind>function</kind>
   <id>4hePn1dLCqLal3xld/sSlBvpu6U=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>EyperGIiZ7cSv/PB2BApKjPRQVA=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -373,6 +382,7 @@
   </source>
   <kind>record</kind>
   <id>xYK8qpEgWzczUMGnNUx+ozeBle0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <key-kind>struct</key-kind>
@@ -386,10 +396,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>U</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -418,13 +428,14 @@
   </source>
   <kind>function</kind>
   <id>ks7mzzkRLaNXkyZ4CdZPO75g8js=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>xYK8qpEgWzczUMGnNUx+ozeBle0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -441,13 +452,14 @@
   </source>
   <kind>function</kind>
   <id>MXnrYOauCPqySxkgtxhqKGFRX5w=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>/vjeowK9rbOfBZNuMjVMRn2iGMo=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -471,10 +483,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
@@ -505,6 +517,7 @@
   </source>
   <kind>record</kind>
   <id>O0cvG3FLegojxWfTpLGLrtCaiDg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <key-kind>struct</key-kind>
@@ -536,6 +549,7 @@
   </source>
   <kind>record</kind>
   <id>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <key-kind>struct</key-kind>
@@ -543,10 +557,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>dKDSVrZun8skBV/NUCmJyCUOvJA=</primary>
@@ -580,13 +594,14 @@
   </source>
   <kind>function</kind>
   <id>7fGykhsl+TDnhidf/wArzvaeUXY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>kLfkJ6zwS7/fgRzTYaPfbg3WHg8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -603,6 +618,7 @@
   </source>
   <kind>record</kind>
   <id>TIHR+/r3scoX8MpUnGX9TnhdTMw=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <key-kind>struct</key-kind>
@@ -640,13 +656,14 @@
   </source>
   <kind>function</kind>
   <id>5vQMmBbKdcjmr6fZ5KE/+hqkRD0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -670,10 +687,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>short</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
@@ -703,6 +720,7 @@
   </source>
   <kind>record</kind>
   <id>7YGPyrC+yNaV349G+Ofic+lrQQ0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
   <key-kind>struct</key-kind>
@@ -740,6 +758,7 @@
   </source>
   <kind>record</kind>
   <id>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
   <key-kind>struct</key-kind>
@@ -772,13 +791,14 @@
   </source>
   <kind>function</kind>
   <id>FnUXB08e7tKDcXA1I7E6hiu2/i0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>bJ8v5jNLvcM2EtaEdF2cpbTmU5s=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -795,13 +815,14 @@
   </source>
   <kind>function</kind>
   <id>Bkfxhhw3rhTX4AsAahIpOZcNmmo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>C6fFmGgpPJ7jgwKJA98mfx5cxts=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -844,6 +865,7 @@
   </source>
   <kind>record</kind>
   <id>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
   <key-kind>struct</key-kind>
@@ -877,13 +899,14 @@
   </source>
   <kind>function</kind>
   <id>cJsLsaJ126sgoCXsFOa+lMSNEVI=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -900,6 +923,7 @@
   </source>
   <kind>record</kind>
   <id>27+9TQyh1Vcx+C3POBLdyXJP8bo=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
   <key-kind>struct</key-kind>
@@ -907,10 +931,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>7FuwQh5wWHsQZAFDRF5GiHXiYdI=</primary>
@@ -944,13 +968,14 @@
   </source>
   <kind>function</kind>
   <id>ePyn5n+volZWM9Xn5rQhbb07Yn8=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>27+9TQyh1Vcx+C3POBLdyXJP8bo=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -74,6 +74,7 @@
   </source>
   <kind>variable</kind>
   <id>h2j8f921HD+Fyaokcs4ndGM/yNk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <deprecated-attribute>
@@ -83,11 +84,11 @@
     <name>maybe_unused</name>
   </maybe-unused-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>iczIHP1J59EwYw3xxL3w2C3Q43Q=</id>
       <identifier>Empty</identifier>
-    </name>
+    </identifier-name>
   </named>
   <initializer>Empty{}</initializer>
   <is-record-field>1</is-record-field>
@@ -104,13 +105,14 @@
   </source>
   <kind>variable</kind>
   <id>91xV6rCFObgi6i1/U2uZ/GnD3WM=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-record-field>1</is-record-field>
 </variable>

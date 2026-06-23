@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -55,10 +55,10 @@
       <type-targ>
         <kind>type</kind>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>void</identifier>
-          </name>
+          </identifier-name>
         </named>
       </type-targ>
       <key-kind>typename</key-kind>
@@ -69,10 +69,10 @@
       <type-targ>
         <kind>type</kind>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>void</identifier>
-          </name>
+          </identifier-name>
         </named>
       </type-targ>
       <key-kind>typename</key-kind>
@@ -113,20 +113,20 @@
       <kind>constant</kind>
       <name>N</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>unsigned long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
     <type-targ>
       <kind>type</kind>
       <array>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
         <bounds>N</bounds>
       </array>
@@ -134,19 +134,19 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>ABmZytgXstnC9bI1eeAkIEeexCM=</primary>

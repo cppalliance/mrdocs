@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -37,10 +37,10 @@
     <balanced-tokens>&quot;b&quot;</balanced-tokens>
   </other-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -64,10 +64,10 @@
     <message>use compute2</message>
   </deprecated-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>
@@ -92,19 +92,19 @@
     <balanced-tokens>2</balanced-tokens>
   </other-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>char</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
     <name>fmt</name>
@@ -132,10 +132,10 @@
     <message>use a, b</message>
   </deprecated-attribute>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
 </function>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -65,13 +65,14 @@
   </source>
   <kind>function</kind>
   <id>c4jAAYDw9qnOxUCpXquNT7fALUY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -95,10 +96,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
@@ -126,13 +127,14 @@
   </source>
   <kind>function</kind>
   <id>NCn1LYKSU8X/x/ejZTTGKsJQLug=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -156,10 +158,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
@@ -187,13 +189,14 @@
   </source>
   <kind>function</kind>
   <id>t1Sc28cdaNrQCdMKo/gCBCog34Q=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>y/8TvVlacBAIG2ds2aYgZE+zGUU=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -244,13 +247,14 @@
   </source>
   <kind>function</kind>
   <id>toIq7IwIU6fbbbkqhsEmDYWVF00=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>Bu/3QcmNOdsc7RSM3OKHnuCxGPU=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -280,10 +284,10 @@
       <kind>type</kind>
       <l-value-reference>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
       </l-value-reference>
     </type-targ>
@@ -312,13 +316,14 @@
   </source>
   <kind>function</kind>
   <id>Y1o9DjZarkgpmS4JVrc/XkZMn3k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -348,10 +353,10 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
@@ -380,13 +385,14 @@
   </source>
   <kind>function</kind>
   <id>YqMF7qPhrCzrLLwscZ76goyLl0k=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>dydGCFMdrM4nOwuv3RCXqg2KCUA=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -442,13 +448,14 @@
   </source>
   <kind>function</kind>
   <id>mhp5LhlIUPVO0i2zQmcJLvBQAlk=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>8nYw0KA23eAszqSOs0wOXAD1DYQ=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -472,19 +479,19 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>8nYw0KA23eAszqSOs0wOXAD1DYQ=</primary>
@@ -512,13 +519,14 @@
   </source>
   <kind>function</kind>
   <id>xGwiZK/5LGsqcQUgiFrCHkH3zFU=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>qrcrkE8Br83XKNMh95Dvwpph/M8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>
@@ -548,20 +556,20 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>T</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>int</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>8nYw0KA23eAszqSOs0wOXAD1DYQ=</primary>
@@ -589,13 +597,14 @@
   </source>
   <kind>function</kind>
   <id>N2KH/LGAYrCEUFXj6hyS4bkzaIs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>6zS87fCNnLtFfHbRWEmcdeAT1Zg=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <func-class>normal</func-class>
   <is-record-method>1</is-record-method>

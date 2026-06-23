@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -30,10 +30,10 @@
   <extraction>regular</extraction>
   <parent>//////////////////////////8=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -65,10 +65,10 @@
   <parent>//////////////////////////8=</parent>
   <named>
     <constraints>is_match&lt;_Yp&gt;::value</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>_Res</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
   <template>
@@ -109,10 +109,10 @@
       <kind>constant</kind>
       <name>C</name>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
     <type-tparam>
@@ -144,13 +144,14 @@
   </source>
   <kind>typedef</kind>
   <id>SrZbYkahcv/tBYSnQf6ndFySgTg=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>MBGPS/84tvNdD37cvMMFLX91CIs=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <is-using>1</is-using>
 </typedef>
@@ -182,10 +183,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>T</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>MBGPS/84tvNdD37cvMMFLX91CIs=</primary>
@@ -243,6 +244,7 @@
   </source>
   <kind>enum</kind>
   <id>ojy2H3a1lmqWgs1IHVc6fgGwKO0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>qA3Nv3MdXjhVzIuwWZK2uT6FskY=</parent>
   <constants>5+HaEEsX//OaezDumbrpRhUuOp0=</constants>
@@ -259,6 +261,7 @@
   </source>
   <kind>enum-constant</kind>
   <id>5+HaEEsX//OaezDumbrpRhUuOp0=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>ojy2H3a1lmqWgs1IHVc6fgGwKO0=</parent>
   <initializer>false</initializer>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -56,6 +56,7 @@
   </source>
   <kind>record</kind>
   <id>7XlFKPcXRfyYPWc4WPN3PAH+m58=</id>
+  <access>private</access>
   <extraction>regular</extraction>
   <parent>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</parent>
   <key-kind>struct</key-kind>
@@ -68,10 +69,10 @@
     <constant-tparam>
       <kind>constant</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>bool</identifier>
-        </name>
+        </identifier-name>
       </named>
     </constant-tparam>
   </template>
@@ -97,6 +98,7 @@
   </source>
   <kind>record</kind>
   <id>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</id>
+  <access>private</access>
   <extraction>regular</extraction>
   <parent>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</parent>
   <key-kind>struct</key-kind>
@@ -109,10 +111,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>R</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <constant-targ>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -57,6 +57,7 @@
   </source>
   <kind>record</kind>
   <id>oAtKB0INIy/QCSdQExvcQwsaZJA=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
@@ -95,6 +96,7 @@
   </source>
   <kind>record</kind>
   <id>RB9DBMAJDxjxuRQCinQOVPFSNek=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
@@ -102,19 +104,19 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>T</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>long</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>oAtKB0INIy/QCSdQExvcQwsaZJA=</primary>
@@ -141,6 +143,7 @@
   </source>
   <kind>record</kind>
   <id>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
   <key-kind>struct</key-kind>
@@ -154,20 +157,20 @@
       <kind>type</kind>
       <pointer>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>U</identifier>
-          </name>
+          </identifier-name>
         </named>
       </pointer>
     </type-targ>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>T</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <primary>oAtKB0INIy/QCSdQExvcQwsaZJA=</primary>

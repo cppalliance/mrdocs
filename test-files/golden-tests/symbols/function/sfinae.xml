@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rng">
 <namespace>
   <source>
   </source>
@@ -112,10 +112,10 @@
       <type-targ>
         <kind>type</kind>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>void</identifier>
-          </name>
+          </identifier-name>
         </named>
       </type-targ>
       <key-kind>class</key-kind>
@@ -165,10 +165,10 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>T</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <requires>std::is_integral_v&lt;T&gt;</requires>
@@ -221,10 +221,10 @@
       <type-targ>
         <kind>type</kind>
         <named>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <identifier>void</identifier>
-          </name>
+          </identifier-name>
         </named>
       </type-targ>
       <key-kind>class</key-kind>
@@ -253,22 +253,23 @@
   </source>
   <kind>function</kind>
   <id>KmwKarrWHSv7aalrBX18hjPbEfs=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>IZrmVBMJu1uvsP9zur5JVrwgYmE=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -309,25 +310,42 @@
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>T</identifier>
-        </name>
+        </identifier-name>
       </named>
     </type-targ>
     <type-targ>
       <kind>type</kind>
       <named>
-        <name>
+        <specialization-name>
           <kind>specialization</kind>
           <id>Er+ynG/5PHLxm80m2f8PHWglPWY=</id>
           <identifier>void_t</identifier>
-          <name>
+          <identifier-name>
             <kind>identifier</kind>
             <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
             <identifier>std</identifier>
-          </name>
-        </name>
+          </identifier-name>
+          <type-targ>
+            <kind>type</kind>
+            <named>
+              <identifier-name>
+                <kind>identifier</kind>
+                <identifier>b</identifier>
+                <identifier-name>
+                  <kind>identifier</kind>
+                  <identifier>a</identifier>
+                  <identifier-name>
+                    <kind>identifier</kind>
+                    <identifier>T</identifier>
+                  </identifier-name>
+                </identifier-name>
+              </identifier-name>
+            </named>
+          </type-targ>
+        </specialization-name>
       </named>
     </type-targ>
     <primary>IZrmVBMJu1uvsP9zur5JVrwgYmE=</primary>
@@ -355,22 +373,23 @@
   </source>
   <kind>function</kind>
   <id>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</id>
+  <access>public</access>
   <extraction>regular</extraction>
   <parent>g0UNZpdodOU5mGCtcpviXd8o6Vk=</parent>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <pointer>
       <named>
         <is-const>1</is-const>
-        <name>
+        <identifier-name>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
+        </identifier-name>
       </named>
     </pointer>
   </param>
@@ -403,17 +422,17 @@
   </doc-comment>
   <named>
     <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -473,17 +492,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -523,17 +542,17 @@
   </doc-comment>
   <named>
     <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>int</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -578,23 +597,23 @@
   </doc-comment>
   <named>
     <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
       <identifier>C</identifier>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
         <identifier>B</identifier>
-      </name>
-    </name>
+      </identifier-name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -634,17 +653,17 @@
   </doc-comment>
   <named>
     <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -683,17 +702,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -732,17 +751,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -781,17 +800,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>void</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -830,17 +849,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
@@ -879,17 +898,17 @@
     </brief>
   </doc-comment>
   <named>
-    <name>
+    <identifier-name>
       <kind>identifier</kind>
       <identifier>T</identifier>
-    </name>
+    </identifier-name>
   </named>
   <param>
     <named>
-      <name>
+      <identifier-name>
         <kind>identifier</kind>
         <identifier>T</identifier>
-      </name>
+      </identifier-name>
     </named>
     <name>value</name>
   </param>
