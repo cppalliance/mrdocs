@@ -152,11 +152,18 @@ buildCorpusDom(CorpusImpl& corpus)
 }
 
 dom::Value
-buildTransformContext(CorpusImpl& corpus)
+buildTransformContext(
+    dom::Value const& corpusDom, CorpusImpl& corpus, std::string_view id)
 {
+    // `ctx.params` is the transform's own `transform-options.<id>` block,
+    // keyed by the id it registered under; an empty object when unset.
+    auto const& opts = corpus.config->transformOptions;
+    auto const it = opts.find(std::string(id));
     dom::Object ctx;
-    ctx.set("corpus", buildCorpusDom(corpus));
+    ctx.set("corpus", corpusDom);
     ctx.set("config", dom::Value(corpus.config.object()));
+    ctx.set("params",
+        dom::Value(it != opts.end() ? it->second : dom::Object()));
     return dom::Value(std::move(ctx));
 }
 

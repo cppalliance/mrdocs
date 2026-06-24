@@ -15,7 +15,7 @@ function partnerName(name) {
     return partner;
 }
 
-mrdocs.register_transform(function(ctx) {
+mrdocs.register_transform("parse-format-relates", function(ctx) {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i) {
         var s = ctx.corpus.symbols[i];
         if (s.kind === "function") {

@@ -79,15 +79,29 @@ buildOutputApi(OutputSink& sink)
     return dom::Value(std::move(api));
 }
 
+// The generator's own options block, from `generator-options.<id>`, handed
+// to the script as `ctx.params`; an empty object when the id has none.
+dom::Object
+generatorParams(Corpus const& corpus, std::string_view id)
+{
+    auto const& genOpts = corpus.config->generatorOptions;
+    auto const it = genOpts.find(std::string(id));
+    return it != genOpts.end() ? it->second : dom::Object();
+}
+
 // Assemble the single `ctx` object the generator receives.
 dom::Value
 buildGeneratorContext(
-    Corpus const& corpus, DomCorpus const& domCorpus, OutputSink& sink)
+    Corpus const& corpus,
+    DomCorpus const& domCorpus,
+    OutputSink& sink,
+    std::string_view id)
 {
     dom::Object ctx;
     ctx.set("corpus", buildGeneratorCorpus(corpus, domCorpus));
     ctx.set("output", buildOutputApi(sink));
     ctx.set("config", dom::Value(corpus.config.object()));
+    ctx.set("params", dom::Value(generatorParams(corpus, id)));
     return dom::Value(std::move(ctx));
 }
 
@@ -102,7 +116,7 @@ runScriptGenerator(
 {
     OutputSink sink(outputPath);
     DomCorpus domCorpus(corpus);
-    dom::Value ctx = buildGeneratorContext(corpus, domCorpus, sink);
+    dom::Value ctx = buildGeneratorContext(corpus, domCorpus, sink, id);
 
     Expected<dom::Value> invoked = generate.try_invoke(ctx);
     Expected<void> result;

@@ -1,0 +1,9 @@
+addons-supplemental:
+  - addons
+generator: xml
+multipage: false
+warn-if-undocumented: false
+source-root: .
+transform-options:
+  brief-from-params:
+    text: Brief from the transform's params

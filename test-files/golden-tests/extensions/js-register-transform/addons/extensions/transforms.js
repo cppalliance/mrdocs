@@ -3,7 +3,7 @@
 // transforms. The first renames every function; the second rewrites
 // its brief. Mirrors the lua-register-transform fixture on the JS path.
 
-mrdocs.register_transform(function(ctx)
+mrdocs.register_transform("rename-functions", function(ctx)
 {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i)
     {
@@ -15,7 +15,7 @@ mrdocs.register_transform(function(ctx)
     }
 });
 
-mrdocs.register_transform(function(ctx)
+mrdocs.register_transform("set-brief", function(ctx)
 {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i)
     {

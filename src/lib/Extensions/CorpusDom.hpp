@@ -10,6 +10,7 @@
 #define MRDOCS_LIB_EXTENSIONS_CORPUSDOM_HPP
 
 #include <mrdocs/Dom.hpp>
+#include <string_view>
 
 namespace mrdocs {
 
@@ -32,7 +33,7 @@ class CorpusImpl;
 dom::Value
 buildCorpusDom(CorpusImpl& corpus);
 
-/** Build the `ctx` argument passed to each registered corpus transform.
+/** Build the `ctx` argument passed to one registered corpus transform.
 
     A transform receives one object so new capabilities can be added
     without changing its signature:
@@ -40,9 +41,15 @@ buildCorpusDom(CorpusImpl& corpus);
     - `ctx.corpus` -- the navigable corpus (see @ref buildCorpusDom) the
       transform reads and mutates in place.
     - `ctx.config` -- the generation configuration.
+    - `ctx.params` -- the transform's own `transform-options.<id>` block,
+      keyed by the id it registered under; an empty object when unset.
+
+    The corpus DOM is built once per script (it is `O(symbols)`) and passed
+    in as `corpusDom`, so the per-transform context is cheap to assemble.
 */
 dom::Value
-buildTransformContext(CorpusImpl& corpus);
+buildTransformContext(
+    dom::Value const& corpusDom, CorpusImpl& corpus, std::string_view id);
 
 } // mrdocs
 

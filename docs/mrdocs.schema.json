@@ -659,6 +659,15 @@
       "title": "Path for the tagfile",
       "type": "string"
     },
+    "transform-options": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "default": {},
+      "description": "An object whose keys are corpus-transform ids (the id a script passes to `mrdocs.register_transform`) and whose values are parameter objects for that transform. The transform registered under a given id receives its object as `ctx.params`.",
+      "title": "Per-transform parameters keyed by transform id",
+      "type": "object"
+    },
     "use-system-libc": {
       "default": true,
       "description": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",

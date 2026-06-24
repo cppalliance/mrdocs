@@ -7,7 +7,7 @@
 // proxy's `set` trap forwards each assignment into the live C++
 // Symbol via reflection.
 
-mrdocs.register_transform(function(ctx)
+mrdocs.register_transform("set-name", function(ctx)
 {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i)
     {

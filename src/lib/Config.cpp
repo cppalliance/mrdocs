@@ -50,6 +50,28 @@ loadGeneratorOptions(
         });
 }
 
+// Populate the free-form `transform-options` map from the config YAML.
+// Read separately for the same reason as `generator-options` above.
+void
+loadTransformOptions(
+    Config::Settings& s,
+    std::string_view configYaml)
+{
+    MRDOCS_CHECK_OR(!configYaml.empty());
+    s.transformOptions.clear();
+    dom::Object const obj = toDomObject(configYaml);
+    dom::Value const to = obj.get("transform-options");
+    MRDOCS_CHECK_OR(to.isObject());
+    to.getObject().visit(
+        [&s](dom::String const& key, dom::Value const& value)
+        {
+            MRDOCS_CHECK_OR(value.isObject());
+            s.transformOptions.emplace(
+                std::string(std::string_view(key)),
+                value.getObject());
+        });
+}
+
 } // (anon)
 
 Config::
@@ -82,6 +104,7 @@ load(
     s.cwdDir = dirs.cwd;
     s.configYaml = configYaml;
     loadGeneratorOptions(s, configYaml);
+    loadTransformOptions(s, configYaml);
     return {};
 }
 
