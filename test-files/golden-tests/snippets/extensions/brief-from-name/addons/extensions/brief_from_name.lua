@@ -7,7 +7,7 @@
 -- sentence on every declaration. Anything an author already wrote is
 -- preserved: only missing fields are filled in.
 
-mrdocs.register_transform(function(ctx)
+mrdocs.register_transform("brief-from-name", function(ctx)
     for _, sym in ipairs(ctx.corpus.symbols) do
         if sym.kind == "function"
            and sym.name:sub(1, 3) == "is_" then

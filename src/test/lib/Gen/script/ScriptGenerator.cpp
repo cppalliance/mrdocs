@@ -322,6 +322,33 @@ end
     }
 
     void
+    testGeneratorReceivesParams()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        std::string const outDir = files::appendPath(td.path(), "out");
+        dom::Function gen = makeLuaGenerator(R"LUA(
+function generate(ctx)
+  ctx.output.write("params.txt", ctx.params.greeting)
+end
+)LUA");
+        StubConfig config;
+        dom::Object params;
+        params.set("greeting", "hi from params");
+        config.settings_.generatorOptions.emplace("selftest", params);
+        StubCorpus corpus(config);
+        BOOST_TEST(
+            runScriptGenerator(gen, "selftest", corpus, outDir).has_value());
+        Expected<std::string> got =
+            files::getFileText(files::appendPath(outDir, "params.txt"));
+        BOOST_TEST(got.has_value());
+        if (got)
+        {
+            BOOST_TEST(*got == "hi from params");
+        }
+    }
+
+    void
     testGeneratorIteratesCorpus()
     {
         ScopedTempDirectory td("mrdocs-scriptgen");
@@ -445,6 +472,7 @@ end
         testLuaGeneratorWrites();
         testJsGeneratorWrites();
         testGeneratorReceivesConfig();
+        testGeneratorReceivesParams();
         testGeneratorIteratesCorpus();
         testWriteEscapeIsError();
         testGeneratorErrorIsReported();

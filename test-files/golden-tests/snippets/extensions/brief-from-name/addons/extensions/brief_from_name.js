@@ -7,7 +7,7 @@
 // sentence on every declaration. Anything an author already wrote is
 // preserved: only missing fields are filled in.
 
-mrdocs.register_transform(function(ctx) {
+mrdocs.register_transform("brief-from-name", function(ctx) {
     for (var i = 0; i < ctx.corpus.symbols.length; ++i) {
         var sym = ctx.corpus.symbols[i];
         if (sym.kind === "function" && sym.name.indexOf("is_") === 0) {

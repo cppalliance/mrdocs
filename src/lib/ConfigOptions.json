@@ -464,6 +464,13 @@
         "default": {}
       },
       {
+        "name": "transform-options",
+        "brief": "Per-transform parameters keyed by transform id",
+        "details": "An object whose keys are corpus-transform ids (the id a script passes to `mrdocs.register_transform`) and whose values are parameter objects for that transform. The transform registered under a given id receives its object as `ctx.params`.",
+        "type": "map<string,object>",
+        "default": {}
+      },
+      {
         "name": "multipage",
         "brief": "Generate a multipage documentation",
         "details": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",

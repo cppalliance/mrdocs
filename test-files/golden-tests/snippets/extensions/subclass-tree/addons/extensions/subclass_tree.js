@@ -16,7 +16,7 @@ function listSubclasses(corpus, sym, indent) {
     }
 }
 
-mrdocs.register_transform(function(ctx) {
+mrdocs.register_transform("subclass-tree", function(ctx) {
     var base = ctx.corpus.lookup("Shape");
     if (base) {
         console.log(base.name);

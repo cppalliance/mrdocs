@@ -22,6 +22,8 @@
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace mrdocs {
 
@@ -36,7 +38,7 @@ void
 registerJsExtensionApi(
     js::Scope& scope,
     CorpusImpl& corpus,
-    dom::Array& transforms,
+    std::vector<std::pair<std::string, dom::Value>>& transforms,
     std::size_t& generators)
 {
     dom::Object api;
@@ -47,15 +49,19 @@ registerJsExtensionApi(
                 -> Expected<dom::Value, Error>
             {
                 Expected<dom::Value, Error> result;
-                if (args.empty() || !args.get(0).isFunction())
+                if (args.size() < 2 ||
+                    !args.get(0).isString() ||
+                    !args.get(1).isFunction())
                 {
                     result = Unexpected(Error(
-                        "mrdocs.register_transform: expected a function "
-                        "argument"));
+                        "mrdocs.register_transform: expected (string id, "
+                        "function)"));
                 }
                 else
                 {
-                    transforms.push_back(args.get(0));
+                    transforms.emplace_back(
+                        std::string(args.get(0).getString().get()),
+                        args.get(1));
                 }
                 return result;
             })));
@@ -117,18 +123,11 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
 
     js::registerStdGlobals(scope);
 
-    dom::Array transforms;
+    std::vector<std::pair<std::string, dom::Value>> transforms;
     // Generators are owned by the corpus, not held here, so this counts
     // them only to tell whether the script registered anything at all.
     std::size_t generators = 0;
     registerJsExtensionApi(scope, corpus, transforms, generators);
-
-    // Each transform receives one `ctx` object: `ctx.corpus` is the
-    // navigable corpus (an array of per-symbol proxies plus
-    // `get(id)` / `lookup(name)`), `ctx.config` the generation config.
-    // Everything a script does runs through that proxy: direct reads via
-    // reflection, direct writes that mutate the live Symbol.
-    dom::Value ctxValue = buildTransformContext(corpus);
 
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
 
@@ -150,14 +149,17 @@ runOneJsExtension(CorpusImpl& corpus, std::string const& scriptPath)
         report::warn("extension '{}' registered nothing", scriptPath);
     }
 
-    // Invoke each declared transform with the corpus, in registration
-    // order, stopping at the first failure.
-    for (std::size_t i = 0; i < transforms.size(); ++i)
+    // Invoke each declared transform with its own `ctx`, in registration
+    // order, stopping at the first failure. The corpus DOM is O(symbols),
+    // so build it once and reuse it; only `ctx.params` differs per
+    // transform.
+    dom::Value const corpusDom = buildCorpusDom(corpus);
+    for (auto const& [id, transform] : transforms)
     {
         if (result.has_value())
         {
-            result = invokeTransform(
-                transforms.get(i), ctxValue, scriptPath);
+            dom::Value ctx = buildTransformContext(corpusDom, corpus, id);
+            result = invokeTransform(transform, ctx, scriptPath);
         }
     }
 
