@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <records>5sB+nY7A37FZIfir11OpIKC12Ok=</records>
+    <records>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</records>
+    <variables>V/VOefC+Lirvlyv4ml0GPg3tkb8=</variables>
+    <variables>4BBlDC8MjV0Km82gDuPpLniry80=</variables>
+    <variables>w7084vhWPkLDZ/7kZBE9YeheM8E=</variables>
+    <variables>/2+SAVa0lxHgZkikhVVwJfO2tZY=</variables>
+  </namespace-tranche>
+</namespace>
+<record>
+  <name>flag</name>
+  <source>
+    <location>
+      <short-path>default-constructed-instance.cpp</short-path>
+      <source-path>default-constructed-instance.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>5sB+nY7A37FZIfir11OpIKC12Ok=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A default-constructed instance of a same-named tag type (see issue #1238).</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <key-kind>struct</key-kind>
+  <is-final>1</is-final>
+  <base>
+    <named>
+      <name>
+        <kind>identifier</kind>
+        <id>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</id>
+        <identifier>tag_base</identifier>
+      </name>
+    </named>
+  </base>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<record>
+  <name>tag_base</name>
+  <source>
+    <location>
+      <short-path>default-constructed-instance.cpp</short-path>
+      <source-path>default-constructed-instance.cpp</source-path>
+      <line-number>1</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>record</kind>
+  <id>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <key-kind>struct</key-kind>
+  <derived>5sB+nY7A37FZIfir11OpIKC12Ok=</derived>
+  <record-interface>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+    <record-tranche>
+    </record-tranche>
+  </record-interface>
+</record>
+<variable>
+  <name>braced</name>
+  <source>
+    <location>
+      <short-path>default-constructed-instance.cpp</short-path>
+      <source-path>default-constructed-instance.cpp</source-path>
+      <line-number>10</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>V/VOefC+Lirvlyv4ml0GPg3tkb8=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A value-initialized variable.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <id>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</id>
+      <identifier>tag_base</identifier>
+    </name>
+  </named>
+  <initializer>{}</initializer>
+</variable>
+<variable>
+  <name>flag</name>
+  <source>
+    <location>
+      <short-path>default-constructed-instance.cpp</short-path>
+      <source-path>default-constructed-instance.cpp</source-path>
+      <line-number>4</line-number>
+      <column-number>1</column-number>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>4BBlDC8MjV0Km82gDuPpLniry80=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <id>5sB+nY7A37FZIfir11OpIKC12Ok=</id>
+      <identifier>flag</identifier>
+    </name>
+  </named>
+</variable>
+<variable>
+  <name>flag_copy</name>
+  <source>
+    <location>
+      <short-path>default-constructed-instance.cpp</short-path>
+      <source-path>default-constructed-instance.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>w7084vhWPkLDZ/7kZBE9YeheM8E=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A copy-initialized variable.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <auto>
+  </auto>
+  <initializer>flag</initializer>
+</variable>
+<variable>
+  <name>literal</name>
+  <source>
+    <location>
+      <short-path>default-constructed-instance.cpp</short-path>
+      <source-path>default-constructed-instance.cpp</source-path>
+      <line-number>13</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>variable</kind>
+  <id>/2+SAVa0lxHgZkikhVVwJfO2tZY=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>A variable with a literal initializer.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>int</identifier>
+    </name>
+  </named>
+  <initializer>7</initializer>
+</variable>
+</mrdocs>
