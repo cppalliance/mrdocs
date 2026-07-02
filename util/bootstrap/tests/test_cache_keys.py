@@ -24,7 +24,7 @@ from src.recipes.cache_keys import (
 )
 
 
-LLVM_HASH = "dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae"
+LLVM_HASH = "77e43ec11cd8fbe1de491118b54de9bba94510a8"
 
 
 class TestGenerateCacheKey(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             build_type="Release",
             os_key="ubuntu:24.04",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_debug_build_type(self):
         """Build type should be lowercased."""
@@ -48,7 +48,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             build_type="Debug",
             os_key="macos-15",
         )
-        self.assertEqual(key, "llvm-dc4cef8-debug-macos-15")
+        self.assertEqual(key, "llvm-77e43ec-debug-macos-15")
 
     def test_relwithdebinfo_build_type(self):
         """RelWithDebInfo should be lowercased."""
@@ -58,7 +58,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             build_type="RelWithDebInfo",
             os_key="ubuntu:24.04",
         )
-        self.assertEqual(key, "llvm-dc4cef8-relwithdebinfo-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-relwithdebinfo-ubuntu-24.04")
 
     def test_colon_replaced_in_os_key(self):
         """Colons in os-key should be replaced with hyphens."""
@@ -89,7 +89,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             build_type="Release",
             os_key="windows-2022",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-windows-2022")
+        self.assertEqual(key, "llvm-77e43ec-release-windows-2022")
 
     def test_hash_truncated_to_7_chars(self):
         """Only first 7 characters of hash should be used."""
@@ -99,9 +99,9 @@ class TestGenerateCacheKey(unittest.TestCase):
             build_type="Release",
             os_key="ubuntu:24.04",
         )
-        self.assertIn("dc4cef8", key)
+        self.assertIn("77e43ec", key)
         # Full hash should NOT appear
-        self.assertNotIn("dc4cef81", key)
+        self.assertNotIn("77e43ec1", key)
 
     def test_clang_asan_suffix(self):
         """Clang + ASan should add -clang-{version}-ASan suffix."""
@@ -115,7 +115,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             sanitizer="address",
         )
         self.assertEqual(
-            key, "llvm-dc4cef8-release-ubuntu-24.04-clang-19-ASan"
+            key, "llvm-77e43ec-release-ubuntu-24.04-clang-19-ASan"
         )
 
     def test_clang_asan_short_name(self):
@@ -130,7 +130,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             sanitizer="asan",
         )
         self.assertEqual(
-            key, "llvm-dc4cef8-release-ubuntu-24.04-clang-19-ASan"
+            key, "llvm-77e43ec-release-ubuntu-24.04-clang-19-ASan"
         )
 
     def test_clang_msan_suffix(self):
@@ -146,7 +146,7 @@ class TestGenerateCacheKey(unittest.TestCase):
         )
         # MSan has no archive-sanitizer-str in CI template, so empty after last dash
         self.assertEqual(
-            key, "llvm-dc4cef8-release-ubuntu-24.04-clang-19-"
+            key, "llvm-77e43ec-release-ubuntu-24.04-clang-19-"
         )
 
     def test_gcc_asan_no_suffix(self):
@@ -160,7 +160,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             compiler_version="14",
             sanitizer="address",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_clang_ubsan_no_suffix(self):
         """Clang + UBSan should NOT add suffix (only asan/msan trigger it)."""
@@ -173,7 +173,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             compiler_version="19",
             sanitizer="undefined",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_clang_tsan_no_suffix(self):
         """Clang + TSan should NOT add suffix."""
@@ -186,7 +186,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             compiler_version="19",
             sanitizer="thread",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_no_compiler_no_suffix(self):
         """No compiler specified should produce no suffix."""
@@ -197,7 +197,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             os_key="ubuntu:24.04",
             sanitizer="address",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_no_sanitizer_no_suffix(self):
         """No sanitizer should produce no suffix even with clang."""
@@ -209,7 +209,7 @@ class TestGenerateCacheKey(unittest.TestCase):
             compiler="clang",
             compiler_version="19",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_non_llvm_recipe(self):
         """Cache keys should work for any recipe, not just llvm."""
@@ -308,7 +308,7 @@ class TestCacheKeyMatchesCI(unittest.TestCase):
             compiler_version="14",
         )
         # gcc builds never get the compiler suffix
-        self.assertEqual(key, "llvm-dc4cef8-release-ubuntu-24.04")
+        self.assertEqual(key, "llvm-77e43ec-release-ubuntu-24.04")
 
     def test_release_ubuntu_clang_asan(self):
         """Clang ASan release on ubuntu:24.04."""
@@ -322,7 +322,7 @@ class TestCacheKeyMatchesCI(unittest.TestCase):
             sanitizer="address",
         )
         self.assertEqual(
-            key, "llvm-dc4cef8-release-ubuntu-24.04-clang-19-ASan"
+            key, "llvm-77e43ec-release-ubuntu-24.04-clang-19-ASan"
         )
 
     def test_release_windows(self):
@@ -335,7 +335,7 @@ class TestCacheKeyMatchesCI(unittest.TestCase):
             compiler="msvc",
             compiler_version="14.42",
         )
-        self.assertEqual(key, "llvm-dc4cef8-release-windows-2022")
+        self.assertEqual(key, "llvm-77e43ec-release-windows-2022")
 
     def test_release_macos(self):
         """apple-clang release on macos-15."""
@@ -348,7 +348,7 @@ class TestCacheKeyMatchesCI(unittest.TestCase):
             compiler_version="16",
         )
         # apple-clang never gets suffix (only "clang" does)
-        self.assertEqual(key, "llvm-dc4cef8-release-macos-15")
+        self.assertEqual(key, "llvm-77e43ec-release-macos-15")
 
 
 if __name__ == "__main__":

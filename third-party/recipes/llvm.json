@@ -1,12 +1,12 @@
 {
   "name": "llvm",
-  "version": "dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae",
+  "version": "77e43ec11cd8fbe1de491118b54de9bba94510a8",
   "tags": [],
   "package_root_var": "LLVM_ROOT",
   "source": {
     "type": "archive",
-    "url": "https://github.com/llvm/llvm-project/archive/dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae.zip",
-    "commit": "dc4cef81d47c7bc4a3c4d58fbacf8a6359683fae"
+    "url": "https://github.com/llvm/llvm-project/archive/77e43ec11cd8fbe1de491118b54de9bba94510a8.zip",
+    "commit": "77e43ec11cd8fbe1de491118b54de9bba94510a8"
   },
   "dependencies": [],
   "build_type": "Release",

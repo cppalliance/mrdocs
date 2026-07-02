@@ -11,9 +11,11 @@
 #ifndef MRDOCS_SHARE_HEADERS_LIBC_STUBS_STDALIGN_H
 #define MRDOCS_SHARE_HEADERS_LIBC_STUBS_STDALIGN_H
 
+#if !defined __cplusplus
 // Convenience macros for alignment
 #define alignas _Alignas
 #define alignof _Alignof
+#endif
 
 // Macro constants indicating the presence of alignment features
 #define __alignas_is_defined 1

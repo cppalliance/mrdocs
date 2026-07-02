@@ -423,16 +423,6 @@ public:
 
         Downstream_->EndSourceFile();
     }
-
-
-    void
-    finish() override
-    {
-        if (Downstream_)
-        {
-            Downstream_->finish();
-        }
-    }
 };
 
 } // namespace mrdocs
