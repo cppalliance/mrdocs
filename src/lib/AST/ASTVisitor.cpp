@@ -32,11 +32,11 @@
 #include <clang/AST/RawCommentList.h>
 #include <clang/AST/TypeVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
-#include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
 #include <clang/Sema/Lookup.h>
 #include <clang/Sema/Sema.h>
 #include <clang/Sema/Template.h>
+#include <clang/UnifiedSymbolResolution/USRGeneration.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Process.h>

@@ -11,10 +11,12 @@
 #ifndef MRDOCS_SHARE_HEADERS_LIBC_STUBS_STDBOOL_H
 #define MRDOCS_SHARE_HEADERS_LIBC_STUBS_STDBOOL_H
 
+#if !defined __cplusplus
 // Convenience macros for boolean values
 #define bool _Bool
 #define true 1
 #define false 0
+#endif
 
 // Macro constant indicating the presence of boolean features
 #define __bool_true_false_are_defined 1

@@ -73,8 +73,10 @@ int cnd_wait(cnd_t *cond, mtx_t *mtx);
 int cnd_timedwait(cnd_t *cond, mtx_t *mtx, const struct timespec *ts);
 void cnd_destroy(cnd_t *cond);
 
+#if !defined __cplusplus
 // Thread-local storage
 #define thread_local _Thread_local
+#endif
 
 typedef void (*tss_dtor_t)(void *);
 typedef struct {

@@ -315,7 +315,7 @@
       <short-path>function-template.cpp</short-path>
       <source-path>function-template.cpp</source-path>
       <line-number>22</line-number>
-      <column-number>6</column-number>
+      <column-number>1</column-number>
     </location>
   </source>
   <kind>function</kind>
@@ -346,7 +346,7 @@
       <short-path>function-template.cpp</short-path>
       <source-path>function-template.cpp</source-path>
       <line-number>24</line-number>
-      <column-number>6</column-number>
+      <column-number>1</column-number>
     </location>
   </source>
   <kind>function</kind>

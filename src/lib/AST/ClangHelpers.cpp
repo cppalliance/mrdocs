@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,20 +15,26 @@
 #include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <clang/Driver/Driver.h>
-#include <clang/Index/USRGeneration.h>
+#include <clang/Sema/EnterExpressionEvaluationContext.h>
 #include <clang/Sema/Template.h>
+#include <clang/UnifiedSymbolResolution/USRGeneration.h>
 #include <llvm/Option/ArgList.h>
 #include <ranges>
 
 namespace mrdocs {
 
+// Ported from Clang's file-local static `SubstituteConstraintExpressionWithoutSatisfaction`
+// in clang/lib/Sema/SemaConcept.cpp. No public header exposes it, and the public
+// `Sema::AreConstraintExpressionsEqual` returns only a bool, not the substituted
+// expression MrDocs needs, so we vendor a copy. Synced to the pinned revision
+// 77e43ec1; re-diff against that file on each LLVM bump.
 clang::Expr const*
 SubstituteConstraintExpressionWithoutSatisfaction(
     clang::Sema &S, const clang::Sema::TemplateCompareNewDeclInfo &DeclInfo,
     clang::Expr const* ConstrExpr)
 {
     clang::MultiLevelTemplateArgumentList MLTAL = S.getTemplateInstantiationArgs(
-        DeclInfo.getDecl(), DeclInfo.getLexicalDeclContext(), /*Final=*/false,
+        DeclInfo.getDecl(), DeclInfo.getDeclContext(), /*Final=*/false,
         /*Innermost=*/std::nullopt,
         /*RelativeToPrimary=*/true,
         /*Pattern=*/nullptr, /*ForConstraintInstantiation=*/true,
@@ -38,31 +45,48 @@ SubstituteConstraintExpressionWithoutSatisfaction(
         return ConstrExpr;
     }
 
+    // Clang's own `AreConstraintExpressionsEqual` wraps the calls to this
+    // helper in a `SFINAETrap`. MrDocs invokes the helper directly, so the trap
+    // lives here instead: it traps substitution errors and supplies the SFINAE
+    // context that `SubstConstraintExprWithoutSatisfaction` expects on the
+    // instantiation stack.
     clang::Sema::SFINAETrap const SFINAE(S, /*AccessCheckingSFINAE=*/false);
-
-    clang::Sema::InstantiatingTemplate Inst(
-        S, DeclInfo.getLocation(),
-        clang::Sema::InstantiatingTemplate::ConstraintNormalization{},
-        const_cast<clang::NamedDecl *>(DeclInfo.getDecl()), clang::SourceRange{});
-    if (Inst.isInvalid())
-    {
-        return nullptr;
-    }
 
     // Set up a dummy 'instantiation' scope in the case of reference to function
     // parameters that the surrounding function hasn't been instantiated yet. Note
     // this may happen while we're comparing two templates' constraint
     // equivalence.
-    clang::LocalInstantiationScope ScopeForParameters(S);
-    if (auto *FD = DeclInfo.getDecl()->getAsFunction())
+    std::optional<clang::LocalInstantiationScope> ScopeForParameters;
+    if (clang::NamedDecl const* ND = DeclInfo.getDecl();
+        ND && ND->isFunctionOrFunctionTemplate())
     {
-        for (auto *PVD : FD->parameters())
+        ScopeForParameters.emplace(S, /*CombineWithOuterScope=*/true);
+        clang::FunctionDecl const* FD = ND->getAsFunction();
+        if (clang::FunctionTemplateDecl* Template =
+                FD->getDescribedFunctionTemplate();
+            Template && Template->getInstantiatedFromMemberTemplate())
         {
-            ScopeForParameters.InstantiatedLocal(PVD, PVD);
+            FD = Template->getInstantiatedFromMemberTemplate()->getTemplatedDecl();
+        }
+        for (auto* PVD : FD->parameters())
+        {
+            if (ScopeForParameters->getInstantiationOfIfExists(PVD))
+            {
+                continue;
+            }
+            if (!PVD->isParameterPack())
+            {
+                ScopeForParameters->InstantiatedLocal(PVD, PVD);
+                continue;
+            }
+            // Map the parameter pack to a size-of-1 argument so its canonical
+            // type is used when comparing redeclarations for equivalence.
+            ScopeForParameters->MakeInstantiatedLocalArgPack(PVD);
+            ScopeForParameters->InstantiatedLocalPackArg(PVD, PVD);
         }
     }
 
-    Optional<clang::Sema::CXXThisScopeRAII> ThisScope;
+    std::optional<clang::Sema::CXXThisScopeRAII> ThisScope;
 
     // See TreeTransform::RebuildTemplateSpecializationType. A context scope is
     // essential for having an injected class as the canonical type for a template
@@ -71,13 +95,27 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     // template specializations can be profiled to the same value, which makes it
     // possible that e.g. constraints involving C<Class<T>> and C<Class> are
     // perceived identical.
-    Optional<clang::Sema::ContextRAII> ContextScope;
-    if (auto *RD = dyn_cast<clang::CXXRecordDecl>(DeclInfo.getDeclContext()))
+    std::optional<clang::Sema::ContextRAII> ContextScope;
+    clang::DeclContext const* DC = [&] {
+        if (!DeclInfo.getDecl())
+        {
+            return DeclInfo.getDeclContext();
+        }
+        return DeclInfo.getDecl()->getFriendObjectKind()
+                   ? DeclInfo.getLexicalDeclContext()
+                   : DeclInfo.getDeclContext();
+    }();
+    if (auto* RD = dyn_cast<clang::CXXRecordDecl>(DC))
     {
-        ThisScope.emplace(S, const_cast<clang::CXXRecordDecl *>(RD), clang::Qualifiers());
-        ContextScope.emplace(S, const_cast<clang::DeclContext *>(cast<clang::DeclContext>(RD)),
-                             /*NewThisContext=*/false);
+        ThisScope.emplace(
+            S, const_cast<clang::CXXRecordDecl*>(RD), clang::Qualifiers());
+        ContextScope.emplace(
+            S, const_cast<clang::DeclContext*>(cast<clang::DeclContext>(RD)),
+            /*NewThisContext=*/false);
     }
+    clang::EnterExpressionEvaluationContext UnevaluatedContext(
+        S, clang::Sema::ExpressionEvaluationContext::Unevaluated,
+        clang::Sema::ReuseLambdaContextDecl);
     clang::ExprResult SubstConstr = S.SubstConstraintExprWithoutSatisfaction(
         const_cast<clang::Expr *>(ConstrExpr), MLTAL);
     if (SFINAE.hasErrorOccurred() || !SubstConstr.isUsable())
@@ -475,15 +513,15 @@ isStaticFileLevelMember(clang::Decl const* D)
 clang::RawComment const*
 getDocumentation(clang::Decl const* D)
 {
-    clang::RawComment const* RC =
-        D->getASTContext().getRawCommentForDeclNoCache(D);
+    clang::ASTContext const& ctx = D->getASTContext();
+    clang::RawComment const* RC = ctx.getRawCommentNoCache(D);
     if (!RC)
     {
         auto const* TD = dyn_cast<clang::TemplateDecl>(D);
         MRDOCS_CHECK_OR(TD, nullptr);
         clang::NamedDecl const* ND = TD->getTemplatedDecl();
         MRDOCS_CHECK_OR(ND, nullptr);
-        RC = ND->getASTContext().getRawCommentForDeclNoCache(ND);
+        RC = ctx.getRawCommentNoCache(ND);
     }
     return RC;
 }

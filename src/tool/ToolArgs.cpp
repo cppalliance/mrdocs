@@ -48,8 +48,8 @@ hideForeignOptions()
     auto optionMap = llvm::cl::getRegisteredOptions();
     for(auto& opt : optionMap)
     {
-        opt.getValue()->setHiddenFlag(
-            std::ranges::find(oursOptions, opt.getValue()) != oursOptions.end() ?
+        opt.second->setHiddenFlag(
+            std::ranges::find(oursOptions, opt.second) != oursOptions.end() ?
             llvm::cl::NotHidden :
             llvm::cl::ReallyHidden);
     }
