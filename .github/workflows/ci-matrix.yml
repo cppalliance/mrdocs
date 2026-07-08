@@ -43,10 +43,9 @@ jobs:
           main-entry-factors: |
             clang Coverage
           latest-factors: |
-            clang UBSan
+            clang UBSan MSan ASan
           factors: |
             gcc UBSan
-            clang ASan MSan
             apple-clang UBSan ASan
           build-types: |
             gcc: Release

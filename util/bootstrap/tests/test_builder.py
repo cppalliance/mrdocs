@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
@@ -289,6 +290,29 @@ class TestBuildLibcxxRuntimes(unittest.TestCase):
         install_prefix = [a for a in cfg_cmd if "CMAKE_INSTALL_PREFIX" in a]
         self.assertTrue(len(install_prefix) > 0)
         self.assertIn(recipe.install_dir, install_prefix[0])
+
+    @patch("src.recipes.builder.remove_dir")
+    @patch("src.recipes.builder.run_cmd")
+    @patch("src.recipes.builder.ensure_dir")
+    @patch("shutil.which", return_value="/usr/bin/cmake")
+    def test_runtimes_custom_install_prefix(self, mock_which, mock_ensure, mock_run, mock_rm):
+        """A given install_prefix should override the default LLVM install dir."""
+        from src.recipes.builder import build_libcxx_runtimes
+        recipe = _make_recipe(name="llvm")
+        build_libcxx_runtimes(
+            recipe, sanitizer="address",
+            install_prefix="/install/testlib/sanitized-libcxx",
+        )
+        cfg_cmd = mock_run.call_args_list[0][0][0]
+        install_prefix = [a for a in cfg_cmd if "CMAKE_INSTALL_PREFIX" in a]
+        self.assertIn("/install/testlib/sanitized-libcxx", install_prefix[0])
+
+    def test_sanitized_libcxx_prefix_is_a_distinct_subdir(self):
+        """The instrumented libc++ prefix is a distinct dir beside the plain one."""
+        from src.recipes.builder import sanitized_libcxx_prefix
+        prefix = sanitized_libcxx_prefix("/opt/llvm")
+        self.assertTrue(prefix.endswith("sanitized-libcxx"))
+        self.assertNotEqual(prefix, "/opt/llvm")
 
     @patch("src.recipes.builder.remove_dir")
     @patch("src.recipes.builder.run_cmd")

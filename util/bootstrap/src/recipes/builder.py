@@ -52,6 +52,17 @@ def needs_libcxx_runtimes(sanitizer: str, compiler_id: str) -> bool:
     return True
 
 
+def sanitized_libcxx_prefix(llvm_install_dir: str) -> str:
+    """
+    Return the install prefix for the sanitizer-instrumented libc++.
+
+    It sits beside the plain libc++ under the LLVM install directory, so the
+    instrumented runtime is cached with LLVM while the plain headers at
+    <install>/include/c++/v1 stay the ones MrDocs parses.
+    """
+    return os.path.join(llvm_install_dir, "sanitized-libcxx")
+
+
 def build_libcxx_runtimes(
     recipe: Recipe,
     cc: str = "",
@@ -62,16 +73,15 @@ def build_libcxx_runtimes(
     debug: bool = False,
     env: Optional[dict] = None,
     ui: Optional[TextUI] = None,
+    install_prefix: str = "",
 ):
     """
     Build libc++/libc++abi runtimes with sanitizer instrumentation.
 
-    This builds instrumented runtimes before the main LLVM build so that
-    downstream builds use sanitizer-instrumented standard libraries.
-
     The runtimes are built from <llvm-source>/runtimes and installed into
-    the LLVM install prefix. The runtimes build directory is cleaned up
-    after installation.
+    install_prefix, a location separate from the plain libc++ so that MrDocs
+    links against the instrumented library while still parsing the plain
+    headers. The runtimes build directory is cleaned up after installation.
 
     Args:
         recipe: The LLVM recipe (provides source_dir, build_dir, install_dir).
@@ -83,6 +93,8 @@ def build_libcxx_runtimes(
         debug: If True, show debug output.
         env: Environment variables for commands.
         ui: TextUI instance for output.
+        install_prefix: Where to install the runtimes. Defaults to the LLVM
+            install directory.
     """
     if ui is None:
         ui = get_default_ui()
@@ -104,7 +116,8 @@ def build_libcxx_runtimes(
 
     runtimes_src = os.path.join(recipe.source_dir, "runtimes")
     runtimes_build = recipe.build_dir + "-runtimes"
-    install_prefix = recipe.install_dir
+    if not install_prefix:
+        install_prefix = recipe.install_dir
 
     # Determine runtimes to build
     runtimes = "libcxx;libcxxabi"

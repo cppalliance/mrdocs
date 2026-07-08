@@ -55,6 +55,7 @@ from .recipes import (
     build_libcxx_runtimes,
     needs_libcxx_runtimes,
     libcxx_runtime_flags,
+    sanitized_libcxx_prefix,
     write_recipe_stamp,
     recipe_stamp_path,
     is_recipe_up_to_date,
@@ -484,7 +485,8 @@ class MrDocsInstaller:
             # even on cache hit, since downstream builds need them.
             if recipe.name == "llvm":
                 if needs_libcxx_runtimes(self.options.sanitizer, compiler_id):
-                    rt_flags = libcxx_runtime_flags(recipe.install_dir)
+                    rt_flags = libcxx_runtime_flags(
+                        sanitized_libcxx_prefix(recipe.install_dir))
                     self._libcxx_cxxflags = rt_flags["cxxflags"]
                     self._libcxx_ldflags = rt_flags["ldflags"]
                     self.options.cxxflags = (self.options.cxxflags + " " + rt_flags["cxxflags"]).strip()
@@ -550,10 +552,8 @@ class MrDocsInstaller:
                         self.options.debug,
                         self.env,
                         self.ui,
+                        install_prefix=sanitized_libcxx_prefix(recipe.install_dir),
                     )
-                    # Disable runtimes in the main LLVM build so it doesn't
-                    # overwrite the instrumented ones we just built
-                    extra_cmake_options = ["-DLLVM_ENABLE_RUNTIMES="]
 
             self._dry_comment(f"Build and install {recipe.name}")
             build_recipe(
