@@ -661,13 +661,14 @@ class TestInstallDependencies(unittest.TestCase):
     @patch("src.installer.fetch_recipe_source")
     @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
     @patch("src.installer.load_recipe_files")
-    def test_install_dependencies_disables_main_llvm_runtimes_when_libcxx_built(
+    def test_install_dependencies_builds_instrumented_libcxx_beside_plain(
         self, mock_load, mock_topo, mock_fetch, mock_patch, mock_build, mock_stamp,
         mock_flags, mock_needs, mock_libcxx
     ):
-        """LLVM + clang + ASan/MSan should pass -DLLVM_ENABLE_RUNTIMES= to the
-        main LLVM build via extra_cmake_options, so the instrumented libc++
-        we just built isn't overwritten."""
+        """LLVM + clang + ASan/MSan should build the instrumented libc++ into a
+        separate prefix and leave the main build's plain libc++ in place (no
+        -DLLVM_ENABLE_RUNTIMES= override), so MrDocs parses the plain headers."""
+        from src.recipes.builder import sanitized_libcxx_prefix
         recipe = self._make_recipe("llvm")
         mock_load.return_value = [recipe]
 
@@ -676,10 +677,13 @@ class TestInstallDependencies(unittest.TestCase):
         inst.install_dependencies()
 
         mock_libcxx.assert_called_once()
-        # Find the extra_cmake_options arg in the build_recipe call
-        # (positional, between ldflags and force).
+        self.assertEqual(
+            mock_libcxx.call_args.kwargs["install_prefix"],
+            sanitized_libcxx_prefix(recipe.install_dir),
+        )
         build_args = mock_build.call_args[0]
-        self.assertIn(["-DLLVM_ENABLE_RUNTIMES="], build_args)
+        self.assertIn(None, build_args)
+        self.assertNotIn(["-DLLVM_ENABLE_RUNTIMES="], build_args)
 
     @patch("src.installer.needs_libcxx_runtimes", return_value=False)
     @patch("src.installer.write_recipe_stamp")
