@@ -1,0 +1,379 @@
+/**
+ * MrDocs Design System — F0 foundation
+ * =====================================================================
+ * Single source of truth for the comic / C++-superhero visual language,
+ * extracted from the landing page (docs/website/styles.css) and expressed
+ * as three token layers:
+ *
+ *   Layer 0 — Primitives    raw, theme-agnostic values (palette, type ramp,
+ *                           spacing, radii, borders, comic shadows, motion)
+ *   Layer 1 — Semantic      role-based tokens with light / dark variants
+ *   Layer 2 — Component     component-scoped tokens (button, card, comic box,
+ *                           code, nav) that reference the semantic layer
+ *
+ * Consumers (docs/website landing page, docs/ui Antora theme) map their own
+ * variables onto these — they never hardcode a hex value. Wiring each surface
+ * to consume this file happens in the later redesign slices; F0 only
+ * establishes the vocabulary.
+ *
+ * Theming is tri-state: light is the default, dark applies both via the OS
+ * preference (prefers-color-scheme) and via an explicit [data-theme] override
+ * so a toggle can force either direction.
+ */
+
+/* =====================================================================
+ * LAYER 0 — PRIMITIVES  (theme-agnostic)
+ * ===================================================================== */
+:root {
+  /* --- Palette: brand blue ------------------------------------------ */
+  --ds-blue-200: #78c8ff; /* dark-theme primary base */
+  --ds-blue-400: #0091ea; /* secondary hover border    */
+  --ds-blue-500: #1095c1; /* light-theme primary       */
+  --ds-blue-600: #067da6; /* primary hover             */
+  --ds-blue-700: #0078c8; /* primary active            */
+  --ds-blue-100: #bcebfb; /* demo / tint               */
+
+  /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
+  --ds-gold-400: #ffd700; /* peak / hover              */
+  --ds-gold-500: #e5be33; /* rest / function-name / check accent */
+  --ds-gold-700: #c8aa28; /* active / pressed          */
+
+  /* --- Palette: ink & paper (light surfaces) ----------------------- */
+  --ds-black: #000; /* comic borders & hard shadows */
+  --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
+  --ds-white: #fff;
+  --ds-paper: #fef7e1; /* warm cream page background  */
+  --ds-paper-raised: #fbfbfc; /* cards / dropdowns      */
+  --ds-paper-code: #f9fafb; /* inline / block code bg   */
+
+  /* --- Palette: navy (dark surfaces) ------------------------------- */
+  --ds-navy-900: #0e1419; /* logo knockout            */
+  --ds-navy-800: #11191f; /* dark page background     */
+  --ds-navy-700: #141e26; /* dark card                */
+  --ds-navy-600: #18232c; /* dark code / sectioning   */
+  --ds-navy-500: #24333e; /* dark divider / range     */
+  --ds-navy-400: #374956; /* dark form border         */
+
+  /* --- Typography: families ---------------------------------------- */
+  --ds-font-body: "Roboto", sans-serif;
+  --ds-font-mono:
+    "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace", "Noto Mono",
+    "Oxygen Mono", "Liberation Mono", monospace, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* Display face: comic italic once licensed; falls back to body for now. */
+  --ds-font-display: var(--ds-font-body);
+
+  /* --- Typography: weights ----------------------------------------- */
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 600; /* CTA labels               */
+  --ds-weight-bold: 700; /* headings                 */
+  --ds-weight-display: 800; /* hero headings            */
+
+  /* --- Typography: responsive base size ---------------------------- */
+  --ds-font-size: 16px; /* → 20px, see breakpoints below */
+
+  /* --- Typography: type scale (desktop peak; see fluid overrides) --- */
+  --ds-text-h1: 3rem;
+  --ds-text-h2: 2.25rem;
+  --ds-text-h3: 1.5rem;
+  --ds-text-h4: 1.25rem;
+  --ds-text-h5: 1.125rem;
+  --ds-text-h6: 1rem;
+  --ds-text-body: 1rem;
+  --ds-text-small: 0.875em;
+
+  /* --- Typography: line-heights ------------------------------------ */
+  --ds-leading-tight: 1.125; /* h1                     */
+  --ds-leading-snug: 1.25; /* h2                     */
+  --ds-leading-normal: 1.5; /* body                   */
+
+  /* --- Spacing scale (base unit = 1rem) ---------------------------- */
+  --ds-space: 1rem;
+  --ds-space-2xs: 0.25rem;
+  --ds-space-xs: 0.5rem;
+  --ds-space-sm: 0.75rem;
+  --ds-space-md: 1rem;
+  --ds-space-lg: 1.5rem;
+  --ds-space-xl: 2rem;
+  --ds-space-2xl: 3rem;
+  --ds-space-3xl: 4rem;
+  --ds-section-gap: 3rem; /* → 4rem on ≥576px         */
+
+  /* --- Radii & borders --------------------------------------------- */
+  --ds-radius: 0.25rem;
+  --ds-radius-pill: 2rem;
+  --ds-border-width: 1px;
+  --ds-border-width-bold: 2px; /* comic outlines         */
+  --ds-outline-width: 3px;
+
+  /* --- Shadows: comic signature (hard, no blur) -------------------- */
+  --ds-shadow-comic: 6px 6px 0 var(--ds-black);
+  --ds-shadow-comic-soft: 6px 6px 0 rgba(0, 0, 0, 0.8);
+  --ds-shadow-comic-pressed: 2px 2px 0 var(--ds-black);
+  --ds-shadow-comic-pressed-soft: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  --ds-drop-comic: drop-shadow(7px 10px 0 rgba(0, 0, 0, 0.7));
+  /* Soft ambient card elevation (light). */
+  --ds-shadow-card-light:
+    0.0145rem 0.029rem 0.174rem rgba(27, 40, 50, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(27, 40, 50, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(27, 40, 50, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(27, 40, 50, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(27, 40, 50, 0.04302),
+    0.5rem 1rem 6rem rgba(27, 40, 50, 0.06),
+    0 0 0 0.0625rem rgba(27, 40, 50, 0.015);
+  --ds-shadow-card-dark:
+    0.0145rem 0.029rem 0.174rem rgba(0, 0, 0, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(0, 0, 0, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(0, 0, 0, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(0, 0, 0, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(0, 0, 0, 0.04302),
+    0.5rem 1rem 6rem rgba(0, 0, 0, 0.06),
+    0 0 0 0.0625rem rgba(0, 0, 0, 0.015);
+
+  /* --- Motion ------------------------------------------------------- */
+  --ds-transition: 0.2s ease-in-out;
+  --ds-lift: translateY(-2px); /* hover                 */
+  --ds-press: translateY(1px); /* active                */
+
+  /* --- Container max-widths ---------------------------------------- */
+  --ds-container-sm: 510px;
+  --ds-container-md: 700px;
+  --ds-container-lg: 920px;
+  --ds-container-xl: 1130px;
+
+  /* --- Z-index scale ----------------------------------------------- */
+  --ds-z-nav: 1;
+  --ds-z-toolbar: 2;
+  --ds-z-menu: 3;
+  --ds-z-navbar: 4;
+  --ds-z-switcher: 5;
+}
+
+/* Responsive base font size (drives all rem-based tokens). */
+@media (min-width: 576px) {
+  :root {
+    --ds-font-size: 17px;
+    --ds-section-gap: 4rem;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --ds-font-size: 18px;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --ds-font-size: 19px;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --ds-font-size: 20px;
+  }
+}
+
+/* Fluid heading ramp: h1 2rem → 3rem, h2 1.75rem → 2.25rem. */
+:root {
+  --ds-text-h1: 2rem;
+  --ds-text-h2: 1.75rem;
+}
+@media (min-width: 576px) {
+  :root {
+    --ds-text-h1: 2.25rem;
+    --ds-text-h2: 1.875rem;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --ds-text-h1: 2.5rem;
+    --ds-text-h2: 2rem;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --ds-text-h1: 2.75rem;
+    --ds-text-h2: 2.125rem;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --ds-text-h1: 3rem;
+    --ds-text-h2: 2.25rem;
+  }
+}
+
+/* =====================================================================
+ * LAYER 1 — SEMANTIC  (role-based, themed)
+ * ---------------------------------------------------------------------
+ * Light is the default. Dark applies via OS preference AND via an
+ * explicit [data-theme=dark] override. The gold accent is shared across
+ * both themes; only surfaces, text, borders, and the primary blue shift.
+ * ===================================================================== */
+
+/* ---- Light (default + forced) -------------------------------------- */
+:root:not([data-theme="dark"]),
+[data-theme="light"] {
+  color-scheme: light;
+
+  --ds-color-bg: var(--ds-paper);
+  --ds-color-surface: var(--ds-paper-raised);
+  --ds-color-surface-sunken: var(--ds-paper-code);
+
+  --ds-color-text: rgba(0, 0, 0, 0.8);
+  --ds-color-heading: rgba(0, 0, 0, 0.95);
+  --ds-color-muted: rgba(0, 0, 0, 0.5);
+  --ds-color-border: rgba(0, 0, 0, 0.1);
+
+  --ds-color-primary: var(--ds-blue-500);
+  --ds-color-primary-hover: var(--ds-blue-600);
+  --ds-color-primary-active: var(--ds-blue-700);
+  --ds-color-primary-focus: rgba(16, 149, 193, 0.125);
+  --ds-color-on-primary: var(--ds-white);
+
+  --ds-color-accent: var(--ds-gold-500);
+  --ds-color-accent-hover: var(--ds-gold-400);
+  --ds-color-accent-active: var(--ds-gold-700);
+  --ds-color-on-accent: var(--ds-ink-900);
+
+  --ds-color-nav-bg: rgba(255, 255, 255, 0.7);
+  --ds-color-nav-border: rgba(115, 130, 140, 0.2);
+
+  --ds-color-valid: #388e3c;
+  --ds-color-invalid: #c62828;
+  --ds-color-mark-bg: #fff2ca;
+  --ds-color-mark-text: #543a26;
+
+  --ds-shadow-card: var(--ds-shadow-card-light);
+
+  /* Code / syntax (light) */
+  --ds-code-bg: hsl(205deg, 20%, 94%);
+  --ds-code-text: var(--ds-color-muted);
+  --ds-code-tag: hsl(330deg, 40%, 50%);
+  --ds-code-property: hsl(185deg, 40%, 40%);
+  --ds-code-value: hsl(40deg, 20%, 50%);
+  --ds-code-comment: hsl(205deg, 14%, 68%);
+}
+
+/* ---- Dark (OS preference, unless explicitly light) ----------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --ds-color-bg: var(--ds-navy-800);
+    --ds-color-surface: var(--ds-navy-700);
+    --ds-color-surface-sunken: var(--ds-navy-600);
+
+    --ds-color-text: rgba(255, 255, 255, 0.9);
+    --ds-color-heading: rgba(255, 255, 255, 0.98);
+    --ds-color-muted: rgba(255, 255, 255, 0.6);
+    --ds-color-border: rgba(255, 255, 255, 0.1);
+
+    --ds-color-primary: rgba(120, 200, 255, 0.9);
+    --ds-color-primary-hover: rgba(140, 210, 255, 0.95);
+    --ds-color-primary-active: var(--ds-blue-200);
+    --ds-color-primary-focus: rgba(120, 200, 255, 0.2);
+    --ds-color-on-primary: rgba(0, 0, 0, 0.9);
+
+    --ds-color-nav-bg: rgba(16, 24, 30, 0.8);
+    --ds-color-nav-border: rgba(115, 130, 140, 0.2);
+
+    --ds-color-valid: rgba(46, 125, 50, 0.5);
+    --ds-color-invalid: rgba(183, 28, 28, 0.5);
+    --ds-color-mark-bg: #d1c284;
+    --ds-color-mark-text: #11191f;
+
+    --ds-shadow-card: var(--ds-shadow-card-dark);
+
+    --ds-code-bg: var(--ds-navy-600);
+    --ds-code-text: var(--ds-color-muted);
+    --ds-code-tag: hsl(330deg, 30%, 50%);
+    --ds-code-property: hsl(185deg, 30%, 50%);
+    --ds-code-value: hsl(40deg, 10%, 50%);
+    --ds-code-comment: #4d606d;
+  }
+}
+
+/* ---- Dark (forced) ------------------------------------------------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ds-color-bg: var(--ds-navy-800);
+  --ds-color-surface: var(--ds-navy-700);
+  --ds-color-surface-sunken: var(--ds-navy-600);
+
+  --ds-color-text: rgba(255, 255, 255, 0.9);
+  --ds-color-heading: rgba(255, 255, 255, 0.98);
+  --ds-color-muted: rgba(255, 255, 255, 0.6);
+  --ds-color-border: rgba(255, 255, 255, 0.1);
+
+  --ds-color-primary: rgba(120, 200, 255, 0.9);
+  --ds-color-primary-hover: rgba(140, 210, 255, 0.95);
+  --ds-color-primary-active: var(--ds-blue-200);
+  --ds-color-primary-focus: rgba(120, 200, 255, 0.2);
+  --ds-color-on-primary: rgba(0, 0, 0, 0.9);
+
+  --ds-color-nav-bg: rgba(16, 24, 30, 0.8);
+  --ds-color-nav-border: rgba(115, 130, 140, 0.2);
+
+  --ds-color-valid: rgba(46, 125, 50, 0.5);
+  --ds-color-invalid: rgba(183, 28, 28, 0.5);
+  --ds-color-mark-bg: #d1c284;
+  --ds-color-mark-text: #11191f;
+
+  --ds-shadow-card: var(--ds-shadow-card-dark);
+
+  --ds-code-bg: var(--ds-navy-600);
+  --ds-code-text: var(--ds-color-muted);
+  --ds-code-tag: hsl(330deg, 30%, 50%);
+  --ds-code-property: hsl(185deg, 30%, 50%);
+  --ds-code-value: hsl(40deg, 10%, 50%);
+  --ds-code-comment: #4d606d;
+}
+
+/* =====================================================================
+ * LAYER 2 — COMPONENT  (reference the semantic layer only)
+ * ===================================================================== */
+:root {
+  /* ---- Button / CTA (comic) --------------------------------------- */
+  --ds-btn-height: 2.5rem;
+  --ds-btn-padding-x: 1.5em;
+  --ds-btn-weight: var(--ds-weight-medium);
+  --ds-btn-border-width: var(--ds-border-width-bold);
+  --ds-btn-radius: var(--ds-radius);
+  --ds-btn-shadow: var(--ds-shadow-comic);
+  --ds-btn-shadow-pressed: var(--ds-shadow-comic-pressed);
+  --ds-btn-lift: var(--ds-lift);
+  --ds-btn-press: var(--ds-press);
+
+  /* Primary CTA = gold */
+  --ds-btn-primary-bg: var(--ds-color-accent);
+  --ds-btn-primary-bg-hover: var(--ds-color-accent-hover);
+  --ds-btn-primary-bg-active: var(--ds-color-accent-active);
+  --ds-btn-primary-fg: var(--ds-color-on-accent);
+
+  /* Secondary CTA = blue */
+  --ds-btn-secondary-bg: var(--ds-blue-500);
+  --ds-btn-secondary-bg-hover: var(--ds-blue-600);
+  --ds-btn-secondary-bg-active: var(--ds-blue-700);
+  --ds-btn-secondary-fg: var(--ds-ink-900);
+  --ds-btn-secondary-shadow: var(--ds-shadow-comic-soft);
+
+  /* ---- Card -------------------------------------------------------- */
+  --ds-card-bg: var(--ds-color-surface);
+  --ds-card-border: var(--ds-color-border);
+  --ds-card-radius: var(--ds-radius);
+  --ds-card-shadow: var(--ds-shadow-card);
+
+  /* ---- Comic decorative box --------------------------------------- */
+  --ds-box-drop: var(--ds-drop-comic);
+  --ds-box-border: var(--ds-border-width-bold) solid var(--ds-black);
+
+  /* ---- Navigation bar --------------------------------------------- */
+  --ds-nav-bg: var(--ds-color-nav-bg);
+  --ds-nav-border: var(--ds-color-nav-border);
+  --ds-nav-blur: blur(10px);
+
+  /* ---- Code block ------------------------------------------------- */
+  --ds-code-radius: var(--ds-radius);
+  --ds-code-font: var(--ds-font-mono);
+}
