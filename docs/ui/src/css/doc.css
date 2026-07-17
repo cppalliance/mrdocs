@@ -41,6 +41,7 @@ html {
 .doc h5,
 .doc h6 {
   color: var(--heading-font-color);
+  font-family: var(--ds-font-display);
   font-weight: var(--heading-font-weight);
   hyphens: none;
   line-height: 1.3;

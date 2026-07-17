@@ -55,13 +55,13 @@
   --ds-navy-400: #374956; /* dark form border         */
 
   /* --- Typography: families ---------------------------------------- */
-  --ds-font-body: "Roboto", sans-serif;
+  --ds-font-body: "Special Elite", "Roboto", sans-serif;
   --ds-font-mono:
     "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace", "Noto Mono",
     "Oxygen Mono", "Liberation Mono", monospace, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  /* Display face: comic italic once licensed; falls back to body for now. */
-  --ds-font-display: var(--ds-font-body);
+  /* Comic display face for headings; falls back to body where unavailable. */
+  --ds-font-display: "Bangers", var(--ds-font-body);
 
   /* --- Typography: weights ----------------------------------------- */
   --ds-weight-regular: 400;
