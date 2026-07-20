@@ -376,4 +376,14 @@
   /* ---- Code block ------------------------------------------------- */
   --ds-code-radius: var(--ds-radius);
   --ds-code-font: var(--ds-font-mono);
+
+  /* ---- Hero title (comic "Main Title" — Figma spec) --------------- */
+  /* Figma exact: 96px / 90% / #93C5FD, 4px #0F172A outline + shadow.
+     Mapped to nearest existing primitives here (blue-200 / navy-900). */
+  --ds-title-size: clamp(3rem, 8vw, 6rem); /* 96px desktop peak */
+  --ds-title-leading: 0.9; /* Figma line-height 90% */
+  --ds-title-color: var(--ds-blue-200); /* nearest to Figma #93C5FD */
+  --ds-title-ink: var(--ds-navy-900); /* outline + shadow; nearest #0F172A */
+  --ds-title-outline-width: 4px;
+  --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
 }
