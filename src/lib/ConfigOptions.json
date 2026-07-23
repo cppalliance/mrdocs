@@ -74,6 +74,13 @@
         "default": []
       },
       {
+        "name": "extra-compiler-args",
+        "brief": "Additional command-line arguments passed to the compiler",
+        "details": "Extra arguments appended to each translation unit's compile command, regardless of the strategy used to generate the compilation database. Use these for compiler options MrDocs does not model directly. The arguments are passed to the compiler verbatim.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
         "name": "use-system-stdlib",
         "brief": "Use the system C++ standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",

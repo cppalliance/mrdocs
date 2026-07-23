@@ -373,6 +373,12 @@ adjustCommandLine(
     }
     new_cmdline.emplace_back("-D__MRDOCS__");
 
+    // Additional compiler arguments from the config file
+    for (auto const& arg : (*config)->extraCompilerArgs)
+    {
+        new_cmdline.emplace_back(arg);
+    }
+
     if ((*config)->useSystemStdlib || (*config)->useSystemLibc)
     {
         // ------------------------------------------------------

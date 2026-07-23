@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <source>
+  </source>
+  <kind>namespace</kind>
+  <id>//////////////////////////8=</id>
+  <extraction>regular</extraction>
+  <namespace-tranche>
+    <functions>FCl6kQqcum1BJjGHToB834KPI/M=</functions>
+    <functions>Hf4ZEmoq/XgUVgRDrMJKtlEwmtQ=</functions>
+  </namespace-tranche>
+</namespace>
+<function>
+  <name>always</name>
+  <source>
+    <location>
+      <short-path>extra-compiler-args.cpp</short-path>
+      <source-path>extra-compiler-args.cpp</source-path>
+      <line-number>7</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>FCl6kQqcum1BJjGHToB834KPI/M=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Always visible, regardless of extra compiler arguments.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+<function>
+  <name>gated</name>
+  <source>
+    <location>
+      <short-path>extra-compiler-args.cpp</short-path>
+      <source-path>extra-compiler-args.cpp</source-path>
+      <line-number>3</line-number>
+      <column-number>1</column-number>
+      <documented>1</documented>
+    </location>
+  </source>
+  <kind>function</kind>
+  <id>Hf4ZEmoq/XgUVgRDrMJKtlEwmtQ=</id>
+  <extraction>regular</extraction>
+  <parent>//////////////////////////8=</parent>
+  <doc-comment>
+    <brief>
+      <kind>brief</kind>
+      <text>
+        <kind>text</kind>
+        <literal>Visible only when MRDOCS_EXTRA_ARG is defined.</literal>
+      </text>
+    </brief>
+  </doc-comment>
+  <named>
+    <name>
+      <kind>identifier</kind>
+      <identifier>void</identifier>
+    </name>
+  </named>
+  <func-class>normal</func-class>
+</function>
+</mrdocs>

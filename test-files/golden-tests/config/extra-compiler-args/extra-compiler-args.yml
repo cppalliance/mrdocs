@@ -1,0 +1,2 @@
+extra-compiler-args:
+  - -DMRDOCS_EXTRA_ARG

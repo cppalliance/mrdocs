@@ -153,6 +153,15 @@
       "title": "Symbol patterns to exclude",
       "type": "array"
     },
+    "extra-compiler-args": {
+      "default": [],
+      "description": "Extra arguments appended to each translation unit's compile command, regardless of the strategy used to generate the compilation database. Use these for compiler options MrDocs does not model directly. The arguments are passed to the compiler verbatim.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Additional command-line arguments passed to the compiler",
+      "type": "array"
+    },
     "extract-all": {
       "default": true,
       "description": "When set to `true`, MrDocs extracts all symbols from the source code, even if no documentation is provided. MrDocs can only identify whether a symbol is ultimated documented after extracting information from all translation units. For this reason, when this option is set to `false`, it's still recommendable to provide file and symbol filters so that only the desired symbols are traversed and stored by MrDocs.",
