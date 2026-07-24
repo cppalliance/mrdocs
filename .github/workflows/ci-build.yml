@@ -157,15 +157,6 @@ jobs:
           build-dir: build/mrdocs
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # The coverage step scans build/ for *.profraw, which also sweeps up
-      # the committed *.profraw test fixtures in LLVM's extracted source
-      # tree; their older format fails the llvm-profdata merge. The
-      # process-coverage action can't exclude a subdirectory from that
-      # scan, so drop those foreign files first.
-      - name: Prune third-party profraw
-        if: matrix.coverage
-        run: find build/third-party -name '*.profraw' -delete
-
       - name: Process Coverage
         id: process-coverage
         if: matrix.coverage
