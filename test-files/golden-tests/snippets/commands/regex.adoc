@@ -12,7 +12,7 @@ Declared in `&lt;regex&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-class regex { /* see-below */ };
+class regex { &sol;&ast; see-below &ast;&sol; };
 ----
 
 === Description

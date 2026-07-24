@@ -32,11 +32,12 @@
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
 {{~#if noexcept~}}
-    {{~! Specs with operands longer than 40 characters (full string > 50,
-         accounting for the "noexcept(" and ")" wrappers) are rendered as
-         `noexcept(see-below)` plus a dedicated specification section;
-         shorter ones are shown inline. ~}}
-    {{~#if (gt (len noexcept) 50)}} noexcept({{#>markup/em}}see-below{{/markup/em}}){{else}} {{noexcept}}{{/if~}}
+    {{~! Specs whose full "noexcept(...)" string is longer than the
+         noexcept-see-below-limit option (the active generator's
+         generator-options.<id>, exposed as generatorConfig; default 50) are
+         rendered with the see-below placeholder plus a dedicated specification
+         section; shorter ones are shown inline. ~}}
+    {{~#if (gt (len noexcept) (or @root.generatorConfig.[noexcept-see-below-limit] 50))}} noexcept({{> symbol/signature/see-below}}){{else}} {{noexcept}}{{/if~}}
 {{~/if~}}
 {{#if (eq funcClass "normal")}}{{>type/declarator-suffix returnType}}{{/if~}}
 {{#if requires}}

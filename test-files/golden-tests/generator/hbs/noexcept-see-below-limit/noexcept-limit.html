@@ -1,0 +1,62 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+<meta charset="utf-8">
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+<h3>Functions</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#swap"><code>swap</code></a> </td><td>Swaps two values, conditionally noexcept.</td></tr>
+</tbody>
+</table>
+
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="swap">swap</h2>
+<div class="brief">
+<p>Swaps two values, conditionally noexcept.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept-limit.cpp&gt;</code></p>
+<pre><code class="source-code cpp">template&lt;class T&gt;
+void
+swap(
+    T& a,
+    T& b) noexcept(/* see-below */);</code></pre>
+</div><!-- /synopsis -->
+<div class="noexcept-specification">
+<h3>Exception specification</h3>
+<p>This function is potentially-throwing unless <code>sizeof(T) &gt; sizeof(int)</code>.</p>
+</div><!-- /noexcept-specification -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>a</strong></td><td>first value</td></tr>
+<tr><td><strong>b</strong></td><td>second value</td></tr>
+</tbody>
+</table>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+
+</div>
+<footer class="mrdocs-footer">
+<span>Created with <a href="https://www.mrdocs.com">MrDocs</a></span>
+</footer>
+</body>
+</html>
