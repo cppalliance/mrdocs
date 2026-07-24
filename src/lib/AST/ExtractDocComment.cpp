@@ -1277,7 +1277,17 @@ class DocCommentVisitor
 
         // default rendering: concatenate all args and style accordingly
         std::string s;
-        s.reserve([&] {
+        // An unrecognized command carries its meaning in the command name,
+        // which Clang does not expose as an argument. Dropping it silently
+        // loses content: most importantly LaTeX macros inside math spans
+        // (e.g. \pi, \epsilon in `$\pi r^2$`), which Clang tokenizes as
+        // unknown commands. Preserve the command verbatim as literal text.
+        if (cmd->IsUnknownCommand)
+        {
+            s.push_back('\\');
+            s.append(C->getCommandName(ctx_.getCommentCommandTraits()));
+        }
+        s.reserve(s.size() + [&] {
             size_t n = 0;
             for (unsigned i = 0; i < C->getNumArgs(); ++i)
             {
