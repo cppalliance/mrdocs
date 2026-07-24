@@ -634,7 +634,8 @@
         "kind": "Inline",
         "syntaxes": [
           "~~text~~",
-          "<del>text</del>"
+          "<del>text</del>",
+          "<s>text</s>"
         ],
         "partial": "commands/strikethrough.adoc",
         "examples": [
