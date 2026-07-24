@@ -12,7 +12,7 @@ Declared in `&lt;netz&sol;buffer&lowbar;view&period;hpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-class buffer&lowbar;view { /* see-below */ };
+class buffer&lowbar;view { &sol;&ast; see-below &ast;&sol; };
 ----
 
 === Description

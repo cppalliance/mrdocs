@@ -12,7 +12,7 @@ Declared in `&lt;see&hyphen;below&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-class handle { /* see-below */ };
+class handle { &sol;&ast; see-below &ast;&sol; };
 ----
 
 

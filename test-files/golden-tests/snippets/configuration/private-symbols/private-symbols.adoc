@@ -12,7 +12,7 @@ Declared in `&lt;logr&sol;log&period;hpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-class log&lowbar;record { /* see-below */ };
+class log&lowbar;record { &sol;&ast; see-below &ast;&sol; };
 ----
 
 === Description

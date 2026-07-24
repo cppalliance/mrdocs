@@ -39,7 +39,7 @@
     {{#if (eq refQualifier "lvalue")}} &{{else if (eq refQualifier "rvalue")}} &&{{/if~}}
     {{! noexcept specification with "see-below" placeholder for long operands ~}}
     {{~#if exceptionSpec~}}
-        {{~#if (gt (len exceptionSpec) 50)}} noexcept({{#>markup/em}}see-below{{/markup/em}}){{else}} {{exceptionSpec}}{{/if~}}
+        {{~#if (gt (len exceptionSpec) (or @root.generatorConfig.[noexcept-see-below-limit] 50))}} noexcept({{> symbol/signature/see-below}}){{else}} {{exceptionSpec}}{{/if~}}
     {{~/if~}}
     {{! Declarator suffix of the return type ~}}
     {{~>type/declarator-suffix returnType link-components-impl=link-components-impl~}}

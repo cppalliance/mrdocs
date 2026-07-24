@@ -1,0 +1,16 @@
+generator: [adoc, html]
+multipage: false
+no-default-styles: true
+warn-if-undocumented: false
+source-root: .
+# noexcept-see-below-limit set for each generator to a small value, so the
+# specifier (longer than 20, but shorter than the default 50) is elided to
+# noexcept(/* see-below */) with its own section. Both generators set it, so
+# the elision is driven by the option and its rendering is checked in adoc and
+# html. The inline case (specifier at or below the limit) is the default and is
+# already exercised throughout the suite, so it is not repeated here.
+generator-options:
+  adoc:
+    noexcept-see-below-limit: 20
+  html:
+    noexcept-see-below-limit: 20

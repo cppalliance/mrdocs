@@ -6,7 +6,7 @@
 
 === Functions
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#f1[`f1`] 
@@ -17,15 +17,17 @@
 | link:#f6[`f6`] 
 |===
 
+
 === Variables
 
-[cols=1]
+[cols="1"]
 |===
 | Name
 | link:#is_nothrow_move_assignable_v[`is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v`] 
 | link:#is_nothrow_move_constructible_v[`is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v`] 
 | link:#is_nothrow_swappable_v[`is&lowbar;nothrow&lowbar;swappable&lowbar;v`] 
 |===
+
 
 [#f1]
 == f1
@@ -109,12 +111,12 @@ template&lt;typename T&gt;
 void
 f6(
     T&,
-    T&) noexcept(_see-below_);
+    T&) noexcept(&sol;&ast; see-below &ast;&sol;);
 ----
 
-=== `noexcept` Specification
+=== Exception specification
 
-`noexcept` when `is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v&lt;T&gt; &amp;&amp; is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v&lt;T&gt;`.
+This function is potentially-throwing unless `is&lowbar;nothrow&lowbar;move&lowbar;constructible&lowbar;v&lt;T&gt; &amp;&amp; is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v&lt;T&gt;`.
 
 [#is_nothrow_move_assignable_v]
 == is&lowbar;nothrow&lowbar;move&lowbar;assignable&lowbar;v

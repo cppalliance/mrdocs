@@ -1,0 +1,16 @@
+{{! Exception specification: a dedicated section shown only when the noexcept
+    specifier is long enough that the signature elides it with the see-below
+    placeholder (see symbol/signature/function). Shorter specifiers are shown
+    inline and need no section here. The threshold is the noexcept-see-below-limit
+    option (the active generator's generator-options.<id>, exposed as
+    generatorConfig; default 50). symbol.noexcept is the whole "noexcept(...)"
+    string; its operand is that without the "noexcept(" prefix (9 chars) and
+    trailing ")". }}
+{{#if symbol.noexcept}}
+{{#if (gt (len symbol.noexcept) (or @root.generatorConfig.[noexcept-see-below-limit] 50))}}
+{{#> markup/section name="noexcept-specification"}}
+{{#> markup/dynamic-level-h }}Exception specification{{/markup/dynamic-level-h~}}
+{{#> markup/p}}This function is potentially-throwing unless {{#>markup/code}}{{slice symbol.noexcept 9 (sub (len symbol.noexcept) 1)}}{{/markup/code}}.{{/markup/p}}
+{{/markup/section}}
+{{/if}}
+{{/if}}

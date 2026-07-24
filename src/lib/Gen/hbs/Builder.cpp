@@ -29,6 +29,24 @@ namespace hbs {
 
 namespace {
 
+/** The active generator's `generator-options.<id>` settings.
+
+    Exposed to templates as `generatorConfig` so shared partials can read a
+    per-generator option directly as `@root.generatorConfig.<key>`, avoiding a
+    costly generator-options lookup by generator name in the template and
+    letting common partials reach generator configuration without hardcoding
+    the generator. Returns an empty object when the generator has no entry.
+*/
+dom::Value
+generatorConfig(HandlebarsCorpus const& domCorpus)
+{
+    auto const& genOpts = domCorpus->config->generatorOptions;
+    auto const it = genOpts.find(domCorpus.fileExtension);
+    return it != genOpts.end()
+        ? dom::Value(it->second)
+        : dom::Value(dom::Object());
+}
+
 /** Loads Handlebars partial templates from a directory.
 
     Recursively scans the specified directory for `.hbs` files and
@@ -540,6 +558,10 @@ createContext(Symbol const& I)
     ctx.set("page", page);
     ctx.set("symbol", domCorpus.get(I.id));
     ctx.set("config", domCorpus->config.object());
+    // The active generator's id, so templates can index per-generator
+    // settings, e.g. lookup config.generator-options.<generatorId>.
+    ctx.set("generatorId", domCorpus.fileExtension);
+    ctx.set("generatorConfig", generatorConfig(domCorpus));
     return ctx;
 }
 
@@ -594,6 +616,10 @@ renderWrapped(
     page.set("hasDefaultStyles", domCorpus.hasDefaultStyles);
     ctx.set("page", page);
     ctx.set("config", domCorpus->config.object());
+    // The active generator's id, so templates can index per-generator
+    // settings, e.g. lookup config.generator-options.<generatorId>.
+    ctx.set("generatorId", domCorpus.fileExtension);
+    ctx.set("generatorConfig", generatorConfig(domCorpus));
     ctx.set("contents",
             dom::makeInvocable([&](dom::Value const &) -> Expected<dom::Value> {
               MRDOCS_TRY(contentsCb());

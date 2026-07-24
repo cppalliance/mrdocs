@@ -6,185 +6,148 @@
 <body>
 <div>
 <h1>Reference</h1>
-<div>
-<div>
-<h2 id="index">
-Global Namespace</h2>
-</div>
-<h2>
-Functions</h2>
+<div class="symbol">
+<div class="header">
+<h2 id="index">Global namespace</h2>
+</div><!-- /header -->
+<h3>Functions</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-</tr>
+<tr><th>Name</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#f1"><code>f1</code></a> </td></tr><tr>
-<td><a href="#f2"><code>f2</code></a> </td></tr><tr>
-<td><a href="#f3"><code>f3</code></a> </td></tr><tr>
-<td><a href="#f4"><code>f4</code></a> </td></tr><tr>
-<td><a href="#f5"><code>f5</code></a> </td></tr><tr>
-<td><a href="#f6"><code>f6</code></a> </td></tr>
+<tr><td><a href="#f1"><code>f1</code></a> </td></tr>
+<tr><td><a href="#f2"><code>f2</code></a> </td></tr>
+<tr><td><a href="#f3"><code>f3</code></a> </td></tr>
+<tr><td><a href="#f4"><code>f4</code></a> </td></tr>
+<tr><td><a href="#f5"><code>f5</code></a> </td></tr>
+<tr><td><a href="#f6"><code>f6</code></a> </td></tr>
 </tbody>
 </table>
 
-<h2>
-Variables</h2>
+<h3>Variables</h3>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-</tr>
+<tr><th>Name</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><a href="#is_nothrow_move_assignable_v"><code>is_nothrow_move_assignable_v</code></a> </td></tr><tr>
-<td><a href="#is_nothrow_move_constructible_v"><code>is_nothrow_move_constructible_v</code></a> </td></tr><tr>
-<td><a href="#is_nothrow_swappable_v"><code>is_nothrow_swappable_v</code></a> </td></tr>
+<tr><td><a href="#is_nothrow_move_assignable_v"><code>is_nothrow_move_assignable_v</code></a> </td></tr>
+<tr><td><a href="#is_nothrow_move_constructible_v"><code>is_nothrow_move_constructible_v</code></a> </td></tr>
+<tr><td><a href="#is_nothrow_swappable_v"><code>is_nothrow_swappable_v</code></a> </td></tr>
 </tbody>
 </table>
 
-</div>
-<div>
-<div>
-<h2 id="f1">
-f1</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="f1">f1</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">void
 f1() noexcept;</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="f2">
-f2</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="f2">f2</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">void
 f2() noexcept(true);</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="f3">
-f3</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="f3">f3</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">void
 f3() noexcept(false);</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="f4">
-f4</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="f4">f4</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 void
 f4(T&) noexcept(is_nothrow_swappable_v&lt;T&gt;);</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="f5">
-f5</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="f5">f5</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 void
 f5(
     T a,
     T b) noexcept(noexcept(a + b));</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="f6">
-f6</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="f6">f6</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 void
 f6(
     T&,
-    T&) noexcept(<em>see-below</em>);</code></pre>
-</div>
-<div>
-<h3>
-<code>noexcept</code> Specification</h3>
-<p><code>noexcept</code> when <code>is_nothrow_move_constructible_v&lt;T&gt; &amp;&amp; is_nothrow_move_assignable_v&lt;T&gt;</code>.</p>
-</div>
-</div>
-<div>
-<div>
-<h2 id="is_nothrow_move_assignable_v">
-is_nothrow_move_assignable_v</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+    T&) noexcept(/* see-below */);</code></pre>
+</div><!-- /synopsis -->
+<div class="noexcept-specification">
+<h3>Exception specification</h3>
+<p>This function is potentially-throwing unless <code>is_nothrow_move_constructible_v&lt;T&gt; &amp;&amp; is_nothrow_move_assignable_v&lt;T&gt;</code>.</p>
+</div><!-- /noexcept-specification -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="is_nothrow_move_assignable_v">is_nothrow_move_assignable_v</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 inline constexpr bool is_nothrow_move_assignable_v = false;</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="is_nothrow_move_constructible_v">
-is_nothrow_move_constructible_v</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="is_nothrow_move_constructible_v">is_nothrow_move_constructible_v</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 inline constexpr bool is_nothrow_move_constructible_v = false;</code></pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="is_nothrow_swappable_v">
-is_nothrow_swappable_v</h2>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;noexcept.cpp&gt;</code></div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="is_nothrow_swappable_v">is_nothrow_swappable_v</h2>
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;noexcept.cpp&gt;</code></p>
 <pre><code class="source-code cpp">template&lt;typename T&gt;
 inline constexpr bool is_nothrow_swappable_v = false;</code></pre>
-</div>
-</div>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
 
 </div>
 <footer class="mrdocs-footer">

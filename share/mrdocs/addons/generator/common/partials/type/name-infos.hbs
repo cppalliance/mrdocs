@@ -14,7 +14,7 @@
 --}}
 {{#if id.isImplementationDefined~}}
     {{! The name refers to a symbol that's implementation defined. These are special names that should not be linked. ~}}
-    {{ str '/* '}}implementation-defined{{ str ' */'~}}
+    {{~> symbol/signature/implementation-defined ~}}
 {{else~}}
     {{#if prefix~}}
         {{> type/name-info prefix link-components-impl=link-components-impl~}}::
