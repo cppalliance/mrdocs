@@ -127,13 +127,14 @@ jobs:
           cxxflags: ${{ matrix.cxxflags }} ${{ env.BOOTSTRAP_CXXFLAGS }}
           ldflags: ${{ env.BOOTSTRAP_LDFLAGS }}
           generator: Ninja
+          build-dir: build/mrdocs
           build-type: ${{ matrix.build-type }}
           install-prefix: .local
           export-compile-commands: true
           run-tests: true
           install: true
           package: ${{ matrix.is-main }}
-          package-dir: packages
+          package-dir: ../packages
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
           ctest-timeout: 9000
@@ -153,17 +154,8 @@ jobs:
         uses: alandefreitas/cpp-actions/flamegraph@v1.9.5
         if: matrix.time-trace
         with:
-          build-dir: build
+          build-dir: build/mrdocs
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      # The coverage step scans build/ for *.profraw, which also sweeps up
-      # the committed *.profraw test fixtures in LLVM's extracted source
-      # tree; their older format fails the llvm-profdata merge. The
-      # process-coverage action can't exclude a subdirectory from that
-      # scan, so drop those foreign files first.
-      - name: Prune third-party profraw
-        if: matrix.coverage
-        run: find build/third-party -name '*.profraw' -delete
 
       - name: Process Coverage
         id: process-coverage
@@ -171,7 +163,7 @@ jobs:
         uses: alandefreitas/cpp-actions/process-coverage@v1.9.5
         with:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          build-dir: build
+          build-dir: build/mrdocs
           html-report: true
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           codecov-flags: cpp
