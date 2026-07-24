@@ -510,6 +510,16 @@ isStaticFileLevelMember(clang::Decl const* D)
     return false;
 }
 
+bool
+isImplicitDefaultInit(clang::Expr const* E)
+{
+    clang::CXXConstructExpr const* ctor =
+        dyn_cast<clang::CXXConstructExpr>(E->IgnoreImplicit());
+    return ctor != nullptr
+        && ctor->getNumArgs() == 0
+        && ctor->getParenOrBraceRange().isInvalid();
+}
+
 clang::RawComment const*
 getDocumentation(clang::Decl const* D)
 {

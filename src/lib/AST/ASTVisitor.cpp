@@ -1137,23 +1137,6 @@ populate(TypedefSymbol& I, clang::TypeAliasTemplateDecl const* D)
     }
 }
 
-// A variable with no written initializer can still carry an implicit
-// initializer in the AST. Any default-constructed class instance (`T t;`) gets
-// an implicit construction expression located at the variable name, so the
-// extracted source text is the variable name and would cause a spurious `= t`
-// to be rendered in the docs. So, we intercept this case. A written `{}`, a
-// copy-initialization such as `= x`, and literal initializers are left alone.
-static
-bool
-isImplicitDefaultInit(clang::Expr const* E)
-{
-    clang::CXXConstructExpr const* ctor =
-        dyn_cast<clang::CXXConstructExpr>(E->IgnoreImplicit());
-    return ctor != nullptr
-        && ctor->getNumArgs() == 0
-        && ctor->getParenOrBraceRange().isInvalid();
-}
-
 void
 ASTVisitor::
 populate(

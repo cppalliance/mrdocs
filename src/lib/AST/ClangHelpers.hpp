@@ -748,6 +748,11 @@ MRDOCS_DECL
 bool
 isStaticFileLevelMember(clang::Decl const *D);
 
+// Whether E is the implicit default constructor call synthesized for `T t;`
+MRDOCS_DECL
+bool
+isImplicitDefaultInit(clang::Expr const* E);
+
 MRDOCS_DECL
 bool
 isDocumented(clang::Decl const *D);
