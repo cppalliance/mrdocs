@@ -4,7 +4,7 @@
 [#circle_area]
 == circle&lowbar;area
 
-Computes the area of a circle&colon; _A &equals;  r&circ;2_&period;
+Computes the area of a circle&colon; stem:[A = \pi r^2]&period;
 
 === Synopsis
 
@@ -18,7 +18,7 @@ circle&lowbar;area(double r);
 
 === Description
 
-For very large radii the result is taken modulo floating&hyphen;point precision&colon; _A&lowbar;&lcub;approx&rcub; &equals;  r&circ;2 &plus;_
+For very large radii the result is taken modulo floating&hyphen;point precision&colon; stem:[A_{approx} = \pi r^2 + \epsilon]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
