@@ -17,7 +17,8 @@
 # when commiting because xmllint doesn't understand the compact format
 #
 
-namespace xsi= "http://www.w3.org/2001/XMLSchema-instance"
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
 
 grammar
 {
@@ -26,9 +27,373 @@ grammar
     Mrdocs =
         element mrdocs
         {
-            attribute xsi:noNamespaceSchemaLocation { text }?,
+            attribute xsi:noNamespaceSchemaLocation { xsd:string }?,
             AnySymbol*
         }
+
+    #---------------------------------------------
+    # Common leaf types
+    #---------------------------------------------
+
+    Id = xsd:string                 # Base64-encoded SymbolID
+    IdList = list { xsd:string* }   # whitespace-separated SymbolIDs (rule 6a)
+    Bool = empty                    # presence = true; absent = false (rule 3)
+    Kind = element kind { xsd:string }
+
+    # A ConstantExprInfo: its written source form plus, when known, the
+    # evaluated integer value. An expression with no written form is omitted.
+    ConstantExpr = ( element written { xsd:string } | element value { xsd:integer } )*
+    Strings = element string { xsd:string }*   # whitespace-capable scalar list (rule 6b)
+
+    ExtractionMode = "regular" | "see-below" | "implementation-defined" | "dependency"
+    FunctionClass = "normal" | "constructor" | "conversion" | "destructor"
+    RecordKeyKind = "struct" | "class" | "union"
+    UsingClass = "normal" | "typename" | "enum"
+    AccessSpecifier = "public" | "private" | "protected"
+    AdmonitionKind = "note" | "tip" | "important" | "warning" | "caution"
+    ListKind = "ordered" | "unordered" | "task"
+    ParamDirection = "in" | "out" | "inout"
+
+    #---------------------------------------------
+    # Source location
+    #---------------------------------------------
+
+    LocationFields =
+        ( element shortPath { xsd:string }
+        | element sourcePath { xsd:string }
+        | element lineNumber { xsd:integer }
+        | element columnNumber { xsd:integer }
+        | element documented { Bool } )
+
+    Location = element location { LocationFields* }
+
+    # SourceInfo: the `loc` field of a symbol.
+    SourceInfo =
+        element loc
+        {
+            ( element loc { Location* }
+            | element defLoc { LocationFields* } )*
+        }
+
+    #---------------------------------------------
+    # Name (used inside types and some symbols)
+    #---------------------------------------------
+
+    # A name field wraps the concrete name kind it holds (rule 8).
+    Name = element name { NameKind }
+
+    # A concrete name: an identifier, or a specialization carrying its template
+    # arguments. A prefix (the qualifier before `::`) wraps another name kind.
+    NameKind =
+        ( element identifier
+            { ( Kind | element id { Id } | element identifier { xsd:string }
+              | element prefix { NameKind } )* }
+        | element specialization
+            { ( Kind | element id { Id } | element identifier { xsd:string }
+              | element prefix { NameKind } | element templateArgs { AnyTArg* } )* } )
+
+    #---------------------------------------------
+    # Types (variant)
+    #---------------------------------------------
+
+    TypeField =
+        ( Kind
+        | element isPackExpansion { Bool }
+        | element isConst { Bool }
+        | element isVolatile { Bool }
+        | element constraints { Strings } )
+
+    # A type field wraps its concrete type element (rules 8, 9).
+    AnyType =
+        ( element named { ( TypeField | Name | element fundamentalType { xsd:string } )* }
+        | element pointer { ( TypeField | element pointeeType { AnyType } )* }
+        | element lValueReference { ( TypeField | element pointeeType { AnyType } )* }
+        | element rValueReference { ( TypeField | element pointeeType { AnyType } )* }
+        | element memberPointer { ( TypeField | element parentType { AnyType } | element pointeeType { AnyType } )* }
+        | element array { ( TypeField | element elementType { AnyType } | element bounds { ConstantExpr } )* }
+        | element decltype { ( TypeField | element operand { xsd:string } )* }
+        | element auto { ( TypeField | element keyword { xsd:string } | element constraint { NameKind* | text } )* }
+        | element function { ( TypeField | element returnType { AnyType } | element paramTypes { AnyType* } | element isVariadic { Bool } )* } )
+
+    #---------------------------------------------
+    # Template parameters and arguments (variants)
+    #---------------------------------------------
+
+    AnyTParam =
+        ( element type
+            { ( Kind | element name { xsd:string } | element isParameterPack { Bool }
+              | element keyKind { xsd:string } | element default { AnyTArg } | element constraint { NameKind* | text } )* }
+        | element constant
+            { ( Kind | element name { xsd:string } | element isParameterPack { Bool }
+              | element type { AnyType } | element default { AnyTArg } )* }
+        | element template
+            { ( Kind | element name { xsd:string } | element isParameterPack { Bool }
+              | element params { AnyTParam* } )* } )
+
+    AnyTArg =
+        ( element type { ( Kind | element isPackExpansion { Bool } | element type { AnyType } )* }
+        | element constant { ( Kind | element isPackExpansion { Bool } | element value { xsd:string } )* } )
+
+    Template =
+        element template
+        {
+            ( element params { AnyTParam* }
+            | element args { AnyTArg* }
+            | element primary { Id }
+            | element requires { xsd:string } )*
+        }
+
+    #---------------------------------------------
+    # Doc comment
+    #---------------------------------------------
+
+    Children = element children { AnyInline* }
+
+    AnyInline =
+        ( element text { ( Kind | element literal { xsd:string } )* }
+        | element code { ( Kind | Children | element literal { xsd:string } )* }
+        | element strong { ( Kind | Children )* }
+        | element emph { ( Kind | Children )* }
+        | element link { ( Kind | Children | element href { xsd:string } )* }
+        | element reference { ( Kind | element literal { xsd:string } | element id { Id } )* } )
+
+    Reference = element reference { ( Kind | element literal { xsd:string } | element id { Id } )* }
+
+    AnyBlock =
+        ( element paragraph { ( Kind | Children )* }
+        | element admonition { ( Kind | element blocks { AnyBlock* } | element admonish { AdmonitionKind } )* }
+        | element list { ( Kind | element items { ( element listItem { element blocks { AnyBlock* }* } | TableRow )* } | element listKind { ListKind } )* }
+        | element heading { ( Kind | Children | element level { xsd:integer } )* }
+        | element code { ( Kind | Children | element literal { xsd:string } )* }
+        | element table { ( Kind | element items { TableRow* } )* } )
+
+    TableRow =
+        element tableRow
+        {
+            ( element isHeader { Bool } | element cells { element tableCell { Children* }* } )*
+        }
+
+    Doc =
+        element doc
+        {
+            ( element brief { ( Kind | Children | element copiedFrom { Strings } )* }
+            | element document { AnyBlock* }
+            | element related { Reference* }
+            | element relates { Reference* }
+            | element returns { element returns { ( Kind | Children )* }* }
+            | element params { element param { ( Kind | Children | element name { xsd:string } | element direction { ParamDirection } )* }* }
+            | element tparams { element tParam { ( Kind | Children | element name { xsd:string } )* }* }
+            | element exceptions { element throws { ( Kind | Children | element exception { ( Kind | element literal { xsd:string } | element id { Id } )* } )* }* }
+            | element sees { element see { ( Kind | Children )* }* }
+            | element preconditions { element precondition { ( Kind | Children )* }* }
+            | element postconditions { element postcondition { ( Kind | Children )* }* } )*
+        }
+
+    #---------------------------------------------
+    # Attributes (variant)
+    #---------------------------------------------
+
+    AttrField =
+        ( Kind | element name { xsd:string } | element balancedTokens { Strings } )
+
+    Attributes =
+        element attributes
+        {
+            ( element other { AttrField* }
+            | element noreturn { AttrField* }
+            | element maybeUnused { AttrField* }
+            | element deprecated { ( AttrField | element message { xsd:string } )* }
+            | element nodiscard { ( AttrField | element reason { xsd:string } )* } )*
+        }
+
+    #---------------------------------------------
+    # Symbols
+    #---------------------------------------------
+
+    # Fields common to every symbol.
+    SymbolField =
+        ( element name { xsd:string }
+        | SourceInfo
+        | Kind
+        | element id { Id }
+        | element access { AccessSpecifier }
+        | element extraction { ExtractionMode }
+        | element isCopyFromInherited { Bool }
+        | element parent { Id }
+        | Doc
+        | Attributes )
+
+    # A tranche of member id lists.
+    Tranche =
+        ( element namespaces { IdList }
+        | element namespaceAliases { IdList }
+        | element typedefs { IdList }
+        | element records { IdList }
+        | element enums { IdList }
+        | element functions { IdList }
+        | element staticFunctions { IdList }
+        | element variables { IdList }
+        | element staticVariables { IdList }
+        | element concepts { IdList }
+        | element guides { IdList }
+        | element usings { IdList } )
+
+    Namespace =
+        element namespace
+        {
+            ( SymbolField
+            | element isInline { Bool }
+            | element isAnonymous { Bool }
+            | element members { Tranche* }
+            | element usingDirectives { NameKind* } )*
+        }
+
+    Record =
+        element record
+        {
+            ( SymbolField
+            | element keyKind { RecordKeyKind }
+            | Template
+            | element isTypeDef { Bool }
+            | element isFinal { Bool }
+            | element isFinalDestructor { Bool }
+            | element bases { element baseInfo { ( element type { AnyType } | element access { AccessSpecifier } | element isVirtual { Bool } )* }* }
+            | element interface
+                { ( element public { Tranche* } | element protected { Tranche* } | element private { Tranche* } )* }
+            | element derived { IdList }
+            | element friends { element friendInfo { ( element id { Id } | element type { AnyType } )* }* }
+            | element isListedOnPrimary { Bool }
+            | element specializations { IdList }
+            | element deductionGuides { IdList } )*
+        }
+
+    Function =
+        element function
+        {
+            ( SymbolField
+            | element returnType { AnyType }
+            | element params { element param { ( element name { xsd:string } | element type { AnyType } | element default { xsd:string } )* }* }
+            | element paramTypes { AnyType* }
+            | Template
+            | element funcClass { FunctionClass }
+            | element overloadedOperator { xsd:string }
+            | element refQualifier { xsd:string }
+            | element requires { xsd:string }
+            | element isVariadic { Bool }
+            | element isDefaulted { Bool }
+            | element isExplicitlyDefaulted { Bool }
+            | element isDeleted { Bool }
+            | element isDeletedAsWritten { Bool }
+            | element hasOverrideAttr { Bool }
+            | element hasTrailingReturn { Bool }
+            | element isExplicitObjectMemberFunction { Bool }
+            | element constexpr { xsd:string }
+            | element storageClass { xsd:string }
+            | element isRecordMethod { Bool }
+            | element isVirtual { Bool }
+            | element isVirtualAsWritten { Bool }
+            | element isPure { Bool }
+            | element isConst { Bool }
+            | element isVolatile { Bool }
+            | element isFinal { Bool }
+            | element isPackExpansion { Bool }
+            | element functionObjectImpl { Id }
+            | element isListedOnPrimary { Bool }
+            | element specializations { IdList } )*
+        }
+
+    Guide =
+        element guide
+        {
+            ( SymbolField
+            | element deduced { AnyType }
+            | Template
+            | element params { element param { ( element name { xsd:string } | element type { AnyType } | element default { xsd:string } )* }* } )*
+        }
+
+    Enum =
+        element enum
+        {
+            ( SymbolField
+            | element scoped { Bool }
+            | element underlyingType { AnyType }
+            | element constants { IdList } )*
+        }
+
+    EnumConstant =
+        element enumConstant
+        {
+            ( SymbolField | element initializer { ConstantExpr } )*
+        }
+
+    Typedef =
+        element typedef
+        {
+            ( SymbolField
+            | element type { AnyType }
+            | element isUsing { Bool }
+            | Template )*
+        }
+
+    Variable =
+        element variable
+        {
+            ( SymbolField
+            | element type { AnyType }
+            | Template
+            | element initializer { xsd:string }
+            | element storageClass { xsd:string }
+            | element isInline { Bool }
+            | element isConstexpr { Bool }
+            | element isConstinit { Bool }
+            | element isThreadLocal { Bool }
+            | element isRecordField { Bool }
+            | element isMutable { Bool }
+            | element isVariant { Bool }
+            | element isBitfield { Bool }
+            | element bitfieldWidth { ConstantExpr } )*
+        }
+
+    NamespaceAlias =
+        element namespaceAlias
+        {
+            ( SymbolField
+            | element aliasedSymbol
+                { ( Kind | element id { Id } | element identifier { xsd:string } | element prefix { NameKind } )* } )*
+        }
+
+    Using =
+        element using
+        {
+            ( SymbolField
+            | element class { UsingClass }
+            | element introducedName { NameKind* }
+            | element shadowDeclarations { IdList } )*
+        }
+
+    Concept =
+        element concept
+        {
+            ( SymbolField | Template | element constraint { NameKind* | text } )*
+        }
+
+    Overloads =
+        element overloads
+        {
+            ( SymbolField
+            | element funcClass { FunctionClass }
+            | element overloadedOperator { xsd:string }
+            | element members { IdList }
+            | element returnType { AnyType } )*
+        }
+
+    AnySymbol =
+        ( Namespace | Record | Function | Typedef | Enum | EnumConstant
+        | Variable | Guide | NamespaceAlias | Using | Concept | Overloads )
+
+    #---------------------------------------------
+    # Tagfile
+    #---------------------------------------------
 
     Tagfile =
         element tagfile
@@ -40,8 +405,8 @@ grammar
         element compound
         {
             attribute kind { "namespace" | "class" },
-            element name { text },
-            element filename { text },
+            element name { xsd:string },
+            element filename { xsd:string },
             (TagClass | TagMember)*
         }
 
@@ -49,947 +414,17 @@ grammar
         element class
         {
             attribute kind { "class" },
-            text
+            xsd:string
         }
 
     TagMember =
         element member
         {
             attribute kind { "function" },
-            element type { text },
-            element name { text },
-            element anchorfile { text },
-            element anchor { text },
-            element arglist { text }
-        }
-
-    #---------------------------------------------
-    # Common types
-    #---------------------------------------------
-
-    SymbolID = text   # Base64-encoded
-
-    Bool = empty   # empty element when true, omitted when false
-
-    #---------------------------------------------
-    # Enums
-    #---------------------------------------------
-
-    ExtractionMode = "regular" | "see-below" | "implementation-defined" | "dependency"
-
-    FileKind = "source" | "system" | "other"
-
-    FunctionClass = "normal" | "constructor" | "conversion" | "destructor"
-
-    RecordKeyKind = "struct" | "class" | "union"
-
-    UsingClass = "normal" | "typename" | "enum"
-
-    AccessSpecifier = "public" | "private" | "protected"
-
-    AdmonitionKind = "note" | "tip" | "important" | "warning" | "caution"
-
-    ListKind = "ordered" | "unordered" | "task"
-
-    ParamDirection = "in" | "out" | "in-out"
-
-    TableAlignmentKind = "left" | "center" | "right"
-
-    #---------------------------------------------
-    # Name (used inside types, not for symbol names)
-    #---------------------------------------------
-
-    Name =
-        element name
-        {
-            element kind { text }?,
-            element id { SymbolID }?,
-            element identifier { text }?,
-            Name?
-        }
-
-    #---------------------------------------------
-    # Location & Source
-    #---------------------------------------------
-
-    Location =
-        element location
-        {
-            element short-path { text }?,
-            element source-path { text }?,
-            element line-number { text }?,
-            element column-number { text }?,
-            element documented { Bool }?
-        }
-
-    SourceInfo =
-        element source
-        {
-            Location*
-        }
-
-    #---------------------------------------------
-    # Symbol base
-    #---------------------------------------------
-
-    SymbolBase =
-    (
-        element name { text }?,
-        SourceInfo,
-        element kind { text }?,
-        element id { SymbolID }?,
-        element access { AccessSpecifier }?,
-        element extraction { ExtractionMode }?,
-        element is-copy-from-inherited { Bool }?,
-        element parent { SymbolID }?,
-        DocComment?,
-        AnyAttribute*
-    )
-
-    #---------------------------------------------
-    # Attributes (polymorphic)
-    #---------------------------------------------
-
-    AttributeBase =
-    (
-        element name { text }?,
-        element balanced-tokens { text }*
-    )
-
-    AnyAttribute =
-        OtherAttribute | NoreturnAttribute | CarriesDependencyAttribute |
-        DeprecatedAttribute | FallthroughAttribute | MaybeUnusedAttribute |
-        NodiscardAttribute | LikelyAttribute | UnlikelyAttribute |
-        NoUniqueAddressAttribute | AssumeAttribute | IndeterminateAttribute
-
-    OtherAttribute            = element other-attribute             { AttributeBase }
-    NoreturnAttribute         = element noreturn-attribute          { AttributeBase }
-    CarriesDependencyAttribute = element carries-dependency-attribute { AttributeBase }
-    FallthroughAttribute      = element fallthrough-attribute       { AttributeBase }
-    MaybeUnusedAttribute      = element maybe-unused-attribute      { AttributeBase }
-    LikelyAttribute           = element likely-attribute            { AttributeBase }
-    UnlikelyAttribute         = element unlikely-attribute          { AttributeBase }
-    NoUniqueAddressAttribute  = element no-unique-address-attribute { AttributeBase }
-    IndeterminateAttribute    = element indeterminate-attribute     { AttributeBase }
-
-    DeprecatedAttribute =
-        element deprecated-attribute
-        {
-            AttributeBase,
-            element message { text }?
-        }
-
-    NodiscardAttribute =
-        element nodiscard-attribute
-        {
-            AttributeBase,
-            element reason { text }?
-        }
-
-    AssumeAttribute =
-        element assume-attribute
-        {
-            AttributeBase,
-            element expression { text }?
-        }
-
-    #---------------------------------------------
-    # Types (polymorphic)
-    #---------------------------------------------
-
-    TypeBase =
-    (
-        element is-pack-expansion { Bool }?,
-        element is-const { Bool }?,
-        element is-volatile { Bool }?,
-        element constraints { text }?
-    )
-
-    ArrayType =
-        element array
-        {
-            TypeBase,
-            AnyType?,
-            element bounds { text }?
-        }
-
-    AutoType =
-        element auto
-        {
-            TypeBase,
-            Name?,
-            element keyword { text }?,
-            element constraint { text }?
-        }
-
-    DecltypeType =
-        element decltype
-        {
-            TypeBase,
-            element operand { text }?
-        }
-
-    FunctionType =
-        element function
-        {
-            TypeBase,
-            AnyType*,
-            element ref-qualifier { text }?,
-            element exception-spec { text }?,
-            element is-variadic { Bool }?
-        }
-
-    LValueReferenceType =
-        element l-value-reference
-        {
-            TypeBase,
-            AnyType?
-        }
-
-    RValueReferenceType =
-        element r-value-reference
-        {
-            TypeBase,
-            AnyType?
-        }
-
-    PointerType =
-        element pointer
-        {
-            TypeBase,
-            AnyType?
-        }
-
-    MemberPointerType =
-        element member-pointer
-        {
-            TypeBase,
-            AnyType*
-        }
-
-    NamedType =
-        element named
-        {
-            TypeBase,
-            Name?,
-            element fundamental-type { text }?
-        }
-
-    AnyType =
-        ArrayType | AutoType | DecltypeType | FunctionType |
-        LValueReferenceType | RValueReferenceType | PointerType |
-        MemberPointerType | NamedType
-
-    #---------------------------------------------
-    # Template parameters (polymorphic)
-    #---------------------------------------------
-
-    TParamBase =
-    (
-        element kind { text }?,
-        element name { text }?,
-        element is-parameter-pack { Bool }?,
-        AnyTArg?
-    )
-
-    TypeTParam =
-        element type-tparam
-        {
-            TParamBase,
-            element key-kind { text }?,
-            Name?
-        }
-
-    ConstantTParam =
-        element constant-tparam
-        {
-            TParamBase,
-            AnyType?
-        }
-
-    TemplateTParam =
-        element template-tparam
-        {
-            TParamBase,
-            AnyTParam*
-        }
-
-    AnyTParam = TypeTParam | ConstantTParam | TemplateTParam
-
-    #---------------------------------------------
-    # Template arguments (polymorphic)
-    #---------------------------------------------
-
-    TArgBase =
-    (
-        element kind { text }?,
-        element is-pack-expansion { Bool }?
-    )
-
-    TypeTArg =
-        element type-targ
-        {
-            TArgBase,
-            AnyType?
-        }
-
-    ConstantTArg =
-        element constant-targ
-        {
-            TArgBase,
-            element value { text }?
-        }
-
-    TemplateTArg =
-        element template-targ
-        {
-            TArgBase,
-            element name { text }?,
-            element template { text }?
-        }
-
-    AnyTArg = TypeTArg | ConstantTArg | TemplateTArg
-
-    #---------------------------------------------
-    # Template
-    #---------------------------------------------
-
-    TemplateInfo =
-        element template
-        {
-            AnyTParam*,
-            AnyTArg*,
-            element requires { text }?,
-            element primary { SymbolID }?
-        }
-
-    #---------------------------------------------
-    # Param
-    #---------------------------------------------
-
-    Param =
-        element param
-        {
-            AnyType?,
-            element name { text }?,
-            element default { text }?
-        }
-
-    #---------------------------------------------
-    # Symbols
-    #---------------------------------------------
-
-    Namespace =
-        element namespace
-        {
-            SymbolBase,
-            element is-inline { Bool }?,
-            element is-anonymous { Bool }?,
-            Name*,
-            NamespaceTranche?
-        }
-
-    NamespaceTranche =
-        element namespace-tranche
-        {
-            element namespaces { SymbolID }*,
-            element namespace-aliases { SymbolID }*,
-            element typedefs { SymbolID }*,
-            element records { SymbolID }*,
-            element enums { SymbolID }*,
-            element functions { SymbolID }*,
-            element variables { SymbolID }*,
-            element concepts { SymbolID }*,
-            element guides { SymbolID }*,
-            element usings { SymbolID }*
-        }
-
-    #---------------------------------------------
-
-    Record =
-        element record
-        {
-            SymbolBase,
-            element key-kind { RecordKeyKind }?,
-            TemplateInfo?,
-            element is-type-def { Bool }?,
-            element is-final { Bool }?,
-            element is-final-destructor { Bool }?,
-            BaseInfo*,
-            element derived { SymbolID }*,
-            RecordInterface?,
-            FriendInfo*,
-            element is-listed-on-primary { Bool }?,
-            element specializations { SymbolID }*,
-            element deduction-guides { SymbolID }*
-        }
-
-    BaseInfo =
-        element base
-        {
-            AnyType?,
-            element access { AccessSpecifier }?,
-            element is-virtual { Bool }?
-        }
-
-    RecordInterface =
-        element record-interface
-        {
-            RecordTranche*
-        }
-
-    RecordTranche =
-        element record-tranche
-        {
-            element namespace-aliases { SymbolID }*,
-            element typedefs { SymbolID }*,
-            element records { SymbolID }*,
-            element enums { SymbolID }*,
-            element functions { SymbolID }*,
-            element static-functions { SymbolID }*,
-            element variables { SymbolID }*,
-            element static-variables { SymbolID }*,
-            element concepts { SymbolID }*,
-            element guides { SymbolID }*,
-            element usings { SymbolID }*
-        }
-
-    FriendInfo =
-        element friend
-        {
-            AnyType?,
-            element id { SymbolID }?
-        }
-
-    #---------------------------------------------
-
-    Function =
-        element function
-        {
-            SymbolBase,
-            AnyType?,
-            Param*,
-            TemplateInfo?,
-            element func-class { FunctionClass }?,
-            element noexcept { text }?,
-            element requires { text }?,
-            element is-variadic { Bool }?,
-            element is-defaulted { Bool }?,
-            element is-explicitly-defaulted { Bool }?,
-            element is-deleted { Bool }?,
-            element is-deleted-as-written { Bool }?,
-            element has-override-attr { Bool }?,
-            element has-trailing-return { Bool }?,
-            element is-explicit-object-member-function { Bool }?,
-            element constexpr { text }?,
-            element overloaded-operator { text }?,
-            element storage-class { text }?,
-            element is-record-method { Bool }?,
-            element is-virtual { Bool }?,
-            element is-virtual-as-written { Bool }?,
-            element is-pure { Bool }?,
-            element is-const { Bool }?,
-            element is-volatile { Bool }?,
-            element is-final { Bool }?,
-            element ref-qualifier { text }?,
-            element explicit { text }?,
-            element function-object-impl { SymbolID }?,
-            element is-listed-on-primary { Bool }?,
-            element specializations { SymbolID }*
-        }
-
-    #---------------------------------------------
-
-    Guide =
-        element guide
-        {
-            SymbolBase,
-            AnyType?,
-            TemplateInfo?,
-            Param*,
-            element explicit { text }?
-        }
-
-    #---------------------------------------------
-
-    Enum =
-        element enum
-        {
-            SymbolBase,
-            element scoped { Bool }?,
-            AnyType?,
-            element constants { SymbolID }*
-        }
-
-    EnumConstant =
-        element enum-constant
-        {
-            SymbolBase,
-            element initializer { text }?
-        }
-
-    #---------------------------------------------
-
-    Typedef =
-        element typedef
-        {
-            SymbolBase,
-            AnyType?,
-            element is-using { Bool }?,
-            TemplateInfo?
-        }
-
-    #---------------------------------------------
-
-    Variable =
-        element variable
-        {
-            SymbolBase,
-            AnyType?,
-            TemplateInfo?,
-            element initializer { text }?,
-            element storage-class { text }?,
-            element is-inline { Bool }?,
-            element is-constexpr { Bool }?,
-            element is-constinit { Bool }?,
-            element is-thread-local { Bool }?,
-            element is-record-field { Bool }?,
-            element is-mutable { Bool }?,
-            element is-variant { Bool }?,
-            element is-bitfield { Bool }?,
-            element bitfield-width { text }?
-        }
-
-    #---------------------------------------------
-
-    NamespaceAlias =
-        element namespace-alias
-        {
-            SymbolBase,
-            IdentifierName?
-        }
-
-    IdentifierName =
-        element identifier-name
-        {
-            element kind { text }?,
-            element id { SymbolID }?,
-            element identifier { text }?,
-            Name?
-        }
-
-    #---------------------------------------------
-
-    Using =
-        element using
-        {
-            SymbolBase,
-            element class { UsingClass }?,
-            Name?,
-            element shadow-declarations { SymbolID }*
-        }
-
-    #---------------------------------------------
-
-    Concept =
-        element concept
-        {
-            SymbolBase,
-            TemplateInfo?,
-            element constraint { text }?
-        }
-
-    #---------------------------------------------
-
-    Overloads =
-        element overloads
-        {
-            SymbolBase,
-            element func-class { FunctionClass }?,
-            element overloaded-operator { text }?,
-            element members { SymbolID }*,
-            AnyType?
-        }
-
-    #---------------------------------------------
-    # All symbol types (flat at top level)
-    #---------------------------------------------
-
-    AnySymbol =
-    (
-        Namespace      |
-        Record         |
-        Function       |
-        Typedef        |
-        Enum           |
-        EnumConstant   |
-        Variable       |
-        Guide          |
-        NamespaceAlias |
-        Using          |
-        Concept        |
-        Overloads
-    )
-
-    #---------------------------------------------
-    #
-    # DocComment
-    #
-    #---------------------------------------------
-
-    DocComment =
-        element doc-comment
-        {
-            BlockNode*
-        }
-
-    #---------------------------------------------
-    # Block nodes
-    #---------------------------------------------
-
-    BlockNode =
-    (
-        AdmonitionBlock   |
-        BriefBlock        |
-        CodeBlock         |
-        HeadingBlock      |
-        ParagraphBlock    |
-        ListBlock         |
-        DefinitionListBlock |
-        QuoteBlock        |
-        ThematicBreakBlock |
-        FootnoteDefinitionBlock |
-        TableBlock        |
-        MathBlock         |
-        ParamBlock        |
-        PostconditionBlock |
-        PreconditionBlock |
-        ReferenceBlock    |
-        ReturnsBlock      |
-        SeeBlock          |
-        ThrowsBlock       |
-        TParamBlock
-    )
-
-    BlockBase =
-        element kind { text }?
-
-    AdmonitionBlock =
-        element admonition
-        {
-            BlockBase,
-            BlockNode*,
-            element admonish { AdmonitionKind }?
-        }
-
-    BriefBlock =
-        element brief
-        {
-            BlockBase,
-            InlineNode*,
-            element copied-from { SymbolID }*
-        }
-
-    CodeBlock =
-        element code
-        {
-            BlockBase,
-            element literal { text }?,
-            element info { text }?
-        }
-
-    HeadingBlock =
-        element heading
-        {
-            BlockBase,
-            InlineNode*,
-            element level { text }?
-        }
-
-    ParagraphBlock =
-        element paragraph
-        {
-            BlockBase,
-            InlineNode*
-        }
-
-    ListItem =
-        element list-item
-        {
-            BlockNode*
-        }
-
-    ListBlock =
-        element list
-        {
-            BlockBase,
-            ListItem*,
-            element list-kind { ListKind }?
-        }
-
-    DefinitionListItem =
-        element definition-list-item
-        {
-            BlockNode*,
-            element term { InlineNode }*
-        }
-
-    DefinitionListBlock =
-        element definition-list
-        {
-            BlockBase,
-            DefinitionListItem*
-        }
-
-    QuoteBlock =
-        element quote
-        {
-            BlockBase,
-            BlockNode*
-        }
-
-    ThematicBreakBlock =
-        element thematic-break
-        {
-            BlockBase
-        }
-
-    FootnoteDefinitionBlock =
-        element footnote-definition
-        {
-            BlockBase,
-            BlockNode*,
-            element label { text }?
-        }
-
-    TableCell =
-        element table-cell
-        {
-            InlineNode*
-        }
-
-    TableRow =
-        element table-row
-        {
-            element is-header { Bool }?,
-            TableCell*
-        }
-
-    TableBlock =
-        element table
-        {
-            BlockBase,
-            element alignments { TableAlignmentKind }*,
-            TableRow*
-        }
-
-    MathBlock =
-        element math
-        {
-            BlockBase,
-            element literal { text }?
-        }
-
-    ParamBlock =
-        element param
-        {
-            BlockBase,
-            InlineNode*,
-            element name { text }?,
-            element direction { ParamDirection }?
-        }
-
-    PostconditionBlock =
-        element postcondition
-        {
-            BlockBase,
-            InlineNode*
-        }
-
-    PreconditionBlock =
-        element precondition
-        {
-            BlockBase,
-            InlineNode*
-        }
-
-    ReferenceBlock =
-        element reference
-        {
-            BlockBase,
-            element literal { text }?,
-            element id { SymbolID }?
-        }
-
-    ReturnsBlock =
-        element returns
-        {
-            BlockBase,
-            InlineNode*
-        }
-
-    SeeBlock =
-        element see
-        {
-            BlockBase,
-            InlineNode*
-        }
-
-    ThrowsBlock =
-        element throws
-        {
-            BlockBase,
-            InlineNode*,
-            element exception { text }?
-        }
-
-    TParamBlock =
-        element t-param
-        {
-            BlockBase,
-            InlineNode*,
-            element name { text }?
-        }
-
-    #---------------------------------------------
-    # Inline nodes
-    #---------------------------------------------
-
-    InlineNode =
-    (
-        TextInline            |
-        CodeInline            |
-        MathInline            |
-        EmphInline            |
-        StrongInline          |
-        HighlightInline       |
-        StrikethroughInline   |
-        SubscriptInline       |
-        SuperscriptInline     |
-        LinkInline            |
-        ReferenceInline       |
-        ImageInline           |
-        FootnoteReferenceInline |
-        CopyDetailsInline     |
-        LineBreakInline       |
-        SoftBreakInline
-    )
-
-    InlineBase =
-        element kind { text }?
-
-    TextInline =
-        element text
-        {
-            InlineBase,
-            element literal { text }?
-        }
-
-    CodeInline =
-        element code
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    MathInline =
-        element math
-        {
-            InlineBase,
-            element literal { text }?
-        }
-
-    EmphInline =
-        element emph
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    StrongInline =
-        element strong
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    HighlightInline =
-        element highlight
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    StrikethroughInline =
-        element strikethrough
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    SubscriptInline =
-        element subscript
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    SuperscriptInline =
-        element superscript
-        {
-            InlineBase,
-            InlineNode*
-        }
-
-    LinkInline =
-        element link
-        {
-            InlineBase,
-            InlineNode*,
-            element href { text }?
-        }
-
-    ReferenceInline =
-        element reference
-        {
-            InlineBase,
-            element literal { text }?,
-            element id { SymbolID }?
-        }
-
-    ImageInline =
-        element image
-        {
-            InlineBase,
-            InlineNode*,
-            element src { text }?,
-            element alt { text }?
-        }
-
-    FootnoteReferenceInline =
-        element footnote-reference
-        {
-            InlineBase,
-            element label { text }?
-        }
-
-    CopyDetailsInline =
-        element copy-details
-        {
-            InlineBase,
-            element string { text }?,
-            element id { SymbolID }?
-        }
-
-    LineBreakInline =
-        element line-break
-        {
-            InlineBase
-        }
-
-    SoftBreakInline =
-        element soft-break
-        {
-            InlineBase
+            element type { xsd:string },
+            element name { xsd:string },
+            element anchorfile { xsd:string },
+            element anchor { xsd:string },
+            element arglist { xsd:string }
         }
 }

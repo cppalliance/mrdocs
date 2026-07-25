@@ -2,317 +2,436 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>w/4YwvbadDuW7Jcd/fzixfCXP54=</functions>
-    <functions>3y+Rt2TVgN8SW9EozffoZoL4lCI=</functions>
-    <functions>IPZj2cmKd30EV/ztyuacllbdZcg=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>3jNRTaxzpg1AvyzuDsoyvBFcCEU5 47LsC7o5pa2AQYTW2qPVPDybB7W9 TdppRWVWdqhNkJuFxFWcgLUhAR5</functions>
+  </members>
 </namespace>
 <function>
   <name>copyFromNoParam</name>
-  <source>
-    <location>
-      <short-path>no-param.cpp</short-path>
-      <source-path>no-param.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-param.cpp</shortPath>
+        <sourcePath>no-param.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>w/4YwvbadDuW7Jcd/fzixfCXP54=</id>
+  <id>3jNRTaxzpg1AvyzuDsoyvBFcCEU5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the function original documentation for the foo function with no parameters.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This documentation is copied from the page containing the foo overload with no parameters.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This is the function original documentation for the foo function with no parameters.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This documentation is copied from the page containing the foo overload with no parameters.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>foo()</literal>
+          <literal>Brief from </literal>
         </text>
-      </code>
-      <copied-from>foo()</copied-from>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>foo()</literal>
+            </text>
+          </children>
+        </code>
+      </children>
+      <copiedFrom>
+        <string>foo()</string>
+      </copiedFrom>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A boolean value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A boolean value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
 </function>
 <function>
   <name>copyfromOverloads</name>
-  <source>
-    <location>
-      <short-path>no-param.cpp</short-path>
-      <source-path>no-param.cpp</source-path>
-      <line-number>36</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-param.cpp</shortPath>
+        <sourcePath>no-param.cpp</sourcePath>
+        <lineNumber>36</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>3y+Rt2TVgN8SW9EozffoZoL4lCI=</id>
+  <id>47LsC7o5pa2AQYTW2qPVPDybB7W9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This documentation is copied from the page containing all overloads of foo.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This documentation is copied from the page containing all overloads of foo.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>foo()</literal>
+          <literal>Brief from </literal>
         </text>
-      </code>
-      <copied-from>foo</copied-from>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>foo()</literal>
+            </text>
+          </children>
+        </code>
+      </children>
+      <copiedFrom>
+        <string>foo</string>
+      </copiedFrom>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A boolean value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A boolean value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
 </function>
 <overloads>
   <name>foo</name>
-  <source>
-    <location>
-      <short-path>no-param.cpp</short-path>
-      <source-path>no-param.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>no-param.cpp</short-path>
-      <source-path>no-param.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-param.cpp</shortPath>
+        <sourcePath>no-param.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>no-param.cpp</shortPath>
+        <sourcePath>no-param.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>IPZj2cmKd30EV/ztyuacllbdZcg=</id>
+  <id>TdppRWVWdqhNkJuFxFWcgLUhAR5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>foo()</literal>
+          <literal>Brief from </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>foo()</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A boolean value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A boolean value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A character.</literal>
-      </text>
-      <name>ch</name>
-    </param>
-  </doc-comment>
-  <func-class>normal</func-class>
-  <members>yi6+RKHXbSoVR9R7xtUev7R+tpA=</members>
-  <members>rxxMRI4yLbPZ6gsq6d/+e9IVaeQ=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A character.</literal>
+          </text>
+        </children>
+        <name>ch</name>
+      </param>
+    </params>
+  </doc>
+  <funcClass>normal</funcClass>
+  <members>3pNXRSN5t7DoYtWf2iWHbByDvyEw 3SVm91fKi3kBnRayDvrL68Z3zWoV</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>foo</name>
-  <source>
-    <location>
-      <short-path>no-param.cpp</short-path>
-      <source-path>no-param.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-param.cpp</shortPath>
+        <sourcePath>no-param.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>yi6+RKHXbSoVR9R7xtUev7R+tpA=</id>
+  <id>3pNXRSN5t7DoYtWf2iWHbByDvyEw</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the function original documentation for the foo function with no parameters.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This is the function original documentation for the foo function with no parameters.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>foo()</literal>
+          <literal>Brief from </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>foo()</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A boolean value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A boolean value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
 </function>
 <function>
   <name>foo</name>
-  <source>
-    <location>
-      <short-path>no-param.cpp</short-path>
-      <source-path>no-param.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-param.cpp</shortPath>
+        <sourcePath>no-param.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>rxxMRI4yLbPZ6gsq6d/+e9IVaeQ=</id>
+  <id>3SVm91fKi3kBnRayDvrL68Z3zWoV</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the function original documentation for the foo function with no parameters.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This is the function original documentation for the foo function with no parameters.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>foo()</literal>
+          <literal>Brief from </literal>
         </text>
-      </code>
-      <copied-from>foo()</copied-from>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>foo()</literal>
+            </text>
+          </children>
+        </code>
+      </children>
+      <copiedFrom>
+        <string>foo()</string>
+      </copiedFrom>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A boolean value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A boolean value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A character.</literal>
+          </text>
+        </children>
+        <name>ch</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A character.</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>char</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>char</fundamentalType>
+        </named>
+      </type>
       <name>ch</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>char</identifier>
-      </name>
-    </named>
-    <name>ch</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
 </function>
 </mrdocs>

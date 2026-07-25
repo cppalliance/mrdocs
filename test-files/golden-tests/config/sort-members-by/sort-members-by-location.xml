@@ -2,580 +2,776 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>NQ8uQgTcafPcttyBMHHLHAXA4MA=</records>
-  </namespace-tranche>
+  <members>
+    <records>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</records>
+  </members>
 </namespace>
 <record>
   <name>Z</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>sort-members-by-location.cpp</shortPath>
+      <sourcePath>sort-members-by-location.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
+  <id>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>Cnsc4OfzqGbrnICr/PmPGh6bkZc=</functions>
-      <functions>HMG56OCQ5OpB2E9hu4bG3/hoOho=</functions>
-      <functions>lBA1besl9J3wAZAcEn9C+K05hf4=</functions>
-      <functions>gRx0djRTyQ5zuzBd9ujP7LLlWNg=</functions>
-      <functions>zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=</functions>
-      <functions>rjPdhFxUkaC43tWXi+kka78JQxI=</functions>
-      <functions>atwUGLD+QHVhH3x1+8qzINNxzMY=</functions>
-      <functions>CB0pXrzU8BKZ2LF0BSpclxIfgrs=</functions>
-      <functions>6/NYLeQdPqWrbu5kHnTpE3u6Yg4=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>9UCcDp1KkXu5NDXDmY3fr5SSgyt QEig7up7imkBNgoAARDVooAj6cR 34eALzjyxPTZqVxFg2bzYMqgJwyX 2oKwrTM3CsxmTz4VVJ1SR9dcy8Qw 3rgwzBrxeLBuvtdCJowTroEPJGRr 3RmD9C8BF9h5MJ3LEKLBrE2cTGs3 2VM74N61utMoRLsH5VJSLB2Eei8u 7ZGYg8kVwZL6Z4s5tRyHscdXKSz 4Hf6pBSrbv9Kh6s1EwDpfRZAnSqK</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>Z</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>Cnsc4OfzqGbrnICr/PmPGh6bkZc=</id>
+  <id>9UCcDp1KkXu5NDXDmY3fr5SSgyt</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>aQWtFVa4Xa+eceLXiLW74q44JRk=</members>
-  <members>WltomC+2IcmzMN0COGL0OWWmbZk=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>2TrzGfTszSnq5trvcdutxp5skvmN 2G1h1vfmtBtGEt1mYXSQv46zJMPv</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>Z</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>aQWtFVa4Xa+eceLXiLW74q44JRk=</id>
+  <id>2TrzGfTszSnq5trvcdutxp5skvmN</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Construct from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>int</literal>
+          <literal>Construct from </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>int</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>Z</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>WltomC+2IcmzMN0COGL0OWWmbZk=</id>
+  <id>2G1h1vfmtBtGEt1mYXSQv46zJMPv</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Default constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Default constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>~Z</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>HMG56OCQ5OpB2E9hu4bG3/hoOho=</id>
+  <id>QEig7up7imkBNgoAARDVooAj6cR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Destructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Destructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>destructor</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>destructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>foo</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>lBA1besl9J3wAZAcEn9C+K05hf4=</id>
+  <id>34eALzjyxPTZqVxFg2bzYMqgJwyX</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>bar</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>gRx0djRTyQ5zuzBd9ujP7LLlWNg=</id>
+  <id>2oKwrTM3CsxmTz4VVJ1SR9dcy8Qw</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator bool</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=</id>
+  <id>3rgwzBrxeLBuvtdCJowTroEPJGRr</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bool</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>bool</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>bool</literal>
-        </text>
-      </code>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bool</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator!</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>rjPdhFxUkaC43tWXi+kka78JQxI=</id>
+  <id>3RmD9C8BF9h5MJ3LEKLBrE2cTGs3</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Negation operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Negation operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the object is falsy, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the object is falsy, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>!</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator==</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>atwUGLD+QHVhH3x1+8qzINNxzMY=</id>
+  <id>2VM74N61utMoRLsH5VJSLB2Eei8u</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Equality operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Equality operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the objects are equal, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the objects are equal, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</id>
+                  <identifier>Z</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
-          <identifier>Z</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>==</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator!=</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CB0pXrzU8BKZ2LF0BSpclxIfgrs=</id>
+  <id>7ZGYg8kVwZL6Z4s5tRyHscdXKSz</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Inequality operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Inequality operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the objects are not equal, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the objects are not equal, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</id>
+                  <identifier>Z</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
-          <identifier>Z</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>!=</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
-  <source>
-    <location>
-      <short-path>sort-members-by-location.cpp</short-path>
-      <source-path>sort-members-by-location.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sort-members-by-location.cpp</shortPath>
+        <sourcePath>sort-members-by-location.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>6/NYLeQdPqWrbu5kHnTpE3u6Yg4=</id>
+  <id>4Hf6pBSrbv9Kh6s1EwDpfRZAnSqK</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NQ8uQgTcafPcttyBMHHLHAXA4MA=</parent>
-  <doc-comment>
+  <parent>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Three-way comparison operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Three-way comparison operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The relative order of the objects</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The relative order of the objects</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>jsgoxpG4t2pn9Gt7KH2Gv4WcFbm</id>
+                  <identifier>Z</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <auto>
-  </auto>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>NQ8uQgTcafPcttyBMHHLHAXA4MA=</id>
-          <identifier>Z</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;=&gt;</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 </mrdocs>

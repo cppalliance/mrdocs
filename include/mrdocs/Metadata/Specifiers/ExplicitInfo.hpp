@@ -51,7 +51,7 @@ struct ExplicitInfo
     @return The string representation of the explicit-specifier.
 */
 MRDOCS_DECL
-dom::String
+std::string
 toString(
     ExplicitInfo const& info,
     bool resolved = false,

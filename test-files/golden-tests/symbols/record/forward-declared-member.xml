@@ -2,70 +2,71 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>csn+vnio1BK5NeCdEBf/HpD6wmY=</namespaces>
-    <namespaces>eIvg7iueGIPcE8p1NVfngsp2ojw=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>2bkixAJJyMzoJUUh3J672FpQ6vLD 2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>fmt</name>
-  <source>
-    <location>
-      <short-path>forward-declared-member.cpp</short-path>
-      <source-path>forward-declared-member.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>forward-declared-member.cpp</shortPath>
+        <sourcePath>forward-declared-member.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>csn+vnio1BK5NeCdEBf/HpD6wmY=</id>
+  <id>2bkixAJJyMzoJUUh3J672FpQ6vLD</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>5RffQbxkZ8sUj37sDwK63dA5ptA=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>4C7j16NbY2Ftfhi6TdkDKr5aCTCb</records>
+  </members>
 </namespace>
 <record>
   <name>path</name>
-  <source>
-    <location>
-      <short-path>forward-declared-member.cpp</short-path>
-      <source-path>forward-declared-member.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>3</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>forward-declared-member.cpp</shortPath>
+      <sourcePath>forward-declared-member.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>3</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5RffQbxkZ8sUj37sDwK63dA5ptA=</id>
+  <id>4C7j16NbY2Ftfhi6TdkDKr5aCTCb</id>
   <extraction>regular</extraction>
-  <parent>csn+vnio1BK5NeCdEBf/HpD6wmY=</parent>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>ufjqSG34/fsb1/dKE4dBgs8spHM=</id>
-        <identifier>path</identifier>
-        <name>
-          <kind>identifier</kind>
-          <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
-          <identifier>std</identifier>
-        </name>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2bkixAJJyMzoJUUh3J672FpQ6vLD</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3bGp4RSgzEYBvpUzVa5oHMewqGZQ</id>
+              <identifier>path</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</id>
+                  <identifier>std</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
 </record>
 </mrdocs>

@@ -21,7 +21,7 @@
 #include <mrdocs/Metadata/Type/PointerType.hpp>
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 

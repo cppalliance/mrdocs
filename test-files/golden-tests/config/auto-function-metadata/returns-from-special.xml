@@ -2,2033 +2,2785 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
-    <records>9rZb+QO/AFLNBwbIrSOzFktZiVY=</records>
-    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
-    <records>S6h+1uM4q9FLs9aohvL2EV9oRbs=</records>
-    <functions>YufiLU3QRbcE/EbZ/1/y0UPKQxo=</functions>
-    <functions>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</functions>
-    <functions>kibUx6k1SXB+HsXkRXroJl9f59w=</functions>
-    <functions>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</functions>
-    <functions>TFzwjGmsRFw8/0KXWcNJ2hjptZA=</functions>
-    <functions>PCL/yV8DLimc1O5rgMCsXr2rz7s=</functions>
-    <functions>mFT9ttIGXVcpN6jtSrnEnclPRwU=</functions>
-    <functions>dl5ECjWFv+MMFzli4qz59OqD2Z4=</functions>
-    <functions>89EonDQZVWNcdopm5CdG3ShJQjo=</functions>
-  </namespace-tranche>
+  <members>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz 4SMTtKBwpMqLuJNkkKB84MmZnknH 3pckmfiVbXAYjwBs44JCuEmQATU1 248oxoiW2QdFZt1zubkm2Sao5Xai</records>
+    <functions>2NvLW1KAFNZ5bEevi6cGWteLf4hX 3pwUB8UaVa9RXo3a9PGmtTisa1M2 336a5SRmofB7MpehkmK8NPxmMXQo 48eHhKCXGBHUwfrLVbfsd1GbgP44 24hqwVxCdiaBA4GaoyLAg5xcYjpT qbNurTshL2iQjM3hd9MrVwYJwFY 386Dduihruba65iGCco24X6Nryqn 2eeU2DQ1jNJgvmExh4SgbqbNUDmo 4Q1mjJ7vUKzMEuj6kR5Rd3XjdfQm</functions>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>returns-from-special.cpp</shortPath>
+      <sourcePath>returns-from-special.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A helper class</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A helper class</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator!</literal>
-      <id>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator!=</literal>
-      <id>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&lt;</literal>
-      <id>TFzwjGmsRFw8/0KXWcNJ2hjptZA=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&lt;=</literal>
-      <id>PCL/yV8DLimc1O5rgMCsXr2rz7s=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&lt;=&gt;</literal>
-      <id>89EonDQZVWNcdopm5CdG3ShJQjo=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator==</literal>
-      <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&gt;</literal>
-      <id>mFT9ttIGXVcpN6jtSrnEnclPRwU=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&gt;=</literal>
-      <id>dl5ECjWFv+MMFzli4qz59OqD2Z4=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator!</literal>
+        <id>3pwUB8UaVa9RXo3a9PGmtTisa1M2</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator!=</literal>
+        <id>48eHhKCXGBHUwfrLVbfsd1GbgP44</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&lt;</literal>
+        <id>24hqwVxCdiaBA4GaoyLAg5xcYjpT</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&lt;=</literal>
+        <id>qbNurTshL2iQjM3hd9MrVwYJwFY</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&lt;=&gt;</literal>
+        <id>4Q1mjJ7vUKzMEuj6kR5Rd3XjdfQm</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator==</literal>
+        <id>336a5SRmofB7MpehkmK8NPxmMXQo</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&gt;</literal>
+        <id>386Dduihruba65iGCco24X6Nryqn</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&gt;=</literal>
+        <id>2eeU2DQ1jNJgvmExh4SgbqbNUDmo</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>Undoc</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>returns-from-special.cpp</shortPath>
+      <sourcePath>returns-from-special.cpp</sourcePath>
+      <lineNumber>28</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>9rZb+QO/AFLNBwbIrSOzFktZiVY=</id>
+  <id>4SMTtKBwpMqLuJNkkKB84MmZnknH</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>X</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>31</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>returns-from-special.cpp</shortPath>
+      <sourcePath>returns-from-special.cpp</sourcePath>
+      <lineNumber>31</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Test class</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Test class</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>q7aqa6GHOpmWjES40eZPTxdQ3zE=</functions>
-      <functions>KAGpjhkArISJuf2yO8ueGRkoMRY=</functions>
-      <functions>nGRGOmpMUWr4ryyahs3rKCCI6w8=</functions>
-      <functions>CWQgyDAMsfX65S2osLlxVceQp04=</functions>
-      <functions>OKqUHUCCTf6jNFJNn97bqGsSeaw=</functions>
-      <functions>KWAu92L4cHasWWof4vEI3DKRMCM=</functions>
-      <functions>UKmM2VstAN3S3zdmZKKvDGlIrLM=</functions>
-      <functions>B4HRW82Qp1vDOpzQsxPdEsZgycs=</functions>
-      <functions>851IpIwjxsx0O/etQzbn4pl99xE=</functions>
-      <functions>h8nEEe+LBIHRvU6iRGyqW04tWgU=</functions>
-      <functions>cR6bIyYYnXQ30XTeEQusQL16eHI=</functions>
-      <functions>4tbW1aodVDD/vHYusU0xj6w4Fao=</functions>
-      <functions>ttkN5+GpWIElN9dfCpsZKm/wHH0=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3PkZHJJeaB3uyuwwUQbss5DgGuon ZKxB8s1uvMuwHDz5KreDS2ieX3s 3BNUsMbSSpGBntSRwPxhqvLwMv9k 8b8KEVXM3Mk8rgFUYY6WkdHsueD nnjZJUVrdhrAabVNJHfihhPh8xT aS83sCgkEvLF7qZLLj3hWGKSXQE 28BLMQeh88EhzFFHUr7ozjLEjqHL 74q659BoqPvNT8YzHkpiTZq9i4S 4PrGv7WojhyX5jFYt8M331FDv8BA 2tisX1vUgHn5xLhdKp3UvjuiZBaL 2aQUtEuWNSPWFziiKCouvx5Xrgau 4AJ5zuiTf9pdKzkECRkuGmz3cwZT 3YkP3Tq7LnCEPX7sjkNMrVAXKA7E</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>operator=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>37</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>40</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>37</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>40</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>q7aqa6GHOpmWjES40eZPTxdQ3zE=</id>
+  <id>3PkZHJJeaB3uyuwwUQbss5DgGuon</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Assignment operators</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Assignment operators</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>normal</func-class>
-  <members>3QxkEc/c2ugz6330u92HdqOoDNk=</members>
-  <members>fj22HhjPEq+Xg/+Qrr3suU+8qMs=</members>
-  <auto>
-  </auto>
+  </doc>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>=</overloadedOperator>
+  <members>45chBuf39japZz16fBYyv9hbhjzg 2m1SG3nQyxsepK3a4XjT3obafWga</members>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
 </overloads>
 <function>
   <name>operator=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>37</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>37</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>3QxkEc/c2ugz6330u92HdqOoDNk=</id>
+  <id>45chBuf39japZz16fBYyv9hbhjzg</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Assignment operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Assignment operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference to the current object</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Reference to the current object</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy assign from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+              <identifier>X</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to copy assign from</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-        <identifier>X</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>value</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>=</overloadedOperator>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>40</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>40</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>fj22HhjPEq+Xg/+Qrr3suU+8qMs=</id>
+  <id>2m1SG3nQyxsepK3a4XjT3obafWga</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Assignment operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Assignment operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Rvalue reference to the current object</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Rvalue reference to the current object</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move assign from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <rValueReference>
+      <kind>rvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+              <identifier>X</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </rValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to move assign from</literal>
-      </text>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <r-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-        <identifier>X</identifier>
-      </name>
-    </named>
-  </r-value-reference>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>value</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>=</overloadedOperator>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator+</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>KAGpjhkArISJuf2yO8ueGRkoMRY=</id>
+  <id>ZKxB8s1uvMuwHDz5KreDS2ieX3s</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Addition operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Addition operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Another instance of the object</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Another instance of the object</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+          <identifier>X</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-      <identifier>X</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>+</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator-&gt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>46</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>46</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>nGRGOmpMUWr4ryyahs3rKCCI6w8=</id>
+  <id>3BNUsMbSSpGBntSRwPxhqvLwMv9k</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Member access operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Member access operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Pointer to the current object</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Pointer to the current object</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <pointer>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-        <identifier>X</identifier>
-      </name>
-    </named>
-  </pointer>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <pointer>
+      <kind>pointer</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+              <identifier>X</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </pointer>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>-&gt;</overloadedOperator>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator A</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>33</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>33</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CWQgyDAMsfX65S2osLlxVceQp04=</id>
+  <id>8b8KEVXM3Mk8rgFUYY6WkdHsueD</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>A</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>A</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A helper class</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A helper class</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-      <identifier>A</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+          <identifier>A</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator Undoc</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>OKqUHUCCTf6jNFJNn97bqGsSeaw=</id>
+  <id>nnjZJUVrdhrAabVNJHfihhPh8xT</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>Undoc</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>Undoc</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>Undoc</literal>
-        </text>
-      </code>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>Undoc</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>9rZb+QO/AFLNBwbIrSOzFktZiVY=</id>
-      <identifier>Undoc</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4SMTtKBwpMqLuJNkkKB84MmZnknH</id>
+          <identifier>Undoc</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator!</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>67</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>67</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>KWAu92L4cHasWWof4vEI3DKRMCM=</id>
+  <id>aS83sCgkEvLF7qZLLj3hWGKSXQE</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Negation operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Negation operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the object is falsy, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the object is falsy, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>!</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator==</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>49</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>49</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>UKmM2VstAN3S3zdmZKKvDGlIrLM=</id>
+  <id>28BLMQeh88EhzFFHUr7ozjLEjqHL</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Equality operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Equality operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the objects are equal, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the objects are equal, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>==</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator!=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>52</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>52</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>B4HRW82Qp1vDOpzQsxPdEsZgycs=</id>
+  <id>74q659BoqPvNT8YzHkpiTZq9i4S</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Inequality operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Inequality operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the objects are not equal, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the objects are not equal, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>!=</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator&lt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>55</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>55</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>851IpIwjxsx0O/etQzbn4pl99xE=</id>
+  <id>4PrGv7WojhyX5jFYt8M331FDv8BA</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Less-than operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Less-than operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is less than the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is less than the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator&lt;=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>58</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>58</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>h8nEEe+LBIHRvU6iRGyqW04tWgU=</id>
+  <id>2tisX1vUgHn5xLhdKp3UvjuiZBaL</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Less-than-or-equal operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Less-than-or-equal operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is less than or equal to the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is less than or equal to the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;=</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator&gt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>61</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>61</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>cR6bIyYYnXQ30XTeEQusQL16eHI=</id>
+  <id>2aQUtEuWNSPWFziiKCouvx5Xrgau</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Greater-than operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Greater-than operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is greater than the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is greater than the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&gt;</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator&gt;=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>64</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>64</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>4tbW1aodVDD/vHYusU0xj6w4Fao=</id>
+  <id>4AJ5zuiTf9pdKzkECRkuGmz3cwZT</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Greater-than-or-equal operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Greater-than-or-equal operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is greater than or equal to the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is greater than or equal to the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&gt;=</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>70</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>70</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ttkN5+GpWIElN9dfCpsZKm/wHH0=</id>
+  <id>3YkP3Tq7LnCEPX7sjkNMrVAXKA7E</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Three-way comparison operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Three-way comparison operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The relative order of the objects</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The relative order of the objects</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-  </doc-comment>
-  <auto>
-  </auto>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;=&gt;</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>ostream</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>75</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>75</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
+  <id>248oxoiW2QdFZt1zubkm2Sao5Xai</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A fake output stream</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A fake output stream</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&lt;&lt;</literal>
-      <id>YufiLU3QRbcE/EbZ/1/y0UPKQxo=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&lt;&lt;</literal>
+        <id>2NvLW1KAFNZ5bEevi6cGWteLf4hX</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <function>
   <name>operator&lt;&lt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>77</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>77</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>YufiLU3QRbcE/EbZ/1/y0UPKQxo=</id>
+  <id>2NvLW1KAFNZ5bEevi6cGWteLf4hX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Stream insertion operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Stream insertion operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference to the current output stream</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Reference to the current output stream</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>An output stream</literal>
+          </text>
+        </children>
+        <name>os</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to output</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>ostream</literal>
+        <id>248oxoiW2QdFZt1zubkm2Sao5Xai</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>248oxoiW2QdFZt1zubkm2Sao5Xai</id>
+              <identifier>ostream</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>An output stream</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>248oxoiW2QdFZt1zubkm2Sao5Xai</id>
+                  <identifier>ostream</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>os</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to output</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>value</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>ostream</literal>
-      <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
-    </reference>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
-        <identifier>ostream</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <l-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>S6h+1uM4q9FLs9aohvL2EV9oRbs=</id>
-          <identifier>ostream</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>os</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>value</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;&lt;</overloadedOperator>
 </function>
 <function>
   <name>operator!</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>22</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>22</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>yuKyBhGbND+Kyypyb9UsuC4Qe3E=</id>
+  <id>3pwUB8UaVa9RXo3a9PGmtTisa1M2</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Negation operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Negation operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the object is falsy, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the object is falsy, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The operand</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>value</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>value</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>!</overloadedOperator>
 </function>
 <function>
   <name>operator==</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>kibUx6k1SXB+HsXkRXroJl9f59w=</id>
+  <id>336a5SRmofB7MpehkmK8NPxmMXQo</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Equality operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Equality operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the objects are equal, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the objects are equal, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>==</overloadedOperator>
 </function>
 <function>
   <name>operator!=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>4MuN1V3fHVfOMvtg2LT+QVm/XmE=</id>
+  <id>48eHhKCXGBHUwfrLVbfsd1GbgP44</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Inequality operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Inequality operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the objects are not equal, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the objects are not equal, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>!=</overloadedOperator>
 </function>
 <function>
   <name>operator&lt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>TFzwjGmsRFw8/0KXWcNJ2hjptZA=</id>
+  <id>24hqwVxCdiaBA4GaoyLAg5xcYjpT</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Less-than operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Less-than operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is less than the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is less than the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;</overloadedOperator>
 </function>
 <function>
   <name>operator&lt;=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PCL/yV8DLimc1O5rgMCsXr2rz7s=</id>
+  <id>qbNurTshL2iQjM3hd9MrVwYJwFY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Less-than-or-equal operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Less-than-or-equal operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is less than or equal to the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is less than or equal to the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;=</overloadedOperator>
 </function>
 <function>
   <name>operator&gt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>mFT9ttIGXVcpN6jtSrnEnclPRwU=</id>
+  <id>386Dduihruba65iGCco24X6Nryqn</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Greater-than operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Greater-than operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is greater than the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is greater than the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&gt;</overloadedOperator>
 </function>
 <function>
   <name>operator&gt;=</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>dl5ECjWFv+MMFzli4qz59OqD2Z4=</id>
+  <id>2eeU2DQ1jNJgvmExh4SgbqbNUDmo</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Greater-than-or-equal operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Greater-than-or-equal operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>true</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> if the left object is greater than or equal to the right object, </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>false</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> otherwise</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>true</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> if the left object is greater than or equal to the right object, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>false</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> otherwise</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&gt;=</overloadedOperator>
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
-  <source>
-    <location>
-      <short-path>returns-from-special.cpp</short-path>
-      <source-path>returns-from-special.cpp</source-path>
-      <line-number>25</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-special.cpp</shortPath>
+        <sourcePath>returns-from-special.cpp</sourcePath>
+        <lineNumber>25</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>89EonDQZVWNcdopm5CdG3ShJQjo=</id>
+  <id>4Q1mjJ7vUKzMEuj6kR5Rd3XjdfQm</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Three-way comparison operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Three-way comparison operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The relative order of the objects</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The relative order of the objects</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The left operand</literal>
+          </text>
+        </children>
+        <name>lhs</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The left operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>lhs</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>rhs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <auto>
-  </auto>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>lhs</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&lt;=&gt;</overloadedOperator>
 </function>
 </mrdocs>

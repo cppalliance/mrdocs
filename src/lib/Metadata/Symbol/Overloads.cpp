@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -24,7 +25,7 @@ namespace mrdocs {
 OverloadsSymbol::OverloadsSymbol(SymbolID const &Parent, std::string_view Name,
                              AccessKind access, bool isStatic) noexcept
     : SymbolCommonBase(SymbolID::createFromString(std::format(
-          "{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic))) {
+          "{}-{}-{}-{}", toBase16Str(Parent), Name, toString(access), isStatic))) {
   this->Parent = Parent;
 }
 

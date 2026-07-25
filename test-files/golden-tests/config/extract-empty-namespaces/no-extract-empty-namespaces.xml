@@ -2,446 +2,400 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <name>
-    <kind>identifier</kind>
-    <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
-    <identifier>regular_ns</identifier>
-  </name>
-  <namespace-tranche>
-    <namespaces>rYWSTKnSbovxJzFjzhy4tRjQbFU=</namespaces>
-    <namespaces>ZYn+worzOdzCMW6yaZC9jAkpVTk=</namespaces>
-    <namespaces>ealcuYmQonFb4GtSSDp117u3riE=</namespaces>
-    <namespaces>IVNsaOJZhF3igZQSxicbn7zZkdY=</namespaces>
-    <namespaces>HfpFOdGBlFvzJWV5HwJnyWPM72g=</namespaces>
-    <namespaces>exW9PGqoF7V7OCpvgUIZOhj7WwI=</namespaces>
-    <namespace-aliases>KJaKUXr+DfpmlZ42pCbYX9+LCew=</namespace-aliases>
-    <namespace-aliases>tM0QAgguO9OBl0Q4P8CpFRrlBFk=</namespace-aliases>
-  </namespace-tranche>
+  <usingDirectives>
+    <identifier>
+      <kind>identifier</kind>
+      <id>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</id>
+      <identifier>regular_ns</identifier>
+    </identifier>
+  </usingDirectives>
+  <members>
+    <namespaces>3RDJUCeLteBoy8MuMvkQY9ADFTf2 2R3kJDhBUxRFA7bknGtT2w5ibCQQ 2hJp7qccY1DaMLzPCMQQGBewdMYk Tvrf93y2TKfiwEsoPi2v7Dt7wxh RDwJiwqCcCdAQmDeCDU3gZ1cxR5 2iTX7iCr1aU5wW4FvT3UU4N2KU5F</namespaces>
+    <namespaceAliases>ZoCymDYUQggLkhoxPXhj5UAEvm9 3X6TEh2wydBMwrjJoCvGrkPpTEGY</namespaceAliases>
+  </members>
 </namespace>
 <namespace>
   <name>documented_ns</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>rYWSTKnSbovxJzFjzhy4tRjQbFU=</id>
+  <id>3RDJUCeLteBoy8MuMvkQY9ADFTf2</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Namespace documentation</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Namespace documentation</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-  </namespace-tranche>
+  </doc>
 </namespace>
 <namespace>
   <name>implementation_defined_ns</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>24</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>ZYn+worzOdzCMW6yaZC9jAkpVTk=</id>
+  <id>2R3kJDhBUxRFA7bknGtT2w5ibCQQ</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Should decay to implementation-defined</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Should decay to implementation-defined</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-  </namespace-tranche>
+  </doc>
 </namespace>
 <namespace>
   <name>mixed_ns</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>30</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>30</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>ealcuYmQonFb4GtSSDp117u3riE=</id>
+  <id>2hJp7qccY1DaMLzPCMQQGBewdMYk</id>
   <extraction>see-below</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Should decay to see-below</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Should decay to see-below</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>Lk6iyOPZKI46hh8WI5xjsTJwx8I=</records>
-    <records>u8FBT1KsjAgBvS+Nzcrm2Kw/qSA=</records>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>eREvDmoxxKFs47twCELQzQY2y3w 3ciMXkfvhHoTeiRhJbcBj9XwukX9</records>
+  </members>
 </namespace>
 <record>
   <name>ImplementationDefinedStructB</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>32</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>32</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Lk6iyOPZKI46hh8WI5xjsTJwx8I=</id>
+  <id>eREvDmoxxKFs47twCELQzQY2y3w</id>
   <extraction>implementation-defined</extraction>
-  <parent>ealcuYmQonFb4GtSSDp117u3riE=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2hJp7qccY1DaMLzPCMQQGBewdMYk</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>SeeBelowStructA</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>31</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>31</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>u8FBT1KsjAgBvS+Nzcrm2Kw/qSA=</id>
+  <id>3ciMXkfvhHoTeiRhJbcBj9XwukX9</id>
   <extraction>see-below</extraction>
-  <parent>ealcuYmQonFb4GtSSDp117u3riE=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2hJp7qccY1DaMLzPCMQQGBewdMYk</parent>
+  <keyKind>struct</keyKind>
 </record>
 <namespace>
   <name>mixed_regular_ns</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>36</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>36</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>IVNsaOJZhF3igZQSxicbn7zZkdY=</id>
+  <id>Tvrf93y2TKfiwEsoPi2v7Dt7wxh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Should decay to regular</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Should decay to regular</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>tMUbPbwBrgNgJ53IA/mY/ixVyiM=</records>
-    <records>sGLLl7RCwa46rBvSojbUrq3KFsk=</records>
-    <records>dfTMjNUxKdZduX9C3w178BN5JE8=</records>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>3X4zkucKPDnhyYtiowhqeEUcXnrv 3TXXvgRLxvVv8rvbRra1DfbUrmix 2eKAARf4Zr1S2r2WTZnuLphBnVLi</records>
+  </members>
 </namespace>
 <record>
   <name>ImplementationDefinedStructC</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>39</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>39</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>tMUbPbwBrgNgJ53IA/mY/ixVyiM=</id>
+  <id>3X4zkucKPDnhyYtiowhqeEUcXnrv</id>
   <extraction>implementation-defined</extraction>
-  <parent>IVNsaOJZhF3igZQSxicbn7zZkdY=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>Tvrf93y2TKfiwEsoPi2v7Dt7wxh</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>RegularStructA</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>37</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>37</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>sGLLl7RCwa46rBvSojbUrq3KFsk=</id>
+  <id>3TXXvgRLxvVv8rvbRra1DfbUrmix</id>
   <extraction>regular</extraction>
-  <parent>IVNsaOJZhF3igZQSxicbn7zZkdY=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>Tvrf93y2TKfiwEsoPi2v7Dt7wxh</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>SeeBelowStructB</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>38</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>38</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>dfTMjNUxKdZduX9C3w178BN5JE8=</id>
+  <id>2eKAARf4Zr1S2r2WTZnuLphBnVLi</id>
   <extraction>see-below</extraction>
-  <parent>IVNsaOJZhF3igZQSxicbn7zZkdY=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>Tvrf93y2TKfiwEsoPi2v7Dt7wxh</parent>
+  <keyKind>struct</keyKind>
 </record>
 <namespace>
   <name>regular_ns</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
+  <id>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Regular namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Regular namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>i+0rF6rz7UYIPXUcwcMuV9+lHrU=</records>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>2x4pNsYBbBzhiJoqety7n9qDxtCt</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>i+0rF6rz7UYIPXUcwcMuV9+lHrU=</id>
+  <id>2x4pNsYBbBzhiJoqety7n9qDxtCt</id>
   <extraction>regular</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <keyKind>struct</keyKind>
 </record>
 <namespace>
   <name>see_below_ns</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
+  <id>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</id>
   <extraction>see-below</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Should decay to see-below</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Should decay to see-below</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>xjRa7V2UmBgj6fsrvSrjsMfWFZw=</records>
-    <records>Lf/JEph64Agwf7bSm/+aDe9OknY=</records>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>3mA64KfzqmUS9N9Gj1xo5KJH7Cgj eAog7afH8dE7e49bV4nXqGbjZ4y</records>
+  </members>
 </namespace>
 <record>
   <name>SeeBelowStructA</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>19</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>xjRa7V2UmBgj6fsrvSrjsMfWFZw=</id>
+  <id>3mA64KfzqmUS9N9Gj1xo5KJH7Cgj</id>
   <extraction>see-below</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>SeeBelowStructB</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+      <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+      <lineNumber>20</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Lf/JEph64Agwf7bSm/+aDe9OknY=</id>
+  <id>eAog7afH8dE7e49bV4nXqGbjZ4y</id>
   <extraction>see-below</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <keyKind>struct</keyKind>
 </record>
-<namespace-alias>
+<namespaceAlias>
   <name>empty_ns_alias</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>52</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>52</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>KJaKUXr+DfpmlZ42pCbYX9+LCew=</id>
+  <id>ZoCymDYUQggLkhoxPXhj5UAEvm9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Should still work</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Should still work</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <identifier-name>
+  </doc>
+  <aliasedSymbol>
     <kind>identifier</kind>
     <identifier>empty_ns</identifier>
-  </identifier-name>
-</namespace-alias>
-<namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
+<namespaceAlias>
   <name>regular_ns_alias</name>
-  <source>
-    <location>
-      <short-path>no-extract-empty-namespaces.cpp</short-path>
-      <source-path>no-extract-empty-namespaces.cpp</source-path>
-      <line-number>46</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-empty-namespaces.cpp</shortPath>
+        <sourcePath>no-extract-empty-namespaces.cpp</sourcePath>
+        <lineNumber>46</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>tM0QAgguO9OBl0Q4P8CpFRrlBFk=</id>
+  <id>3X6TEh2wydBMwrjJoCvGrkPpTEGY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Should work</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Should work</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <identifier-name>
+  </doc>
+  <aliasedSymbol>
     <kind>identifier</kind>
-    <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
+    <id>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</id>
     <identifier>regular_ns</identifier>
-  </identifier-name>
-</namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
 </mrdocs>

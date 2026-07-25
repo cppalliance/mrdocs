@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <string>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -33,23 +34,10 @@ enum class ConstexprKind
     Consteval,
 };
 
-/** Convert a constexpr/consteval specifier kind to a string.
-*/
-MRDOCS_DECL
-dom::String
-toString(ConstexprKind kind) noexcept;
-
-/** Return the ConstexprKind as a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ConstexprKind const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(
+    ConstexprKind,
+    None, Constexpr, Consteval)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(ConstexprKind, None)
 
 } // mrdocs
 

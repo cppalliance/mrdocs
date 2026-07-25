@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -45,7 +46,7 @@ isDefaultEnum(E value)
 
 // Type trait: is this Polymorphic<U> for a given U?
 //
-// Built alongside (not on top of) the unary `is_polymorphic_v<T>`
+// Built alongside (not on top of) `is_specialization_of_v<T, Polymorphic>`
 // from Support/TypeTraits.hpp, which asks the related question
 // "is `T` some Polymorphic<...>?" without naming the inner type.
 template <typename T, typename U>
@@ -168,7 +169,7 @@ mergeByType(T& dst, T&& src)
     }
     // Optional<T>: take if disengaged; recursive merge if both
     // engaged and the value type has a merge() function.
-    else if constexpr (is_optional_v<T>)
+    else if constexpr (is_specialization_of_v<T, Optional>)
     {
         if (!dst)
         {
@@ -214,7 +215,7 @@ mergeByType(T& dst, T&& src)
         return true;
     }
     // vector<T> fallback: take if dst is empty.
-    else if constexpr (is_vector_v<T>)
+    else if constexpr (is_specialization_of_v<T, std::vector>)
     {
         if (dst.empty())
         {

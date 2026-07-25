@@ -2,347 +2,459 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
-  </namespace-tranche>
+  <members>
+    <records>3pckmfiVbXAYjwBs44JCuEmQATU1</records>
+  </members>
 </namespace>
 <record>
   <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>constructor.cpp</shortPath>
+      <sourcePath>constructor.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>iRe6Tyv0qU6vIHNyvLHuISP/Fw4=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2un1Zi5zMsikusc7Wx3w4UnY7oQZ</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>iRe6Tyv0qU6vIHNyvLHuISP/Fw4=</id>
+  <id>2un1Zi5zMsikusc7Wx3w4UnY7oQZ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>6Jx2eK9l4C46QIRucTvox+6PH2k=</members>
-  <members>4C2UEs8la3Eghf4mLyeViCJNOwY=</members>
-  <members>ad/AzbLEE6b8dNnnX2OLy1+HxDQ=</members>
-  <members>bzCqmNJXWfd3zGOkytPkJL6K6VQ=</members>
-  <members>d9h3reyOyp3JT3kwQOTPOI9tmzg=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>4Exbabw8P1ycov7PrzJ6FUhDoBL4 489NHtx4AyGcPeKyjSqmuNBcyHiD 2UYuqakf8RZnnTgA1tbNLs2n8PRd 2Yr4B8HtjFYYUdkE8VVS4RX6eQpT 2fqhp3xXpcTeGCFDBJ7u2GEUHSmm</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>6Jx2eK9l4C46QIRucTvox+6PH2k=</id>
+  <id>4Exbabw8P1ycov7PrzJ6FUhDoBL4</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Default constructor</literal>
-      </text>
-    </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>constructor</func-class>
-  <is-record-method/>
-</function>
-<function>
-  <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>4C2UEs8la3Eghf4mLyeViCJNOwY=</id>
-  <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Copy constructor</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to copy construct from</literal>
-      </text>
-      <name>other</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
-</function>
-<function>
-  <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>ad/AzbLEE6b8dNnnX2OLy1+HxDQ=</id>
-  <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Move constructor</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to move construct from</literal>
-      </text>
-      <name>other</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
-          <identifier>X</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
-</function>
-<function>
-  <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>bzCqmNJXWfd3zGOkytPkJL6K6VQ=</id>
-  <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Construct from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>double</literal>
+          <literal>Default constructor</literal>
         </text>
-      </code>
+      </children>
     </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
-      <name>value</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>double</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </returnType>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>X</name>
-  <source>
-    <location>
-      <short-path>constructor.cpp</short-path>
-      <source-path>constructor.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>d9h3reyOyp3JT3kwQOTPOI9tmzg=</id>
+  <id>489NHtx4AyGcPeKyjSqmuNBcyHiD</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Construct from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>int</literal>
+          <literal>Copy constructor</literal>
         </text>
-      </code>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
+      <name>other</name>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>X</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2UYuqakf8RZnnTgA1tbNLs2n8PRd</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Move constructor</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+                  <identifier>X</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
+      <name>other</name>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>X</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2Yr4B8HtjFYYUdkE8VVS4RX6eQpT</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Construct from </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>double</literal>
+            </text>
+          </children>
+        </code>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>X</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>constructor.cpp</shortPath>
+        <sourcePath>constructor.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2fqhp3xXpcTeGCFDBJ7u2GEUHSmm</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Construct from </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>int</literal>
+            </text>
+          </children>
+        </code>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

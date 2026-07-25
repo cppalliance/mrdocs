@@ -2,512 +2,674 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>conditional-explicit.cpp</shortPath>
+      <sourcePath>conditional-explicit.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>90LmpTUv2mRF4c7fOK5KY82aqfg=</functions>
-      <functions>8QQvac4UAEj232hkdEvLmrs4iXo=</functions>
-      <functions>BQIWwUrUqUCA8gEZNkinmhykZiw=</functions>
-      <functions>RoN1eWo04RrcRuREabBhJcBRP9g=</functions>
-      <functions>G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>4SoCB2ez9RhYdSDQAGvZ6vJoJXNP 4MkWpdAxcYWEPmYbXSoRB6mtGBu3 53iNVWyqm4GgBAxyyiV3cLtjWHR yyhWkKAisUtUzBpybbNd7CVdheP PapRjmveoqLzZcMTeeuJv2m2p9q</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>90LmpTUv2mRF4c7fOK5KY82aqfg=</id>
+  <id>4SoCB2ez9RhYdSDQAGvZ6vJoJXNP</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</members>
-  <members>AXLv33SreHARdqogAHAgfhC3lFA=</members>
-  <members>F4U5PyaDoe8VKg41ubwK8aze9QE=</members>
-  <members>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>3Yp6aNgKMKonuHsVFqUyXV5iUQKW 2AuerjkJQ5m7mYb1Nf5gBUnyvG7 L1K4W3EhRiNPMaEbqUjLvi8tpf2 eGPWYbnTecFk9DDzqvuKpiwU1Dy</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>tu1aWR2dJXMP1qCjx0wfqGbHUrU=</id>
+  <id>3Yp6aNgKMKonuHsVFqUyXV5iUQKW</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conditionally explicit conversion from char</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Conditionally explicit conversion from char</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>char</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>char</fundamentalType>
+        </named>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>char</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>AXLv33SreHARdqogAHAgfhC3lFA=</id>
+  <id>2AuerjkJQ5m7mYb1Nf5gBUnyvG7</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Implicit conversion from double</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Implicit conversion from double</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>double</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>F4U5PyaDoe8VKg41ubwK8aze9QE=</id>
+  <id>L1K4W3EhRiNPMaEbqUjLvi8tpf2</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Explicit conversion from int</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Explicit conversion from int</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The value to construct from</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Lh5IpjK5DH9VZV67YWZB6MBX3eg=</id>
+  <id>eGPWYbnTecFk9DDzqvuKpiwU1Dy</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conditionally explicit conversion from other types</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Conditionally explicit conversion from other types</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to construct from</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>U</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
       <name>value</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>U</identifier>
-      </name>
-    </named>
-    <name>value</name>
-  </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator </name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>32</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>32</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>8QQvac4UAEj232hkdEvLmrs4iXo=</id>
+  <id>4MkWpdAxcYWEPmYbXSoRB6mtGBu3</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conditional explicit conversion to other types</literal>
-      </text>
-    </brief>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>U</literal>
+          <literal>Conditional explicit conversion to other types</literal>
         </text>
-      </code>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>U</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>U</identifier>
-    </name>
-  </named>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>U</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator bool</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>24</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>BQIWwUrUqUCA8gEZNkinmhykZiw=</id>
+  <id>53iNVWyqm4GgBAxyyiV3cLtjWHR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Explicit conversion to bool</literal>
-      </text>
-    </brief>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bool</literal>
+          <literal>Explicit conversion to bool</literal>
         </text>
-      </code>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bool</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator char</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>RoN1eWo04RrcRuREabBhJcBRP9g=</id>
+  <id>yyhWkKAisUtUzBpybbNd7CVdheP</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conditionally explicit conversion to char</literal>
-      </text>
-    </brief>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>char</literal>
+          <literal>Conditionally explicit conversion to char</literal>
         </text>
-      </code>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>char</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>char</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>char</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator double</name>
-  <source>
-    <location>
-      <short-path>conditional-explicit.cpp</short-path>
-      <source-path>conditional-explicit.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>conditional-explicit.cpp</shortPath>
+        <sourcePath>conditional-explicit.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=</id>
+  <id>PapRjmveoqLzZcMTeeuJv2m2p9q</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Implicit conversion to double</literal>
-      </text>
-    </brief>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>double</literal>
+          <literal>Implicit conversion to double</literal>
         </text>
-      </code>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>double</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>double</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>double</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 </mrdocs>

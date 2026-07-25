@@ -470,17 +470,21 @@ inline
 QualifierKind
 toQualifierKind(unsigned const quals)
 {
-    std::underlying_type_t<QualifierKind> result = QualifierKind::None;
-    if (quals & clang::Qualifiers::Const)
+    bool const isConst = quals & clang::Qualifiers::Const;
+    bool const isVolatile = quals & clang::Qualifiers::Volatile;
+    if (isConst && isVolatile)
     {
-        result |= QualifierKind::Const;
+        return QualifierKind::ConstVolatile;
     }
-    if (quals & clang::Qualifiers::Volatile)
+    if (isConst)
     {
-        result |= QualifierKind::Volatile;
+        return QualifierKind::Const;
     }
-    return static_cast<QualifierKind>(result);
-
+    if (isVolatile)
+    {
+        return QualifierKind::Volatile;
+    }
+    return QualifierKind::None;
 }
 
 /** Convert a Clang Decl::Kind into a MrDocs FunctionClass

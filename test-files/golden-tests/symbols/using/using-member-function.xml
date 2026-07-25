@@ -2,1550 +2,2068 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
-    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-    <records>BrX2oZup9qgy4SfJloKCuUYZshA=</records>
-    <records>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</records>
-    <records>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</records>
-    <records>47VHAvq/9ANwJboZT8J8RwBjMLU=</records>
-    <records>VcdHojbpExgHkfZT+vfrZl1ADjM=</records>
-    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
-  </namespace-tranche>
+  <members>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz 45Fwe5kYuv1Y5U477G1sB17ZooGh 6RWYArUFm6agSXBXbdJrAxtHtTq 8NvL7tW5hEXkEyq5QnZs7SHNjP9 Zo28JLEeTpjgaLqxZAGsf4eqV3E 4AzosenCzW5LkxQrsfr9SyffmSMi 2CK7DUP6APSEiE3BQoKbZzUQvXrA Hk31bikkzpysZoDACKWU6p2oivg</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct will be inherited as public</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct will be inherited as public</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <derived>FLgkhM3m0U3Lo2o3XLPUizWPH00=</derived>
-  <record-interface>
-    <record-tranche>
-      <functions>+yf24/wS549V5ZqYWGboHExPRoY=</functions>
-      <functions>nGMtjL9NQBvDG5i6/RUEWr+GrRg=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <derived>Hk31bikkzpysZoDACKWU6p2oivg</derived>
+  <interface>
+    <public>
+      <functions>4Vwj7NpSfWciNb4FZrGtVpv465Pb 3BNHE8uLutgMtU1xf5R6HgzQfwbD</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>nGMtjL9NQBvDG5i6/RUEWr+GrRg=</id>
+  <id>3BNHE8uLutgMtU1xf5R6HgzQfwbD</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>That is the only member function that will be publicly accessible in U via inheritance.</literal>
-      </text>
-    </paragraph>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>That is the only member function that will be publicly accessible in U via inheritance.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;0&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;0&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>0</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>24</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct will be inherited as public</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct will be inherited as public</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <derived>FLgkhM3m0U3Lo2o3XLPUizWPH00=</derived>
-  <record-interface>
-    <record-tranche>
-      <functions>BXWQl1hwcRN+K0eldjwdmDjNhoI=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>xY3rr0vMQ99dtCUUyDbfqsakgww=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <derived>Hk31bikkzpysZoDACKWU6p2oivg</derived>
+  <interface>
+    <public>
+      <functions>5QrWS85ah6muZ2wy3RvAxbKi45f</functions>
+    </public>
+    <protected>
+      <functions>3kdcqUU44zksxVm43c5ZBsqJM7aB</functions>
+    </protected>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>xY3rr0vMQ99dtCUUyDbfqsakgww=</id>
+  <id>3kdcqUU44zksxVm43c5ZBsqJM7aB</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <doc-comment>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;1&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;1&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>1</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>32</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>32</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
+  <id>6RWYArUFm6agSXBXbdJrAxtHtTq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct will be inherited as protected</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct will be inherited as protected</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>xc4rubk4zE3w1Khd0s5vZ8j8QoM=</functions>
-      <functions>PvNGaaAeF9VeSz8kIOeaPmy37BQ=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3kqP3zEFzuvfivdF8jhZffptrFkN ssEtM3FFwruGT5fmMymL7WfQ57H</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PvNGaaAeF9VeSz8kIOeaPmy37BQ=</id>
+  <id>ssEtM3FFwruGT5fmMymL7WfQ57H</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
-  <doc-comment>
+  <parent>6RWYArUFm6agSXBXbdJrAxtHtTq</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;2&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;2&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>2</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>D</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>39</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>39</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
+  <id>8NvL7tW5hEXkEyq5QnZs7SHNjP9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct will be inherited as protected</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct will be inherited as protected</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>VPiDxu6gwBq5Y8pf7OEziM6JdXw=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>mEbr7lEslKhZ3jpVBYzcTiHp/oA=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2BfFm3BEPnpnRKAG2NuV6icmZsYF</functions>
+    </public>
+    <protected>
+      <functions>383eFDauUAXRjtUAf5tU6CauAjcb</functions>
+    </protected>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>mEbr7lEslKhZ3jpVBYzcTiHp/oA=</id>
+  <id>383eFDauUAXRjtUAf5tU6CauAjcb</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
-  <doc-comment>
+  <parent>8NvL7tW5hEXkEyq5QnZs7SHNjP9</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;3&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;3&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>3</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>E</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>47</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>47</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
+  <id>Zo28JLEeTpjgaLqxZAGsf4eqV3E</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct will be inherited as private</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct will be inherited as private</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>O8C8ZYsRFO28krcT7Fzi7EZDymo=</functions>
-      <functions>CEIniuKR4So6PAYFUcT6B+Nx+H8=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>qHPYMaDewYihVegrp7ocAsxhRs7 7g3LkzouUWJDVp5j2AJhmJhCCcn</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>50</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>50</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CEIniuKR4So6PAYFUcT6B+Nx+H8=</id>
+  <id>7g3LkzouUWJDVp5j2AJhmJhCCcn</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
-  <doc-comment>
+  <parent>Zo28JLEeTpjgaLqxZAGsf4eqV3E</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;4&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;4&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>4</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>F</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>54</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>54</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
+  <id>4AzosenCzW5LkxQrsfr9SyffmSMi</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct will be inherited as private</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct will be inherited as private</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>mg32bBYYyqlyYAdMC01XRwDKYLg=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>5FJgzIcro5VIoeXTsaIxTaVD91s=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>39UwvaYhsPLwT3gySCq94zZtQKxs</functions>
+    </public>
+    <protected>
+      <functions>4BVZzGQnaWfYt7YakhyFau7rP2GJ</functions>
+    </protected>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>58</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>58</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>5FJgzIcro5VIoeXTsaIxTaVD91s=</id>
+  <id>4BVZzGQnaWfYt7YakhyFau7rP2GJ</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
-  <doc-comment>
+  <parent>4AzosenCzW5LkxQrsfr9SyffmSMi</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;5&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;5&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>5</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>Tag</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
+  <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A tag template to create distinct f functions.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A tag template to create distinct f functions.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>idx</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>idx</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <record>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>67</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>using-member-function.cpp</shortPath>
+      <sourcePath>using-member-function.cpp</sourcePath>
+      <lineNumber>67</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <id>Hk31bikkzpysZoDACKWU6p2oivg</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The documentation of this struct should include the function f twice: once in the member functions</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The documentation of this struct should include the function f twice: once in the member functions</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct inherits from A, B, C, D, E, and F in various ways,</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This struct inherits from A, B, C, D, E, and F in various ways,</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-        <identifier>A</identifier>
-      </name>
-    </named>
-  </base>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
-        <identifier>B</identifier>
-      </name>
-    </named>
-  </base>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
-        <identifier>C</identifier>
-      </name>
-    </named>
-  </base>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
-        <identifier>D</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>nGMtjL9NQBvDG5i6/RUEWr+GrRg=</functions>
-      <usings>rmQLRfXW6vtP8GPIdyNNwtpI+fw=</usings>
-      <usings>G3OvpIVH5hy5WK887jqrPTyl37g=</usings>
-      <usings>HTq6bF0wwPrK9aYY2w2AP0w7n4M=</usings>
-      <usings>zZluhP9Ym1VXLys/h+I2mnz4A6E=</usings>
-      <usings>T+dE7rV3VUFcNGkSQ5sS+TE3ovE=</usings>
-      <usings>YoyYEMZ0BckFWg9oBMs6hEGFY1o=</usings>
-      <usings>DND4SGqk7GU/0r60b5NpJlihpCI=</usings>
-      <usings>vu1xdQQ6LH5sjZHsW8XwytWstO8=</usings>
-      <usings>91+ZMOvfXn2lxSqWzq2TgM9xueo=</usings>
-      <usings>CQN3Y3phH+3gaj82D6tq5au3JMQ=</usings>
-      <usings>vYTRrgx7/KOCWsM9RR5gIdgaRsw=</usings>
-      <usings>IrXefx1M56k6Iagrba7mfDBpg80=</usings>
-    </record-tranche>
-    <record-tranche>
-      <functions>fRZCjYpQKv6bmUv7+MW+i+lpbAc=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+              <identifier>A</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
+              <identifier>B</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>6RWYArUFm6agSXBXbdJrAxtHtTq</id>
+              <identifier>C</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>protected</access>
+    </baseInfo>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>8NvL7tW5hEXkEyq5QnZs7SHNjP9</id>
+              <identifier>D</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>protected</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>3BNHE8uLutgMtU1xf5R6HgzQfwbD</functions>
+      <usings>3Rv2i77gQYuCNXAptk7geFpMo9zb PBZoFHuqeSSnYZVQV8yNYHckifq QcsVJdLokWQZk4Lg64mvW2nMYHx 3s8ey4EpGUSXeesH2XRkx4MHA6SU 27ZmTLoRGvZWyXe4BhFB6bys5cZ6 2NddBJ1rcfYMeEJZGuU8REoRZM5b BMeiyVM2MATuEF4iwsx2MEPEN65 3fH3SSniL4brKwyKix5Cya2W4tWA 4StStNeK17vykMwgyQf92oFBAoWR 8HRx3tWckqDc8VyrpdQpvi8v4QB 3e92HnApfL7nCS7X3PE5HfLFXETd V3kCnTzBKN5jEihEd8AcFrzdE68</usings>
+    </public>
+    <protected>
+      <functions>2k5M83g19ndi72Ymu13Hja9MVVAn</functions>
+    </protected>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>nGMtjL9NQBvDG5i6/RUEWr+GrRg=</id>
+  <id>3BNHE8uLutgMtU1xf5R6HgzQfwbD</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>That is the only member function that will be publicly accessible in U via inheritance.</literal>
-      </text>
-    </paragraph>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>That is the only member function that will be publicly accessible in U via inheritance.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;0&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;0&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>0</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <using>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>76</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>76</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>rmQLRfXW6vtP8GPIdyNNwtpI+fw=</id>
+  <id>3Rv2i77gQYuCNXAptk7geFpMo9zb</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the A::A constructors into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the A::A constructors into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>U</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-      <identifier>A</identifier>
-    </name>
-  </name>
+      <identifier>U</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+          <identifier>A</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 <using>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>78</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>78</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>G3OvpIVH5hy5WK887jqrPTyl37g=</id>
+  <id>PBZoFHuqeSSnYZVQV8yNYHckifq</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the B::B constructors into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the B::B constructors into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>U</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
-      <identifier>B</identifier>
-    </name>
-  </name>
+      <identifier>U</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
+          <identifier>B</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 <using>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>80</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>80</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>HTq6bF0wwPrK9aYY2w2AP0w7n4M=</id>
+  <id>QcsVJdLokWQZk4Lg64mvW2nMYHx</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the C::C constructors into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the C::C constructors into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>U</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
-      <identifier>C</identifier>
-    </name>
-  </name>
+      <identifier>U</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>6RWYArUFm6agSXBXbdJrAxtHtTq</id>
+          <identifier>C</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 <using>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>82</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>82</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>zZluhP9Ym1VXLys/h+I2mnz4A6E=</id>
+  <id>3s8ey4EpGUSXeesH2XRkx4MHA6SU</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the D::D constructors into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the D::D constructors into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>U</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
-      <identifier>D</identifier>
-    </name>
-  </name>
+      <identifier>U</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>8NvL7tW5hEXkEyq5QnZs7SHNjP9</id>
+          <identifier>D</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 <using>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>84</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>84</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>T+dE7rV3VUFcNGkSQ5sS+TE3ovE=</id>
+  <id>27ZmTLoRGvZWyXe4BhFB6bys5cZ6</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the E::E constructors into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the E::E constructors into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>U</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
-      <identifier>E</identifier>
-    </name>
-  </name>
+      <identifier>U</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>Zo28JLEeTpjgaLqxZAGsf4eqV3E</id>
+          <identifier>E</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 <using>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>86</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>86</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>YoyYEMZ0BckFWg9oBMs6hEGFY1o=</id>
+  <id>2NddBJ1rcfYMeEJZGuU8REoRZM5b</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the F::F constructors into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the F::F constructors into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>U</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
-      <identifier>F</identifier>
-    </name>
-  </name>
+      <identifier>U</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4AzosenCzW5LkxQrsfr9SyffmSMi</id>
+          <identifier>F</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>89</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>89</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>DND4SGqk7GU/0r60b5NpJlihpCI=</id>
+  <id>BMeiyVM2MATuEF4iwsx2MEPEN65</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the A::f functions into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the A::f functions into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-      <identifier>A</identifier>
-    </name>
-  </name>
-  <shadow-declarations>nGMtjL9NQBvDG5i6/RUEWr+GrRg=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+          <identifier>A</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>3BNHE8uLutgMtU1xf5R6HgzQfwbD</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>nGMtjL9NQBvDG5i6/RUEWr+GrRg=</id>
+  <id>3BNHE8uLutgMtU1xf5R6HgzQfwbD</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>That is the only member function that will be publicly accessible in U via inheritance.</literal>
-      </text>
-    </paragraph>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>That is the only member function that will be publicly accessible in U via inheritance.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;0&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;0&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>0</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>91</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>91</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>vu1xdQQ6LH5sjZHsW8XwytWstO8=</id>
+  <id>3fH3SSniL4brKwyKix5Cya2W4tWA</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the B::f functions into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the B::f functions into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
-      <identifier>B</identifier>
-    </name>
-  </name>
-  <shadow-declarations>xY3rr0vMQ99dtCUUyDbfqsakgww=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
+          <identifier>B</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>3kdcqUU44zksxVm43c5ZBsqJM7aB</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>xY3rr0vMQ99dtCUUyDbfqsakgww=</id>
+  <id>3kdcqUU44zksxVm43c5ZBsqJM7aB</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <doc-comment>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;1&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;1&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>1</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>93</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>93</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>91+ZMOvfXn2lxSqWzq2TgM9xueo=</id>
+  <id>4StStNeK17vykMwgyQf92oFBAoWR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the C::f functions into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the C::f functions into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
-      <identifier>C</identifier>
-    </name>
-  </name>
-  <shadow-declarations>PvNGaaAeF9VeSz8kIOeaPmy37BQ=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>6RWYArUFm6agSXBXbdJrAxtHtTq</id>
+          <identifier>C</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>ssEtM3FFwruGT5fmMymL7WfQ57H</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PvNGaaAeF9VeSz8kIOeaPmy37BQ=</id>
+  <id>ssEtM3FFwruGT5fmMymL7WfQ57H</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
-  <doc-comment>
+  <parent>6RWYArUFm6agSXBXbdJrAxtHtTq</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;2&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;2&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>2</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>95</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>95</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>CQN3Y3phH+3gaj82D6tq5au3JMQ=</id>
+  <id>8HRx3tWckqDc8VyrpdQpvi8v4QB</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the D::f functions into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the D::f functions into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</id>
-      <identifier>D</identifier>
-    </name>
-  </name>
-  <shadow-declarations>mEbr7lEslKhZ3jpVBYzcTiHp/oA=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>8NvL7tW5hEXkEyq5QnZs7SHNjP9</id>
+          <identifier>D</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>383eFDauUAXRjtUAf5tU6CauAjcb</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>mEbr7lEslKhZ3jpVBYzcTiHp/oA=</id>
+  <id>383eFDauUAXRjtUAf5tU6CauAjcb</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
-  <doc-comment>
+  <parent>8NvL7tW5hEXkEyq5QnZs7SHNjP9</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;3&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;3&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>3</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>97</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>97</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>vYTRrgx7/KOCWsM9RR5gIdgaRsw=</id>
+  <id>3e92HnApfL7nCS7X3PE5HfLFXETd</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the E::f functions into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the E::f functions into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
-      <identifier>E</identifier>
-    </name>
-  </name>
-  <shadow-declarations>CEIniuKR4So6PAYFUcT6B+Nx+H8=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>Zo28JLEeTpjgaLqxZAGsf4eqV3E</id>
+          <identifier>E</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>7g3LkzouUWJDVp5j2AJhmJhCCcn</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>50</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>50</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CEIniuKR4So6PAYFUcT6B+Nx+H8=</id>
+  <id>7g3LkzouUWJDVp5j2AJhmJhCCcn</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</parent>
-  <doc-comment>
+  <parent>Zo28JLEeTpjgaLqxZAGsf4eqV3E</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;4&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;4&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>4</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>99</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>99</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>IrXefx1M56k6Iagrba7mfDBpg80=</id>
+  <id>V3kCnTzBKN5jEihEd8AcFrzdE68</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bring all the F::f functions into U.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bring all the F::f functions into U.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>47VHAvq/9ANwJboZT8J8RwBjMLU=</id>
-      <identifier>F</identifier>
-    </name>
-  </name>
-  <shadow-declarations>5FJgzIcro5VIoeXTsaIxTaVD91s=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4AzosenCzW5LkxQrsfr9SyffmSMi</id>
+          <identifier>F</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>4BVZzGQnaWfYt7YakhyFau7rP2GJ</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>58</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>58</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>5FJgzIcro5VIoeXTsaIxTaVD91s=</id>
+  <id>4BVZzGQnaWfYt7YakhyFau7rP2GJ</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>47VHAvq/9ANwJboZT8J8RwBjMLU=</parent>
-  <doc-comment>
+  <parent>4AzosenCzW5LkxQrsfr9SyffmSMi</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;5&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;5&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>5</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <overloads>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>fRZCjYpQKv6bmUv7+MW+i+lpbAc=</id>
+  <id>2k5M83g19ndi72Ymu13Hja9MVVAn</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <doc-comment>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <code>
-        <kind>code</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>f</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>f</literal>
+          <literal> overloads</literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> overloads</literal>
-      </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>normal</func-class>
-  <members>xY3rr0vMQ99dtCUUyDbfqsakgww=</members>
-  <members>PvNGaaAeF9VeSz8kIOeaPmy37BQ=</members>
-  <members>mEbr7lEslKhZ3jpVBYzcTiHp/oA=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>normal</funcClass>
+  <members>3kdcqUU44zksxVm43c5ZBsqJM7aB ssEtM3FFwruGT5fmMymL7WfQ57H 383eFDauUAXRjtUAf5tU6CauAjcb</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>xY3rr0vMQ99dtCUUyDbfqsakgww=</id>
+  <id>3kdcqUU44zksxVm43c5ZBsqJM7aB</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <doc-comment>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;1&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;1&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>1</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PvNGaaAeF9VeSz8kIOeaPmy37BQ=</id>
+  <id>ssEtM3FFwruGT5fmMymL7WfQ57H</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
-  <doc-comment>
+  <parent>6RWYArUFm6agSXBXbdJrAxtHtTq</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Public member function f taking a Tag&lt;2&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public member function f taking a Tag&lt;2&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>2</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-member-function.cpp</short-path>
-      <source-path>using-member-function.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-member-function.cpp</shortPath>
+        <sourcePath>using-member-function.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>mEbr7lEslKhZ3jpVBYzcTiHp/oA=</id>
+  <id>383eFDauUAXRjtUAf5tU6CauAjcb</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>CSFzdUEgi4+pu0K2D3isHXeaoFQ=</parent>
-  <doc-comment>
+  <parent>8NvL7tW5hEXkEyq5QnZs7SHNjP9</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Protected member function f taking a Tag&lt;3&gt;.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Protected member function f taking a Tag&lt;3&gt;.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <id>VcdHojbpExgHkfZT+vfrZl1ADjM=</id>
-        <identifier>Tag</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2CK7DUP6APSEiE3BQoKbZzUQvXrA</id>
+              <identifier>Tag</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>3</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

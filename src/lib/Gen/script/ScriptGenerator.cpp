@@ -34,7 +34,7 @@ buildGeneratorCorpus(Corpus const& corpus, DomCorpus const& domCorpus)
     for (Symbol const& sym : corpus)
     {
         dom::Value value = domCorpus.get(sym.id);
-        value.getObject().set("_id", toBase16Str(sym.id));
+        value.getObject().set("_id", toBase58Str(sym.id));
         symbols.emplace_back(std::move(value));
     }
     dom::Object corpusObj;

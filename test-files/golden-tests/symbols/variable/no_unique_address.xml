@@ -2,114 +2,121 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>iczIHP1J59EwYw3xxL3w2C3Q43Q=</records>
-    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
-  </namespace-tranche>
+  <members>
+    <records>2vMA1v3K7vUZxnM4rWjkvuV1hPAK 95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</records>
+  </members>
 </namespace>
 <record>
   <name>Empty</name>
-  <source>
-    <location>
-      <short-path>no_unique_address.cpp</short-path>
-      <source-path>no_unique_address.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no_unique_address.cpp</shortPath>
+      <sourcePath>no_unique_address.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>iczIHP1J59EwYw3xxL3w2C3Q43Q=</id>
+  <id>2vMA1v3K7vUZxnM4rWjkvuV1hPAK</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>T</name>
-  <source>
-    <location>
-      <short-path>no_unique_address.cpp</short-path>
-      <source-path>no_unique_address.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no_unique_address.cpp</shortPath>
+      <sourcePath>no_unique_address.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <variables>h2j8f921HD+Fyaokcs4ndGM/yNk=</variables>
-      <variables>91xV6rCFObgi6i1/U2uZ/GnD3WM=</variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <variables>2tR9uEjc5BaU96ytQ2pHJjgp9SDE 4SsrEyu974kgpZYJU1EXRQRiUhra</variables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>e</name>
-  <source>
-    <location>
-      <short-path>no_unique_address.cpp</short-path>
-      <source-path>no_unique_address.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no_unique_address.cpp</shortPath>
+        <sourcePath>no_unique_address.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>h2j8f921HD+Fyaokcs4ndGM/yNk=</id>
+  <id>2tR9uEjc5BaU96ytQ2pHJjgp9SDE</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>iczIHP1J59EwYw3xxL3w2C3Q43Q=</id>
-      <identifier>Empty</identifier>
-    </name>
-  </named>
+  <parent>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+    </deprecated>
+    <maybeUnused>
+      <kind>maybe-unused</kind>
+      <name>maybe_unused</name>
+    </maybeUnused>
+  </attributes>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2vMA1v3K7vUZxnM4rWjkvuV1hPAK</id>
+          <identifier>Empty</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <initializer>Empty{}</initializer>
-  <attributes>deprecated</attributes>
-  <attributes>maybe_unused</attributes>
-  <is-maybe-unused/>
-  <is-deprecated/>
-  <is-record-field/>
+  <isRecordField/>
 </variable>
 <variable>
   <name>i</name>
-  <source>
-    <location>
-      <short-path>no_unique_address.cpp</short-path>
-      <source-path>no_unique_address.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no_unique_address.cpp</shortPath>
+        <sourcePath>no_unique_address.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>91xV6rCFObgi6i1/U2uZ/GnD3WM=</id>
+  <id>4SsrEyu974kgpZYJU1EXRQRiUhra</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  <parent>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 </mrdocs>

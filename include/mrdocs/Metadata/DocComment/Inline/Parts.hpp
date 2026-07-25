@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 
@@ -35,23 +36,9 @@ enum class Parts
     description
 };
 
-/** Return the name of the Parts as a string.
-*/
-MRDOCS_DECL
-dom::String
-toString(Parts kind) noexcept;
-
-/** Return the Parts from a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Parts const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(
+    Parts,
+    all, brief, description)
 
 } // mrdocs::doc
 

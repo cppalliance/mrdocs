@@ -2,668 +2,900 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>2xwtzebgDk4MeocbdM1v5JoV4Xvj</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <typedefs>knD7LwHco1Rc3UN13fDrTDK0Fg4=</typedefs>
-    <typedefs>mAmfKzQQ8Mg78wrSV5C5vqhB38M=</typedefs>
-    <typedefs>40FFJWRtg8LikFmMYkFhi3taM7w=</typedefs>
-    <typedefs>EFfBXjCvLk0J5w7aUT/GZ5D4Zww=</typedefs>
-    <typedefs>9GvIXSW1TfhlI8qPuV4xPDXT5+A=</typedefs>
-    <typedefs>N9KZXiVz/IMBW2CcGYh+8cvUeFQ=</typedefs>
-    <records>jJtr0x+P2kzEfxAlp7Hjo5akJho=</records>
-    <records>n2ekv7/9IraylJIibujZeExrML4=</records>
-    <records>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</records>
-    <records>WjzMcZfRtncsiJEvL1/LzUes/GM=</records>
-    <records>+AYNfv3bBiQwa6z9A60U/F7dvXE=</records>
-    <records>w5ssdgUOfKNpDbPFUfSYesxFAc8=</records>
-    <records>/TldxA72JGXtufh5RbJgxLW2mwU=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <typedefs>33L9QnZcZPdykKheKHFUB1DC5BXB 37rRMertz4QJoUqoso6r81fKpMUW 4Ada6UAYgUbSLmEh9g6DtzPdjV7Z ECvcA6gFcAJ6C65wfAvBWdpjgUs 4QW5Yds5uLTFnu2vKbnc1fiuRrbh n7CGARPgr2H6Tu9JNMdoGbeEAD1</typedefs>
+    <records>2xcice1qoiaTeaSVaS251J7r3fe1 3DohMiun7Uk2cBu42HVFxXXxKGCd 3ryhCfB2M6WT1VQ6s35iU87dYEfe 2Fv5zkjNSJaUPodpcqC2iBpFQ8Gi 4TQvKQDPskqVPACGDhax7XqREUGx 3j4K5kCQDE35YBWkduVPJ1yGQowL 4XceMwibZBAcQ78SrXF4MYjfdD2U</records>
+  </members>
 </namespace>
 <typedef>
   <name>BInt</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>knD7LwHco1Rc3UN13fDrTDK0Fg4=</id>
+  <id>33L9QnZcZPdykKheKHFUB1DC5BXB</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of B for int.</literal>
-      </text>
-      <copied-from>B&lt;int&gt;</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of B for int.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>B&lt;int&gt;</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>n2ekv7/9IraylJIibujZeExrML4=</id>
-      <identifier>B</identifier>
-    </name>
-  </named>
-  <is-using/>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>3DohMiun7Uk2cBu42HVFxXXxKGCd</id>
+          <identifier>B</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>int</identifier>
+                    </identifier>
+                  </name>
+                  <fundamentalType>int</fundamentalType>
+                </named>
+              </type>
+            </type>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 <typedef>
   <name>BInt2</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>mAmfKzQQ8Mg78wrSV5C5vqhB38M=</id>
+  <id>37rRMertz4QJoUqoso6r81fKpMUW</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of B for int with value 2.</literal>
-      </text>
-      <copied-from>B&lt;int, 2&gt;</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of B for int with value 2.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>B&lt;int, 2&gt;</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
-      <identifier>B</identifier>
-    </name>
-  </named>
-  <is-using/>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>3ryhCfB2M6WT1VQ6s35iU87dYEfe</id>
+          <identifier>B</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>int</identifier>
+                    </identifier>
+                  </name>
+                  <fundamentalType>int</fundamentalType>
+                </named>
+              </type>
+            </type>
+            <constant>
+              <kind>constant</kind>
+              <value>2</value>
+            </constant>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 <typedef>
   <name>B_t</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>40FFJWRtg8LikFmMYkFhi3taM7w=</id>
+  <id>4Ada6UAYgUbSLmEh9g6DtzPdjV7Z</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Main class template for B.</literal>
-      </text>
-      <copied-from>B</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Main class template for B.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>B</string>
+      </copiedFrom>
     </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The type parameter.</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
-      <identifier>B</identifier>
-    </name>
-  </named>
-  <is-using/>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The type parameter.</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>2xcice1qoiaTeaSVaS251J7r3fe1</id>
+          <identifier>B</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>T</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+            <constant>
+              <kind>constant</kind>
+              <value>I</value>
+            </constant>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>I</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <name>I</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
 </typedef>
 <typedef>
   <name>CDTrue</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>60</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>60</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>EFfBXjCvLk0J5w7aUT/GZ5D4Zww=</id>
+  <id>ECvcA6gFcAJ6C65wfAvBWdpjgUs</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of C for D with true.</literal>
-      </text>
-      <copied-from>C&lt;D, true&gt;</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of C for D with true.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>C&lt;D, true&gt;</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
-      <identifier>C</identifier>
-    </name>
-  </named>
-  <is-using/>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>4TQvKQDPskqVPACGDhax7XqREUGx</id>
+          <identifier>C</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <id>4XceMwibZBAcQ78SrXF4MYjfdD2U</id>
+                      <identifier>D</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+            <constant>
+              <kind>constant</kind>
+              <value>true</value>
+            </constant>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 <typedef>
   <name>CIntTrue</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>48</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>48</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>9GvIXSW1TfhlI8qPuV4xPDXT5+A=</id>
+  <id>4QW5Yds5uLTFnu2vKbnc1fiuRrbh</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of C for D with true.</literal>
-      </text>
-      <copied-from>C&lt;int, true&gt;</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of C for D with true.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>C&lt;int, true&gt;</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
-      <identifier>C</identifier>
-    </name>
-  </named>
-  <is-using/>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>3j4K5kCQDE35YBWkduVPJ1yGQowL</id>
+          <identifier>C</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>int</identifier>
+                    </identifier>
+                  </name>
+                  <fundamentalType>int</fundamentalType>
+                </named>
+              </type>
+            </type>
+            <constant>
+              <kind>constant</kind>
+              <value>true</value>
+            </constant>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 <typedef>
   <name>C_t</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>39</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>39</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>N9KZXiVz/IMBW2CcGYh+8cvUeFQ=</id>
+  <id>n7CGARPgr2H6Tu9JNMdoGbeEAD1</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Main class template for C.</literal>
-      </text>
-      <copied-from>C</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Main class template for C.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>C</string>
+      </copiedFrom>
     </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The type parameter.</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
-      <identifier>C</identifier>
-    </name>
-  </named>
-  <is-using/>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The type parameter.</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>2Fv5zkjNSJaUPodpcqC2iBpFQ8Gi</id>
+          <identifier>C</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>T</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+            <constant>
+              <kind>constant</kind>
+              <value>B</value>
+            </constant>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>B</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>bool</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <name>B</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>bool</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>bool</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
 </typedef>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>jJtr0x+P2kzEfxAlp7Hjo5akJho=</id>
+  <id>2xcice1qoiaTeaSVaS251J7r3fe1</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Main class template for B.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Main class template for B.</literal>
+        </text>
+      </children>
     </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The type parameter.</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The integer parameter with a default value of 0.</literal>
-      </text>
-      <name>int</name>
-    </t-param>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The type parameter.</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The integer parameter with a default value of 0.</literal>
+          </text>
+        </children>
+        <name>int</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <constant-targ>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <constant>
         <kind>constant</kind>
-        <value>0</value>
-      </constant-targ>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+        <default>
+          <constant>
+            <kind>constant</kind>
+            <value>0</value>
+          </constant>
+        </default>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <specializations>3DohMiun7Uk2cBu42HVFxXXxKGCd 3ryhCfB2M6WT1VQ6s35iU87dYEfe</specializations>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>template-arguments.cpp</shortPath>
+      <sourcePath>template-arguments.cpp</sourcePath>
+      <lineNumber>17</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>n2ekv7/9IraylJIibujZeExrML4=</id>
+  <id>3DohMiun7Uk2cBu42HVFxXXxKGCd</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of B for int.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of B for int.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>jJtr0x+P2kzEfxAlp7Hjo5akJho=</primary>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>2xcice1qoiaTeaSVaS251J7r3fe1</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>25</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>template-arguments.cpp</shortPath>
+      <sourcePath>template-arguments.cpp</sourcePath>
+      <lineNumber>25</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>zWh7HJU4uEOW6SQu1/X6/fBkFq0=</id>
+  <id>3ryhCfB2M6WT1VQ6s35iU87dYEfe</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of B for int with value 2.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of B for int with value 2.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <constant-targ>
-      <kind>constant</kind>
-      <value>2</value>
-    </constant-targ>
-    <primary>jJtr0x+P2kzEfxAlp7Hjo5akJho=</primary>
-  </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-</record>
-<record>
-  <name>C</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
-  <kind>record</kind>
-  <id>WjzMcZfRtncsiJEvL1/LzUes/GM=</id>
-  <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Main class template for C.</literal>
-      </text>
-    </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The type parameter.</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The boolean parameter with a default value of false.</literal>
-      </text>
-      <name>bool</name>
-    </t-param>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <constant-targ>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+      <constant>
         <kind>constant</kind>
-        <value>false</value>
-      </constant-targ>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>bool</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+        <value>2</value>
+      </constant>
+    </args>
+    <primary>2xcice1qoiaTeaSVaS251J7r3fe1</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>57</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>+AYNfv3bBiQwa6z9A60U/F7dvXE=</id>
+  <id>2Fv5zkjNSJaUPodpcqC2iBpFQ8Gi</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of C for D with true.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Main class template for C.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The type parameter.</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The boolean parameter with a default value of false.</literal>
+          </text>
+        </children>
+        <name>bool</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
-          <identifier>D</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <constant-targ>
-      <kind>constant</kind>
-      <value>true</value>
-    </constant-targ>
-    <primary>WjzMcZfRtncsiJEvL1/LzUes/GM=</primary>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <default>
+          <constant>
+            <kind>constant</kind>
+            <value>false</value>
+          </constant>
+        </default>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>bool</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>bool</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <specializations>3j4K5kCQDE35YBWkduVPJ1yGQowL 4TQvKQDPskqVPACGDhax7XqREUGx</specializations>
 </record>
 <record>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>45</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>template-arguments.cpp</shortPath>
+      <sourcePath>template-arguments.cpp</sourcePath>
+      <lineNumber>57</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>w5ssdgUOfKNpDbPFUfSYesxFAc8=</id>
+  <id>4TQvKQDPskqVPACGDhax7XqREUGx</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization of C for int with true.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of C for D with true.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <constant-targ>
-      <kind>constant</kind>
-      <value>true</value>
-    </constant-targ>
-    <primary>WjzMcZfRtncsiJEvL1/LzUes/GM=</primary>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <id>4XceMwibZBAcQ78SrXF4MYjfdD2U</id>
+                <identifier>D</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <value>true</value>
+      </constant>
+    </args>
+    <primary>2Fv5zkjNSJaUPodpcqC2iBpFQ8Gi</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <isListedOnPrimary/>
+</record>
+<record>
+  <name>C</name>
+  <loc>
+    <defLoc>
+      <shortPath>template-arguments.cpp</shortPath>
+      <sourcePath>template-arguments.cpp</sourcePath>
+      <lineNumber>45</lineNumber>
+      <columnNumber>5</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3j4K5kCQDE35YBWkduVPJ1yGQowL</id>
+  <extraction>regular</extraction>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization of C for int with true.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <template>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <value>true</value>
+      </constant>
+    </args>
+    <primary>2Fv5zkjNSJaUPodpcqC2iBpFQ8Gi</primary>
+  </template>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>D</name>
-  <source>
-    <location>
-      <short-path>template-arguments.cpp</short-path>
-      <source-path>template-arguments.cpp</source-path>
-      <line-number>52</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-arguments.cpp</shortPath>
+        <sourcePath>template-arguments.cpp</sourcePath>
+        <lineNumber>52</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
+  <id>4XceMwibZBAcQ78SrXF4MYjfdD2U</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <doc-comment>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Helper struct D.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Helper struct D.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

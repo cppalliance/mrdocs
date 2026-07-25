@@ -109,6 +109,22 @@
       ]
     },
     {
+      "name": "Check Reference",
+      "group": "Documentation",
+      "target": "mrdocs",
+      "program": "${mrdocs_build_dir}/bin/mrdocs",
+      "args": [
+        "../CMakeLists.txt",
+        "--config=${mrdocs_src_dir}/docs/mrdocs.yml",
+        "--generator=noop",
+        "--addons=${mrdocs_src_dir}/share/mrdocs/addons",
+        "--stdlib-includes=${mrdocs_stdlib_includes}",
+        "--libc-includes=${mrdocs_src_dir}/share/mrdocs/headers/libc-stubs",
+        "--concurrency=${num_cores}",
+        "--log-level=warn"
+      ]
+    },
+    {
       "name": "Build Local Docs",
       "group": "Documentation",
       "script": "${mrdocs_src_dir}/docs/build_local_docs.${docs_script_ext}",

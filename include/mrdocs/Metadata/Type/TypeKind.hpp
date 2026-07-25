@@ -13,45 +13,38 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
+#include <string_view>
 
 namespace mrdocs {
 
 /** Variants of C++ types captured in metadata.
 
-    @note `TypeKind` is intentionally NOT registered with
-    `MRDOCS_DESCRIBE_ENUM`. Describing it would make the reflection-
-    driven XML writer emit a redundant `<kind>...</kind>` child into
-    every type element (NamedType, LValueReferenceType, ...), which
-    would churn every XML golden test for no semantic gain. Code that
-    needs a string form for a `TypeKind` value calls `toString` below;
-    the script side of `mrdocs.set` falls back to `toString` for
-    polymorphic `kind:` matching when the discriminator enum is
-    undescribed, so script names (`lvalue-reference`, ...) match the
-    DOM and Handlebars side and differ only from the XML writer's tag
-    form (`l-value-reference`, ...).
+    @note `TypeKind` is described (see MRDOCS_DESCRIBE_ENUM below) for
+    reflection, but the custom `toString` is deliberately kept: it renders
+    `lvalue-reference` / `rvalue-reference`, whereas the generic described-enum
+    `toString` would give the kebab name `l-value-reference` /
+    `r-value-reference`. The custom spelling is what the DOM/Handlebars side and
+    script `kind:` matching expect.
 */
 enum class TypeKind {
 #define INFO(Type) Type,
 #include <mrdocs/Metadata/Type/TypeNodes.inc>
 };
 
+MRDOCS_DESCRIBE_ENUM_BEGIN(TypeKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(TypeKind, Name)
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
+MRDOCS_DESCRIBE_ENUM_END(TypeKind)
+
 /** Convert a TypeKind to its string representation.
+
+    @param kind The type kind.
+    @return The kind's string representation.
 */
 MRDOCS_DECL
-dom::String
+std::string_view
 toString(TypeKind kind) noexcept;
-
-inline
-/** Map a TypeKind into a DOM value.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TypeKind kind)
-{
-    v = toString(kind);
-}
 
 } // mrdocs
 

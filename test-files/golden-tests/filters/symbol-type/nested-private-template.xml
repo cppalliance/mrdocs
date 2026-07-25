@@ -2,133 +2,133 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</records>
-  </namespace-tranche>
+  <members>
+    <records>3V1mMbWKbUNBXcKnTTGU2CvmoCDK</records>
+  </members>
 </namespace>
 <record>
   <name>range</name>
-  <source>
-    <location>
-      <short-path>nested-private-template.cpp</short-path>
-      <source-path>nested-private-template.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>nested-private-template.cpp</shortPath>
+      <sourcePath>nested-private-template.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</id>
+  <id>3V1mMbWKbUNBXcKnTTGU2CvmoCDK</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-      <records>7XlFKPcXRfyYPWc4WPN3PAH+m58=</records>
-      <records>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</records>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <private>
+      <records>4JtV6FFfBrgN69DpcGvhXJWEiaiS 4M7j2jJtx3QteQAJXN21k7gXG6S</records>
+    </private>
+  </interface>
 </record>
 <record>
   <name>impl</name>
-  <source>
-    <location>
-      <short-path>nested-private-template.cpp</short-path>
-      <source-path>nested-private-template.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>nested-private-template.cpp</shortPath>
+        <sourcePath>nested-private-template.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>7XlFKPcXRfyYPWc4WPN3PAH+m58=</id>
+  <id>4JtV6FFfBrgN69DpcGvhXJWEiaiS</id>
+  <access>private</access>
   <extraction>regular</extraction>
-  <parent>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</parent>
-  <key-kind>struct</key-kind>
+  <parent>3V1mMbWKbUNBXcKnTTGU2CvmoCDK</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>R</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>bool</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>R</name>
+        <keyKind>class</keyKind>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>bool</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>bool</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <specializations>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</specializations>
+  <specializations>4M7j2jJtx3QteQAJXN21k7gXG6S</specializations>
 </record>
 <record>
   <name>impl</name>
-  <source>
-    <location>
-      <short-path>nested-private-template.cpp</short-path>
-      <source-path>nested-private-template.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>nested-private-template.cpp</shortPath>
+      <sourcePath>nested-private-template.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>BCRU3eMBRSysyvFsjJj+0yg+Vfc=</id>
+  <id>4M7j2jJtx3QteQAJXN21k7gXG6S</id>
+  <access>private</access>
   <extraction>regular</extraction>
-  <parent>sjnSu9g/42wrfWC6AbtyVuLVV6Y=</parent>
-  <key-kind>struct</key-kind>
+  <parent>3V1mMbWKbUNBXcKnTTGU2CvmoCDK</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>R</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>R</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <constant-targ>
-      <kind>constant</kind>
-      <value>false</value>
-    </constant-targ>
-    <primary>7XlFKPcXRfyYPWc4WPN3PAH+m58=</primary>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>R</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>R</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <value>false</value>
+      </constant>
+    </args>
+    <primary>4JtV6FFfBrgN69DpcGvhXJWEiaiS</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <isListedOnPrimary/>
 </record>
 </mrdocs>

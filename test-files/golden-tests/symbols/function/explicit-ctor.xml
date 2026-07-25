@@ -2,1080 +2,1443 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>bonobNKGOblPVcRjxpiPan4nYnc=</records>
-    <records>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</records>
-    <records>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</records>
-    <records>htdCGapMsdazR1XkXoanrOCkvDE=</records>
-  </namespace-tranche>
+  <members>
+    <records>2YKXWn41nHnPbLTGQxy5c348iTvN 3t8nUds7T8UFB5sisob2tAdzg6nm esZmqzigThXQpFSZNtfzmqmjkKB 2sxUYTJULQHBjCdv8zsCTh5HJ62U</records>
+  </members>
 </namespace>
 <record>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-ctor.cpp</shortPath>
+      <sourcePath>explicit-ctor.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>bonobNKGOblPVcRjxpiPan4nYnc=</id>
+  <id>2YKXWn41nHnPbLTGQxy5c348iTvN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>Q0rFzGKBYJzUfWemkMds75mPjJU=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>wNiu47qEMw7DWGmJwjT8bchh7vU</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>Q0rFzGKBYJzUfWemkMds75mPjJU=</id>
+  <id>wNiu47qEMw7DWGmJwjT8bchh7vU</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bonobNKGOblPVcRjxpiPan4nYnc=</parent>
-  <doc-comment>
+  <parent>2YKXWn41nHnPbLTGQxy5c348iTvN</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>JPrjQsrkg+QoApI2wln2eGwCGP4=</members>
-  <members>CuzDbFSxtCdVcGerq2UySnHF7po=</members>
-  <members>saOH3agrCzNHcRhbXHOM0FYFxGc=</members>
-  <members>Oj6cGCOaarVfZXkgsr/pOPOOiFY=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>Wt7Xa9WcPSVtRTDxo93C2BDFhws 9q1N1qYxcJf6nZRhreYRPsDYvph 3UYFXs9pcvV3GFRvWZnSwm1FjQb8 p4hcEKXhUN5CsTwkyPFh6oJmqxq</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>JPrjQsrkg+QoApI2wln2eGwCGP4=</id>
+  <id>Wt7Xa9WcPSVtRTDxo93C2BDFhws</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bonobNKGOblPVcRjxpiPan4nYnc=</parent>
-  <doc-comment>
+  <parent>2YKXWn41nHnPbLTGQxy5c348iTvN</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Default constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Default constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CuzDbFSxtCdVcGerq2UySnHF7po=</id>
+  <id>9q1N1qYxcJf6nZRhreYRPsDYvph</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bonobNKGOblPVcRjxpiPan4nYnc=</parent>
-  <doc-comment>
+  <parent>2YKXWn41nHnPbLTGQxy5c348iTvN</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Copy constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Copy constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to copy construct from</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2YKXWn41nHnPbLTGQxy5c348iTvN</id>
+                  <identifier>Explicit</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>bonobNKGOblPVcRjxpiPan4nYnc=</id>
-          <identifier>Explicit</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>saOH3agrCzNHcRhbXHOM0FYFxGc=</id>
+  <id>3UYFXs9pcvV3GFRvWZnSwm1FjQb8</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bonobNKGOblPVcRjxpiPan4nYnc=</parent>
-  <doc-comment>
+  <parent>2YKXWn41nHnPbLTGQxy5c348iTvN</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Move constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Move constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to move construct from</literal>
-      </text>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2YKXWn41nHnPbLTGQxy5c348iTvN</id>
+                  <identifier>Explicit</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>bonobNKGOblPVcRjxpiPan4nYnc=</id>
-          <identifier>Explicit</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Oj6cGCOaarVfZXkgsr/pOPOOiFY=</id>
+  <id>p4hcEKXhUN5CsTwkyPFh6oJmqxq</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bonobNKGOblPVcRjxpiPan4nYnc=</parent>
-  <doc-comment>
+  <parent>2YKXWn41nHnPbLTGQxy5c348iTvN</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-ctor.cpp</shortPath>
+      <sourcePath>explicit-ctor.cpp</sourcePath>
+      <lineNumber>24</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</id>
+  <id>3t8nUds7T8UFB5sisob2tAdzg6nm</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>B</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>bool</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>B</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>bool</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>bool</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>f+Hwm4zWY/Tvp2r3/j/hgeahqjE=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>2nLNJ6neBVHJFA4H7cdCkLMgSDZi</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>27</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>29</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>f+Hwm4zWY/Tvp2r3/j/hgeahqjE=</id>
+  <id>2nLNJ6neBVHJFA4H7cdCkLMgSDZi</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</parent>
-  <doc-comment>
+  <parent>3t8nUds7T8UFB5sisob2tAdzg6nm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>s6L5UKI8FLTRiyny1rXgYxG/f/0=</members>
-  <members>Ty1Sv+L6at7TykYdCITSQKmXwVs=</members>
-  <members>gDoLCstIvgYYJng1jhLOLe/yz+Q=</members>
-  <members>J31K1hQq31LWiQhVy5ro0V+1pD0=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>3W9t6Z9hEGisEXrnEub3jz6Tdzng 26yj4L3RFnDCErsiWCgpPYMpHCU2 2ncVnZkMtocvG8uLX6LkT668D7BR Yuiexze88LiSjsRjPM96XWpfdd6</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>s6L5UKI8FLTRiyny1rXgYxG/f/0=</id>
+  <id>3W9t6Z9hEGisEXrnEub3jz6Tdzng</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</parent>
-  <doc-comment>
+  <parent>3t8nUds7T8UFB5sisob2tAdzg6nm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Default constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Default constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>27</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Ty1Sv+L6at7TykYdCITSQKmXwVs=</id>
+  <id>26yj4L3RFnDCErsiWCgpPYMpHCU2</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</parent>
-  <doc-comment>
+  <parent>3t8nUds7T8UFB5sisob2tAdzg6nm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Copy constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Copy constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to copy construct from</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3t8nUds7T8UFB5sisob2tAdzg6nm</id>
+                  <identifier>ExplicitExpression</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</id>
-          <identifier>ExplicitExpression</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>gDoLCstIvgYYJng1jhLOLe/yz+Q=</id>
+  <id>2ncVnZkMtocvG8uLX6LkT668D7BR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</parent>
-  <doc-comment>
+  <parent>3t8nUds7T8UFB5sisob2tAdzg6nm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Move constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Move constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to move construct from</literal>
-      </text>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3t8nUds7T8UFB5sisob2tAdzg6nm</id>
+                  <identifier>ExplicitExpression</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</id>
-          <identifier>ExplicitExpression</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>29</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>J31K1hQq31LWiQhVy5ro0V+1pD0=</id>
+  <id>Yuiexze88LiSjsRjPM96XWpfdd6</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</parent>
-  <doc-comment>
+  <parent>3t8nUds7T8UFB5sisob2tAdzg6nm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-ctor.cpp</shortPath>
+      <sourcePath>explicit-ctor.cpp</sourcePath>
+      <lineNumber>17</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</id>
+  <id>esZmqzigThXQpFSZNtfzmqmjkKB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>dnlN/iFc3Ih19qTLmv3gczFwHjA=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2ejR88V4TdcLQkhjXryx14133P51</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>21</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>dnlN/iFc3Ih19qTLmv3gczFwHjA=</id>
+  <id>2ejR88V4TdcLQkhjXryx14133P51</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</parent>
-  <doc-comment>
+  <parent>esZmqzigThXQpFSZNtfzmqmjkKB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>GVN7KvqFotNClBLUnxR3nnPlH7Y=</members>
-  <members>gsl+2i8v8v4Lifq3SZ5sFhSfseQ=</members>
-  <members>qXjKOO0FQ3p2vTehkEQl2kIKpFs=</members>
-  <members>T0aRgSzz7xtFbPWKv3q57ueIYlI=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>MTwNAVsVCSP3uWnz1j2wH8UDHGZ 2pgVTTDWcft3daauZguXYsvTrm2K 3MwVoS72njhiUKxqnNXKnabf1VJr 274M7Zrnzef1qkMmYSpcYs6xEMkm</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>GVN7KvqFotNClBLUnxR3nnPlH7Y=</id>
+  <id>MTwNAVsVCSP3uWnz1j2wH8UDHGZ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</parent>
-  <doc-comment>
+  <parent>esZmqzigThXQpFSZNtfzmqmjkKB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Default constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Default constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>gsl+2i8v8v4Lifq3SZ5sFhSfseQ=</id>
+  <id>2pgVTTDWcft3daauZguXYsvTrm2K</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</parent>
-  <doc-comment>
+  <parent>esZmqzigThXQpFSZNtfzmqmjkKB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Copy constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Copy constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to copy construct from</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>esZmqzigThXQpFSZNtfzmqmjkKB</id>
+                  <identifier>ExplicitFalse</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</id>
-          <identifier>ExplicitFalse</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>qXjKOO0FQ3p2vTehkEQl2kIKpFs=</id>
+  <id>3MwVoS72njhiUKxqnNXKnabf1VJr</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</parent>
-  <doc-comment>
+  <parent>esZmqzigThXQpFSZNtfzmqmjkKB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Move constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Move constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to move construct from</literal>
-      </text>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>esZmqzigThXQpFSZNtfzmqmjkKB</id>
+                  <identifier>ExplicitFalse</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</id>
-          <identifier>ExplicitFalse</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>21</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>T0aRgSzz7xtFbPWKv3q57ueIYlI=</id>
+  <id>274M7Zrnzef1qkMmYSpcYs6xEMkm</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</parent>
-  <doc-comment>
+  <parent>esZmqzigThXQpFSZNtfzmqmjkKB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-ctor.cpp</shortPath>
+      <sourcePath>explicit-ctor.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>htdCGapMsdazR1XkXoanrOCkvDE=</id>
+  <id>2sxUYTJULQHBjCdv8zsCTh5HJ62U</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>EX6X/2XknCtjmarXemc0JA+x364=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>F8uEdH7UXcrfUBmWS2ZXVdGTaaH</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>EX6X/2XknCtjmarXemc0JA+x364=</id>
+  <id>F8uEdH7UXcrfUBmWS2ZXVdGTaaH</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>htdCGapMsdazR1XkXoanrOCkvDE=</parent>
-  <doc-comment>
+  <parent>2sxUYTJULQHBjCdv8zsCTh5HJ62U</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>constructor</func-class>
-  <members>3sd37ryB4gMx1BgYdDdQzVJFniU=</members>
-  <members>Tj9uY+jY7QBYQC8IsjplHuoDgQo=</members>
-  <members>iQOO8pEh0iNSnpupVwR9tCVIf8U=</members>
-  <members>XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>471oqc4yqfL7Dgu8r1FepNPJaraG 26EB6L18u5mYSezEz4TvupC5F9Db 2uiKQNvrSiVrHnLCcGfLw5R8sTg8 2HUPAyn21vxRoJTLrRCBqyxkHTNz</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>3sd37ryB4gMx1BgYdDdQzVJFniU=</id>
+  <id>471oqc4yqfL7Dgu8r1FepNPJaraG</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>htdCGapMsdazR1XkXoanrOCkvDE=</parent>
-  <doc-comment>
+  <parent>2sxUYTJULQHBjCdv8zsCTh5HJ62U</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Default constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Default constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Tj9uY+jY7QBYQC8IsjplHuoDgQo=</id>
+  <id>26EB6L18u5mYSezEz4TvupC5F9Db</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>htdCGapMsdazR1XkXoanrOCkvDE=</parent>
-  <doc-comment>
+  <parent>2sxUYTJULQHBjCdv8zsCTh5HJ62U</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Copy constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Copy constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to copy construct from</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2sxUYTJULQHBjCdv8zsCTh5HJ62U</id>
+                  <identifier>ExplicitTrue</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
-          <kind>identifier</kind>
-          <id>htdCGapMsdazR1XkXoanrOCkvDE=</id>
-          <identifier>ExplicitTrue</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>iQOO8pEh0iNSnpupVwR9tCVIf8U=</id>
+  <id>2uiKQNvrSiVrHnLCcGfLw5R8sTg8</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>htdCGapMsdazR1XkXoanrOCkvDE=</parent>
-  <doc-comment>
+  <parent>2sxUYTJULQHBjCdv8zsCTh5HJ62U</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Move constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Move constructor</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to move construct from</literal>
-      </text>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2sxUYTJULQHBjCdv8zsCTh5HJ62U</id>
+                  <identifier>ExplicitTrue</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
       <name>other</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>htdCGapMsdazR1XkXoanrOCkvDE=</id>
-          <identifier>ExplicitTrue</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>other</name>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-ctor.cpp</short-path>
-      <source-path>explicit-ctor.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-ctor.cpp</shortPath>
+        <sourcePath>explicit-ctor.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=</id>
+  <id>2HUPAyn21vxRoJTLrRCBqyxkHTNz</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>htdCGapMsdazR1XkXoanrOCkvDE=</parent>
-  <doc-comment>
+  <parent>2sxUYTJULQHBjCdv8zsCTh5HJ62U</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Constructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>constructor</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

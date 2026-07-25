@@ -28,7 +28,10 @@ enum class TArgKind : int {
 #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 };
 
-MRDOCS_DESCRIBE_ENUM(TArgKind, Type, Constant, Template)
+MRDOCS_DESCRIBE_ENUM_BEGIN(TArgKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(TArgKind, Name)
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+MRDOCS_DESCRIBE_ENUM_END(TArgKind)
 
 } // mrdocs
 

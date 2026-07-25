@@ -2,158 +2,156 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>aMJtdgJFybRcdkRG712j3iC7JeM=</namespaces>
-    <namespaces>FmK1G1VDxt6WyumYC2tUbb5VjSs=</namespaces>
-    <variables>/ePshzEghZYl/D7bJ6X3M2XbKEg=</variables>
-    <variables>ixmivDXFAcQVJd4G7XOqINAR858=</variables>
-  </namespace-tranche>
+  <members>
+    <namespaces>2TegDc2mZHZfGrRYzGpN9YUKhVc6 K68KswmkhhGHgVQE3ixNEqd4Pop</namespaces>
+    <variables>4Y9sN2EBsZ96XwwEqwyH1fJHbKwM 2wQ6JKTYZZ1WEsn2UK29LeXfgRB4</variables>
+  </members>
 </namespace>
 <namespace>
   <name>detail</name>
-  <source>
-    <location>
-      <short-path>impl-defined-member.cpp</short-path>
-      <source-path>impl-defined-member.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>impl-defined-member.cpp</shortPath>
+        <sourcePath>impl-defined-member.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
+  <id>2TegDc2mZHZfGrRYzGpN9YUKhVc6</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3ddKCJTUnBfVGqiXAC8uayBsJ6MZ</records>
+  </members>
 </namespace>
 <record>
   <name>absolute_uri_rule_t</name>
-  <source>
-    <location>
-      <short-path>impl-defined-member.cpp</short-path>
-      <source-path>impl-defined-member.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>impl-defined-member.cpp</shortPath>
+      <sourcePath>impl-defined-member.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
+  <id>3ddKCJTUnBfVGqiXAC8uayBsJ6MZ</id>
   <extraction>implementation-defined</extraction>
-  <parent>aMJtdgJFybRcdkRG712j3iC7JeM=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2TegDc2mZHZfGrRYzGpN9YUKhVc6</parent>
+  <keyKind>struct</keyKind>
 </record>
 <namespace>
   <name>regular</name>
-  <source>
-    <location>
-      <short-path>impl-defined-member.cpp</short-path>
-      <source-path>impl-defined-member.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>impl-defined-member.cpp</shortPath>
+        <sourcePath>impl-defined-member.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
+  <id>K68KswmkhhGHgVQE3ixNEqd4Pop</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>2jFHjRNVeb4uNBThaTsDJBsi51wT</records>
+  </members>
 </namespace>
 <record>
   <name>absolute_uri_rule_t</name>
-  <source>
-    <location>
-      <short-path>impl-defined-member.cpp</short-path>
-      <source-path>impl-defined-member.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>impl-defined-member.cpp</shortPath>
+      <sourcePath>impl-defined-member.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
+  <id>2jFHjRNVeb4uNBThaTsDJBsi51wT</id>
   <extraction>regular</extraction>
-  <parent>FmK1G1VDxt6WyumYC2tUbb5VjSs=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>K68KswmkhhGHgVQE3ixNEqd4Pop</parent>
+  <keyKind>struct</keyKind>
 </record>
 <variable>
   <name>absolute_uri_rule</name>
-  <source>
-    <location>
-      <short-path>impl-defined-member.cpp</short-path>
-      <source-path>impl-defined-member.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>impl-defined-member.cpp</shortPath>
+      <sourcePath>impl-defined-member.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>/ePshzEghZYl/D7bJ6X3M2XbKEg=</id>
+  <id>4Y9sN2EBsZ96XwwEqwyH1fJHbKwM</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>vOKKVGAcuI3CBaMkdZstuFgnnuQ=</id>
-      <identifier>absolute_uri_rule_t</identifier>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
-        <identifier>detail</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3ddKCJTUnBfVGqiXAC8uayBsJ6MZ</id>
+          <identifier>absolute_uri_rule_t</identifier>
+          <prefix>
+            <identifier>
+              <kind>identifier</kind>
+              <id>2TegDc2mZHZfGrRYzGpN9YUKhVc6</id>
+              <identifier>detail</identifier>
+            </identifier>
+          </prefix>
+        </identifier>
       </name>
-    </name>
-  </named>
+    </named>
+  </type>
   <initializer>{}</initializer>
-  <is-constexpr/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>regular_absolute_uri_rule</name>
-  <source>
-    <location>
-      <short-path>impl-defined-member.cpp</short-path>
-      <source-path>impl-defined-member.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>impl-defined-member.cpp</shortPath>
+      <sourcePath>impl-defined-member.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>ixmivDXFAcQVJd4G7XOqINAR858=</id>
+  <id>2wQ6JKTYZZ1WEsn2UK29LeXfgRB4</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>fA+/UQOR2lG0f1+BZ+GeGlfo5sY=</id>
-      <identifier>absolute_uri_rule_t</identifier>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <id>FmK1G1VDxt6WyumYC2tUbb5VjSs=</id>
-        <identifier>regular</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2jFHjRNVeb4uNBThaTsDJBsi51wT</id>
+          <identifier>absolute_uri_rule_t</identifier>
+          <prefix>
+            <identifier>
+              <kind>identifier</kind>
+              <id>K68KswmkhhGHgVQE3ixNEqd4Pop</id>
+              <identifier>regular</identifier>
+            </identifier>
+          </prefix>
+        </identifier>
       </name>
-    </name>
-  </named>
+    </named>
+  </type>
   <initializer>{}</initializer>
-  <is-constexpr/>
+  <isConstexpr/>
 </variable>
 </mrdocs>

@@ -2,178 +2,245 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>3ZKlnoAXRUcmM+Nj5b9K9/L9PEw=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>463GjcGgvg8nFBk9gsKH9pBsBCEX</functions>
+  </members>
 </namespace>
 <function>
   <name>httpCategory</name>
-  <source>
-    <location>
-      <short-path>grouped.cpp</short-path>
-      <source-path>grouped.cpp</source-path>
-      <line-number>44</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>grouped.cpp</shortPath>
+        <sourcePath>grouped.cpp</sourcePath>
+        <lineNumber>44</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>3ZKlnoAXRUcmM+Nj5b9K9/L9PEw=</id>
+  <id>463GjcGgvg8nFBk9gsKH9pBsBCEX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The categories are grouped using </literal>
-      </text>
-      <text>
-        <kind>text</kind>
-        <literal>, </literal>
-      </text>
-      <text>
-        <kind>text</kind>
-        <literal>, and </literal>
-      </text>
-      <text>
-        <kind>text</kind>
-        <literal>; MrDocs treats those as transparent grouping elements and renders the rows directly in the table.</literal>
-      </text>
-    </paragraph>
-    <table>
-      <kind>table</kind>
-      <table-row>
-        <is-header/>
-        <table-cell>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
           <text>
             <kind>text</kind>
-            <literal>Range</literal>
+            <literal>The categories are grouped using </literal>
           </text>
-        </table-cell>
-        <table-cell>
           <text>
             <kind>text</kind>
-            <literal>Category</literal>
+            <literal>, </literal>
           </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
           <text>
             <kind>text</kind>
-            <literal>1xx</literal>
+            <literal>, and </literal>
           </text>
-        </table-cell>
-        <table-cell>
           <text>
             <kind>text</kind>
-            <literal>Informational</literal>
+            <literal>; MrDocs treats those as transparent grouping elements and renders the rows directly in the table.</literal>
           </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>2xx</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Success</literal>
-          </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>3xx</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Redirection</literal>
-          </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>4xx</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Client error</literal>
-          </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>5xx</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Server error</literal>
-          </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Other</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Reserved</literal>
-          </text>
-        </table-cell>
-      </table-row>
-    </table>
+        </children>
+      </paragraph>
+      <table>
+        <kind>table</kind>
+        <items>
+          <tableRow>
+            <isHeader/>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Range</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Category</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>1xx</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Informational</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>2xx</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Success</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>3xx</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Redirection</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>4xx</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Client error</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>5xx</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Server error</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Other</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Reserved</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+        </items>
+      </table>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Look up an HTTP status code&apos;s category.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Look up an HTTP status code&apos;s category.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <pointer>
-    <named>
-      <is-const/>
-      <name>
-        <kind>identifier</kind>
-        <identifier>char</identifier>
-      </name>
-    </named>
-  </pointer>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>code</name>
-  </param>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <pointer>
+      <kind>pointer</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <isConst/>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>char</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>char</fundamentalType>
+        </named>
+      </pointeeType>
+    </pointer>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>code</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

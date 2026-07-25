@@ -2,77 +2,84 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>OaOnBHKCiwPzSl9scjYZHnbbONQ=</records>
-    <functions>l1bUVBI7Kj1W/LknqpflEcOAnWQ=</functions>
-  </namespace-tranche>
+  <members>
+    <records>oaLFdY3TZqofASNZ124cA3rMeZq</records>
+    <functions>37HgvEwyKyFSFmY5HKMdJATE92KV</functions>
+  </members>
 </namespace>
 <record>
   <name>Task</name>
-  <source>
-    <location>
-      <short-path>empty_template_args.cpp</short-path>
-      <source-path>empty_template_args.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>empty_template_args.cpp</shortPath>
+      <sourcePath>empty_template_args.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>OaOnBHKCiwPzSl9scjYZHnbbONQ=</id>
+  <id>oaLFdY3TZqofASNZ124cA3rMeZq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>int</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+        <name>T</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>int</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>int</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <function>
   <name>handshake</name>
-  <source>
-    <location>
-      <short-path>empty_template_args.cpp</short-path>
-      <source-path>empty_template_args.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>empty_template_args.cpp</shortPath>
+        <sourcePath>empty_template_args.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>l1bUVBI7Kj1W/LknqpflEcOAnWQ=</id>
+  <id>37HgvEwyKyFSFmY5HKMdJATE92KV</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>OaOnBHKCiwPzSl9scjYZHnbbONQ=</id>
-      <identifier>Task</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>oaLFdY3TZqofASNZ124cA3rMeZq</id>
+          <identifier>Task</identifier>
+        </specialization>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

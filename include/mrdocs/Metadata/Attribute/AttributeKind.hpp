@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -25,33 +26,16 @@ namespace mrdocs {
 
     Attributes mrdocs does not recognize use the `Other` kind.
 
-    @note Like @ref TypeKind, this enum is intentionally NOT registered
-    with `MRDOCS_DESCRIBE_ENUM`: the reflection-driven XML writer would
-    otherwise emit a redundant `<kind>` child into every attribute
-    element. Code that needs a string form calls `toString` below.
 */
 enum class AttributeKind {
 #define INFO(PascalName) PascalName,
 #include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
 };
 
-/** Convert an AttributeKind to its string representation.
-*/
-MRDOCS_DECL
-dom::String
-toString(AttributeKind kind) noexcept;
-
-/** Map an AttributeKind into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    AttributeKind kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM_BEGIN(AttributeKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(AttributeKind, Name)
+#include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
+MRDOCS_DESCRIBE_ENUM_END(AttributeKind)
 
 } // mrdocs
 

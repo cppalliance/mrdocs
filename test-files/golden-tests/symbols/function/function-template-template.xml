@@ -2,55 +2,88 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>bE2iHZMP9X3RlkJcBwZ03NU57Pg=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2WWm2y4cvaYxMuX93t52qFHMtU31</functions>
+  </members>
 </namespace>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>function-template-template.cpp</short-path>
-      <source-path>function-template-template.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template-template.cpp</shortPath>
+      <sourcePath>function-template-template.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>bE2iHZMP9X3RlkJcBwZ03NU57Pg=</id>
+  <id>2WWm2y4cvaYxMuX93t52qFHMtU31</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>specialization</kind>
-        <identifier>ListType</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>param</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <identifier>ListType</identifier>
+              <templateArgs>
+                <type>
+                  <kind>type</kind>
+                  <type>
+                    <named>
+                      <kind>named</kind>
+                      <name>
+                        <identifier>
+                          <kind>identifier</kind>
+                          <identifier>int</identifier>
+                        </identifier>
+                      </name>
+                      <fundamentalType>int</fundamentalType>
+                    </named>
+                  </type>
+                </type>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+      <name>param</name>
+    </param>
+  </params>
   <template>
-    <template-tparam>
-      <kind>template</kind>
-      <name>ListType</name>
-      <type-tparam>
-        <kind>type</kind>
-        <is-parameter-pack/>
-        <key-kind>class</key-kind>
-      </type-tparam>
-    </template-tparam>
+    <params>
+      <template>
+        <kind>template</kind>
+        <name>ListType</name>
+        <params>
+          <type>
+            <kind>type</kind>
+            <isParameterPack/>
+            <keyKind>class</keyKind>
+          </type>
+        </params>
+      </template>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
 </function>
 </mrdocs>

@@ -2,901 +2,1182 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</namespaces>
-    <namespaces>eIvg7iueGIPcE8p1NVfngsp2ojw=</namespaces>
-    <records>m/JW900ik2XLYvUdA4MCuWZQd80=</records>
-    <records>f80OzcD5UlgQ2KOvUj+MvoJcAFE=</records>
-    <records>IZrmVBMJu1uvsP9zur5JVrwgYmE=</records>
-    <records>g0UNZpdodOU5mGCtcpviXd8o6Vk=</records>
-    <functions>1VN+nmJkLcjg6wK0C6XNq8dG1Ro=</functions>
-    <functions>MX3B1GMAk3D0sirBOV2sk9C49uw=</functions>
-    <functions>7RxfINQ5PQyMFT7lVKhcQZiocmU=</functions>
-    <functions>OiYqKxV5vNAeh0jqRKIygSwyW4o=</functions>
-    <functions>oQV00j0v7EfuVl9bWFumA28DNZM=</functions>
-    <functions>4Z8f2LwbeJzKuu95VpPC5b3UKZQ=</functions>
-    <functions>QQ+RfmlXmyvRCoT+N6iLEixOE3w=</functions>
-    <functions>5j4YKg9GCIyC/kpDPExDouNRI8E=</functions>
-    <functions>N7SAlDvKDvPlACsckMXASo+muPE=</functions>
-    <functions>njCzIgSzvUpYyI1eg28pJ1dPwcM=</functions>
-  </namespace-tranche>
+  <members>
+    <namespaces>329AMgWLT3ZbFAuzsZWvr8ntJRkH 2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</namespaces>
+    <records>3B1d6dPG86LWDeSgELmTsz1uX7k8 2nGYZsiKsFjwNPrUc888crBVahpc U9wbqtMG629ZtoFGYf7V6j5pNQY 2q57Q2Zj5AaKhDRE2FJCg8ZWrvUG</records>
+    <functions>3yNnGhx7XMZuY3Nc7dWE7A4Sfr81 gzTyKfdhG9hwiF53FjuPuL7Rc9q 4JbUgbFA7GBJ9DTz9bN1sM7RG4Fv ozE3k2spiEJ8nJMPBpkEx9wULcR 3F7TGfVG79DYkqVufcrWeQn4ybBx 49K2B6Z7wws2gtkwG1wXJzqit6Gs ua9nQgrNNDuvcZe6kAK45i7CsQ7 4D3b68n8Hy8xc9HovvSXBYy8fdGk n1gh1Fsm5dFwtT6HzTC8n7p2uTe 3CpmiinnCsqBaX8sTR9Catae1rxz</functions>
+  </members>
 </namespace>
 <namespace>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
+  <id>329AMgWLT3ZbFAuzsZWvr8ntJRkH</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3TDAHEosayQBR1v939NDV5hN9SVr</records>
+  </members>
 </namespace>
 <record>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
+  <id>3TDAHEosayQBR1v939NDV5hN9SVr</id>
   <extraction>regular</extraction>
-  <parent>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</parent>
-  <doc-comment>
-    <reference>
-      <kind>reference</kind>
-      <literal>::f3</literal>
-      <id>OiYqKxV5vNAeh0jqRKIygSwyW4o=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>329AMgWLT3ZbFAuzsZWvr8ntJRkH</parent>
+  <doc>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>::f3</literal>
+        <id>ozE3k2spiEJ8nJMPBpkEx9wULcR</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>67</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>67</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>m/JW900ik2XLYvUdA4MCuWZQd80=</id>
+  <id>3B1d6dPG86LWDeSgELmTsz1uX7k8</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The partial specialization of A is enabled via a template parameter</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The partial specialization of A is enabled via a template parameter</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
+  </doc>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>Enable</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>void</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>class</key-kind>
-    </type-tparam>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>Enable</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>void</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>void</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <specializations>2nGYZsiKsFjwNPrUc888crBVahpc</specializations>
 </record>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>72</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>72</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>f80OzcD5UlgQ2KOvUj+MvoJcAFE=</id>
+  <id>2nGYZsiKsFjwNPrUc888crBVahpc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Specialization for integral types</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Specialization for integral types</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
+  </doc>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+    </args>
     <requires>std::is_integral_v&lt;T&gt;</requires>
-    <primary>m/JW900ik2XLYvUdA4MCuWZQd80=</primary>
+    <primary>3B1d6dPG86LWDeSgELmTsz1uX7k8</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>S</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>75</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>75</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>IZrmVBMJu1uvsP9zur5JVrwgYmE=</id>
+  <id>U9wbqtMG629ZtoFGYf7V6j5pNQY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>SFINAE with std::void_t</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>SFINAE with std::void_t</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>Enable</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>void</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>class</key-kind>
-    </type-tparam>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>Enable</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>void</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>void</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>KmwKarrWHSv7aalrBX18hjPbEfs=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>bHABxeLfi4k3qfht1qvLBM6vicr</functions>
+    </public>
+  </interface>
+  <specializations>2q57Q2Zj5AaKhDRE2FJCg8ZWrvUG</specializations>
 </record>
 <function>
   <name>store</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>78</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>78</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>KmwKarrWHSv7aalrBX18hjPbEfs=</id>
+  <id>bHABxeLfi4k3qfht1qvLBM6vicr</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>IZrmVBMJu1uvsP9zur5JVrwgYmE=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <pointer>
-      <named>
-        <is-const/>
-        <name>
+  <parent>U9wbqtMG629ZtoFGYf7V6j5pNQY</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
-      </named>
-    </pointer>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <pointer>
+          <kind>pointer</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <identifier>void</identifier>
+                </identifier>
+              </name>
+              <fundamentalType>void</fundamentalType>
+            </named>
+          </pointeeType>
+        </pointer>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>S</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>83</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>83</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>g0UNZpdodOU5mGCtcpviXd8o6Vk=</id>
+  <id>2q57Q2Zj5AaKhDRE2FJCg8ZWrvUG</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>SFINAE with std::void_t</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>SFINAE with std::void_t</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>specialization</kind>
-          <id>Er+ynG/5PHLxm80m2f8PHWglPWY=</id>
-          <identifier>void_t</identifier>
-          <name>
-            <kind>identifier</kind>
-            <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
-            <identifier>std</identifier>
-          </name>
-        </name>
-      </named>
-    </type-targ>
-    <primary>IZrmVBMJu1uvsP9zur5JVrwgYmE=</primary>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <specialization>
+                <kind>specialization</kind>
+                <id>G9gkmB3kbio28rc2LM67fabtvtm</id>
+                <identifier>void_t</identifier>
+                <prefix>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <id>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</id>
+                    <identifier>std</identifier>
+                  </identifier>
+                </prefix>
+                <templateArgs>
+                  <type>
+                    <kind>type</kind>
+                    <type>
+                      <named>
+                        <kind>named</kind>
+                        <name>
+                          <identifier>
+                            <kind>identifier</kind>
+                            <identifier>b</identifier>
+                            <prefix>
+                              <identifier>
+                                <kind>identifier</kind>
+                                <identifier>a</identifier>
+                                <prefix>
+                                  <identifier>
+                                    <kind>identifier</kind>
+                                    <identifier>T</identifier>
+                                  </identifier>
+                                </prefix>
+                              </identifier>
+                            </prefix>
+                          </identifier>
+                        </name>
+                      </named>
+                    </type>
+                  </type>
+                </templateArgs>
+              </specialization>
+            </name>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>U9wbqtMG629ZtoFGYf7V6j5pNQY</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>424qYEm9voAWJFoeWrETcUSHNrPF</functions>
+    </public>
+  </interface>
+  <isListedOnPrimary/>
 </record>
 <function>
   <name>store</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>85</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>sfinae.cpp</shortPath>
+      <sourcePath>sfinae.cpp</sourcePath>
+      <lineNumber>85</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>2KfuSRGlpNo9Lk/lk1bhwZqm/BY=</id>
+  <id>424qYEm9voAWJFoeWrETcUSHNrPF</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>g0UNZpdodOU5mGCtcpviXd8o6Vk=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <pointer>
-      <named>
-        <is-const/>
-        <name>
+  <parent>2q57Q2Zj5AaKhDRE2FJCg8ZWrvUG</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
           <identifier>void</identifier>
-        </name>
-      </named>
-    </pointer>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <pointer>
+          <kind>pointer</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <identifier>void</identifier>
+                </identifier>
+              </name>
+              <fundamentalType>void</fundamentalType>
+            </named>
+          </pointeeType>
+        </pointer>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>1VN+nmJkLcjg6wK0C6XNq8dG1Ro=</id>
+  <id>3yNnGhx7XMZuY3Nc7dWE7A4Sfr81</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via return type</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via return type</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
+      <constraints>
+        <string>std::is_integral_v&lt;T&gt;</string>
+      </constraints>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f10</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>63</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>63</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>MX3B1GMAk3D0sirBOV2sk9C49uw=</id>
+  <id>gzTyKfdhG9hwiF53FjuPuL7Rc9q</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via type template parameter</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via type template parameter</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
     <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>7RxfINQ5PQyMFT7lVKhcQZiocmU=</id>
+  <id>4JbUgbFA7GBJ9DTz9bN1sM7RG4Fv</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabling a specified return type</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabling a specified return type</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
+      <constraints>
+        <string>std::is_integral_v&lt;T&gt;</string>
+      </constraints>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
       </name>
+      <fundamentalType>int</fundamentalType>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>OiYqKxV5vNAeh0jqRKIygSwyW4o=</id>
+  <id>ozE3k2spiEJ8nJMPBpkEx9wULcR</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabling a specified return type in another namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabling a specified return type in another namespace</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>C</literal>
-      <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
-      <kind>identifier</kind>
-      <id>r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=</id>
-      <identifier>C</identifier>
-      <name>
-        <kind>identifier</kind>
-        <id>kPgq2AM8TvyGDGm5jEWfqYlOPmY=</id>
-        <identifier>B</identifier>
-      </name>
-    </name>
-  </named>
-  <param>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>C</literal>
+        <id>3TDAHEosayQBR1v939NDV5hN9SVr</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
+      <constraints>
+        <string>std::is_integral_v&lt;T&gt;</string>
+      </constraints>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3TDAHEosayQBR1v939NDV5hN9SVr</id>
+          <identifier>C</identifier>
+          <prefix>
+            <identifier>
+              <kind>identifier</kind>
+              <id>329AMgWLT3ZbFAuzsZWvr8ntJRkH</id>
+              <identifier>B</identifier>
+            </identifier>
+          </prefix>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f4</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>23</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>23</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>oQV00j0v7EfuVl9bWFumA28DNZM=</id>
+  <id>3F7TGfVG79DYkqVufcrWeQn4ybBx</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via return type with std::enable_if</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via return type with std::enable_if</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
+      <constraints>
+        <string>std::is_integral_v&lt;T&gt;</string>
+      </constraints>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f5</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>4Z8f2LwbeJzKuu95VpPC5b3UKZQ=</id>
+  <id>49K2B6Z7wws2gtkwG1wXJzqit6Gs</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via a non-type template parameter with helper</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via a non-type template parameter with helper</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
     <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f6</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>33</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>33</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>QQ+RfmlXmyvRCoT+N6iLEixOE3w=</id>
+  <id>ua9nQgrNNDuvcZe6kAK45i7CsQ7</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via a non-type template parameter without helper</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via a non-type template parameter without helper</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
     <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f7</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>38</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>38</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>5j4YKg9GCIyC/kpDPExDouNRI8E=</id>
+  <id>4D3b68n8Hy8xc9HovvSXBYy8fdGk</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via a non-type template parameter using int instead of bool</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via a non-type template parameter using int instead of bool</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
     <requires>std::is_integral_v&lt;T&gt;</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f8</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>42</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>42</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>N7SAlDvKDvPlACsckMXASo+muPE=</id>
+  <id>n1gh1Fsm5dFwtT6HzTC8n7p2uTe</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via parameter without helper</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via parameter without helper</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 <function>
   <name>f9</name>
-  <source>
-    <location>
-      <short-path>sfinae.cpp</short-path>
-      <source-path>sfinae.cpp</source-path>
-      <line-number>47</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>sfinae.cpp</shortPath>
+        <sourcePath>sfinae.cpp</sourcePath>
+        <lineNumber>47</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>njCzIgSzvUpYyI1eg28pJ1dPwcM=</id>
+  <id>3CpmiinnCsqBaX8sTR9Catae1rxz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enabled via parameter with helper</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enabled via parameter with helper</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 </mrdocs>

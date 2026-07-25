@@ -2,263 +2,299 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <typedefs>4DGh9Grsi+0USbdPtRkJctjxR+Y=</typedefs>
-    <typedefs>23UqwUcqtU0FB7E2/v81xsd9IyA=</typedefs>
-    <records>MBGPS/84tvNdD37cvMMFLX91CIs=</records>
-    <records>6f4GHawhlUckr08SJkt7su9cIDY=</records>
-    <records>qA3Nv3MdXjhVzIuwWZK2uT6FskY=</records>
-  </namespace-tranche>
+  <members>
+    <typedefs>48A7LhBFdjvKM8HHF8EvUxQfuwmw 44L9EkBVwyeicd5381W7qefaYRg3</typedefs>
+    <records>fqnt4Pn6QsTNDfXmMKDTCpUp3AJ 4G5KjW96WJsxkVcGUjEbYFS3sK1X 3Lo3a4rfzoP9pUwTXuCQHLcPJMX3</records>
+  </members>
 </namespace>
 <typedef>
   <name>_UniqAssignable</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>23</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-alias-template-dependent.cpp</shortPath>
+        <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+        <lineNumber>23</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>4DGh9Grsi+0USbdPtRkJctjxR+Y=</id>
+  <id>48A7LhBFdjvKM8HHF8EvUxQfuwmw</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>_Yp</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>_Del</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>_Yp</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>_Del</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
 </typedef>
 <typedef>
   <name>_UniqCompatible</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-alias-template-dependent.cpp</shortPath>
+        <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>23UqwUcqtU0FB7E2/v81xsd9IyA=</id>
+  <id>44L9EkBVwyeicd5381W7qefaYRg3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <constraints>is_match&lt;_Yp&gt;::value</constraints>
-    <name>
-      <kind>identifier</kind>
-      <identifier>_Res</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <constraints>
+        <string>is_match&lt;_Yp&gt;::value</string>
+      </constraints>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>_Res</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>_Yp</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>_Del</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>_Res</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>_Yp</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>_Del</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>_Res</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
 </typedef>
 <record>
   <name>enable_if</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-alias-template-dependent.cpp</shortPath>
+      <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>MBGPS/84tvNdD37cvMMFLX91CIs=</id>
+  <id>fqnt4Pn6QsTNDfXmMKDTCpUp3AJ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>C</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>bool</identifier>
-        </name>
-      </named>
-    </constant-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>C</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>bool</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>bool</fundamentalType>
+          </named>
+        </type>
+      </constant>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <typedefs>SrZbYkahcv/tBYSnQf6ndFySgTg=</typedefs>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <typedefs>23NUucYy9uPjHR22tHihiyr9KfLb</typedefs>
+    </public>
+  </interface>
+  <specializations>4G5KjW96WJsxkVcGUjEbYFS3sK1X</specializations>
 </record>
 <typedef>
   <name>type</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-alias-template-dependent.cpp</shortPath>
+        <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>SrZbYkahcv/tBYSnQf6ndFySgTg=</id>
+  <id>23NUucYy9uPjHR22tHihiyr9KfLb</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>MBGPS/84tvNdD37cvMMFLX91CIs=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>fqnt4Pn6QsTNDfXmMKDTCpUp3AJ</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 <record>
   <name>enable_if</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-alias-template-dependent.cpp</shortPath>
+      <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>6f4GHawhlUckr08SJkt7su9cIDY=</id>
+  <id>4G5KjW96WJsxkVcGUjEbYFS3sK1X</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <constant-targ>
-      <kind>constant</kind>
-      <value>false</value>
-    </constant-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>MBGPS/84tvNdD37cvMMFLX91CIs=</primary>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+    <args>
+      <constant>
+        <kind>constant</kind>
+        <value>false</value>
+      </constant>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>fqnt4Pn6QsTNDfXmMKDTCpUp3AJ</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>is_match</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-alias-template-dependent.cpp</shortPath>
+      <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+      <lineNumber>13</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>qA3Nv3MdXjhVzIuwWZK2uT6FskY=</id>
+  <id>3Lo3a4rfzoP9pUwTXuCQHLcPJMX3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <enums>ojy2H3a1lmqWgs1IHVc6fgGwKO0=</enums>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <enums>3G6SDN2TAzJGHmYJLG3LY4o6Hqdv</enums>
+    </public>
+  </interface>
 </record>
 <enum>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-alias-template-dependent.cpp</shortPath>
+      <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>ojy2H3a1lmqWgs1IHVc6fgGwKO0=</id>
+  <id>3G6SDN2TAzJGHmYJLG3LY4o6Hqdv</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>qA3Nv3MdXjhVzIuwWZK2uT6FskY=</parent>
-  <constants>5+HaEEsX//OaezDumbrpRhUuOp0=</constants>
+  <parent>3Lo3a4rfzoP9pUwTXuCQHLcPJMX3</parent>
+  <constants>4ENS85vF93Er2hwZ7hUBM8cVdpqa</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>value</name>
-  <source>
-    <location>
-      <short-path>using-alias-template-dependent.cpp</short-path>
-      <source-path>using-alias-template-dependent.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>9</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-alias-template-dependent.cpp</shortPath>
+        <sourcePath>using-alias-template-dependent.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>9</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>5+HaEEsX//OaezDumbrpRhUuOp0=</id>
+  <id>4ENS85vF93Er2hwZ7hUBM8cVdpqa</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ojy2H3a1lmqWgs1IHVc6fgGwKO0=</parent>
-  <initializer>false</initializer>
-</enum-constant>
+  <parent>3G6SDN2TAzJGHmYJLG3LY4o6Hqdv</parent>
+  <initializer>
+    <written>false</written>
+    <value>0</value>
+  </initializer>
+</enumConstant>
 </mrdocs>

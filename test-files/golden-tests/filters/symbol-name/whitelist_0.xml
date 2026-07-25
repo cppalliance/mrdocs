@@ -2,695 +2,830 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>YAQKEfxRmUjg43kkhT1n65uziVY=</namespaces>
-    <namespaces>BjVED4etdK1saUZITQfgE7SCCPI=</namespaces>
-    <namespaces>bhpVTks6uYUbdSEnCkcSZ80Va4Y=</namespaces>
-    <records>BrX2oZup9qgy4SfJloKCuUYZshA=</records>
-  </namespace-tranche>
+  <members>
+    <namespaces>2LatkNQ8oDX2FjJEa5Lfueq6bNa9 61x1geGpG2LANM7zbGgfxDv5RiR 2Xy6oR7qWwuCp7Q7EUPue4oZJjXj</namespaces>
+    <records>6RWYArUFm6agSXBXbdJrAxtHtTq</records>
+  </members>
 </namespace>
 <namespace>
   <name>N0</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>YAQKEfxRmUjg43kkhT1n65uziVY=</id>
+  <id>2LatkNQ8oDX2FjJEa5Lfueq6bNa9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should extracted because it&apos;s implied by </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N0::f0_WL</literal>
+          <literal>This namespace should extracted because it&apos;s implied by </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N0::f0_WL</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <functions>Wh1//CHkEeCK/Sbv3ShkayyURHI=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <functions>2FpMfSkqBuG83eaQySf54Cdy4sWZ</functions>
+  </members>
 </namespace>
 <function>
   <name>f0_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Wh1//CHkEeCK/Sbv3ShkayyURHI=</id>
+  <id>2FpMfSkqBuG83eaQySf54Cdy4sWZ</id>
   <extraction>regular</extraction>
-  <parent>YAQKEfxRmUjg43kkhT1n65uziVY=</parent>
-  <doc-comment>
+  <parent>2LatkNQ8oDX2FjJEa5Lfueq6bNa9</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should be included because it matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N0::f0_WL</literal>
+          <literal>This function should be included because it matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N0::f0_WL</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <namespace>
   <name>N1</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>BjVED4etdK1saUZITQfgE7SCCPI=</id>
+  <id>61x1geGpG2LANM7zbGgfxDv5RiR</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should extracted because it&apos;s implied by </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N1::N3_WL</literal>
+          <literal>This namespace should extracted because it&apos;s implied by </literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> and </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N1::N3_WL</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>N1::N4::f1_WL</literal>
+          <literal> and </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N1::N4::f1_WL</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <namespaces>tySliu/J1lEvVfGwELlCaMsWPUs=</namespaces>
-    <namespaces>gTTyBBJ//JO3QEp36iu198cetXI=</namespaces>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <namespaces>3YzDh4bjMyaMUG5vsPPFQrBjFjMC 2oQRtv6cGsMV1M9EAcJRpsekbh45</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>N3_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>33</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>33</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>tySliu/J1lEvVfGwELlCaMsWPUs=</id>
+  <id>3YzDh4bjMyaMUG5vsPPFQrBjFjMC</id>
   <extraction>regular</extraction>
-  <parent>BjVED4etdK1saUZITQfgE7SCCPI=</parent>
-  <doc-comment>
+  <parent>61x1geGpG2LANM7zbGgfxDv5RiR</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should extracted because it&apos;s explicitly included by </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N1::N3_WL</literal>
+          <literal>This namespace should extracted because it&apos;s explicitly included by </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N1::N3_WL</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <functions>eGeX3DO44VLOHBJLdaGkYowxcHk=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <functions>2gHuY8oAJv6wRZ7Bj4ruYNqihy9z</functions>
+  </members>
 </namespace>
 <function>
   <name>f1_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>38</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>38</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>eGeX3DO44VLOHBJLdaGkYowxcHk=</id>
+  <id>2gHuY8oAJv6wRZ7Bj4ruYNqihy9z</id>
   <extraction>regular</extraction>
-  <parent>tySliu/J1lEvVfGwELlCaMsWPUs=</parent>
-  <doc-comment>
+  <parent>3YzDh4bjMyaMUG5vsPPFQrBjFjMC</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should extracted because the namespace </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N1::N3_WL</literal>
+          <literal>This function should extracted because the namespace </literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> is included as a literal.</literal>
-      </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N1::N3_WL</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> is included as a literal.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <namespace>
   <name>N4</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>gTTyBBJ//JO3QEp36iu198cetXI=</id>
+  <id>2oQRtv6cGsMV1M9EAcJRpsekbh45</id>
   <extraction>regular</extraction>
-  <parent>BjVED4etdK1saUZITQfgE7SCCPI=</parent>
-  <doc-comment>
+  <parent>61x1geGpG2LANM7zbGgfxDv5RiR</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should extracted because it&apos;s implied by </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N1::N4::f1_WL</literal>
+          <literal>This namespace should extracted because it&apos;s implied by </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N1::N4::f1_WL</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <functions>DqNFGUiBz22gD9dvzuf4hmwiMIQ=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <functions>Cq1xFTcVBNjPJU5b4ZqkKtUD3yV</functions>
+  </members>
 </namespace>
 <function>
   <name>f1_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>47</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>47</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>DqNFGUiBz22gD9dvzuf4hmwiMIQ=</id>
+  <id>Cq1xFTcVBNjPJU5b4ZqkKtUD3yV</id>
   <extraction>regular</extraction>
-  <parent>gTTyBBJ//JO3QEp36iu198cetXI=</parent>
-  <doc-comment>
+  <parent>2oQRtv6cGsMV1M9EAcJRpsekbh45</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should extracted because it matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N1::N4::f1_WL</literal>
+          <literal>This function should extracted because it matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N1::N4::f1_WL</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <namespace>
   <name>N5</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>57</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>57</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>bhpVTks6uYUbdSEnCkcSZ80Va4Y=</id>
+  <id>2Xy6oR7qWwuCp7Q7EUPue4oZJjXj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should extracted because it&apos;s implied by </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N5::N6::*7</literal>
+          <literal>This namespace should extracted because it&apos;s implied by </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N5::N6::*7</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <namespaces>Hd7HJHspRdJ75zQ2gjaf37XEVEI=</namespaces>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <namespaces>R8uPSKLRuBvB6heaZAQPiYhHovh</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>N6</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>65</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>65</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>Hd7HJHspRdJ75zQ2gjaf37XEVEI=</id>
+  <id>R8uPSKLRuBvB6heaZAQPiYhHovh</id>
   <extraction>regular</extraction>
-  <parent>bhpVTks6uYUbdSEnCkcSZ80Va4Y=</parent>
-  <doc-comment>
+  <parent>2Xy6oR7qWwuCp7Q7EUPue4oZJjXj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should extracted because it&apos;s implied by </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N5::N6::*7</literal>
+          <literal>This namespace should extracted because it&apos;s implied by </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N5::N6::*7</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <namespaces>oQQ87evv0wAHmyyua78i6ilqQiY=</namespaces>
-    <namespaces>80mHUKSfQIyK2/8/2Pv7Vx6gUbE=</namespaces>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <namespaces>3F7ELMcz4t2p8NXPDMGwFdkZBABo 4PawbQu8Pju8ibbjHirsqCkpi9Gt</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>M7</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>83</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>83</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>oQQ87evv0wAHmyyua78i6ilqQiY=</id>
+  <id>3F7ELMcz4t2p8NXPDMGwFdkZBABo</id>
   <extraction>regular</extraction>
-  <parent>Hd7HJHspRdJ75zQ2gjaf37XEVEI=</parent>
-  <doc-comment>
+  <parent>R8uPSKLRuBvB6heaZAQPiYhHovh</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should be included because it matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N5::N6::*7</literal>
+          <literal>This namespace should be included because it matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N5::N6::*7</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <functions>UUaWPiTlYnVSUAmT0IVfux0AGyM=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <functions>28g5nauPzjr7dTAK8NJEMpTELdnS</functions>
+  </members>
 </namespace>
 <function>
   <name>f2_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>88</line-number>
-      <column-number>13</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>88</lineNumber>
+        <columnNumber>13</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>UUaWPiTlYnVSUAmT0IVfux0AGyM=</id>
+  <id>28g5nauPzjr7dTAK8NJEMpTELdnS</id>
   <extraction>regular</extraction>
-  <parent>oQQ87evv0wAHmyyua78i6ilqQiY=</parent>
-  <doc-comment>
+  <parent>3F7ELMcz4t2p8NXPDMGwFdkZBABo</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should be included because it&apos;s a member of </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>M7</literal>
+          <literal>This function should be included because it&apos;s a member of </literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal>, which matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>M7</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>N5::N6::*7</literal>
+          <literal>, which matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N5::N6::*7</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <namespace>
   <name>N7</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>73</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>73</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>80mHUKSfQIyK2/8/2Pv7Vx6gUbE=</id>
+  <id>4PawbQu8Pju8ibbjHirsqCkpi9Gt</id>
   <extraction>regular</extraction>
-  <parent>Hd7HJHspRdJ75zQ2gjaf37XEVEI=</parent>
-  <doc-comment>
+  <parent>R8uPSKLRuBvB6heaZAQPiYhHovh</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should be included because it matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N5::N6::*7</literal>
+          <literal>This namespace should be included because it matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N5::N6::*7</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <functions>hMy4bR/Pm1VhNdwzbkfuKtLNnL8=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <functions>2rJpB8RCvamdQFHeXn666iDQQRci</functions>
+  </members>
 </namespace>
 <function>
   <name>f2_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>78</line-number>
-      <column-number>13</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>78</lineNumber>
+        <columnNumber>13</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>hMy4bR/Pm1VhNdwzbkfuKtLNnL8=</id>
+  <id>2rJpB8RCvamdQFHeXn666iDQQRci</id>
   <extraction>regular</extraction>
-  <parent>80mHUKSfQIyK2/8/2Pv7Vx6gUbE=</parent>
-  <doc-comment>
+  <parent>4PawbQu8Pju8ibbjHirsqCkpi9Gt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should be included because it&apos;s a member of </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>N7</literal>
+          <literal>This function should be included because it&apos;s a member of </literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal>, which matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N7</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>N5::N6::*7</literal>
+          <literal>, which matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>N5::N6::*7</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <record>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>105</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>whitelist_0.cpp</shortPath>
+      <sourcePath>whitelist_0.cpp</sourcePath>
+      <lineNumber>105</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>BrX2oZup9qgy4SfJloKCuUYZshA=</id>
+  <id>6RWYArUFm6agSXBXbdJrAxtHtTq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This namespace should be included because it strictly matches </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>C</literal>
+          <literal>This namespace should be included because it strictly matches </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>C</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <records>WRUY2j3O9l2Pd1qDymu1ksSw07c=</records>
-      <functions>vL6CN4hW4T9Ah0GmoIu9Hx4iaPo=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <records>2EyxCj5cmsyoNT62cGJBS4tSgTrn</records>
+      <functions>3dWic9zjmMCuogyLxYgTs6TBYBRj</functions>
+    </public>
+  </interface>
 </record>
 <record>
   <name>D</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>113</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>whitelist_0.cpp</shortPath>
+      <sourcePath>whitelist_0.cpp</sourcePath>
+      <lineNumber>113</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>WRUY2j3O9l2Pd1qDymu1ksSw07c=</id>
+  <id>2EyxCj5cmsyoNT62cGJBS4tSgTrn</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
-  <doc-comment>
+  <parent>6RWYArUFm6agSXBXbdJrAxtHtTq</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This struct should be included because it&apos;s a member of </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>C</literal>
+          <literal>This struct should be included because it&apos;s a member of </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>C</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>/QkJ00FbaOOH1IQKxpOPbklxM0c=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4XToDAue7412JSAj8HhNfoRVrXYa</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f1_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>116</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>116</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>/QkJ00FbaOOH1IQKxpOPbklxM0c=</id>
+  <id>4XToDAue7412JSAj8HhNfoRVrXYa</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>WRUY2j3O9l2Pd1qDymu1ksSw07c=</parent>
-  <doc-comment>
+  <parent>2EyxCj5cmsyoNT62cGJBS4tSgTrn</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should be included because it&apos;s a member of </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>D</literal>
+          <literal>This function should be included because it&apos;s a member of </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>D</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f0_WL</name>
-  <source>
-    <location>
-      <short-path>whitelist_0.cpp</short-path>
-      <source-path>whitelist_0.cpp</source-path>
-      <line-number>109</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>whitelist_0.cpp</shortPath>
+        <sourcePath>whitelist_0.cpp</sourcePath>
+        <lineNumber>109</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>vL6CN4hW4T9Ah0GmoIu9Hx4iaPo=</id>
+  <id>3dWic9zjmMCuogyLxYgTs6TBYBRj</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>BrX2oZup9qgy4SfJloKCuUYZshA=</parent>
-  <doc-comment>
+  <parent>6RWYArUFm6agSXBXbdJrAxtHtTq</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function should be included because it&apos;s a member of </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>C</literal>
+          <literal>This function should be included because it&apos;s a member of </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>C</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

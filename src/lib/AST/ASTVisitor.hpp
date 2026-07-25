@@ -1236,7 +1236,8 @@ private:
     Expected<void>
     checkUndocumented(
         SymbolID const& id,
-        DeclTy const* D);
+        DeclTy const* D,
+        ExtractionMode extractionMode);
 };
 
 } // mrdocs

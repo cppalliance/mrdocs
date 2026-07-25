@@ -2,1258 +2,1408 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>ZYn+worzOdzCMW6yaZC9jAkpVTk=</namespaces>
-    <namespaces>HfpFOdGBlFvzJWV5HwJnyWPM72g=</namespaces>
-    <namespaces>exW9PGqoF7V7OCpvgUIZOhj7WwI=</namespaces>
-    <namespace-aliases>iz2edsTj1BrHatwuxuBXSOfqpDE=</namespace-aliases>
-    <namespace-aliases>CzgfGPX1nw65BdnXgQsTa12LA2Y=</namespace-aliases>
-    <namespace-aliases>ZOLXb+PiKO6aTHMnfr3P9Mgop24=</namespace-aliases>
-    <records>t1gs2ps85mDDF3gcK68GCS5x23g=</records>
-    <records>rl76spVysmpVYgBTOlxoh5Z9fk8=</records>
-    <records>cw0xJkxH12xMAqMkCi84zr2R6nQ=</records>
-    <records>1gqUCUm5v18bVRIAohOhUsenH0o=</records>
-    <functions>TDPbPaUgAt15wH9Aq054dH6qByE=</functions>
-    <functions>65ri7AMHwO5ME919iJQNbXl0TVE=</functions>
-    <functions>ja9KgZ+gKpeRL1CK/1+wSZ41F18=</functions>
-    <functions>eg89BLjqgCjN8fLjTLnl5lhYTE0=</functions>
-  </namespace-tranche>
+  <members>
+    <namespaces>2R3kJDhBUxRFA7bknGtT2w5ibCQQ RDwJiwqCcCdAQmDeCDU3gZ1cxR5 2iTX7iCr1aU5wW4FvT3UU4N2KU5F</namespaces>
+    <namespaceAliases>2wWgNg1NB4nJnE4a7DoVfKoYWxtp A4oXN6yBJBWa6FmckHKJsLuGQjo 2QX9SXzGE7Wvc9JJ1LwgFoNP9FYq</namespaceAliases>
+    <records>3Z9epy7yYYLbZPJChcApYyUogtc7 3Ru6vybQ5z6TATf7vHVHErPd8ZTL 2by2TRcDPNnVzP6TsKcUHeJvkC5R 3yxJGvvCWsdeWs1pNPmqu6d66A6D</records>
+    <functions>24aKiMfoxZdFkNxDdpVt5RwjSD1i 4HNuZE6ierHALUXEuGPstpXERn2t 2yVDqK4pCVdfDskf4BmqeKu9K2ia 2hdTrM85gZhqPRTBqvnjH5FU3aT6</functions>
+  </members>
 </namespace>
 <namespace>
   <name>implementation_defined_ns</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>202</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>extraction-mode.cpp</shortPath>
+        <sourcePath>extraction-mode.cpp</sourcePath>
+        <lineNumber>202</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>ZYn+worzOdzCMW6yaZC9jAkpVTk=</id>
+  <id>2R3kJDhBUxRFA7bknGtT2w5ibCQQ</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Members are not traversed and, if traversed for some other reason, they also become implementation-defined.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Members are not traversed and, if traversed for some other reason, they also become implementation-defined.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>An implementation-defined namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>An implementation-defined namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-  </namespace-tranche>
+  </doc>
 </namespace>
 <namespace>
   <name>regular_ns</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>extraction-mode.cpp</shortPath>
+        <sourcePath>extraction-mode.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>HfpFOdGBlFvzJWV5HwJnyWPM72g=</id>
+  <id>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A regular namespace with different filters for members</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular namespace with different filters for members</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>1L0CXReBnwnJJ+QMfbufLsSVX8Q=</records>
-    <records>4SJRVLqyXsDWvcWXoyjLUtLXROw=</records>
-    <records>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</records>
-    <records>TSJP5hkEf4wSQVuTwVCP1Zs/mBU=</records>
-    <functions>JsA4nL3r830aRrxkYOJehKibEWE=</functions>
-    <functions>ZrA7FcVREiRMaG484junagM1Snc=</functions>
-    <functions>GmX35W90ijAwMEpaZZqAbeG5UmU=</functions>
-    <functions>M7TOn0G63CtYGRm2THtNEEEdpLY=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>3xuEQAg9diARhi7iK1e4CUAoXwyD 48vAxnboQyeo2VCNT2nAWjAJWA7M 3c76ne5GgHoAYeUJEz9kR97TJ5dx 25KyfVXMKSXcGGxemurL1H7N2nj6</records>
+    <functions>YK75KYWaeuxi2sF7yfAC3t84Yw2 2RycXUxADDNsZSZDnxCbXQ3diPfU NLBuLuWzEuKsCd6yVVYkvtf8VV6 inGyWddbSr7ovGGySXfZrgUs517</functions>
+  </members>
 </namespace>
 <record>
   <name>implementation_defined</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>59</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>59</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>4SJRVLqyXsDWvcWXoyjLUtLXROw=</id>
+  <id>48vAxnboQyeo2VCNT2nAWjAJWA7M</id>
   <extraction>implementation-defined</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the filters and the implementation-defined filter The symbol is implementation defined and should not have a page. Members of an implementation-defined scope should not be traversed. If they are traversed for some other reason, they should also become implementation-defined.</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A symbol that passes the filters and the implementation-defined filter The symbol is implementation defined and should not have a page. Members of an implementation-defined scope should not be traversed. If they are traversed for some other reason, they should also become implementation-defined.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the implementation-defined filter</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A symbol that passes the implementation-defined filter</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>16</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</id>
+  <id>3c76ne5GgHoAYeUJEz9kR97TJ5dx</id>
   <extraction>regular</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol should have a page as usual</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol should have a page as usual</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the filters</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A symbol that passes the filters</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>get_regular</literal>
-      <id>GmX35W90ijAwMEpaZZqAbeG5UmU=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <records>HIH1h4hOIdF5+btaX+gwmErtATY=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>get_regular</literal>
+        <id>NLBuLuWzEuKsCd6yVVYkvtf8VV6</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <records>Q33b6LQ6RNubfErkLaGaDgiU5P3</records>
+    </public>
+  </interface>
 </record>
 <record>
   <name>also_regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>9</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>18</lineNumber>
+      <columnNumber>9</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>HIH1h4hOIdF5+btaX+gwmErtATY=</id>
+  <id>Q33b6LQ6RNubfErkLaGaDgiU5P3</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</parent>
-  <doc-comment>
+  <parent>3c76ne5GgHoAYeUJEz9kR97TJ5dx</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Child of a regular symbol extracted as regular</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Child of a regular symbol extracted as regular</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <records>ZZiAG+2jvp211xfxhzPQi3p+JQU=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <records>2R6QKJUmiQDp1jbcHFUsagY4MXJ4</records>
+    </public>
+  </interface>
 </record>
 <record>
   <name>regular_as_well</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>13</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>20</lineNumber>
+      <columnNumber>13</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ZZiAG+2jvp211xfxhzPQi3p+JQU=</id>
+  <id>2R6QKJUmiQDp1jbcHFUsagY4MXJ4</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>HIH1h4hOIdF5+btaX+gwmErtATY=</parent>
-  <doc-comment>
+  <parent>Q33b6LQ6RNubfErkLaGaDgiU5P3</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Grandchild of a regular symbol extracted as regular</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Grandchild of a regular symbol extracted as regular</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>see_below</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>35</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>TSJP5hkEf4wSQVuTwVCP1Zs/mBU=</id>
+  <id>25KyfVXMKSXcGGxemurL1H7N2nj6</id>
   <extraction>see-below</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the filters and the see-below filter. The symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page.</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A symbol that passes the filters and the see-below filter. The symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the see-below filter</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A symbol that passes the see-below filter</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <function>
   <name>get_dependency</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>102</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>102</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>JsA4nL3r830aRrxkYOJehKibEWE=</id>
+  <id>YK75KYWaeuxi2sF7yfAC3t84Yw2</id>
   <extraction>regular</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, only the symbol name should be shown. No links should be generated for this symbol.</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, only the symbol name should be shown. No links should be generated for this symbol.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get an excluded symbol</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get an excluded symbol</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>1L0CXReBnwnJJ+QMfbufLsSVX8Q=</id>
-      <identifier>dependency</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3xuEQAg9diARhi7iK1e4CUAoXwyD</id>
+          <identifier>dependency</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_implementation_defined</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>82</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>82</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>ZrA7FcVREiRMaG484junagM1Snc=</id>
+  <id>2RycXUxADDNsZSZDnxCbXQ3diPfU</id>
   <extraction>regular</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the implementation-defined comment should replace the real type.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the implementation-defined comment should replace the real type.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get an implementation-defined symbol</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get an implementation-defined symbol</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the implementation-defined filter</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A symbol that passes the implementation-defined filter</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>4SJRVLqyXsDWvcWXoyjLUtLXROw=</id>
-      <identifier>implementation_defined</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>48vAxnboQyeo2VCNT2nAWjAJWA7M</id>
+          <identifier>implementation_defined</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>28</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>GmX35W90ijAwMEpaZZqAbeG5UmU=</id>
+  <id>NLBuLuWzEuKsCd6yVVYkvtf8VV6</id>
   <extraction>regular</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the symbol should be shown as usual with a link to the page.</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the symbol should be shown as usual with a link to the page.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get a regular symbol</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get a regular symbol</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the filters</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A symbol that passes the filters</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <reference>
-      <kind>reference</kind>
-      <literal>regular</literal>
-      <id>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>uwCvFwfbmTvoEwwfxdL9EV+P8/c=</id>
-      <identifier>regular</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>regular</literal>
+        <id>3c76ne5GgHoAYeUJEz9kR97TJ5dx</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3c76ne5GgHoAYeUJEz9kR97TJ5dx</id>
+          <identifier>regular</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_see_below</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>50</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>50</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>M7TOn0G63CtYGRm2THtNEEEdpLY=</id>
+  <id>inGyWddbSr7ovGGySXfZrgUs517</id>
   <extraction>regular</extraction>
-  <parent>HfpFOdGBlFvzJWV5HwJnyWPM72g=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere.</literal>
-      </text>
-    </paragraph>
+  <parent>RDwJiwqCcCdAQmDeCDU3gZ1cxR5</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get a see-below symbol</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get a see-below symbol</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A symbol that passes the see-below filter</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A symbol that passes the see-below filter</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>TSJP5hkEf4wSQVuTwVCP1Zs/mBU=</id>
-      <identifier>see_below</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>25KyfVXMKSXcGGxemurL1H7N2nj6</id>
+          <identifier>see_below</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <namespace>
   <name>see_below_ns</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>121</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>extraction-mode.cpp</shortPath>
+        <sourcePath>extraction-mode.cpp</sourcePath>
+        <lineNumber>121</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
+  <id>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</id>
   <extraction>see-below</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>All member symbols should become see-below. All members are traversed as see-below.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The documentation page for these symbols should include the see-below comment.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>All member symbols should become see-below. All members are traversed as see-below.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The documentation page for these symbols should include the see-below comment.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A see-below namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>CyWO4Tsh/ybq2vl/ylZdyGSc20U=</records>
-    <records>V7X9PJ4pWsN52pFdrtqL2hmhnp8=</records>
-    <records>oCi9GhACSlMlNqMEp/8CzrcvYUc=</records>
-    <records>VpoO3YTaskouQspzjnerGL/r84w=</records>
-    <functions>a9NW/0+lwniKyNoc79ktu9ydz9Q=</functions>
-    <functions>Cte3a6dkPj265m1BZHW+q+5RYx4=</functions>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>A1QR7Lhs9nJArUrdcNiutjAbfPJ 2Dsg6euqvTsRDciwpzdkx4t95vDt 3ER3fWtx4ZPJqgvgHsdW9zEUbhrn 2CyhHRu1xsVjN3j5i4BeaK76W9fy</records>
+    <functions>2W8NWTWxUPXobQ135QkQSriLmkFm 9m9tGptAaaYaaixvRYg1EvouDvD</functions>
+  </members>
 </namespace>
 <record>
   <name>implementation_defined</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>155</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>155</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>V7X9PJ4pWsN52pFdrtqL2hmhnp8=</id>
+  <id>2Dsg6euqvTsRDciwpzdkx4t95vDt</id>
   <extraction>implementation-defined</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol does not become see-below because the the implentation-defined filter has precedence over the see-below filter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Functions using this symbol should explain the implementation-defined nature of the symbol.</literal>
-      </text>
-    </paragraph>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol does not become see-below because the the implentation-defined filter has precedence over the see-below filter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Functions using this symbol should explain the implementation-defined nature of the symbol.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Implementation-defined symbol in a see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Implementation-defined symbol in a see-below namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>127</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>127</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>oCi9GhACSlMlNqMEp/8CzrcvYUc=</id>
+  <id>3ER3fWtx4ZPJqgvgHsdW9zEUbhrn</id>
   <extraction>see-below</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol becomes see-below because the whole namespace is see-below.</literal>
-      </text>
-    </paragraph>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol becomes see-below because the whole namespace is see-below.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Regular symbol in a see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Regular symbol in a see-below namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>see_below</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>145</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>145</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>VpoO3YTaskouQspzjnerGL/r84w=</id>
+  <id>2CyhHRu1xsVjN3j5i4BeaK76W9fy</id>
   <extraction>see-below</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol becomes see-below because the whole namespace is see-below and because it&apos;s explicitly marked as see-below.</literal>
-      </text>
-    </paragraph>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol becomes see-below because the whole namespace is see-below and because it&apos;s explicitly marked as see-below.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>See-below symbol in a see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>See-below symbol in a see-below namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <function>
   <name>get_dependency</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>184</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>184</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>a9NW/0+lwniKyNoc79ktu9ydz9Q=</id>
+  <id>2W8NWTWxUPXobQ135QkQSriLmkFm</id>
   <extraction>see-below</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol should be extracted as a dependency because the exclude filter has precedence over the see-below filter. Only included symbols can be promoted to see-below.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>It&apos;s the responsibility of the function documentation to explain the dependency.</literal>
-      </text>
-    </paragraph>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol should be extracted as a dependency because the exclude filter has precedence over the see-below filter. Only included symbols can be promoted to see-below.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>It&apos;s the responsibility of the function documentation to explain the dependency.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get a dependency symbol in a see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get a dependency symbol in a see-below namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>CyWO4Tsh/ybq2vl/ylZdyGSc20U=</id>
-      <identifier>dependency</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>A1QR7Lhs9nJArUrdcNiutjAbfPJ</id>
+          <identifier>dependency</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_implementation_defined</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>164</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>164</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>Cte3a6dkPj265m1BZHW+q+5RYx4=</id>
+  <id>9m9tGptAaaYaaixvRYg1EvouDvD</id>
   <extraction>see-below</extraction>
-  <parent>exW9PGqoF7V7OCpvgUIZOhj7WwI=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the implementation-defined comment should replace the real type.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</literal>
-      </text>
-    </paragraph>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the implementation-defined comment should replace the real type.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get an implementation-defined symbol in a see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get an implementation-defined symbol in a see-below namespace</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Implementation-defined symbol in a see-below namespace</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Implementation-defined symbol in a see-below namespace</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>V7X9PJ4pWsN52pFdrtqL2hmhnp8=</id>
-      <identifier>implementation_defined</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2Dsg6euqvTsRDciwpzdkx4t95vDt</id>
+          <identifier>implementation_defined</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
-<namespace-alias>
+<namespaceAlias>
   <name>dependency_ns_alias</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>233</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>extraction-mode.cpp</shortPath>
+        <sourcePath>extraction-mode.cpp</sourcePath>
+        <lineNumber>233</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>iz2edsTj1BrHatwuxuBXSOfqpDE=</id>
+  <id>2wWgNg1NB4nJnE4a7DoVfKoYWxtp</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Namespace alias to form the dependency on dependency_ns</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Namespace alias to form the dependency on dependency_ns</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <identifier-name>
+  </doc>
+  <aliasedSymbol>
     <kind>identifier</kind>
     <identifier>dependency_ns</identifier>
-  </identifier-name>
-</namespace-alias>
-<namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
+<namespaceAlias>
   <name>implementation_defined_ns_alias</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>215</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>extraction-mode.cpp</shortPath>
+        <sourcePath>extraction-mode.cpp</sourcePath>
+        <lineNumber>215</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>CzgfGPX1nw65BdnXgQsTa12LA2Y=</id>
+  <id>A4oXN6yBJBWa6FmckHKJsLuGQjo</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Namespace alias to form a dependency on the implementation-defined namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Namespace alias to form a dependency on the implementation-defined namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <identifier-name>
+  </doc>
+  <aliasedSymbol>
     <kind>identifier</kind>
-    <id>ZYn+worzOdzCMW6yaZC9jAkpVTk=</id>
+    <id>2R3kJDhBUxRFA7bknGtT2w5ibCQQ</id>
     <identifier>implementation_defined_ns</identifier>
-  </identifier-name>
-</namespace-alias>
-<namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
+<namespaceAlias>
   <name>see_below_ns_alias</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>196</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>extraction-mode.cpp</shortPath>
+        <sourcePath>extraction-mode.cpp</sourcePath>
+        <lineNumber>196</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>ZOLXb+PiKO6aTHMnfr3P9Mgop24=</id>
+  <id>2QX9SXzGE7Wvc9JJ1LwgFoNP9FYq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The alias should be linked as usual and, because it&apos;s a namespace, the members should be listed on the page.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The alias should be linked as usual and, because it&apos;s a namespace, the members should be listed on the page.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Namespace alias to form a dependency on the see-below namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Namespace alias to form a dependency on the see-below namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <identifier-name>
+  </doc>
+  <aliasedSymbol>
     <kind>identifier</kind>
-    <id>exW9PGqoF7V7OCpvgUIZOhj7WwI=</id>
+    <id>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</id>
     <identifier>see_below_ns</identifier>
-  </identifier-name>
-</namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
 <record>
   <name>implementation_defined</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>295</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>295</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>rl76spVysmpVYgBTOlxoh5Z9fk8=</id>
+  <id>3Ru6vybQ5z6TATf7vHVHErPd8ZTL</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol is implementation defined and should not have a page.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol is implementation defined and should not have a page.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>An implementation-defined symbol in the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>An implementation-defined symbol in the global namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>251</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>251</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>cw0xJkxH12xMAqMkCi84zr2R6nQ=</id>
+  <id>2by2TRcDPNnVzP6TsKcUHeJvkC5R</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This symbol should have a page as usual.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This symbol should have a page as usual.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A regular symbol in the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular symbol in the global namespace</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>get_regular</literal>
-      <id>ja9KgZ+gKpeRL1CK/1+wSZ41F18=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <records>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>get_regular</literal>
+        <id>2yVDqK4pCVdfDskf4BmqeKu9K2ia</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <records>2WNuz81B48D1MwvGwevwvtLog7RA</records>
+    </public>
+  </interface>
 </record>
 <record>
   <name>also_regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>253</line-number>
-      <column-number>5</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>253</lineNumber>
+      <columnNumber>5</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</id>
+  <id>2WNuz81B48D1MwvGwevwvtLog7RA</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>cw0xJkxH12xMAqMkCi84zr2R6nQ=</parent>
-  <doc-comment>
+  <parent>2by2TRcDPNnVzP6TsKcUHeJvkC5R</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Child of a regular symbol: should be traversed as usual</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Child of a regular symbol: should be traversed as usual</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <records>cF5hGQlXVxQ9lU9qT768m47j5fE=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <records>2ZoHoG1BVHBDf6qhBeujtBabKatp</records>
+    </public>
+  </interface>
 </record>
 <record>
   <name>regular_as_well</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>255</line-number>
-      <column-number>9</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>255</lineNumber>
+      <columnNumber>9</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>cF5hGQlXVxQ9lU9qT768m47j5fE=</id>
+  <id>2ZoHoG1BVHBDf6qhBeujtBabKatp</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bCLHAM9lOQrXlNa5dlpbk5UpW2k=</parent>
-  <doc-comment>
+  <parent>2WNuz81B48D1MwvGwevwvtLog7RA</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Grandchild of a regular symbol: should be traversed as usual</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Grandchild of a regular symbol: should be traversed as usual</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>see_below</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>271</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>271</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>1gqUCUm5v18bVRIAohOhUsenH0o=</id>
+  <id>3yxJGvvCWsdeWs1pNPmqu6d66A6D</id>
   <extraction>see-below</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The synopsis should say &quot;See below&quot;.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The synopsis should say &quot;See below&quot;.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A see-below symbol in the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A see-below symbol in the global namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <function>
   <name>get_dependency</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>313</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>313</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>TDPbPaUgAt15wH9Aq054dH6qByE=</id>
+  <id>24aKiMfoxZdFkNxDdpVt5RwjSD1i</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The symbol should be extracted as a dependency but its members should not be traversed.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The symbol should be extracted as a dependency but its members should not be traversed.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get a dependency symbol on the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get a dependency symbol on the global namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>t1gs2ps85mDDF3gcK68GCS5x23g=</id>
-      <identifier>dependency</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3Z9epy7yYYLbZPJChcApYyUogtc7</id>
+          <identifier>dependency</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_implementation_defined</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>304</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>304</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>65ri7AMHwO5ME919iJQNbXl0TVE=</id>
+  <id>4HNuZE6ierHALUXEuGPstpXERn2t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the implementation-defined comment should replace the real type.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the implementation-defined comment should replace the real type.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get an implementation-defined symbol in the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get an implementation-defined symbol in the global namespace</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>An implementation-defined symbol in the global namespace</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>An implementation-defined symbol in the global namespace</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>rl76spVysmpVYgBTOlxoh5Z9fk8=</id>
-      <identifier>implementation_defined</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3Ru6vybQ5z6TATf7vHVHErPd8ZTL</id>
+          <identifier>implementation_defined</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_regular</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>263</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>263</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>ja9KgZ+gKpeRL1CK/1+wSZ41F18=</id>
+  <id>2yVDqK4pCVdfDskf4BmqeKu9K2ia</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the symbol should be shown as usual with a link to the page.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the symbol should be shown as usual with a link to the page.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get a regular symbol in the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get a regular symbol in the global namespace</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A regular symbol in the global namespace</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A regular symbol in the global namespace</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <reference>
-      <kind>reference</kind>
-      <literal>regular</literal>
-      <id>cw0xJkxH12xMAqMkCi84zr2R6nQ=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>cw0xJkxH12xMAqMkCi84zr2R6nQ=</id>
-      <identifier>regular</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>regular</literal>
+        <id>2by2TRcDPNnVzP6TsKcUHeJvkC5R</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2by2TRcDPNnVzP6TsKcUHeJvkC5R</id>
+          <identifier>regular</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>get_see_below</name>
-  <source>
-    <location>
-      <short-path>extraction-mode.cpp</short-path>
-      <source-path>extraction-mode.cpp</source-path>
-      <line-number>290</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>extraction-mode.cpp</shortPath>
+      <sourcePath>extraction-mode.cpp</sourcePath>
+      <lineNumber>290</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>eg89BLjqgCjN8fLjTLnl5lhYTE0=</id>
+  <id>2hdTrM85gZhqPRTBqvnjH5FU3aT6</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function to get a see-below symbol in the global namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function to get a see-below symbol in the global namespace</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A see-below symbol in the global namespace</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A see-below symbol in the global namespace</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>1gqUCUm5v18bVRIAohOhUsenH0o=</id>
-      <identifier>see_below</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3yxJGvvCWsdeWs1pNPmqu6d66A6D</id>
+          <identifier>see_below</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

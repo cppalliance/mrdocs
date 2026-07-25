@@ -2,519 +2,638 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>DBR3jN3uyfnI20zmAUSKJdd5czg=</records>
-    <records>wkfZ7hBp72uNy/H08ouKSfh83xw=</records>
-    <records>btOmu4Wi+12LN0yOtwktdItL6TI=</records>
-    <records>8MtMw2t61OoqkEmw6hklgOf9YUY=</records>
-    <functions>mmReqpxt8q1qjQV7YALD0ssuF74=</functions>
-    <functions>wH29WA5OLckgy+cshQ+CRIPopIQ=</functions>
-    <functions>tPKVO6zR+8+Hvqf0IIe9r7kOOSc=</functions>
-    <functions>sILAnHKthNvXNvIcWzCGSK+n8t8=</functions>
-  </namespace-tranche>
+  <members>
+    <records>Am9BLFyba2EnFaNNJjLU7R5WUoy 3hzC7mvvJPtMeVhkuRpBSzhYHnxb 2YZ2XhmbjJqh69bq8gppuyMVeHbw 4Ma6ojYCZo1njby3u7XVSLp72Ayj</records>
+    <functions>39kmQXVr1nrT4MBvy8WrabFYAp5b 3gYKqLCSchiJ4yaZ6xpmpYXtX9C7 3XDKdfdN6SHJfVZzehcyhgyxnLZ4 3TdPFVK1fg2MSgREruzJBBp8b35G</functions>
+  </members>
 </namespace>
 <record>
   <name>auto_detected_fn</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>DBR3jN3uyfnI20zmAUSKJdd5czg=</id>
+  <id>Am9BLFyba2EnFaNNJjLU7R5WUoy</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Type with only operator(): auto-detected without the command.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Type with only operator(): auto-detected without the command.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>SJcq0OY0c+Sn2qeErP31YsnigRE=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>21f3FnEHRrB74k9vRM4siJd8CtLp</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>SJcq0OY0c+Sn2qeErP31YsnigRE=</id>
+  <id>21f3FnEHRrB74k9vRM4siJd8CtLp</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>DBR3jN3uyfnI20zmAUSKJdd5czg=</parent>
-  <doc-comment>
+  <parent>Am9BLFyba2EnFaNNJjLU7R5WUoy</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>doc_on_struct_fn</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>37</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>37</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>wkfZ7hBp72uNy/H08ouKSfh83xw=</id>
+  <id>3hzC7mvvJPtMeVhkuRpBSzhYHnxb</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation on the struct, not the variable. The variable has no doc comment of its own.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documentation on the struct, not the variable. The variable has no doc comment of its own.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>WetcQwZF2HLFqHvCelvdZkd3uKw=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2FfBGxz6wxBP7dhEDkqiDgrNpD5D</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>42</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>42</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>WetcQwZF2HLFqHvCelvdZkd3uKw=</id>
+  <id>2FfBGxz6wxBP7dhEDkqiDgrNpD5D</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>wkfZ7hBp72uNy/H08ouKSfh83xw=</parent>
-  <doc-comment>
+  <parent>3hzC7mvvJPtMeVhkuRpBSzhYHnxb</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>forced_fn</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>16</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>btOmu4Wi+12LN0yOtwktdItL6TI=</id>
+  <id>2YZ2XhmbjJqh69bq8gppuyMVeHbw</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>command forces treatment.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>command forces treatment.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Type with extra public members: not auto-detected. The</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Type with extra public members: not auto-detected. The</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>dPBhh3IXC4bo1W1R+KW7DKUhWXc=</functions>
-      <functions>yzemSe6FSS2yygjwWU0fDjnApag=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2dVV1knsw9tBMzn7vxY8yvEyBnaz 3qD2EDfDBuxSmwVtPARESGNoHYaK</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>name</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>25</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>25</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>dPBhh3IXC4bo1W1R+KW7DKUhWXc=</id>
+  <id>2dVV1knsw9tBMzn7vxY8yvEyBnaz</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>btOmu4Wi+12LN0yOtwktdItL6TI=</parent>
-  <doc-comment>
+  <parent>2YZ2XhmbjJqh69bq8gppuyMVeHbw</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Extra public member that prevents auto-detection.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Extra public member that prevents auto-detection.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <pointer>
-    <named>
-      <is-const/>
-      <name>
-        <kind>identifier</kind>
-        <identifier>char</identifier>
-      </name>
-    </named>
-  </pointer>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <pointer>
+      <kind>pointer</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <isConst/>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>char</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>char</fundamentalType>
+        </named>
+      </pointeeType>
+    </pointer>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>21</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>yzemSe6FSS2yygjwWU0fDjnApag=</id>
+  <id>3qD2EDfDBuxSmwVtPARESGNoHYaK</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>btOmu4Wi+12LN0yOtwktdItL6TI=</parent>
-  <doc-comment>
+  <parent>2YZ2XhmbjJqh69bq8gppuyMVeHbw</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>undocumented_fn</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>48</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>48</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>8MtMw2t61OoqkEmw6hklgOf9YUY=</id>
+  <id>4Ma6ojYCZo1njby3u7XVSLp72Ayj</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>ADXCgWvBcGrBZsanaYhrkqsGrm0=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>1Aqq1XWRakEepUvjpRHqzj1mbwA</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>53</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>53</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ADXCgWvBcGrBZsanaYhrkqsGrm0=</id>
+  <id>1Aqq1XWRakEepUvjpRHqzj1mbwA</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>8MtMw2t61OoqkEmw6hklgOf9YUY=</parent>
-  <doc-comment>
+  <parent>4Ma6ojYCZo1njby3u7XVSLp72Ayj</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>auto_detected</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>mmReqpxt8q1qjQV7YALD0ssuF74=</id>
+  <id>39kmQXVr1nrT4MBvy8WrabFYAp5b</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <function-object-impl>DBR3jN3uyfnI20zmAUSKJdd5czg=</function-object-impl>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <functionObjectImpl>Am9BLFyba2EnFaNNJjLU7R5WUoy</functionObjectImpl>
 </function>
 <function>
   <name>doc_on_struct</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>42</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>42</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>wH29WA5OLckgy+cshQ+CRIPopIQ=</id>
+  <id>3gYKqLCSchiJ4yaZ6xpmpYXtX9C7</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <function-object-impl>wkfZ7hBp72uNy/H08ouKSfh83xw=</function-object-impl>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <functionObjectImpl>3hzC7mvvJPtMeVhkuRpBSzhYHnxb</functionObjectImpl>
 </function>
 <function>
   <name>doc_on_variable</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>53</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>53</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>tPKVO6zR+8+Hvqf0IIe9r7kOOSc=</id>
+  <id>3XDKdfdN6SHJfVZzehcyhgyxnLZ4</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <function-object-impl>8MtMw2t61OoqkEmw6hklgOf9YUY=</function-object-impl>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <functionObjectImpl>4Ma6ojYCZo1njby3u7XVSLp72Ayj</functionObjectImpl>
 </function>
 <function>
   <name>forced</name>
-  <source>
-    <location>
-      <short-path>function-object.cpp</short-path>
-      <source-path>function-object.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>function-object.cpp</shortPath>
+        <sourcePath>function-object.cpp</sourcePath>
+        <lineNumber>21</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>sILAnHKthNvXNvIcWzCGSK+n8t8=</id>
+  <id>3TdPFVK1fg2MSgREruzJBBp8b35G</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <function-object-impl>btOmu4Wi+12LN0yOtwktdItL6TI=</function-object-impl>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <functionObjectImpl>2YZ2XhmbjJqh69bq8gppuyMVeHbw</functionObjectImpl>
 </function>
 </mrdocs>

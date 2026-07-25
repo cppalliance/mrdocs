@@ -2,187 +2,219 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>aMJtdgJFybRcdkRG712j3iC7JeM=</namespaces>
-    <records>ABxWcxit2TyVLv16ZxoJKAc6LKw=</records>
-  </namespace-tranche>
+  <members>
+    <namespaces>2TegDc2mZHZfGrRYzGpN9YUKhVc6</namespaces>
+    <records>16BtnvydaDUMs96N5PELUc8h1NT</records>
+  </members>
 </namespace>
 <namespace>
   <name>detail</name>
-  <source>
-    <location>
-      <short-path>impl-defined-base.cpp</short-path>
-      <source-path>impl-defined-base.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>impl-defined-base.cpp</shortPath>
+        <sourcePath>impl-defined-base.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
+  <id>2TegDc2mZHZfGrRYzGpN9YUKhVc6</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3rLMKiB117HwFAa8SHWjUfAXEKTW</records>
+  </members>
 </namespace>
 <record>
   <name>base_detail</name>
-  <source>
-    <location>
-      <short-path>impl-defined-base.cpp</short-path>
-      <source-path>impl-defined-base.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>impl-defined-base.cpp</shortPath>
+      <sourcePath>impl-defined-base.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
+  <id>3rLMKiB117HwFAa8SHWjUfAXEKTW</id>
   <extraction>implementation-defined</extraction>
-  <parent>aMJtdgJFybRcdkRG712j3iC7JeM=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>0k4Wdt7n3RgOCeAZcrhJ7PruWP0=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2TegDc2mZHZfGrRYzGpN9YUKhVc6</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3vwC9Tnge2LW8jg3hPBMizRExw6U</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>do_it</name>
-  <source>
-    <location>
-      <short-path>impl-defined-base.cpp</short-path>
-      <source-path>impl-defined-base.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>impl-defined-base.cpp</shortPath>
+        <sourcePath>impl-defined-base.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>0k4Wdt7n3RgOCeAZcrhJ7PruWP0=</id>
+  <id>3vwC9Tnge2LW8jg3hPBMizRExw6U</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</parent>
-  <doc-comment>
+  <parent>3rLMKiB117HwFAa8SHWjUfAXEKTW</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Do the thing</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Do the thing</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>derived</name>
-  <source>
-    <location>
-      <short-path>impl-defined-base.cpp</short-path>
-      <source-path>impl-defined-base.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>impl-defined-base.cpp</shortPath>
+      <sourcePath>impl-defined-base.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ABxWcxit2TyVLv16ZxoJKAc6LKw=</id>
+  <id>16BtnvydaDUMs96N5PELUc8h1NT</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>zJyAW21qgGwkRrS6Ea2uUqKSLhE=</id>
-        <identifier>base_detail</identifier>
-        <name>
-          <kind>identifier</kind>
-          <id>aMJtdgJFybRcdkRG712j3iC7JeM=</id>
-          <identifier>detail</identifier>
-        </name>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>o0JbdzeoEgGm/tWclYdgORU0Qyw=</functions>
-      <functions>LsIEKTwhFIkvPhRlDXC1p7T+GPU=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3rLMKiB117HwFAa8SHWjUfAXEKTW</id>
+              <identifier>base_detail</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2TegDc2mZHZfGrRYzGpN9YUKhVc6</id>
+                  <identifier>detail</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>3GvLQBo7XeyRQRDxcY1UZSW6PWXm enN3KXxxRmDYoo1yVxnYj2fLvoW</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>do_it</name>
-  <source>
-    <location>
-      <short-path>impl-defined-base.cpp</short-path>
-      <source-path>impl-defined-base.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>impl-defined-base.cpp</shortPath>
+        <sourcePath>impl-defined-base.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>o0JbdzeoEgGm/tWclYdgORU0Qyw=</id>
+  <id>3GvLQBo7XeyRQRDxcY1UZSW6PWXm</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
-  <doc-comment>
+  <isCopyFromInherited/>
+  <parent>16BtnvydaDUMs96N5PELUc8h1NT</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Do the thing</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Do the thing</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>own</name>
-  <source>
-    <location>
-      <short-path>impl-defined-base.cpp</short-path>
-      <source-path>impl-defined-base.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>impl-defined-base.cpp</shortPath>
+        <sourcePath>impl-defined-base.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>LsIEKTwhFIkvPhRlDXC1p7T+GPU=</id>
+  <id>enN3KXxxRmDYoo1yVxnYj2fLvoW</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ABxWcxit2TyVLv16ZxoJKAc6LKw=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>16BtnvydaDUMs96N5PELUc8h1NT</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

@@ -2,312 +2,389 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>2xwtzebgDk4MeocbdM1v5JoV4Xvj</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <namespaces>4hr3niqdAlVLoJDRDfOf4nP1zbU=</namespaces>
-    <records>/TldxA72JGXtufh5RbJgxLW2mwU=</records>
-    <records>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <namespaces>49hh9paWqCeaSTRV2DfFhFFWK9Wc</namespaces>
+    <records>4XceMwibZBAcQ78SrXF4MYjfdD2U 2hkBK3xf9WoHuE2HTCEFqMoQ64kr</records>
+  </members>
 </namespace>
 <record>
   <name>D</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>excluded-base-class.cpp</shortPath>
+      <sourcePath>excluded-base-class.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>/TldxA72JGXtufh5RbJgxLW2mwU=</id>
+  <id>4XceMwibZBAcQ78SrXF4MYjfdD2U</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <key-kind>class</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>9QgUJNKn+WNP3bawIZL9jzTlEGc=</id>
-        <identifier>C</identifier>
-        <name>
-          <kind>identifier</kind>
-          <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
-          <identifier>B</identifier>
-        </name>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>BcIYmKdVh0f6TsMPCA/M0Cmr9VI=</functions>
-      <functions>o+85JO3Sv4bIWiG3+bfyUw5gJWI=</functions>
-      <functions>NiHV825xQJhfQDhKCeAex3UuHGY=</functions>
-      <functions>d5/JtPJCrP6OG8ToxUKNR5xqJ4I=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <keyKind>class</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>4Qzh7fZXvkejuajZAHEGDagHCt4v</id>
+              <identifier>C</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>49hh9paWqCeaSTRV2DfFhFFWK9Wc</id>
+                  <identifier>B</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>5es8H9kDgrA9WHd2muMG4Jwq7jw 3HTyup6LhM8vTVLCwk7PYBqBsNED kjy8W2aWtCFt9MNLNN5FNYJMdGZ 2ffKytL5y5Xf5bhEgHfqeCAqCHCm</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>17</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>17</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>BcIYmKdVh0f6TsMPCA/M0Cmr9VI=</id>
+  <id>5es8H9kDgrA9WHd2muMG4Jwq7jw</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <isCopyFromInherited/>
+  <parent>4XceMwibZBAcQ78SrXF4MYjfdD2U</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>13</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>13</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>o+85JO3Sv4bIWiG3+bfyUw5gJWI=</id>
+  <id>3HTyup6LhM8vTVLCwk7PYBqBsNED</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-override-attr/>
-  <is-record-method/>
-  <is-virtual/>
+  <parent>4XceMwibZBAcQ78SrXF4MYjfdD2U</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasOverrideAttr/>
+  <isRecordMethod/>
+  <isVirtual/>
 </function>
 <function>
   <name>h</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>13</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>13</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>NiHV825xQJhfQDhKCeAex3UuHGY=</id>
+  <id>kjy8W2aWtCFt9MNLNN5FNYJMdGZ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-override-attr/>
-  <is-record-method/>
-  <is-virtual/>
+  <parent>4XceMwibZBAcQ78SrXF4MYjfdD2U</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasOverrideAttr/>
+  <isRecordMethod/>
+  <isVirtual/>
 </function>
 <function>
   <name>i</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>13</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>13</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>d5/JtPJCrP6OG8ToxUKNR5xqJ4I=</id>
+  <id>2ffKytL5y5Xf5bhEgHfqeCAqCHCm</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>/TldxA72JGXtufh5RbJgxLW2mwU=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>4XceMwibZBAcQ78SrXF4MYjfdD2U</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>E</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>excluded-base-class.cpp</shortPath>
+      <sourcePath>excluded-base-class.cpp</sourcePath>
+      <lineNumber>27</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</id>
+  <id>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <key-kind>class</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>9QgUJNKn+WNP3bawIZL9jzTlEGc=</id>
-        <identifier>C</identifier>
-        <name>
-          <kind>identifier</kind>
-          <id>4hr3niqdAlVLoJDRDfOf4nP1zbU=</id>
-          <identifier>B</identifier>
-        </name>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>e7VYD0d5BKg0c6yEn8zt92t304s=</functions>
-      <functions>JgPp0cAF/suYYKB1RQalvRP+hjk=</functions>
-      <functions>KiY+7o+uUp3h7bndNOpI2AuCrAE=</functions>
-      <functions>0wO8aZwuOLvF7/RooHUZJ5SyKzk=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <keyKind>class</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>4Qzh7fZXvkejuajZAHEGDagHCt4v</id>
+              <identifier>C</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>49hh9paWqCeaSTRV2DfFhFFWK9Wc</id>
+                  <identifier>B</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>2ixjpSov8aQ3DSwHskKDrLWDR5Tx XidbpLDeDDQ69j9JCUAxow8mWEc b4P6jfNveNsSJchWPWVu1YYRKe8 3wWSugECofpfapKCUSc4H9XYRYsS</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>17</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>17</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>e7VYD0d5BKg0c6yEn8zt92t304s=</id>
+  <id>2ixjpSov8aQ3DSwHskKDrLWDR5Tx</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <isCopyFromInherited/>
+  <parent>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>17</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>17</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>JgPp0cAF/suYYKB1RQalvRP+hjk=</id>
+  <id>XidbpLDeDDQ69j9JCUAxow8mWEc</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-virtual/>
-  <is-virtual-as-written/>
+  <isCopyFromInherited/>
+  <parent>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isVirtualAsWritten/>
 </function>
 <function>
   <name>h</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>13</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>29</lineNumber>
+        <columnNumber>13</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>KiY+7o+uUp3h7bndNOpI2AuCrAE=</id>
+  <id>b4P6jfNveNsSJchWPWVu1YYRKe8</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-override-attr/>
-  <is-record-method/>
-  <is-virtual/>
+  <parent>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasOverrideAttr/>
+  <isRecordMethod/>
+  <isVirtual/>
 </function>
 <function>
   <name>i</name>
-  <source>
-    <location>
-      <short-path>excluded-base-class.cpp</short-path>
-      <source-path>excluded-base-class.cpp</source-path>
-      <line-number>30</line-number>
-      <column-number>13</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>excluded-base-class.cpp</shortPath>
+        <sourcePath>excluded-base-class.cpp</sourcePath>
+        <lineNumber>30</lineNumber>
+        <columnNumber>13</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>0wO8aZwuOLvF7/RooHUZJ5SyKzk=</id>
+  <id>3wWSugECofpfapKCUSc4H9XYRYsS</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ejPqzkotYMoiJcYkJf0fmJ0UNFM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

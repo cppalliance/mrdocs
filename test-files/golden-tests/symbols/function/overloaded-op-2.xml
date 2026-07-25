@@ -2,96 +2,116 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
-  </namespace-tranche>
+  <members>
+    <records>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</records>
+  </members>
 </namespace>
 <record>
   <name>T</name>
-  <source>
-    <location>
-      <short-path>overloaded-op-2.cpp</short-path>
-      <source-path>overloaded-op-2.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>overloaded-op-2.cpp</shortPath>
+      <sourcePath>overloaded-op-2.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>LhEvBUAmiZm97R+EE8Wp8+CtOwU=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>eDzQq9G3RH9npjT5QJ7xjAytU1a</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator+</name>
-  <source>
-    <location>
-      <short-path>overloaded-op-2.cpp</short-path>
-      <source-path>overloaded-op-2.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>overloaded-op-2.cpp</shortPath>
+        <sourcePath>overloaded-op-2.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>LhEvBUAmiZm97R+EE8Wp8+CtOwU=</id>
+  <id>eDzQq9G3RH9npjT5QJ7xjAytU1a</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <doc-comment>
+  <parent>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Addition operator</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Addition operator</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Another instance of the object</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Another instance of the object</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
-      <name>rhs</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>rhs</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>rhs</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>+</overloadedOperator>
+  <isRecordMethod/>
 </function>
 </mrdocs>

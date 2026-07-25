@@ -2,1041 +2,1163 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>O2UBDeG42PMrk1up8f8PGVFhIGk=</records>
-    <records>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</records>
-    <records>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</records>
-    <records>MBpLzhyCDdQBHul4AN2i2fR8fw0=</records>
-    <records>5s81XyCIgauM5viJN9KAwx2A6DU=</records>
-    <records>SzwXGFnhX4HlHjHolU7XF/KEqDs=</records>
-    <records>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</records>
-    <records>SX7tpa77UInh7a4AsMFjfiCtoLY=</records>
-    <records>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</records>
-    <records>MXMa4TZZfdRkREzWSLpIF6ruUyw=</records>
-    <records>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</records>
-    <records>NyLraUP0R3lYeyTpHQYZpyZMstc=</records>
-    <records>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</records>
-    <records>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</records>
-    <records>75395VGvKeZbe1EhfJwktZuWLs0=</records>
-    <records>HL3/1NhKSels2G5ay7F0IYzlSLs=</records>
-    <records>FLgkhM3m0U3Lo2o3XLPUizWPH00=</records>
-    <records>9kzYwt0WPztMEDUaFxul1Jvqqs8=</records>
-  </namespace-tranche>
+  <members>
+    <records>pzbXFJWBFrLNoMWc2TJ3C6Yux8g SnmJYcWpvbyShrNpSJUGFTT8kCs 3QdzpAqrTmLtmj2EekQiH89DVV51 fsPeMVAUf2C2LKBBoE66rgqcWnp 4DW9vmRhhsoCMkbLkEFrWj5duYJY 23nxuLssYWNWQpNiWRf6GoJet6ae 2FAcjXd7uzGxGweaPKixZSLGyPyk 22PU823ypaRBBLaDf4nXrM6SgZ9X 24u15vtZ8EYM9XKt8mQwGTmnZtxK gxWsBtWLMQ8GCVGx4PKmPWG6t8K 4Ktsii8yYNKBPTuK4U6T8Tzex6uc mZ2snfoFJM2Xif9VkSoSqwrKCPp 21k2C9P77UGePvaKY8nX9rj3z6b8 6bw5CugEV8nzQFahm62ZPsX7ENs 4LcwUue7pgBAsHRFzCYtj545U5JC QE36vcTAPTAV8pnnQpEtmJ2tocn Hk31bikkzpysZoDACKWU6p2oivg 4S29YKvbBcnQs5inybG691BvpQtW</records>
+  </members>
 </namespace>
 <record>
   <name>T01</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>O2UBDeG42PMrk1up8f8PGVFhIGk=</id>
+  <id>pzbXFJWBFrLNoMWc2TJ3C6Yux8g</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>dmtEtFE6EVKE6hWuugP9vFuib6Y=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2egr5sdWQnAahvFEPaLWAHRPa5Ju</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>dmtEtFE6EVKE6hWuugP9vFuib6Y=</id>
+  <id>2egr5sdWQnAahvFEPaLWAHRPa5Ju</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>O2UBDeG42PMrk1up8f8PGVFhIGk=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>pzbXFJWBFrLNoMWc2TJ3C6Yux8g</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T02</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</id>
+  <id>SnmJYcWpvbyShrNpSJUGFTT8kCs</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <static-functions>QPLurkQ2BXODb4xY6bw1mlNtQ28=</static-functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <staticFunctions>uUuiuruhFLhsiUY2jmsKG8UF2rr</staticFunctions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>QPLurkQ2BXODb4xY6bw1mlNtQ28=</id>
+  <id>uUuiuruhFLhsiUY2jmsKG8UF2rr</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>H+pnPDuG6B+W6+srjVP2qhqXCrQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>SnmJYcWpvbyShrNpSJUGFTT8kCs</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <storageClass>static</storageClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T03</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</id>
+  <id>3QdzpAqrTmLtmj2EekQiH89DVV51</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>p6A5dCCvCkASDE6pH4cJA/27/o8=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3LSz3ag8jtz3KYMdF5iGFn67Lh1x</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>p6A5dCCvCkASDE6pH4cJA/27/o8=</id>
+  <id>3LSz3ag8jtz3KYMdF5iGFn67Lh1x</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>rM+ml6ikwiS9Twa1IwpCHbSHTbg=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3QdzpAqrTmLtmj2EekQiH89DVV51</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <refQualifier>&amp;</refQualifier>
 </function>
 <record>
   <name>T04</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>MBpLzhyCDdQBHul4AN2i2fR8fw0=</id>
+  <id>fsPeMVAUf2C2LKBBoE66rgqcWnp</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>G71rDzcAZPSKGoGGoDswQjD1JuA=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>PR4hDgU1UyUnsmZxAzyYvsMYh67</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>G71rDzcAZPSKGoGGoDswQjD1JuA=</id>
+  <id>PR4hDgU1UyUnsmZxAzyYvsMYh67</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>MBpLzhyCDdQBHul4AN2i2fR8fw0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>fsPeMVAUf2C2LKBBoE66rgqcWnp</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <refQualifier>&amp;&amp;</refQualifier>
 </function>
 <record>
   <name>T05</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5s81XyCIgauM5viJN9KAwx2A6DU=</id>
+  <id>4DW9vmRhhsoCMkbLkEFrWj5duYJY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>rWLMsKBEv1FtDyk7Y7XNzcgmt68=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3R6wFtdRamhSZgGW8MiDq7xuQbYi</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>rWLMsKBEv1FtDyk7Y7XNzcgmt68=</id>
+  <id>3R6wFtdRamhSZgGW8MiDq7xuQbYi</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5s81XyCIgauM5viJN9KAwx2A6DU=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  <parent>4DW9vmRhhsoCMkbLkEFrWj5duYJY</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>T06</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>SzwXGFnhX4HlHjHolU7XF/KEqDs=</id>
+  <id>23nxuLssYWNWQpNiWRf6GoJet6ae</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>A3MUO5+pwkURxw+SBeh1y0BKv7c=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3nfdwwZcYafvRavmhg6hXRdnYaS</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>14</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>A3MUO5+pwkURxw+SBeh1y0BKv7c=</id>
+  <id>3nfdwwZcYafvRavmhg6hXRdnYaS</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>SzwXGFnhX4HlHjHolU7XF/KEqDs=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>23nxuLssYWNWQpNiWRf6GoJet6ae</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T08</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</id>
+  <id>2FAcjXd7uzGxGweaPKixZSLGyPyk</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>jlrEtbnYd1B6OAjYlF0gQ/oYu5w=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2z2cbnPmzJjyfYaDxMmZQgh945kP</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>jlrEtbnYd1B6OAjYlF0gQ/oYu5w=</id>
+  <id>2z2cbnPmzJjyfYaDxMmZQgh945kP</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>WU9ZeQm0IOT8cYJkWXom3NXeWsM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>2FAcjXd7uzGxGweaPKixZSLGyPyk</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T09</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>SX7tpa77UInh7a4AsMFjfiCtoLY=</id>
+  <id>22PU823ypaRBBLaDf4nXrM6SgZ9X</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>u+MePKsNF/sYSk6UpgNS65+USGU=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3cpZ6JpHAoHLYbd8muLoK9PkPwqE</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>u+MePKsNF/sYSk6UpgNS65+USGU=</id>
+  <id>3cpZ6JpHAoHLYbd8muLoK9PkPwqE</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>SX7tpa77UInh7a4AsMFjfiCtoLY=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>22PU823ypaRBBLaDf4nXrM6SgZ9X</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T10</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</id>
+  <id>24u15vtZ8EYM9XKt8mQwGTmnZtxK</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>0hjrVGeDlQhdYkOu4shvWWPqNKU=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3vmTbbrF4ZaAi8WNKXxcVLAr6J9z</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>0hjrVGeDlQhdYkOu4shvWWPqNKU=</id>
+  <id>3vmTbbrF4ZaAi8WNKXxcVLAr6J9z</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>TJnjDRnoO8E/5XEw8BaODsKxlwQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-trailing-return/>
-  <is-record-method/>
+  <parent>24u15vtZ8EYM9XKt8mQwGTmnZtxK</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasTrailingReturn/>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T11</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>13</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>MXMa4TZZfdRkREzWSLpIF6ruUyw=</id>
+  <id>gxWsBtWLMQ8GCVGx4PKmPWG6t8K</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>+NevzZlqigIe1KSKS7eqq7pCd40=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4U5JEgLnUtBnMymQfwo7oVjCScSY</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>+NevzZlqigIe1KSKS7eqq7pCd40=</id>
+  <id>4U5JEgLnUtBnMymQfwo7oVjCScSY</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>MXMa4TZZfdRkREzWSLpIF6ruUyw=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-trailing-return/>
-  <is-record-method/>
+  <parent>gxWsBtWLMQ8GCVGx4PKmPWG6t8K</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasTrailingReturn/>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T12</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</id>
+  <id>4Ktsii8yYNKBPTuK4U6T8Tzex6uc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>I0S8eMgTnTkagm+IrM34MBiU4XI=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>VVuBbjcX57FnaVRodhyyfFqBABT</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>I0S8eMgTnTkagm+IrM34MBiU4XI=</id>
+  <id>VVuBbjcX57FnaVRodhyyfFqBABT</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>7rg34TfmIwu+7zOd7DN+Dq8mLCc=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-variadic/>
-  <is-record-method/>
+  <parent>4Ktsii8yYNKBPTuK4U6T8Tzex6uc</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T13</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>NyLraUP0R3lYeyTpHQYZpyZMstc=</id>
+  <id>mZ2snfoFJM2Xif9VkSoSqwrKCPp</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>5d5eSOvkYwBOnpbLcrkRuFvJGP4=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4Ck4f9FCnCnSQEvYzVkJSZTbfm5P</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>5d5eSOvkYwBOnpbLcrkRuFvJGP4=</id>
+  <id>4Ck4f9FCnCnSQEvYzVkJSZTbfm5P</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>NyLraUP0R3lYeyTpHQYZpyZMstc=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-virtual/>
-  <is-virtual-as-written/>
+  <parent>mZ2snfoFJM2Xif9VkSoSqwrKCPp</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isVirtualAsWritten/>
 </function>
 <record>
   <name>T14</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>16</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</id>
+  <id>21k2C9P77UGePvaKY8nX9rj3z6b8</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <derived>HL3/1NhKSels2G5ay7F0IYzlSLs=</derived>
-  <record-interface>
-    <record-tranche>
-      <functions>1Lz3aFupR+OsCqiPOaIFWqGuyCc=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <derived>QE36vcTAPTAV8pnnQpEtmJ2tocn</derived>
+  <interface>
+    <public>
+      <functions>3xuDwozz96Njj88oJeaAwRVPwL6A</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>1Lz3aFupR+OsCqiPOaIFWqGuyCc=</id>
+  <id>3xuDwozz96Njj88oJeaAwRVPwL6A</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-virtual/>
-  <is-virtual-as-written/>
-  <is-pure/>
+  <parent>21k2C9P77UGePvaKY8nX9rj3z6b8</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isVirtualAsWritten/>
+  <isPure/>
 </function>
 <record>
   <name>T15</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>17</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</id>
+  <id>6bw5CugEV8nzQFahm62ZPsX7ENs</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>wSFf8IAx5Twq6aD5T8XdnXGuhw8=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3h4HLAam2qFj7qF1B8hdgvuX41Zx</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>wSFf8IAx5Twq6aD5T8XdnXGuhw8=</id>
+  <id>3h4HLAam2qFj7qF1B8hdgvuX41Zx</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Bu7lz+fvOPzOR6oSlAo9R8R0alg=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-volatile/>
+  <parent>6bw5CugEV8nzQFahm62ZPsX7ENs</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVolatile/>
 </function>
 <record>
   <name>T16</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>18</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>75395VGvKeZbe1EhfJwktZuWLs0=</id>
+  <id>4LcwUue7pgBAsHRFzCYtj545U5JC</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <static-functions>OEX+TUed8FjXJPiI4c3+9WHzJl4=</static-functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <staticFunctions>nUKXpbNRzSQ1tw8C3NE7NSW8k7o</staticFunctions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>OEX+TUed8FjXJPiI4c3+9WHzJl4=</id>
+  <id>nUKXpbNRzSQ1tw8C3NE7NSW8k7o</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>75395VGvKeZbe1EhfJwktZuWLs0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>4LcwUue7pgBAsHRFzCYtj545U5JC</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <storageClass>static</storageClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>T17</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>20</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>HL3/1NhKSels2G5ay7F0IYzlSLs=</id>
+  <id>QE36vcTAPTAV8pnnQpEtmJ2tocn</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>SLJhBKx+2u4KxSJ78Fg6wqlObPc=</id>
-        <identifier>T14</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>5+yfyWtDpz80IwKT3xugro18Ev0=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>21k2C9P77UGePvaKY8nX9rj3z6b8</id>
+              <identifier>T14</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>4EQQWFSwWrQWr4SmgAgG4TRbAde4</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>20</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>20</lineNumber>
+        <columnNumber>20</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>5+yfyWtDpz80IwKT3xugro18Ev0=</id>
+  <id>4EQQWFSwWrQWr4SmgAgG4TRbAde4</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>HL3/1NhKSels2G5ay7F0IYzlSLs=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-override-attr/>
-  <is-record-method/>
-  <is-virtual/>
+  <parent>QE36vcTAPTAV8pnnQpEtmJ2tocn</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasOverrideAttr/>
+  <isRecordMethod/>
+  <isVirtual/>
 </function>
 <record>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>22</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>22</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
+  <id>Hk31bikkzpysZoDACKWU6p2oivg</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <derived>9kzYwt0WPztMEDUaFxul1Jvqqs8=</derived>
-  <record-interface>
-    <record-tranche>
-      <functions>DBXd564vaQo7GHkh6XCC6HV78/I=</functions>
-      <functions>YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=</functions>
-      <static-functions>II436kVwM/ZBYOf9q474VxRXK6c=</static-functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <derived>4S29YKvbBcnQs5inybG691BvpQtW</derived>
+  <interface>
+    <public>
+      <functions>AmQ3R2ivLsg1HKQXvKKj6Ch6bbF 2MJqe4z5Pi1V8drgqcswXidazTr3</functions>
+      <staticFunctions>TJkiF62me4NHnj73azrdDCbkbmp</staticFunctions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>24</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>DBXd564vaQo7GHkh6XCC6HV78/I=</id>
+  <id>AmQ3R2ivLsg1HKQXvKKj6Ch6bbF</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-variadic/>
-  <has-trailing-return/>
-  <is-record-method/>
-  <is-const/>
-  <is-volatile/>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
+  <hasTrailingReturn/>
+  <constexpr>constexpr</constexpr>
+  <isRecordMethod/>
+  <isConst/>
+  <isVolatile/>
 </function>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=</id>
+  <id>2MJqe4z5Pi1V8drgqcswXidazTr3</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-virtual/>
-  <is-virtual-as-written/>
-  <is-pure/>
-  <is-const/>
-  <is-volatile/>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isVirtualAsWritten/>
+  <isPure/>
+  <isConst/>
+  <isVolatile/>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>25</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>25</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>II436kVwM/ZBYOf9q474VxRXK6c=</id>
+  <id>TJkiF62me4NHnj73azrdDCbkbmp</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>char</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-trailing-return/>
-  <is-record-method/>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>char</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasTrailingReturn/>
+  <constexpr>constexpr</constexpr>
+  <storageClass>static</storageClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>V</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>29</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>9kzYwt0WPztMEDUaFxul1Jvqqs8=</id>
+  <id>4S29YKvbBcnQs5inybG691BvpQtW</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>FLgkhM3m0U3Lo2o3XLPUizWPH00=</id>
-        <identifier>U</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>DBXd564vaQo7GHkh6XCC6HV78/I=</functions>
-      <functions>/C2pxLlwRMKnr6YRbVnykUArzEI=</functions>
-      <static-functions>II436kVwM/ZBYOf9q474VxRXK6c=</static-functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>Hk31bikkzpysZoDACKWU6p2oivg</id>
+              <identifier>U</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>AmQ3R2ivLsg1HKQXvKKj6Ch6bbF 4Wmdrm89Fbnjf6wrwQmhkfRgGMtV</functions>
+      <staticFunctions>TJkiF62me4NHnj73azrdDCbkbmp</staticFunctions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>24</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>DBXd564vaQo7GHkh6XCC6HV78/I=</id>
+  <id>AmQ3R2ivLsg1HKQXvKKj6Ch6bbF</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-variadic/>
-  <has-trailing-return/>
-  <is-record-method/>
-  <is-const/>
-  <is-volatile/>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
+  <hasTrailingReturn/>
+  <constexpr>constexpr</constexpr>
+  <isRecordMethod/>
+  <isConst/>
+  <isVolatile/>
 </function>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>31</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>mem-fn.cpp</shortPath>
+        <sourcePath>mem-fn.cpp</sourcePath>
+        <lineNumber>31</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>/C2pxLlwRMKnr6YRbVnykUArzEI=</id>
+  <id>4Wmdrm89Fbnjf6wrwQmhkfRgGMtV</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>9kzYwt0WPztMEDUaFxul1Jvqqs8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-override-attr/>
-  <is-record-method/>
-  <is-virtual/>
-  <is-const/>
-  <is-volatile/>
+  <parent>4S29YKvbBcnQs5inybG691BvpQtW</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasOverrideAttr/>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isConst/>
+  <isVolatile/>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>mem-fn.cpp</short-path>
-      <source-path>mem-fn.cpp</source-path>
-      <line-number>25</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>mem-fn.cpp</shortPath>
+      <sourcePath>mem-fn.cpp</sourcePath>
+      <lineNumber>25</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>II436kVwM/ZBYOf9q474VxRXK6c=</id>
+  <id>TJkiF62me4NHnj73azrdDCbkbmp</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>FLgkhM3m0U3Lo2o3XLPUizWPH00=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>char</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <has-trailing-return/>
-  <is-record-method/>
+  <parent>Hk31bikkzpysZoDACKWU6p2oivg</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>char</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <hasTrailingReturn/>
+  <constexpr>constexpr</constexpr>
+  <storageClass>static</storageClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

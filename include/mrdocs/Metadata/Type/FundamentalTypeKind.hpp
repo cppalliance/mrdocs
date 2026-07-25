@@ -14,6 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 #include <string_view>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -66,6 +67,10 @@ enum class FundamentalTypeKind
     /// long double
     LongDouble
 };
+
+MRDOCS_DESCRIBE_ENUM(
+    FundamentalTypeKind,
+    Void, Nullptr, Bool, Char, SignedChar, UnsignedChar, Char8, Char16, Char32, WChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong, Float, Double, LongDouble)
 
 /** Convert a FundamentalTypeKind to a string.
 
@@ -191,18 +196,6 @@ makeUnsigned(FundamentalTypeKind& kind) noexcept;
 MRDOCS_DECL
 bool
 makeChar(FundamentalTypeKind& kind) noexcept;
-
-/** Serialize a FundamentalTypeKind into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FundamentalTypeKind kind)
-{
-    v = toString(kind);
-}
 
 } // mrdocs
 

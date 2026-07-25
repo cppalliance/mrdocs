@@ -2,340 +2,403 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>bonobNKGOblPVcRjxpiPan4nYnc=</records>
-    <records>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</records>
-    <records>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</records>
-    <records>htdCGapMsdazR1XkXoanrOCkvDE=</records>
-  </namespace-tranche>
+  <members>
+    <records>2YKXWn41nHnPbLTGQxy5c348iTvN 3t8nUds7T8UFB5sisob2tAdzg6nm esZmqzigThXQpFSZNtfzmqmjkKB 2sxUYTJULQHBjCdv8zsCTh5HJ62U</records>
+  </members>
 </namespace>
 <record>
   <name>Explicit</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-conv-operator.cpp</shortPath>
+      <sourcePath>explicit-conv-operator.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>bonobNKGOblPVcRjxpiPan4nYnc=</id>
+  <id>2YKXWn41nHnPbLTGQxy5c348iTvN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>64zY8rVu+TzEUayzMrnV65i9nFc=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4HLLVKbaXrjnXPERNktAmvVcDkBx</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator bool</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-conv-operator.cpp</shortPath>
+        <sourcePath>explicit-conv-operator.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>64zY8rVu+TzEUayzMrnV65i9nFc=</id>
+  <id>4HLLVKbaXrjnXPERNktAmvVcDkBx</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>bonobNKGOblPVcRjxpiPan4nYnc=</parent>
-  <doc-comment>
+  <parent>2YKXWn41nHnPbLTGQxy5c348iTvN</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bool</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>bool</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>bool</literal>
-        </text>
-      </code>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bool</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>ExplicitExpression</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-conv-operator.cpp</shortPath>
+      <sourcePath>explicit-conv-operator.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</id>
+  <id>3t8nUds7T8UFB5sisob2tAdzg6nm</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>B</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>bool</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>B</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>bool</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>bool</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>q6N8XkMK9WWWGKNQnlx/o2E1EYc=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>3Ph3dM6UJAbjEGmroVW1HUh1HYJJ</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator bool</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-conv-operator.cpp</shortPath>
+        <sourcePath>explicit-conv-operator.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>q6N8XkMK9WWWGKNQnlx/o2E1EYc=</id>
+  <id>3Ph3dM6UJAbjEGmroVW1HUh1HYJJ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ztb0u1Q4SVBUQ0roTOM7MFlUt/o=</parent>
-  <doc-comment>
+  <parent>3t8nUds7T8UFB5sisob2tAdzg6nm</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bool</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>bool</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>bool</literal>
-        </text>
-      </code>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bool</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>ExplicitFalse</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-conv-operator.cpp</shortPath>
+      <sourcePath>explicit-conv-operator.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</id>
+  <id>esZmqzigThXQpFSZNtfzmqmjkKB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>hJXOxv26Y9uxUYMMVZRsp3Wps4A=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2r8m76v5Gju7vC9mp1A3AKfEo9MR</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator bool</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-conv-operator.cpp</shortPath>
+        <sourcePath>explicit-conv-operator.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>hJXOxv26Y9uxUYMMVZRsp3Wps4A=</id>
+  <id>2r8m76v5Gju7vC9mp1A3AKfEo9MR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=</parent>
-  <doc-comment>
+  <parent>esZmqzigThXQpFSZNtfzmqmjkKB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bool</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>bool</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>bool</literal>
-        </text>
-      </code>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bool</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>ExplicitTrue</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>explicit-conv-operator.cpp</shortPath>
+      <sourcePath>explicit-conv-operator.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>htdCGapMsdazR1XkXoanrOCkvDE=</id>
+  <id>2sxUYTJULQHBjCdv8zsCTh5HJ62U</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>9tpZWv9eJGfWj37jmTdNTg+gp14=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4SU42eX2dZ7koWc5TMeb8Zhg1jss</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator bool</name>
-  <source>
-    <location>
-      <short-path>explicit-conv-operator.cpp</short-path>
-      <source-path>explicit-conv-operator.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>explicit-conv-operator.cpp</shortPath>
+        <sourcePath>explicit-conv-operator.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>9tpZWv9eJGfWj37jmTdNTg+gp14=</id>
+  <id>4SU42eX2dZ7koWc5TMeb8Zhg1jss</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>htdCGapMsdazR1XkXoanrOCkvDE=</parent>
-  <doc-comment>
+  <parent>2sxUYTJULQHBjCdv8zsCTh5HJ62U</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Conversion to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bool</literal>
+          <literal>Conversion to </literal>
         </text>
-      </code>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>bool</literal>
+            </text>
+          </children>
+        </code>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object converted to </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>bool</literal>
-        </text>
-      </code>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object converted to </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bool</literal>
+              </text>
+            </children>
+          </code>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>conversion</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>conversion</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

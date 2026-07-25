@@ -2,1871 +2,2532 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
-    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
-    <records>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</records>
-    <enums>pUJEk/x997P8q+ILVKlwge3u5Ag=</enums>
-    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
-    <functions>9JfSlZfEThLXiWTez3b8eT/AbZU=</functions>
-  </namespace-tranche>
+  <members>
+    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q</namespaces>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz 4DaPBsUp8QVkfk4LroDR4aEki8dk</records>
+    <enums>3JY3vkFYX1Chr3EmuTtRx6XRvj4j</enums>
+    <functions>3n1Azr6YH2dKUM73rBYBfasjwdVX 4Qe9AfCz8HJt5wcHVXSe7xpWfVpY</functions>
+  </members>
 </namespace>
 <namespace>
   <name>N</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>152</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>152</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Namespace to test qualified identifier parameters.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Namespace to test qualified identifier parameters.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <namespaces>/zZYK9RwdepvVZXQEMRgSV41SYM=</namespaces>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <namespaces>4ZDpkYzqJoQdVRenjaPoNcFkfJC2</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>M</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>154</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>154</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>/zZYK9RwdepvVZXQEMRgSV41SYM=</id>
+  <id>4ZDpkYzqJoQdVRenjaPoNcFkfJC2</id>
   <extraction>regular</extraction>
-  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
-  <doc-comment>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Namespace to test qualified identifier parameters.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Namespace to test qualified identifier parameters.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>E7FjuWJfQv+1+p7aLfssrWXRlVU=</records>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>Guw4tHYrTjQW3xDCJhPLwR4TFvU</records>
+  </members>
 </namespace>
 <record>
   <name>Q</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>156</line-number>
-      <column-number>9</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-types.cpp</shortPath>
+      <sourcePath>param-types.cpp</sourcePath>
+      <lineNumber>156</lineNumber>
+      <columnNumber>9</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>E7FjuWJfQv+1+p7aLfssrWXRlVU=</id>
+  <id>Guw4tHYrTjQW3xDCJhPLwR4TFvU</id>
   <extraction>regular</extraction>
-  <parent>/zZYK9RwdepvVZXQEMRgSV41SYM=</parent>
-  <doc-comment>
+  <parent>4ZDpkYzqJoQdVRenjaPoNcFkfJC2</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Struct to test qualified identifier parameters.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Struct to test qualified identifier parameters.</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>::g</literal>
-      <id>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>::g</literal>
+        <id>3Bm3Y7PvY87LGKHNgufMHK2y6TDi</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>64</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-types.cpp</shortPath>
+      <sourcePath>param-types.cpp</sourcePath>
+      <lineNumber>64</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Struct to test explicit object member functions.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Struct to test explicit object member functions.</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>g</literal>
-      <id>XTMt2BS2W4VehIStEJr0wkPasWc=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>ZtNDo4tS35tJKrXxGM1LJZVrCwA=</functions>
-      <functions>c2hExG7/ditEkntdYONY88sivsA=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>g</literal>
+        <id>2JJvZzJXyzSewowCbcfE19D3naAJ</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2S62Wqchkb9JH4YPAz7hFmC2YUwq 2cFhX3U6A1BwkzG7hKyjZte3n7uR</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>80</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>80</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ZtNDo4tS35tJKrXxGM1LJZVrCwA=</id>
+  <id>2S62Wqchkb9JH4YPAz7hFmC2YUwq</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with an explicit object parameter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>this</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with an explicit object parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>this</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference member function.</literal>
-      </text>
-      <copied-from>g(this A&amp; self, int a)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Reference member function.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(this A&amp; self, int a)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>4</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>73</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>73</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>c2hExG7/ditEkntdYONY88sivsA=</id>
+  <id>2cFhX3U6A1BwkzG7hKyjZte3n7uR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>YrPSaKAbmXgzCAX5WByx4eVoqBM=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with an explicit object parameter.</literal>
-      </text>
-    </paragraph>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with an explicit object parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference member function.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Reference member function.</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to operate on</literal>
+          </text>
+        </children>
+        <name>self</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The object to operate on</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>self</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>self</name>
-  </param>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-explicit-object-member-function/>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <isExplicitObjectMemberFunction/>
+  <isRecordMethod/>
 </function>
 <record>
   <name>paramType</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-types.cpp</shortPath>
+      <sourcePath>param-types.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
+  <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Struct used to vary the parameter type.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Struct used to vary the parameter type.</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>DU72uK07T2VUA0/zFlSD5xYsNXI=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>EKpcuXzkjOnv8ZyC3Gh0a79SSs4=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>EnCYlDIJiAucNZ8lyKbGxiUjKJI=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>PfAXYt2bWhT47nnpR0gbsP8sVmM=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>RQlRhXU+F7TPvDQClE1vHm3vyzo=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>gWNKk2me9Z+SnL0juCZ31BSqXZQ=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>jDU+LoIgfrcRan+T7yNnme6xG2g=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>tQHT08jpEiAKaxbXFhRLIW9Wlcc=</id>
-    </reference>
-    <reference>
-      <kind>reference</kind>
-      <literal>f</literal>
-      <id>wUBitX6O3yYx6++hHwwo2BmUuhY=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>BkiYRQY2GzXwazaHBGfoRR3cqzq</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>EU3jfJfBAbNFqJJzUqW58Z5wUMB</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>FuCqvUqTUgZKoGm6EGTUVZVsmBF</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>s3nqrVhy9yK3XNYmygqpVcQQUUJ</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>xnUNeUgN7HF8QGy5nQiLHGVvXTw</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>2oYv16jakdWCcvzJN5M8YZVQzCtb</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>2xJ1g448nxLRvQ3p9PzqCsMYC6Vu</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>3XG7W1XQzqw26EAiYbBnftxVBwfc</id>
+      </reference>
+      <reference>
+        <kind>reference</kind>
+        <literal>f</literal>
+        <id>3h9xcCnJhyZBgFUt8Fk1xkr1qyDX</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>Idx</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>Idx</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <enum>
   <name>testEnum</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>133</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>param-types.cpp</shortPath>
+      <sourcePath>param-types.cpp</sourcePath>
+      <lineNumber>133</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
+  <id>3JY3vkFYX1Chr3EmuTtRx6XRvj4j</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <reference>
-      <kind>reference</kind>
-      <literal>g</literal>
-      <id>TF0l7iZI1k70e/PY/mnOvc0hoyI=</id>
-    </reference>
-  </doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>g</literal>
+        <id>24ht9vF5eZkJNYxq8yv5ca1tP23j</id>
+      </reference>
+    </related>
+  </doc>
 </enum>
 <overloads>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>53</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>60</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>97</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>114</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>130</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>148</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>173</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>53</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>60</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>97</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>114</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>130</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>148</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>173</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <id>3n1Azr6YH2dKUM73rBYBfasjwdVX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <code>
-        <kind>code</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>f</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>f</literal>
+          <literal> overloads</literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> overloads</literal>
-      </text>
+      </children>
     </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of f</literal>
-      </text>
-      <name>a</name>
-    </param>
-  </doc-comment>
-  <func-class>normal</func-class>
-  <members>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</members>
-  <members>DU72uK07T2VUA0/zFlSD5xYsNXI=</members>
-  <members>jDU+LoIgfrcRan+T7yNnme6xG2g=</members>
-  <members>EnCYlDIJiAucNZ8lyKbGxiUjKJI=</members>
-  <members>wUBitX6O3yYx6++hHwwo2BmUuhY=</members>
-  <members>PfAXYt2bWhT47nnpR0gbsP8sVmM=</members>
-  <members>RQlRhXU+F7TPvDQClE1vHm3vyzo=</members>
-  <members>tQHT08jpEiAKaxbXFhRLIW9Wlcc=</members>
-  <members>EKpcuXzkjOnv8ZyC3Gh0a79SSs4=</members>
-  <members>gWNKk2me9Z+SnL0juCZ31BSqXZQ=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of f</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <funcClass>normal</funcClass>
+  <members>3WB9tVatMdT8usB7kG91HHDMUYwU BkiYRQY2GzXwazaHBGfoRR3cqzq 2xJ1g448nxLRvQ3p9PzqCsMYC6Vu FuCqvUqTUgZKoGm6EGTUVZVsmBF 3h9xcCnJhyZBgFUt8Fk1xkr1qyDX s3nqrVhy9yK3XNYmygqpVcQQUUJ xnUNeUgN7HF8QGy5nQiLHGVvXTw 3XG7W1XQzqw26EAiYbBnftxVBwfc EU3jfJfBAbNFqJJzUqW58Z5wUMB 2oYv16jakdWCcvzJN5M8YZVQzCtb</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the reference function.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the reference function.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference function.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Reference function.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>DU72uK07T2VUA0/zFlSD5xYsNXI=</id>
+  <id>BkiYRQY2GzXwazaHBGfoRR3cqzq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the reference function.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function uses a reference with no parameters.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the reference function.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This function uses a reference with no parameters.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference function.</literal>
-      </text>
-      <copied-from>f()</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Reference function.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>f()</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of f</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of f</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>0</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>28</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>jDU+LoIgfrcRan+T7yNnme6xG2g=</id>
+  <id>2xJ1g448nxLRvQ3p9PzqCsMYC6Vu</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the reference function.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>void</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the reference function.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>void</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference function.</literal>
-      </text>
-      <copied-from>f(void)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Reference function.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>f(void)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of f</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of f</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>1</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>53</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>53</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>EnCYlDIJiAucNZ8lyKbGxiUjKJI=</id>
+  <id>FuCqvUqTUgZKoGm6EGTUVZVsmBF</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the variadic function.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>...</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the variadic function.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>...</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Variadic function</literal>
-      </text>
-      <copied-from>g(int a, ...)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Variadic function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(int a, ...)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>2</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>60</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>60</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>wUBitX6O3yYx6++hHwwo2BmUuhY=</id>
+  <id>3h9xcCnJhyZBgFUt8Fk1xkr1qyDX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the non-variadic function.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>int</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the non-variadic function.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>int</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Non-variadic function</literal>
-      </text>
-      <copied-from>g(int a)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Non-variadic function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(int a)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>3</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>97</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>97</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PfAXYt2bWhT47nnpR0gbsP8sVmM=</id>
+  <id>s3nqrVhy9yK3XNYmygqpVcQQUUJ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a struct parameter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>auto</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a struct parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>auto</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>struct param function</literal>
-      </text>
-      <copied-from>g(auto a)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>struct param function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(auto a)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>5</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>114</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>114</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>RQlRhXU+F7TPvDQClE1vHm3vyzo=</id>
+  <id>xnUNeUgN7HF8QGy5nQiLHGVvXTw</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>decltype</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> parameter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>decltype</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>decltype</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>decltype</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Decltype function</literal>
-      </text>
-      <copied-from>g(int a, decltype(a) b)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Decltype function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(int a, decltype(a) b)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>6</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>130</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>130</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>tQHT08jpEiAKaxbXFhRLIW9Wlcc=</id>
+  <id>3XG7W1XQzqw26EAiYbBnftxVBwfc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a struct parameter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>struct</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a struct parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>struct</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>struct param function</literal>
-      </text>
-      <copied-from>g(struct A a)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>struct param function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(struct A a)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>7</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>148</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>148</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>EKpcuXzkjOnv8ZyC3Gh0a79SSs4=</id>
+  <id>EU3jfJfBAbNFqJJzUqW58Z5wUMB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with an enum parameter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>enum</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> keyword.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with an enum parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>enum</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> keyword.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enum param function</literal>
-      </text>
-      <copied-from>g(enum testEnum a)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enum param function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(enum testEnum a)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>8</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>173</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>173</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>gWNKk2me9Z+SnL0juCZ31BSqXZQ=</id>
+  <id>2oYv16jakdWCcvzJN5M8YZVQzCtb</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a qualified identifier parameter.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This reference uses the qualified identifier </literal>
-      </text>
-      <code>
-        <kind>code</kind>
-        <text>
-          <kind>text</kind>
-          <literal>N::M::Q</literal>
-        </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal>.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a qualified identifier parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This reference uses the qualified identifier </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>N::M::Q</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Qualified identifier param function</literal>
-      </text>
-      <copied-from>g(N::M::Q a)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Qualified identifier param function</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>g(N::M::Q a)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>paramType</literal>
+        <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>4DaPBsUp8QVkfk4LroDR4aEki8dk</id>
+              <identifier>paramType</identifier>
+              <templateArgs>
+                <constant>
+                  <kind>constant</kind>
+                  <value>9</value>
+                </constant>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>paramType</literal>
-      <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=</id>
-        <identifier>paramType</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <overloads>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>37</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>46</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>91</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>107</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>123</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>141</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>166</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>37</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>46</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>90</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>107</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>123</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>141</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>166</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>9JfSlZfEThLXiWTez3b8eT/AbZU=</id>
+  <id>4Qe9AfCz8HJt5wcHVXSe7xpWfVpY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <code>
-        <kind>code</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>g</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>g</literal>
+          <literal> overloads</literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> overloads</literal>
-      </text>
+      </children>
     </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The second parameter of g</literal>
-      </text>
-      <name>b</name>
-    </param>
-  </doc-comment>
-  <func-class>normal</func-class>
-  <members>XTMt2BS2W4VehIStEJr0wkPasWc=</members>
-  <members>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</members>
-  <members>tWSGybFaxNKcropoGJaIH9niqLg=</members>
-  <members>lldWvRg9y+NwRnDpK3x2NF9+e08=</members>
-  <members>SvF6a1ZP8sdIXexPrrRDIA1OHus=</members>
-  <members>TF0l7iZI1k70e/PY/mnOvc0hoyI=</members>
-  <members>wOc7mtwXPodKdeWFmSfib8PaSww=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The second parameter of g</literal>
+          </text>
+        </children>
+        <name>b</name>
+      </param>
+    </params>
+  </doc>
+  <funcClass>normal</funcClass>
+  <members>2JJvZzJXyzSewowCbcfE19D3naAJ 3Bm3Y7PvY87LGKHNgufMHK2y6TDi 3XaBVuijCfnCvipJ8mS2dx4DNQDV 36Uv69xEto6p8RVAvMxKwdoRtkvA 23ZJfUPGYN9Xqm9nBfkQsaorDv7k 24ht9vF5eZkJNYxq8yv5ca1tP23j 3gsdyQiTQ5cLEt3wuEdTCZ5GYN2P</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>123</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>123</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>XTMt2BS2W4VehIStEJr0wkPasWc=</id>
+  <id>2JJvZzJXyzSewowCbcfE19D3naAJ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a struct parameter.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a struct parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>struct param function</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>struct param function</literal>
+        </text>
+      </children>
     </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>A</literal>
-      <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>A</literal>
+        <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-        <identifier>A</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-</function>
-<function>
-  <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>166</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a qualified identifier parameter.</literal>
-      </text>
-    </paragraph>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Qualified identifier param function</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>Q</literal>
-      <id>E7FjuWJfQv+1+p7aLfssrWXRlVU=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>E7FjuWJfQv+1+p7aLfssrWXRlVU=</id>
-        <identifier>Q</identifier>
-        <name>
+        <identifier>
           <kind>identifier</kind>
-          <id>/zZYK9RwdepvVZXQEMRgSV41SYM=</id>
-          <identifier>M</identifier>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
           <name>
-            <kind>identifier</kind>
-            <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
-            <identifier>N</identifier>
+            <identifier>
+              <kind>identifier</kind>
+              <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+              <identifier>A</identifier>
+            </identifier>
           </name>
-        </name>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>91</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>166</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>tWSGybFaxNKcropoGJaIH9niqLg=</id>
+  <id>3Bm3Y7PvY87LGKHNgufMHK2y6TDi</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with an </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a qualified identifier parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>auto</literal>
+          <literal>Qualified identifier param function</literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> parameter.</literal>
-      </text>
-    </paragraph>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Auto function</literal>
-      </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>Q</literal>
+        <id>Guw4tHYrTjQW3xDCJhPLwR4TFvU</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>Guw4tHYrTjQW3xDCJhPLwR4TFvU</id>
+              <identifier>Q</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>4ZDpkYzqJoQdVRenjaPoNcFkfJC2</id>
+                  <identifier>M</identifier>
+                  <prefix>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
+                      <identifier>N</identifier>
+                    </identifier>
+                  </prefix>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>auto</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>37</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>90</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>lldWvRg9y+NwRnDpK3x2NF9+e08=</id>
+  <id>3XaBVuijCfnCvipJ8mS2dx4DNQDV</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the variadic function.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with an </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>auto</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Variadic function</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-variadic/>
-</function>
-<function>
-  <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>46</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>SvF6a1ZP8sdIXexPrrRDIA1OHus=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for the non-variadic function.</literal>
-      </text>
-    </paragraph>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Non-variadic function</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-</function>
-<function>
-  <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>141</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>TF0l7iZI1k70e/PY/mnOvc0hoyI=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with an enum parameter.</literal>
-      </text>
-    </paragraph>
-    <brief>
-      <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Enum param function</literal>
-      </text>
-    </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
-      <name>a</name>
-    </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>testEnum</literal>
-      <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>pUJEk/x997P8q+ILVKlwge3u5Ag=</id>
-        <identifier>testEnum</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
-</function>
-<function>
-  <name>g</name>
-  <source>
-    <location>
-      <short-path>param-types.cpp</short-path>
-      <source-path>param-types.cpp</source-path>
-      <line-number>107</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
-  <kind>function</kind>
-  <id>wOc7mtwXPodKdeWFmSfib8PaSww=</id>
-  <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation for a function with a </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>decltype</literal>
+          <literal>Auto function</literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> parameter.</literal>
-      </text>
-    </paragraph>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>auto</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>g</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>37</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>36Uv69xEto6p8RVAvMxKwdoRtkvA</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the variadic function.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Decltype function</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Variadic function</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first parameter of g</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
+</function>
+<function>
+  <name>g</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>46</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>23ZJfUPGYN9Xqm9nBfkQsaorDv7k</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for the non-variadic function.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Non-variadic function</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>g</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>141</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>24ht9vF5eZkJNYxq8yv5ca1tP23j</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with an enum parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Enum param function</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>testEnum</literal>
+        <id>3JY3vkFYX1Chr3EmuTtRx6XRvj4j</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3JY3vkFYX1Chr3EmuTtRx6XRvj4j</id>
+              <identifier>testEnum</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>g</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>param-types.cpp</shortPath>
+        <sourcePath>param-types.cpp</sourcePath>
+        <lineNumber>107</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3gsdyQiTQ5cLEt3wuEdTCZ5GYN2P</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Documentation for a function with a </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>decltype</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> parameter.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Decltype function</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first parameter of g</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The second parameter of g</literal>
+          </text>
+        </children>
+        <name>b</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The second parameter of g</literal>
-      </text>
+      <type>
+        <decltype>
+          <kind>decltype</kind>
+          <operand>a</operand>
+        </decltype>
+      </type>
       <name>b</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <param>
-    <decltype>
-      <operand>a</operand>
-    </decltype>
-    <name>b</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

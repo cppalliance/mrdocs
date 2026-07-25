@@ -2,185 +2,196 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-    <records>AKwlChAOi+0ttIAPsD7uitS+gk0=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t 1YWrSpfV88zbfQ3PBCGBoYZMGKW</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mc_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <records>fWoD36lD5WiSb4UmeWlbUQhHuXU=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <records>2kLgSjKJXv3AdYru7Lbsq8haN3K2</records>
+    </public>
+  </interface>
+  <specializations>1YWrSpfV88zbfQ3PBCGBoYZMGKW</specializations>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mc_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>fWoD36lD5WiSb4UmeWlbUQhHuXU=</id>
+  <id>2kLgSjKJXv3AdYru7Lbsq8haN3K2</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>FBE8MWhdRJutTkraJIXajcEr4U0=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>HDUmTvC4Lufwz9Rqqd98ET2KTpY</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>16</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mc_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>16</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>FBE8MWhdRJutTkraJIXajcEr4U0=</id>
+  <id>HDUmTvC4Lufwz9Rqqd98ET2KTpY</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>fWoD36lD5WiSb4UmeWlbUQhHuXU=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>2kLgSjKJXv3AdYru7Lbsq8haN3K2</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mc_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>AKwlChAOi+0ttIAPsD7uitS+gk0=</id>
+  <id>1YWrSpfV88zbfQ3PBCGBoYZMGKW</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>4DXECWsw8UfKpZwrQBmtBTThqd1t</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-      <records>xks7eBJx25CIVelbqBa2LCCEll4=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <records>3mEGyDM7x1YMe6c6rqo4Yp6Dmss3</records>
+    </public>
+  </interface>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mc_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>ct_mc_expl_outside.cpp</shortPath>
+        <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>xks7eBJx25CIVelbqBa2LCCEll4=</id>
+  <id>3mEGyDM7x1YMe6c6rqo4Yp6Dmss3</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>692fgnQlzTAWgxI/0d6qH/zXq2w=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>1YWrSpfV88zbfQ3PBCGBoYZMGKW</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4Hb8B4Rnmoqbk3qDQiYZLsUysDxP</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>ct_mc_expl_outside.cpp</short-path>
-      <source-path>ct_mc_expl_outside.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>20</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mc_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mc_expl_outside.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>20</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>692fgnQlzTAWgxI/0d6qH/zXq2w=</id>
+  <id>4Hb8B4Rnmoqbk3qDQiYZLsUysDxP</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>xks7eBJx25CIVelbqBa2LCCEll4=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3mEGyDM7x1YMe6c6rqo4Yp6Dmss3</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

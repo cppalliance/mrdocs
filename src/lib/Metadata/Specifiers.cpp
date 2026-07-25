@@ -15,70 +15,7 @@
 
 namespace mrdocs {
 
-dom::String toString(AccessKind kind) noexcept
-{
-    switch(kind)
-    {
-    case AccessKind::Public:    return "public";
-    case AccessKind::Private:   return "private";
-    case AccessKind::Protected: return "protected";
-    case AccessKind::None:      return "";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String toString(StorageClassKind kind) noexcept
-{
-    switch(kind)
-    {
-    case StorageClassKind::None:     return "";
-    case StorageClassKind::Extern:   return "extern";
-    case StorageClassKind::Static:   return "static";
-    case StorageClassKind::Auto:     return "auto";
-    case StorageClassKind::Register: return "register";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String toString(ConstexprKind kind) noexcept
-{
-    switch(kind)
-    {
-    case ConstexprKind::None:      return "";
-    case ConstexprKind::Constexpr: return "constexpr";
-    case ConstexprKind::Consteval: return "consteval";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String toString(ExplicitKind kind) noexcept
-{
-    switch(kind)
-    {
-    case ExplicitKind::False:     return "";
-    case ExplicitKind::True:      return "explicit";
-    case ExplicitKind::Dependent: return "explicit(...)";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String toString(NoexceptKind kind) noexcept
-{
-    switch(kind)
-    {
-    case NoexceptKind::False:     return "";
-    case NoexceptKind::True:      return "noexcept";
-    case NoexceptKind::Dependent: return "noexcept(...)";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String
+std::string
 toString(
     NoexceptInfo const& info,
     bool resolved,
@@ -98,7 +35,7 @@ toString(
     return std::format("noexcept({})", info.Operand);
 }
 
-dom::String
+std::string
 toString(
     ExplicitInfo const& info,
     bool resolved,
@@ -116,18 +53,6 @@ toString(
         (resolved || info.Operand.empty()))
         return "explicit";
     return std::format("explicit({})", info.Operand);
-}
-
-dom::String toString(ReferenceKind kind) noexcept
-{
-    switch(kind)
-    {
-    case ReferenceKind::None:   return "";
-    case ReferenceKind::LValue: return "&";
-    case ReferenceKind::RValue: return "&&";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
 }
 
 bool

@@ -41,12 +41,7 @@ enum class AdmonitionKind
 MRDOCS_DESCRIBE_ENUM(
     AdmonitionKind,
     none, note, tip, important, caution, warning)
-
-/** Return the name of the Admonish as a string.
-*/
-MRDOCS_DECL
-dom::String
-toString(AdmonitionKind kind) noexcept;
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(AdmonitionKind, none)
 
 } // mrdocs::doc
 

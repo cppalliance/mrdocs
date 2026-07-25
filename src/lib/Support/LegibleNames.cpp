@@ -5,7 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
-// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -243,7 +243,8 @@ public:
         std::string_view rawName)
     {
         // Generate the legible name information for this symbol
-        auto const idAsString = toBase16(I.id, true);
+        auto const idAsString = toBase16(std::string_view(
+            reinterpret_cast<char const*>(I.id.data()), I.id.size()), true);
         LegibleName LI(std::string(rawName), 0, idAsString);
         LegibleName& info = map_.emplace(I.id, std::move(LI)).first->second;
 
@@ -306,7 +307,7 @@ public:
             {
                 // Final, robust fallback: emit the raw SymbolID (legible-ish),
                 // and return without crashing.
-                result.append(toBase16(I.id));
+                result.append(toBase16Str(I.id));
                 return;
             }
         }
@@ -375,7 +376,7 @@ getUnqualified(
 {
     if (!impl_)
     {
-        return toBase16(id);
+        return toBase16Str(id);
     }
     std::string result;
     impl_->getLegibleUnqualified(result, id);
@@ -390,7 +391,7 @@ getQualified(
 {
     if (!impl_)
     {
-        return toBase16(id);
+        return toBase16Str(id);
     }
     std::string result;
     impl_->getLegibleQualified(result, id, delim);

@@ -2,195 +2,270 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</records>
-    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
-    <functions>43ASI/aC9fCLy8T+1gn7pUdis+g=</functions>
-  </namespace-tranche>
+  <members>
+    <records>RznaPnoNcskjbqkU7Xwh4Qs6e2U</records>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU 4An92kkqG8S7Ca73ZvRsDcPWQnS3</functions>
+  </members>
 </namespace>
 <record>
   <name>pair</name>
-  <source>
-    <location>
-      <short-path>returns.cpp</short-path>
-      <source-path>returns.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>returns.cpp</shortPath>
+      <sourcePath>returns.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
+  <id>RznaPnoNcskjbqkU7Xwh4Qs6e2U</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <reference>
-      <kind>reference</kind>
-      <literal>g</literal>
-      <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>g</literal>
+        <id>4An92kkqG8S7Ca73ZvRsDcPWQnS3</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <variables>zYZRwoC/XWBesPi1AQs+kPHibHI=</variables>
-      <variables>AfaC9XI9L85KNgrioXVThVhljqA=</variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <variables>3s5A2hpsSS7FipiEgFt2uCZgsBTf 2azj9yA5sCvspJDEwfVky6RyhhH</variables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>first</name>
-  <source>
-    <location>
-      <short-path>returns.cpp</short-path>
-      <source-path>returns.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns.cpp</shortPath>
+        <sourcePath>returns.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>zYZRwoC/XWBesPi1AQs+kPHibHI=</id>
+  <id>3s5A2hpsSS7FipiEgFt2uCZgsBTf</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  <parent>RznaPnoNcskjbqkU7Xwh4Qs6e2U</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 <variable>
   <name>second</name>
-  <source>
-    <location>
-      <short-path>returns.cpp</short-path>
-      <source-path>returns.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns.cpp</shortPath>
+        <sourcePath>returns.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>AfaC9XI9L85KNgrioXVThVhljqA=</id>
+  <id>2azj9yA5sCvspJDEwfVky6RyhhH</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>U</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  <parent>RznaPnoNcskjbqkU7Xwh4Qs6e2U</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>U</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>returns.cpp</short-path>
-      <source-path>returns.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns.cpp</shortPath>
+        <sourcePath>returns.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function with a single return value.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function with a single return value.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The return value of the function.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The return value of the function.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>returns.cpp</short-path>
-      <source-path>returns.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns.cpp</shortPath>
+        <sourcePath>returns.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
+  <id>4An92kkqG8S7Ca73ZvRsDcPWQnS3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A function with multiple return values.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function with multiple return values.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first return value of the function.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first return value of the function.</literal>
+          </text>
+        </children>
+      </returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The second return value of the function.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The second return value of the function.</literal>
-      </text>
-    </returns>
-    <reference>
-      <kind>reference</kind>
-      <literal>pair</literal>
-      <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>Hu9BKPbk/tFDZMVcFeVpIqFnAJE=</id>
-      <identifier>pair</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>pair</literal>
+        <id>RznaPnoNcskjbqkU7Xwh4Qs6e2U</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>RznaPnoNcskjbqkU7Xwh4Qs6e2U</id>
+          <identifier>pair</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>int</identifier>
+                    </identifier>
+                  </name>
+                  <fundamentalType>int</fundamentalType>
+                </named>
+              </type>
+            </type>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>int</identifier>
+                    </identifier>
+                  </name>
+                  <fundamentalType>int</fundamentalType>
+                </named>
+              </type>
+            </type>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

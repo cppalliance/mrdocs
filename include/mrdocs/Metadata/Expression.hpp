@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -16,6 +17,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Dom/Value.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <concepts>
 #include <optional>
 #include <string>
@@ -51,6 +53,8 @@ struct ExprInfo
     auto operator<=>(ExprInfo const&) const = default;
 };
 
+MRDOCS_DESCRIBE_STRUCT(ExprInfo, (), (Written))
+
 /** Merge metadata from another expression.
 */
 MRDOCS_DECL
@@ -77,6 +81,8 @@ struct ConstantExprInfo
     /** Order constant expressions by written form and value.
     */
     auto operator<=>(ConstantExprInfo const&) const = default;
+
+    MRDOCS_DESCRIBE_CLASS(ConstantExprInfo, (ExprInfo), (Value))
 
     static_assert(std::integral<type>, "expression type must be integral");
 };

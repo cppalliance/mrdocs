@@ -2,123 +2,139 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <enums>8ys5YHCZzogRGq/E/f61InZlmOE=</enums>
-  </namespace-tranche>
+  <members>
+    <enums>4PVPpPqwv3FBieMS7DKsPgXCBjAp</enums>
+  </members>
 </namespace>
 <enum>
   <name>Color</name>
-  <source>
-    <location>
-      <short-path>show-enum-constants-false.cpp</short-path>
-      <source-path>show-enum-constants-false.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>show-enum-constants-false.cpp</shortPath>
+      <sourcePath>show-enum-constants-false.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>8ys5YHCZzogRGq/E/f61InZlmOE=</id>
+  <id>4PVPpPqwv3FBieMS7DKsPgXCBjAp</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A simple enum</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A simple enum</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <scoped/>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <constants>BBOAF6yhnTvCHkG9Jr5y9fvtD58=</constants>
-  <constants>Lx0D7a81JkdDRHL9+a9QPTM4Np0=</constants>
-  <constants>kd2nnOQJJwznL3PIvdJxDbGUmr4=</constants>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>4J31Z41F2VZDoxA4GtpA4ZPMNqC f52HBhj3MAyTgmbvGBH4rZkgeNY 32sB5fxNDohavUeaUntbTwN4fqUZ</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>Red</name>
-  <source>
-    <location>
-      <short-path>show-enum-constants-false.cpp</short-path>
-      <source-path>show-enum-constants-false.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>show-enum-constants-false.cpp</shortPath>
+        <sourcePath>show-enum-constants-false.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>BBOAF6yhnTvCHkG9Jr5y9fvtD58=</id>
+  <id>4J31Z41F2VZDoxA4GtpA4ZPMNqC</id>
   <extraction>regular</extraction>
-  <parent>8ys5YHCZzogRGq/E/f61InZlmOE=</parent>
-  <doc-comment>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The color red</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The color red</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
-<enum-constant>
+  </doc>
+</enumConstant>
+<enumConstant>
   <name>Green</name>
-  <source>
-    <location>
-      <short-path>show-enum-constants-false.cpp</short-path>
-      <source-path>show-enum-constants-false.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>show-enum-constants-false.cpp</shortPath>
+        <sourcePath>show-enum-constants-false.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>Lx0D7a81JkdDRHL9+a9QPTM4Np0=</id>
+  <id>f52HBhj3MAyTgmbvGBH4rZkgeNY</id>
   <extraction>regular</extraction>
-  <parent>8ys5YHCZzogRGq/E/f61InZlmOE=</parent>
-  <doc-comment>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The color green</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The color green</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
-<enum-constant>
+  </doc>
+</enumConstant>
+<enumConstant>
   <name>Blue</name>
-  <source>
-    <location>
-      <short-path>show-enum-constants-false.cpp</short-path>
-      <source-path>show-enum-constants-false.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>show-enum-constants-false.cpp</shortPath>
+        <sourcePath>show-enum-constants-false.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>kd2nnOQJJwznL3PIvdJxDbGUmr4=</id>
+  <id>32sB5fxNDohavUeaUntbTwN4fqUZ</id>
   <extraction>regular</extraction>
-  <parent>8ys5YHCZzogRGq/E/f61InZlmOE=</parent>
-  <doc-comment>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The color blue</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The color blue</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
+  </doc>
+</enumConstant>
 </mrdocs>

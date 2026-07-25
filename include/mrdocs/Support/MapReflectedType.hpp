@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -20,7 +21,6 @@
 #include <mrdocs/Metadata/Specifiers/StorageClassKind.hpp>
 #include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Describe.hpp>
-#include <mrdocs/Support/EnumToString.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <locale>
 #include <string>
@@ -106,7 +106,7 @@ template <typename T>
 constexpr bool
 shouldMapValue(T const& value)
 {
-    if constexpr (is_optional_v<T>)
+    if constexpr (is_specialization_of_v<T, Optional>)
     {
         return value.has_value();
     }
@@ -114,20 +114,18 @@ shouldMapValue(T const& value)
     {
         return !value.empty();
     }
-    else if constexpr (std::is_same_v<T, ConstexprKind>)
+    else if constexpr (describe::has_undefined_enumerator<T>)
     {
-        return value != ConstexprKind::None;
+        // A described enum with a designated undefined state (e.g. AccessKind,
+        // ConstexprKind, ReferenceKind, ...) is absent when it holds that
+        // value; the XML writer applies the same rule.
+        return value != describe::undefined_enumerator<T>;
     }
-    else if constexpr (std::is_same_v<T, ReferenceKind>)
+    else if constexpr (std::is_base_of_v<ExprInfo, T>)
     {
-        return value != ReferenceKind::None;
-    }
-    else if constexpr (std::is_same_v<T, StorageClassKind>)
-    {
-        return value != StorageClassKind::None;
-    }
-    else if constexpr (std::is_same_v<T, ExprInfo>)
-    {
+        // Also covers ConstantExprInfo: an expression with no written form is
+        // absent (so a non-bitfield's width, an empty requires-clause, etc.
+        // are omitted just as in the XML output).
         return !value.Written.empty();
     }
     else
@@ -198,12 +196,12 @@ mapMember(
 {
     std::string const domName = detail::normalizeMemberName(name);
 
-    if constexpr (is_optional_v<T>)
+    if constexpr (is_specialization_of_v<T, Optional>)
     {
         // Unwrap optionals — shouldMapValue already verified has_value().
         mapMember(io, name, *value, domCorpus);
     }
-    else if constexpr (detail::is_vector_v<T>)
+    else if constexpr (is_specialization_of_v<T, std::vector>)
     {
         // Vectors become lazy arrays — the decision is encapsulated here.
         MRDOCS_ASSERT(domCorpus != nullptr);
@@ -304,8 +302,8 @@ mapReflectedType(
             auto const& value = obj.*Descriptor::pointer;
 
             static_assert(
-                detail::is_vector_v<MemberType> ||
-                detail::is_optional_v<MemberType> ||
+                is_specialization_of_v<MemberType, std::vector> ||
+                is_specialization_of_v<MemberType, Optional> ||
                 dom::HasValueFrom<MemberType, DomCorpus const*>,
                 "No ValueFrom() overload found for this member type");
 
@@ -392,35 +390,34 @@ tag_invoke(
     mapReflectedType<true>(io, I);
 }
 
-/** Generic ValueFrom for any described enum.
+/** Single ValueFrom for any described enum.
 
+    The DOM string form of a described enum is its `toString`. This one overload
+    subsumes every described enum, whether its `toString` is the generic describe
+    one (the kebab name) or a custom overload (e.g. ReferenceKind, TypeKind), so
+    no per-enum `tag_invoke` is needed. A more specialized `tag_invoke` (e.g.
+    OperatorKind, which maps to its integer) still wins by overload resolution.
+
+    @param v The output value.
     @param e The enumerator to convert to a dom::Value string.
 */
 template <typename Enum>
     requires describe::has_describe_enumerators<Enum>::value
 void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Enum e)
+tag_invoke(dom::ValueFromTag, dom::Value& v, Enum e)
 {
     v = toString(e);
 }
 
-/** Generic ValueFrom for described enums, with context.
+/** Single ValueFrom for any described enum, ignoring context.
 
-    Same as above, ignoring the context.
-
+    @param v The output value.
     @param e The enumerator to convert to a dom::Value string.
 */
 template <typename Enum, typename Context>
     requires describe::has_describe_enumerators<Enum>::value
 void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Enum e,
-    Context const&)
+tag_invoke(dom::ValueFromTag, dom::Value& v, Enum e, Context const&)
 {
     v = toString(e);
 }

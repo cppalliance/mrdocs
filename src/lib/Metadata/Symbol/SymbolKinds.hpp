@@ -24,7 +24,7 @@
 #include <mrdocs/Metadata/Symbol/Typedef.hpp>
 #include <mrdocs/Metadata/Symbol/Using.hpp>
 #include <mrdocs/Metadata/Symbol/Variable.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 

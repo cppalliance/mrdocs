@@ -2,63 +2,75 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
-    <usings>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</usings>
-  </namespace-tranche>
+  <members>
+    <namespaces>2xwtzebgDk4MeocbdM1v5JoV4Xvj</namespaces>
+    <usings>Jqq7dYCKs8tnjqSAy6xfv6XdZPj</usings>
+  </members>
 </namespace>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-function-excluded.cpp</short-path>
-      <source-path>using-function-excluded.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-function-excluded.cpp</shortPath>
+        <sourcePath>using-function-excluded.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</id>
+  <id>Jqq7dYCKs8tnjqSAy6xfv6XdZPj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>No shadow should be listed because A::f is excluded.</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Only included symbols are listed in the shadow list.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>No shadow should be listed because A::f is excluded.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Only included symbols are listed in the shadow list.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Using excluded function f</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Using excluded function f</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
-      <identifier>A</identifier>
-    </name>
-  </name>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
+          <identifier>A</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
 </using>
 </mrdocs>

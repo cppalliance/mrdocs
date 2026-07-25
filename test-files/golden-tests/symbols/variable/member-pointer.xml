@@ -2,177 +2,221 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>pOYGF6pLJlICuiGO0Xj0daDb/to=</records>
-    <variables>rxLgE4jstVt2wGgHzDH3yzniyjs=</variables>
-    <variables>YS1M8HrBXVDzcrBiPpJJ987blqE=</variables>
-  </namespace-tranche>
+  <members>
+    <records>3JFAU9jshT1foKv9gi6GC2GvijYM</records>
+    <variables>3SU365iVMzzZ6dQhbPVNbTZUERjY 2MXK6vn3MLN6ov3SJfZeAv1Jsawa</variables>
+  </members>
 </namespace>
 <record>
   <name>S</name>
-  <source>
-    <location>
-      <short-path>member-pointer.cpp</short-path>
-      <source-path>member-pointer.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>member-pointer.cpp</shortPath>
+      <sourcePath>member-pointer.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
+  <id>3JFAU9jshT1foKv9gi6GC2GvijYM</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A struct.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A struct.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <variables>DXJlc6wJoMqdyInhGyTWrnqPjXQ=</variables>
-      <variables>Nf9nw1tdylSujfxB7RZlc/qmkeM=</variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <variables>BsCmaeRpnnm9vjEkPWdYigAgcfd kdfYVrQLyAccrRNt4bNZter1oir</variables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>member-pointer.cpp</short-path>
-      <source-path>member-pointer.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>member-pointer.cpp</shortPath>
+        <sourcePath>member-pointer.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>DXJlc6wJoMqdyInhGyTWrnqPjXQ=</id>
+  <id>BsCmaeRpnnm9vjEkPWdYigAgcfd</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  <parent>3JFAU9jshT1foKv9gi6GC2GvijYM</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 <variable>
   <name>y</name>
-  <source>
-    <location>
-      <short-path>member-pointer.cpp</short-path>
-      <source-path>member-pointer.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>member-pointer.cpp</shortPath>
+        <sourcePath>member-pointer.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>Nf9nw1tdylSujfxB7RZlc/qmkeM=</id>
+  <id>kdfYVrQLyAccrRNt4bNZter1oir</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>double</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  <parent>3JFAU9jshT1foKv9gi6GC2GvijYM</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>double</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 <variable>
   <name>mp_double</name>
-  <source>
-    <location>
-      <short-path>member-pointer.cpp</short-path>
-      <source-path>member-pointer.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>member-pointer.cpp</shortPath>
+      <sourcePath>member-pointer.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>rxLgE4jstVt2wGgHzDH3yzniyjs=</id>
+  <id>3SU365iVMzzZ6dQhbPVNbTZUERjY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Pointer to a double member of S.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Pointer to a double member of S.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <member-pointer>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
-        <identifier>S</identifier>
-      </name>
-    </named>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>double</identifier>
-      </name>
-    </named>
-  </member-pointer>
+  </doc>
+  <type>
+    <memberPointer>
+      <kind>member-pointer</kind>
+      <parentType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3JFAU9jshT1foKv9gi6GC2GvijYM</id>
+              <identifier>S</identifier>
+            </identifier>
+          </name>
+        </named>
+      </parentType>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </pointeeType>
+    </memberPointer>
+  </type>
   <initializer>&amp;S::y</initializer>
 </variable>
 <variable>
   <name>mp_int</name>
-  <source>
-    <location>
-      <short-path>member-pointer.cpp</short-path>
-      <source-path>member-pointer.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>member-pointer.cpp</shortPath>
+      <sourcePath>member-pointer.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>YS1M8HrBXVDzcrBiPpJJ987blqE=</id>
+  <id>2MXK6vn3MLN6ov3SJfZeAv1Jsawa</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Pointer to an int member of S.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Pointer to an int member of S.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <member-pointer>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
-        <identifier>S</identifier>
-      </name>
-    </named>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </member-pointer>
+  </doc>
+  <type>
+    <memberPointer>
+      <kind>member-pointer</kind>
+      <parentType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3JFAU9jshT1foKv9gi6GC2GvijYM</id>
+              <identifier>S</identifier>
+            </identifier>
+          </name>
+        </named>
+      </parentType>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </pointeeType>
+    </memberPointer>
+  </type>
   <initializer>&amp;S::x</initializer>
 </variable>
 </mrdocs>

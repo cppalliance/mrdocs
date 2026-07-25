@@ -2,40 +2,51 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <typedefs>Nz16WgwQioPGG3IEr5zgZyHBaR4=</typedefs>
-  </namespace-tranche>
+  <members>
+    <typedefs>mdtsn1qoRk4BbXrakJM7M1r4Zch</typedefs>
+  </members>
 </namespace>
 <typedef>
   <name>extension_type</name>
-  <source>
-    <location>
-      <short-path>attributes.cpp</short-path>
-      <source-path>attributes.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes.cpp</shortPath>
+        <sourcePath>attributes.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>Nz16WgwQioPGG3IEr5zgZyHBaR4=</id>
+  <id>mdtsn1qoRk4BbXrakJM7M1r4Zch</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <deprecated-attribute>
-    <name>deprecated</name>
-    <balanced-tokens>&quot;use extent_type&quot;</balanced-tokens>
-    <message>use extent_type</message>
-  </deprecated-attribute>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-using>1</is-using>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use extent_type&quot;</string>
+      </balancedTokens>
+      <message>use extent_type</message>
+    </deprecated>
+  </attributes>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 </mrdocs>

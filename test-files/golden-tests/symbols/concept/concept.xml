@@ -2,94 +2,114 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>PmhXjCXUJYVnj/a7NhfjjSesyp0=</functions>
-    <variables>ujOvtFFNPf6akih2fga4S9j6Y9M=</variables>
-    <concepts>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</concepts>
-  </namespace-tranche>
+  <members>
+    <functions>sRogJY533qTwDRYtF4NSM9eyQya</functions>
+    <variables>3bTa6hZH47eKcEmtzUEw1Us7DSPL</variables>
+    <concepts>6qQBFa3NuRU4jJfNNHzE4qPGzwa</concepts>
+  </members>
 </namespace>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>concept.cpp</short-path>
-      <source-path>concept.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>concept.cpp</shortPath>
+        <sourcePath>concept.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PmhXjCXUJYVnj/a7NhfjjSesyp0=</id>
+  <id>sRogJY533qTwDRYtF4NSM9eyQya</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <id>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</id>
-        <identifier>C</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
-    </type-tparam>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+        <constraint>
+          <identifier>
+            <kind>identifier</kind>
+            <id>6qQBFa3NuRU4jJfNNHzE4qPGzwa</id>
+            <identifier>C</identifier>
+          </identifier>
+        </constraint>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>concept.cpp</short-path>
-      <source-path>concept.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>concept.cpp</shortPath>
+      <sourcePath>concept.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>ujOvtFFNPf6akih2fga4S9j6Y9M=</id>
+  <id>3bTa6hZH47eKcEmtzUEw1Us7DSPL</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <auto>
-    <name>
-      <kind>identifier</kind>
-      <id>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</id>
-      <identifier>C</identifier>
-    </name>
-  </auto>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+      <constraint>
+        <identifier>
+          <kind>identifier</kind>
+          <id>6qQBFa3NuRU4jJfNNHzE4qPGzwa</id>
+          <identifier>C</identifier>
+        </identifier>
+      </constraint>
+    </auto>
+  </type>
   <initializer>0</initializer>
 </variable>
 <concept>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>concept.cpp</short-path>
-      <source-path>concept.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>concept.cpp</shortPath>
+        <sourcePath>concept.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>concept</kind>
-  <id>Bzh2Bz1ZBW0d6sKvxtXunIUU31k=</id>
+  <id>6qQBFa3NuRU4jJfNNHzE4qPGzwa</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
   <constraint>sizeof(T) == sizeof(int)</constraint>
 </concept>

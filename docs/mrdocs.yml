@@ -10,18 +10,9 @@ file-patterns:
 include-symbols:
   - 'mrdocs::**'
 implementation-defined:
-  - 'mrdocs::detail'
-  - 'mrdocs::report::detail'
-  - 'mrdocs::dom::detail'
-exclude-symbols:
-    # Reflection facilities.
-  - 'mrdocs::describe'
-  - 'mrdocs::describe::**'
-    # Symbols injected by MRDOCS_DESCRIBE_STRUCT, etc.
-  - '**mrdocs_base_descriptor_fn'
-  - '**mrdocs_member_descriptor_fn'
-  - '**mrdocs_enum_descriptor_fn'
-  - '**mrdocs_kind_descriptor_fn'
+  - '**::detail'
+    # Injected by the MRDOCS_DESCRIBE_* macros
+  - '**mrdocs_*_descriptor_fn'
 multipage: true
 generator: adoc
 cmake: '-D MRDOCS_DOCUMENTATION_BUILD=ON'

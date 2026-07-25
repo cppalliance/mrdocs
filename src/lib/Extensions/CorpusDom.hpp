@@ -24,7 +24,7 @@ class CorpusImpl;
       symbol vector. Reads through reflection on the concrete C++
       type; writes are gated on the allowlist for top-level Symbol
       fields. Push/replace propagate to the underlying vector.
-    - `corpus.get(id)` -- decode a base16 id string and return the
+    - `corpus.get(id)` -- decode a base58 id string and return the
       proxy for that symbol, or `null` if no symbol has that id.
     - `corpus.lookup(name)` -- look up a symbol by name in the global
       namespace (mirrors `Corpus::lookup(name)`). Returns the proxy

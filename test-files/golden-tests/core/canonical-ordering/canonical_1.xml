@@ -2,212 +2,139 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
-    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-    <records>r32UJws/5rQHSwieW9XcY/Lu30k=</records>
-    <records>64sjs/NcKpvextfuwbtyP/VMOJk=</records>
-    <records>bJjlANSkHT9fMIOJb+7rnfl9B2Q=</records>
-    <records>x22+jYd1xB7rz7rTGsgmwOre390=</records>
-    <records>o++ChozQVnJgKoS41uCm96LOP14=</records>
-    <records>DnCAWz4yn8cUKkg886MMQcSEBhg=</records>
-  </namespace-tranche>
+  <members>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz 45Fwe5kYuv1Y5U477G1sB17ZooGh 3Soa5UMUK6mpXxd7WpLnPeRteoxc 4HL2MTMD4VLzdb164R11dGPakUVn 2WkYAgtGEk9mHh6EQh5wPtVeRooq 3n9TfJ5xqC5ahMX6wZdPCDjKA13a 3HU2xLtravcmixJLjtHjxshp7by7 CfitQsx1Kbhb7Rz1P3wnmkiDzdV</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>Ba</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>r32UJws/5rQHSwieW9XcY/Lu30k=</id>
+  <id>3Soa5UMUK6mpXxd7WpLnPeRteoxc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>Bx</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>64sjs/NcKpvextfuwbtyP/VMOJk=</id>
+  <id>4HL2MTMD4VLzdb164R11dGPakUVn</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>a</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>bJjlANSkHT9fMIOJb+7rnfl9B2Q=</id>
+  <id>2WkYAgtGEk9mHh6EQh5wPtVeRooq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>b</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>x22+jYd1xB7rz7rTGsgmwOre390=</id>
+  <id>3n9TfJ5xqC5ahMX6wZdPCDjKA13a</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>bA</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>o++ChozQVnJgKoS41uCm96LOP14=</id>
+  <id>3HU2xLtravcmixJLjtHjxshp7by7</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>ba</name>
-  <source>
-    <location>
-      <short-path>canonical_1.cpp</short-path>
-      <source-path>canonical_1.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>DnCAWz4yn8cUKkg886MMQcSEBhg=</id>
+  <id>CfitQsx1Kbhb7Rz1P3wnmkiDzdV</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

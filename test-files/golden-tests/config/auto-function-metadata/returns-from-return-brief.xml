@@ -2,98 +2,109 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>iiL9gikPcQtnSisz70tbNep58xQ=</records>
-    <functions>9qWYEt0yZtWNXCd4PxS2BGM2N00=</functions>
-  </namespace-tranche>
+  <members>
+    <records>2vcwPY6Eq644TANdSxYsUBCDWFJT</records>
+    <functions>4SJPsS6K3rw6PhqSBPBvQyfFsed2</functions>
+  </members>
 </namespace>
 <record>
   <name>R</name>
-  <source>
-    <location>
-      <short-path>returns-from-return-brief.cpp</short-path>
-      <source-path>returns-from-return-brief.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-return-brief.cpp</shortPath>
+        <sourcePath>returns-from-return-brief.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
+  <id>2vcwPY6Eq644TANdSxYsUBCDWFJT</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The return type of the function</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The return type of the function</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>getR</literal>
-      <id>9qWYEt0yZtWNXCd4PxS2BGM2N00=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>getR</literal>
+        <id>4SJPsS6K3rw6PhqSBPBvQyfFsed2</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <function>
   <name>getR</name>
-  <source>
-    <location>
-      <short-path>returns-from-return-brief.cpp</short-path>
-      <source-path>returns-from-return-brief.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-return-brief.cpp</shortPath>
+        <sourcePath>returns-from-return-brief.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>9qWYEt0yZtWNXCd4PxS2BGM2N00=</id>
+  <id>4SJPsS6K3rw6PhqSBPBvQyfFsed2</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Test function</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Test function</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The return type of the function</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The return type of the function</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <reference>
-      <kind>reference</kind>
-      <literal>R</literal>
-      <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
-    </reference>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>iiL9gikPcQtnSisz70tbNep58xQ=</id>
-      <identifier>R</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>R</literal>
+        <id>2vcwPY6Eq644TANdSxYsUBCDWFJT</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2vcwPY6Eq644TANdSxYsUBCDWFJT</id>
+          <identifier>R</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

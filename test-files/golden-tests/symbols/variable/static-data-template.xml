@@ -2,178 +2,226 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>static-data-template.cpp</short-path>
-      <source-path>static-data-template.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-template.cpp</shortPath>
+      <sourcePath>static-data-template.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <static-variables>XzfcXqh7M7tQVHWKvlB891KIC/0=</static-variables>
-      <static-variables>eKdgKT44WwfN7UkQXGEqVJssIPM=</static-variables>
-      <static-variables>odTOUblgmooUozrBqW3qKzPWSO4=</static-variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <staticVariables>2KwWkryLuRNk2LBJftQEdhq1vKKS 2gVanbRPht7MyoRtxe8vuv9MrHVt 3FmQw5xvqR6Fb33s8dnpM3kG2WLM</staticVariables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>static-data-template.cpp</short-path>
-      <source-path>static-data-template.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-template.cpp</shortPath>
+      <sourcePath>static-data-template.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>XzfcXqh7M7tQVHWKvlB891KIC/0=</id>
+  <id>2KwWkryLuRNk2LBJftQEdhq1vKKS</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>V</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>V</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
   <initializer>0</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>static-data-template.cpp</short-path>
-      <source-path>static-data-template.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-template.cpp</shortPath>
+      <sourcePath>static-data-template.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>eKdgKT44WwfN7UkQXGEqVJssIPM=</id>
+  <id>2gVanbRPht7MyoRtxe8vuv9MrHVt</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </type>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>long</identifier>
-        </name>
-      </named>
-    </type-targ>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>long</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>long</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
   </template>
   <initializer>2</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>static-data-template.cpp</short-path>
-      <source-path>static-data-template.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-template.cpp</shortPath>
+      <sourcePath>static-data-template.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>odTOUblgmooUozrBqW3qKzPWSO4=</id>
+  <id>3FmQw5xvqR6Fb33s8dnpM3kG2WLM</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <pointer>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>U</identifier>
-          </name>
-        </named>
-      </pointer>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
           <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <pointer>
+            <kind>pointer</kind>
+            <pointeeType>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>U</identifier>
+                  </identifier>
+                </name>
+              </named>
+            </pointeeType>
+          </pointer>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+    </args>
   </template>
   <initializer>1</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 </mrdocs>

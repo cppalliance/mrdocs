@@ -16,6 +16,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/String.hpp>
 #include <string>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -120,6 +121,11 @@ enum class OperatorKind
     Coawait,
 };
 
+MRDOCS_DESCRIBE_ENUM(
+    OperatorKind,
+    None, New, Delete, ArrayNew, ArrayDelete, Plus, Minus, Star, Slash, Percent, Caret, Amp, Pipe, Tilde, Equal, PlusEqual, MinusEqual, StarEqual, SlashEqual, PercentEqual, CaretEqual, AmpEqual, PipeEqual, LessLess, GreaterGreater, LessLessEqual, GreaterGreaterEqual, Exclaim, EqualEqual, ExclaimEqual, Less, LessEqual, Greater, GreaterEqual, Spaceship, AmpAmp, PipePipe, PlusPlus, MinusMinus, Comma, ArrowStar, Arrow, Call, Subscript, Conditional, Coawait)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(OperatorKind, None)
+
 /** Map an operator kind to a DOM value (its underlying integer).
 */
 inline
@@ -162,6 +168,22 @@ MRDOCS_DECL
 std::string_view
 getShortOperatorName(
     OperatorKind kind) noexcept;
+
+/** Return the operator's written spelling ("+", "[]", "new", ...).
+
+    Customized (routes to getOperatorName) rather than using the generic
+    described-enum name, so the `overloadedOperator` field carries the source
+    symbol.
+
+    @param kind The operator kind.
+    @return The operator spelling, empty for OperatorKind::None.
+*/
+inline
+std::string_view
+toString(OperatorKind kind) noexcept
+{
+    return getOperatorName(kind);
+}
 
 /** Return the short name of an operator as a string.
 

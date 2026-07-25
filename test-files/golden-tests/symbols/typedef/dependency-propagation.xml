@@ -2,189 +2,241 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
-    <records>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</records>
-  </namespace-tranche>
+  <members>
+    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q</namespaces>
+    <records>Zo28JLEeTpjgaLqxZAGsf4eqV3E</records>
+  </members>
 </namespace>
 <namespace>
   <name>N</name>
-  <source>
-    <location>
-      <short-path>dependency-propagation.cpp</short-path>
-      <source-path>dependency-propagation.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>dependency-propagation.cpp</shortPath>
+        <sourcePath>dependency-propagation.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <typedefs>YZjBn7yW7NyL8yCKqswVvbiptNM=</typedefs>
-    <typedefs>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</typedefs>
-    <records>CvmTMb/ji8iqIZMky8t7bt71VbE=</records>
-    <records>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</records>
-    <records>G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <typedefs>2Mrz5fp9MHTN7oCgG8EXzRua99VC 3ydAPecPexjir7UvEureRc9scRas</typedefs>
+    <records>9sMQ43pJANYH1kBMXd9hopyiLw2 tJGwNiVyA3v6JCMevdJShmVtGDa PXEKV9e3vTDFcM3yznpjv9NucoD</records>
+  </members>
 </namespace>
 <typedef>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>dependency-propagation.cpp</short-path>
-      <source-path>dependency-propagation.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>dependency-propagation.cpp</shortPath>
+        <sourcePath>dependency-propagation.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
+  <id>2Mrz5fp9MHTN7oCgG8EXzRua99VC</id>
   <extraction>regular</extraction>
-  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
-      <identifier>A</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>tJGwNiVyA3v6JCMevdJShmVtGDa</id>
+          <identifier>A</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>T</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
 </typedef>
 <typedef>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>dependency-propagation.cpp</short-path>
-      <source-path>dependency-propagation.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>dependency-propagation.cpp</shortPath>
+        <sourcePath>dependency-propagation.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
+  <id>3ydAPecPexjir7UvEureRc9scRas</id>
   <extraction>regular</extraction>
-  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>YZjBn7yW7NyL8yCKqswVvbiptNM=</id>
-      <identifier>B</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>2Mrz5fp9MHTN7oCgG8EXzRua99VC</id>
+          <identifier>B</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>T</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
 </typedef>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>dependency-propagation.cpp</short-path>
-      <source-path>dependency-propagation.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>dependency-propagation.cpp</shortPath>
+      <sourcePath>dependency-propagation.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>P3wHAbrIf4CGxTZs+lXT5a3t2K0=</id>
+  <id>tJGwNiVyA3v6JCMevdJShmVtGDa</id>
   <extraction>regular</extraction>
-  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
-  <key-kind>struct</key-kind>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <record>
   <name>D</name>
-  <source>
-    <location>
-      <short-path>dependency-propagation.cpp</short-path>
-      <source-path>dependency-propagation.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>dependency-propagation.cpp</shortPath>
+      <sourcePath>dependency-propagation.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=</id>
+  <id>PXEKV9e3vTDFcM3yznpjv9NucoD</id>
   <extraction>regular</extraction>
-  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>E</name>
-  <source>
-    <location>
-      <short-path>dependency-propagation.cpp</short-path>
-      <source-path>dependency-propagation.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>dependency-propagation.cpp</shortPath>
+      <sourcePath>dependency-propagation.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>KJWEqOD/QXinlGIqVHqmIlA5Z6E=</id>
+  <id>Zo28JLEeTpjgaLqxZAGsf4eqV3E</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>1aINBgFfB9zQVkEDJdB0DyLWTmQ=</id>
-        <identifier>C</identifier>
-        <name>
-          <kind>identifier</kind>
-          <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
-          <identifier>N</identifier>
-        </name>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>3ydAPecPexjir7UvEureRc9scRas</id>
+              <identifier>C</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
+                  <identifier>N</identifier>
+                </identifier>
+              </prefix>
+              <templateArgs>
+                <type>
+                  <kind>type</kind>
+                  <type>
+                    <named>
+                      <kind>named</kind>
+                      <name>
+                        <identifier>
+                          <kind>identifier</kind>
+                          <identifier>int</identifier>
+                        </identifier>
+                      </name>
+                      <fundamentalType>int</fundamentalType>
+                    </named>
+                  </type>
+                </type>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
 </record>
 </mrdocs>

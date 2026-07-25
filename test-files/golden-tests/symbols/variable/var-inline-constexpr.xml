@@ -2,284 +2,338 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <variables>9s8AEcaO/PYLDINeClULQZuqcls=</variables>
-    <variables>zUgw7RZYhWQ0Wdr483M4dEkcXFU=</variables>
-    <variables>23TCuxWNlj84e/NoEZJsI1rADQA=</variables>
-    <variables>fWXHXBdM9s2COMhYT0j3aWad+0I=</variables>
-    <variables>+c5FvmsSJNn7o5ii4DyReMV38C4=</variables>
-    <variables>pn99V2QzcOsMfIXOuUkZkX5qPxM=</variables>
-    <variables>eeYDvHDDTr7yHd4hDvbGxxhRsdg=</variables>
-    <variables>/HfsnrPPmN325zi27Blg78dY0HE=</variables>
-    <variables>Ix017ZAiVi07tMCvlM1DJ9AE5sk=</variables>
-    <variables>NeARXC6JJzwenZWHvmtX1WP6Y4E=</variables>
-  </namespace-tranche>
+  <members>
+    <variables>4SRyXVjTazReNa6RyBe6WGrBsEdG 3rsnLy3PdQhUyWrkpk4N4h54RL4C 44L4vVpaKpGgzKAnWQR5XETEbLjq 2kKuTkVbvJJCnSBLwnD3ioV1ipbB 4UrSWgs9uVjhdmBhc6Ba3pKg8DzD 3KY8E1XcK7hmhaep8oyMT41SwZbY 2hVv8fLo4NBv26Spy5M232Piaxe3 4X1ENYYL35aRdkxYp3Xj4iGFyKmr VNfVkTTdEWVKdVg4BwDfzUjkeKA kXvoGNp3ABu3Go4CuHMSxrXNBPN</variables>
+  </members>
 </namespace>
 <variable>
   <name>var</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>9s8AEcaO/PYLDINeClULQZuqcls=</id>
+  <id>4SRyXVjTazReNa6RyBe6WGrBsEdG</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>5</initializer>
 </variable>
 <variable>
   <name>var_const</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>zUgw7RZYhWQ0Wdr483M4dEkcXFU=</id>
+  <id>3rsnLy3PdQhUyWrkpk4N4h54RL4C</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>4</initializer>
 </variable>
 <variable>
   <name>var_const_t</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>20</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>23TCuxWNlj84e/NoEZJsI1rADQA=</id>
+  <id>44L4vVpaKpGgzKAnWQR5XETEbLjq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
 </variable>
 <variable>
   <name>var_constexpr</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>fWXHXBdM9s2COMhYT0j3aWad+0I=</id>
+  <id>2kKuTkVbvJJCnSBLwnD3ioV1ipbB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>2</initializer>
-  <is-constexpr/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>var_constexpr_t</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>+c5FvmsSJNn7o5ii4DyReMV38C4=</id>
+  <id>4UrSWgs9uVjhdmBhc6Ba3pKg8DzD</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <is-constexpr/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>var_inline_const</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>pn99V2QzcOsMfIXOuUkZkX5qPxM=</id>
+  <id>3KY8E1XcK7hmhaep8oyMT41SwZbY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>3</initializer>
-  <is-inline/>
+  <isInline/>
 </variable>
 <variable>
   <name>var_inline_const_t</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>17</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>eeYDvHDDTr7yHd4hDvbGxxhRsdg=</id>
+  <id>2hVv8fLo4NBv26Spy5M232Piaxe3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <is-inline/>
+  <isInline/>
 </variable>
 <variable>
   <name>var_inline_constexpr</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>/HfsnrPPmN325zi27Blg78dY0HE=</id>
+  <id>4X1ENYYL35aRdkxYp3Xj4iGFyKmr</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>1</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>var_inline_constexpr_t</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>Ix017ZAiVi07tMCvlM1DJ9AE5sk=</id>
+  <id>VNfVkTTdEWVKdVg4BwDfzUjkeKA</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <is-inline/>
-  <is-constexpr/>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>var_t</name>
-  <source>
-    <location>
-      <short-path>var-inline-constexpr.cpp</short-path>
-      <source-path>var-inline-constexpr.cpp</source-path>
-      <line-number>23</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>var-inline-constexpr.cpp</shortPath>
+      <sourcePath>var-inline-constexpr.cpp</sourcePath>
+      <lineNumber>23</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>NeARXC6JJzwenZWHvmtX1WP6Y4E=</id>
+  <id>kXvoGNp3ABu3Go4CuHMSxrXNBPN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
 </variable>
 </mrdocs>

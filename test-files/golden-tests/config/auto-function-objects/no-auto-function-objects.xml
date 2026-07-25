@@ -2,257 +2,307 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>2VD2BzFCUHtQG69kwwWzGSJPuSNM</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>example</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-auto-function-objects.cpp</shortPath>
+        <sourcePath>no-auto-function-objects.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</id>
+  <id>2VD2BzFCUHtQG69kwwWzGSJPuSNM</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</records>
-    <records>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</records>
-    <functions>K/gF5rpXkFJJYDun6PDmCeQcFT8=</functions>
-    <variables>zK8gWyWtxQjNc0x9PWS1qQDbceI=</variables>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>2VKLwH3TH9JfUNvKnHmvcNaL4ck2 4MGdnRhMxsA2odvm44HGnwwJzCxB</records>
+    <functions>cXen2CvrEKKAWVVzfuPzkc5YAk6</functions>
+    <variables>3rPm5vsK64K22PsBbWHTvAjTS5yT</variables>
+  </members>
 </namespace>
 <record>
   <name>auto_fn</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>no-auto-function-objects.cpp</shortPath>
+      <sourcePath>no-auto-function-objects.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</id>
+  <id>2VKLwH3TH9JfUNvKnHmvcNaL4ck2</id>
   <extraction>regular</extraction>
-  <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
-  <doc-comment>
+  <parent>2VD2BzFCUHtQG69kwwWzGSJPuSNM</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Would be auto-detected, but auto-function-objects is false. Should remain a regular variable.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Would be auto-detected, but auto-function-objects is false. Should remain a regular variable.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>11lTy9LCvZbcyORLiyJVo85H/ZE=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>411agR1AW8mnkDTi5Lr3ETDwgsep</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-auto-function-objects.cpp</shortPath>
+        <sourcePath>no-auto-function-objects.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>11lTy9LCvZbcyORLiyJVo85H/ZE=</id>
+  <id>411agR1AW8mnkDTi5Lr3ETDwgsep</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</parent>
-  <doc-comment>
+  <parent>2VKLwH3TH9JfUNvKnHmvcNaL4ck2</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Function call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Function call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Something.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Something.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>explicit_fn</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>no-auto-function-objects.cpp</shortPath>
+      <sourcePath>no-auto-function-objects.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</id>
+  <id>4MGdnRhMxsA2odvm44HGnwwJzCxB</id>
   <extraction>implementation-defined</extraction>
-  <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>. Should still be treated as a function object even when auto-detection is off.</literal>
-      </text>
-    </paragraph>
+  <parent>2VD2BzFCUHtQG69kwwWzGSJPuSNM</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>. Should still be treated as a function object even when auto-detection is off.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Explicitly marked with</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Explicitly marked with</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>7NEMEfqJ2qq9ya8mcW1t7V5K0DA=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>4JMgsyCnKbrrU9RBpPfxyz82XRwu</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-auto-function-objects.cpp</shortPath>
+        <sourcePath>no-auto-function-objects.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>7NEMEfqJ2qq9ya8mcW1t7V5K0DA=</id>
+  <id>4JMgsyCnKbrrU9RBpPfxyz82XRwu</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</parent>
-  <doc-comment>
+  <parent>4MGdnRhMxsA2odvm44HGnwwJzCxB</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Function call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Function call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Something.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Something.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>explicit_var</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-auto-function-objects.cpp</shortPath>
+        <sourcePath>no-auto-function-objects.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>K/gF5rpXkFJJYDun6PDmCeQcFT8=</id>
+  <id>cXen2CvrEKKAWVVzfuPzkc5YAk6</id>
   <extraction>regular</extraction>
-  <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
-  <doc-comment>
+  <parent>2VD2BzFCUHtQG69kwwWzGSJPuSNM</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Function call operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Function call operator.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Something.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Something.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <function-object-impl>8GvlDu9dAD8UG/F0pZ8sAX1YesQ=</function-object-impl>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <functionObjectImpl>4MGdnRhMxsA2odvm44HGnwwJzCxB</functionObjectImpl>
 </function>
 <variable>
   <name>auto_var</name>
-  <source>
-    <location>
-      <short-path>no-auto-function-objects.cpp</short-path>
-      <source-path>no-auto-function-objects.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-auto-function-objects.cpp</shortPath>
+      <sourcePath>no-auto-function-objects.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>zK8gWyWtxQjNc0x9PWS1qQDbceI=</id>
+  <id>3rPm5vsK64K22PsBbWHTvAjTS5yT</id>
   <extraction>regular</extraction>
-  <parent>aq/rzLqHv/iV3WBl6G2uDMW2aTo=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>atJ19SGK6qD7vR0+k/Q9OWKCjbM=</id>
-      <identifier>auto_fn</identifier>
-    </name>
-  </named>
+  <parent>2VD2BzFCUHtQG69kwwWzGSJPuSNM</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2VKLwH3TH9JfUNvKnHmvcNaL4ck2</id>
+          <identifier>auto_fn</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <initializer>{}</initializer>
-  <is-constexpr/>
+  <isConstexpr/>
 </variable>
 </mrdocs>

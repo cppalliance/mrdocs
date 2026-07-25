@@ -2,175 +2,222 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <typedefs>f75RIL8qKOwbyH6ffvrv59F0nCA=</typedefs>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-    <records>swBEqeWAJoaWVKty+1lCoYUK04A=</records>
-    <records>i5oK/nki0o3BH2ZAgkGyaGib07g=</records>
-  </namespace-tranche>
+  <members>
+    <typedefs>2nDr3fdQuZtjKEe3hFDxRF7G6kK9</typedefs>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t 3Ve6U8om2GHH3gDtSgvwXB4gcCtX 2wobk33T1XxsXMtP4Gam3bnxcdcs</records>
+  </members>
 </namespace>
 <typedef>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>alias-template.cpp</short-path>
-      <source-path>alias-template.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>alias-template.cpp</shortPath>
+        <sourcePath>alias-template.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>f75RIL8qKOwbyH6ffvrv59F0nCA=</id>
+  <id>2nDr3fdQuZtjKEe3hFDxRF7G6kK9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
-      <identifier>A</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
+          <identifier>A</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>T</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
 </typedef>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>alias-template.cpp</short-path>
-      <source-path>alias-template.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>alias-template.cpp</shortPath>
+      <sourcePath>alias-template.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>alias-template.cpp</short-path>
-      <source-path>alias-template.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>alias-template.cpp</shortPath>
+      <sourcePath>alias-template.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
+  <id>3Ve6U8om2GHH3gDtSgvwXB4gcCtX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <record>
   <name>D</name>
-  <source>
-    <location>
-      <short-path>alias-template.cpp</short-path>
-      <source-path>alias-template.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>alias-template.cpp</shortPath>
+      <sourcePath>alias-template.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>i5oK/nki0o3BH2ZAgkGyaGib07g=</id>
+  <id>2wobk33T1XxsXMtP4Gam3bnxcdcs</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <typedefs>STM3CgeaOEakPrQJdlRWWM4MMFo=</typedefs>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <typedefs>229cBuvj4bh4tStjzWGLsAYrbHvR</typedefs>
+    </public>
+  </interface>
 </record>
 <typedef>
   <name>E</name>
-  <source>
-    <location>
-      <short-path>alias-template.cpp</short-path>
-      <source-path>alias-template.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>alias-template.cpp</shortPath>
+        <sourcePath>alias-template.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>STM3CgeaOEakPrQJdlRWWM4MMFo=</id>
+  <id>229cBuvj4bh4tStjzWGLsAYrbHvR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>i5oK/nki0o3BH2ZAgkGyaGib07g=</parent>
-  <named>
-    <name>
-      <kind>specialization</kind>
-      <id>swBEqeWAJoaWVKty+1lCoYUK04A=</id>
-      <identifier>B</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>2wobk33T1XxsXMtP4Gam3bnxcdcs</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>3Ve6U8om2GHH3gDtSgvwXB4gcCtX</id>
+          <identifier>B</identifier>
+          <templateArgs>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>T</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+            <type>
+              <kind>type</kind>
+              <type>
+                <named>
+                  <kind>named</kind>
+                  <name>
+                    <identifier>
+                      <kind>identifier</kind>
+                      <identifier>U</identifier>
+                    </identifier>
+                  </name>
+                </named>
+              </type>
+            </type>
+          </templateArgs>
+        </specialization>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
 </typedef>
 </mrdocs>

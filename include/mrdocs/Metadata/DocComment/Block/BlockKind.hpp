@@ -21,28 +21,13 @@ namespace mrdocs::doc {
 */
 enum class BlockKind {
     #define INFO(Type) Type,
-#include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
+    #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 };
 
-MRDOCS_DESCRIBE_ENUM(
-    BlockKind,
-    Admonition, Brief, Code, Heading, Paragraph, List,
-    DefinitionList, Quote, ThematicBreak, FootnoteDefinition, Table, Math,
-    Param, Postcondition, Precondition, Returns, See, Throws, TParam)
-
-/** Convert a block kind to its kebab-case string name.
-*/
-inline
-dom::String
-toString(BlockKind kind) noexcept
-{
-    switch (kind)
-    {
-        #define INFO(Type) case BlockKind::Type: return toKebabCase(#Type);
+MRDOCS_DESCRIBE_ENUM_BEGIN(BlockKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(BlockKind, Name)
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
-    }
-    return "Unknown";
-}
+MRDOCS_DESCRIBE_ENUM_END(BlockKind)
 
 /** Return true if the given block kind represents a command block.
 */

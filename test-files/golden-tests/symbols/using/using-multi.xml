@@ -2,206 +2,280 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
-    <usings>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</usings>
-    <usings>cDM3OfRdqVBecKsqtI31a9Fb8ZQ=</usings>
-  </namespace-tranche>
+  <members>
+    <namespaces>2xwtzebgDk4MeocbdM1v5JoV4Xvj</namespaces>
+    <usings>Jqq7dYCKs8tnjqSAy6xfv6XdZPj 2ZfPUwo8PXijWavxPHoFpLvEAoaB</usings>
+  </members>
 </namespace>
 <namespace>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <functions>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</functions>
-    <functions>ylPpWuAYV7dDT1JQYve/w5+ZWK4=</functions>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>KWGXM8Ze4DCiAdsJhuT1kD32rFe 3pVL5a5co8mWVT8Z8f2tRoandNhT</functions>
+  </members>
 </namespace>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <id>KWGXM8Ze4DCiAdsJhuT1kD32rFe</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ylPpWuAYV7dDT1JQYve/w5+ZWK4=</id>
+  <id>3pVL5a5co8mWVT8Z8f2tRoandNhT</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <using>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>FhSdC4kR2+KOxLCiCUQ9mu1WNoY=</id>
+  <id>Jqq7dYCKs8tnjqSAy6xfv6XdZPj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>f</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
-      <identifier>A</identifier>
-    </name>
-  </name>
-  <shadow-declarations>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</shadow-declarations>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
+          <identifier>A</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>KWGXM8Ze4DCiAdsJhuT1kD32rFe</shadowDeclarations>
 </using>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>FuaTgMW0VtO+b4uzr/DCmx9vlb0=</id>
+  <id>KWGXM8Ze4DCiAdsJhuT1kD32rFe</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <using>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>cDM3OfRdqVBecKsqtI31a9Fb8ZQ=</id>
+  <id>2ZfPUwo8PXijWavxPHoFpLvEAoaB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>g</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
-      <identifier>A</identifier>
-    </name>
-  </name>
-  <shadow-declarations>ylPpWuAYV7dDT1JQYve/w5+ZWK4=</shadow-declarations>
+      <identifier>g</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
+          <identifier>A</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>3pVL5a5co8mWVT8Z8f2tRoandNhT</shadowDeclarations>
 </using>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>using-multi.cpp</short-path>
-      <source-path>using-multi.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-multi.cpp</shortPath>
+        <sourcePath>using-multi.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ylPpWuAYV7dDT1JQYve/w5+ZWK4=</id>
+  <id>3pVL5a5co8mWVT8Z8f2tRoandNhT</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

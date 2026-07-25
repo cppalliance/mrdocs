@@ -6,7 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
-// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
@@ -16,10 +16,13 @@
 #include <mrdocs/Metadata/Attributes.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Support/EnumToString.hpp>
 #include <mrdocs/Support/MapReflectedType.hpp>
+#include <mrdocs/Support/TypeTraits.hpp>
+#include <algorithm>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -32,40 +35,115 @@ namespace mrdocs::xml {
 
 namespace {
 
-template <typename T> struct is_optional : std::false_type {};
-template <typename T> struct is_optional<Optional<T>> : std::true_type {};
+// A token type has no internal whitespace when represented as a string.
+template <typename T>
+constexpr bool is_token =
+    !describe::has_describe_members<T>::value &&
+    (std::is_arithmetic_v<T> || std::is_enum_v<T> || std::is_same_v<T, SymbolID>);
 
-template <typename T> struct is_vector : std::false_type {};
-template <typename T, typename A> struct is_vector<std::vector<T, A>> : std::true_type {};
+// A described object collapses to plain text when it has a single string member
+template <typename T>
+constexpr bool is_single_text_object =
+    describe::has_describe_members<T>::value &&
+    describe::describedMemberCount<T>() == 1 &&
+    describe::describedMembersAllText<T>();
 
-template <typename T> struct is_polymorphic : std::false_type {};
-template <typename T> struct is_polymorphic<Polymorphic<T>> : std::true_type {};
+// A type represented as a string
+template <typename T>
+constexpr bool is_text =
+    (!describe::has_describe_members<T>::value &&
+     std::convertible_to<T, std::string_view>) ||
+    is_single_text_object<T>;
 
-std::string
-removeSuffix(std::string_view s, std::string_view suffix)
+// Types represented as leaf nodes in the XML tree
+template <typename T>
+constexpr bool is_leaf_text = is_token<T> || is_text<T>;
+
+// A range whose members are not reflected
+template <typename T>
+concept unreflected_range =
+    std::ranges::range<T> &&
+    !is_leaf_text<T> &&
+    !describe::has_describe_members<T>::value;
+
+// A runtime-polymorphic base reached through its `visit` overload (Type,
+// Attribute, TParam, TArg, Name, Symbol, doc::Block, doc::Inline). visit
+// dispatches to the concrete kind, which is then written under its own type tag.
+template <typename T>
+concept visitable = requires (T const& t) { visit(t, [](auto const&) {}); };
+
+// Whether `value` is omitted from the XML output. A field with such a value
+// produces no element, and an object all of whose members are omitted produces
+// no children, so it is omitted too. Each type has its own test: a boolean is
+// omitted when false, a string when empty, a list when every entry is omitted,
+// an object when every member is omitted, and so on. The test is conservative:
+// anything not provably omitted (a live variant, an integer, a plain enum)
+// counts as present, so at worst a genuinely empty object is kept -- a non-empty
+// one is never dropped.
+template <typename T>
+bool
+isOmittedFromXML(T const& value)
 {
-    return s.size() >= suffix.size() &&
-           s.substr(s.size() - suffix.size()) == suffix
-        ? std::string(s.substr(0, s.size() - suffix.size()))
-        : std::string(s);
+    using Type = std::decay_t<T>;
+    if constexpr (std::is_same_v<Type, bool>)
+        return !value;
+    else if constexpr (describe::has_undefined_enumerator<Type>)
+        return value == describe::undefined_enumerator<Type>;
+    else if constexpr (is_specialization_of_v<Type, Optional>)
+        return !value || isOmittedFromXML(*value);
+    else if constexpr (is_specialization_of_v<Type, Polymorphic>)
+        return value.valueless_after_move();
+    else if constexpr (unreflected_range<Type>)
+        return std::ranges::all_of(
+            value, [](auto const& e) { return isOmittedFromXML(e); });
+    else if constexpr (std::is_same_v<Type, SymbolID>)
+        return !value;
+    else if constexpr (std::convertible_to<Type, std::string_view>)
+        return std::string_view(value).empty();
+    else if constexpr (describe::has_describe_members<Type>::value)
+    {
+        bool omitted = true;
+        describe::for_each_member<Type>(
+            [&](auto d) { omitted = omitted && isOmittedFromXML(value.*d.pointer); });
+        return omitted;
+    }
+    else
+        return false;
 }
 
+// Strip from `name` any trailing repetition of a base class name. For instance,
+// "FunctionSymbol" becomes "Function" because the base class is "Symbol".
 template <typename T>
-std::string tagName()
+void
+stripBaseName(std::string& name)
+{
+    if constexpr (describe::has_describe_bases<T>::value)
+    {
+        describe::for_each(describe::describe_bases<T>{}, [&](auto D) {
+            using Base = typename std::decay_t<decltype(D)>::type;
+            std::string_view const base = readableTypeName<Base>();
+            if (name.size() > base.size() &&
+                std::string_view(name).substr(name.size() - base.size()) == base)
+            {
+                name.erase(name.size() - base.size());
+            }
+            stripBaseName<Base>(name);
+        });
+    }
+}
+
+// The default element tag for an object value
+// It's defined as the camel case version of the type name with any base
+// class name stripped.
+template <typename T>
+std::string typeTag()
 {
     std::string name(readableTypeName<T>());
-    for (std::string_view const suffix : {"Symbol", "Info", "TypeInfo", "TParam", "TArg", "Block", "Inline"})
-    {
-        name = removeSuffix(name, suffix);
-    }
-    return toKebabCase(name);
+    stripBaseName<T>(name);
+    return toCamelCase(name);
 }
 
 } // unnamed namespace
-
-//------------------------------------------------
-// XMLWriter
-//------------------------------------------------
 
 XMLWriter::XMLWriter(llvm::raw_ostream& os, Corpus const& corpus) noexcept
     : tags_(os), os_(os), corpus_(corpus) {}
@@ -81,294 +159,219 @@ XMLWriter::build()
     return {};
 }
 
-//------------------------------------------------
-// Symbol visitor
-//------------------------------------------------
-
 template <std::derived_from<Symbol> SymbolTy>
 void
 XMLWriter::operator()(SymbolTy const& I)
 {
-    if (I.Extraction == ExtractionMode::Dependency)
-        return;
-
-    tags_.open(tagName<SymbolTy>());
-    write(I);
-    tags_.close(tagName<SymbolTy>());
-
+    MRDOCS_CHECK_OR(I.Extraction != ExtractionMode::Dependency);
+    // Symbols are a flat list of typed elements at the top level; the tree
+    // structure is recovered from the SymbolID references in their fields.
+    writeObject(typeTag<SymbolTy>(), I);
     corpus_.traverse(I, *this);
 }
 
-//------------------------------------------------
-// Core recursive writer
-//------------------------------------------------
+#define INFO(Type) template void XMLWriter::operator()<Type##Symbol>(Type##Symbol const&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
 template <typename T>
 void
-XMLWriter::write(T const& value)
+XMLWriter::writeObject(std::string const& tag, T const& value)
+{
+    // An object all of whose members are omitted has no children; writing it as
+    // an empty `<tag></tag>` is meaningless, so omit the whole element.
+    if (isOmittedFromXML(value))
+    {
+        return;
+    }
+    tags_.open(tag);
+    writeObjectBody(value);
+    tags_.close(tag);
+}
+
+template <typename T>
+void
+XMLWriter::writeObjectBody(T const& obj)
+{
+    describe::for_each_member<T>([&](auto D) {
+        writeObjectField(toCamelCase(D.name), obj.*D.pointer);
+    });
+}
+
+template <typename T>
+void
+XMLWriter::writeObjectField(std::string_view tag, T const& value)
 {
     using Type = std::decay_t<T>;
-
-    // Primitives: write as text content
-    if constexpr (std::is_same_v<Type, std::string> ||
-                  std::is_same_v<Type, dom::String> ||
-                  std::is_same_v<Type, llvm::StringRef>)
-    {
-        os_ << xmlEscape(value);
-    }
-    else if constexpr (std::is_integral_v<Type>)
-    {
-        os_ << value;
-    }
-    else if constexpr (std::is_same_v<Type, SymbolID>)
-    {
-        os_ << toBase64Str(value);
-    }
-    else if constexpr (describe::has_describe_enumerators<Type>::value)
-    {
-        os_ << toString(value);
-    }
-    // Wrappers: unwrap.
-    else if constexpr (is_optional<Type>::value)
+    // A boolean is written as presence: `true` is an empty element `<tag/>`,
+    // `false` is omitted entirely (an absent element reads as false). Almost
+    // every boolean in MrDocs metadata is false, so this keeps the output
+    // compact.
+    if constexpr (std::is_same_v<Type, bool>)
     {
         if (value)
         {
-            write(*value);
+            tags_.indent() << '<' << tag << "/>\n";
+        }
+        return;
+    }
+    // An enum with a designated undefined state is absent when it holds that
+    // value: treat it like an empty optional and omit the field entirely.
+    if constexpr (describe::has_undefined_enumerator<Type>)
+    {
+        if (value == describe::undefined_enumerator<Type>)
+            return;
+    }
+    // Optional: emit only when it holds a value.
+    if constexpr (is_specialization_of_v<Type, Optional>)
+    {
+        if (value)
+        {
+            writeObjectField(tag, *value);
         }
     }
-    else if constexpr (is_polymorphic<Type>::value)
+    // Variant in a field: wrap twice
+    else if constexpr (is_specialization_of_v<Type, Polymorphic>)
     {
         if (!value.valueless_after_move())
         {
-            writePolymorphic(*value);
+            tags_.open(std::string(tag));
+            writeValue(*value);
+            tags_.close(std::string(tag));
         }
     }
-    // Containers: iterate.
-    else if constexpr (is_vector<Type>::value)
+    // Lists
+    else if constexpr (unreflected_range<Type>)
     {
-        for (auto const& item : value)
+        if (value.empty())
+            return;
+        using Elem = std::decay_t<std::ranges::range_value_t<Type>>;
+        if constexpr (is_token<Elem>)
         {
-            writeElement("item", item);
+            // List of token scalars: values space-separated.
+            tags_.indent() << '<' << tag << '>';
+            char const* sep = "";
+            for (auto const& item : value)
+            {
+                os_ << sep;
+                writeScalar(os_, item);
+                sep = " ";
+            }
+            os_ << "</" << tag << ">\n";
+        }
+        else
+        {
+            // Object lists: typed objects entry
+            tags_.open(std::string(tag));
+            for (auto const& item: value)
+            {
+                writeValue(item);
+            }
+            tags_.close(std::string(tag));
         }
     }
-    // Described types: recurse.
-    else // if constexpr (describe::has_describe_members<Type>::value)
+    // Leaf nodes
+    else if constexpr (is_leaf_text<Type>)
     {
-        writeMembers(value);
+        if constexpr (std::is_same_v<Type, SymbolID>)
+        { if (!value) return; }
+        std::string text;
+        {
+            llvm::raw_string_ostream os(text);
+            writeScalar(os, value);
+        }
+        if (text.empty())
+        {
+            return;
+        }
+        tags_.indent() << '<' << tag << '>' << text << "</" << tag << ">\n";
+    }
+    // rule 4 - objects: a child element per field.
+    else if constexpr (describe::has_describe_members<Type>::value)
+    {
+        // An expression with no written form is absent, so an empty
+        // ConstantExprInfo (e.g. a non-bitfield's width) is omitted. This is
+        // the same rule the DOM applies in `shouldMapValue`, keeping the
+        // generators in sync.
+        if constexpr (std::is_base_of_v<ExprInfo, Type>)
+        {
+            if (value.Written.empty())
+                return;
+        }
+        writeObject(std::string(tag), value);
+    }
+}
+
+// Emit the text content of a scalar (rule 5) to `os`. No tags.
+template <typename T>
+void
+XMLWriter::writeScalar(llvm::raw_ostream& os, T const& value)
+{
+    using Type = std::decay_t<T>;
+    if constexpr (std::is_same_v<Type, bool>)
+    {
+        os << (value ? "true" : "false");
+    }
+    else if constexpr (describe::has_describe_enumerators<Type>::value)
+    {
+        // Described enum: its kebab name via the generic toString. Qualified
+        // because the local toString(SymbolID) would hide it, and enums in
+        // mrdocs::doc cannot reach it through ADL from here.
+        os << xmlEscape(mrdocs::toString(value));
+    }
+    else if constexpr (std::is_enum_v<Type> || std::is_same_v<Type, SymbolID>)
+    {
+        // A base64 SymbolID, or an undescribed enum with its own toString.
+        os << xmlEscape(toString(value));
+    }
+    else if constexpr (is_single_text_object<Type>)
+    {
+        describe::for_each_member<T>([&](auto d) {
+            writeScalar(os, value.*d.pointer);
+        });
+    }
+    else if constexpr (std::convertible_to<Type, std::string_view>)
+    {
+        os << xmlEscape(std::string_view(value));
+    }
+    else // integers
+    {
+        os << value;
     }
 }
 
 template <typename T>
 void
-XMLWriter::writeElement(std::string_view tag, T const& value)
+XMLWriter::writeValue(T const& value)
 {
     using Type = std::decay_t<T>;
 
-    // Skip empty values.
-    if constexpr (std::is_same_v<Type, std::string> || std::is_same_v<Type, dom::String>)
-        { if (value.empty()) return; }
-    else if constexpr (std::is_same_v<Type, bool>)
-        { if (!value) return; }
-    else if constexpr (std::is_same_v<Type, SymbolID>)
-        { if (!value) return; }
-    else if constexpr (is_optional<Type>::value)
-        { if (!value) return; }
-    else if constexpr (is_vector<Type>::value)
-        { if (value.empty()) return; }
-    else if constexpr (std::is_base_of_v<ExprInfo, Type>)
-        { if (value.Written.empty()) return; }
-
-    // Primitives inline, compounds wrapped.
-    if constexpr (std::is_base_of_v<ExprInfo, Type>)
-    {
-        // ExprInfo and ConstantExprInfo: write the Written string.
-        tags_.indent() << "<" << tag << ">";
-        os_ << xmlEscape(value.Written);
-        os_ << "</" << tag << ">\n";
-    }
-    else if constexpr (std::is_same_v<Type, bool>)
-    {
-        // A false `bool` was skipped above. A true `bool` carries no
-        // text body: the element's presence alone encodes the value,
-        // so emit an empty element.
-        tags_.indent() << '<' << tag << "/>\n";
-    }
-    else if constexpr (std::is_same_v<Type, std::string> ||
-                  std::is_same_v<Type, dom::String> ||
-                  std::is_integral_v<Type> ||
-                  std::is_same_v<Type, SymbolID> ||
-                  describe::has_describe_enumerators<Type>::value)
-    {
-        tags_.indent() << "<" << tag << ">";
-        write(value);
-        os_ << "</" << tag << ">\n";
-    }
-    else if constexpr (is_optional<Type>::value)
-    {
-        writeElement(tag, *value);
-    }
-    else if constexpr (is_polymorphic<Type>::value)
+    // A variant resolves to the concrete type it holds (rule 8).
+    if constexpr (is_specialization_of_v<Type, Polymorphic>)
     {
         if (!value.valueless_after_move())
         {
-            writePolymorphic(*value);
+            writeValue(*value);
         }
     }
-    else if constexpr (is_vector<Type>::value)
+    // Runtime-polymorphic bases dispatch on their Kind via `visit`.
+    else if constexpr (visitable<Type>)
     {
-        for (auto const& item : value)
-            writeElement(tag, item);
+        visit(value, [&]<class C>(C const& concrete) {
+            writeObject(typeTag<std::decay_t<C>>(), concrete);
+        });
     }
+    // A whitespace-capable scalar list entry (rule 6b): a <string> child.
+    else if constexpr (is_leaf_text<Type>)
+    {
+        tags_.indent() << "<string>";
+        writeScalar(os_, value);
+        os_ << "</string>\n";
+    }
+    // A plain reflected object list entry (rule 7): tag is its type name.
     else if constexpr (describe::has_describe_members<Type>::value)
     {
-        tags_.open(tagName<Type>());
-        writeMembers(value);
-        tags_.close(tagName<Type>());
+        writeObject(typeTag<Type>(), value);
     }
 }
-
-template <typename T>
-void
-XMLWriter::writeMembers(T const& obj)
-{
-    // Write base class members first.
-    if constexpr (describe::has_describe_bases<T>::value)
-    {
-        describe::for_each(
-            describe::describe_bases<T>{},
-            [&](auto D) {
-                using Base = typename std::decay_t<decltype(D)>::type;
-                if constexpr (describe::has_describe_members<Base>::value)
-                {
-                    writeMembers(static_cast<Base const&>(obj));
-                }
-            });
-    }
-
-    // Write direct members.
-    if constexpr (describe::has_describe_members<T>::value)
-    {
-        describe::for_each(
-            describe::describe_members<T>{},
-            [&](auto D) {
-                writeElement(toKebabCase(D.name), obj.*D.pointer);
-            });
-    }
-}
-
-//------------------------------------------------
-// Polymorphic dispatch
-//------------------------------------------------
-
-template <typename T>
-void
-XMLWriter::writePolymorphic(T const& value)
-{
-    if constexpr (std::is_base_of_v<Type, T>)
-    {
-        switch (value.Kind)
-        {
-        #define INFO(Name) case TypeKind::Name: \
-            tags_.open(toKebabCase(#Name)); \
-            writeMembers(static_cast<Name##Type const&>(value)); \
-            tags_.close(toKebabCase(#Name)); \
-            break;
-#include <mrdocs/Metadata/Type/TypeNodes.inc>
-        default: MRDOCS_UNREACHABLE();
-        }
-    }
-    else if constexpr (std::is_base_of_v<::mrdocs::Attribute, T>)
-    {
-        switch (value.Kind)
-        {
-        #define INFO(Name) case ::mrdocs::AttributeKind::Name: \
-            tags_.open(toKebabCase(#Name) + "-attribute"); \
-            writeMembers(value.as##Name()); \
-            tags_.close(toKebabCase(#Name) + "-attribute"); \
-            break;
-#include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
-        default: MRDOCS_UNREACHABLE();
-        }
-    }
-    else if constexpr (std::is_base_of_v<TParam, T>)
-    {
-        switch (value.Kind)
-        {
-        #define INFO(Name) case TParamKind::Name: \
-            tags_.open(toKebabCase(#Name) + "-tparam"); \
-            writeMembers(static_cast<Name##TParam const&>(value)); \
-            tags_.close(toKebabCase(#Name) + "-tparam"); \
-            break;
-#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
-        default: MRDOCS_UNREACHABLE();
-        }
-    }
-    else if constexpr (std::is_base_of_v<TArg, T>)
-    {
-        switch (value.Kind)
-        {
-        #define INFO(Name) case TArgKind::Name: \
-            tags_.open(toKebabCase(#Name) + "-targ"); \
-            writeMembers(static_cast<Name##TArg const&>(value)); \
-            tags_.close(toKebabCase(#Name) + "-targ"); \
-            break;
-#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
-        default: MRDOCS_UNREACHABLE();
-        }
-    }
-    else if constexpr (std::is_base_of_v<doc::Block, T>)
-    {
-        switch (value.Kind)
-        {
-        #define INFO(Name) case doc::BlockKind::Name: \
-            tags_.open(toKebabCase(#Name)); \
-            writeMembers(value.as##Name()); \
-            tags_.close(toKebabCase(#Name)); \
-            break;
-#include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
-        default: MRDOCS_UNREACHABLE();
-        }
-    }
-    else if constexpr (std::is_base_of_v<doc::Inline, T>)
-    {
-        switch (value.Kind)
-        {
-        #define INFO(Name) case doc::InlineKind::Name: \
-            tags_.open(toKebabCase(#Name)); \
-            writeMembers(value.as##Name()); \
-            tags_.close(toKebabCase(#Name)); \
-            break;
-#include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
-        default: MRDOCS_UNREACHABLE();
-        }
-    }
-    else if constexpr (describe::has_describe_members<T>::value)
-    {
-        tags_.open(toKebabCase(readableTypeName<T>()));
-        writeMembers(value);
-        tags_.close(toKebabCase(readableTypeName<T>()));
-    }
-}
-
-//------------------------------------------------
-// Explicit instantiations
-//------------------------------------------------
-
-#define INSTANTIATE(Type) \
-    template void XMLWriter::operator()<Type>(Type const&);
-
-INSTANTIATE(NamespaceSymbol)
-INSTANTIATE(EnumSymbol)
-INSTANTIATE(EnumConstantSymbol)
-INSTANTIATE(FunctionSymbol)
-INSTANTIATE(OverloadsSymbol)
-INSTANTIATE(GuideSymbol)
-INSTANTIATE(ConceptSymbol)
-INSTANTIATE(NamespaceAliasSymbol)
-INSTANTIATE(UsingSymbol)
-INSTANTIATE(RecordSymbol)
-INSTANTIATE(TypedefSymbol)
-INSTANTIATE(VariableSymbol)
-#undef INSTANTIATE
 
 } // namespace mrdocs::xml

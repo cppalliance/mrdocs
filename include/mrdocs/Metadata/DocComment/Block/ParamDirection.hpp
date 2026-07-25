@@ -16,6 +16,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 
@@ -33,23 +34,10 @@ enum class ParamDirection
     inout
 };
 
-/** Return the name of the ParamDirection as a string.
-*/
-MRDOCS_DECL
-dom::String
-toString(ParamDirection kind) noexcept;
-
-/** Return the ParamDirection from a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ParamDirection const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(
+    ParamDirection,
+    none, in, out, inout)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(ParamDirection, none)
 
 } // mrdocs::doc
 

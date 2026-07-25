@@ -2,99 +2,96 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>pOlR4JvM07kjg0dk5WSjWZiChpc=</records>
-    <records>jGFAabkrVv9Glu0e6ensMu9FByY=</records>
-  </namespace-tranche>
+  <members>
+    <records>3JFmU1xQshvyJpGS9jxtPwyq1ftr 2xS4xrgGQn3tvfJeQLrXei9AfV9f</records>
+  </members>
 </namespace>
 <record>
   <name>Base</name>
-  <source>
-    <location>
-      <short-path>using-typename.cpp</short-path>
-      <source-path>using-typename.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-typename.cpp</shortPath>
+      <sourcePath>using-typename.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>pOlR4JvM07kjg0dk5WSjWZiChpc=</id>
+  <id>3JFmU1xQshvyJpGS9jxtPwyq1ftr</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <typedefs>GJwWDf/H5L0HhOr2GLrume6MtVg=</typedefs>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <typedefs>LtN4Dhwy6BNsEhYBeb1sNg6yT9q</typedefs>
+    </public>
+  </interface>
 </record>
 <typedef>
   <name>V</name>
-  <source>
-    <location>
-      <short-path>using-typename.cpp</short-path>
-      <source-path>using-typename.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-typename.cpp</shortPath>
+        <sourcePath>using-typename.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>GJwWDf/H5L0HhOr2GLrume6MtVg=</id>
+  <id>LtN4Dhwy6BNsEhYBeb1sNg6yT9q</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>pOlR4JvM07kjg0dk5WSjWZiChpc=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <is-using/>
+  <parent>3JFmU1xQshvyJpGS9jxtPwyq1ftr</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <isUsing/>
 </typedef>
 <record>
   <name>Derived</name>
-  <source>
-    <location>
-      <short-path>using-typename.cpp</short-path>
-      <source-path>using-typename.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-typename.cpp</shortPath>
+      <sourcePath>using-typename.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>jGFAabkrVv9Glu0e6ensMu9FByY=</id>
+  <id>2xS4xrgGQn3tvfJeQLrXei9AfV9f</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 </mrdocs>

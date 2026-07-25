@@ -2,71 +2,62 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>PQ4j8n/T0THRVULn+iM+q2WWHP4=</records>
-    <records>9thLmlNjyEVo7oVvsZ1FMMqUUjg=</records>
-  </namespace-tranche>
+  <members>
+    <records>rLRfnantjWExC2zy8BXsDnF5eKP 4STgDrwLeHv7mqV5anD6cJEd6K4T</records>
+  </members>
 </namespace>
 <record>
   <name>Aligned</name>
-  <source>
-    <location>
-      <short-path>attributes.cpp</short-path>
-      <source-path>attributes.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>attributes.cpp</shortPath>
+      <sourcePath>attributes.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>PQ4j8n/T0THRVULn+iM+q2WWHP4=</id>
+  <id>rLRfnantjWExC2zy8BXsDnF5eKP</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <other-attribute>
-    <name>gnu::aligned</name>
-    <balanced-tokens>16</balanced-tokens>
-  </other-attribute>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <other>
+      <kind>other</kind>
+      <name>gnu::aligned</name>
+      <balancedTokens>
+        <string>16</string>
+      </balancedTokens>
+    </other>
+  </attributes>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>Widget</name>
-  <source>
-    <location>
-      <short-path>attributes.cpp</short-path>
-      <source-path>attributes.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>attributes.cpp</shortPath>
+      <sourcePath>attributes.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>9thLmlNjyEVo7oVvsZ1FMMqUUjg=</id>
+  <id>4STgDrwLeHv7mqV5anD6cJEd6K4T</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <deprecated-attribute>
-    <name>deprecated</name>
-    <balanced-tokens>&quot;use Widget2&quot;</balanced-tokens>
-    <message>use Widget2</message>
-  </deprecated-attribute>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use Widget2&quot;</string>
+      </balancedTokens>
+      <message>use Widget2</message>
+    </deprecated>
+  </attributes>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

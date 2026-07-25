@@ -2,97 +2,94 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>IjtkITsyqdEWPMXZF3lD/2/XH0s=</namespaces>
-    <namespace-aliases>8bX9GsmeU9RHTU5qqahjfu5RFHw=</namespace-aliases>
-    <namespace-aliases>vr8SVrdB6byha64PErh7G+ti7GY=</namespace-aliases>
-  </namespace-tranche>
+  <members>
+    <namespaces>UfKicPw9MTYUQKvc95J7sgwZujx</namespaces>
+    <namespaceAliases>4NK4m3Xjmth56pq1Lp7Meh6uBv3d 3f8Z4V4VZGc8ZVuMt9bZfBue53d7</namespaceAliases>
+  </members>
 </namespace>
 <namespace>
   <name>LongName</name>
-  <source>
-    <location>
-      <short-path>namespace-alias-2.cpp</short-path>
-      <source-path>namespace-alias-2.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
+  <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>F2TZRvEqYUTyFh8Xxk3AsRzOiFU=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>KuPJQQiefs1Xpfc3cwGmm7a1Ahr</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>namespace-alias-2.cpp</short-path>
-      <source-path>namespace-alias-2.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>F2TZRvEqYUTyFh8Xxk3AsRzOiFU=</id>
+  <id>KuPJQQiefs1Xpfc3cwGmm7a1Ahr</id>
   <extraction>regular</extraction>
-  <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
 </record>
-<namespace-alias>
+<namespaceAlias>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>namespace-alias-2.cpp</short-path>
-      <source-path>namespace-alias-2.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>8bX9GsmeU9RHTU5qqahjfu5RFHw=</id>
+  <id>4NK4m3Xjmth56pq1Lp7Meh6uBv3d</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <identifier-name>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <aliasedSymbol>
     <kind>identifier</kind>
-    <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
+    <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
     <identifier>LongName</identifier>
-  </identifier-name>
-</namespace-alias>
-<namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
+<namespaceAlias>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>namespace-alias-2.cpp</short-path>
-      <source-path>namespace-alias-2.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace-alias</kind>
-  <id>vr8SVrdB6byha64PErh7G+ti7GY=</id>
+  <id>3f8Z4V4VZGc8ZVuMt9bZfBue53d7</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <identifier-name>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <aliasedSymbol>
     <kind>identifier</kind>
-    <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
+    <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
     <identifier>LongName</identifier>
-  </identifier-name>
-</namespace-alias>
+  </aliasedSymbol>
+</namespaceAlias>
 </mrdocs>

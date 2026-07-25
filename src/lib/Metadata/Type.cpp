@@ -31,26 +31,7 @@ isPlaceholderType(Polymorphic<Type> const& t)
 
 } // namespace detail
 
-dom::String
-toString(
-    QualifierKind kind) noexcept
-{
-    switch(+kind)
-    {
-    case QualifierKind::None:
-        return "";
-    case QualifierKind::Const:
-        return "const";
-    case QualifierKind::Volatile:
-        return "volatile";
-    case QualifierKind::Const | QualifierKind::Volatile:
-        return "const volatile";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String
+std::string_view
 toString(
     TypeKind kind) noexcept
 {
@@ -74,21 +55,6 @@ toString(
         return "array";
     case TypeKind::Function:
         return "function";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String
-toString(
-    AutoKind kind) noexcept
-{
-    switch(kind)
-    {
-    case AutoKind::Auto:
-        return "auto";
-    case AutoKind::DecltypeAuto:
-        return "decltype(auto)";
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -360,6 +326,8 @@ tag_invoke(
     });
 }
 
+// Custom (not the generic described-enum name): renders the C++ type spelling
+// (`unsigned int`, `std::nullptr_t`, ...), used as the written type name.
 std::string_view
 toString(FundamentalTypeKind const kind) noexcept
 {

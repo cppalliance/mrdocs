@@ -2,507 +2,694 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>G5Gycl5fXkd7l6yntSV6MMQr5ec=</functions>
-    <functions>fpfzj7NvP0RymD19kc9AegA13cE=</functions>
-    <functions>BVn9mZBUjrupKT/hcmB2opaRXII=</functions>
-    <functions>FpwDEuWCkwtZg2rG40r+1NAgPvg=</functions>
-    <functions>10VGELAizJ5U/4YaDXaQcV9P5IU=</functions>
-    <functions>n4j0p3bBh0UwMIpqw35BJHCUmkA=</functions>
-    <functions>CR+oGVkvlYeRXx423BdbUdiyfGI=</functions>
-    <functions>7dJfgpH2aNKlsNFBU9eGpEy7mW8=</functions>
-    <functions>CSSRf8UFPpR/4f+ymxsrA3bG2gs=</functions>
-    <functions>OAMHb1yDlqAsy2FOrHhyB2Rftts=</functions>
-    <functions>nJNSlvqUH/l21TGT25LRQ+zBEuw=</functions>
-    <functions>7D+MVsQ8UiCF/fMdh4TYzVzv/R0=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>PH4TWyCvmHkAQoaWPG6eic9dQz2 2mHxSSEKMbaHLdBcdU3eK1s4WKdS 5KoirEGK8fxw78tQj9QMbxWoMNH KGcnwPrk6QdC9LDqiYA6PVhMxco 3zwukNBg2sptM3Jo928wKsije38Y 3Duo52SPwPGYUBocPpG1AZZrZhqq 8NbH485wG4ppdWqAvKYQdwPU4AM 4KAoCMmV5FvkbU8GG2kC2TqwySWz 8PVRwXKUPMTAg8ZtVbuhuQgeDyL nG4VneEaM7dKGg3JwtCSsLv22dx 3BX6S5iuJRW9wxgeCCcdrTiVPLo5 4Hu3xKdVMAjgJ2bPUqijXaMUxsY8</functions>
+  </members>
 </namespace>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>G5Gycl5fXkd7l6yntSV6MMQr5ec=</id>
+  <id>PH4TWyCvmHkAQoaWPG6eic9dQz2</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>x</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>x</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>fpfzj7NvP0RymD19kc9AegA13cE=</id>
+  <id>2mHxSSEKMbaHLdBcdU3eK1s4WKdS</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>t</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>t</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>BVn9mZBUjrupKT/hcmB2opaRXII=</id>
+  <id>5KoirEGK8fxw78tQj9QMbxWoMNH</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>int</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+        <name>T</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>int</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>int</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>FpwDEuWCkwtZg2rG40r+1NAgPvg=</id>
+  <id>KGcnwPrk6QdC9LDqiYA6PVhMxco</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>int</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>class</key-kind>
-    </type-tparam>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>int</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>int</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g0</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>13</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>10VGELAizJ5U/4YaDXaQcV9P5IU=</id>
+  <id>3zwukNBg2sptM3Jo928wKsije38Y</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>x</name>
-  </param>
-  <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>I</name>
-      <named>
-        <name>
+        <identifier>
           <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>x</name>
+    </param>
+  </params>
+  <template>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>I</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g1</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>16</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>n4j0p3bBh0UwMIpqw35BJHCUmkA=</id>
+  <id>3Duo52SPwPGYUBocPpG1AZZrZhqq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>I</name>
-      <constant-targ>
-        <kind>constant</kind>
-        <value>1</value>
-      </constant-targ>
-      <named>
-        <name>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <template>
+    <params>
+      <constant>
+        <kind>constant</kind>
+        <name>I</name>
+        <default>
+          <constant>
+            <kind>constant</kind>
+            <value>1</value>
+          </constant>
+        </default>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g2</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>19</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>CR+oGVkvlYeRXx423BdbUdiyfGI=</id>
+  <id>8NbH485wG4ppdWqAvKYQdwPU4AM</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>J</name>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>I</name>
-      <constant-targ>
+    <params>
+      <constant>
         <kind>constant</kind>
-        <value>1</value>
-      </constant-targ>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+        <name>J</name>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+      <constant>
+        <kind>constant</kind>
+        <name>I</name>
+        <default>
+          <constant>
+            <kind>constant</kind>
+            <value>1</value>
+          </constant>
+        </default>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>h0</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>22</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>22</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>7dJfgpH2aNKlsNFBU9eGpEy7mW8=</id>
+  <id>4KAoCMmV5FvkbU8GG2kC2TqwySWz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>auto</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>x</name>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>auto</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>x</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>h1</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>24</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>CSSRf8UFPpR/4f+ymxsrA3bG2gs=</id>
+  <id>8PVRwXKUPMTAg8ZtVbuhuQgeDyL</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>auto</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>x</name>
-  </param>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>auto</identifier>
-      </name>
-    </named>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>auto</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>x</name>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>auto</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>i</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>26</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>OAMHb1yDlqAsy2FOrHhyB2Rftts=</id>
+  <id>nG4VneEaM7dKGg3JwtCSsLv22dx</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <type-targ>
-        <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>int</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <constant-tparam>
-      <kind>constant</kind>
-      <name>I</name>
-      <constant-targ>
-        <kind>constant</kind>
-        <value>1</value>
-      </constant-targ>
-      <named>
-        <name>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </constant-tparam>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>int</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>int</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>typename</keyKind>
+      </type>
+      <constant>
+        <kind>constant</kind>
+        <name>I</name>
+        <default>
+          <constant>
+            <kind>constant</kind>
+            <value>1</value>
+          </constant>
+        </default>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </constant>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>j0</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>29</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>nJNSlvqUH/l21TGT25LRQ+zBEuw=</id>
+  <id>3BX6S5iuJRW9wxgeCCcdrTiVPLo5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <template-tparam>
-      <kind>template</kind>
-      <name>T</name>
-      <type-tparam>
-        <kind>type</kind>
-        <name>U</name>
-        <key-kind>typename</key-kind>
-      </type-tparam>
-    </template-tparam>
+    <params>
+      <template>
+        <kind>template</kind>
+        <name>T</name>
+        <params>
+          <type>
+            <kind>type</kind>
+            <name>U</name>
+            <keyKind>typename</keyKind>
+          </type>
+        </params>
+      </template>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>j1</name>
-  <source>
-    <location>
-      <short-path>function-template.cpp</short-path>
-      <source-path>function-template.cpp</source-path>
-      <line-number>32</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>function-template.cpp</shortPath>
+      <sourcePath>function-template.cpp</sourcePath>
+      <lineNumber>32</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>7D+MVsQ8UiCF/fMdh4TYzVzv/R0=</id>
+  <id>4Hu3xKdVMAjgJ2bPUqijXaMUxsY8</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <template-tparam>
-      <kind>template</kind>
-      <name>X</name>
-      <type-tparam>
-        <kind>type</kind>
-        <name>W</name>
-        <key-kind>typename</key-kind>
-      </type-tparam>
-    </template-tparam>
-    <template-tparam>
-      <kind>template</kind>
-      <name>Z</name>
-      <type-tparam>
-        <kind>type</kind>
-        <name>Y</name>
-        <key-kind>typename</key-kind>
-      </type-tparam>
-    </template-tparam>
+    <params>
+      <template>
+        <kind>template</kind>
+        <name>X</name>
+        <params>
+          <type>
+            <kind>type</kind>
+            <name>W</name>
+            <keyKind>typename</keyKind>
+          </type>
+        </params>
+      </template>
+      <template>
+        <kind>template</kind>
+        <name>Z</name>
+        <params>
+          <type>
+            <kind>type</kind>
+            <name>Y</name>
+            <keyKind>typename</keyKind>
+          </type>
+        </params>
+      </template>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>
