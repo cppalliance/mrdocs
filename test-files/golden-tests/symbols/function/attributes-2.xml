@@ -2,44 +2,56 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>e/hP0+mSSe5Ju83w/5pueMcFgLQ=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2jAzteWQKN2aqDY8KnmgFfh2rYU3</functions>
+  </members>
 </namespace>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>attributes-2.cpp</short-path>
-      <source-path>attributes-2.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes-2.cpp</shortPath>
+        <sourcePath>attributes-2.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>e/hP0+mSSe5Ju83w/5pueMcFgLQ=</id>
+  <id>2jAzteWQKN2aqDY8KnmgFfh2rYU3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <nodiscard>
+      <kind>nodiscard</kind>
+      <name>nodiscard</name>
+    </nodiscard>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
-  <is-nodiscard/>
-  <attributes>nodiscard</attributes>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

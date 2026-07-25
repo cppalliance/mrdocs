@@ -2,202 +2,216 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5sB+nY7A37FZIfir11OpIKC12Ok=</records>
-    <records>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</records>
-    <variables>V/VOefC+Lirvlyv4ml0GPg3tkb8=</variables>
-    <variables>4BBlDC8MjV0Km82gDuPpLniry80=</variables>
-    <variables>w7084vhWPkLDZ/7kZBE9YeheM8E=</variables>
-    <variables>/2+SAVa0lxHgZkikhVVwJfO2tZY=</variables>
-  </namespace-tranche>
+  <members>
+    <records>4DTThCqRaz5z7aCupLFnGCsWkkuE 4PETg7Luo8hR4Cwx2ToZtwDTU93E</records>
+    <variables>2E5GQh466BLzjacZ4TZ1baYp57Cz 4842R6Qpx55QxcmNNi6jgMJhxhXi 3jAYnBrW1HACcXcy5DCNoav2qcNc 4ZQJPBK6M4MXiZqRyFu2FyAExAB7</variables>
+  </members>
 </namespace>
 <record>
   <name>flag</name>
-  <source>
-    <location>
-      <short-path>default-constructed-instance.cpp</short-path>
-      <source-path>default-constructed-instance.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>default-constructed-instance.cpp</shortPath>
+      <sourcePath>default-constructed-instance.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5sB+nY7A37FZIfir11OpIKC12Ok=</id>
+  <id>4DTThCqRaz5z7aCupLFnGCsWkkuE</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A default-constructed instance of a same-named tag type (see issue #1238).</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A default-constructed instance of a same-named tag type (see issue #1238).</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <is-final>1</is-final>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</id>
-        <identifier>tag_base</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <isFinal/>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>4PETg7Luo8hR4Cwx2ToZtwDTU93E</id>
+              <identifier>tag_base</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
 </record>
 <record>
   <name>tag_base</name>
-  <source>
-    <location>
-      <short-path>default-constructed-instance.cpp</short-path>
-      <source-path>default-constructed-instance.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>default-constructed-instance.cpp</shortPath>
+      <sourcePath>default-constructed-instance.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</id>
+  <id>4PETg7Luo8hR4Cwx2ToZtwDTU93E</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <derived>5sB+nY7A37FZIfir11OpIKC12Ok=</derived>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <derived>4DTThCqRaz5z7aCupLFnGCsWkkuE</derived>
 </record>
 <variable>
   <name>braced</name>
-  <source>
-    <location>
-      <short-path>default-constructed-instance.cpp</short-path>
-      <source-path>default-constructed-instance.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>default-constructed-instance.cpp</shortPath>
+      <sourcePath>default-constructed-instance.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>V/VOefC+Lirvlyv4ml0GPg3tkb8=</id>
+  <id>2E5GQh466BLzjacZ4TZ1baYp57Cz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A value-initialized variable.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A value-initialized variable.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>8tmm5w1vdZa8PYl9AaZ5HNozN/k=</id>
-      <identifier>tag_base</identifier>
-    </name>
-  </named>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4PETg7Luo8hR4Cwx2ToZtwDTU93E</id>
+          <identifier>tag_base</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <initializer>{}</initializer>
 </variable>
 <variable>
   <name>flag</name>
-  <source>
-    <location>
-      <short-path>default-constructed-instance.cpp</short-path>
-      <source-path>default-constructed-instance.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>default-constructed-instance.cpp</shortPath>
+      <sourcePath>default-constructed-instance.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>4BBlDC8MjV0Km82gDuPpLniry80=</id>
+  <id>4842R6Qpx55QxcmNNi6jgMJhxhXi</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>5sB+nY7A37FZIfir11OpIKC12Ok=</id>
-      <identifier>flag</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4DTThCqRaz5z7aCupLFnGCsWkkuE</id>
+          <identifier>flag</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
 </variable>
 <variable>
   <name>flag_copy</name>
-  <source>
-    <location>
-      <short-path>default-constructed-instance.cpp</short-path>
-      <source-path>default-constructed-instance.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>default-constructed-instance.cpp</shortPath>
+      <sourcePath>default-constructed-instance.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>w7084vhWPkLDZ/7kZBE9YeheM8E=</id>
+  <id>3jAYnBrW1HACcXcy5DCNoav2qcNc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A copy-initialized variable.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A copy-initialized variable.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <auto>
-  </auto>
+  </doc>
+  <type>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </type>
   <initializer>flag</initializer>
 </variable>
 <variable>
   <name>literal</name>
-  <source>
-    <location>
-      <short-path>default-constructed-instance.cpp</short-path>
-      <source-path>default-constructed-instance.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>default-constructed-instance.cpp</shortPath>
+      <sourcePath>default-constructed-instance.cpp</sourcePath>
+      <lineNumber>13</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>/2+SAVa0lxHgZkikhVVwJfO2tZY=</id>
+  <id>4ZQJPBK6M4MXiZqRyFu2FyAExAB7</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A variable with a literal initializer.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A variable with a literal initializer.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>7</initializer>
 </variable>
 </mrdocs>

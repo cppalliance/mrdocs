@@ -14,7 +14,8 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
-#include <string>
+#include <string_view>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -30,20 +31,30 @@ enum class ReferenceKind
     RValue
 };
 
-/** Convert a reference kind to its string representation.
-*/
-MRDOCS_DECL dom::String toString(ReferenceKind kind) noexcept;
+MRDOCS_DESCRIBE_ENUM(
+    ReferenceKind,
+    None, LValue, RValue)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(ReferenceKind, None)
 
-/** Return the ReferenceKind as a @ref dom::Value string.
+/** Return the written ref-qualifier syntax (`&`, `&&`, or empty).
+
+    Customized rather than using the generic described-enum name, so the
+    refQualifier field carries the source spelling.
+
+    @param kind The reference kind.
+    @return The ref-qualifier spelling; empty for ReferenceKind::None.
 */
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ReferenceKind kind)
+constexpr
+std::string_view
+toString(ReferenceKind kind) noexcept
 {
-    v = toString(kind);
+    switch (kind)
+    {
+    case ReferenceKind::None:   return "";
+    case ReferenceKind::LValue: return "&";
+    case ReferenceKind::RValue: return "&&";
+    default:                    return "";
+    }
 }
 
 } // mrdocs

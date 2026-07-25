@@ -2,193 +2,265 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <typedefs>PvNOREc+JWxdkVgvSz+jC45IbGQ=</typedefs>
-    <typedefs>h6hupdyuT6SfsCGFl6UUFGtvrcc=</typedefs>
-    <records>8nYw0KA23eAszqSOs0wOXAD1DYQ=</records>
-    <functions>CMaAySU4txrIlGl6edqWDSabBRA=</functions>
-    <functions>lldWvRg9y+NwRnDpK3x2NF9+e08=</functions>
-  </namespace-tranche>
+  <members>
+    <typedefs>ssFDEuwr9AdHT8rrrtaS7dPn9iK 2tcmaScPFXjdj3QwnaFL9xMdqZKt</typedefs>
+    <records>4NvFaoL1Leg8k9c7hUAS1fWwX4LT</records>
+    <functions>86GdkrqN91jdDF1TTy3zFv2wLbH 36Uv69xEto6p8RVAvMxKwdoRtkvA</functions>
+  </members>
 </namespace>
 <typedef>
   <name>T</name>
-  <source>
-    <location>
-      <short-path>variadic-function.cpp</short-path>
-      <source-path>variadic-function.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>variadic-function.cpp</shortPath>
+        <sourcePath>variadic-function.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>PvNOREc+JWxdkVgvSz+jC45IbGQ=</id>
+  <id>ssFDEuwr9AdHT8rrrtaS7dPn9iK</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <function>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>void</identifier>
-      </name>
-    </named>
-    <is-variadic/>
-  </function>
-  <is-using/>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <function>
+      <kind>function</kind>
+      <returnType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>void</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>void</fundamentalType>
+        </named>
+      </returnType>
+      <isVariadic/>
+    </function>
+  </type>
+  <isUsing/>
 </typedef>
 <typedef>
   <name>U</name>
-  <source>
-    <location>
-      <short-path>variadic-function.cpp</short-path>
-      <source-path>variadic-function.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>variadic-function.cpp</shortPath>
+        <sourcePath>variadic-function.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>typedef</kind>
-  <id>h6hupdyuT6SfsCGFl6UUFGtvrcc=</id>
+  <id>2tcmaScPFXjdj3QwnaFL9xMdqZKt</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <function>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>void</identifier>
-      </name>
-    </named>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <is-variadic/>
-  </function>
-  <is-using/>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <function>
+      <kind>function</kind>
+      <returnType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>void</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>void</fundamentalType>
+        </named>
+      </returnType>
+      <paramTypes>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </paramTypes>
+      <isVariadic/>
+    </function>
+  </type>
+  <isUsing/>
 </typedef>
 <record>
   <name>C</name>
-  <source>
-    <location>
-      <short-path>variadic-function.cpp</short-path>
-      <source-path>variadic-function.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>variadic-function.cpp</shortPath>
+        <sourcePath>variadic-function.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>8nYw0KA23eAszqSOs0wOXAD1DYQ=</id>
+  <id>4NvFaoL1Leg8k9c7hUAS1fWwX4LT</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>A</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <function>
-          <named>
-            <name>
-              <kind>identifier</kind>
-              <identifier>void</identifier>
-            </name>
-          </named>
-          <is-variadic/>
-        </function>
-      </type-targ>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>B</name>
-      <type-targ>
+        <name>A</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <function>
+                <kind>function</kind>
+                <returnType>
+                  <named>
+                    <kind>named</kind>
+                    <name>
+                      <identifier>
+                        <kind>identifier</kind>
+                        <identifier>void</identifier>
+                      </identifier>
+                    </name>
+                    <fundamentalType>void</fundamentalType>
+                  </named>
+                </returnType>
+                <isVariadic/>
+              </function>
+            </type>
+          </type>
+        </default>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
         <kind>type</kind>
-        <function>
-          <named>
-            <name>
-              <kind>identifier</kind>
-              <identifier>void</identifier>
-            </name>
-          </named>
-          <named>
-            <name>
-              <kind>identifier</kind>
-              <identifier>int</identifier>
-            </name>
-          </named>
-          <is-variadic/>
-        </function>
-      </type-targ>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+        <name>B</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <function>
+                <kind>function</kind>
+                <returnType>
+                  <named>
+                    <kind>named</kind>
+                    <name>
+                      <identifier>
+                        <kind>identifier</kind>
+                        <identifier>void</identifier>
+                      </identifier>
+                    </name>
+                    <fundamentalType>void</fundamentalType>
+                  </named>
+                </returnType>
+                <paramTypes>
+                  <named>
+                    <kind>named</kind>
+                    <name>
+                      <identifier>
+                        <kind>identifier</kind>
+                        <identifier>int</identifier>
+                      </identifier>
+                    </name>
+                    <fundamentalType>int</fundamentalType>
+                  </named>
+                </paramTypes>
+                <isVariadic/>
+              </function>
+            </type>
+          </type>
+        </default>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>variadic-function.cpp</short-path>
-      <source-path>variadic-function.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>variadic-function.cpp</shortPath>
+        <sourcePath>variadic-function.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CMaAySU4txrIlGl6edqWDSabBRA=</id>
+  <id>86GdkrqN91jdDF1TTy3zFv2wLbH</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-variadic/>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>variadic-function.cpp</short-path>
-      <source-path>variadic-function.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>variadic-function.cpp</shortPath>
+        <sourcePath>variadic-function.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>lldWvRg9y+NwRnDpK3x2NF9+e08=</id>
+  <id>36Uv69xEto6p8RVAvMxKwdoRtkvA</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-  </param>
-  <func-class>normal</func-class>
-  <is-variadic/>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
 </function>
 </mrdocs>

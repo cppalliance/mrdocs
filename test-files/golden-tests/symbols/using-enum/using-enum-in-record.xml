@@ -2,127 +2,135 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>jQQu/8mLNzRQvGtbkKMwwloVDpw=</namespaces>
-    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-    <functions>43ASI/aC9fCLy8T+1gn7pUdis+g=</functions>
-  </namespace-tranche>
+  <members>
+    <namespaces>2xwtzebgDk4MeocbdM1v5JoV4Xvj</namespaces>
+    <records>45Fwe5kYuv1Y5U477G1sB17ZooGh</records>
+    <functions>4An92kkqG8S7Ca73ZvRsDcPWQnS3</functions>
+  </members>
 </namespace>
 <namespace>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>using-enum-in-record.cpp</short-path>
-      <source-path>using-enum-in-record.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-enum-in-record.cpp</shortPath>
+        <sourcePath>using-enum-in-record.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>jQQu/8mLNzRQvGtbkKMwwloVDpw=</id>
+  <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <enums>a5uhL/8g9ACd/JSUdADFNrjlrmA=</enums>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <enums>2VxAyHiQYJQJDGHirNUvDxBEQAb1</enums>
+  </members>
 </namespace>
 <enum>
   <name>E</name>
-  <source>
-    <location>
-      <short-path>using-enum-in-record.cpp</short-path>
-      <source-path>using-enum-in-record.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-enum-in-record.cpp</shortPath>
+      <sourcePath>using-enum-in-record.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>a5uhL/8g9ACd/JSUdADFNrjlrmA=</id>
+  <id>2VxAyHiQYJQJDGHirNUvDxBEQAb1</id>
   <extraction>regular</extraction>
-  <parent>jQQu/8mLNzRQvGtbkKMwwloVDpw=</parent>
+  <parent>2xwtzebgDk4MeocbdM1v5JoV4Xvj</parent>
   <scoped/>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <constants>wwbsykALj7y7OWYYyP6gTbo876U=</constants>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>3ibAxeqM3n1dptbSNJzeXtbzKUip</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>e1</name>
-  <source>
-    <location>
-      <short-path>using-enum-in-record.cpp</short-path>
-      <source-path>using-enum-in-record.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-enum-in-record.cpp</shortPath>
+        <sourcePath>using-enum-in-record.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>wwbsykALj7y7OWYYyP6gTbo876U=</id>
+  <id>3ibAxeqM3n1dptbSNJzeXtbzKUip</id>
   <extraction>regular</extraction>
-  <parent>a5uhL/8g9ACd/JSUdADFNrjlrmA=</parent>
-  <doc-comment>
+  <parent>2VxAyHiQYJQJDGHirNUvDxBEQAb1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The constant to be introduced</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The constant to be introduced</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
+  </doc>
+</enumConstant>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>using-enum-in-record.cpp</short-path>
-      <source-path>using-enum-in-record.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-enum-in-record.cpp</shortPath>
+      <sourcePath>using-enum-in-record.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
 </record>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>using-enum-in-record.cpp</short-path>
-      <source-path>using-enum-in-record.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-enum-in-record.cpp</shortPath>
+      <sourcePath>using-enum-in-record.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
+  <id>4An92kkqG8S7Ca73ZvRsDcPWQnS3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

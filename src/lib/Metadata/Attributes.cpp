@@ -15,39 +15,6 @@
 
 namespace mrdocs {
 
-dom::String
-toString(AttributeKind kind) noexcept
-{
-    switch(kind)
-    {
-    case AttributeKind::Other:
-        return "other";
-    case AttributeKind::Noreturn:
-        return "noreturn";
-    case AttributeKind::CarriesDependency:
-        return "carries-dependency";
-    case AttributeKind::Deprecated:
-        return "deprecated";
-    case AttributeKind::Fallthrough:
-        return "fallthrough";
-    case AttributeKind::MaybeUnused:
-        return "maybe-unused";
-    case AttributeKind::Nodiscard:
-        return "nodiscard";
-    case AttributeKind::Likely:
-        return "likely";
-    case AttributeKind::Unlikely:
-        return "unlikely";
-    case AttributeKind::NoUniqueAddress:
-        return "no-unique-address";
-    case AttributeKind::Assume:
-        return "assume";
-    case AttributeKind::Indeterminate:
-        return "indeterminate";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
 
 void
 tag_invoke(

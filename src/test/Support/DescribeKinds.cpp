@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <test_suite/test_suite.hpp>
 #include <string>
 #include <type_traits>

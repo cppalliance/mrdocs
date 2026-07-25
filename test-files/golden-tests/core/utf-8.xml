@@ -2,35 +2,39 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>s6XCVcQ8RMTkyc8SmoMVVgJrVgs=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>3WAPfqusBkCb5zFP8bhdrtAPytbk</functions>
+  </members>
 </namespace>
 <function>
   <name>Христос_воскрес</name>
-  <source>
-    <location>
-      <short-path>utf-8.cpp</short-path>
-      <source-path>utf-8.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>utf-8.cpp</shortPath>
+      <sourcePath>utf-8.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>s6XCVcQ8RMTkyc8SmoMVVgJrVgs=</id>
+  <id>3WAPfqusBkCb5zFP8bhdrtAPytbk</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

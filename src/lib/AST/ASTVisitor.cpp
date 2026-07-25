@@ -2069,7 +2069,7 @@ addMember(
     }
     report::error("Cannot push {} of type {} into members of namespace {}",
         Member.Name,
-        mrdocs::toString(Member.Kind).c_str(),
+        mrdocs::toString(Member.Kind),
         I.Name);
 }
 
@@ -2159,7 +2159,7 @@ addMember(RecordTranche& T, Symbol const& Member)
     }
     report::error("Cannot push {} of type {} into tranche",
         Member.Name,
-        mrdocs::toString(Member.Kind).c_str());
+        mrdocs::toString(Member.Kind));
 }
 
 void
@@ -2173,7 +2173,7 @@ addMember(EnumSymbol& I, Symbol const& Member) const
     }
     report::error("Cannot push {} of type {} into members of enum {}",
         Member.Name,
-        mrdocs::toString(Member.Kind).c_str(),
+        mrdocs::toString(Member.Kind),
         I.Name);
 }
 
@@ -2188,7 +2188,7 @@ addMember(OverloadsSymbol& I, Symbol const& Member) const
     }
     report::error("Cannot push {} of type {} into members of enum {}",
         Member.Name,
-        mrdocs::toString(Member.Kind).c_str(),
+        mrdocs::toString(Member.Kind),
         I.Name);
 }
 
@@ -3913,7 +3913,7 @@ upsert(DeclType const* D)
     }
 
     SymbolID const id = generateID(D);
-    MRDOCS_TRY(checkUndocumented<R>(id, D));
+    MRDOCS_TRY(checkUndocumented<R>(id, D, m));
 
     MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
     auto [I, isNew] = upsert<R>(id);
@@ -3942,7 +3942,8 @@ Expected<void>
 ASTVisitor::
 checkUndocumented(
     SymbolID const& id,
-    DeclTy const* D)
+    DeclTy const* D,
+    ExtractionMode const extractionMode)
 {
     // If the symbol is in the global namespace, it doesn't
     // need documentation
@@ -3969,23 +3970,13 @@ checkUndocumented(
     // These are expected to be potentially undocumented
     MRDOCS_CHECK_OR(mode_ == Regular, {});
 
-    if constexpr (std::same_as<InfoTy, NamespaceSymbol>)
-    {
-        // Respect implementation-defined filters: symbols that match those patterns
-        // are intentionally kept undocumented. We re-check here to avoid emitting
-        // warnings even though extraction proceeds in regular mode for these
-        // namespaces to extract their children.
-        if (!config_->implementationDefined.empty())
-        {
-            llvm::SmallString<256> const qn = qualifiedName(D);
-            auto qns = qn.str();
-            if (checkSymbolFiltersImpl<Strict>(config_->implementationDefined, qns) ||
-                checkSymbolFiltersImpl<PrefixOnly>(config_->implementationDefined, qns))
-            {
-                return {};
-            }
-        }
-    }
+    // Only Regular and SeeBelow symbols are part of the documented API surface,
+    // so only they are warned about when undocumented. ImplementationDefined and
+    // Dependency symbols are still extracted (so other symbols can point to
+    // them), but they are intentionally not required to be documented.
+    MRDOCS_CHECK_OR(
+        extractionMode == ExtractionMode::Regular ||
+        extractionMode == ExtractionMode::SeeBelow, {});
 
     // Check if the symbol is documented, ensure this symbol is not in the set
     // of undocumented symbols in this translation unit and return

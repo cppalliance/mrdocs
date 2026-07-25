@@ -11,7 +11,7 @@
 {{#if isThreadLocal}}thread_local
 {{/if~}}
 {{>type/declarator-prefix type}} {{>symbol/name-text symbol ~}}
-{{#if isBitfield}} : {{bitfieldWidth}}{{/if~}}
+{{#if isBitfield}} : {{bitfieldWidth.written}}{{/if~}}
 {{#if default}} = {{default}}{{/if~}}
 {{>type/declarator-suffix type~}}
 {{#if initializer}} = {{initializer}}{{/if}};

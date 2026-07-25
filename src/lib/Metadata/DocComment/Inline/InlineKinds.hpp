@@ -28,7 +28,7 @@
 #include <mrdocs/Metadata/DocComment/Inline/SubscriptInline.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/SuperscriptInline.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 

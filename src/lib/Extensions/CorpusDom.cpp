@@ -48,39 +48,6 @@ makeSymbolProxyValue(Symbol& sym)
     return result;
 }
 
-// Decode a base16-encoded SymbolID string. Returns true on success.
-// 40 hex chars (lower or upper) decode into the 20-byte SymbolID.
-bool
-parseBase16SymbolID(std::string_view s, SymbolID& out)
-{
-    constexpr std::size_t kIdBytes = 20;
-    constexpr std::size_t kHexLen = kIdBytes * 2;
-    if (s.size() != kHexLen)
-    {
-        return false;
-    }
-    auto const decode = [](char c) -> int
-    {
-        if (c >= '0' && c <= '9') return c - '0';
-        if (c >= 'a' && c <= 'f') return c - 'a' + 10;
-        if (c >= 'A' && c <= 'F') return c - 'A' + 10;
-        return -1;
-    };
-    SymbolID::value_type bytes[kIdBytes] = {};
-    for (std::size_t i = 0; i < kIdBytes; ++i)
-    {
-        int const hi = decode(s[i * 2]);
-        int const lo = decode(s[i * 2 + 1]);
-        if (hi < 0 || lo < 0)
-        {
-            return false;
-        }
-        bytes[i] = static_cast<SymbolID::value_type>((hi << 4) | lo);
-    }
-    out = SymbolID(bytes);
-    return true;
-}
-
 } // (anon)
 
 dom::Value
@@ -94,7 +61,7 @@ buildCorpusDom(CorpusImpl& corpus)
         symbols.emplace_back(makeSymbolProxyValue(*mutableSym).getObject());
     }
 
-    // `corpus.get(id)` -- decode the base16 string and look up the
+    // `corpus.get(id)` -- decode the base58 string and look up the
     // matching symbol. Returns a proxy or `null`.
     auto getFn = dom::makeVariadicInvocable(
         [corpusPtr = &corpus]
@@ -105,12 +72,12 @@ buildCorpusDom(CorpusImpl& corpus)
                 return Unexpected(Error(
                     "corpus.get: expected a string id"));
             }
-            SymbolID id;
-            if (!parseBase16SymbolID(args.get(0).getString(), id))
+            auto const id = fromBase58Str(args.get(0).getString());
+            if (!id)
             {
                 return dom::Value(nullptr);
             }
-            Symbol* mutableSym = corpusPtr->find(id);
+            Symbol* mutableSym = corpusPtr->find(*id);
             if (!mutableSym)
             {
                 return dom::Value(nullptr);

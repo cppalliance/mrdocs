@@ -39,12 +39,10 @@ enum class TemplateSpecKind
     Partial
 };
 
-/** Convert the specialization kind to a readable string.
-    @return String view naming the specialization category.
-*/
-MRDOCS_DECL
-std::string_view
-toString(TemplateSpecKind kind);
+MRDOCS_DESCRIBE_ENUM(
+    TemplateSpecKind,
+    Primary, Explicit, Partial)
+
 
 
 /** Information about templates and specializations thereof.

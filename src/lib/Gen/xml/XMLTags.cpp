@@ -5,13 +5,13 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "XMLTags.hpp"
 #include <mrdocs/Platform.hpp>
-#include <lib/Support/Radix.hpp>
 
 
 namespace mrdocs {
@@ -67,15 +67,6 @@ write(
             ++pos;
         }
     }
-}
-
-//------------------------------------------------
-
-std::string
-toBase64Str(
-    SymbolID const& id)
-{
-    return toBase64(id);
 }
 
 //------------------------------------------------

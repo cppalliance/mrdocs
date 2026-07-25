@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 #include <string>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -40,23 +41,10 @@ enum class StorageClassKind
     Register
 };
 
-/** Convert a storage class kind to its string form.
-*/
-MRDOCS_DECL
-dom::String
-toString(StorageClassKind kind) noexcept;
-
-/** Return the StorageClassKind as a @ref dom::Value string.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    StorageClassKind const kind)
-{
-    v = toString(kind);
-}
+MRDOCS_DESCRIBE_ENUM(
+    StorageClassKind,
+    None, Extern, Static, Auto, Register)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(StorageClassKind, None)
 
 } // mrdocs
 

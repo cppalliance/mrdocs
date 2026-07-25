@@ -2,172 +2,211 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>ynx5NXMLXqzSXwgOnIP6CHzNx14=</records>
-  </namespace-tranche>
+  <members>
+    <records>3pckmfiVbXAYjwBs44JCuEmQATU1</records>
+  </members>
 </namespace>
 <record>
   <name>X</name>
-  <source>
-    <location>
-      <short-path>returns-from-brief.cpp</short-path>
-      <source-path>returns-from-brief.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>returns-from-brief.cpp</shortPath>
+      <sourcePath>returns-from-brief.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ynx5NXMLXqzSXwgOnIP6CHzNx14=</id>
+  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Test class</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Test class</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>NvIeyslj/JtN1AFmvZ8Tij9uTrg=</functions>
-      <functions>3xIfjajRSSCEaVNizhf9qh46l4U=</functions>
-      <functions>4jz+tDHFk1vY3ErafzS9b537gac=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>mQ6ihkrPXmxpwexhkMorKUYiVxT 47FUXohTQg9stCzbqmjznFSNBbYx 49ovTo6r2XQyctH922tPdcwhKu3L</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>empty</name>
-  <source>
-    <location>
-      <short-path>returns-from-brief.cpp</short-path>
-      <source-path>returns-from-brief.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-brief.cpp</shortPath>
+        <sourcePath>returns-from-brief.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>NvIeyslj/JtN1AFmvZ8Tij9uTrg=</id>
+  <id>mQ6ihkrPXmxpwexhkMorKUYiVxT</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Determines whether the range is empty.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Determines whether the range is empty.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>whether the range is empty.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>whether the range is empty.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>front</name>
-  <source>
-    <location>
-      <short-path>returns-from-brief.cpp</short-path>
-      <source-path>returns-from-brief.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-brief.cpp</shortPath>
+        <sourcePath>returns-from-brief.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>3xIfjajRSSCEaVNizhf9qh46l4U=</id>
+  <id>47FUXohTQg9stCzbqmjznFSNBbYx</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Returns the first element of the range.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Returns the first element of the range.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>the first element of the range.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>the first element of the range.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <function>
   <name>size</name>
-  <source>
-    <location>
-      <short-path>returns-from-brief.cpp</short-path>
-      <source-path>returns-from-brief.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-brief.cpp</shortPath>
+        <sourcePath>returns-from-brief.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>4jz+tDHFk1vY3ErafzS9b537gac=</id>
+  <id>49ovTo6r2XQyctH922tPdcwhKu3L</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ynx5NXMLXqzSXwgOnIP6CHzNx14=</parent>
-  <doc-comment>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Get the range size.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Get the range size.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>the range size.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>the range size.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 </mrdocs>

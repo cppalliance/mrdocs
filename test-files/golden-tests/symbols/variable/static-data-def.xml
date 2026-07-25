@@ -2,370 +2,449 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t 45Fwe5kYuv1Y5U477G1sB17ZooGh</records>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU</functions>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <static-variables>rW6h+mCfZLROHlYzwXFIUPN6oSE=</static-variables>
-      <static-variables>nkB0lMmDvMsu9GDrKr3Mzwi5g6I=</static-variables>
-      <static-variables>e48c97dC3AIWJHWE5T0yWVxezgg=</static-variables>
-      <static-variables>Wx5S5oWv5o4nV7I+zFEKTvWl40g=</static-variables>
-      <static-variables>6a2wBN4mHiuAAqV0gYgYQeqFNVM=</static-variables>
-      <static-variables>Q96okKllwtE2Tg+t7HAkms6flbk=</static-variables>
-      <static-variables>0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=</static-variables>
-      <static-variables>VCnmz8Cp9RtJzQQQ7yw57uzbQAY=</static-variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <staticVariables>3R96uMG9kgZVJLeQVKaJ3t58VCsr 3Csf1rbUvomHZ2LYHcv2uJ9e9fGM 2iqjsxZrpY3SFnrrHcKKqJ9o3wm9 2GdNeeW5PZo7JoFRT3Q9CmrvJuXM 4FpciKMGUAQjS3RGWYpNqAHFNDAr wqoAefoDcrka8cNy2gLATeVxysE 3vG5wvr3s5GiffKhX2HNUXXdt2S2 2B1RvAPQmomUGV6X39rdDV1MxJ8u</staticVariables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>v0</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def.cpp</shortPath>
+        <sourcePath>static-data-def.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>rW6h+mCfZLROHlYzwXFIUPN6oSE=</id>
+  <id>3R96uMG9kgZVJLeQVKaJ3t58VCsr</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
+  <storageClass>static</storageClass>
 </variable>
 <variable>
   <name>v1</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>24</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def.cpp</shortPath>
+        <sourcePath>static-data-def.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>nkB0lMmDvMsu9GDrKr3Mzwi5g6I=</id>
+  <id>3Csf1rbUvomHZ2LYHcv2uJ9e9fGM</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>1</initializer>
-  <is-inline/>
+  <storageClass>static</storageClass>
+  <isInline/>
 </variable>
 <variable>
   <name>v2</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>27</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def.cpp</shortPath>
+        <sourcePath>static-data-def.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>e48c97dC3AIWJHWE5T0yWVxezgg=</id>
+  <id>2iqjsxZrpY3SFnrrHcKKqJ9o3wm9</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>2</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>v3</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>30</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>30</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def.cpp</shortPath>
+        <sourcePath>static-data-def.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>Wx5S5oWv5o4nV7I+zFEKTvWl40g=</id>
+  <id>2GdNeeW5PZo7JoFRT3Q9CmrvJuXM</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>3</initializer>
-  <is-inline/>
+  <storageClass>static</storageClass>
+  <isInline/>
 </variable>
 <variable>
   <name>v4</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>33</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>33</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def.cpp</shortPath>
+        <sourcePath>static-data-def.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>6a2wBN4mHiuAAqV0gYgYQeqFNVM=</id>
+  <id>4FpciKMGUAQjS3RGWYpNqAHFNDAr</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>4</initializer>
+  <storageClass>static</storageClass>
 </variable>
 <variable>
   <name>v5</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>Q96okKllwtE2Tg+t7HAkms6flbk=</id>
+  <id>wqoAefoDcrka8cNy2gLATeVxysE</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>5</initializer>
-  <is-inline/>
+  <storageClass>static</storageClass>
+  <isInline/>
 </variable>
 <variable>
   <name>v6</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=</id>
+  <id>3vG5wvr3s5GiffKhX2HNUXXdt2S2</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>6</initializer>
-  <is-inline/>
+  <storageClass>static</storageClass>
+  <isInline/>
 </variable>
 <variable>
   <name>v7</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>VCnmz8Cp9RtJzQQQ7yw57uzbQAY=</id>
+  <id>2B1RvAPQmomUGV6X39rdDV1MxJ8u</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>7</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <static-variables>+yhNlGuTVY4spCfBXSTBkEDzi30=</static-variables>
-      <static-variables>vNYWHh2ovZiBP3uVEeJhMkaiF3w=</static-variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <staticVariables>4VwnhvT5enCyP2hXRU9SXTACbpHa 3db2xXPF5msK8bUoFNniXRVucuJT</staticVariables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>x0</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>49</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>49</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def.cpp</shortPath>
+        <sourcePath>static-data-def.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>+yhNlGuTVY4spCfBXSTBkEDzi30=</id>
+  <id>4VwnhvT5enCyP2hXRU9SXTACbpHa</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <named>
-    <is-const/>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <isConst/>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-thread-local/>
+  <storageClass>static</storageClass>
+  <isThreadLocal/>
 </variable>
 <variable>
   <name>x1</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>18</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>vNYWHh2ovZiBP3uVEeJhMkaiF3w=</id>
+  <id>3db2xXPF5msK8bUoFNniXRVucuJT</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-inline/>
-  <is-constexpr/>
-  <is-thread-local/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
+  <isThreadLocal/>
 </variable>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>static-data-def.cpp</short-path>
-      <source-path>static-data-def.cpp</source-path>
-      <line-number>36</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def.cpp</shortPath>
+      <sourcePath>static-data-def.cpp</sourcePath>
+      <lineNumber>36</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <auto>
-  </auto>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

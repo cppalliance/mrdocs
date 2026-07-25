@@ -2,334 +2,431 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>e1UQQek5v3C9OClW5cGf57XvwQo=</functions>
-    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
-    <functions>Vn88rrW6JgrUc7j/24MUTRnpkRg=</functions>
-    <functions>99zzvQbBwXKh7ewapNRMnAKND3I=</functions>
-    <functions>GUlieEk6E+t8qLpALj3XrWv0CGw=</functions>
-    <functions>q8fclJU+n2M3XqifIjVL9vT9fKQ=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2if7W2yae7MLawKNuq1XwahifSpZ 9SrB1UL3KesEDpt7G1mT9bvMnqC 2CtnVgKdaaADJ394EAF4DJu2wPWo 4THPuZ2j6cjdyP15Ja3RrfQbMwhj MS6AEwXXP5qFZDRJuviBRGWkg9y 3PohsRy81zMcTWfqd6enY7pdy6RZ</functions>
+  </members>
 </namespace>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>param-duplicate.cpp</short-path>
-      <source-path>param-duplicate.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-duplicate.cpp</shortPath>
+      <sourcePath>param-duplicate.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+  <id>2if7W2yae7MLawKNuq1XwahifSpZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>f0 brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>f0 brief</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>int</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>int</literal>
+          </text>
+        </children>
+      </returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>int</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>int</literal>
-      </text>
-    </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>param-duplicate.cpp</short-path>
-      <source-path>param-duplicate.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-duplicate.cpp</shortPath>
+      <sourcePath>param-duplicate.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>f1 brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>f1 brief</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>int</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>int</literal>
+          </text>
+        </children>
+      </returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>bool</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>bool</literal>
-      </text>
-    </returns>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g0</name>
-  <source>
-    <location>
-      <short-path>param-duplicate.cpp</short-path>
-      <source-path>param-duplicate.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-duplicate.cpp</shortPath>
+      <sourcePath>param-duplicate.cpp</sourcePath>
+      <lineNumber>17</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>Vn88rrW6JgrUc7j/24MUTRnpkRg=</id>
+  <id>2CtnVgKdaaADJ394EAF4DJu2wPWo</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>g0 brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>g0 brief</literal>
+        </text>
+      </children>
     </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>one</literal>
-      </text>
-      <name>a</name>
-    </param>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>one</literal>
-      </text>
-      <name>a</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>one</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>one</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
       </name>
+      <fundamentalType>void</fundamentalType>
     </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g1</name>
-  <source>
-    <location>
-      <short-path>param-duplicate.cpp</short-path>
-      <source-path>param-duplicate.cpp</source-path>
-      <line-number>23</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-duplicate.cpp</shortPath>
+      <sourcePath>param-duplicate.cpp</sourcePath>
+      <lineNumber>23</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>99zzvQbBwXKh7ewapNRMnAKND3I=</id>
+  <id>4THPuZ2j6cjdyP15Ja3RrfQbMwhj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>g1 brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>g1 brief</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>one</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>two</literal>
+          </text>
+        </children>
+        <name>b</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>one</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>two</literal>
-      </text>
-      <name>b</name>
-    </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>h0</name>
-  <source>
-    <location>
-      <short-path>param-duplicate.cpp</short-path>
-      <source-path>param-duplicate.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-duplicate.cpp</shortPath>
+      <sourcePath>param-duplicate.cpp</sourcePath>
+      <lineNumber>29</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>GUlieEk6E+t8qLpALj3XrWv0CGw=</id>
+  <id>MS6AEwXXP5qFZDRJuviBRGWkg9y</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>h0 brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>h0 brief</literal>
+        </text>
+      </children>
     </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>one</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>one</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>one</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>one</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>h1</name>
-  <source>
-    <location>
-      <short-path>param-duplicate.cpp</short-path>
-      <source-path>param-duplicate.cpp</source-path>
-      <line-number>36</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>param-duplicate.cpp</shortPath>
+      <sourcePath>param-duplicate.cpp</sourcePath>
+      <lineNumber>36</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>q8fclJU+n2M3XqifIjVL9vT9fKQ=</id>
+  <id>3PohsRy81zMcTWfqd6enY7pdy6RZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>h1 brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>h1 brief</literal>
+        </text>
+      </children>
     </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>one</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>two</literal>
-      </text>
-      <name>U</name>
-    </t-param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>one</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>two</literal>
+          </text>
+        </children>
+        <name>U</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

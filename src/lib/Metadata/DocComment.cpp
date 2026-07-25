@@ -24,62 +24,6 @@
 namespace mrdocs {
 namespace doc {
 
-dom::String
-toString(AdmonitionKind kind) noexcept
-{
-    switch(kind)
-    {
-    case AdmonitionKind::none:
-        return "";
-    case AdmonitionKind::note:
-        return "note";
-    case AdmonitionKind::tip:
-        return "tip";
-    case AdmonitionKind::important:
-        return "important";
-    case AdmonitionKind::caution:
-        return "caution";
-    case AdmonitionKind::warning:
-        return "warning";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String
-toString(ParamDirection kind) noexcept
-{
-    switch(kind)
-    {
-    case ParamDirection::none:
-        return "";
-    case ParamDirection::in:
-        return "in";
-    case ParamDirection::out:
-        return "out";
-    case ParamDirection::inout:
-        return "inout";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-dom::String
-toString(Parts kind) noexcept
-{
-    switch(kind)
-    {
-    case Parts::all:
-        return "all";
-    case Parts::brief:
-        return "brief";
-    case Parts::description:
-        return "description";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
 std::strong_ordering
 operator<=>(Polymorphic<TextInline> const& lhs, Polymorphic<TextInline> const& rhs)
 {

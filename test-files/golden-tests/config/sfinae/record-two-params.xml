@@ -2,216 +2,239 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>+jO0pmMB/RXahxtatVUYoEwUKWs=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>4VB1YRZ5xEZNSpqzp72yMeXnHRtn</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>boost</name>
-  <source>
-    <location>
-      <short-path>record-two-params.cpp</short-path>
-      <source-path>record-two-params.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-two-params.cpp</shortPath>
+        <sourcePath>record-two-params.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>+jO0pmMB/RXahxtatVUYoEwUKWs=</id>
+  <id>4VB1YRZ5xEZNSpqzp72yMeXnHRtn</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <namespaces>TEIM9BIyHSbM/47WKqIXi8qMp7U=</namespaces>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <namespaces>24cvRrsRRWYboadY1jPTvDU71pBN</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>mysql</name>
-  <source>
-    <location>
-      <short-path>record-two-params.cpp</short-path>
-      <source-path>record-two-params.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>16</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-two-params.cpp</shortPath>
+        <sourcePath>record-two-params.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>16</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>TEIM9BIyHSbM/47WKqIXi8qMp7U=</id>
+  <id>24cvRrsRRWYboadY1jPTvDU71pBN</id>
   <extraction>regular</extraction>
-  <parent>+jO0pmMB/RXahxtatVUYoEwUKWs=</parent>
-  <namespace-tranche>
-    <records>ej4LppiJqIyK4LTV+iQB8QbcLOw=</records>
-    <records>E4XI9hgprdQN7ez3dhWgM/Nx9DQ=</records>
-    <records>5GqWQ5IFiKuJx5FMNsyMUX5/JA0=</records>
-  </namespace-tranche>
+  <parent>4VB1YRZ5xEZNSpqzp72yMeXnHRtn</parent>
+  <members>
+    <records>2hn2raFMj24jsDn3oi3csEeWkdqM Gmx4zUx3qX1XuzqrZ7XNp7cTiAf 4Ba13Jewax4MK1SSWGwVRxiLE3Yg</records>
+  </members>
 </namespace>
 <record>
   <name>writable_field_traits</name>
-  <source>
-    <location>
-      <short-path>record-two-params.cpp</short-path>
-      <source-path>record-two-params.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>record-two-params.cpp</shortPath>
+      <sourcePath>record-two-params.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ej4LppiJqIyK4LTV+iQB8QbcLOw=</id>
+  <id>2hn2raFMj24jsDn3oi3csEeWkdqM</id>
   <extraction>regular</extraction>
-  <parent>TEIM9BIyHSbM/47WKqIXi8qMp7U=</parent>
-  <key-kind>struct</key-kind>
+  <parent>24cvRrsRRWYboadY1jPTvDU71pBN</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>En1</name>
-      <type-targ>
+    <params>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>void</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>En2</name>
-      <type-targ>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
         <kind>type</kind>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>void</identifier>
-          </name>
-        </named>
-      </type-targ>
-      <key-kind>class</key-kind>
-    </type-tparam>
+        <name>En1</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>void</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>void</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>En2</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>void</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>void</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <specializations>E4XI9hgprdQN7ez3dhWgM/Nx9DQ=</specializations>
-  <specializations>5GqWQ5IFiKuJx5FMNsyMUX5/JA0=</specializations>
+  <specializations>Gmx4zUx3qX1XuzqrZ7XNp7cTiAf 4Ba13Jewax4MK1SSWGwVRxiLE3Yg</specializations>
 </record>
 <record>
   <name>writable_field_traits</name>
-  <source>
-    <location>
-      <short-path>record-two-params.cpp</short-path>
-      <source-path>record-two-params.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>record-two-params.cpp</shortPath>
+      <sourcePath>record-two-params.cpp</sourcePath>
+      <lineNumber>16</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>E4XI9hgprdQN7ez3dhWgM/Nx9DQ=</id>
+  <id>Gmx4zUx3qX1XuzqrZ7XNp7cTiAf</id>
   <extraction>regular</extraction>
-  <parent>TEIM9BIyHSbM/47WKqIXi8qMp7U=</parent>
-  <key-kind>struct</key-kind>
+  <parent>24cvRrsRRWYboadY1jPTvDU71pBN</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>void</identifier>
-        </name>
-      </named>
-    </type-targ>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>void</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>void</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
     <requires>std::is_same&lt;T, int&gt;::value</requires>
-    <primary>ej4LppiJqIyK4LTV+iQB8QbcLOw=</primary>
+    <primary>2hn2raFMj24jsDn3oi3csEeWkdqM</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>writable_field_traits</name>
-  <source>
-    <location>
-      <short-path>record-two-params.cpp</short-path>
-      <source-path>record-two-params.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>record-two-params.cpp</shortPath>
+      <sourcePath>record-two-params.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5GqWQ5IFiKuJx5FMNsyMUX5/JA0=</id>
+  <id>4Ba13Jewax4MK1SSWGwVRxiLE3Yg</id>
   <extraction>regular</extraction>
-  <parent>TEIM9BIyHSbM/47WKqIXi8qMp7U=</parent>
-  <key-kind>struct</key-kind>
+  <parent>24cvRrsRRWYboadY1jPTvDU71pBN</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>void</identifier>
-        </name>
-      </named>
-    </type-targ>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>void</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>void</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
     <requires>std::is_same&lt;T, bool&gt;::value</requires>
-    <primary>ej4LppiJqIyK4LTV+iQB8QbcLOw=</primary>
+    <primary>2hn2raFMj24jsDn3oi3csEeWkdqM</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <isListedOnPrimary/>
 </record>
 </mrdocs>

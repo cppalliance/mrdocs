@@ -2,208 +2,254 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-    <records>AKwlChAOi+0ttIAPsD7uitS+gk0=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t 1YWrSpfV88zbfQ3PBCGBoYZMGKW</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mft_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>fycIFVnUjGsczEihLemEC7pcV4w=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>2mk9gULyHvhuVuWMwexBC4DKJ62P</functions>
+    </public>
+  </interface>
+  <specializations>1YWrSpfV88zbfQ3PBCGBoYZMGKW</specializations>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mft_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>fycIFVnUjGsczEihLemEC7pcV4w=</id>
+  <id>2mk9gULyHvhuVuWMwexBC4DKJ62P</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <specializations>2kzEcYMAxTXKPrfFLH4TU96VVDNa</specializations>
 </function>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mft_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>AKwlChAOi+0ttIAPsD7uitS+gk0=</id>
+  <id>1YWrSpfV88zbfQ3PBCGBoYZMGKW</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>5tUSuMtQqtYE49jBjSYSWp0DJAM=</primary>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>4DXECWsw8UfKpZwrQBmtBTThqd1t</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>op80FfPhYepRTXrszso/lDC+jBQ=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>3GQU1mWuMuxWQ2rthE8L3XAHTjqV</functions>
+    </public>
+  </interface>
+  <isListedOnPrimary/>
 </record>
 <overloads>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mft_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>ct_mft_expl_outside.cpp</shortPath>
+        <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>op80FfPhYepRTXrszso/lDC+jBQ=</id>
+  <id>3GQU1mWuMuxWQ2rthE8L3XAHTjqV</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
-  <func-class>normal</func-class>
-  <members>MtpaTgur0M7GGwfDIj9dUJZjaHM=</members>
-  <members>fjcm9F09lrCrLSgw6Swqw9KOBlM=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>1YWrSpfV88zbfQ3PBCGBoYZMGKW</parent>
+  <funcClass>normal</funcClass>
+  <members>i6HQDH6yjGw714DsaiKpVfs9yc6 2kzEcYMAxTXKPrfFLH4TU96VVDNa</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>ct_mft_expl_outside.cpp</shortPath>
+        <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>MtpaTgur0M7GGwfDIj9dUJZjaHM=</id>
+  <id>i6HQDH6yjGw714DsaiKpVfs9yc6</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>1YWrSpfV88zbfQ3PBCGBoYZMGKW</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>ct_mft_expl_outside.cpp</short-path>
-      <source-path>ct_mft_expl_outside.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mft_expl_outside.cpp</shortPath>
+      <sourcePath>ct_mft_expl_outside.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>fjcm9F09lrCrLSgw6Swqw9KOBlM=</id>
+  <id>2kzEcYMAxTXKPrfFLH4TU96VVDNa</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>AKwlChAOi+0ttIAPsD7uitS+gk0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
+  <parent>1YWrSpfV88zbfQ3PBCGBoYZMGKW</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
-          <identifier>int</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>fycIFVnUjGsczEihLemEC7pcV4w=</primary>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <template>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>2mk9gULyHvhuVuWMwexBC4DKJ62P</primary>
   </template>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isListedOnPrimary/>
 </function>
 </mrdocs>

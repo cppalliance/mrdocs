@@ -2,150 +2,178 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>dtor-overloads.cpp</short-path>
-      <source-path>dtor-overloads.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>dtor-overloads.cpp</shortPath>
+      <sourcePath>dtor-overloads.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>LEZJddSqCEXJZ++1t8aAiluL0/E=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>cmynujTK3VJ8VugHpKrYETwwhVi</functions>
+    </public>
+  </interface>
 </record>
 <overloads>
   <name>~A</name>
-  <source>
-    <location>
-      <short-path>dtor-overloads.cpp</short-path>
-      <source-path>dtor-overloads.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>dtor-overloads.cpp</short-path>
-      <source-path>dtor-overloads.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>dtor-overloads.cpp</shortPath>
+        <sourcePath>dtor-overloads.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>dtor-overloads.cpp</shortPath>
+        <sourcePath>dtor-overloads.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>LEZJddSqCEXJZ++1t8aAiluL0/E=</id>
+  <id>cmynujTK3VJ8VugHpKrYETwwhVi</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Destructors</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Destructors</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <func-class>destructor</func-class>
-  <members>x5T8zVxBVmg1ModTwgEAXcXWKDg=</members>
-  <members>uiH+ZSS+bYC5efGHgbdzlzXaV/o=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  </doc>
+  <funcClass>destructor</funcClass>
+  <members>46xSKgpUibDHibC8CvVusuHDF2FQ 4yUHW8SBnvmASp7w9JdfJvZnfhe</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>~A</name>
-  <source>
-    <location>
-      <short-path>dtor-overloads.cpp</short-path>
-      <source-path>dtor-overloads.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>dtor-overloads.cpp</shortPath>
+        <sourcePath>dtor-overloads.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>x5T8zVxBVmg1ModTwgEAXcXWKDg=</id>
+  <id>46xSKgpUibDHibC8CvVusuHDF2FQ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Destructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Destructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>destructor</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>destructor</funcClass>
   <requires>(sizeof(T) &gt; 4)</requires>
-  <is-record-method/>
+  <isRecordMethod/>
 </function>
 <function>
   <name>~A</name>
-  <source>
-    <location>
-      <short-path>dtor-overloads.cpp</short-path>
-      <source-path>dtor-overloads.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>dtor-overloads.cpp</shortPath>
+        <sourcePath>dtor-overloads.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>uiH+ZSS+bYC5efGHgbdzlzXaV/o=</id>
+  <id>4yUHW8SBnvmASp7w9JdfJvZnfhe</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <doc-comment>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Destructor</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Destructor</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>destructor</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>destructor</funcClass>
   <requires>(sizeof(T) &lt;= 4)</requires>
-  <is-record-method/>
+  <isRecordMethod/>
 </function>
 </mrdocs>

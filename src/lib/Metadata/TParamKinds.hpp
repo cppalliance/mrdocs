@@ -15,7 +15,7 @@
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/TParam/TemplateTParam.hpp>
 #include <mrdocs/Metadata/TParam/TypeTParam.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 

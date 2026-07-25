@@ -2,62 +2,63 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>FKq9Eqf4/TSH5THy8HQZ8ZjI+gY=</records>
-  </namespace-tranche>
+  <members>
+    <records>HhaggXomKFivpXfin7KPe2NAwg1</records>
+  </members>
 </namespace>
 <record>
   <name>Container</name>
-  <source>
-    <location>
-      <short-path>friend-type.cpp</short-path>
-      <source-path>friend-type.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>friend-type.cpp</shortPath>
+      <sourcePath>friend-type.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>FKq9Eqf4/TSH5THy8HQZ8ZjI+gY=</id>
+  <id>HhaggXomKFivpXfin7KPe2NAwg1</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A class template that befriends a template parameter.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A class template that befriends a template parameter.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
+  </doc>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <friend>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
-      </name>
-    </named>
-  </friend>
+  <friends>
+    <friendInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+    </friendInfo>
+  </friends>
 </record>
 </mrdocs>

@@ -2,137 +2,174 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
-    <functions>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</functions>
-    <functions>khwJweIqd5FuWAg8T+l+GEljQVc=</functions>
-    <functions>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>9SrB1UL3KesEDpt7G1mT9bvMnqC 3ugjxNbHHSuxBbaHt8ENMWRLxFAS 334bUXUdxG62ArqzF5WTRNS4vHSN 4DfW6vEZFNNWbTgB4Lw8xm6erYat</functions>
+  </members>
 </namespace>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>para-1.cpp</short-path>
-      <source-path>para-1.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>para-1.cpp</shortPath>
+        <sourcePath>para-1.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>para-1.cpp</short-path>
-      <source-path>para-1.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>para-1.cpp</shortPath>
+        <sourcePath>para-1.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</id>
+  <id>3ugjxNbHHSuxBbaHt8ENMWRLxFAS</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>para-1.cpp</short-path>
-      <source-path>para-1.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>para-1.cpp</shortPath>
+        <sourcePath>para-1.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>khwJweIqd5FuWAg8T+l+GEljQVc=</id>
+  <id>334bUXUdxG62ArqzF5WTRNS4vHSN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f4</name>
-  <source>
-    <location>
-      <short-path>para-1.cpp</short-path>
-      <source-path>para-1.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>para-1.cpp</shortPath>
+        <sourcePath>para-1.cpp</sourcePath>
+        <lineNumber>27</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=</id>
+  <id>4DfW6vEZFNNWbTgB4Lw8xm6erYat</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>a</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>b</literal>
-      </text>
-    </paragraph>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>c</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>a</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>b</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>c</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

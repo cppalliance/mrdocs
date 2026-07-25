@@ -2,52 +2,64 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>e1UQQek5v3C9OClW5cGf57XvwQo=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2if7W2yae7MLawKNuq1XwahifSpZ</functions>
+  </members>
 </namespace>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>brief-6.cpp</short-path>
-      <source-path>brief-6.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>brief-6.cpp</shortPath>
+        <sourcePath>brief-6.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+  <id>2if7W2yae7MLawKNuq1XwahifSpZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>desc</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>desc</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

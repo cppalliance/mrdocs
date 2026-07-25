@@ -2,110 +2,114 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>iyPnRqvK5CeWtYJ+M257FJexgOs=</records>
-    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
-  </namespace-tranche>
+  <members>
+    <records>2wRyKiMLVJtwPXUpEga43WKXy3RL 45Fwe5kYuv1Y5U477G1sB17ZooGh</records>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU</functions>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>local-class.cpp</short-path>
-      <source-path>local-class.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>local-class.cpp</shortPath>
+      <sourcePath>local-class.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>iyPnRqvK5CeWtYJ+M257FJexgOs=</id>
+  <id>2wRyKiMLVJtwPXUpEga43WKXy3RL</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>jCCBBuUPAMKbCDHSsikdFgCuMPQ=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2xEDTzb7Xp6cdrhRmFAoDwomxjij</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>local-class.cpp</short-path>
-      <source-path>local-class.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>9</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>local-class.cpp</shortPath>
+        <sourcePath>local-class.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>9</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>jCCBBuUPAMKbCDHSsikdFgCuMPQ=</id>
+  <id>2xEDTzb7Xp6cdrhRmFAoDwomxjij</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>iyPnRqvK5CeWtYJ+M257FJexgOs=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>2wRyKiMLVJtwPXUpEga43WKXy3RL</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>local-class.cpp</short-path>
-      <source-path>local-class.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>local-class.cpp</shortPath>
+      <sourcePath>local-class.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <base>
-    <decltype>
-      <operand>f()</operand>
-    </decltype>
-  </base>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <decltype>
+          <kind>decltype</kind>
+          <operand>f()</operand>
+        </decltype>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>local-class.cpp</short-path>
-      <source-path>local-class.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>local-class.cpp</shortPath>
+      <sourcePath>local-class.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <auto>
-  </auto>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

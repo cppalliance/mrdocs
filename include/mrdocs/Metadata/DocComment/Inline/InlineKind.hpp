@@ -24,25 +24,10 @@ enum class InlineKind {
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
 };
 
-MRDOCS_DESCRIBE_ENUM(
-    InlineKind,
-    Reference, CopyDetails, Link, Text, SoftBreak, LineBreak,
-    Code, Emph, Strong, Image, FootnoteReference, Strikethrough,
-    Math, Superscript, Subscript, Highlight)
-
-/** Convert an inline kind to its kebab-case string.
-*/
-inline
-dom::String
-toString(InlineKind kind) noexcept
-{
-    switch (kind)
-    {
-        #define INFO(Type) case InlineKind::Type: return toKebabCase(#Type);
+MRDOCS_DESCRIBE_ENUM_BEGIN(InlineKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(InlineKind, Name)
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
-    }
-    return "Unknown";
-}
+MRDOCS_DESCRIBE_ENUM_END(InlineKind)
 
 } // mrdocs::doc
 

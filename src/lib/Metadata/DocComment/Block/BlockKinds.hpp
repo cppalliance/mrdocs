@@ -31,7 +31,7 @@
 #include <mrdocs/Metadata/DocComment/Block/TableBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ThematicBreakBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ThrowsBlock.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs::doc {
 

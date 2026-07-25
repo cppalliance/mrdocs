@@ -2,75 +2,71 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>rQr6X4pFwyRradNsE4fgTcl6Jmk=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>3QprkvAv6SmsjBRQTSrkLz8nkZQC</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>mrdocs</name>
-  <source>
-    <location>
-      <short-path>global-symbol-excluded.cpp</short-path>
-      <source-path>global-symbol-excluded.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>global-symbol-excluded.cpp</shortPath>
+        <sourcePath>global-symbol-excluded.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>rQr6X4pFwyRradNsE4fgTcl6Jmk=</id>
+  <id>3QprkvAv6SmsjBRQTSrkLz8nkZQC</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Included namespace</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Included namespace</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <namespace-tranche>
-    <records>yJQinsro3N5aSu4KK6p+ChnY5FM=</records>
-  </namespace-tranche>
+  </doc>
+  <members>
+    <records>3o5MYAYG2sXk4nYJVEEwBiDWgcfc</records>
+  </members>
 </namespace>
 <record>
   <name>Foo</name>
-  <source>
-    <location>
-      <short-path>global-symbol-excluded.cpp</short-path>
-      <source-path>global-symbol-excluded.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>global-symbol-excluded.cpp</shortPath>
+      <sourcePath>global-symbol-excluded.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>yJQinsro3N5aSu4KK6p+ChnY5FM=</id>
+  <id>3o5MYAYG2sXk4nYJVEEwBiDWgcfc</id>
   <extraction>regular</extraction>
-  <parent>rQr6X4pFwyRradNsE4fgTcl6Jmk=</parent>
-  <doc-comment>
+  <parent>3QprkvAv6SmsjBRQTSrkLz8nkZQC</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Included record</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Included record</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

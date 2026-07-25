@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom/String.hpp>
 #include <string>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 
@@ -33,11 +34,10 @@ enum class ExplicitKind
     Dependent
 };
 
-/** Convert an explicit kind to its string form.
-*/
-MRDOCS_DECL
-dom::String
-toString(ExplicitKind kind) noexcept;
+MRDOCS_DESCRIBE_ENUM(
+    ExplicitKind,
+    False, True, Dependent)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(ExplicitKind, False)
 
 } // mrdocs
 

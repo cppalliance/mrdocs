@@ -2,181 +2,212 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>rOga+mYntM7ytFb7bhJSklZ0r34=</records>
-    <records>3JsK1DO0O+wZhv+0meptQrbs3fY=</records>
-  </namespace-tranche>
+  <members>
+    <records>3QiUUaL6PhKNC3uuXExnhuC51LHK 45Fwe5kYuv1Y5U477G1sB17ZooGh</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>union.cpp</shortPath>
+      <sourcePath>union.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>rOga+mYntM7ytFb7bhJSklZ0r34=</id>
+  <id>3QiUUaL6PhKNC3uuXExnhuC51LHK</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>union</key-kind>
-  <record-interface>
-    <record-tranche>
-      <variables>Be23kXXQRAQHfKNTp2HOM2jouJo=</variables>
-      <variables>HqUCV+CnE+akUirdwlf8maZxw40=</variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>union</keyKind>
+  <interface>
+    <public>
+      <variables>5nrJJEmkwDBhDsYbePcKrxxdHCm RmCEKLLe376EGqg1QH92WomxBwJ</variables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>union.cpp</shortPath>
+        <sourcePath>union.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>Be23kXXQRAQHfKNTp2HOM2jouJo=</id>
+  <id>5nrJJEmkwDBhDsYbePcKrxxdHCm</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>rOga+mYntM7ytFb7bhJSklZ0r34=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-record-field/>
-  <is-variant/>
+  <parent>3QiUUaL6PhKNC3uuXExnhuC51LHK</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
+  <isVariant/>
 </variable>
 <variable>
   <name>y</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>union.cpp</shortPath>
+        <sourcePath>union.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>HqUCV+CnE+akUirdwlf8maZxw40=</id>
+  <id>RmCEKLLe376EGqg1QH92WomxBwJ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>rOga+mYntM7ytFb7bhJSklZ0r34=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <is-record-field/>
-  <is-variant/>
+  <parent>3QiUUaL6PhKNC3uuXExnhuC51LHK</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
+  <isVariant/>
 </variable>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>union.cpp</shortPath>
+      <sourcePath>union.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3JsK1DO0O+wZhv+0meptQrbs3fY=</id>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <variables>QtOrWpj/+5ytPBCEoNlbW+uW/oA=</variables>
-      <variables>8o+2/UVx4hIiDLQRYohp688sXmI=</variables>
-      <variables>zTVqdWL2ShJziu85kaeOk2wfYFs=</variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <variables>vzvFBzrfjdFYw4udaSfkR1uxPmR 4NzvbrCKgodhr7JoXQbDpRTe9rKT 3rpLzCrzDtAj6hQFEEfiENebUpst</variables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>9</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>union.cpp</shortPath>
+        <sourcePath>union.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>9</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>QtOrWpj/+5ytPBCEoNlbW+uW/oA=</id>
+  <id>vzvFBzrfjdFYw4udaSfkR1uxPmR</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-record-field/>
-  <is-variant/>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
+  <isVariant/>
 </variable>
 <variable>
   <name>y</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>9</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>union.cpp</shortPath>
+        <sourcePath>union.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>9</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>8o+2/UVx4hIiDLQRYohp688sXmI=</id>
+  <id>4NzvbrCKgodhr7JoXQbDpRTe9rKT</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>bool</identifier>
-    </name>
-  </named>
-  <is-record-field/>
-  <is-variant/>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
+  <isVariant/>
 </variable>
 <variable>
   <name>z</name>
-  <source>
-    <location>
-      <short-path>union.cpp</short-path>
-      <source-path>union.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>union.cpp</shortPath>
+        <sourcePath>union.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>zTVqdWL2ShJziu85kaeOk2wfYFs=</id>
+  <id>3rpLzCrzDtAj6hQFEEfiENebUpst</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>3JsK1DO0O+wZhv+0meptQrbs3fY=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 </mrdocs>

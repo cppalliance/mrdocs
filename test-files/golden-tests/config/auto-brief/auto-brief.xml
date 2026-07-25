@@ -2,999 +2,1307 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>ppO9JcNDRHLDj36JVGH0zSixGv4=</functions>
-    <functions>bjvzloyWErD1DyNilcHo5vZFol4=</functions>
-    <functions>8m+HcfJ//1hM71kLKl4eg3ubQRo=</functions>
-    <functions>1TGakYl7bDnE2QttJ28contJFuk=</functions>
-    <functions>k3Pi7vFhGs3GvaKAhQeyAgAC5q4=</functions>
-    <functions>6wafW/WrMSAXXUKad39IyT9QO9g=</functions>
-    <functions>iUWEJAdG7dvpTbZVHeFuuqF3JDw=</functions>
-    <functions>qpxWgycufwhGvVmeUBO6xqRWrXQ=</functions>
-    <functions>QnUl3vdUcBvuuEDz2K3mDSda7Uw=</functions>
-    <functions>JM+3V456PQGJZ3EAK2wKwdLPx4U=</functions>
-    <functions>yCusTQPN+4fRuo/BZP/o3qeyGlQ=</functions>
-    <functions>TsgZNU1zRr56zndlZFaoDMc3HYY=</functions>
-    <functions>WOb35hB9YaAVV+CcY+YGVbftUus=</functions>
-    <functions>Wam/KT3m8TTZMyZaCMOfyJ4Nl8Q=</functions>
-    <functions>feuygn/fD/kAgrOluqeBwIdGSN8=</functions>
-    <functions>/W9Gcu/9mPpmnlcLzqb07fE5NfU=</functions>
-    <functions>w0nnzgrgQArkJmBNTMgQndCvLEY=</functions>
-    <functions>DLgwr/zhr5/zU7XTTW0xwbX8xDk=</functions>
-    <functions>4XIirlBtHiS1Bj+U07f22Hbf6xo=</functions>
-    <functions>IV37E8LGcb3UZ4VcCoFGoFRXMAA=</functions>
-    <functions>nfm5DhGLP53urgKVUj7/azRbGiU=</functions>
-    <functions>y3EB6VotLcEDqzU5ye611iQpd08=</functions>
-    <functions>+OInO9eRUKfg4w7+GGNQIRlBYDQ=</functions>
-    <functions>QQUSujFeIVZnajdM74smV6sAtdw=</functions>
-    <functions>pMmcF/A3wZTg9BwAWar3xDZO3o0=</functions>
-    <functions>Je9QqhEaYHLFVdcnYkfNWXAGjJw=</functions>
-    <functions>EQ4aeACGgJCKgpkBFTm+KrTKM08=</functions>
-    <functions>hVn0zYeVB1UeUsQUs0EG5jWWZgc=</functions>
-    <functions>XUmcRhGoBzspZZ6bVrmAGUhomKY=</functions>
-    <functions>e93ywTYvWfPd3ZXQFlbyoKbffQ8=</functions>
-    <functions>52m/iQc/lZvmZ3uV6SZIrBOIdiY=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>3KbqEXGRb5gJv86LX6dVmj3GAKZX 2Y5FmGWAP2hKbPWCy2QtqjNX83a5 4Nu2rFHm1MyuKyxVeHNuwcHyCkYH 3yGaR1wGJu87YHtZTJv8RvCpcePr 349YVoy4xi47sEmkfFde89Ko4AFf 4GumGmjCx22QoZxq4f8fNB3F6rvB 2uvPkY1TxwTfJBM3rw72iUK7dpPd 3NrsVWiBQZtQy3c8pdFQr1vGNK1M vhcc6dUqkXSHtz9Xfzs7ANPhaMZ WkD8LFv1J2jYqY1bABc12EJwypY 3nkEM3SNBeS7tRKkAAA5L7RyBVs1 26fCEyGnCwnuobnM5fBBxh9nzGrR 2EqWQK6Dd8FJfnoT2n9WiDbSPgpA 2FTAajLWtEwm77j6E8F7M2igy9Go 2kkRRbtpezrv8aqjpj3Qa6DZurop 4XnWmo7P6FehkVGv5q24gXSNReqr 3ioSAfYQkwZsNCH5MEE7bNdW4U7P BH7cPrjpgX11gfedKeZqhN9RxEk 49AnUdP4PksDCLSimBx99C2LfwXw Txnkrjfcx5nb4ZKQCKCrJ6FLeTq 3CehyAyVSFZC7zhPmoKhcBj9qARr 3qPXG8UELRFFZUz9FEnEebHQv1ok 4U7DNVpSX3Ewe581KFzKT16jybDu uYELwegCb2WqDBCrEWvxACpFJb5 3J9xmL7fT87aMF7otRtM41xPbe4U XertMrvN6vv5pofjADeKjkq3Zo1 EnJoMULKv3NCgRtsBEk4DqnpNfQ 2rkfqLgkuXyQAShWjr3jLbFbJ5ug 2JP2kN43AZ2QTUJW1xDYTExSXfG9 2j6Axd7LwTxXeLp68j63a7ZTiEUN 4DzSrAk9tj6BeBePjBuhq9bb4HcZ</functions>
+  </members>
 </namespace>
 <function>
   <name>copyBriefFromCopyBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>70</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>70</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ppO9JcNDRHLDj36JVGH0zSixGv4=</id>
+  <id>3KbqEXGRb5gJv86LX6dVmj3GAKZX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the explicit brief.</literal>
-      </text>
-      <copied-from>copyBriefFromExplicitBrief</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the explicit brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>copyBriefFromExplicitBrief</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyBriefFromExplicitBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>48</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>48</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>bjvzloyWErD1DyNilcHo5vZFol4=</id>
+  <id>2Y5FmGWAP2hKbPWCy2QtqjNX83a5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the explicit brief.</literal>
-      </text>
-      <copied-from>explicitBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the explicit brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>explicitBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyBriefFromFirstSentenceAsBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>60</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>60</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>8m+HcfJ//1hM71kLKl4eg3ubQRo=</id>
+  <id>4Nu2rFHm1MyuKyxVeHNuwcHyCkYH</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the brief.</literal>
-      </text>
-      <copied-from>firstSentenceAsBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>firstSentenceAsBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyBriefFromFirstValid</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>55</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>55</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>1TGakYl7bDnE2QttJ28contJFuk=</id>
+  <id>3yGaR1wGJu87YHtZTJv8RvCpcePr</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function has documentation but no brief.</literal>
-      </text>
-      <copied-from>noDocFunction</copied-from>
-      <copied-from>docNoBriefFunction</copied-from>
-      <copied-from>explicitBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This function has documentation but no brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>noDocFunction</string>
+        <string>docNoBriefFunction</string>
+        <string>explicitBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDetailsFromCopyBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>104</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>104</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>k3Pi7vFhGs3GvaKAhQeyAgAC5q4=</id>
+  <id>349YVoy4xi47sEmkfFde89Ko4AFf</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Details will be copied</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Details will be copied</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDetailsFromDocNoBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>83</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>83</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>6wafW/WrMSAXXUKad39IyT9QO9g=</id>
+  <id>4GumGmjCx22QoZxq4f8fNB3F6rvB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Custom brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Custom brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDetailsFromExplicitBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>88</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>88</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>iUWEJAdG7dvpTbZVHeFuuqF3JDw=</id>
+  <id>2uvPkY1TxwTfJBM3rw72iUK7dpPd</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This description will never be copied as brief because it is an explicit brief.</literal>
-      </text>
-    </paragraph>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This description will never be copied as brief because it is an explicit brief.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDetailsFromFirstSentenceAsBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>93</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>93</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>qpxWgycufwhGvVmeUBO6xqRWrXQ=</id>
+  <id>3NrsVWiBQZtQy3c8pdFQr1vGNK1M</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is more documentation.</literal>
-      </text>
-    </paragraph>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This is more documentation.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDetailsFromNoDoc</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>77</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>77</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>QnUl3vdUcBvuuEDz2K3mDSda7Uw=</id>
+  <id>vhcc6dUqkXSHtz9Xfzs7ANPhaMZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Custom brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Custom brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDocFromCopyBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>135</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>135</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>JM+3V456PQGJZ3EAK2wKwdLPx4U=</id>
+  <id>WkD8LFv1J2jYqY1bABc12EJwypY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This description will never be copied as brief because it is an explicit brief.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This description will never be copied as brief because it is an explicit brief.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the explicit brief.</literal>
-      </text>
-      <copied-from>copyDocFromExplicitBrief</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the explicit brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>copyDocFromExplicitBrief</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDocFromExplicitBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>120</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>120</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>yCusTQPN+4fRuo/BZP/o3qeyGlQ=</id>
+  <id>3nkEM3SNBeS7tRKkAAA5L7RyBVs1</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This description will never be copied as brief because it is an explicit brief.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This description will never be copied as brief because it is an explicit brief.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the explicit brief.</literal>
-      </text>
-      <copied-from>explicitBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the explicit brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>explicitBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>copyDocFromFirstSentenceAsBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>125</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>125</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>TsgZNU1zRr56zndlZFaoDMc3HYY=</id>
+  <id>26fCEyGnCwnuobnM5fBBxh9nzGrR</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is more documentation.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This is more documentation.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the brief.</literal>
-      </text>
-      <copied-from>firstSentenceAsBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>firstSentenceAsBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>docNoBriefFunction</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>WOb35hB9YaAVV+CcY+YGVbftUus=</id>
+  <id>2EqWQK6Dd8FJfnoT2n9WiDbSPgpA</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function has documentation but no brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This function has documentation but no brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>explicitBriefFunction</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Wam/KT3m8TTZMyZaCMOfyJ4Nl8Q=</id>
+  <id>2FTAajLWtEwm77j6E8F7M2igy9Go</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This description will never be copied as brief because it is an explicit brief.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This description will never be copied as brief because it is an explicit brief.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the explicit brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the explicit brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>explicitBriefFunction2</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>24</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>feuygn/fD/kAgrOluqeBwIdGSN8=</id>
+  <id>2kkRRbtpezrv8aqjpj3Qa6DZurop</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This will not be copied as brief.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This will not be copied as brief.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the explicit brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the explicit brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCircularReferenceCopyFunction</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>175</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>175</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>/W9Gcu/9mPpmnlcLzqb07fE5NfU=</id>
+  <id>4XnWmo7P6FehkVGv5q24gXSNReqr</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCircularSourceFunctionA</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>165</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>165</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>w0nnzgrgQArkJmBNTMgQndCvLEY=</id>
+  <id>3ioSAfYQkwZsNCH5MEE7bNdW4U7P</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCircularSourceFunctionB</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>170</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>170</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>DLgwr/zhr5/zU7XTTW0xwbX8xDk=</id>
+  <id>BH7cPrjpgX11gfedKeZqhN9RxEk</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyBriefFromDocNoBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>43</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>4XIirlBtHiS1Bj+U07f22Hbf6xo=</id>
+  <id>49AnUdP4PksDCLSimBx99C2LfwXw</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function has documentation but no brief.</literal>
-      </text>
-      <copied-from>docNoBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This function has documentation but no brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>docNoBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyBriefFromInvalidReference</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>65</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>65</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>IV37E8LGcb3UZ4VcCoFGoFRXMAA=</id>
+  <id>Txnkrjfcx5nb4ZKQCKCrJ6FLeTq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyBriefFromNoDoc</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>38</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>38</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>nfm5DhGLP53urgKVUj7/azRbGiU=</id>
+  <id>3CehyAyVSFZC7zhPmoKhcBj9qARr</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyDetailsFromInvalidReference</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>98</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>98</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>y3EB6VotLcEDqzU5ye611iQpd08=</id>
+  <id>3qPXG8UELRFFZUz9FEnEebHQv1ok</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyDocFromDocNoBrief</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>115</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>115</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>+OInO9eRUKfg4w7+GGNQIRlBYDQ=</id>
+  <id>4U7DNVpSX3Ewe581KFzKT16jybDu</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function has documentation but no brief.</literal>
-      </text>
-      <copied-from>docNoBriefFunction</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This function has documentation but no brief.</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>docNoBriefFunction</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyDocFromInvalidReference</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>130</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>130</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>QQUSujFeIVZnajdM74smV6sAtdw=</id>
+  <id>uYELwegCb2WqDBCrEWvxACpFJb5</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failCopyDocFromNoDoc</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>110</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>110</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>pMmcF/A3wZTg9BwAWar3xDZO3o0=</id>
+  <id>3J9xmL7fT87aMF7otRtM41xPbe4U</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>failInvalidReferenceCopyFunctions</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>143</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>143</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Je9QqhEaYHLFVdcnYkfNWXAGjJw=</id>
+  <id>XertMrvN6vv5pofjADeKjkq3Zo1</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>firstSentenceAsBriefFunction</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>32</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>32</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>EQ4aeACGgJCKgpkBFTm+KrTKM08=</id>
+  <id>EnJoMULKv3NCgRtsBEk4DqnpNfQ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is more documentation.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This is more documentation.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This is the brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>This is the brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>noDocFunction</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>hVn0zYeVB1UeUsQUs0EG5jWWZgc=</id>
+  <id>2rkfqLgkuXyQAShWjr3jLbFbJ5ug</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>recursiveReferenceCopyFunction</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>160</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>160</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>XUmcRhGoBzspZZ6bVrmAGUhomKY=</id>
+  <id>2JP2kN43AZ2QTUJW1xDYTExSXfG9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Final recursive brief</literal>
-      </text>
-      <copied-from>recursiveSourceFunctionB</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Final recursive brief</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>recursiveSourceFunctionB</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>recursiveSourceFunctionA</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>150</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>150</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>e93ywTYvWfPd3ZXQFlbyoKbffQ8=</id>
+  <id>2j6Axd7LwTxXeLp68j63a7ZTiEUN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Final recursive brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Final recursive brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>recursiveSourceFunctionB</name>
-  <source>
-    <location>
-      <short-path>auto-brief.cpp</short-path>
-      <source-path>auto-brief.cpp</source-path>
-      <line-number>155</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>auto-brief.cpp</shortPath>
+        <sourcePath>auto-brief.cpp</sourcePath>
+        <lineNumber>155</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>52m/iQc/lZvmZ3uV6SZIrBOIdiY=</id>
+  <id>4DzSrAk9tj6BeBePjBuhq9bb4HcZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Final recursive brief</literal>
-      </text>
-      <copied-from>recursiveSourceFunctionA</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Final recursive brief</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>recursiveSourceFunctionA</string>
+      </copiedFrom>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

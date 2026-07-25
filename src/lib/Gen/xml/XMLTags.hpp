@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -60,8 +61,10 @@ private:
 
 //------------------------------------------------
 
-// Converters for attributes
-std::string toBase64Str(SymbolID const& id);
+// The XML text form of a SymbolID is its canonical base58 encoding. Exposed as
+// a toString overload so the writer renders ids the same way it renders any
+// other value with a toString, rather than hard-coding the encoding.
+inline std::string toString(SymbolID const& id) { return toBase58Str(id); }
 
 //------------------------------------------------
 
@@ -86,7 +89,7 @@ struct Attribute
     Attribute(
         SymbolID id)
         : name("id")
-        , value(toBase64Str(id))
+        , value(toBase58Str(id))
         , pred(id != SymbolID::invalid)
     {
     }

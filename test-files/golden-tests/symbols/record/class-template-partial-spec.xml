@@ -2,184 +2,188 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>class-template-partial-spec.cpp</short-path>
-      <source-path>class-template-partial-spec.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>class-template-partial-spec.cpp</shortPath>
+      <sourcePath>class-template-partial-spec.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <records>oAtKB0INIy/QCSdQExvcQwsaZJA=</records>
-      <records>RB9DBMAJDxjxuRQCinQOVPFSNek=</records>
-      <records>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <records>3EKey1mWyNg7GzNxX5zniTYUoVno x3d8fbyahtxciGMG9HjuUWNQJpQ 2PnQkR7WrLGShwHFpGVtu54B5oND</records>
+    </public>
+  </interface>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>class-template-partial-spec.cpp</short-path>
-      <source-path>class-template-partial-spec.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>class-template-partial-spec.cpp</shortPath>
+      <sourcePath>class-template-partial-spec.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>oAtKB0INIy/QCSdQExvcQwsaZJA=</id>
+  <id>3EKey1mWyNg7GzNxX5zniTYUoVno</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>V</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>V</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <specializations>RB9DBMAJDxjxuRQCinQOVPFSNek=</specializations>
-  <specializations>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</specializations>
+  <specializations>x3d8fbyahtxciGMG9HjuUWNQJpQ 2PnQkR7WrLGShwHFpGVtu54B5oND</specializations>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>class-template-partial-spec.cpp</short-path>
-      <source-path>class-template-partial-spec.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>class-template-partial-spec.cpp</shortPath>
+      <sourcePath>class-template-partial-spec.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>RB9DBMAJDxjxuRQCinQOVPFSNek=</id>
+  <id>x3d8fbyahtxciGMG9HjuUWNQJpQ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>long</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>oAtKB0INIy/QCSdQExvcQwsaZJA=</primary>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>long</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>long</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>3EKey1mWyNg7GzNxX5zniTYUoVno</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <isListedOnPrimary/>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>class-template-partial-spec.cpp</short-path>
-      <source-path>class-template-partial-spec.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>class-template-partial-spec.cpp</shortPath>
+      <sourcePath>class-template-partial-spec.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>Y/lm1lkT88vf1Ml123mbuN6Fp2Y=</id>
+  <id>2PnQkR7WrLGShwHFpGVtu54B5oND</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
-    <type-targ>
-      <kind>type</kind>
-      <pointer>
-        <named>
-          <name>
-            <kind>identifier</kind>
-            <identifier>U</identifier>
-          </name>
-        </named>
-      </pointer>
-    </type-targ>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>T</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>oAtKB0INIy/QCSdQExvcQwsaZJA=</primary>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <pointer>
+            <kind>pointer</kind>
+            <pointeeType>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>U</identifier>
+                  </identifier>
+                </name>
+              </named>
+            </pointeeType>
+          </pointer>
+        </type>
+      </type>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>T</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>3EKey1mWyNg7GzNxX5zniTYUoVno</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <is-listed-on-primary>1</is-listed-on-primary>
+  <isListedOnPrimary/>
 </record>
 </mrdocs>

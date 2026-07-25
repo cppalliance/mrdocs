@@ -2,327 +2,391 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <enums>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</enums>
-    <enums>YVlrwdT9xevSZZOb/TqEFyXYRzs=</enums>
-    <enums>pjF+x6gHHvGroB7+mumMEpLLPDw=</enums>
-    <enums>sSur7Z1606gfBcxeK64ws2daEXI=</enums>
-  </namespace-tranche>
+  <members>
+    <enums>3KTMV1UEXa6pL2Nx4Biz81FUjMLQ 2MfPaW2vcSoVERZgbCKh2TZnuFna 3KHr578xgvjPJcZsHSubte1cF7hu 3UAJrXBQZ4TwyCiQV63EMpZcyNph</enums>
+  </members>
 </namespace>
 <enum>
   <name>E0</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>enum.cpp</shortPath>
+      <sourcePath>enum.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</id>
+  <id>3KTMV1UEXa6pL2Nx4Biz81FUjMLQ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>E0 description.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>E0 description.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>E0 brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>E0 brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <constants>PKsKOtl3cLUHJP4nEw+EKQK4fUE=</constants>
-  <constants>AXLqFIJBEk7eAdup5AR/wvnrMzc=</constants>
+  </doc>
+  <constants>r2HQgs7s4mKkW7axZTsAtqXGoZJ 2AuQvUsVAesEi4mtBaemUbWNdPL</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>e0</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>PKsKOtl3cLUHJP4nEw+EKQK4fUE=</id>
+  <id>r2HQgs7s4mKkW7axZTsAtqXGoZJ</id>
   <extraction>regular</extraction>
-  <parent>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e0 description.</literal>
-      </text>
-    </paragraph>
+  <parent>3KTMV1UEXa6pL2Nx4Biz81FUjMLQ</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>e0 description.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e0 brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>e0 brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <initializer>1</initializer>
-</enum-constant>
-<enum-constant>
+  </doc>
+  <initializer>
+    <written>1</written>
+    <value>1</value>
+  </initializer>
+</enumConstant>
+<enumConstant>
   <name>e1</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>AXLqFIJBEk7eAdup5AR/wvnrMzc=</id>
+  <id>2AuQvUsVAesEi4mtBaemUbWNdPL</id>
   <extraction>regular</extraction>
-  <parent>pmVtLf5hBBPEGDMBiRb6W7pOgbU=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e1 description.</literal>
-      </text>
-    </paragraph>
+  <parent>3KTMV1UEXa6pL2Nx4Biz81FUjMLQ</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>e1 description.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e1 brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>e1 brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
+  </doc>
+</enumConstant>
 <enum>
   <name>E1</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>enum.cpp</shortPath>
+      <sourcePath>enum.cpp</sourcePath>
+      <lineNumber>19</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>YVlrwdT9xevSZZOb/TqEFyXYRzs=</id>
+  <id>2MfPaW2vcSoVERZgbCKh2TZnuFna</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>char</identifier>
-    </name>
-  </named>
-  <constants>WhHxTXqItGXwZujc82O1Xfzbaz4=</constants>
-  <constants>Rifzp55QTXd/noKg5TyWoEJWlpE=</constants>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>char</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>2FnEwqfaFda9ifo4wmhS2rUCDm9F ygwt295TvzDjNzzKY54nR16Jidn</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>e2</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>21</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>WhHxTXqItGXwZujc82O1Xfzbaz4=</id>
+  <id>2FnEwqfaFda9ifo4wmhS2rUCDm9F</id>
   <extraction>regular</extraction>
-  <parent>YVlrwdT9xevSZZOb/TqEFyXYRzs=</parent>
-</enum-constant>
-<enum-constant>
+  <parent>2MfPaW2vcSoVERZgbCKh2TZnuFna</parent>
+</enumConstant>
+<enumConstant>
   <name>e3</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>22</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>22</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>Rifzp55QTXd/noKg5TyWoEJWlpE=</id>
+  <id>ygwt295TvzDjNzzKY54nR16Jidn</id>
   <extraction>regular</extraction>
-  <parent>YVlrwdT9xevSZZOb/TqEFyXYRzs=</parent>
-</enum-constant>
+  <parent>2MfPaW2vcSoVERZgbCKh2TZnuFna</parent>
+</enumConstant>
 <enum>
   <name>E2</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>29</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>enum.cpp</shortPath>
+      <sourcePath>enum.cpp</sourcePath>
+      <lineNumber>29</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>pjF+x6gHHvGroB7+mumMEpLLPDw=</id>
+  <id>3KHr578xgvjPJcZsHSubte1cF7hu</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>E2 description.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>E2 description.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>E2 brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>E2 brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
+  </doc>
   <scoped/>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <constants>RyRlkoU0rHCqW5D5O8YXfJrvfaw=</constants>
-  <constants>xFkU6j7yjwyQB2aStQjCIF9O+sQ=</constants>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>zVANUVQkR2FBAfEq1uuApAbJjmd 3jf5YktNnXsKHHc6Dd4aZaTcWfdD</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>e4</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>35</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>RyRlkoU0rHCqW5D5O8YXfJrvfaw=</id>
+  <id>zVANUVQkR2FBAfEq1uuApAbJjmd</id>
   <extraction>regular</extraction>
-  <parent>pjF+x6gHHvGroB7+mumMEpLLPDw=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e4 description.</literal>
-      </text>
-    </paragraph>
+  <parent>3KHr578xgvjPJcZsHSubte1cF7hu</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>e4 description.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e4 brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>e4 brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
-<enum-constant>
+  </doc>
+</enumConstant>
+<enumConstant>
   <name>e5</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>40</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>40</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>xFkU6j7yjwyQB2aStQjCIF9O+sQ=</id>
+  <id>3jf5YktNnXsKHHc6Dd4aZaTcWfdD</id>
   <extraction>regular</extraction>
-  <parent>pjF+x6gHHvGroB7+mumMEpLLPDw=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e5 description.</literal>
-      </text>
-    </paragraph>
+  <parent>3KHr578xgvjPJcZsHSubte1cF7hu</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>e5 description.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>e5 brief.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>e5 brief.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-</enum-constant>
+  </doc>
+</enumConstant>
 <enum>
   <name>E3</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>43</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>enum.cpp</shortPath>
+      <sourcePath>enum.cpp</sourcePath>
+      <lineNumber>43</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>enum</kind>
-  <id>sSur7Z1606gfBcxeK64ws2daEXI=</id>
+  <id>3UAJrXBQZ4TwyCiQV63EMpZcyNph</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <scoped/>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>char</identifier>
-    </name>
-  </named>
-  <constants>m/aInWQVfzBhSp/BbwL1S6HYfgI=</constants>
-  <constants>s6xZcC+IxMf8dGaSjBuD4CkmAuU=</constants>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>char</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>char</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>3B2PdUCsvkNeHGBtyc36LTQD8acy 3WBbeTELJtHvqB3yFA7i75zCxVEU</constants>
 </enum>
-<enum-constant>
+<enumConstant>
   <name>e6</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>45</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>45</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>m/aInWQVfzBhSp/BbwL1S6HYfgI=</id>
+  <id>3B2PdUCsvkNeHGBtyc36LTQD8acy</id>
   <extraction>regular</extraction>
-  <parent>sSur7Z1606gfBcxeK64ws2daEXI=</parent>
-</enum-constant>
-<enum-constant>
+  <parent>3UAJrXBQZ4TwyCiQV63EMpZcyNph</parent>
+</enumConstant>
+<enumConstant>
   <name>e7</name>
-  <source>
-    <location>
-      <short-path>enum.cpp</short-path>
-      <source-path>enum.cpp</source-path>
-      <line-number>46</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>enum.cpp</shortPath>
+        <sourcePath>enum.cpp</sourcePath>
+        <lineNumber>46</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>enum-constant</kind>
-  <id>s6xZcC+IxMf8dGaSjBuD4CkmAuU=</id>
+  <id>3WBbeTELJtHvqB3yFA7i75zCxVEU</id>
   <extraction>regular</extraction>
-  <parent>sSur7Z1606gfBcxeK64ws2daEXI=</parent>
-</enum-constant>
+  <parent>3UAJrXBQZ4TwyCiQV63EMpZcyNph</parent>
+</enumConstant>
 </mrdocs>

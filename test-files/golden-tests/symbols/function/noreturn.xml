@@ -2,117 +2,152 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
-    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
-  </namespace-tranche>
+  <members>
+    <records>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</records>
+    <functions>9SrB1UL3KesEDpt7G1mT9bvMnqC</functions>
+  </members>
 </namespace>
 <record>
   <name>T</name>
-  <source>
-    <location>
-      <short-path>noreturn.cpp</short-path>
-      <source-path>noreturn.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>noreturn.cpp</shortPath>
+      <sourcePath>noreturn.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</functions>
-      <static-functions>QjsWLydQujVa097RP8f2Lq3nLQ4=</static-functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <friend>
-    <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
-  </friend>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>26EMFdhdqkvSeDrdJJWTpY8Ehyue</functions>
+      <staticFunctions>vWz71idoRD1yaaSJcwjzzhQw7aV</staticFunctions>
+    </public>
+  </interface>
+  <friends>
+    <friendInfo>
+      <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
+    </friendInfo>
+  </friends>
 </record>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>noreturn.cpp</short-path>
-      <source-path>noreturn.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>noreturn.cpp</shortPath>
+        <sourcePath>noreturn.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>TkBjWwqMDycyUbq+TJZ9qfUhSn0=</id>
+  <id>26EMFdhdqkvSeDrdJJWTpY8Ehyue</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-no-return/>
-  <is-record-method/>
-  <attributes>noreturn</attributes>
+  <parent>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</parent>
+  <attributes>
+    <noreturn>
+      <kind>noreturn</kind>
+      <name>noreturn</name>
+    </noreturn>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>noreturn.cpp</short-path>
-      <source-path>noreturn.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>noreturn.cpp</shortPath>
+        <sourcePath>noreturn.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>QjsWLydQujVa097RP8f2Lq3nLQ4=</id>
+  <id>vWz71idoRD1yaaSJcwjzzhQw7aV</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-no-return/>
-  <is-record-method/>
-  <attributes>noreturn</attributes>
+  <parent>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</parent>
+  <attributes>
+    <noreturn>
+      <kind>noreturn</kind>
+      <name>noreturn</name>
+    </noreturn>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <storageClass>static</storageClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>noreturn.cpp</short-path>
-      <source-path>noreturn.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>14</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>noreturn.cpp</shortPath>
+        <sourcePath>noreturn.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>14</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-no-return/>
-  <attributes>noreturn</attributes>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <noreturn>
+      <kind>noreturn</kind>
+      <name>noreturn</name>
+    </noreturn>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

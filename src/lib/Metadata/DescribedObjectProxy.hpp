@@ -3,6 +3,8 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+//
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
@@ -14,7 +16,6 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Support/Describe.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Expected.hpp>
 #include <mrdocs/Support/String.hpp>
@@ -203,17 +204,17 @@ Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src);
 
 template <typename T>
-    requires mrdocs::detail::is_optional_v<T>
+    requires mrdocs::is_specialization_of_v<T, mrdocs::Optional>
 Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src);
 
 template <typename T>
-    requires mrdocs::detail::is_vector_v<T>
+    requires mrdocs::is_specialization_of_v<T, std::vector>
 Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src);
 
 template <typename T>
-    requires mrdocs::detail::is_polymorphic_v<T>
+    requires mrdocs::is_specialization_of_v<T, mrdocs::Polymorphic>
 Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src);
 
@@ -280,39 +281,16 @@ assignFromDom(
     if (!src.isString())
     {
         return Unexpected(formatError(
-            "field '{}' expects a base16 SymbolID string",
+            "field '{}' expects a base58 SymbolID string",
             fieldName));
     }
-    std::string_view const s = src.getString();
-    constexpr std::size_t kIdBytes = 20;
-    constexpr std::size_t kHexLen = kIdBytes * 2;
-    if (s.size() != kHexLen)
+    auto const id = fromBase58Str(src.getString());
+    if (!id)
     {
         return Unexpected(formatError(
-            "field '{}' expects a {}-character base16 SymbolID, got {} characters",
-            fieldName, kHexLen, s.size()));
+            "field '{}' expects a valid base58 SymbolID", fieldName));
     }
-    auto const decode = [](char c) -> int
-    {
-        if (c >= '0' && c <= '9') { return c - '0'; }
-        if (c >= 'a' && c <= 'f') { return 10 + (c - 'a'); }
-        if (c >= 'A' && c <= 'F') { return 10 + (c - 'A'); }
-        return -1;
-    };
-    SymbolID::value_type bytes[kIdBytes] = {};
-    for (std::size_t i = 0; i < kIdBytes; ++i)
-    {
-        int const hi = decode(s[(i * 2) + 0]);
-        int const lo = decode(s[(i * 2) + 1]);
-        if (hi < 0 || lo < 0)
-        {
-            return Unexpected(formatError(
-                "field '{}' has an invalid base16 character",
-                fieldName));
-        }
-        bytes[i] = static_cast<SymbolID::value_type>((hi << 4) | lo);
-    }
-    dest = SymbolID(bytes);
+    dest = *id;
     return {};
 }
 
@@ -349,7 +327,7 @@ assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
 }
 
 template <typename T>
-    requires mrdocs::detail::is_optional_v<T>
+    requires mrdocs::is_specialization_of_v<T, mrdocs::Optional>
 Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
 {
@@ -376,7 +354,7 @@ assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
 }
 
 template <typename T>
-    requires mrdocs::detail::is_vector_v<T>
+    requires mrdocs::is_specialization_of_v<T, std::vector>
 Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
 {
@@ -393,7 +371,7 @@ assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
     {
         T fresh;
         fresh.reserve(1);
-        if constexpr (mrdocs::detail::is_polymorphic_v<Element>)
+        if constexpr (mrdocs::is_specialization_of_v<Element, mrdocs::Polymorphic>)
         {
             Expected<void> r = buildPolymorphic<Element>(
                 src, fieldName,
@@ -426,7 +404,7 @@ assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
     std::size_t const n = arr.size();
     T fresh;
     fresh.reserve(n);
-    if constexpr (mrdocs::detail::is_polymorphic_v<Element>)
+    if constexpr (mrdocs::is_specialization_of_v<Element, mrdocs::Polymorphic>)
     {
         for (std::size_t i = 0; i < n; ++i)
         {
@@ -457,7 +435,7 @@ assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
 }
 
 template <typename T>
-    requires mrdocs::detail::is_polymorphic_v<T>
+    requires mrdocs::is_specialization_of_v<T, mrdocs::Polymorphic>
 Expected<void>
 assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
 {
@@ -1014,7 +992,7 @@ public:
     void
     emplace_back(dom::Value value) override
     {
-        if constexpr (mrdocs::detail::is_polymorphic_v<T>)
+        if constexpr (mrdocs::is_specialization_of_v<T, mrdocs::Polymorphic>)
         {
             Expected<void> r = detail::described_setter::buildPolymorphic<T>(
                 value, "array element",
@@ -1047,7 +1025,7 @@ private:
     Expected<void>
     applyArrayWrite(dom::Value const& value, T& dest)
     {
-        if constexpr (mrdocs::detail::is_polymorphic_v<T>)
+        if constexpr (mrdocs::is_specialization_of_v<T, mrdocs::Polymorphic>)
         {
             return detail::described_setter::buildPolymorphic<T>(
                 value, "array element",
@@ -1068,7 +1046,7 @@ private:
 // Convert a described C++ member value to a DOM value:
 //
 //  - Primitives (string, bool, integers) become matching DOM scalars.
-//  - `SymbolID` becomes its base16 string (no recursive-symbol trick).
+//  - `SymbolID` becomes its base58 string (no recursive-symbol trick).
 //  - Described enums become their kebab-case string.
 //  - `Optional<T>` collapses to `null` when empty, else recurses.
 //  - `vector<T>` becomes a `DescribedArrayProxy` over the live vector.
@@ -1095,7 +1073,7 @@ describedValueToDom(T& value)
     }
     else if constexpr (std::is_same_v<U, SymbolID>)
     {
-        return dom::Value(toBase16Str(value));
+        return dom::Value(toBase58Str(value));
     }
     else if constexpr (std::is_integral_v<U>)
     {
@@ -1106,7 +1084,7 @@ describedValueToDom(T& value)
     {
         return dom::Value(toString(value));
     }
-    else if constexpr (mrdocs::detail::is_optional_v<U>)
+    else if constexpr (mrdocs::is_specialization_of_v<U, mrdocs::Optional>)
     {
         if (!value.has_value())
         {
@@ -1114,12 +1092,12 @@ describedValueToDom(T& value)
         }
         return describedValueToDom(*value);
     }
-    else if constexpr (mrdocs::detail::is_vector_v<U>)
+    else if constexpr (mrdocs::is_specialization_of_v<U, std::vector>)
     {
         using Element = typename U::value_type;
         return dom::Value(dom::newArray<DescribedArrayProxy<Element>>(value));
     }
-    else if constexpr (mrdocs::detail::is_polymorphic_v<U>)
+    else if constexpr (mrdocs::is_specialization_of_v<U, mrdocs::Polymorphic>)
     {
         if (value.valueless_after_move())
         {

@@ -30,22 +30,6 @@ operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
     return lhs->Kind <=> rhs->Kind;
 }
 
-std::string_view
-toString(
-    TemplateSpecKind kind)
-{
-    switch(kind)
-    {
-    case TemplateSpecKind::Primary:
-        return "primary";
-    case TemplateSpecKind::Explicit:
-        return "explicit";
-    case TemplateSpecKind::Partial:
-        return "partial";
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
 
 std::strong_ordering
 operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)

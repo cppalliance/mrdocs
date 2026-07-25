@@ -229,6 +229,60 @@ toBase64(std::string_view str)
     return dest;
 }
 
+std::string
+toBase58(std::string_view str)
+{
+    static constexpr char alphabet[] =
+        "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+    auto const* const begin = reinterpret_cast<unsigned char const*>(str.data());
+    auto const* const end = begin + str.size();
+    auto const* p = begin;
+
+    // Leading zero bytes are encoded as leading '1's.
+    std::size_t zeroes = 0;
+    while (p != end && *p == 0)
+    {
+        ++p;
+        ++zeroes;
+    }
+
+    // Big-endian base58 digits; size bounded by log(256)/log(58) ~ 1.38.
+    std::vector<unsigned char> b58((end - p) * 138 / 100 + 1, 0);
+    std::size_t length = 0;
+    for (; p != end; ++p)
+    {
+        int carry = *p;
+        std::size_t i = 0;
+        for (auto it = b58.rbegin();
+             (carry != 0 || i < length) && it != b58.rend();
+             ++it, ++i)
+        {
+            carry += 256 * *it;
+            *it = static_cast<unsigned char>(carry % 58);
+            carry /= 58;
+        }
+        MRDOCS_ASSERT(carry == 0);
+        length = i;
+    }
+
+    // Skip the leading zero digits that padded the buffer.
+    auto it = b58.begin() + (b58.size() - length);
+    while (it != b58.end() && *it == 0)
+    {
+        ++it;
+    }
+
+    std::string dest;
+    dest.reserve(zeroes + (b58.end() - it));
+    dest.assign(zeroes, '1');
+    for (; it != b58.end(); ++it)
+    {
+        dest.push_back(alphabet[*it]);
+    }
+    return dest;
+}
+
 llvm::StringRef
 toBaseFN(
     llvm::SmallVectorImpl<char>& dest,

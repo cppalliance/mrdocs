@@ -2,235 +2,282 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>+jO0pmMB/RXahxtatVUYoEwUKWs=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>4VB1YRZ5xEZNSpqzp72yMeXnHRtn</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>boost</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>+jO0pmMB/RXahxtatVUYoEwUKWs=</id>
+  <id>4VB1YRZ5xEZNSpqzp72yMeXnHRtn</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <namespaces>8vOLQN1FS3phbXzrBx8KohfFQCw=</namespaces>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <namespaces>4PKCbiXWLSQLdc6PvR9QPfaqgm8o</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>openmethod</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>16</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>16</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>8vOLQN1FS3phbXzrBx8KohfFQCw=</id>
+  <id>4PKCbiXWLSQLdc6PvR9QPfaqgm8o</id>
   <extraction>regular</extraction>
-  <parent>+jO0pmMB/RXahxtatVUYoEwUKWs=</parent>
-  <namespace-tranche>
-    <namespaces>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</namespaces>
-    <functions>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</functions>
-  </namespace-tranche>
+  <parent>4VB1YRZ5xEZNSpqzp72yMeXnHRtn</parent>
+  <members>
+    <namespaces>2wTDWZNbuZMxhis4kUXDJBbauYQk</namespaces>
+    <functions>ybPjG2iqAbdhpTcJDGdjMevEGfR</functions>
+  </members>
 </namespace>
 <namespace>
   <name>policies</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</id>
+  <id>2wTDWZNbuZMxhis4kUXDJBbauYQk</id>
   <extraction>regular</extraction>
-  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
-  <namespace-tranche>
-    <namespaces>TVhmFYxnwUAmcG327zb+ghem758=</namespaces>
-  </namespace-tranche>
+  <parent>4PKCbiXWLSQLdc6PvR9QPfaqgm8o</parent>
+  <members>
+    <namespaces>25VsxonTAWq19KgzBKXuVSfabrFp</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>runtime_checks</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>8</line-number>
-      <column-number>23</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>23</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>TVhmFYxnwUAmcG327zb+ghem758=</id>
+  <id>25VsxonTAWq19KgzBKXuVSfabrFp</id>
   <extraction>regular</extraction>
-  <parent>iyqzr2bAIIz4tcVOh2wjYTkCOC0=</parent>
-  <namespace-tranche>
-    <records>1Jkj+l8tdM+DGWC1GVMWML70iGA=</records>
-  </namespace-tranche>
+  <parent>2wTDWZNbuZMxhis4kUXDJBbauYQk</parent>
+  <members>
+    <records>3xnfYQLNNLg8No71C7RhFD8tJf4b</records>
+  </members>
 </namespace>
 <record>
   <name>runtime_checks</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>9</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>9</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>1Jkj+l8tdM+DGWC1GVMWML70iGA=</id>
+  <id>3xnfYQLNNLg8No71C7RhFD8tJf4b</id>
   <extraction>regular</extraction>
-  <parent>TVhmFYxnwUAmcG327zb+ghem758=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>See </literal>
-      </text>
-      <reference>
-        <kind>reference</kind>
-        <literal>final_virtual_ptr</literal>
-        <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
-      </reference>
-    </paragraph>
+  <parent>25VsxonTAWq19KgzBKXuVSfabrFp</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>See </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>final_virtual_ptr</literal>
+            <id>ybPjG2iqAbdhpTcJDGdjMevEGfR</id>
+          </reference>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Documentation with ref to final_virtual_ptr</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documentation with ref to final_virtual_ptr</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <overloads>
   <name>final_virtual_ptr</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>5</column-number>
-    </location>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>RgmcrbKVGmXz6c3Lxk0nacbfXkg=</id>
+  <id>ybPjG2iqAbdhpTcJDGdjMevEGfR</id>
   <extraction>regular</extraction>
-  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
-  <func-class>normal</func-class>
-  <members>jq5N3pt8pWn/EcTzXTPM1Gj1O9s=</members>
-  <members>N+/tS2Uxf62zshI73QwQ0n3wcJg=</members>
-  <auto>
-  </auto>
+  <parent>4PKCbiXWLSQLdc6PvR9QPfaqgm8o</parent>
+  <funcClass>normal</funcClass>
+  <members>2zHubMxC8DhmQqJ4uEgW8XmcJ1C6 nCZfjh1pyYLiL6uzpEJx21avgcP</members>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
 </overloads>
 <function>
   <name>final_virtual_ptr</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>jq5N3pt8pWn/EcTzXTPM1Gj1O9s=</id>
+  <id>2zHubMxC8DhmQqJ4uEgW8XmcJ1C6</id>
   <extraction>regular</extraction>
-  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
-  <auto>
-  </auto>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>Arg</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>obj</name>
-  </param>
+  <parent>4PKCbiXWLSQLdc6PvR9QPfaqgm8o</parent>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <identifier>Arg</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
+      <name>obj</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>Arg</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>Arg</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>final_virtual_ptr</name>
-  <source>
-    <location>
-      <short-path>parent_context.cpp</short-path>
-      <source-path>parent_context.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>parent_context.cpp</shortPath>
+        <sourcePath>parent_context.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>N+/tS2Uxf62zshI73QwQ0n3wcJg=</id>
+  <id>nCZfjh1pyYLiL6uzpEJx21avgcP</id>
   <extraction>regular</extraction>
-  <parent>8vOLQN1FS3phbXzrBx8KohfFQCw=</parent>
-  <auto>
-  </auto>
-  <param>
-    <r-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <identifier>Arg</identifier>
-        </name>
-      </named>
-    </r-value-reference>
-    <name>obj</name>
-  </param>
+  <parent>4PKCbiXWLSQLdc6PvR9QPfaqgm8o</parent>
+  <returnType>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+    </auto>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <identifier>Arg</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
+      <name>obj</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>Registry</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>Arg</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>Registry</name>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>Arg</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

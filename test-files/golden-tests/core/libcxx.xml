@@ -2,104 +2,142 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>Ys2WHtLDVIke+oa2xBB2ekE+xds=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2NqXGvCohbR7tu7uXhgvYD1vTTdk</functions>
+  </members>
 </namespace>
 <function>
   <name>sqrt</name>
-  <source>
-    <location>
-      <short-path>libcxx.cpp</short-path>
-      <source-path>libcxx.cpp</source-path>
-      <line-number>149</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>libcxx.cpp</shortPath>
+        <sourcePath>libcxx.cpp</sourcePath>
+        <lineNumber>149</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Ys2WHtLDVIke+oa2xBB2ekE+xds=</id>
+  <id>2NqXGvCohbR7tu7uXhgvYD1vTTdk</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>This function calculates the square root of a given integral value using bit manipulation.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>This function calculates the square root of a given integral value using bit manipulation.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Computes the square root of an integral value.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Computes the square root of an integral value.</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The square root of the input value.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The square root of the input value.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The integral value to compute the square root of.</literal>
-      </text>
-      <name>value</name>
-    </param>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The type of the input value. Must be an integral type.</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-    <throws>
-      <kind>throws</kind>
-      <text>
-        <kind>text</kind>
-        <literal>if the input value is negative.</literal>
-      </text>
-      <reference>
-        <kind>reference</kind>
-        <literal>std::invalid_argument</literal>
-      </reference>
-    </throws>
-  </doc-comment>
-  <named>
-    <constraints>std::is_integral_v&lt;T&gt;</constraints>
-    <name>
-      <kind>identifier</kind>
-      <identifier>T</identifier>
-    </name>
-  </named>
-  <param>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The integral value to compute the square root of.</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The type of the input value. Must be an integral type.</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+    </tparams>
+    <exceptions>
+      <throws>
+        <kind>throws</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>if the input value is negative.</literal>
+          </text>
+        </children>
+        <exception>
+          <kind>reference</kind>
+          <literal>std::invalid_argument</literal>
+        </exception>
+      </throws>
+    </exceptions>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
+      <constraints>
+        <string>std::is_integral_v&lt;T&gt;</string>
+      </constraints>
       <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>T</identifier>
+        </identifier>
       </name>
     </named>
-    <name>value</name>
-  </param>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>std::is_integral_v&lt;T&gt;</requires>
 </function>
 </mrdocs>

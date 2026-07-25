@@ -43,17 +43,6 @@ MRDOCS_DESCRIBE_ENUM(
     UsingClass,
     Normal, Typename, Enum)
 
-/** Return the UsingClass as a @ref dom::Value string.
-
-    @param v The output value.
-    @param kind The UsingClass to convert.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    UsingClass kind);
-
 /** Info for using declarations.
 
     For instance, the following code:

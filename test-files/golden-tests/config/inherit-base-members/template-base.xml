@@ -2,406 +2,557 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>gSa0yJZ5wX/+n5uAzlRPKCOgQ4Q=</records>
-    <records>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</records>
-    <records>qSoIJ38D4p+grUCWP6X5kItp3a8=</records>
-    <records>VmATJ/H4380dpA0mtYd7uf/hcZA=</records>
-  </namespace-tranche>
+  <members>
+    <records>2oMphhZSuCJwKCJVYpwaRharQkKV 2QNTTB9W6ddCyrosjUkvpw72URGc 3Mh5YCvsGhZTTNjciaQ48gzZCfSN 2Co5cQRLpHyqoKUvAErKwzkfJBuy</records>
+  </members>
 </namespace>
 <record>
   <name>base</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>template-base.cpp</shortPath>
+      <sourcePath>template-base.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</id>
+  <id>2QNTTB9W6ddCyrosjUkvpw72URGc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A class template base.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A class template base.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
+  </doc>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <derived>qSoIJ38D4p+grUCWP6X5kItp3a8=</derived>
-  <derived>VmATJ/H4380dpA0mtYd7uf/hcZA=</derived>
-  <record-interface>
-    <record-tranche>
-      <functions>POYVSjIb9yYJwMJ0idlrE7qVb8s=</functions>
-      <functions>Jykv51AJ/2ySE5tqs91b5BH4PR0=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <derived>3Mh5YCvsGhZTTNjciaQ48gzZCfSN 2Co5cQRLpHyqoKUvAErKwzkfJBuy</derived>
+  <interface>
+    <public>
+      <functions>rD6LVYokKT6qAqBkQ9FC7yjA7qC YeKchvKZkQLkNDn4u5w8DKpAanp</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>method</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-base.cpp</shortPath>
+        <sourcePath>template-base.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>POYVSjIb9yYJwMJ0idlrE7qVb8s=</id>
+  <id>rD6LVYokKT6qAqBkQ9FC7yjA7qC</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</parent>
-  <doc-comment>
+  <parent>2QNTTB9W6ddCyrosjUkvpw72URGc</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A regular member function that should also be inherited.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular member function that should also be inherited.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator[]</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-base.cpp</shortPath>
+        <sourcePath>template-base.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>Jykv51AJ/2ySE5tqs91b5BH4PR0=</id>
+  <id>YeKchvKZkQLkNDn4u5w8DKpAanp</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</parent>
-  <doc-comment>
+  <parent>2QNTTB9W6ddCyrosjUkvpw72URGc</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Indexing operator that should be inherited.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Indexing operator that should be inherited.</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>n</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>n</name>
     </param>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>n</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>[]</overloadedOperator>
+  <isRecordMethod/>
 </function>
 <record>
   <name>concrete_derived</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>template-base.cpp</shortPath>
+      <sourcePath>template-base.cpp</sourcePath>
+      <lineNumber>27</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>qSoIJ38D4p+grUCWP6X5kItp3a8=</id>
+  <id>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A non-template that inherits from a concrete specialization.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A non-template that inherits from a concrete specialization.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</id>
-        <identifier>base</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>9X0U5wi8aI04GBZwYXOMit+BPNs=</functions>
-      <functions>fJuJ+E/X6B4WdSCqYQX0onTsvhs=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>class</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2QNTTB9W6ddCyrosjUkvpw72URGc</id>
+              <identifier>base</identifier>
+              <templateArgs>
+                <type>
+                  <kind>type</kind>
+                  <type>
+                    <named>
+                      <kind>named</kind>
+                      <name>
+                        <identifier>
+                          <kind>identifier</kind>
+                          <identifier>int</identifier>
+                        </identifier>
+                      </name>
+                      <fundamentalType>int</fundamentalType>
+                    </named>
+                  </type>
+                </type>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>4RN7U35H91MmCjs1PhSU1Qeu5GEE 2jgt4CfAs6R1oiBp6PEsdzFAn6yY</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>method</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-base.cpp</shortPath>
+        <sourcePath>template-base.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>9X0U5wi8aI04GBZwYXOMit+BPNs=</id>
+  <id>4RN7U35H91MmCjs1PhSU1Qeu5GEE</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <isCopyFromInherited/>
+  <parent>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</parent>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator[]</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-base.cpp</shortPath>
+        <sourcePath>template-base.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>fJuJ+E/X6B4WdSCqYQX0onTsvhs=</id>
+  <id>2jgt4CfAs6R1oiBp6PEsdzFAn6yY</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>qSoIJ38D4p+grUCWP6X5kItp3a8=</parent>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>n</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <isCopyFromInherited/>
+  <parent>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</parent>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>n</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>[]</overloadedOperator>
+  <isRecordMethod/>
 </function>
 <record>
   <name>derived</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>template-base.cpp</shortPath>
+      <sourcePath>template-base.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>VmATJ/H4380dpA0mtYd7uf/hcZA=</id>
+  <id>2Co5cQRLpHyqoKUvAErKwzkfJBuy</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A class template that inherits from </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>base&lt;T&gt;</literal>
+          <literal>A class template that inherits from </literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal>.</literal>
-      </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>base&lt;T&gt;</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
+  </doc>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <base>
-    <named>
-      <name>
-        <kind>specialization</kind>
-        <id>ZLNgZaGs9JV18Yo8wi3pzzp4vfE=</id>
-        <identifier>base</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>w8SzajsNCB5ck0YpsMvHduC9g1E=</functions>
-      <functions>vt7li1a/kZQyCXxHvrdak2VBJQw=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <specialization>
+              <kind>specialization</kind>
+              <id>2QNTTB9W6ddCyrosjUkvpw72URGc</id>
+              <identifier>base</identifier>
+              <templateArgs>
+                <type>
+                  <kind>type</kind>
+                  <type>
+                    <named>
+                      <kind>named</kind>
+                      <name>
+                        <identifier>
+                          <kind>identifier</kind>
+                          <identifier>T</identifier>
+                        </identifier>
+                      </name>
+                    </named>
+                  </type>
+                </type>
+              </templateArgs>
+            </specialization>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>3jBv2HPtFDMbMQGF3zp7QXBLuzfa 3fENyx57kdBGyVfWg3dAP8yPRYu9</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>method</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>17</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-base.cpp</shortPath>
+        <sourcePath>template-base.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>w8SzajsNCB5ck0YpsMvHduC9g1E=</id>
+  <id>3jBv2HPtFDMbMQGF3zp7QXBLuzfa</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>VmATJ/H4380dpA0mtYd7uf/hcZA=</parent>
-  <doc-comment>
+  <isCopyFromInherited/>
+  <parent>2Co5cQRLpHyqoKUvAErKwzkfJBuy</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A regular member function that should also be inherited.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular member function that should also be inherited.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>operator[]</name>
-  <source>
-    <location>
-      <short-path>template-base.cpp</short-path>
-      <source-path>template-base.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>template-base.cpp</shortPath>
+        <sourcePath>template-base.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>vt7li1a/kZQyCXxHvrdak2VBJQw=</id>
+  <id>3fENyx57kdBGyVfWg3dAP8yPRYu9</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>VmATJ/H4380dpA0mtYd7uf/hcZA=</parent>
-  <doc-comment>
+  <isCopyFromInherited/>
+  <parent>2Co5cQRLpHyqoKUvAErKwzkfJBuy</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Indexing operator that should be inherited.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Indexing operator that should be inherited.</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>n</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>T</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The right operand</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>n</name>
     </param>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>T</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>n</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>[]</overloadedOperator>
+  <isRecordMethod/>
 </function>
 </mrdocs>

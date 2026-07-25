@@ -2,65 +2,61 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>TbLT2OLri0f15uavHJgGv+UqjH0=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>25nS9SA2iJ6bvopD2mHUzyPCiMBJ</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>repro</name>
-  <source>
-    <location>
-      <short-path>friend-recursive.cpp</short-path>
-      <source-path>friend-recursive.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>friend-recursive.cpp</shortPath>
+        <sourcePath>friend-recursive.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>TbLT2OLri0f15uavHJgGv+UqjH0=</id>
+  <id>25nS9SA2iJ6bvopD2mHUzyPCiMBJ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>FCqV132dA3DBMjJi6NETuUxv8SE=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>HJ7wQBUhskcVu1mCzKYM7zr1sgL</records>
+  </members>
 </namespace>
 <record>
   <name>FriendLoop</name>
-  <source>
-    <location>
-      <short-path>friend-recursive.cpp</short-path>
-      <source-path>friend-recursive.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>friend-recursive.cpp</shortPath>
+      <sourcePath>friend-recursive.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>FCqV132dA3DBMjJi6NETuUxv8SE=</id>
+  <id>HJ7wQBUhskcVu1mCzKYM7zr1sgL</id>
   <extraction>regular</extraction>
-  <parent>TbLT2OLri0f15uavHJgGv+UqjH0=</parent>
-  <key-kind>struct</key-kind>
+  <parent>25nS9SA2iJ6bvopD2mHUzyPCiMBJ</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <friend>
-    <id>FCqV132dA3DBMjJi6NETuUxv8SE=</id>
-  </friend>
+  <friends>
+    <friendInfo>
+      <id>HJ7wQBUhskcVu1mCzKYM7zr1sgL</id>
+    </friendInfo>
+  </friends>
 </record>
 </mrdocs>

@@ -25,6 +25,15 @@ namespace mrdocs {
 std::string
 toBase64(std::string_view str);
 
+/** Encode bytes with the Bitcoin base58 alphabet.
+
+    Base58 is compact like base64 but avoids `0`, `O`, `I`, `l`, and the
+    non-alphanumeric `+`/`/`/`=`, so the result is easy to copy, paste, and
+    match with a regular expression. Leading zero bytes map to leading `1`s.
+*/
+std::string
+toBase58(std::string_view str);
+
 llvm::StringRef
 toBaseFN(
     llvm::SmallVectorImpl<char>& dest,

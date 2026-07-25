@@ -2,55 +2,47 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>C0LRBO38MuY9CAdrRQ/gbJutBAw=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>A6m5tmdDqHesPqWnbghHwBRz8uZ</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>TEST</name>
-  <source>
-    <location>
-      <short-path>include-self.cpp</short-path>
-      <source-path>include-self.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>include-self.cpp</shortPath>
+        <sourcePath>include-self.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>C0LRBO38MuY9CAdrRQ/gbJutBAw=</id>
+  <id>A6m5tmdDqHesPqWnbghHwBRz8uZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>3fDo50p0XYyS9fd9RqKyi2wjy/M=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>46LXdT31ckaT8d49norRJ7BUYNn6</records>
+  </members>
 </namespace>
 <record>
   <name>SUCCESS</name>
-  <source>
-    <location>
-      <short-path>include-self.cpp</short-path>
-      <source-path>include-self.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>include-self.cpp</shortPath>
+      <sourcePath>include-self.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>3fDo50p0XYyS9fd9RqKyi2wjy/M=</id>
+  <id>46LXdT31ckaT8d49norRJ7BUYNn6</id>
   <extraction>regular</extraction>
-  <parent>C0LRBO38MuY9CAdrRQ/gbJutBAw=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>A6m5tmdDqHesPqWnbghHwBRz8uZ</parent>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

@@ -2,143 +2,169 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>2ojNymM2/7QaiSYB3jBfRS4jiDI=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>43asWJxesB13zm5495mFHhQWG1tV</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>test</name>
-  <source>
-    <location>
-      <short-path>out-of-tree-base.cpp</short-path>
-      <source-path>out-of-tree-base.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>out-of-tree-base.cpp</shortPath>
+        <sourcePath>out-of-tree-base.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>2ojNymM2/7QaiSYB3jBfRS4jiDI=</id>
+  <id>43asWJxesB13zm5495mFHhQWG1tV</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>BmCrcf+XE+ozOs7VIbREWw02pf0=</records>
-    <records>yXfQfCJQf6SvVQYn4gaA2krC8tk=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>69tsyiFtctogcFRz1AaLM7XFnZS 3oo34ZXswj5sNbYGKT8hHe97hE64</records>
+  </members>
 </namespace>
 <record>
   <name>InTree</name>
-  <source>
-    <location>
-      <short-path>out-of-tree-base.cpp</short-path>
-      <source-path>out-of-tree-base.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>out-of-tree-base.cpp</shortPath>
+      <sourcePath>out-of-tree-base.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>yXfQfCJQf6SvVQYn4gaA2krC8tk=</id>
+  <id>3oo34ZXswj5sNbYGKT8hHe97hE64</id>
   <extraction>regular</extraction>
-  <parent>2ojNymM2/7QaiSYB3jBfRS4jiDI=</parent>
-  <doc-comment>
+  <parent>43asWJxesB13zm5495mFHhQWG1tV</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A class declared in-tree that inherits an out-of-tree base.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A class declared in-tree that inherits an out-of-tree base.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>BmCrcf+XE+ozOs7VIbREWw02pf0=</id>
-        <identifier>ExternalBase</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-      <functions>r2FT8w6tN0syeB7bck2xfwAZX28=</functions>
-      <functions>1DlxDyIhnIUKFbQOs4tQMjoMTgM=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>69tsyiFtctogcFRz1AaLM7XFnZS</id>
+              <identifier>ExternalBase</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>3SiQ7CT9FRG6CgYv7hdrecFVaeQW 3xV9Q9zoxRWxHKkGMD3FkVpuR3uL</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>externalMethod</name>
-  <source>
-    <location>
-      <short-path>external_base.hpp</short-path>
-      <line-number>10</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>external_base.hpp</shortPath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>r2FT8w6tN0syeB7bck2xfwAZX28=</id>
+  <id>3SiQ7CT9FRG6CgYv7hdrecFVaeQW</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <is-copy-from-inherited/>
-  <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
-  <doc-comment>
+  <isCopyFromInherited/>
+  <parent>3oo34ZXswj5sNbYGKT8hHe97hE64</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A member function inherited from the out-of-tree base.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A member function inherited from the out-of-tree base.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>inTreeMethod</name>
-  <source>
-    <location>
-      <short-path>out-of-tree-base.cpp</short-path>
-      <source-path>out-of-tree-base.cpp</source-path>
-      <line-number>15</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>out-of-tree-base.cpp</shortPath>
+        <sourcePath>out-of-tree-base.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>1DlxDyIhnIUKFbQOs4tQMjoMTgM=</id>
+  <id>3xV9Q9zoxRWxHKkGMD3FkVpuR3uL</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>yXfQfCJQf6SvVQYn4gaA2krC8tk=</parent>
-  <doc-comment>
+  <parent>3oo34ZXswj5sNbYGKT8hHe97hE64</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A member function declared in-tree.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A member function declared in-tree.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

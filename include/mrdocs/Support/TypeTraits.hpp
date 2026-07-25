@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -20,36 +21,17 @@
 
 namespace mrdocs {
 
-namespace detail {
+/** Whether `T` is a specialization of the class template `Template`.
 
-template <typename T>
-struct is_optional : std::false_type {};
+    @tparam T The type to test.
+    @tparam Template The class template to test against.
+*/
+template <typename T, template <typename...> class Template>
+inline constexpr bool is_specialization_of_v = false;
 
-template <typename T>
-struct is_optional<Optional<T>> : std::true_type {};
-
-template <typename T>
-inline constexpr bool is_optional_v = is_optional<T>::value;
-
-template <typename T>
-struct is_vector : std::false_type {};
-
-template <typename T, typename A>
-struct is_vector<std::vector<T, A>> : std::true_type {};
-
-template <typename T>
-inline constexpr bool is_vector_v = is_vector<T>::value;
-
-template <typename T>
-struct is_polymorphic : std::false_type {};
-
-template <typename T>
-struct is_polymorphic<Polymorphic<T>> : std::true_type {};
-
-template <typename T>
-inline constexpr bool is_polymorphic_v = is_polymorphic<T>::value;
-
-} // namespace detail
+/// @copydoc is_specialization_of_v
+template <template <typename...> class Template, typename... Args>
+inline constexpr bool is_specialization_of_v<Template<Args...>, Template> = true;
 
 /** Return the value as its underlying type.
 

@@ -18,40 +18,50 @@
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
+#include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace mrdocs {
 
 /** Type qualifiers
 */
-enum QualifierKind
+enum class QualifierKind
 {
     /// No qualifiers
     None,
     /// The const qualifier
     Const,
     /// The volatile qualifier
-    Volatile
+    Volatile,
+    /// Both the const and volatile qualifiers
+    ConstVolatile
 };
 
-/** Convert a cv/ref qualifier kind to its string form.
-*/
-MRDOCS_DECL
-dom::String
-toString(QualifierKind kind) noexcept;
+MRDOCS_DESCRIBE_ENUM(
+    QualifierKind,
+    None, Const, Volatile, ConstVolatile)
+MRDOCS_DESCRIBE_ENUM_UNDEFINED(QualifierKind, None)
 
-/** Map a QualifierKind into a DOM value.
+/** Convert a cv qualifier kind to its string form.
+
+    @param kind The qualifier kind.
+    @return The written qualifier syntax; empty for QualifierKind::None.
 */
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    QualifierKind kind)
+constexpr
+std::string_view
+toString(QualifierKind kind) noexcept
 {
-    v = toString(kind);
+    switch (kind)
+    {
+    case QualifierKind::None:          return "";
+    case QualifierKind::Const:         return "const";
+    case QualifierKind::Volatile:      return "volatile";
+    case QualifierKind::ConstVolatile: return "const volatile";
+    default:                           return "";
+    }
 }
 
 } // mrdocs

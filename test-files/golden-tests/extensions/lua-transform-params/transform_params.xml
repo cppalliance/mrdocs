@@ -2,45 +2,53 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>HuxRZuBJaL6YnoJa2a7IFMcNqvo=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>RzFPux7e7JZp3Dm4rWTWEYZtPkD</functions>
+  </members>
 </namespace>
 <function>
   <name>target_function</name>
-  <source>
-    <location>
-      <short-path>transform_params.cpp</short-path>
-      <source-path>transform_params.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-      <documented>1</documented>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>transform_params.cpp</shortPath>
+        <sourcePath>transform_params.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>HuxRZuBJaL6YnoJa2a7IFMcNqvo=</id>
+  <id>RzFPux7e7JZp3Dm4rWTWEYZtPkD</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief from the transform&apos;s params</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief from the transform&apos;s params</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

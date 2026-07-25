@@ -2,35 +2,41 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>4N1JFtP3y7voqQo6aiZzzTWLj84=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>48hXyFeqsYHRrR176thPX1LtiHEd</functions>
+  </members>
 </namespace>
 <function>
   <name>local_function</name>
-  <source>
-    <location>
-      <short-path>no-extract-local-classes.cpp</short-path>
-      <source-path>no-extract-local-classes.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-local-classes.cpp</shortPath>
+        <sourcePath>no-extract-local-classes.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>4N1JFtP3y7voqQo6aiZzzTWLj84=</id>
+  <id>48hXyFeqsYHRrR176thPX1LtiHEd</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

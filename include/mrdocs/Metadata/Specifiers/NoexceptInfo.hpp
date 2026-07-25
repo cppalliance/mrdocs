@@ -56,7 +56,7 @@ struct NoexceptInfo
     @return The string representation of the noexcept-specifier.
 */
 MRDOCS_DECL
-dom::String
+std::string
 toString(
     NoexceptInfo const& info,
     bool resolved = false,

@@ -2,303 +2,380 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>sTaqkoFcVbtntbfpe777v5/pWL0=</records>
-    <records>u38+snleg17KL7EQuD9FV1Z8b9E=</records>
-    <records>SHIJWZPzfYtLVfe/rzFAmeVpANk=</records>
-  </namespace-tranche>
+  <members>
+    <records>3UCKbcpJfA6hSzkGYBhiSasP5Ha4 3cWGdKBwvWccF2jR9kCXcXUTDw9A 21YEzntZqESiErEekCSg6ZAVYoap</records>
+  </members>
 </namespace>
 <record>
   <name>C0</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>record-access.cpp</shortPath>
+      <sourcePath>record-access.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>sTaqkoFcVbtntbfpe777v5/pWL0=</id>
+  <id>3UCKbcpJfA6hSzkGYBhiSasP5Ha4</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>ZOAAp99eH9zKUZqx0JzW6AuhRTQ=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>EyRDT2mXtRNmcISD2rsC6/mLusw=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>IdInRLjINkaIuyTqWyEUhoM1DZM=</functions>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
+  <interface>
+    <public>
+      <functions>2QWdJ98ktAu63ynKwWF3ELGNWyXH</functions>
+    </public>
+    <protected>
+      <functions>GU6ZwcCHuyyKXPqK1gCEVXNasY7</functions>
+    </protected>
+    <private>
+      <functions>UL4HrzrQvn3Lf21zvKJoNZHCkxS</functions>
+    </private>
+  </interface>
 </record>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ZOAAp99eH9zKUZqx0JzW6AuhRTQ=</id>
+  <id>2QWdJ98ktAu63ynKwWF3ELGNWyXH</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3UCKbcpJfA6hSzkGYBhiSasP5Ha4</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>EyRDT2mXtRNmcISD2rsC6/mLusw=</id>
+  <id>GU6ZwcCHuyyKXPqK1gCEVXNasY7</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3UCKbcpJfA6hSzkGYBhiSasP5Ha4</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>IdInRLjINkaIuyTqWyEUhoM1DZM=</id>
+  <id>UL4HrzrQvn3Lf21zvKJoNZHCkxS</id>
+  <access>private</access>
   <extraction>regular</extraction>
-  <parent>sTaqkoFcVbtntbfpe777v5/pWL0=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3UCKbcpJfA6hSzkGYBhiSasP5Ha4</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>S0</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>record-access.cpp</shortPath>
+      <sourcePath>record-access.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>u38+snleg17KL7EQuD9FV1Z8b9E=</id>
+  <id>3cWGdKBwvWccF2jR9kCXcXUTDw9A</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>STTnU4grbgOl2xPE6okWC57zruc=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>IaPeEIwn9q94M3MuwxsB3qhBOSE=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>QicvGhxlL09TrpXiFYAS+pz8/9g=</functions>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>229v7rPR4APnUrzAzrPgv2jHDtbg</functions>
+    </public>
+    <protected>
+      <functions>UBapcynYGbCBgG9KX5QGAWvjJqW</functions>
+    </protected>
+    <private>
+      <functions>vTLmwWv7MHQx3z7U9joUKFWU3Hh</functions>
+    </private>
+  </interface>
 </record>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>STTnU4grbgOl2xPE6okWC57zruc=</id>
+  <id>229v7rPR4APnUrzAzrPgv2jHDtbg</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3cWGdKBwvWccF2jR9kCXcXUTDw9A</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>IaPeEIwn9q94M3MuwxsB3qhBOSE=</id>
+  <id>UBapcynYGbCBgG9KX5QGAWvjJqW</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3cWGdKBwvWccF2jR9kCXcXUTDw9A</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>QicvGhxlL09TrpXiFYAS+pz8/9g=</id>
+  <id>vTLmwWv7MHQx3z7U9joUKFWU3Hh</id>
+  <access>private</access>
   <extraction>regular</extraction>
-  <parent>u38+snleg17KL7EQuD9FV1Z8b9E=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>3cWGdKBwvWccF2jR9kCXcXUTDw9A</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <record>
   <name>U0</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>21</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>record-access.cpp</shortPath>
+      <sourcePath>record-access.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>SHIJWZPzfYtLVfe/rzFAmeVpANk=</id>
+  <id>21YEzntZqESiErEekCSg6ZAVYoap</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>union</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>eY4R9etszWK2H42p4kWNm5XfpnE=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>KjiG7Uufpmd65dhiSV+Jv2RjgHA=</functions>
-    </record-tranche>
-    <record-tranche>
-      <functions>KXASSTkImsSKBg6l0hOSkbt1K7M=</functions>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>union</keyKind>
+  <interface>
+    <public>
+      <functions>2hDpL1VLCwwx6JAHy4cmFRrbEoYk</functions>
+    </public>
+    <protected>
+      <functions>b7jDFJ3NWF6HKB3S6vXDrvuoxyu</functions>
+    </protected>
+    <private>
+      <functions>aV2kV2vSojZprjeykCbiznLVVrz</functions>
+    </private>
+  </interface>
 </record>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>23</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>23</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>eY4R9etszWK2H42p4kWNm5XfpnE=</id>
+  <id>2hDpL1VLCwwx6JAHy4cmFRrbEoYk</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>21YEzntZqESiErEekCSg6ZAVYoap</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>25</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>25</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>KjiG7Uufpmd65dhiSV+Jv2RjgHA=</id>
+  <id>b7jDFJ3NWF6HKB3S6vXDrvuoxyu</id>
+  <access>protected</access>
   <extraction>regular</extraction>
-  <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>21YEzntZqESiErEekCSg6ZAVYoap</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>record-access.cpp</short-path>
-      <source-path>record-access.cpp</source-path>
-      <line-number>27</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>record-access.cpp</shortPath>
+        <sourcePath>record-access.cpp</sourcePath>
+        <lineNumber>27</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>KXASSTkImsSKBg6l0hOSkbt1K7M=</id>
+  <id>aV2kV2vSojZprjeykCbiznLVVrz</id>
+  <access>private</access>
   <extraction>regular</extraction>
-  <parent>SHIJWZPzfYtLVfe/rzFAmeVpANk=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>21YEzntZqESiErEekCSg6ZAVYoap</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

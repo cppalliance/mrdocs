@@ -2,126 +2,134 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>pOYGF6pLJlICuiGO0Xj0daDb/to=</records>
-    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
-  </namespace-tranche>
+  <members>
+    <records>3JFAU9jshT1foKv9gi6GC2GvijYM 95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</records>
+  </members>
 </namespace>
 <record>
   <name>S</name>
-  <source>
-    <location>
-      <short-path>static-data-def-constexpr.cpp</short-path>
-      <source-path>static-data-def-constexpr.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def-constexpr.cpp</shortPath>
+      <sourcePath>static-data-def-constexpr.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
+  <id>3JFAU9jshT1foKv9gi6GC2GvijYM</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <static-variables>Sugb8cWjf0PRq2dN0pOEbkKY9C4=</static-variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <staticVariables>23XbBYJTudhg8m8PYWoSHPTv9sg1</staticVariables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>s</name>
-  <source>
-    <location>
-      <short-path>static-data-def-constexpr.cpp</short-path>
-      <source-path>static-data-def-constexpr.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def-constexpr.cpp</short-path>
-      <source-path>static-data-def-constexpr.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def-constexpr.cpp</shortPath>
+      <sourcePath>static-data-def-constexpr.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def-constexpr.cpp</shortPath>
+        <sourcePath>static-data-def-constexpr.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>Sugb8cWjf0PRq2dN0pOEbkKY9C4=</id>
+  <id>23XbBYJTudhg8m8PYWoSHPTv9sg1</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>pOYGF6pLJlICuiGO0Xj0daDb/to=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>pOYGF6pLJlICuiGO0Xj0daDb/to=</id>
-      <identifier>S</identifier>
-    </name>
-  </named>
+  <parent>3JFAU9jshT1foKv9gi6GC2GvijYM</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3JFAU9jshT1foKv9gi6GC2GvijYM</id>
+          <identifier>S</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
   <initializer>S{}</initializer>
-  <is-inline/>
-  <is-constexpr/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
 </variable>
 <record>
   <name>T</name>
-  <source>
-    <location>
-      <short-path>static-data-def-constexpr.cpp</short-path>
-      <source-path>static-data-def-constexpr.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def-constexpr.cpp</shortPath>
+      <sourcePath>static-data-def-constexpr.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <static-variables>+nDx93NmBRbrBZ8RlBwzPk8rp8I=</static-variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <staticVariables>4VNDnqBnjWpUqeTkr7D4GQ8V3CRP</staticVariables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>t</name>
-  <source>
-    <location>
-      <short-path>static-data-def-constexpr.cpp</short-path>
-      <source-path>static-data-def-constexpr.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>static-data-def-constexpr.cpp</short-path>
-      <source-path>static-data-def-constexpr.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>static-data-def-constexpr.cpp</shortPath>
+      <sourcePath>static-data-def-constexpr.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>static-data-def-constexpr.cpp</shortPath>
+        <sourcePath>static-data-def-constexpr.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>+nDx93NmBRbrBZ8RlBwzPk8rp8I=</id>
+  <id>4VNDnqBnjWpUqeTkr7D4GQ8V3CRP</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>CgGNdHpW5mG/i5741WPYQDw28OQ=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-inline/>
-  <is-constexpr/>
-  <is-constinit/>
+  <storageClass>static</storageClass>
+  <isInline/>
+  <isConstexpr/>
+  <isConstinit/>
 </variable>
 </mrdocs>

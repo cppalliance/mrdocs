@@ -2,264 +2,310 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>CgGNdHpW5mG/i5741WPYQDw28OQ=</records>
-    <variables>X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=</variables>
-    <variables>pKvK/kHXdM/1/pu86JcSrLqVypE=</variables>
-    <variables>Fr1KYTKmyLHGW9rPSpCZK82iRqQ=</variables>
-    <variables>h5r4fNloVAMKqMyVJI+iWTxRjhM=</variables>
-    <variables>EgqLVTs3FIJjFIODa5OOP2hmEI0=</variables>
-    <variables>eFAdMVIx9F2Zyx0LmK/nCDOhmhA=</variables>
-    <variables>LESPWJfwRpePfANf2Vm0O/W1Lfw=</variables>
-    <variables>bMKl4XYJf8MQ48jSHwRmFHM3MiA=</variables>
-    <variables>EpcDWput1W/SJ3IYEINS0W815Zw=</variables>
-  </namespace-tranche>
+  <members>
+    <records>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</records>
+    <variables>2L5tbnmaR343Q8UXzXw5bhGoRprS 3J4WAdYNHMAZDPE1XAKMLP4m3S5v KNi9Z5V2TP5WdNtMdsHmcyvjRMV 2taJe8MRHNxpiBMQvbiLTkzcsxqQ FaXFGqnJg4SU2kvUdLc3ZDQmCrQ 2gDcEUAadNcdm94dXa7SmoAEm5HH cmfTL7RSrE7CPLgfaLZoHZrKjAj 2WtBWa5Ka9Y3krngbNBCmWRWWH6f G2Em7sTwb2p6RXi89YWSDW71mQw</variables>
+  </members>
 </namespace>
 <record>
   <name>T</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
+  <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <variable>
   <name>i</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=</id>
+  <id>2L5tbnmaR343Q8UXzXw5bhGoRprS</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-constexpr/>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>j</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>pKvK/kHXdM/1/pu86JcSrLqVypE=</id>
+  <id>3J4WAdYNHMAZDPE1XAKMLP4m3S5v</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-constinit/>
+  <isConstinit/>
 </variable>
 <variable>
   <name>k</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>ns-variables.cpp</shortPath>
+        <sourcePath>ns-variables.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>Fr1KYTKmyLHGW9rPSpCZK82iRqQ=</id>
+  <id>KNi9Z5V2TP5WdNtMdsHmcyvjRMV</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>1</initializer>
-  <is-constexpr/>
+  <storageClass>extern</storageClass>
+  <isConstexpr/>
 </variable>
 <variable>
   <name>l</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>ns-variables.cpp</shortPath>
+        <sourcePath>ns-variables.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>h5r4fNloVAMKqMyVJI+iWTxRjhM=</id>
+  <id>2taJe8MRHNxpiBMQvbiLTkzcsxqQ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>1</initializer>
-  <is-constinit/>
+  <storageClass>extern</storageClass>
+  <isConstinit/>
 </variable>
 <variable>
   <name>pi</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>EgqLVTs3FIJjFIODa5OOP2hmEI0=</id>
+  <id>FaXFGqnJg4SU2kvUdLc3ZDQmCrQ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>double</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>double</fundamentalType>
+    </named>
+  </type>
   <initializer>3.14</initializer>
 </variable>
 <variable>
   <name>t</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>ns-variables.cpp</shortPath>
+        <sourcePath>ns-variables.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>eFAdMVIx9F2Zyx0LmK/nCDOhmhA=</id>
+  <id>2gDcEUAadNcdm94dXa7SmoAEm5HH</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>CgGNdHpW5mG/i5741WPYQDw28OQ=</id>
-      <identifier>T</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>95wsF4Mhzu8wk3eWfgXUT6Lb7Bh</id>
+          <identifier>T</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <storageClass>extern</storageClass>
 </variable>
 <variable>
   <name>x0</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>18</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>LESPWJfwRpePfANf2Vm0O/W1Lfw=</id>
+  <id>cmfTL7RSrE7CPLgfaLZoHZrKjAj</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-thread-local/>
+  <isThreadLocal/>
 </variable>
 <variable>
   <name>x1</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>19</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>bMKl4XYJf8MQ48jSHwRmFHM3MiA=</id>
+  <id>2WtBWa5Ka9Y3krngbNBCmWRWWH6f</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-thread-local/>
+  <storageClass>static</storageClass>
+  <isThreadLocal/>
 </variable>
 <variable>
   <name>x2</name>
-  <source>
-    <location>
-      <short-path>ns-variables.cpp</short-path>
-      <source-path>ns-variables.cpp</source-path>
-      <line-number>20</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ns-variables.cpp</shortPath>
+      <sourcePath>ns-variables.cpp</sourcePath>
+      <lineNumber>20</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>variable</kind>
-  <id>EpcDWput1W/SJ3IYEINS0W815Zw=</id>
+  <id>G2Em7sTwb2p6RXi89YWSDW71mQw</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
   <initializer>0</initializer>
-  <is-constexpr/>
-  <is-thread-local/>
+  <storageClass>static</storageClass>
+  <isConstexpr/>
+  <isThreadLocal/>
 </variable>
 </mrdocs>

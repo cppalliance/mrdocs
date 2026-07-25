@@ -13,6 +13,8 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Describe.hpp>
+#include <string_view>
 
 namespace mrdocs {
 
@@ -28,23 +30,28 @@ enum class AutoKind
     DecltypeAuto
 };
 
+MRDOCS_DESCRIBE_ENUM(
+    AutoKind,
+    Auto, DecltypeAuto)
+
 /** Convert an auto-kind to its spelling.
+
+    Custom (not the generic described-enum name): renders the written keyword
+    `auto` / `decltype(auto)`, used when building type strings.
+
+    @param kind The auto kind.
     @return String naming the keyword.
 */
-MRDOCS_DECL
-dom::String
-toString(AutoKind kind) noexcept;
-
-/** Serialize the auto kind into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    AutoKind kind)
+constexpr
+std::string_view
+toString(AutoKind kind) noexcept
 {
-    v = toString(kind);
+    switch (kind)
+    {
+    case AutoKind::Auto:         return "auto";
+    case AutoKind::DecltypeAuto: return "decltype(auto)";
+    default:                     return "";
+    }
 }
 
 } // mrdocs

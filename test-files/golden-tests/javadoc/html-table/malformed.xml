@@ -2,107 +2,147 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>yDaXDb+Szqhz/Z8mLHHiEKtBr5I=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>3nnEGHg9pdmDyzJm5YRUTHfBtyQd</functions>
+  </members>
 </namespace>
 <function>
   <name>hexDigit</name>
-  <source>
-    <location>
-      <short-path>malformed.cpp</short-path>
-      <source-path>malformed.cpp</source-path>
-      <line-number>30</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>malformed.cpp</shortPath>
+        <sourcePath>malformed.cpp</sourcePath>
+        <lineNumber>30</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>yDaXDb+Szqhz/Z8mLHHiEKtBr5I=</id>
+  <id>3nnEGHg9pdmDyzJm5YRUTHfBtyQd</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Below, the malformed bits exercise the warning paths in the HTML-table parser: stray text directly inside the table and inside a row, plus an unexpected paragraph element where a cell is expected.</literal>
-      </text>
-    </paragraph>
-    <table>
-      <kind>table</kind>
-      <table-row>
-        <is-header/>
-        <table-cell>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
           <text>
             <kind>text</kind>
-            <literal>Digit</literal>
+            <literal>Below, the malformed bits exercise the warning paths in the HTML-table parser: stray text directly inside the table and inside a row, plus an unexpected paragraph element where a cell is expected.</literal>
           </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>Value</literal>
-          </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>A</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>10</literal>
-          </text>
-        </table-cell>
-      </table-row>
-      <table-row>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>B</literal>
-          </text>
-        </table-cell>
-        <table-cell>
-          <text>
-            <kind>text</kind>
-            <literal>11</literal>
-          </text>
-        </table-cell>
-      </table-row>
-    </table>
+        </children>
+      </paragraph>
+      <table>
+        <kind>table</kind>
+        <items>
+          <tableRow>
+            <isHeader/>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Digit</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>Value</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>A</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>10</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+          <tableRow>
+            <cells>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>B</literal>
+                  </text>
+                </children>
+              </tableCell>
+              <tableCell>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>11</literal>
+                  </text>
+                </children>
+              </tableCell>
+            </cells>
+          </tableRow>
+        </items>
+      </table>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Decode a hexadecimal digit.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Decode a hexadecimal digit.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <param>
+  </doc>
+  <returnType>
     <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <identifier>char</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
       </name>
+      <fundamentalType>int</fundamentalType>
     </named>
-    <name>c</name>
-  </param>
-  <func-class>normal</func-class>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>char</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>char</fundamentalType>
+        </named>
+      </type>
+      <name>c</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

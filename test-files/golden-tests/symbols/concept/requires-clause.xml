@@ -2,249 +2,283 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>hK3x73/Ae4MeCnzwbIjl8ymPv3I=</records>
-    <records>bRI9ggyD7onLd/oP8QmcF0upggA=</records>
-    <functions>PmhXjCXUJYVnj/a7NhfjjSesyp0=</functions>
-    <functions>9JfSlZfEThLXiWTez3b8eT/AbZU=</functions>
-  </namespace-tranche>
+  <members>
+    <records>2rDBQ6qdq9zUj8BCyXFvyUY6GQsT 2X8kdYta3biTUF7o61x8i5ufm18j</records>
+    <functions>sRogJY533qTwDRYtF4NSM9eyQya 4Qe9AfCz8HJt5wcHVXSe7xpWfVpY</functions>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>hK3x73/Ae4MeCnzwbIjl8ymPv3I=</id>
+  <id>2rDBQ6qdq9zUj8BCyXFvyUY6GQsT</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
     <requires>(sizeof(T) == 2)</requires>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>22</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>22</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>bRI9ggyD7onLd/oP8QmcF0upggA=</id>
+  <id>2X8kdYta3biTUF7o61x8i5ufm18j</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
     <requires>(sizeof(U) == 2)</requires>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>PmhXjCXUJYVnj/a7NhfjjSesyp0=</id>
+  <id>sRogJY533qTwDRYtF4NSM9eyQya</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
   <requires>(sizeof(U) == 2)</requires>
 </function>
 <overloads>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>9JfSlZfEThLXiWTez3b8eT/AbZU=</id>
+  <id>4Qe9AfCz8HJt5wcHVXSe7xpWfVpY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <func-class>normal</func-class>
-  <members>dMn9/neX/a+6Xf4Zj/trXAbJ3eE=</members>
-  <members>E8bM7kQ8fDu6ewzy2w4PlX3glWk=</members>
-  <members>waZu2K22py8SyW2+N49MTmkmhv8=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <funcClass>normal</funcClass>
+  <members>2dNTPyaxVkE3ARPEAXwhBu1cGrVW GyrQqvM4SwrL4ZSwGQoJrr2JtPi 3hUeABkWvvdb8csZ6Gm2GwRoEiwQ</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>dMn9/neX/a+6Xf4Zj/trXAbJ3eE=</id>
+  <id>2dNTPyaxVkE3ARPEAXwhBu1cGrVW</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
     <requires>(sizeof(T) == 2)</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>E8bM7kQ8fDu6ewzy2w4PlX3glWk=</id>
+  <id>GyrQqvM4SwrL4ZSwGQoJrr2JtPi</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
     <requires>(sizeof(T) == 4)</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>requires-clause.cpp</short-path>
-      <source-path>requires-clause.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>requires-clause.cpp</shortPath>
+        <sourcePath>requires-clause.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>waZu2K22py8SyW2+N49MTmkmhv8=</id>
+  <id>3hUeABkWvvdb8csZ6Gm2GwRoEiwQ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
     <requires>(sizeof(U) == 2)</requires>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

@@ -2,61 +2,55 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</namespaces>
-  </namespace-tranche>
+  <members>
+    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q</namespaces>
+  </members>
 </namespace>
 <namespace>
   <name>N</name>
-  <source>
-    <location>
-      <short-path>out-of-line-record-def.cpp</short-path>
-      <source-path>out-of-line-record-def.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>4</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>out-of-line-record-def.cpp</shortPath>
+        <sourcePath>out-of-line-record-def.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>4</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</id>
+  <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>BOgJOhZPKKMy9QBLYD1JPMD1Doc=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>4xwjpvALSdxSH9rd9bH8A5L8KVY</records>
+  </members>
 </namespace>
 <record>
   <name>S</name>
-  <source>
-    <location>
-      <short-path>out-of-line-record-def.cpp</short-path>
-      <source-path>out-of-line-record-def.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>out-of-line-record-def.cpp</short-path>
-      <source-path>out-of-line-record-def.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>out-of-line-record-def.cpp</shortPath>
+      <sourcePath>out-of-line-record-def.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>out-of-line-record-def.cpp</shortPath>
+        <sourcePath>out-of-line-record-def.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>BOgJOhZPKKMy9QBLYD1JPMD1Doc=</id>
+  <id>4xwjpvALSdxSH9rd9bH8A5L8KVY</id>
   <extraction>regular</extraction>
-  <parent>rjlMNXAaWNMkQYMTJzRA1DR0DiE=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

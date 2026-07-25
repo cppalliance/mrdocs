@@ -2,218 +2,297 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>e1UQQek5v3C9OClW5cGf57XvwQo=</functions>
-    <functions>CnO51rIKTzfiVKHkR3TdPa0eo+8=</functions>
-    <functions>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</functions>
-    <functions>khwJweIqd5FuWAg8T+l+GEljQVc=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2if7W2yae7MLawKNuq1XwahifSpZ 9SrB1UL3KesEDpt7G1mT9bvMnqC 3ugjxNbHHSuxBbaHt8ENMWRLxFAS 334bUXUdxG62ArqzF5WTRNS4vHSN</functions>
+  </members>
 </namespace>
 <function>
   <name>f0</name>
-  <source>
-    <location>
-      <short-path>listitem.cpp</short-path>
-      <source-path>listitem.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>listitem.cpp</shortPath>
+        <sourcePath>listitem.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>e1UQQek5v3C9OClW5cGf57XvwQo=</id>
+  <id>2if7W2yae7MLawKNuq1XwahifSpZ</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <list>
-      <kind>list</kind>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-kind>unordered</list-kind>
-    </list>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <list>
+        <kind>list</kind>
+        <items>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+        </items>
+        <listKind>unordered</listKind>
+      </list>
+    </document>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f1</name>
-  <source>
-    <location>
-      <short-path>listitem.cpp</short-path>
-      <source-path>listitem.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>listitem.cpp</shortPath>
+        <sourcePath>listitem.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>CnO51rIKTzfiVKHkR3TdPa0eo+8=</id>
+  <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <list>
-      <kind>list</kind>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 1</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 2</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-kind>unordered</list-kind>
-    </list>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <list>
+        <kind>list</kind>
+        <items>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 1</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 2</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+        </items>
+        <listKind>unordered</listKind>
+      </list>
+    </document>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f2</name>
-  <source>
-    <location>
-      <short-path>listitem.cpp</short-path>
-      <source-path>listitem.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>listitem.cpp</shortPath>
+        <sourcePath>listitem.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>0MJUv5yGFR9nXWFLeYc+rjOY+iM=</id>
+  <id>3ugjxNbHHSuxBbaHt8ENMWRLxFAS</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <list>
-      <kind>list</kind>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 1</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 2</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-kind>unordered</list-kind>
-    </list>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <list>
+        <kind>list</kind>
+        <items>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 1</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 2</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+        </items>
+        <listKind>unordered</listKind>
+      </list>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f3</name>
-  <source>
-    <location>
-      <short-path>listitem.cpp</short-path>
-      <source-path>listitem.cpp</source-path>
-      <line-number>24</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>listitem.cpp</shortPath>
+        <sourcePath>listitem.cpp</sourcePath>
+        <lineNumber>24</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>khwJweIqd5FuWAg8T+l+GEljQVc=</id>
+  <id>334bUXUdxG62ArqzF5WTRNS4vHSN</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <list>
-      <kind>list</kind>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 1</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 2</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-item>
-        <paragraph>
-          <kind>paragraph</kind>
-          <text>
-            <kind>text</kind>
-            <literal>item 3</literal>
-          </text>
-        </paragraph>
-      </list-item>
-      <list-kind>unordered</list-kind>
-    </list>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <list>
+        <kind>list</kind>
+        <items>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 1</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 2</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+          <listItem>
+            <blocks>
+              <paragraph>
+                <kind>paragraph</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>item 3</literal>
+                  </text>
+                </children>
+              </paragraph>
+            </blocks>
+          </listItem>
+        </items>
+        <listKind>unordered</listKind>
+      </list>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

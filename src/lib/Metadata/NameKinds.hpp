@@ -14,7 +14,7 @@
 #include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/Name/SpecializationName.hpp>
-#include <mrdocs/Support/DescribeKinds.hpp>
+#include <mrdocs/Support/Describe.hpp>
 
 namespace mrdocs {
 

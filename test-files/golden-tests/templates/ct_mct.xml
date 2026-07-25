@@ -2,100 +2,102 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>5tUSuMtQqtYE49jBjSYSWp0DJAM=</records>
-  </namespace-tranche>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t</records>
+  </members>
 </namespace>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>ct_mct.cpp</short-path>
-      <source-path>ct_mct.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mct.cpp</shortPath>
+      <sourcePath>ct_mct.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>5tUSuMtQqtYE49jBjSYSWp0DJAM=</id>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <records>dKDSVrZun8skBV/NUCmJyCUOvJA=</records>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <records>2dEvF5AtxD2tmCfHnQo2Q4zRVYij</records>
+    </public>
+  </interface>
 </record>
 <record>
   <name>B</name>
-  <source>
-    <location>
-      <short-path>ct_mct.cpp</short-path>
-      <source-path>ct_mct.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mct.cpp</shortPath>
+      <sourcePath>ct_mct.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>dKDSVrZun8skBV/NUCmJyCUOvJA=</id>
+  <id>2dEvF5AtxD2tmCfHnQo2Q4zRVYij</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>5tUSuMtQqtYE49jBjSYSWp0DJAM=</parent>
-  <key-kind>struct</key-kind>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <keyKind>struct</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>E/7hys/9wYX9YmsaiN5VHroNb8A=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>HA7tgAK2sRRUsdwLJqjKSLm72yV</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>ct_mct.cpp</short-path>
-      <source-path>ct_mct.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>16</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>ct_mct.cpp</shortPath>
+      <sourcePath>ct_mct.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>16</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>E/7hys/9wYX9YmsaiN5VHroNb8A=</id>
+  <id>HA7tgAK2sRRUsdwLJqjKSLm72yV</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>dKDSVrZun8skBV/NUCmJyCUOvJA=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  <parent>2dEvF5AtxD2tmCfHnQo2Q4zRVYij</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
 </function>
 </mrdocs>

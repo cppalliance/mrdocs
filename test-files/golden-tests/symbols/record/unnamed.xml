@@ -2,216 +2,255 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</records>
-    <records>8AwuUPjsLEReggyF5UohZMvrh8k=</records>
-    <functions>wcU0I2BxBC0WE0uUZ6ypPRqFoxE=</functions>
-    <variables>O3vj5ch+AFTAIMnsaVF06Ms3nc0=</variables>
-    <variables>SEYEjN6YLJp3VM0ue8amNlWQiTU=</variables>
-  </namespace-tranche>
+  <members>
+    <records>Kr1beZSFZ5Rax88fWPEUaLSP4GV 4Ly7UyvQGvcfUFMQeorJqmva1nhv</records>
+    <functions>3haGtL3WyD53oQR4xwEh8Ab67GMn</functions>
+    <variables>q4nXg7Et64ZFDGd1Qhax4WQPkeY 21QBboumkxmsrSqi8gEfVXVrrguz</variables>
+  </members>
 </namespace>
 <record>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>11</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>unnamed.cpp</shortPath>
+      <sourcePath>unnamed.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>11</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</id>
+  <id>Kr1beZSFZ5Rax88fWPEUaLSP4GV</id>
   <extraction>implementation-defined</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <functions>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>3pLeaxcgFrbJXFt3XXpEM199efWD</functions>
+    </public>
+  </interface>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>unnamed.cpp</shortPath>
+        <sourcePath>unnamed.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>yiR+Q9T0kIzuR5+cO8MjyUGxhD4=</id>
+  <id>3pLeaxcgFrbJXFt3XXpEM199efWD</id>
+  <access>public</access>
   <extraction>implementation-defined</extraction>
-  <parent>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+  <parent>Kr1beZSFZ5Rax88fWPEUaLSP4GV</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>8</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>unnamed.cpp</shortPath>
+      <sourcePath>unnamed.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>8</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
+  <id>4Ly7UyvQGvcfUFMQeorJqmva1nhv</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A test unnamed class.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A test unnamed class.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-      <variables>4Sy+GbRmqI4igByqQo0hAnRUahY=</variables>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <variables>48x5exXwAtw9dLfv6QnLDUFPiGWZ</variables>
+    </public>
+  </interface>
 </record>
 <variable>
   <name>a</name>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>3</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>unnamed.cpp</shortPath>
+        <sourcePath>unnamed.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>3</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>4Sy+GbRmqI4igByqQo0hAnRUahY=</id>
+  <id>48x5exXwAtw9dLfv6QnLDUFPiGWZ</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>8AwuUPjsLEReggyF5UohZMvrh8k=</parent>
-  <doc-comment>
+  <parent>4Ly7UyvQGvcfUFMQeorJqmva1nhv</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A test field.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A test field.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <is-record-field/>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isRecordField/>
 </variable>
 <function>
   <name>F</name>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>unnamed.cpp</shortPath>
+        <sourcePath>unnamed.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>wcU0I2BxBC0WE0uUZ6ypPRqFoxE=</id>
+  <id>3haGtL3WyD53oQR4xwEh8Ab67GMn</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
-  <function-object-impl>F1Jq7+g4G9C/ONGL1uiGY4NNso4=</function-object-impl>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <functionObjectImpl>Kr1beZSFZ5Rax88fWPEUaLSP4GV</functionObjectImpl>
 </function>
 <variable>
   <name>x</name>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>unnamed.cpp</shortPath>
+        <sourcePath>unnamed.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>O3vj5ch+AFTAIMnsaVF06Ms3nc0=</id>
+  <id>q4nXg7Et64ZFDGd1Qhax4WQPkeY</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A test variable named &apos;x&apos;</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A test variable named &apos;x&apos;</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
-    </name>
-  </named>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4Ly7UyvQGvcfUFMQeorJqmva1nhv</id>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <storageClass>extern</storageClass>
 </variable>
 <variable>
   <name>y</name>
-  <source>
-    <location>
-      <short-path>unnamed.cpp</short-path>
-      <source-path>unnamed.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>unnamed.cpp</shortPath>
+        <sourcePath>unnamed.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>variable</kind>
-  <id>SEYEjN6YLJp3VM0ue8amNlWQiTU=</id>
+  <id>21QBboumkxmsrSqi8gEfVXVrrguz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A test variable named &apos;y&apos;</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A test variable named &apos;y&apos;</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>8AwuUPjsLEReggyF5UohZMvrh8k=</id>
-    </name>
-  </named>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4Ly7UyvQGvcfUFMQeorJqmva1nhv</id>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <storageClass>extern</storageClass>
 </variable>
 </mrdocs>

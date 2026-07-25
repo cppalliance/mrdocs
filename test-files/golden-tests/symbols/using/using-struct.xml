@@ -2,182 +2,160 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>IjtkITsyqdEWPMXZF3lD/2/XH0s=</namespaces>
-    <usings>G92XaEqIwVs05hrwdNXMhpeFqkU=</usings>
-    <usings>0Ljxy8EQ03btL9wIVt4SqbP1U2M=</usings>
-  </namespace-tranche>
+  <members>
+    <namespaces>UfKicPw9MTYUQKvc95J7sgwZujx</namespaces>
+    <usings>PWxK8cc9wX3kPXbdZ3mF7Wn2niG 3uf2HfjvXNxJbrbrwb84BtEWkuWS</usings>
+  </members>
 </namespace>
 <namespace>
   <name>LongName</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-struct.cpp</shortPath>
+        <sourcePath>using-struct.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
+  <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=</records>
-    <records>AsUl1L5PkCm5NvYpI3F7g6rfMlw=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>2QH38GpLjeijJPQLMaiLb2uxyhmF 3EppEuznKQh2pvaqTDnVmPno8Rq</records>
+  </members>
 </namespace>
 <record>
   <name>S1</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct.cpp</shortPath>
+      <sourcePath>using-struct.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=</id>
+  <id>2QH38GpLjeijJPQLMaiLb2uxyhmF</id>
   <extraction>regular</extraction>
-  <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>S2</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct.cpp</shortPath>
+      <sourcePath>using-struct.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>AsUl1L5PkCm5NvYpI3F7g6rfMlw=</id>
+  <id>3EppEuznKQh2pvaqTDnVmPno8Rq</id>
   <extraction>regular</extraction>
-  <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
 </record>
 <using>
   <name>S1</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-struct.cpp</shortPath>
+        <sourcePath>using-struct.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>G92XaEqIwVs05hrwdNXMhpeFqkU=</id>
+  <id>PWxK8cc9wX3kPXbdZ3mF7Wn2niG</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>S1</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
-      <identifier>LongName</identifier>
-    </name>
-  </name>
-  <shadow-declarations>ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=</shadow-declarations>
+      <identifier>S1</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+          <identifier>LongName</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>2QH38GpLjeijJPQLMaiLb2uxyhmF</shadowDeclarations>
 </using>
 <record>
   <name>S1</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct.cpp</shortPath>
+      <sourcePath>using-struct.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=</id>
+  <id>2QH38GpLjeijJPQLMaiLb2uxyhmF</id>
   <extraction>regular</extraction>
-  <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
 </record>
 <using>
   <name>S2</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-struct.cpp</shortPath>
+        <sourcePath>using-struct.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>using</kind>
-  <id>0Ljxy8EQ03btL9wIVt4SqbP1U2M=</id>
+  <id>3uf2HfjvXNxJbrbrwb84BtEWkuWS</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <class>normal</class>
-  <name>
-    <kind>identifier</kind>
-    <identifier>S2</identifier>
-    <name>
+  <introducedName>
+    <identifier>
       <kind>identifier</kind>
-      <id>IjtkITsyqdEWPMXZF3lD/2/XH0s=</id>
-      <identifier>LongName</identifier>
-    </name>
-  </name>
-  <shadow-declarations>AsUl1L5PkCm5NvYpI3F7g6rfMlw=</shadow-declarations>
+      <identifier>S2</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+          <identifier>LongName</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>3EppEuznKQh2pvaqTDnVmPno8Rq</shadowDeclarations>
 </using>
 <record>
   <name>S2</name>
-  <source>
-    <location>
-      <short-path>using-struct.cpp</short-path>
-      <source-path>using-struct.cpp</source-path>
-      <line-number>3</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct.cpp</shortPath>
+      <sourcePath>using-struct.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>AsUl1L5PkCm5NvYpI3F7g6rfMlw=</id>
+  <id>3EppEuznKQh2pvaqTDnVmPno8Rq</id>
   <extraction>regular</extraction>
-  <parent>IjtkITsyqdEWPMXZF3lD/2/XH0s=</parent>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
 </record>
 </mrdocs>

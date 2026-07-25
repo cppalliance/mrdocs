@@ -24,7 +24,10 @@ enum class NameKind {
 #include <mrdocs/Metadata/Name/NameNodes.inc>
 };
 
-MRDOCS_DESCRIBE_ENUM(NameKind, Identifier, Specialization)
+MRDOCS_DESCRIBE_ENUM_BEGIN(NameKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(NameKind, Name)
+#include <mrdocs/Metadata/Name/NameNodes.inc>
+MRDOCS_DESCRIBE_ENUM_END(NameKind)
 
 } // mrdocs
 

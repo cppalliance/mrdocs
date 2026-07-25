@@ -2,167 +2,137 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>SbMa64K5phHhIll2efzz7iKnrZE=</records>
-    <records>BmxizUzlC6nO7M6Kn11pbG640so=</records>
-    <records>m2My9rwS8HRYf4+Ad3mDnH+orw8=</records>
-    <records>AiD3OiD6LwxTupKA1088x45xmFY=</records>
-    <records>d3qgfOExBXZ0LWp+CxgeblnNu78=</records>
-  </namespace-tranche>
+  <members>
+    <records>22Z29AyR94QvK9q9UkNNFEV4sjT6 6C3HS3rRvv2uwbCKVTsNUe2eQL9 3AZRDMLzv4qQvPrHG7mtxD1u2mJW 2imWbL34qkCKdkYrBe6Y8Ldjds3 2fYXQFEextD1cACbFYX3msEzn8M4</records>
+  </members>
 </namespace>
 <record>
   <name>A1</name>
-  <source>
-    <location>
-      <short-path>final-class.cpp</short-path>
-      <source-path>final-class.cpp</source-path>
-      <line-number>9</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>final-class.cpp</shortPath>
+      <sourcePath>final-class.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>SbMa64K5phHhIll2efzz7iKnrZE=</id>
+  <id>22Z29AyR94QvK9q9UkNNFEV4sjT6</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <is-final/>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
+  <isFinal/>
 </record>
 <record>
   <name>A2</name>
-  <source>
-    <location>
-      <short-path>final-class.cpp</short-path>
-      <source-path>final-class.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>final-class.cpp</shortPath>
+      <sourcePath>final-class.cpp</sourcePath>
+      <lineNumber>13</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>BmxizUzlC6nO7M6Kn11pbG640so=</id>
+  <id>6C3HS3rRvv2uwbCKVTsNUe2eQL9</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>typename</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
   </template>
-  <is-final/>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <isFinal/>
 </record>
 <record>
   <name>A3</name>
-  <source>
-    <location>
-      <short-path>final-class.cpp</short-path>
-      <source-path>final-class.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>final-class.cpp</shortPath>
+      <sourcePath>final-class.cpp</sourcePath>
+      <lineNumber>18</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>m2My9rwS8HRYf4+Ad3mDnH+orw8=</id>
+  <id>3AZRDMLzv4qQvPrHG7mtxD1u2mJW</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <is-final/>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>AiD3OiD6LwxTupKA1088x45xmFY=</id>
-        <identifier>B1</identifier>
-      </name>
-    </named>
-  </base>
-  <base>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>d3qgfOExBXZ0LWp+CxgeblnNu78=</id>
-        <identifier>B2</identifier>
-      </name>
-    </named>
-  </base>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
+  <isFinal/>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>2imWbL34qkCKdkYrBe6Y8Ldjds3</id>
+              <identifier>B1</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>2fYXQFEextD1cACbFYX3msEzn8M4</id>
+              <identifier>B2</identifier>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
 </record>
 <record>
   <name>B1</name>
-  <source>
-    <location>
-      <short-path>final-class.cpp</short-path>
-      <source-path>final-class.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>final-class.cpp</shortPath>
+      <sourcePath>final-class.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>AiD3OiD6LwxTupKA1088x45xmFY=</id>
+  <id>2imWbL34qkCKdkYrBe6Y8Ldjds3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <derived>m2My9rwS8HRYf4+Ad3mDnH+orw8=</derived>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
+  <derived>3AZRDMLzv4qQvPrHG7mtxD1u2mJW</derived>
 </record>
 <record>
   <name>B2</name>
-  <source>
-    <location>
-      <short-path>final-class.cpp</short-path>
-      <source-path>final-class.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>final-class.cpp</shortPath>
+      <sourcePath>final-class.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>d3qgfOExBXZ0LWp+CxgeblnNu78=</id>
+  <id>2fYXQFEextD1cACbFYX3msEzn8M4</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <derived>m2My9rwS8HRYf4+Ad3mDnH+orw8=</derived>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
+  <derived>3AZRDMLzv4qQvPrHG7mtxD1u2mJW</derived>
 </record>
 </mrdocs>

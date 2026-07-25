@@ -2,85 +2,101 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>heJcpXgra+N7RTWsFHYAmUw+P14=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>2sBeCs6pqPkqDWZ2LGG4EnsB8xqB</functions>
+  </members>
 </namespace>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>merge-tparams.cpp</short-path>
-      <source-path>merge-tparams.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>merge-tparams.cpp</short-path>
-      <source-path>merge-tparams.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>merge-tparams.cpp</short-path>
-      <source-path>merge-tparams.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>merge-tparams.cpp</shortPath>
+        <sourcePath>merge-tparams.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>merge-tparams.cpp</shortPath>
+        <sourcePath>merge-tparams.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>merge-tparams.cpp</shortPath>
+        <sourcePath>merge-tparams.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>heJcpXgra+N7RTWsFHYAmUw+P14=</id>
+  <id>2sBeCs6pqPkqDWZ2LGG4EnsB8xqB</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Function</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Function</literal>
+        </text>
+      </children>
     </brief>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The first template parameter.</literal>
-      </text>
-      <name>T</name>
-    </t-param>
-    <t-param>
-      <kind>t-param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The second template parameter.</literal>
-      </text>
-      <name>U</name>
-    </t-param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+    <tparams>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The first template parameter.</literal>
+          </text>
+        </children>
+        <name>T</name>
+      </tParam>
+      <tParam>
+        <kind>t-param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The second template parameter.</literal>
+          </text>
+        </children>
+        <name>U</name>
+      </tParam>
+    </tparams>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
-    <type-tparam>
-      <kind>type</kind>
-      <name>U</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+      <type>
+        <kind>type</kind>
+        <name>U</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <func-class>normal</func-class>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

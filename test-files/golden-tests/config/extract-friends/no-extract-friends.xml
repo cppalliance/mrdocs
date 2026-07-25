@@ -2,169 +2,179 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>eIvg7iueGIPcE8p1NVfngsp2ojw=</namespaces>
-    <records>YrPSaKAbmXgzCAX5WByx4eVoqBM=</records>
-  </namespace-tranche>
+  <members>
+    <namespaces>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</namespaces>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz</records>
+  </members>
 </namespace>
 <namespace>
   <name>std</name>
-  <source>
-    <location>
-      <short-path>no-extract-friends.cpp</short-path>
-      <source-path>no-extract-friends.cpp</source-path>
-      <line-number>1</line-number>
-      <column-number>1</column-number>
-    </location>
-    <location>
-      <short-path>no-extract-friends.cpp</short-path>
-      <source-path>no-extract-friends.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-friends.cpp</shortPath>
+        <sourcePath>no-extract-friends.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>no-extract-friends.cpp</shortPath>
+        <sourcePath>no-extract-friends.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>namespace</kind>
-  <id>eIvg7iueGIPcE8p1NVfngsp2ojw=</id>
+  <id>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <namespace-tranche>
-    <records>PJd7qch01fTpaC83fxeMwg+clc0=</records>
-    <records>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</records>
-  </namespace-tranche>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>qxhkZ7vJu8kXFjx3zKMDAQk258p 2y62bsH8f9YhN6EQVTT2zTx1c8eH</records>
+  </members>
 </namespace>
 <record>
   <name>hash</name>
-  <source>
-    <location>
-      <short-path>no-extract-friends.cpp</short-path>
-      <source-path>no-extract-friends.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>no-extract-friends.cpp</shortPath>
+        <sourcePath>no-extract-friends.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>PJd7qch01fTpaC83fxeMwg+clc0=</id>
+  <id>qxhkZ7vJu8kXFjx3zKMDAQk258p</id>
   <extraction>regular</extraction>
-  <parent>eIvg7iueGIPcE8p1NVfngsp2ojw=</parent>
-  <key-kind>class</key-kind>
+  <parent>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</parent>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>T</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <specializations>2y62bsH8f9YhN6EQVTT2zTx1c8eH</specializations>
 </record>
 <record>
   <name>hash</name>
-  <source>
-    <location>
-      <short-path>no-extract-friends.cpp</short-path>
-      <source-path>no-extract-friends.cpp</source-path>
-      <line-number>12</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-friends.cpp</shortPath>
+      <sourcePath>no-extract-friends.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</id>
+  <id>2y62bsH8f9YhN6EQVTT2zTx1c8eH</id>
   <extraction>regular</extraction>
-  <parent>eIvg7iueGIPcE8p1NVfngsp2ojw=</parent>
-  <key-kind>class</key-kind>
+  <parent>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</parent>
+  <keyKind>class</keyKind>
   <template>
-    <type-targ>
-      <kind>type</kind>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </type-targ>
-    <primary>PJd7qch01fTpaC83fxeMwg+clc0=</primary>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                <identifier>A</identifier>
+              </identifier>
+            </name>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>qxhkZ7vJu8kXFjx3zKMDAQk258p</primary>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>oizNQDy8La+BwcGOBpMPC63TA5U=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <interface>
+    <public>
+      <functions>3G3XHPVGShArBhXuTKLEQJYNEekk</functions>
+    </public>
+  </interface>
+  <isListedOnPrimary/>
 </record>
 <function>
   <name>operator()</name>
-  <source>
-    <location>
-      <short-path>no-extract-friends.cpp</short-path>
-      <source-path>no-extract-friends.cpp</source-path>
-      <line-number>14</line-number>
-      <column-number>5</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-friends.cpp</shortPath>
+      <sourcePath>no-extract-friends.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
   <kind>function</kind>
-  <id>oizNQDy8La+BwcGOBpMPC63TA5U=</id>
+  <id>3G3XHPVGShArBhXuTKLEQJYNEekk</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>jTCZUvygQOxo6L+VfFZcAI6KU0Y=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>unsigned long long</identifier>
-    </name>
-  </named>
-  <param>
-    <l-value-reference>
-      <named>
-        <is-const/>
-        <name>
+  <parent>2y62bsH8f9YhN6EQVTT2zTx1c8eH</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
-          <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
-          <identifier>A</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>rhs</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
-  <is-const/>
+          <identifier>unsigned long long</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned long long</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+                  <identifier>A</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
+      <name>rhs</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
 </function>
 <record>
   <name>A</name>
-  <source>
-    <location>
-      <short-path>no-extract-friends.cpp</short-path>
-      <source-path>no-extract-friends.cpp</source-path>
-      <line-number>6</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-friends.cpp</shortPath>
+      <sourcePath>no-extract-friends.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>YrPSaKAbmXgzCAX5WByx4eVoqBM=</id>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <key-kind>class</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
 </record>
 </mrdocs>

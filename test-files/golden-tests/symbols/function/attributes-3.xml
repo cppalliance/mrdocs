@@ -2,141 +2,202 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>6BYUopzX+DBqDbRJLP2dm/2e0PI=</functions>
-    <functions>1EwAic4Ry+EDiChtdDEPDw/vEtQ=</functions>
-    <functions>K/UYck54RmD14h3yIN/RSUyOvEg=</functions>
-    <functions>TC/uKMv0qxSXX9JNVZ+KVi1ZvMU=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>4EXzhEQPfKydBchdmHGxE9HLMTVb 3xYYUdiaCwGcr1eZnjrDnZ2h3Dn3 cX7h5kn76peVeLAPSyRghnLepTq 24Zc2TxknMHFHwnBD9i3TdcA1Xme</functions>
+  </members>
 </namespace>
 <function>
   <name>annotated</name>
-  <source>
-    <location>
-      <short-path>attributes-3.cpp</short-path>
-      <source-path>attributes-3.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>48</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes-3.cpp</shortPath>
+        <sourcePath>attributes-3.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>48</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>6BYUopzX+DBqDbRJLP2dm/2e0PI=</id>
+  <id>4EXzhEQPfKydBchdmHGxE9HLMTVb</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <other-attribute>
-    <name>clang::annotate</name>
-    <balanced-tokens>&quot;a&quot;</balanced-tokens>
-  </other-attribute>
-  <other-attribute>
-    <name>clang::annotate</name>
-    <balanced-tokens>&quot;b&quot;</balanced-tokens>
-  </other-attribute>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <other>
+      <kind>other</kind>
+      <name>clang::annotate</name>
+      <balancedTokens>
+        <string>&quot;a&quot;</string>
+      </balancedTokens>
+    </other>
+    <other>
+      <kind>other</kind>
+      <name>clang::annotate</name>
+      <balancedTokens>
+        <string>&quot;b&quot;</string>
+      </balancedTokens>
+    </other>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>compute</name>
-  <source>
-    <location>
-      <short-path>attributes-3.cpp</short-path>
-      <source-path>attributes-3.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>32</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes-3.cpp</shortPath>
+        <sourcePath>attributes-3.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>32</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>1EwAic4Ry+EDiChtdDEPDw/vEtQ=</id>
+  <id>3xYYUdiaCwGcr1eZnjrDnZ2h3Dn3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <deprecated-attribute>
-    <name>deprecated</name>
-    <balanced-tokens>&quot;use compute2&quot;</balanced-tokens>
-    <message>use compute2</message>
-  </deprecated-attribute>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>int</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use compute2&quot;</string>
+      </balancedTokens>
+      <message>use compute2</message>
+    </deprecated>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>log_message</name>
-  <source>
-    <location>
-      <short-path>attributes-3.cpp</short-path>
-      <source-path>attributes-3.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>31</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes-3.cpp</shortPath>
+        <sourcePath>attributes-3.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>31</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>K/UYck54RmD14h3yIN/RSUyOvEg=</id>
+  <id>cX7h5kn76peVeLAPSyRghnLepTq</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <other-attribute>
-    <name>gnu::format</name>
-    <balanced-tokens>printf</balanced-tokens>
-    <balanced-tokens>1</balanced-tokens>
-    <balanced-tokens>2</balanced-tokens>
-  </other-attribute>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <pointer>
-      <named>
-        <is-const>1</is-const>
-        <name>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <other>
+      <kind>other</kind>
+      <name>gnu::format</name>
+      <balancedTokens>
+        <string>printf</string>
+        <string>1</string>
+        <string>2</string>
+      </balancedTokens>
+    </other>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
           <kind>identifier</kind>
-          <identifier>char</identifier>
-        </name>
-      </named>
-    </pointer>
-    <name>fmt</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-variadic>1</is-variadic>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <pointer>
+          <kind>pointer</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <identifier>char</identifier>
+                </identifier>
+              </name>
+              <fundamentalType>char</fundamentalType>
+            </named>
+          </pointeeType>
+        </pointer>
+      </type>
+      <name>fmt</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <isVariadic/>
 </function>
 <function>
   <name>raw_message</name>
-  <source>
-    <location>
-      <short-path>attributes-3.cpp</short-path>
-      <source-path>attributes-3.cpp</source-path>
-      <line-number>11</line-number>
-      <column-number>31</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes-3.cpp</shortPath>
+        <sourcePath>attributes-3.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>31</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>TC/uKMv0qxSXX9JNVZ+KVi1ZvMU=</id>
+  <id>24Zc2TxknMHFHwnBD9i3TdcA1Xme</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <deprecated-attribute>
-    <name>deprecated</name>
-    <balanced-tokens>&quot;use a, b&quot;</balanced-tokens>
-    <message>use a, b</message>
-  </deprecated-attribute>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use a, b&quot;</string>
+      </balancedTokens>
+      <message>use a, b</message>
+    </deprecated>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

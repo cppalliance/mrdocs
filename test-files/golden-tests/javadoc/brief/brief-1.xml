@@ -2,107 +2,132 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>RnDTZyCZuSqydMEPutN0yG4E/xg=</functions>
-    <functions>NEkWCLiknLGzCD6JnXuBTSAAne8=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>yvHfYSZg8bP7qbNUqNZCNkYYstT jFRRE5yCAMaXWhcSeZZbpa77uXc</functions>
+  </members>
 </namespace>
 <function>
   <name>f5</name>
-  <source>
-    <location>
-      <short-path>brief-1.cpp</short-path>
-      <source-path>brief-1.cpp</source-path>
-      <line-number>30</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>brief-1.cpp</shortPath>
+        <sourcePath>brief-1.cpp</sourcePath>
+        <lineNumber>30</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>RnDTZyCZuSqydMEPutN0yG4E/xg=</id>
+  <id>yvHfYSZg8bP7qbNUqNZCNkYYstT</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>brief </literal>
-      </text>
-      <strong>
-        <kind>strong</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>bold</literal>
+          <literal>brief </literal>
         </text>
-      </strong>
-      <text>
-        <kind>text</kind>
-        <literal> it continues to the line.</literal>
-      </text>
+        <strong>
+          <kind>strong</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>bold</literal>
+            </text>
+          </children>
+        </strong>
+        <text>
+          <kind>text</kind>
+          <literal> it continues to the line.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f6</name>
-  <source>
-    <location>
-      <short-path>brief-1.cpp</short-path>
-      <source-path>brief-1.cpp</source-path>
-      <line-number>39</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>brief-1.cpp</shortPath>
+        <sourcePath>brief-1.cpp</sourcePath>
+        <lineNumber>39</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>NEkWCLiknLGzCD6JnXuBTSAAne8=</id>
+  <id>jFRRE5yCAMaXWhcSeZZbpa77uXc</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>many lined </literal>
-      </text>
-      <strong>
-        <kind>strong</kind>
-        <text>
-          <kind>text</kind>
-          <literal>bold</literal>
-        </text>
-      </strong>
-      <text>
-        <kind>text</kind>
-        <literal> what will happen?</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>many lined </literal>
+          </text>
+          <strong>
+            <kind>strong</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bold</literal>
+              </text>
+            </children>
+          </strong>
+          <text>
+            <kind>text</kind>
+            <literal> what will happen?</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>brief</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

@@ -2,290 +2,405 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>x0B55dWJmTMqTXm6ZEu790gmPxY=</functions>
-    <functions>YeUN6nJ9c4mQKDbDWPlXFODDK1Y=</functions>
-    <functions>AF4Au7CviDbKZx+hVBlelmlAwJ0=</functions>
-  </namespace-tranche>
+  <members>
+    <functions>3n1Azr6YH2dKUM73rBYBfasjwdVX 2N6xDs8Kjy4WnKP2XB75nr59vBuX 1JD8jxzhuZSkoKWyG68HM5ocFu6</functions>
+  </members>
 </namespace>
 <overloads>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>fundamental.cpp</short-path>
-      <source-path>fundamental.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-    <location>
-      <short-path>fundamental.cpp</short-path>
-      <source-path>fundamental.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>fundamental.cpp</shortPath>
+        <sourcePath>fundamental.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>fundamental.cpp</shortPath>
+        <sourcePath>fundamental.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>overloads</kind>
-  <id>x0B55dWJmTMqTXm6ZEu790gmPxY=</id>
+  <id>3n1Azr6YH2dKUM73rBYBfasjwdVX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <code>
-        <kind>code</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>f</literal>
+            </text>
+          </children>
+        </code>
         <text>
           <kind>text</kind>
-          <literal>f</literal>
+          <literal> overloads</literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal> overloads</literal>
-      </text>
+      </children>
     </brief>
-    <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Fail param</literal>
-      </text>
-      <name>a</name>
-    </param>
-  </doc-comment>
-  <func-class>normal</func-class>
-  <members>ackjGh57CJQLwtO8PihiSPPKIBY=</members>
-  <members>RX9GLABxvm5/ekXBz4J4QOCw/z0=</members>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Fail param</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <funcClass>normal</funcClass>
+  <members>2UUmhVE11kFkzzQeeZWDoLww9ebF yA4qjuys9Nay9kusbFN7N1NXveg</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
 </overloads>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>fundamental.cpp</short-path>
-      <source-path>fundamental.cpp</source-path>
-      <line-number>5</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>fundamental.cpp</shortPath>
+        <sourcePath>fundamental.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>ackjGh57CJQLwtO8PihiSPPKIBY=</id>
+  <id>2UUmhVE11kFkzzQeeZWDoLww9ebF</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Fail</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Fail</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Fail param</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Fail param</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>fundamental.cpp</short-path>
-      <source-path>fundamental.cpp</source-path>
-      <line-number>13</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>fundamental.cpp</shortPath>
+        <sourcePath>fundamental.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>RX9GLABxvm5/ekXBz4J4QOCw/z0=</id>
+  <id>yA4qjuys9Nay9kusbFN7N1NXveg</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Details</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Details</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief</literal>
+        </text>
+      </children>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Param description</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Param description</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>long</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>long</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>long</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>fundamental.cpp</short-path>
-      <source-path>fundamental.cpp</source-path>
-      <line-number>16</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>fundamental.cpp</shortPath>
+        <sourcePath>fundamental.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>YeUN6nJ9c4mQKDbDWPlXFODDK1Y=</id>
+  <id>2N6xDs8Kjy4WnKP2XB75nr59vBuX</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Details</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Details</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief</literal>
-      </text>
-      <copied-from>f(long int)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>f(long int)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Param description</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Param description</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>long</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>long</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>long</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>h</name>
-  <source>
-    <location>
-      <short-path>fundamental.cpp</short-path>
-      <source-path>fundamental.cpp</source-path>
-      <line-number>19</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>fundamental.cpp</shortPath>
+        <sourcePath>fundamental.cpp</sourcePath>
+        <lineNumber>19</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>AF4Au7CviDbKZx+hVBlelmlAwJ0=</id>
+  <id>1JD8jxzhuZSkoKWyG68HM5ocFu6</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Details</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Details</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Brief</literal>
-      </text>
-      <copied-from>f(long)</copied-from>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief</literal>
+        </text>
+      </children>
+      <copiedFrom>
+        <string>f(long)</string>
+      </copiedFrom>
     </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Param description</literal>
+          </text>
+        </children>
+        <name>a</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Param description</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>long</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>long</fundamentalType>
+        </named>
+      </type>
       <name>a</name>
     </param>
-  </doc-comment>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <identifier>void</identifier>
-    </name>
-  </named>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>long</identifier>
-      </name>
-    </named>
-    <name>a</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

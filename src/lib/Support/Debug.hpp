@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -28,7 +29,8 @@ struct std::formatter<mrdocs::SymbolID> : std::formatter<std::string> {
   template <class FmtContext>
   std::format_context::iterator format(mrdocs::SymbolID const &s,
                                        FmtContext &ctx) const {
-    std::string str = s ? mrdocs::toBase64(s) : "<invalid SymbolID>";
+    std::string str = s ? mrdocs::toBase64(std::string_view(
+        reinterpret_cast<char const*>(s.data()), s.size())) : "<invalid SymbolID>";
     return std::formatter<std::string>::format(std::move(str), ctx);
   }
 };
@@ -38,7 +40,7 @@ struct std::formatter<mrdocs::SymbolKind> : std::formatter<std::string> {
   template <class FmtContext>
   std::format_context::iterator format(mrdocs::SymbolKind t,
                                        FmtContext &ctx) const {
-    return std::formatter<std::string>::format(toString(t), ctx);
+    return std::formatter<std::string>::format(std::string(toString(t)), ctx);
   }
 };
 
@@ -47,7 +49,7 @@ struct std::formatter<mrdocs::AccessKind> : std::formatter<std::string> {
   template <class FmtContext>
   std::format_context::iterator format(mrdocs::AccessKind a,
                                        FmtContext &ctx) const {
-    return std::formatter<std::string>::format(toString(a).str(), ctx);
+    return std::formatter<std::string>::format(std::string(toString(a)), ctx);
   }
 };
 

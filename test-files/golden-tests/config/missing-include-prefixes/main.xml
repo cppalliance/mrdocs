@@ -2,67 +2,80 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <namespaces>FSD/uKhIsgLLMoCQGwUzTPIPF6s=</namespaces>
-    <records>KJQiUzqS/DyA8gVUV+KMxND3bns=</records>
-    <functions>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</functions>
-    <functions>43ASI/aC9fCLy8T+1gn7pUdis+g=</functions>
-  </namespace-tranche>
+  <members>
+    <namespaces>J5EPQuoWXC3fPuzNJ98P5v2iMUe</namespaces>
+    <records>ZnmRtVNaw1HHxhPXkdeemWSKxpS</records>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU 4An92kkqG8S7Ca73ZvRsDcPWQnS3</functions>
+  </members>
 </namespace>
 <function>
   <name>f</name>
-  <source>
-    <location>
-      <short-path>main.cpp</short-path>
-      <source-path>main.cpp</source-path>
-      <line-number>4</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>main.cpp</shortPath>
+        <sourcePath>main.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>s6nsa+zVhpzzrN+yUVPP5rvdXqs=</id>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>KJQiUzqS/DyA8gVUV+KMxND3bns=</id>
-      <identifier>unknown_type</identifier>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>ZnmRtVNaw1HHxhPXkdeemWSKxpS</id>
+          <identifier>unknown_type</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 <function>
   <name>g</name>
-  <source>
-    <location>
-      <short-path>main.cpp</short-path>
-      <source-path>main.cpp</source-path>
-      <line-number>7</line-number>
-      <column-number>1</column-number>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>main.cpp</shortPath>
+        <sourcePath>main.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>43ASI/aC9fCLy8T+1gn7pUdis+g=</id>
+  <id>4An92kkqG8S7Ca73ZvRsDcPWQnS3</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <named>
-    <name>
-      <kind>identifier</kind>
-      <id>crCUrZiBv5bX9bGLig2c8iHIQTw=</id>
-      <identifier>unknown_type</identifier>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
       <name>
-        <kind>identifier</kind>
-        <id>FSD/uKhIsgLLMoCQGwUzTPIPF6s=</id>
-        <identifier>unknown_ns</identifier>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2bg56jNTtmYqaYkuokLVycSeN4bd</id>
+          <identifier>unknown_type</identifier>
+          <prefix>
+            <identifier>
+              <kind>identifier</kind>
+              <id>J5EPQuoWXC3fPuzNJ98P5v2iMUe</id>
+              <identifier>unknown_ns</identifier>
+            </identifier>
+          </prefix>
+        </identifier>
       </name>
-    </name>
-  </named>
-  <func-class>normal</func-class>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
 </function>
 </mrdocs>

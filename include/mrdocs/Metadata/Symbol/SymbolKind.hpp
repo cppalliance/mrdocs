@@ -27,10 +27,12 @@ enum class SymbolKind {
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 };
 
-MRDOCS_DESCRIBE_ENUM(SymbolKind,
-    Namespace, Record, Function, Overloads, Enum,
-    EnumConstant, Typedef, Variable, Guide,
-    NamespaceAlias, Using, Concept)
+// Described from SymbolNodes.inc (the same source that defines the enum),
+// which excludes the leading None sentinel.
+MRDOCS_DESCRIBE_ENUM_BEGIN(SymbolKind)
+#define INFO(Name) MRDOCS_ENUM_ENTRY(SymbolKind, Name)
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
+MRDOCS_DESCRIBE_ENUM_END(SymbolKind)
 
 /** Count the number of SymbolKind enumerators.
     @return Number of `SymbolKind` values generated from SymbolNodes.inc.

@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -19,6 +20,7 @@
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -123,14 +125,6 @@ public:
         return data_ + size();
     }
 
-    /** Return a string view of the SymbolID.
-    */
-    operator std::string_view() const noexcept
-    {
-        return {reinterpret_cast<
-            char const*>(data()), size()};
-    }
-
     /** Compare two SymbolIDs with strong ordering.
     */
     auto operator<=>(
@@ -169,6 +163,34 @@ MRDOCS_DECL
 std::string
 toBase16Str(SymbolID const& id);
 
+/** Convert a SymbolID to its canonical string form.
+
+    This is the representation used for symbol identifiers in the generated
+    output (e.g. the XML `id`/`parent` attributes and the DOM `id` field). It
+    uses base58, which is compact yet easy to copy, paste, and match with a
+    regular expression.
+
+    @param id The SymbolID to convert.
+    @return The base58 string representation of the SymbolID.
+*/
+MRDOCS_DECL
+std::string
+toBase58Str(SymbolID const& id);
+
+/** Parse the base58 string form of a SymbolID.
+
+    This is the inverse of @ref toBase58Str, used to decode the ids that appear
+    in the generated output (e.g. when a template or extension looks a symbol up
+    by its id).
+
+    @param str The base58 string to parse.
+    @return The SymbolID, or std::nullopt if `str` is not a valid encoding of a
+    20-byte SymbolID.
+*/
+MRDOCS_DECL
+std::optional<SymbolID>
+fromBase58Str(std::string_view str);
+
 /** Return the result of comparing s0 to s1.
 
     This function returns true if the string
@@ -188,7 +210,7 @@ compareSymbolNames(
     std::string_view symbolName0,
     std::string_view symbolName1) noexcept;
 
-/** Convert SymbolID to dom::Value string in the DOM using toBase16
+/** Convert SymbolID to dom::Value string in the DOM using toBase58
 */
 MRDOCS_DECL
 void
@@ -252,7 +274,8 @@ struct std::hash<mrdocs::SymbolID>
     operator()(mrdocs::SymbolID const& id) const noexcept
     {
         return std::hash<std::string_view>()(
-            std::string_view(id));
+            std::string_view(
+                reinterpret_cast<char const*>(id.data()), id.size()));
     }
 };
 

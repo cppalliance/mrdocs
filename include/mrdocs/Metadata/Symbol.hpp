@@ -68,7 +68,7 @@ merge(SymbolTy& I, SymbolTy&& Other)
     Symbol& base = I;
     visit(base, [&]<typename DerivedSymbolTy>(DerivedSymbolTy& derived) mutable
     {
-        DerivedSymbolTy& otherDerived = static_cast<DerivedSymbolTy&>(Other);
+        auto& otherDerived = static_cast<DerivedSymbolTy&>(Other);
         merge(derived, std::move(otherDerived));
     });
 }

@@ -2,264 +2,357 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
-  <source>
-  </source>
   <kind>namespace</kind>
-  <id>//////////////////////////8=</id>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
-  <namespace-tranche>
-    <records>EOLlVkgHSwHfoF79RB5z5u63swE=</records>
-    <records>RjxurTLspCmZOtygTU8hoUYrzSY=</records>
-    <functions>2iIZZF467cENdcSgE3k9ICUfoY8=</functions>
-  </namespace-tranche>
+  <members>
+    <records>EeQ1x8PP9hxqoN8GerrL9H8GHBv ykhLzANy8ZdYGpg327e54ASyMCh</records>
+    <functions>43G4yYjyxbyWd3L3BPRRZ6GSuM2v</functions>
+  </members>
 </namespace>
 <record>
   <name>dynamic_bitset</name>
-  <source>
-    <location>
-      <short-path>friend-and-member-operator-rshift.cpp</short-path>
-      <source-path>friend-and-member-operator-rshift.cpp</source-path>
-      <line-number>10</line-number>
-      <column-number>1</column-number>
+  <loc>
+    <defLoc>
+      <shortPath>friend-and-member-operator-rshift.cpp</shortPath>
+      <sourcePath>friend-and-member-operator-rshift.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
-    </location>
-  </source>
+    </defLoc>
+  </loc>
   <kind>record</kind>
-  <id>EOLlVkgHSwHfoF79RB5z5u63swE=</id>
+  <id>EeQ1x8PP9hxqoN8GerrL9H8GHBv</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
-    <paragraph>
-      <kind>paragraph</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reduced from Boost.DynamicBitset: a member bitwise right-shift operator and a friend stream extraction operator. The friend declaration is essential to trigger the anchor collision (#919), where both operators were assigned the same AsciiDoctor section id.</literal>
-      </text>
-    </paragraph>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Reduced from Boost.DynamicBitset: a member bitwise right-shift operator and a friend stream extraction operator. The friend declaration is essential to trigger the anchor collision (#919), where both operators were assigned the same AsciiDoctor section id.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A class template with two unrelated </literal>
-      </text>
-      <code>
-        <kind>code</kind>
+      <children>
         <text>
           <kind>text</kind>
-          <literal>operator&gt;&gt;</literal>
+          <literal>A class template with two unrelated </literal>
         </text>
-      </code>
-      <text>
-        <kind>text</kind>
-        <literal>.</literal>
-      </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>operator&gt;&gt;</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>.</literal>
+        </text>
+      </children>
     </brief>
-  </doc-comment>
-  <key-kind>class</key-kind>
+  </doc>
+  <keyKind>class</keyKind>
   <template>
-    <type-tparam>
-      <kind>type</kind>
-      <name>Block</name>
-      <key-kind>class</key-kind>
-    </type-tparam>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>Block</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
   </template>
-  <record-interface>
-    <record-tranche>
-      <functions>LFBJIEiE8seUws6ttMfR5DodiGs=</functions>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
-  <friend>
-    <id>2iIZZF467cENdcSgE3k9ICUfoY8=</id>
-  </friend>
+  <interface>
+    <public>
+      <functions>cooxcahW5QnhXwhowE5L12MAi9G</functions>
+    </public>
+  </interface>
+  <friends>
+    <friendInfo>
+      <id>43G4yYjyxbyWd3L3BPRRZ6GSuM2v</id>
+    </friendInfo>
+  </friends>
 </record>
 <function>
   <name>operator&gt;&gt;</name>
-  <source>
-    <location>
-      <short-path>friend-and-member-operator-rshift.cpp</short-path>
-      <source-path>friend-and-member-operator-rshift.cpp</source-path>
-      <line-number>18</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>friend-and-member-operator-rshift.cpp</shortPath>
+        <sourcePath>friend-and-member-operator-rshift.cpp</sourcePath>
+        <lineNumber>18</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>LFBJIEiE8seUws6ttMfR5DodiGs=</id>
+  <id>cooxcahW5QnhXwhowE5L12MAi9G</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>EOLlVkgHSwHfoF79RB5z5u63swE=</parent>
-  <doc-comment>
+  <parent>EeQ1x8PP9hxqoN8GerrL9H8GHBv</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Bitwise right-shift operator (member).</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Bitwise right-shift operator (member).</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference to the current object.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Reference to the current object.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The shift amount.</literal>
+          </text>
+        </children>
+        <name>n</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>EeQ1x8PP9hxqoN8GerrL9H8GHBv</id>
+              <identifier>dynamic_bitset</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The shift amount.</literal>
-      </text>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
       <name>n</name>
     </param>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>EOLlVkgHSwHfoF79RB5z5u63swE=</id>
-        <identifier>dynamic_bitset</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <identifier>int</identifier>
-      </name>
-    </named>
-    <name>n</name>
-  </param>
-  <func-class>normal</func-class>
-  <is-record-method/>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&gt;&gt;</overloadedOperator>
+  <isRecordMethod/>
 </function>
 <record>
   <name>istream</name>
-  <source>
-    <location>
-      <short-path>friend-and-member-operator-rshift.cpp</short-path>
-      <source-path>friend-and-member-operator-rshift.cpp</source-path>
-      <line-number>2</line-number>
-      <column-number>1</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>friend-and-member-operator-rshift.cpp</shortPath>
+        <sourcePath>friend-and-member-operator-rshift.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>record</kind>
-  <id>RjxurTLspCmZOtygTU8hoUYrzSY=</id>
+  <id>ykhLzANy8ZdYGpg327e54ASyMCh</id>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>A stand-in for a stream type used by the extraction operator.</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A stand-in for a stream type used by the extraction operator.</literal>
+        </text>
+      </children>
     </brief>
-    <reference>
-      <kind>reference</kind>
-      <literal>operator&gt;&gt;</literal>
-      <id>2iIZZF467cENdcSgE3k9ICUfoY8=</id>
-    </reference>
-  </doc-comment>
-  <key-kind>struct</key-kind>
-  <record-interface>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-    <record-tranche>
-    </record-tranche>
-  </record-interface>
+    <related>
+      <reference>
+        <kind>reference</kind>
+        <literal>operator&gt;&gt;</literal>
+        <id>43G4yYjyxbyWd3L3BPRRZ6GSuM2v</id>
+      </reference>
+    </related>
+  </doc>
+  <keyKind>struct</keyKind>
 </record>
 <function>
   <name>operator&gt;&gt;</name>
-  <source>
-    <location>
-      <short-path>friend-and-member-operator-rshift.cpp</short-path>
-      <source-path>friend-and-member-operator-rshift.cpp</source-path>
-      <line-number>26</line-number>
-      <column-number>5</column-number>
-      <documented/>
-    </location>
-  </source>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>friend-and-member-operator-rshift.cpp</shortPath>
+        <sourcePath>friend-and-member-operator-rshift.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
   <kind>function</kind>
-  <id>2iIZZF467cENdcSgE3k9ICUfoY8=</id>
+  <id>43G4yYjyxbyWd3L3BPRRZ6GSuM2v</id>
+  <access>public</access>
   <extraction>regular</extraction>
-  <parent>//////////////////////////8=</parent>
-  <doc-comment>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
     <brief>
       <kind>brief</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Stream extraction operator (friend / free function).</literal>
-      </text>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Stream extraction operator (friend / free function).</literal>
+        </text>
+      </children>
     </brief>
     <returns>
-      <kind>returns</kind>
-      <text>
-        <kind>text</kind>
-        <literal>Reference to the input stream.</literal>
-      </text>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Reference to the input stream.</literal>
+          </text>
+        </children>
+      </returns>
     </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The input stream.</literal>
+          </text>
+        </children>
+        <name>is</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The bitset to read into.</literal>
+          </text>
+        </children>
+        <name>bs</name>
+      </param>
+    </params>
+    <relates>
+      <reference>
+        <kind>reference</kind>
+        <literal>istream</literal>
+        <id>ykhLzANy8ZdYGpg327e54ASyMCh</id>
+      </reference>
+    </relates>
+  </doc>
+  <returnType>
+    <lValueReference>
+      <kind>lvalue-reference</kind>
+      <pointeeType>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>ykhLzANy8ZdYGpg327e54ASyMCh</id>
+              <identifier>istream</identifier>
+            </identifier>
+          </name>
+        </named>
+      </pointeeType>
+    </lValueReference>
+  </returnType>
+  <params>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The input stream.</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>ykhLzANy8ZdYGpg327e54ASyMCh</id>
+                  <identifier>istream</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>is</name>
     </param>
     <param>
-      <kind>param</kind>
-      <text>
-        <kind>text</kind>
-        <literal>The bitset to read into.</literal>
-      </text>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <specialization>
+                  <kind>specialization</kind>
+                  <id>EeQ1x8PP9hxqoN8GerrL9H8GHBv</id>
+                  <identifier>dynamic_bitset</identifier>
+                  <templateArgs>
+                    <type>
+                      <kind>type</kind>
+                      <type>
+                        <named>
+                          <kind>named</kind>
+                          <name>
+                            <identifier>
+                              <kind>identifier</kind>
+                              <identifier>B</identifier>
+                            </identifier>
+                          </name>
+                        </named>
+                      </type>
+                    </type>
+                  </templateArgs>
+                </specialization>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
       <name>bs</name>
     </param>
-    <reference>
-      <kind>reference</kind>
-      <literal>istream</literal>
-      <id>RjxurTLspCmZOtygTU8hoUYrzSY=</id>
-    </reference>
-  </doc-comment>
-  <l-value-reference>
-    <named>
-      <name>
-        <kind>identifier</kind>
-        <id>RjxurTLspCmZOtygTU8hoUYrzSY=</id>
-        <identifier>istream</identifier>
-      </name>
-    </named>
-  </l-value-reference>
-  <param>
-    <l-value-reference>
-      <named>
-        <name>
-          <kind>identifier</kind>
-          <id>RjxurTLspCmZOtygTU8hoUYrzSY=</id>
-          <identifier>istream</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>is</name>
-  </param>
-  <param>
-    <l-value-reference>
-      <named>
-        <name>
-          <kind>specialization</kind>
-          <id>EOLlVkgHSwHfoF79RB5z5u63swE=</id>
-          <identifier>dynamic_bitset</identifier>
-        </name>
-      </named>
-    </l-value-reference>
-    <name>bs</name>
-  </param>
-  <func-class>normal</func-class>
+  </params>
+  <funcClass>normal</funcClass>
+  <overloadedOperator>&gt;&gt;</overloadedOperator>
 </function>
 </mrdocs>
