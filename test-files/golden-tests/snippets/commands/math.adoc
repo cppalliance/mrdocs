@@ -1,6 +1,34 @@
 = Reference
 :mrdocs:
 
+[#binary_search]
+== binary&lowbar;search
+
+Looks up a key in a sorted range in stem:[O(\log n)] time&period;
+
+=== Synopsis
+
+Declared in `&lt;math&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+binary&lowbar;search(
+    int const* first,
+    int n,
+    int key);
+----
+
+=== Description
+
+The number of comparisons follows the recurrence&colon;
+
+[stem]
+++++
+T(n) = T(n/2) + O(1)
+++++
+This comment uses the Doxygen formula delimiters, which Clang parses as known commands, so it compiles cleanly under &hyphen;Wdocumentation&period;
+
 [#circle_area]
 == circle&lowbar;area
 
@@ -18,7 +46,11 @@ circle&lowbar;area(double r);
 
 === Description
 
-For very large radii the result is taken modulo floating&hyphen;point precision&colon; stem:[A_{approx} = \pi r^2 + \epsilon]
+The Gaussian integral is the classic closed&hyphen;form result&colon;
 
+[stem]
+++++
+\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
+++++
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

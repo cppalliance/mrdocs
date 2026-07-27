@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>2snLA3wNkrp2uBCNszvUX3UJ5h4s</functions>
+  </members>
+</namespace>
+<function>
+  <name>solve_quadratic</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>math.cpp</shortPath>
+        <sourcePath>math.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2snLA3wNkrp2uBCNszvUX3UJ5h4s</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The roots are </literal>
+          </text>
+          <math>
+            <kind>math</kind>
+            <literal>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</literal>
+          </math>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A standalone Markdown display span is promoted to a block:</literal>
+          </text>
+        </children>
+      </paragraph>
+      <math>
+        <kind>math</kind>
+        <literal>\int_0^1 x^2\,dx = \frac{1}{3}</literal>
+      </math>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The Doxygen delimiters produce the same block form:</literal>
+          </text>
+        </children>
+      </paragraph>
+      <math>
+        <kind>math</kind>
+        <literal>e^{i\pi} + 1 = 0</literal>
+      </math>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Solves a quadratic equation in </literal>
+        </text>
+        <math>
+          <kind>math</kind>
+          <literal>O(1)</literal>
+        </math>
+        <text>
+          <kind>text</kind>
+          <literal> time.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>double</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </type>
+      <name>a</name>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </type>
+      <name>b</name>
+    </param>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </type>
+      <name>c</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

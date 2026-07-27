@@ -1,0 +1,52 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#solve_quadratic[`solve&lowbar;quadratic`] 
+| Solves a quadratic equation in stem:[O(1)] time&period;
+|===
+
+
+[#solve_quadratic]
+== solve&lowbar;quadratic
+
+Solves a quadratic equation in stem:[O(1)] time&period;
+
+=== Synopsis
+
+Declared in `&lt;math&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+solve&lowbar;quadratic(
+    double a,
+    double b,
+    double c);
+----
+
+=== Description
+
+The roots are stem:[x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}]&period;
+
+A standalone Markdown display span is promoted to a block&colon;
+
+[stem]
+++++
+\int_0^1 x^2\,dx = \frac{1}{3}
+++++
+The Doxygen delimiters produce the same block form&colon;
+
+[stem]
+++++
+e^{i\pi} + 1 = 0
+++++
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

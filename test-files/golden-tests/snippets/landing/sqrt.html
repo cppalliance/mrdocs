@@ -30,9 +30,9 @@ requires std::is_integral_v&lt;T&gt;;</code></pre>
 </div>
 <div class="description">
 <h3>Description</h3>
-<p>Returns the integer square root of <code>value</code> via bit manipulation.</p>
+<p>Returns \(\lfloor\sqrt{value}\rfloor\), the largest integer whose square does not exceed <code>value</code>, computed via bit manipulation.</p>
 <h3>Complexity</h3>
-<p>Logarithmic in <code>value</code>.</p>
+<p>Logarithmic in <code>value</code>, about \(O(\log value)\) iterations.</p>
 <div class="admonition">
 <h4>NOTE</h4>
 <div>

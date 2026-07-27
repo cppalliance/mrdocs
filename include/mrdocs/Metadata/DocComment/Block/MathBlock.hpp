@@ -44,6 +44,10 @@ struct MathBlock final
     /// Raw TeX math source
     std::string literal;
 
+    /** Construct an empty math block.
+    */
+    MathBlock() = default;
+
     /** Copy-construct a math block.
     */
     MathBlock(MathBlock const& other) = default;

@@ -47,6 +47,8 @@ Doc comments in the Javadoc and Doxygen tradition. Block-level commands describe
 include::example$snippets/landing/sqrt.cpp[tag=doc]
 ----
 
+Doc comments carry LaTeX math too. The `\f$...\f$` and `$...$` spans in the comment above render as real symbols, so a complexity like stem:[O(\log n)] or a definition like stem:[\lfloor\sqrt{value}\rfloor] reads the way it would in a paper.
+
 == What Mr.Docs produces
 
 * Several generators emit documentation in formats ranging from rendered documents for human readers to structured data for downstream tooling.
