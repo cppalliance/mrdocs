@@ -21,6 +21,13 @@
 </script>
 {{/each}}
 {{/if}}
+{{! Math rendering. Math nodes emit MathJax delimiters (\( \) inline, \[ \]
+    display); load MathJax so they render in the default template. Gated on
+    hasDefaultStyles so minimal/overridden output stays script-free, and users
+    who prefer KaTeX or a self-hosted copy can override this partial. }}
+{{#if page.hasDefaultStyles}}
+{{> math-renderer }}
+{{/if}}
 {{! Title }}
 {{#if @root.config.multipage }}
 {{! Multipage documentation: symbol is available to the wrapper }}

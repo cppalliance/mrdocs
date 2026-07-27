@@ -178,6 +178,62 @@ splitParagraphsAtMarkers(BlockVec& blocks)
     }
 }
 
+// Convert a paragraph whose whole text is a standalone display-math span
+// ($$ ... $$) into a MathBlock, so display math renders as a block instead
+// of an inline formula. Inline $...$ or $$...$$ mixed with other text is
+// left untouched for parseInlinesInContainer to turn into a MathInline.
+// Runs before inline parsing, while the paragraph still holds raw text.
+void
+promoteDisplayMathParagraphs(BlockVec& blocks)
+{
+    for (auto& block : blocks)
+    {
+        if (!block->isParagraph())
+        {
+            continue;
+        }
+        doc::ParagraphBlock& para = block->asParagraph();
+        std::string text;
+        bool pureText = true;
+        for (auto const& child : para.children)
+        {
+            if (child->isText())
+            {
+                text += child->asText().literal;
+            }
+            else if (child->isSoftBreak() || child->isLineBreak())
+            {
+                text += ' ';
+            }
+            else
+            {
+                pureText = false;
+                break;
+            }
+        }
+        if (!pureText)
+        {
+            continue;
+        }
+        std::string_view const sv = trim(text);
+        if (sv.size() < 5
+            || !sv.starts_with("$$")
+            || !sv.ends_with("$$"))
+        {
+            continue;
+        }
+        std::string_view const inner = sv.substr(2, sv.size() - 4);
+        // Two spans on one line are two inline formulas, not one block.
+        if (inner.find("$$") != std::string_view::npos)
+        {
+            continue;
+        }
+        doc::MathBlock math;
+        math.literal = std::string(trim(inner));
+        block = Polymorphic<doc::Block>(std::move(math));
+    }
+}
+
 // Convert a paragraph that opens with a Markdown footnote definition
 // (`[^label]: text`) into a FootnoteDefinitionBlock holding the text. The
 // matching `[^label]` reference is produced by the inline parser. Runs on
@@ -1647,6 +1703,7 @@ parseInlines(DocComment& doc)
             })
         {
             splitParagraphsAtMarkers(node.Document);
+            promoteDisplayMathParagraphs(node.Document);
             extractFootnoteDefinitions(node.Document);
         }
         if constexpr (
@@ -1656,6 +1713,7 @@ parseInlines(DocComment& doc)
             })
         {
             splitParagraphsAtMarkers(node.blocks);
+            promoteDisplayMathParagraphs(node.blocks);
             extractFootnoteDefinitions(node.blocks);
         }
         if constexpr (std::same_as<NodeTy, doc::ListBlock>)
@@ -1663,6 +1721,7 @@ parseInlines(DocComment& doc)
             for (doc::ListItem& item : node.items)
             {
                 splitParagraphsAtMarkers(item.blocks);
+                promoteDisplayMathParagraphs(item.blocks);
                 extractFootnoteDefinitions(item.blocks);
             }
         }

@@ -5,11 +5,11 @@ struct sqrt_fn
 {
     /** Compute the integer square root.
 
-        Returns the integer square root of `value`
-        via bit manipulation.
+        Returns \f$\lfloor\sqrt{value}\rfloor\f$, the largest integer whose
+        square does not exceed `value`, computed via bit manipulation.
 
         @par Complexity
-        Logarithmic in `value`.
+        Logarithmic in `value`, about $O(\log value)$ iterations.
 
         @note Returns zero for zero input.
 

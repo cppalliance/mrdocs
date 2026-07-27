@@ -37,6 +37,7 @@
 #include <format>
 #include <ranges>
 #include <string_view>
+#include <utility>
 
 #ifdef _MSC_VER
 #    pragma warning(push)
@@ -291,6 +292,12 @@ class DocCommentVisitor
     DocComment jd_;
     doc::InlineContainer* curInlines_{ nullptr };
     bool newline_blocks_merge_{ false };
+
+    // A `\f$...\f$` inline formula is a verbatim block command to Clang, so it
+    // splits the surrounding paragraph in two. When that happens we record the
+    // source line just past the formula; a paragraph that starts on the next
+    // line (no blank line between) is merged back so the formula stays inline.
+    unsigned mergeParagraphAfterLine_{ 0 };
 
     // --- inline assembly
 
@@ -1357,6 +1364,20 @@ class DocCommentVisitor
             visitChildrenWithCursor(C);
             return;
         }
+        // Merge back a paragraph split off by a preceding `\f$...\f$` inline
+        // formula, but only when it is contiguous (no blank line between).
+        unsigned const mergeLine = std::exchange(mergeParagraphAfterLine_, 0);
+        if (mergeLine != 0
+            && !jd_.Document.empty()
+            && jd_.Document.back()->Kind == doc::BlockKind::Paragraph
+            && sm_.getPresumedLoc(C->getBeginLoc()).getLine() <= mergeLine + 1)
+        {
+            auto& inlines = static_cast<doc::InlineContainer&>(
+                jd_.Document.back()->asParagraph());
+            auto scope = enterScope(inlines);
+            visitChildrenWithCursor(C);
+            return;
+        }
         doc::ParagraphBlock paragraph;
         auto scope = enterScope(paragraph);
         visitChildrenWithCursor(C);
@@ -1667,7 +1688,6 @@ class DocCommentVisitor
     visitVerbatimBlock(clang::comments::VerbatimBlockComment const* C)
     {
         MRDOCS_COMMENT_TRACE(C, ctx_);
-        doc::CodeBlock code;
         std::string payload;
         unsigned n = C->getNumLines();
         for (unsigned i = 0; i < n; ++i)
@@ -1679,6 +1699,59 @@ class DocCommentVisitor
                 payload.push_back('\n');
             }
         }
+
+        // Doxygen LaTeX formula commands, which Clang models as verbatim
+        // block commands. They give users a math syntax that does not trip
+        // Clang's -Wdocumentation-unknown-command (unlike the `$...$` /
+        // `$$...$$` Markdown forms, whose bodies Clang cannot parse).
+        //   \f$ ... \f$  inline formula
+        //   \f[ ... \f]  displayed formula
+        auto const name = C->getCommandName(ctx_.getCommentCommandTraits());
+        if (name == "f$" || name == "f[")
+        {
+            payload = std::string(trim(payload));
+        }
+        if (name == "f$")
+        {
+            // Inline formula. Clang positions the verbatim block outside the
+            // surrounding paragraph, so emit into the current inline flow when
+            // one is open, append to the paragraph that was just closed, or
+            // otherwise wrap it in its own paragraph.
+            if (curInlines_)
+            {
+                emplaceInline<doc::MathInline>(true, std::move(payload));
+                return;
+            }
+            doc::InlineContainer* inlines = nullptr;
+            if (!jd_.Document.empty()
+                && jd_.Document.back()->Kind == doc::BlockKind::Paragraph)
+            {
+                inlines = &static_cast<doc::InlineContainer&>(
+                    jd_.Document.back()->asParagraph());
+            }
+            else
+            {
+                jd_.Document.emplace_back(doc::ParagraphBlock{});
+                inlines = &static_cast<doc::InlineContainer&>(
+                    jd_.Document.back()->asParagraph());
+            }
+            inlines->children.emplace_back(
+                std::in_place_type<doc::MathInline>, std::move(payload));
+            mergeParagraphAfterLine_
+                = sm_.getPresumedLoc(C->getEndLoc()).getLine();
+            return;
+        }
+        if (name == "f[")
+        {
+            // Displayed formula: always a block.
+            flushCurrentParagraphAsBlock();
+            doc::MathBlock math;
+            math.literal = std::move(payload);
+            jd_.Document.emplace_back(std::move(math));
+            return;
+        }
+
+        doc::CodeBlock code;
         code.literal = std::move(payload);
         jd_.Document.emplace_back(std::move(code));
     }

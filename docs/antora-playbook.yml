@@ -83,6 +83,11 @@ asciidoc:
     logo-img: ''
     logo-text: 'Mr. Docs'
     icon-img: ''
+    # Render LaTeX math. `stem:[...]` and `[stem]` blocks become MathJax
+    # delimiters (\(...\) inline, \[...\] display); the UI head loads
+    # MathJax to typeset them. MrDocs's own `$...$` / `\f$...\f$` doc-comment
+    # math emits `stem:[...]`, so this lights up the generated reference too.
+    stem: latexmath
     # Make every `[tabs]` block in the docs a synchronised tabset.
     # A tab click in one tabset selects the matching label in every
     # other tabset on the page, and the choice is persisted in

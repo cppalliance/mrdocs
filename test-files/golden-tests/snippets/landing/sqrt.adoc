@@ -27,11 +27,11 @@ This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#
 
 === Description
 
-Returns the integer square root of `value` via bit manipulation&period;
+Returns stem:[\lfloor\sqrt{value}\rfloor], the largest integer whose square does not exceed `value`, computed via bit manipulation&period;
 
 === Complexity
 
-Logarithmic in `value`&period;
+Logarithmic in `value`, about stem:[O(\log value)] iterations&period;
 
 [NOTE]
 ====

@@ -2,6 +2,15 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id={{this}}"></script>
     <script>function gtag(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[];gtag('js',new Date());gtag('config','{{this}}')</script>
     {{/with}}
+    {{! MathJax typesets the \(...\) and \[...\] delimiters that Asciidoctor
+        emits for stem/latexmath (enabled via the playbook `stem` attribute). }}
+    <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     {{!--
     <script>var uiRootPath = '{{{uiRootPath}}}'</script>
     --}}

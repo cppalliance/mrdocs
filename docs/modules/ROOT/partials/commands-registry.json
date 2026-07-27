@@ -237,17 +237,17 @@
       {
         "node_type": "MathBlock",
         "heading": "Math Block",
-        "kind": "Planned",
+        "kind": "Block",
         "syntaxes": [
-          "$$ expression $$"
+          "$$ expression $$",
+          "\\f[ expression \\f]"
         ],
         "partial": "commands/math-block.adoc",
         "examples": [],
         "see_also": [
           "Math"
         ],
-        "planned": true,
-        "description": "The AST defines a block-level Math node, but no parser path produces it yet.\nThis is the block form, separate from the inline `$...$` and `$$...$$` math that already works.\nWhen that lands, it will hold a standalone math expression as its own block.",
+        "description": "A standalone display math expression on its own line.\nA paragraph that is only `$$...$$`, or a `\\f[...\\f]` Doxygen block, becomes a math block; inline `$...$` and `\\f$...\\f$` stay in the surrounding text as a Math span.",
         "parameters": [
           {
             "name": "expression",
@@ -728,22 +728,25 @@
         "kind": "Inline",
         "syntaxes": [
           "$expression$ (inline)",
-          "$$expression$$ (display)"
+          "$$expression$$ (display)",
+          "\\f$expression\\f$ (inline)",
+          "\\f[expression\\f] (display)"
         ],
         "partial": "commands/math.adoc",
-        "examples": [],
+        "examples": [
+          "commands/math"
+        ],
         "see_also": [
           "Code Span"
         ],
-        "description": "Renders a mathematical expression.\nSingle dollar signs (`$...$`) produce an inline math span that flows within surrounding text.\nDouble dollar signs (`$$...$$`) produce a display math block, typically centered on its own line.\nThe content between the delimiters is treated as a literal math expression and is not parsed for Markdown or other formatting.",
+        "description": "Renders a mathematical expression.\nSingle dollar signs (`$...$`) produce an inline math span that flows within surrounding text; double dollar signs (`$$...$$`) produce a display math block on its own line.\nThe Doxygen delimiters `\\f$...\\f$` (inline) and `\\f[...\\f]` (display) are also recognized. Prefer them when the surrounding code is compiled with `-Wdocumentation`, since Clang parses them as known commands whereas `$...$` bodies can trip `-Wdocumentation-unknown-command`.\nThe content between the delimiters is treated as a literal math expression and is not parsed for Markdown or other formatting.",
         "parameters": [
           {
             "name": "expression",
             "type": "Math",
             "description": "A LaTeX math expression; `$...$` inline, `$$...$$` display."
           }
-        ],
-        "planned": true
+        ]
       }
     ],
     "links_and_images": [

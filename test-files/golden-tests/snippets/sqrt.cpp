@@ -1,9 +1,9 @@
 #include <type_traits>
 
-/** Computes the square root of an integral value.
+/** Computes the integer square root \f$\lfloor\sqrt{value}\rfloor\f$.
 
-    This function calculates the square root of a
-    given integral value using bit manipulation.
+    This function calculates the square root of a given integral value
+    using bit manipulation, in $O(\log value)$ time.
 
     @throws std::invalid_argument if the input value is negative.
 
