@@ -1,0 +1,41 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#cache[`cache`] 
+| A cache with a bounded number of entries^<<fn-lru,lru>>^&period;
+|===
+
+
+[#cache]
+== cache
+
+A cache with a bounded number of entries^<<fn-lru,lru>>^&period;
+
+=== Synopsis
+
+Declared in `&lt;footnotes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct cache;
+----
+
+=== Description
+
+A lookup that misses falls through to the backing store^<<fn-lru,lru>>^&period;
+
+'''
+
+[#fn-lru]
+^lru^ Least&hyphen;recently&hyphen;used entries are evicted first&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

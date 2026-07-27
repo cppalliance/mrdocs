@@ -159,6 +159,7 @@ grammar
         | element superscript { ( Kind | Children )* }
         | element highlight { ( Kind | Children )* }
         | element image { ( Kind | Children | element src { xsd:string } | element alt { xsd:string } )* }
+        | element footnoteReference { ( Kind | element label { xsd:string } )* }
         | element link { ( Kind | Children | element href { xsd:string } )* }
         | element reference { ( Kind | element literal { xsd:string } | element id { Id } )* } )
 
@@ -170,6 +171,7 @@ grammar
         | element list { ( Kind | element items { ( element listItem { element blocks { AnyBlock* }* } | TableRow )* } | element listKind { ListKind } )* }
         | element heading { ( Kind | Children | element level { xsd:integer } )* }
         | element code { ( Kind | Children | element literal { xsd:string } )* }
+        | element footnoteDefinition { ( Kind | element blocks { AnyBlock* } | element label { xsd:string } )* }
         | element table { ( Kind | element items { TableRow* } )* } )
 
     TableRow =
@@ -191,7 +193,8 @@ grammar
             | element exceptions { element throws { ( Kind | Children | element exception { ( Kind | element literal { xsd:string } | element id { Id } )* } )* }* }
             | element sees { element see { ( Kind | Children )* }* }
             | element preconditions { element precondition { ( Kind | Children )* }* }
-            | element postconditions { element postcondition { ( Kind | Children )* }* } )*
+            | element postconditions { element postcondition { ( Kind | Children )* }* }
+            | element footnotes { element footnoteDefinition { ( Kind | element blocks { AnyBlock* } | element label { xsd:string } )* }* } )*
         }
 
     #---------------------------------------------

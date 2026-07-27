@@ -178,6 +178,68 @@ splitParagraphsAtMarkers(BlockVec& blocks)
     }
 }
 
+// Convert a paragraph that opens with a Markdown footnote definition
+// (`[^label]: text`) into a FootnoteDefinitionBlock holding the text. The
+// matching `[^label]` reference is produced by the inline parser. Runs on
+// raw text, before inline parsing, so the definition body is inline-parsed
+// later when the traversal descends into the new block.
+void
+extractFootnoteDefinitions(BlockVec& blocks)
+{
+    for (auto& block : blocks)
+    {
+        if (!block->isParagraph())
+        {
+            continue;
+        }
+        doc::ParagraphBlock& para = block->asParagraph();
+        if (para.children.empty() || !para.children.front()->isText())
+        {
+            continue;
+        }
+        std::string_view const head = ltrim(para.children.front()->asText().literal);
+        if (!head.starts_with("[^"))
+        {
+            continue;
+        }
+        std::size_t const close = head.find("]:", 2);
+        if (close == std::string_view::npos || close == 2)
+        {
+            continue;
+        }
+        std::string label(head.substr(2, close - 2));
+        std::string rest(ltrim(head.substr(close + 2)));
+        para.children.front()->asText().literal = std::move(rest);
+
+        doc::FootnoteDefinitionBlock def;
+        def.label = std::move(label);
+        def.blocks.emplace_back(
+            Polymorphic<doc::Block>(std::move(para)));
+        block = Polymorphic<doc::Block>(std::move(def));
+    }
+}
+
+// Move footnote definitions out of the document flow into the DocComment's
+// floating `footnotes` list. They are written inline (as a `[^label]: text`
+// paragraph) but belong to the whole comment, and are rendered together in a
+// footnotes section at the end of the page instead of where they appear.
+void
+hoistFootnoteDefinitions(DocComment& doc)
+{
+    for (auto it = doc.Document.begin(); it != doc.Document.end();)
+    {
+        if ((*it)->isFootnoteDefinition())
+        {
+            doc.footnotes.push_back(std::move((*it)->asFootnoteDefinition()));
+            it = doc.Document.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
 // Parse inline Markdown (bold, italic, code, etc.) in a
 // single InlineContainer's immediate text children.
 // Does *not* recurse: topDownTraverse() already visits every
@@ -1585,6 +1647,7 @@ parseInlines(DocComment& doc)
             })
         {
             splitParagraphsAtMarkers(node.Document);
+            extractFootnoteDefinitions(node.Document);
         }
         if constexpr (
             requires {
@@ -1593,12 +1656,14 @@ parseInlines(DocComment& doc)
             })
         {
             splitParagraphsAtMarkers(node.blocks);
+            extractFootnoteDefinitions(node.blocks);
         }
         if constexpr (std::same_as<NodeTy, doc::ListBlock>)
         {
             for (doc::ListItem& item : node.items)
             {
                 splitParagraphsAtMarkers(item.blocks);
+                extractFootnoteDefinitions(item.blocks);
             }
         }
 
@@ -1610,6 +1675,10 @@ parseInlines(DocComment& doc)
             parseInlinesInContainer(node);
         }
     });
+
+    // Footnote definitions are parsed inline above; collect them into the
+    // floating `footnotes` list so they render once at the end of the page.
+    hoistFootnoteDefinitions(doc);
 }
 
 namespace {

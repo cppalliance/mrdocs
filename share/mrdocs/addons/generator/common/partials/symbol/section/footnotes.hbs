@@ -1,0 +1,12 @@
+{{! Footnotes: definitions written as `[^label]: text` are collected here
+    (see DocComment.footnotes) and rendered once at the end of the page,
+    under a horizontal rule rather than a heading. References `[^label]`
+    link to these anchors. }}
+{{#if symbol.doc.footnotes}}
+{{#> markup/section name="footnotes"}}
+{{> markup/hr }}
+{{#each symbol.doc.footnotes}}
+{{> doc/block . }}
+{{/each}}
+{{/markup/section}}
+{{/if}}
