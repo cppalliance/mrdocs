@@ -4,3 +4,13 @@ A few examples of reference documentation generated with Mr.Docs are available i
 
 mrdocs-demos::[]
 
+== Libraries using Mr.Docs
+
+These libraries publish their reference documentation with Mr.Docs:
+
+* https://redboltz.github.io/async_mqtt/doc/latest/async_mqtt/reference.html[async_mqtt,window=_blank]
+* https://www.boost.org/doc/libs/develop/libs/dynamic_bitset/doc/html/dynamic_bitset/reference/boost/dynamic_bitset.html[Boost.DynamicBitset,window=_blank]
+* https://www.boost.org/doc/libs/develop/libs/openmethod/doc/html/openmethod/reference/boost/openmethod.html[Boost.OpenMethod,window=_blank]
+* https://www.boost.org/doc/libs/develop/libs/redis/doc/html/redis/reference/boost/redis.html[Boost.Redis,window=_blank]
+* https://www.boost.org/latest/doc/antora/url/reference/boost/urls.html[Boost.URL,window=_blank]
+

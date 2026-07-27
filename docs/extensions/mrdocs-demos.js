@@ -180,25 +180,25 @@ module.exports = function (registry) {
             // demos. The attribute is set by Antora.
             const pageVersion = parent.getDocument().getAttribute(
                 'page-component-version')
-            // Collect all demo URLs
+            // Collect all demo URLs. The layout on the server is
+            // demos/<version>/<library>/<format>/, where <format> is one of
+            // adoc, adoc-asciidoc, html, or xml. Each format directory holds a
+            // full multipage tree (html, adoc, adoc-asciidoc) or a single file
+            // (xml); there is no separate single/multi level.
             let finalDemoDirs = [];
             const versions = getSubdirectoriesSync('https://mrdocs.com/demos/')
                 .filter((v) => !pageVersion || v === pageVersion);
             for (const version of versions) {
                 const demoLibraries = getSubdirectoriesSync(`https://mrdocs.com/demos/${version}/`);
                 for (const demoLibrary of demoLibraries) {
-                    const pageTypes = getSubdirectoriesSync(`https://mrdocs.com/demos/${version}/${demoLibrary}/`);
-                    for (const pageType of pageTypes) {
-                        const demoFormats = getSubdirectoriesSync(`https://mrdocs.com/demos/${version}/${demoLibrary}/${pageType}/`);
-                        for (const demoFormat of demoFormats) {
-                            finalDemoDirs.push({
-                                url: `https://mrdocs.com/demos/${version}/${demoLibrary}/${pageType}/${demoFormat}`,
-                                version: version,
-                                library: demoLibrary,
-                                pageType: pageType,
-                                format: demoFormat
-                            });
-                        }
+                    const demoFormats = getSubdirectoriesSync(`https://mrdocs.com/demos/${version}/${demoLibrary}/`);
+                    for (const demoFormat of demoFormats) {
+                        finalDemoDirs.push({
+                            url: `https://mrdocs.com/demos/${version}/${demoLibrary}/${demoFormat}`,
+                            version: version,
+                            library: demoLibrary,
+                            format: demoFormat
+                        });
                     }
                 }
             }
@@ -211,129 +211,59 @@ module.exports = function (registry) {
                 }
             }
 
-            // Create tables. Each page renders only its own version (see
-            // the version filter above), so the per-version heading would
-            // just repeat the page title.
+            // Format columns, in display order. AsciiDoc links to the
+            // rendered (`adoc-asciidoc`) multipage output rather than the raw
+            // `.adoc` tree, so the reader sees a browsable page; each cell is
+            // the format icon linking to that demo.
+            const iconBase = 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/';
+            const formatColumns = [
+                { key: 'html',          label: 'HTML',     icon: 'html5.svg',       entry: 'index.html' },
+                { key: 'adoc-asciidoc', label: 'AsciiDoc', icon: 'asciidoc.svg',    entry: 'index.html' },
+                { key: 'xml',           label: 'XML',      icon: 'code_blocks.svg', entry: 'reference.xml' },
+            ];
+
+            // Each page renders only its own version (see the version filter
+            // above), so a per-version heading would just repeat the title.
             let text = ''
             for (const version of allVersions) {
-                text += '\n'
-                text += `|===\n`;
+                // Libraries present in this version, sorted by display name.
+                const versionLibraries = [...new Set(
+                    finalDemoDirs
+                        .filter(d => d.version === version)
+                        .map(d => d.library))]
+                    .sort((a, b) => humanizeLibrary(a).localeCompare(humanizeLibrary(b)));
 
-                // Collect all unique page types, formats, and libraries for this version
-                let versionPageTypes = [];
-                let versionFormats = [];
-                let versionLibraries = [];
-                for (const demoDir of finalDemoDirs) {
-                    if (demoDir.version !== version) {
-                        continue
-                    }
-                    if (!versionPageTypes.includes(demoDir.pageType)) {
-                        versionPageTypes.push(demoDir.pageType);
-                    }
-                    if (!versionFormats.includes(demoDir.format)) {
-                        versionFormats.push(demoDir.format);
-                    }
-                    if (!versionLibraries.includes(demoDir.library)) {
-                        versionLibraries.push(demoDir.library);
-                    }
+                // Keep only the format columns that exist for this version,
+                // preserving the column order above.
+                const columns = formatColumns.filter(col =>
+                    finalDemoDirs.some(d => d.version === version && d.format === col.key));
+                if (versionLibraries.length === 0 || columns.length === 0) {
+                    continue;
                 }
 
-                // Sort versionPageTypes so that multipage always comes first
-                versionPageTypes.sort((a, b) => {
-                    if (a === 'multi' && b !== 'multi') return -1;
-                    if (a !== 'multi' && b === 'multi') return 1;
-                    return a.localeCompare(b);
-                });
-
-                // Drop the raw `.adoc` format and keep only the
-                // rendered AsciiDoc (`adoc-asciidoc`); the single
-                // AsciiDoc column links to the rendered version.
-                versionFormats = versionFormats.filter(format => format !== 'adoc');
-                // Order columns HTML first, then AsciiDoc, then XML.
-                versionFormats.sort((a, b) => {
-                    const order = ['html', 'adoc-asciidoc', 'xml'];
-                    const aIndex = order.indexOf(a);
-                    const bIndex = order.indexOf(b);
-                    if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
-                    if (aIndex === -1) return 1;
-                    if (bIndex === -1) return -1;
-                    return aIndex - bIndex;
-                });
-
-                // Sort versionLibraries alphabetically
-                versionLibraries.sort((a, b) => humanizeLibrary(a).localeCompare(humanizeLibrary(b)));
-
-                // Ensure XML is never in the multipage formats
-                let multipageFormats = versionFormats.filter(format => format !== 'xml');
-                let versionFormatColumns = versionFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
-                let multipageFormatColumns = multipageFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
-
-                // Multicells for the page format taking as many formats as possible for that page type
-                const toPageTypeCell = pageType => `${(pageType === 'multi' ? multipageFormats : versionFormats).length}+| *${humanizePageType(pageType)}*`;
-                text += `| ${versionPageTypes.map(toPageTypeCell).join(' ')}\n`;
-
-                text += `| *Library* | ${multipageFormatColumns} | ${versionFormatColumns}\n\n`;
+                const colCount = columns.length + 1;
+                text += `\n[cols="${colCount}*a",options="header"]\n`;
+                text += `|===\n`;
+                text += `| Library ${columns.map(col => `| ${col.label}`).join(' ')}\n\n`;
                 for (const library of versionLibraries) {
-                    text += `| ${libraryLink(library)}`
-                    for (const pageType of versionPageTypes) {
-                        const pageTypeFormats = pageType === 'multi' ? multipageFormats : versionFormats;
-                        for (const format of pageTypeFormats) {
-                            const demoDir = finalDemoDirs.find(
-                                demoDir => demoDir.version === version &&
-                                    demoDir.library === library &&
-                                    demoDir.pageType === pageType &&
-                                    demoDir.format === format);
-                            if (demoDir) {
-                                const demoUrlWithSuffix = demoDir.url + (() => {
-                                    if (format === 'xml')
-                                    {
-                                        return '/reference.xml';
-                                    }
-                                    if (format === 'adoc')
-                                    {
-                                        if (pageType === 'multi')
-                                        {
-                                            return '/index.adoc'
-                                        }
-                                        else {
-                                            return '/reference.adoc'
-                                        }
-                                    }
-                                    if (format === 'html' || format === 'adoc-asciidoc')
-                                    {
-                                        if (pageType === 'multi')
-                                        {
-                                            return '/index.html'
-                                        }
-                                        else {
-                                            return '/reference.html'
-                                        }
-                                    }
-                                    return '';
-                                })()
-                                if (['adoc', 'xml', 'html', 'adoc-asciidoc'].includes(format)) {
-                                    const formatIcons = {
-                                        adoc: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/asciidoc.svg',
-                                        html: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
-                                        // The single AsciiDoc column now points at the rendered
-                                        // form, but the cell still represents the AsciiDoc format,
-                                        // so use the AsciiDoc icon.
-                                        'adoc-asciidoc': 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/asciidoc.svg',
-                                        default: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/code_blocks.svg'
-                                    };
-                                    const icon = formatIcons[format] || formatIcons.default;
-                                    text += `| image:${icon}[${humanizeLibrary(library)} reference in ${humanizeFormat(format)} format,width=16,height=16,link=${demoUrlWithSuffix},window=_blank]`
-                                } else {
-                                    text += `| ${demoUrlWithSuffix}[🔗,window=_blank]`
-                                }
-                            } else {
-                                text += `|     `
-                            }
+                    text += `| ${libraryLink(library)}`;
+                    for (const col of columns) {
+                        const demoDir = finalDemoDirs.find(d =>
+                            d.version === version &&
+                            d.library === library &&
+                            d.format === col.key);
+                        if (demoDir) {
+                            const icon = iconBase + col.icon;
+                            const url = `${demoDir.url}/${col.entry}`;
+                            const alt = `${humanizeLibrary(library)} reference in ${col.label} format`;
+                            text += ` | image:${icon}[${alt},width=24,height=24,link=${url},window=_blank]`;
+                        } else {
+                            text += ` |`;
                         }
                     }
-                    text += `\n`
+                    text += `\n`;
                 }
-                text += `|===\n\n`
+                text += `|===\n\n`;
             }
 
             return self.parseContent(parent, text)
