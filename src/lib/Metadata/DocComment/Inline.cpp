@@ -67,7 +67,13 @@ isEmpty(Polymorphic<Inline> const& el)
 {
     return visit(*el, []<class InlineTy>(InlineTy const& N) -> bool
     {
-        if constexpr (std::derived_from<InlineTy, InlineContainer>)
+        if constexpr (std::same_as<InlineTy, ImageInline>)
+        {
+            // An image carries its content in src/alt, not in children, so
+            // an empty child list does not make it empty.
+            return N.src.empty();
+        }
+        else if constexpr (std::derived_from<InlineTy, InlineContainer>)
         {
             return N.children.empty();
         }

@@ -1149,6 +1149,33 @@ class DocCommentVisitor
                 C->hasTrailingNewline(),
                 ensureUTF8(std::move(comps.text)));
         }
+        else if (comps.tag == "code")
+        {
+            emplaceInline<doc::CodeInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
+        }
+        else if (comps.tag == "img")
+        {
+            // <img> is a void tag: src/alt come from attributes, not
+            // enclosed text. A missing src makes the image meaningless,
+            // so warn and drop; a missing alt is allowed (empty alt).
+            auto srcAttr = getAttr("src");
+            if (!srcAttr)
+            {
+                report::warn(
+                    "{} at {} ({})",
+                    srcAttr.error().message(),
+                    filename,
+                    loc.getLine());
+                return;
+            }
+            std::string alt = getAttr("alt").value_or(std::string());
+            emplaceInline<doc::ImageInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(*srcAttr)),
+                ensureUTF8(std::move(alt)));
+        }
         else
         {
             report::warn(

@@ -1,7 +1,7 @@
-/** A widget showing a status indicator.
+/** The documentation banner.
 
-    Markdown image: ![Status icon](status.png)
+    Markdown image: ![MrDocs banner](MrDocsBanner.png)
 
-    HTML image: <img src="banner.png" alt="Banner">
+    HTML image: <img src="MrDocsBanner.png" alt="MrDocs banner">
  */
-struct status_widget { };
+struct banner { };
