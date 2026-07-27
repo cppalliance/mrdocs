@@ -91,6 +91,16 @@ struct MRDOCS_DECL DocComment {
     /// The list of postconditions.
     std::vector<doc::PostconditionBlock> postconditions;
 
+    /** Footnote definitions.
+
+        A footnote definition is written as a paragraph starting with
+        `[^label]: text` and is collected here as floating metadata,
+        regardless of where it appears in the comment. Inline
+        `[^label]` references point at it by label, and it is rendered
+        once in a footnotes section at the end of the symbol page.
+    */
+    std::vector<doc::FootnoteDefinitionBlock> footnotes;
+
     /** The list of "relates" references.
 
         These references are created with the
@@ -142,7 +152,8 @@ struct MRDOCS_DECL DocComment {
             sees.empty() &&
             related.empty() &&
             preconditions.empty() &&
-            postconditions.empty();
+            postconditions.empty() &&
+            footnotes.empty();
     }
 
     /** Three-way comparison on the rendered block sequence.
@@ -183,7 +194,7 @@ MRDOCS_DESCRIBE_STRUCT(
     (),
     (Document, brief, returns, params, tparams,
      exceptions, sees, preconditions, postconditions,
-     relates, related)
+     footnotes, relates, related)
 )
 
 /** Append blocks from `other` into `I`, preserving order.
@@ -322,6 +333,10 @@ traverseImpl(DocComment& doc, F&& func)
     for (auto& postconditionsEl: doc.postconditions)
     {
         traverseImpl<bottomUp>(postconditionsEl, std::forward<F>(func));
+    }
+    for (auto& footnotesEl: doc.footnotes)
+    {
+        traverseImpl<bottomUp>(footnotesEl, std::forward<F>(func));
     }
     if constexpr (bottomUp && std::invocable<F, DocComment&>)
     {

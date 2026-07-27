@@ -1031,6 +1031,22 @@ parse(char const* first, char const* last, doc::InlineContainer& out_root)
             i += 2;
             continue;
         }
+        // Markdown footnote reference [^label]
+        if (c == '[' && i + 1 < s.size() && s[i + 1] == '^') {
+            std::size_t k = i + 2;
+            while (k < s.size() && s[k] != ']' && s[k] != '[') {
+                ++k;
+            }
+            if (k < s.size() && s[k] == ']' && k > i + 2) {
+                st.flush_text();
+                st.cur->emplace_back<doc::FootnoteReferenceInline>();
+                st.cur->back()->asFootnoteReference().label
+                    = std::string(s.substr(i + 2, k - (i + 2)));
+                i = k + 1;
+                continue;
+            }
+            // Malformed: fall through to normal '[' handling below.
+        }
         if (c == '[') {
             st.flush_text();
             st.brackets.push_back(Bracket{

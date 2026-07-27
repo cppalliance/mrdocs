@@ -211,7 +211,7 @@
       {
         "node_type": "FootnoteDefinitionBlock",
         "heading": "Footnote Definition",
-        "kind": "Planned",
+        "kind": "Block",
         "syntaxes": [
           "[^label]: text"
         ],
@@ -220,8 +220,7 @@
         "see_also": [
           "Footnote Reference"
         ],
-        "planned": true,
-        "description": "The AST defines a FootnoteDefinition node, but no parser path produces it yet.\nWhen that lands, it will hold the body of a footnote that inline content can reference.",
+        "description": "Defines the body of a footnote, matched to references by its label.\nStart the paragraph with the label after a caret in square brackets, then a colon and the footnote text.",
         "parameters": [
           {
             "name": "label",
@@ -842,17 +841,18 @@
       {
         "node_type": "FootnoteReferenceInline",
         "heading": "Footnote Reference",
-        "kind": "Planned",
+        "kind": "Inline",
         "syntaxes": [
           "[^label]"
         ],
         "partial": "commands/footnote-reference.adoc",
-        "examples": [],
+        "examples": [
+          "commands/footnote"
+        ],
         "see_also": [
           "Footnote Definition"
         ],
-        "planned": true,
-        "description": "The AST defines a FootnoteReference node, but no parser path produces it yet.\nWhen that lands, it will hold an inline reference to a footnote definition.",
+        "description": "Marks a superscript reference to a footnote, linking to the matching Footnote Definition.\nWrite the label after a caret inside square brackets. Any string works as the label; it just has to match the definition.",
         "parameters": [
           {
             "name": "label",

@@ -1,0 +1,25 @@
+= Reference
+:mrdocs:
+
+[#configure]
+== configure
+
+Uses the small&hyphen;buffer optimization^<<fn-sbo,sbo>>^ to avoid heap traffic&period;
+
+=== Synopsis
+
+Declared in `&lt;footnote&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+configure();
+----
+
+'''
+
+[#fn-sbo]
+^sbo^ Short buffers live inline in the object, so no allocation happens until the capacity is exceeded&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
