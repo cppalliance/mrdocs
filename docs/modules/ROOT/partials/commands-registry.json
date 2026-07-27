@@ -784,33 +784,28 @@
         "kind": "Inline",
         "syntaxes": [
           "![alt](src)",
-          "<img src=\"src\" alt=\"alt\">",
-          "@image <format> <file> [\"caption\"]"
+          "<img src=\"src\" alt=\"alt\">"
         ],
         "partial": "commands/image.adoc",
-        "examples": [],
+        "examples": [
+          "commands/image"
+        ],
         "see_also": [
           "Link"
         ],
-        "description": "Embeds an image inline.\nThe Markdown form is an exclamation mark, alt text in square brackets, then the source path in parentheses.\nThe HTML form uses an `<img>` tag with `src` and `alt` attributes.",
+        "description": "Embeds an image inline.\nThe Markdown form is an exclamation mark, alt text in square brackets, then the source path in parentheses.\nThe HTML form uses an `<img>` tag with `src` and `alt` attributes.\nBoth forms map to the same node, so pick whichever reads better. The Doxygen `@image` command is not supported, because it names a single output format and MrDocs renders every format from one model.",
         "parameters": [
           {
-            "name": "format",
-            "type": "Text",
-            "description": "Output format the image applies to, e.g. `html`."
-          },
-          {
-            "name": "file",
+            "name": "src",
             "type": "Path",
-            "description": "Path to the image file."
+            "description": "Path or URL of the image."
           },
           {
-            "name": "caption",
+            "name": "alt",
             "type": "Text",
-            "description": "Optional caption."
+            "description": "Alternate text shown when the image cannot be displayed."
           }
-        ],
-        "planned": true
+        ]
       }
     ],
     "cross_references": [

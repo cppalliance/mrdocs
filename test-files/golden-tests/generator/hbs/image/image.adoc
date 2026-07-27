@@ -1,0 +1,38 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#widget[`widget`] 
+| A widget with an inline image&period;
+|===
+
+
+[#widget]
+== widget
+
+A widget with an inline image&period;
+
+=== Synopsis
+
+Declared in `&lt;image&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct widget;
+----
+
+=== Description
+
+Markdown&colon; image:status.png[status icon]
+
+HTML&colon; image:banner.png[Banner]
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

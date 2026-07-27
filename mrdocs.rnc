@@ -158,6 +158,7 @@ grammar
         | element subscript { ( Kind | Children )* }
         | element superscript { ( Kind | Children )* }
         | element highlight { ( Kind | Children )* }
+        | element image { ( Kind | Children | element src { xsd:string } | element alt { xsd:string } )* }
         | element link { ( Kind | Children | element href { xsd:string } )* }
         | element reference { ( Kind | element literal { xsd:string } | element id { Id } )* } )
 

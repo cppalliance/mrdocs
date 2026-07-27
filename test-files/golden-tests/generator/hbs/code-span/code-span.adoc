@@ -1,6 +1,19 @@
 = Reference
 :mrdocs:
 
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#set_value[`set&lowbar;value`] 
+| Sets the value pointed to by `target`&period;
+|===
+
+
 [#set_value]
 == set&lowbar;value
 
@@ -20,7 +33,7 @@ set&lowbar;value(
 
 === Description
 
-The previous value of `&ast;target` is overwritten&period; The HTML form `&ast;target` and the Doxygen `new&lowbar;value` command render the same way as the Markdown backticks&period;
+The HTML form `&ast;target` and the Doxygen `new&lowbar;value` command render the same way as the Markdown backticks&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

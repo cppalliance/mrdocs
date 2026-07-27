@@ -45,6 +45,20 @@ struct ImageInline final
     */
     std::string alt;
 
+    /** Construct an empty image.
+    */
+    ImageInline() = default;
+
+    /** Construct an image with a source and alternate text.
+
+        @param src Image source URL or path.
+        @param alt Alternate text when the image cannot be shown.
+    */
+    ImageInline(std::string_view src, std::string_view alt)
+        : src(src)
+        , alt(alt)
+    {}
+
 };
 
 MRDOCS_DESCRIBE_STRUCT(

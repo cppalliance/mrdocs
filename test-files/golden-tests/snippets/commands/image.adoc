@@ -1,10 +1,10 @@
 = Reference
 :mrdocs:
 
-[#status_widget]
-== status&lowbar;widget
+[#banner]
+== banner
 
-A widget showing a status indicator&period;
+The documentation banner&period;
 
 === Synopsis
 
@@ -12,14 +12,14 @@ Declared in `&lt;image&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-struct status&lowbar;widget;
+struct banner;
 ----
 
 === Description
 
-Markdown image&colon;
+Markdown image&colon; image:MrDocsBanner.png[MrDocs banner]
 
-HTML image&colon;
+HTML image&colon; image:MrDocsBanner.png[MrDocs banner]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
