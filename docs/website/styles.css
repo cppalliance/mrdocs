@@ -2659,7 +2659,7 @@ section#demo {
 }
 
 .documentation-panel p,
-.documentation-panel span,
+.documentation-panel span:not([class^="hljs-"]),
 .documentation-panel div {
     font-size: 0.875rem;
     color: #fff;
@@ -2720,12 +2720,84 @@ section#demo {
     border-collapse: collapse;
 }
 
-.hljs-string {
-    color: green;
+/*
+ * Syntax highlighting for the landing page code blocks, ported from the doc
+ * site's theme (docs/ui/src/css/highlight.css, GitHub Primer dark dimmed) so
+ * the raw snippet and the mrdocs-rendered synopsis are coloured identically
+ * to the documentation. The markup comes from the shared richCpp language
+ * definition consumed by both the UI bundle and docs/website/render.js.
+ */
+.hljs-comment,
+.hljs-quote {
+    color: #768390;
+    font-style: italic;
 }
 
-.hljs-meta .hljs-string {
-    color: green;
+.hljs-keyword,
+.hljs-formula {
+    color: #f47067;
+}
+
+.hljs-string,
+.hljs-regexp {
+    color: #96d0ff;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-attr,
+.hljs-attribute,
+.hljs-template-variable,
+.hljs-meta {
+    color: #6cb6ff;
+}
+
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-title.class_,
+.hljs-name,
+.hljs-variable {
+    color: #f69d50;
+}
+
+.hljs-title,
+.hljs-function .hljs-title,
+.hljs-title.function_ {
+    color: #dcbdfb;
+}
+
+.hljs-tag,
+.hljs-doctag,
+.hljs-selector-tag,
+.hljs-section {
+    color: #8ddb8c;
+}
+
+/*
+ * Doxygen-style doc-block comments use a green pair: the prose is a darker
+ * green, and the `@tag` keywords, the identifier after `@param`/`@tparam`/
+ * `@throws`, and backtick code spans share a lighter green so the parts that
+ * feed the rendered documentation stand out.
+ */
+.hljs-doc-comment {
+    color: rgb(94, 135, 79);
+    font-style: italic;
+}
+
+.hljs-doc-comment .hljs-doctag {
+    color: rgb(164, 181, 67);
+    font-style: normal;
+    font-weight: 700;
+}
+
+.hljs-doc-comment .hljs-name,
+.hljs-doc-comment .hljs-string {
+    color: rgb(164, 181, 67);
+    font-style: italic;
 }
 
 html {

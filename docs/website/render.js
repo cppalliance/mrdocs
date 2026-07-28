@@ -9,9 +9,16 @@
 //
 
 const Handlebars = require('handlebars');
-const hljs = require('highlight.js/lib/core');
-hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
-hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
+// Reuse the doc site's rich C++ language definition (the doc-comment
+// colouring, etc.) instead of the stock cpp language, so the landing page
+// snippets look identical to the documentation. highlight.js and its cpp
+// language come from this package's own dependency (pinned to 9.x to match
+// the UI bundle); we only borrow the doc-comment logic from docs/ui, passing
+// our base cpp definition into it, so nothing here has to resolve
+// highlight.js from docs/ui at run time.
+const hljs = require('highlight.js/lib/highlight');
+const { makeRichCpp } = require('../ui/src/js/vendor/mrdocs-highlight-languages.js');
+hljs.registerLanguage('cpp', makeRichCpp(require('highlight.js/lib/languages/cpp')));
 const fs = require('fs');
 const os = require('os');
 const assert = require('assert');
@@ -69,6 +76,36 @@ if (!fs.existsSync(mrdocsExecutable)) {
 const absSnippetsDir = process.env.SNIPPETS_PATH
     ? path.resolve(process.env.SNIPPETS_PATH)
     : path.resolve(__dirname, '..', '..', 'test-files', 'golden-tests', 'snippets')
+
+// The mrdocs HTML generator emits synopsis code blocks as
+// <pre><code class="source-code cpp">...</code></pre> and leaves them
+// unhighlighted; the doc site colours code through Antora's pipeline, not
+// this generator, so nothing highlights them on the landing page. Run the
+// same highlighter used for the raw snippet over those blocks (their
+// contents are HTML-escaped C++, so unescape before highlighting and let
+// highlight.js re-escape).
+function highlightSynopsisBlocks (html) {
+    return html.replace(
+        /<pre><code class="source-code cpp">([\s\S]*?)<\/code><\/pre>/g,
+        (_match, escaped) => {
+            const code = escaped
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .replace(/&amp;/g, '&')
+            // Keep the original class (no `hljs`): the CDN github theme
+            // paints `.hljs` with a white background, which on this dark page
+            // turns the block into a white box. The inner hljs-* spans are
+            // styled by standalone class rules, so they colour without it,
+            // exactly like the raw snippet above.
+            return '<pre><code class="source-code cpp">' +
+                hljs.highlight('cpp', code).value +
+                '</code></pre>'
+        }
+    )
+}
+
 for (let panel of data.panels) {
     console.log(`Generating documentation for panel ${panel.source}`)
 
@@ -112,11 +149,11 @@ for (let panel of data.panels) {
         console.log('Failed to generate website panel documentation')
         process.exit(1)
     }
-    panel.documentation = fs.readFileSync(mrdocsOutput, 'utf8');
+    panel.documentation = highlightSynopsisBlocks(fs.readFileSync(mrdocsOutput, 'utf8'));
 
     // Also inject the contents of the source file as highlighted C++
     const snippetContents = fs.readFileSync(sourcePath, 'utf8');
-    panel.snippet = hljs.highlight(snippetContents, {language: 'cpp'}).value;
+    panel.snippet = hljs.highlight('cpp', snippetContents).value;
 
     // Delete the temporary output file
     fs.unlinkSync(mrdocsOutput);
