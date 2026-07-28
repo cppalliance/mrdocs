@@ -8,7 +8,7 @@ Compute the absolute value&period;
 
 === Synopsis
 
-Declared in `&lt;function&lowbar;object&period;cpp&gt;`
+Declared in `&lt;function&lowbar;object&period;hpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

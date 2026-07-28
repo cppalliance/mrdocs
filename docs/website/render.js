@@ -109,23 +109,30 @@ function highlightSynopsisBlocks (html) {
 for (let panel of data.panels) {
     console.log(`Generating documentation for panel ${panel.source}`)
 
-    // Find source file
+    // Find source file. The .cpp is a thin translation unit that only
+    // includes the same-named .hpp; the documented declarations live in
+    // that header, which is also what we show as the example (we document
+    // headers, not .cpp files).
     const sourcePath = path.join(absSnippetsDir, panel.source)
     assert(sourcePath.endsWith('.cpp'))
     assert(fs.existsSync(sourcePath))
     const sourceBasename = path.basename(sourcePath, path.extname(sourcePath))
+    const headerSource = panel.source.replace(/\.cpp$/, '.hpp')
+    const headerPath = path.join(absSnippetsDir, headerSource)
+    assert(fs.existsSync(headerPath))
 
     // Run mrdocs in header-scan mode: no compilation database, the
     // config points `input` at the snippets directory, `file-patterns`
-    // narrows the scan to this panel's source file, and `recursive`
-    // is off so we never pick up identically named files in nested
-    // golden-test subdirectories.
+    // matches this panel's .cpp and its .hpp (the .cpp is the translation
+    // unit; the declarations live in the header), and `recursive` is off
+    // so we never pick up identically named files in nested golden-test
+    // subdirectories.
     const mrdocsConfig = path.join(absSnippetsDir, 'mrdocs.yml')
     const mrdocsOutput = path.join(os.tmpdir(), `mrdocs-website-${sourceBasename}.html`)
     const args = [
         mrdocsExecutable,
         `--config=${mrdocsConfig}`,
-        `--file-patterns=${panel.source}`,
+        `--file-patterns=${sourceBasename}.*`,
         '--recursive=false',
         `--output=${mrdocsOutput}`,
         '--multipage=false',
@@ -151,8 +158,9 @@ for (let panel of data.panels) {
     }
     panel.documentation = highlightSynopsisBlocks(fs.readFileSync(mrdocsOutput, 'utf8'));
 
-    // Also inject the contents of the source file as highlighted C++
-    const snippetContents = fs.readFileSync(sourcePath, 'utf8');
+    // Also inject the header contents as highlighted C++ (the representative
+    // example is the header, not the thin .cpp that includes it).
+    const snippetContents = fs.readFileSync(headerPath, 'utf8');
     panel.snippet = hljs.highlight('cpp', snippetContents).value;
 
     // Delete the temporary output file
