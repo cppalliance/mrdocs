@@ -5,7 +5,37 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>44KfzTF3nyC5YFfX9iUGEz6jPFoQ 2qJ7A2BZNwgGzRfyvBoUpchteYNf 2hWSU9kQCuh6L9VEQrPNZyhZ439y</macros>
+  </members>
 </namespace>
+<macro>
+  <name>MYLIB_REGULAR</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-extraction-modes.cpp</shortPath>
+      <sourcePath>macros-extraction-modes.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>44KfzTF3nyC5YFfX9iUGEz6jPFoQ</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular macro (not matched by any filter).</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
 <macro>
   <name>MYLIB_IMPL_DETAIL</name>
   <loc>
@@ -20,6 +50,7 @@
   <kind>macro</kind>
   <id>2qJ7A2BZNwgGzRfyvBoUpchteYNf</id>
   <extraction>implementation-defined</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -44,34 +75,6 @@
       </children>
     </brief>
   </doc>
-  <source>#define MYLIB_IMPL_DETAIL 0</source>
-</macro>
-<macro>
-  <name>MYLIB_REGULAR</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-extraction-modes.cpp</shortPath>
-      <sourcePath>macros-extraction-modes.cpp</sourcePath>
-      <lineNumber>6</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>44KfzTF3nyC5YFfX9iUGEz6jPFoQ</id>
-  <extraction>regular</extraction>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>A regular macro (not matched by any filter).</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-  <source>#define MYLIB_REGULAR 1</source>
 </macro>
 <macro>
   <name>MYLIB_SEE_BELOW</name>
@@ -87,6 +90,7 @@
   <kind>macro</kind>
   <id>2hWSU9kQCuh6L9VEQrPNZyhZ439y</id>
   <extraction>see-below</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <document>
       <paragraph>
@@ -215,9 +219,5 @@
     <string>cond</string>
     <string>msg</string>
   </parameters>
-  <source>#define MYLIB_SEE_BELOW(cond, msg)                       \
-    ((cond) ? (void)0                                    \
-            : ::mylib_detail::assert_fail(               \
-                  msg, __FILE__, __LINE__))</source>
 </macro>
 </mrdocs>

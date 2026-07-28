@@ -246,7 +246,8 @@ grammar
         | element staticVariables { IdList }
         | element concepts { IdList }
         | element guides { IdList }
-        | element usings { IdList } )
+        | element usings { IdList }
+        | element macros { IdList } )
 
     Namespace =
         element namespace
@@ -393,8 +394,7 @@ grammar
             ( SymbolField
             | element isFunctionLike { Bool }
             | element parameters { Strings }
-            | element isVariadic { Bool }
-            | element source { xsd:string } )*
+            | element isVariadic { Bool } )*
         }
 
     Overloads =

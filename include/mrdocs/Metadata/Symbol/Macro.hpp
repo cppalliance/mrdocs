@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -26,12 +27,19 @@ struct MacroSymbol final
     : SymbolCommonBase<SymbolKind::Macro>
 {
     /** Whether this is a function-like macro.
+
+        This is not derivable from @ref Parameters and
+        @ref IsVariadic: a function-like macro can have an
+        empty parameter list. `#define F` is object-like,
+        while `#define F()` is function-like with no
+        parameters, and only this flag tells them apart.
     */
     bool IsFunctionLike = false;
 
     /** The names of the macro's parameters.
 
-        Empty for object-like macros. For variadic
+        Empty for object-like macros and for function-like
+        macros with no parameters. For variadic
         function-like macros, this lists only the
         named parameters; variadicness is indicated
         by @ref IsVariadic.
@@ -44,22 +52,6 @@ struct MacroSymbol final
         `#define LOG(fmt, ...) ...`.
     */
     bool IsVariadic = false;
-
-    /** The full source of the macro definition.
-
-        Captured from the start of the line containing
-        the `#define` directive through the end of the
-        macro definition, line continuations and all,
-        with one normalization: whitespace between `#`
-        and `define` (typically used when the macro
-        definition is in a `#if`/`#ifdef`/`#ifndef`),
-        and the matching leading whitespace on
-        continuation lines, is stripped; so the
-        definition in the synopsis reads as a
-        top-level directive without a surrounding
-        `#if`/`#ifdef`/`#ifndef`.
-    */
-    std::string Source;
 
     //--------------------------------------------
 
@@ -74,7 +66,7 @@ struct MacroSymbol final
 MRDOCS_DESCRIBE_STRUCT(
     MacroSymbol,
     (SymbolCommonBase<SymbolKind::Macro>),
-    (IsFunctionLike, Parameters, IsVariadic, Source)
+    (IsFunctionLike, Parameters, IsVariadic)
 )
 
 } // mrdocs

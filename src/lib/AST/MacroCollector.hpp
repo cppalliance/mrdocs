@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -11,12 +12,11 @@
 #ifndef MRDOCS_LIB_AST_MACROCOLLECTOR_HPP
 #define MRDOCS_LIB_AST_MACROCOLLECTOR_HPP
 
-#include <clang/Basic/SourceLocation.h>
 #include <clang/Lex/PPCallbacks.h>
-#include <string>
 #include <vector>
 
 namespace clang {
+class IdentifierInfo;
 class MacroDirective;
 class MacroInfo;
 class Preprocessor;
@@ -25,42 +25,24 @@ class Token;
 
 namespace mrdocs {
 
-/** A captured `#define` from the preprocessor.
+/** A macro definition captured from the preprocessor.
 
-    Filled in by @ref MacroCollector when the preprocessor
-    sees a macro definition. The visitor consumes these
-    at the end of the translation unit and turns them into
-    @ref MacroSymbol instances.
+    Holds only the raw Clang handles the visitor needs later:
+    the macro's identifier (for its name) and the preprocessor's
+    record of the definition (`MacroInfo`, for everything else).
+    Everything a @ref MacroSymbol needs is derived from these by
+    `ASTVisitor::populate`, so this carries no MrDocs-level state
+    of its own.
 */
-struct MacroDefinition {
-    /** The macro identifier.
+struct CollectedMacro
+{
+    /** The macro's identifier, used for its name.
     */
-    std::string Name;
+    clang::IdentifierInfo const* Identifier = nullptr;
 
-    /** The location of the macro name in the `#define`.
+    /** The preprocessor's record of the definition.
     */
-    clang::SourceLocation DefLoc;
-
-    /** The preprocessor's record of this definition.
-    */
-    clang::MacroInfo const* ClangMacro = nullptr;
-
-    /** True for object-like macros (no parameter list).
-    */
-    bool IsObjectLike = true;
-
-    /** True when the macro takes a variadic argument list.
-    */
-    bool IsVariadic = false;
-
-    /** Names of the named parameters, in declaration order.
-    */
-    std::vector<std::string> Parameters;
-
-    /** Full source of the macro definition, line continuations
-        and all. Used as the synopsis at render time.
-    */
-    std::string Source;
+    clang::MacroInfo const* Info = nullptr;
 };
 
 /** Capture `MacroDefined` events from the preprocessor.
@@ -69,14 +51,14 @@ struct MacroDefinition {
     the visitor applies any further filtering.
 */
 class MacroCollector final : public clang::PPCallbacks {
-    std::vector<MacroDefinition>& sink_;
+    std::vector<CollectedMacro>& sink_;
     clang::Preprocessor const& pp_;
 
 public:
     /** Construct a collector that pushes into the given sink.
     */
     MacroCollector(
-        std::vector<MacroDefinition>& sink,
+        std::vector<CollectedMacro>& sink,
         clang::Preprocessor const& pp) noexcept
         : sink_(sink)
         , pp_(pp)

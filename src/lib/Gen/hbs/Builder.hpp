@@ -109,30 +109,6 @@ public:
         std::ostream& os,
         std::function<Expected<void>()> contentsCb);
 
-    /** Render the corpus-level Macros index page.
-
-        Used in multi-page mode to produce a stand-alone
-        `macros.{ext}` page listing all macros, since macros
-        live at the corpus root rather than under any namespace.
-
-        @param os Stream to receive the rendered page.
-        @return Success or a template-rendering error.
-    */
-    Expected<void>
-    renderMacrosIndexPage(std::ostream& os);
-
-    /** Render the single-page heading for the macros section.
-
-        In single-page output the macros are appended after the
-        global namespace; this renders the heading that precedes
-        them into `os`.
-
-        @param os Stream to receive the rendered heading.
-        @return Success or a template-rendering error.
-    */
-    Expected<void>
-    renderMacrosSectionHeading(std::ostream& os);
-
 private:
     /** Path to the index template file resolved for the active generator. */
     std::string

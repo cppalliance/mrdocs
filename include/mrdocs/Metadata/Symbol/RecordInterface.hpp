@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -75,19 +76,15 @@ inline
 auto
 allMembers(RecordInterface const& T)
 {
-    // This is a trick to emulate views::concat in C++20
-    return
-        std::views::iota(0, 3) |
-        std::views::transform(
-            [&T](int i) -> auto {
-                switch (i) {
-                    case 0: return allMembers(T.Public);
-                    case 1: return allMembers(T.Protected);
-                    case 2: return allMembers(T.Private);
-                    default: throw std::out_of_range("Invalid index");
-                }
-            }) |
-        std::ranges::views::join;
+    // Concatenate the access tranches (emulating C++26 views::concat).
+    // The tranches are discovered by reflection, so this needs no
+    // hand-maintained per-tranche switch.
+    static constexpr auto tranches =
+        describe::memberPointers<RecordInterface>();
+    return tranches
+        | std::views::transform(
+            [&T](auto const p) { return allMembers(T.*p); })
+        | std::ranges::views::join;
 }
 
 } // mrdocs

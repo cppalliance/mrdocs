@@ -277,6 +277,43 @@ describedMemberCount()
     return n;
 }
 
+namespace detail {
+template<class L> struct describe_front;
+template<class D0, class... Ds>
+struct describe_front<list<D0, Ds...>> { using type = D0; };
+} // namespace detail
+
+/** The member-pointer type shared by `T`'s reflected members.
+
+    Well-formed only when `T` has at least one own reflected member
+    and all its members share a single type. That homogeneity is
+    what lets the members be addressed by a runtime index (see
+    @ref memberPointers).
+*/
+template<class T>
+using member_pointer_t = std::remove_cvref_t<
+    decltype(detail::describe_front<describe_members<T>>::type::pointer)>;
+
+/** Pointers to every reflected member of `T`, in reflection order.
+
+    Complements @ref describedMemberCount by giving O(1) access to
+    the i-th described member: `t.*memberPointers<T>()[i]`. Requires
+    the members to be homogeneous (a single type), so a plain array
+    indexable at runtime can hold them. Use it to iterate a struct's
+    members generically instead of hand-writing a per-member switch.
+
+    @return An array with one pointer per reflected member of `T`.
+*/
+template<class T>
+consteval std::array<member_pointer_t<T>, describedMemberCount<T>()>
+memberPointers()
+{
+    std::array<member_pointer_t<T>, describedMemberCount<T>()> ptrs{};
+    std::size_t i = 0;
+    for_each_member<T>([&](auto d) { ptrs[i++] = d.pointer; });
+    return ptrs;
+}
+
 /** Whether every reflected member of `T` (inherited ones included) is an
     undescribed string, i.e. a value convertible to `std::string_view`.
 

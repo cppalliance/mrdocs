@@ -10,7 +10,8 @@ Declared in `&lt;multipage&hyphen;macros&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-&num;define MY&lowbar;INC(x) ((x) &plus; 1)
+#define MY&lowbar;INC(x)
+
 ----
 
 == Parameters
@@ -21,8 +22,6 @@ Declared in `&lt;multipage&hyphen;macros&period;cpp&gt;`
 | *x*
 | The argument&period;
 |===
-
-See also: xref:macros.adoc[Macros]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

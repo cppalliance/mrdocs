@@ -80,7 +80,7 @@ class ASTVisitor
 
     // Macros captured by `MacroCollector` during preprocessing.
     // Owned by `ASTAction`.
-    std::vector<MacroDefinition>& macroDefs_;
+    std::vector<CollectedMacro>& macroDefs_;
 
     // An unordered set of all extracted Info declarations
     SymbolSet info_;
@@ -297,7 +297,7 @@ public:
         clang::CompilerInstance& compiler,
         clang::ASTContext& context,
         clang::Sema& sema,
-        std::vector<MacroDefinition>& macroDefs) noexcept;
+        std::vector<CollectedMacro>& macroDefs) noexcept;
 
     /** Build the metadata representation from the AST.
 
@@ -349,14 +349,26 @@ public:
     }
 
 private:
-    /*  Drain captured macro records into `info_`.
+    /*  Turn the captured macros into `MacroSymbol`s in `info_`.
 
-        Each record becomes a `MacroSymbol` with
-        `Parent = SymbolID::invalid` (macros live at the corpus
-        root, not under any namespace).
+        Runs after traversal, once the preprocessor has finished
+        and `macroDefs_` holds every user `#define`. Each entry is
+        filtered, given a `MacroSymbol`, and populated via
+        `populate`. Macros carry `Parent = SymbolID::invalid`
+        (they live at the corpus root, not under any namespace).
      */
     void
-    addMacros();
+    populateMacros();
+
+    /*  Populate a `MacroSymbol` from its `clang::MacroInfo`.
+
+        The macro analogue of the `populate` overloads used for
+        declarations. `MacroInfo` is not a `clang::Decl`, so it
+        cannot be reached through `traverse`; this fills the symbol
+        (kind flags, parameters, doc comment) directly instead.
+     */
+    void
+    populate(MacroSymbol& I, clang::MacroInfo const* MI);
 
     /*  Apply the configured symbol-pattern filters to a macro
         name and return the corresponding extraction mode.

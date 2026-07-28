@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
@@ -64,46 +65,6 @@ Corpus::
 globalNamespace() const noexcept
 {
     return get<NamespaceSymbol>(SymbolID::global);
-}
-
-std::vector<MacroSymbol const*>
-Corpus::
-macros() const
-{
-    std::vector<MacroSymbol const*> result;
-    for (Symbol const& s : *this)
-    {
-        if (MacroSymbol const* m = s.asMacroPtr())
-        {
-            result.push_back(m);
-        }
-    }
-    std::ranges::sort(
-        result,
-        [](MacroSymbol const* a, MacroSymbol const* b)
-        {
-            if (std::strong_ordering const cmp = a->Name <=> b->Name;
-                !std::is_eq(cmp))
-            {
-                return std::is_lt(cmp);
-            }
-            // Tiebreak by source location, so order stays
-            // stable when the same name appears in multiple
-            // files.
-            Optional<Location> const& aLoc = a->Loc.DefLoc;
-            Optional<Location> const& bLoc = b->Loc.DefLoc;
-            if (!aLoc || !bLoc)
-            {
-                return aLoc.has_value() < bLoc.has_value();
-            }
-            if (std::strong_ordering const cmp = aLoc->FullPath <=> bLoc->FullPath;
-                !std::is_eq(cmp))
-            {
-                return std::is_lt(cmp);
-            }
-            return aLoc->LineNumber < bLoc->LineNumber;
-        });
-    return result;
 }
 
 //------------------------------------------------

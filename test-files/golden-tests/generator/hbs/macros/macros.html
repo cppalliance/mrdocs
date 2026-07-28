@@ -10,9 +10,19 @@
 <div class="header">
 <h2 id="index">Global namespace</h2>
 </div><!-- /header -->
-</div><!-- /symbol -->
-<h2 id="macros">Macros</h2>
+<h3>Macros</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="#EXAMPLE_ABI_VERSION"><code>EXAMPLE_ABI_VERSION</code></a> </td><td>The library&#x27;s ABI version.</td></tr>
+<tr><td><a href="#EXAMPLE_CLAMP"><code>EXAMPLE_CLAMP</code></a> </td><td>Clamp <code>x</code> to the closed range [<code>lo</code>, <code>hi</code>].</td></tr>
+<tr><td><a href="#EXAMPLE_LOG"><code>EXAMPLE_LOG</code></a> </td><td>Log a formatted message.</td></tr>
+</tbody>
+</table>
 
+</div><!-- /symbol -->
 <div class="symbol">
 <div class="header">
 <h2 id="EXAMPLE_ABI_VERSION">EXAMPLE_ABI_VERSION</h2>
@@ -22,7 +32,8 @@
 <div class="synopsis">
 <h3>Synopsis</h3>
 <p>Declared in <code>&lt;macros.cpp&gt;</code></p>
-<pre><code class="source-code cpp">#define EXAMPLE_ABI_VERSION 3</code></pre>
+<pre><code class="source-code cpp">#define EXAMPLE_ABI_VERSION
+</code></pre>
 </div><!-- /synopsis -->
 </div><!-- /symbol -->
 <div class="symbol">
@@ -34,7 +45,8 @@
 <div class="synopsis">
 <h3>Synopsis</h3>
 <p>Declared in <code>&lt;macros.cpp&gt;</code></p>
-<pre><code class="source-code cpp">#define EXAMPLE_CLAMP(x, lo, hi) ((x) &lt; (lo) ? (lo) : ((x) &gt; (hi) ? (hi) : (x)))</code></pre>
+<pre><code class="source-code cpp">#define EXAMPLE_CLAMP(x, lo, hi)
+</code></pre>
 </div><!-- /synopsis -->
 <div class="return-value">
 <h3>Return Value</h3>
@@ -63,7 +75,8 @@
 <div class="synopsis">
 <h3>Synopsis</h3>
 <p>Declared in <code>&lt;macros.cpp&gt;</code></p>
-<pre><code class="source-code cpp">#define EXAMPLE_LOG(fmt, ...) ::example::log_impl((fmt), __VA_ARGS__)</code></pre>
+<pre><code class="source-code cpp">#define EXAMPLE_LOG(fmt, ...)
+</code></pre>
 </div><!-- /synopsis -->
 <div class="parameters">
 <h3>Parameters</h3>

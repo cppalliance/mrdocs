@@ -5,22 +5,10 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>QG5iRzeDE2tatU6QHB3vtFnqFhG 2vqFfC4Y3Y3Ru4FxrrfLh9FYKv8S</macros>
+  </members>
 </namespace>
-<macro>
-  <name>SHARED_MACRO</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-multi-file.cpp</shortPath>
-      <sourcePath>macros-multi-file.cpp</sourcePath>
-      <lineNumber>10</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2vqFfC4Y3Y3Ru4FxrrfLh9FYKv8S</id>
-  <extraction>regular</extraction>
-  <source>#define SHARED_MACRO 2</source>
-</macro>
 <macro>
   <name>SHARED_MACRO</name>
   <loc>
@@ -34,6 +22,21 @@
   <kind>macro</kind>
   <id>QG5iRzeDE2tatU6QHB3vtFnqFhG</id>
   <extraction>regular</extraction>
-  <source>#define SHARED_MACRO 1</source>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>SHARED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-multi-file.cpp</shortPath>
+      <sourcePath>macros-multi-file.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2vqFfC4Y3Y3Ru4FxrrfLh9FYKv8S</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
 </macro>
 </mrdocs>

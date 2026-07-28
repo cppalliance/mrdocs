@@ -5,7 +5,37 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>ifZRvs46MXdbXRNPkmDXUFZWNfX 2MJA7aC2EtYDDyqqWvAzp1EbS7FY</macros>
+  </members>
 </namespace>
+<macro>
+  <name>DOC_OBJECT</name>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-all-macros.cpp</shortPath>
+      <sourcePath>no-extract-all-macros.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>ifZRvs46MXdbXRNPkmDXUFZWNfX</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documented object-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
 <macro>
   <name>DOC_FUNC</name>
   <loc>
@@ -20,6 +50,7 @@
   <kind>macro</kind>
   <id>2MJA7aC2EtYDDyqqWvAzp1EbS7FY</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -47,33 +78,5 @@
   <parameters>
     <string>x</string>
   </parameters>
-  <source>#define DOC_FUNC(x) (x)</source>
-</macro>
-<macro>
-  <name>DOC_OBJECT</name>
-  <loc>
-    <defLoc>
-      <shortPath>no-extract-all-macros.cpp</shortPath>
-      <sourcePath>no-extract-all-macros.cpp</sourcePath>
-      <lineNumber>6</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>ifZRvs46MXdbXRNPkmDXUFZWNfX</id>
-  <extraction>regular</extraction>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Documented object-like macro.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-  <source>#define DOC_OBJECT 2</source>
 </macro>
 </mrdocs>

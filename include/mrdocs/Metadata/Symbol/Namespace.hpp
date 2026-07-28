@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -55,13 +56,21 @@ struct NamespaceTranche {
     */
     std::vector<SymbolID> Usings;
 
+    /** Preprocessor macros.
+
+        Only the global namespace's tranche carries these:
+        macros have no C++ scope, so they are collected at the
+        top level rather than under any named namespace.
+    */
+    std::vector<SymbolID> Macros;
+
 };
 
 MRDOCS_DESCRIBE_STRUCT(
     NamespaceTranche,
     (),
     (Namespaces, NamespaceAliases, Typedefs, Records, Enums,
-     Functions, Variables, Concepts, Guides, Usings)
+     Functions, Variables, Concepts, Guides, Usings, Macros)
 )
 
 /** Join all tranche member lists into a single view.
@@ -71,25 +80,16 @@ inline
 auto
 allMembers(NamespaceTranche const& T)
 {
-    // This is a trick to emulate views::concat in C++20
-    return std::views::transform(
-        std::views::iota(0, 10),
-        [&T](int const i) -> auto const& {
-            switch (i) {
-                case 0: return T.Namespaces;
-                case 1: return T.NamespaceAliases;
-                case 2: return T.Typedefs;
-                case 3: return T.Records;
-                case 4: return T.Enums;
-                case 5: return T.Functions;
-                case 6: return T.Variables;
-                case 7: return T.Concepts;
-                case 8: return T.Guides;
-                case 9: return T.Usings;
-                default: throw std::out_of_range("Invalid index");
-            }
-        }
-    ) | std::ranges::views::join;
+    // Concatenate every member list (emulating C++26 views::concat).
+    // The lists are discovered by reflection, so adding a member to
+    // NamespaceTranche extends this automatically, no switch to keep
+    // in sync.
+    static constexpr auto members =
+        describe::memberPointers<NamespaceTranche>();
+    return members
+        | std::views::transform(
+            [&T](auto const p) -> auto const& { return T.*p; })
+        | std::ranges::views::join;
 }
 
 /** Describes a namespace and its members.

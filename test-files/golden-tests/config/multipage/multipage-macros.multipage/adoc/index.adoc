@@ -11,6 +11,18 @@
 |===
 
 
+== Macros
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:MY_VERSION.adoc[`MY&lowbar;VERSION`] 
+| Object&hyphen;like macro&period;
+| xref:MY_INC.adoc[`MY&lowbar;INC`] 
+| Function&hyphen;like macro&period;
+|===
+
+
 == xref:foo.adoc[foo] namespace
 
 === Functions
@@ -22,8 +34,6 @@
 | A function in a namespace&period;
 |===
 
-
-See also: xref:macros.adoc[Macros]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
