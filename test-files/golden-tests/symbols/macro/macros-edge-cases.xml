@@ -5,7 +5,55 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>taiRsNxDnEPbGDX6TUAdTGe8FsT 2gZEKEXddibTYTDBviFnMfz3ri1H 2RxkLvemUQ3X8C4baVnh1hcpUDq1 2CjEHzyvJeernxCXkT7QGgKDP22D 3hM8jc31JWkocdaQKVddcEVJSd7F</macros>
+  </members>
 </namespace>
+<macro>
+  <name>FIRST_THING_IN_FILE</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>taiRsNxDnEPbGDX6TUAdTGe8FsT</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>REDEFINED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>19</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2gZEKEXddibTYTDBviFnMfz3ri1H</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>REDEFINED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>21</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2RxkLvemUQ3X8C4baVnh1hcpUDq1</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
 <macro>
   <name>DOC_THEN_BLANK</name>
   <loc>
@@ -20,6 +68,7 @@
   <kind>macro</kind>
   <id>2CjEHzyvJeernxCXkT7QGgKDP22D</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -44,52 +93,6 @@
       </children>
     </brief>
   </doc>
-  <source>#define DOC_THEN_BLANK 1</source>
-</macro>
-<macro>
-  <name>FIRST_THING_IN_FILE</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-edge-cases.cpp</shortPath>
-      <sourcePath>macros-edge-cases.cpp</sourcePath>
-      <lineNumber>1</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>taiRsNxDnEPbGDX6TUAdTGe8FsT</id>
-  <extraction>regular</extraction>
-  <source>#define FIRST_THING_IN_FILE 1</source>
-</macro>
-<macro>
-  <name>REDEFINED_MACRO</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-edge-cases.cpp</shortPath>
-      <sourcePath>macros-edge-cases.cpp</sourcePath>
-      <lineNumber>19</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2gZEKEXddibTYTDBviFnMfz3ri1H</id>
-  <extraction>regular</extraction>
-  <source>#define REDEFINED_MACRO 100</source>
-</macro>
-<macro>
-  <name>REDEFINED_MACRO</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-edge-cases.cpp</shortPath>
-      <sourcePath>macros-edge-cases.cpp</sourcePath>
-      <lineNumber>21</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2RxkLvemUQ3X8C4baVnh1hcpUDq1</id>
-  <extraction>regular</extraction>
-  <source>#define REDEFINED_MACRO 200</source>
 </macro>
 <macro>
   <name>SAME_LINE</name>
@@ -105,6 +108,7 @@
   <kind>macro</kind>
   <id>3hM8jc31JWkocdaQKVddcEVJSd7F</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -116,6 +120,5 @@
       </children>
     </brief>
   </doc>
-  <source>/** Doc-comment that ends on the macro&apos;s line. */ #define SAME_LINE 2</source>
 </macro>
 </mrdocs>

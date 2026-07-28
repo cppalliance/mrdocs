@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -81,27 +82,16 @@ inline
 auto
 allMembers(RecordTranche const& T)
 {
-    // This is a trick to emulate views::concat in C++20
-    return std::views::transform(
-        std::views::iota(0, 11),
-        [&T](int const i) -> auto const&
-        {
-            switch (i) {
-                case 0: return T.NamespaceAliases;
-                case 1: return T.Typedefs;
-                case 2: return T.Records;
-                case 3: return T.Enums;
-                case 4: return T.Functions;
-                case 5: return T.StaticFunctions;
-                case 6: return T.Variables;
-                case 7: return T.StaticVariables;
-                case 8: return T.Concepts;
-                case 9: return T.Guides;
-                case 10: return T.Usings;
-                default: throw std::out_of_range("Invalid index");
-            }
-        }
-    ) | std::ranges::views::join;
+    // Concatenate every member list (emulating C++26 views::concat).
+    // The lists are discovered by reflection, so adding a member to
+    // RecordTranche extends this automatically, no switch to keep in
+    // sync.
+    static constexpr auto members =
+        describe::memberPointers<RecordTranche>();
+    return members
+        | std::views::transform(
+            [&T](auto const p) -> auto const& { return T.*p; })
+        | std::ranges::views::join;
 }
 
 } // mrdocs

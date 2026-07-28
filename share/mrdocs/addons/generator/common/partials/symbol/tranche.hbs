@@ -28,6 +28,7 @@
 {{>symbol/members-table members=tranche.variables title="Variables"}}
 {{>symbol/members-table members=tranche.concepts title="Concepts"}}
 {{>symbol/members-table members=tranche.usings title=(concat (select label (concat label " ") "") "Using Declarations")}}
+{{>symbol/members-table members=tranche.macros title="Macros"}}
 {{else}}
 {{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
 {{>symbol/members-table members=(reject_by tranche.records "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}

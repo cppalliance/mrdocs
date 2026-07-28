@@ -5,7 +5,37 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>jc8EM399XDa2b6yHoN3CV4omsBX 4CZmkptAL3NCevc9fwYRsdQXcJNm 2zKk5c8uqgHfW326EcothwTzF3eo</macros>
+  </members>
 </namespace>
+<macro>
+  <name>MYLIB_VERSION</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-allowlist.cpp</shortPath>
+      <sourcePath>macros-allowlist.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>jc8EM399XDa2b6yHoN3CV4omsBX</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public API version.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
 <macro>
   <name>MYLIB_ASSERT</name>
   <loc>
@@ -20,6 +50,7 @@
   <kind>macro</kind>
   <id>4CZmkptAL3NCevc9fwYRsdQXcJNm</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -35,7 +66,6 @@
   <parameters>
     <string>x</string>
   </parameters>
-  <source>#define MYLIB_ASSERT(x) ((x) ? (void)0 : abort())</source>
 </macro>
 <macro>
   <name>MYLIB_DETAIL_INTERNAL</name>
@@ -51,6 +81,7 @@
   <kind>macro</kind>
   <id>2zKk5c8uqgHfW326EcothwTzF3eo</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -62,33 +93,5 @@
       </children>
     </brief>
   </doc>
-  <source>#define MYLIB_DETAIL_INTERNAL 0</source>
-</macro>
-<macro>
-  <name>MYLIB_VERSION</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-allowlist.cpp</shortPath>
-      <sourcePath>macros-allowlist.cpp</sourcePath>
-      <lineNumber>4</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>jc8EM399XDa2b6yHoN3CV4omsBX</id>
-  <extraction>regular</extraction>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Public API version.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-  <source>#define MYLIB_VERSION 1</source>
 </macro>
 </mrdocs>

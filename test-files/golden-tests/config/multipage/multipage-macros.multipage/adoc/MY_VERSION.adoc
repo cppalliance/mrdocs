@@ -10,10 +10,9 @@ Declared in `&lt;multipage&hyphen;macros&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-&num;define MY&lowbar;VERSION 1
-----
+#define MY&lowbar;VERSION
 
-See also: xref:macros.adoc[Macros]
+----
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

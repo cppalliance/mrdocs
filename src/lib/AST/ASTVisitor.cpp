@@ -61,7 +61,7 @@ ASTVisitor(
     clang::CompilerInstance& compiler,
     clang::ASTContext& context,
     clang::Sema& sema,
-    std::vector<MacroDefinition>& macroDefs) noexcept
+    std::vector<CollectedMacro>& macroDefs) noexcept
     : config_(config)
     , diags_(diags)
     , compiler_(compiler)
@@ -92,34 +92,63 @@ build()
     clang::TranslationUnitDecl const* TU = context_.getTranslationUnitDecl();
     traverse(TU);
     MRDOCS_ASSERT(find(SymbolID::global));
-    addMacros();
+    populateMacros();
 }
+
+namespace {
+
+std::vector<std::string>
+gatherMacroParameters(clang::MacroInfo const* MI)
+{
+    std::vector<std::string> result;
+    // For variadic macros, Clang appends a synthetic `__VA_ARGS__`
+    // identifier as the last parameter. Drop it: variadicness is
+    // reported via `MacroSymbol::IsVariadic`, mirroring how
+    // `FunctionSymbol` excludes the trailing C-style `...`.
+    for (clang::IdentifierInfo const* P : MI->params())
+    {
+        if (P && P->getName() != "__VA_ARGS__")
+        {
+            result.emplace_back(P->getName().str());
+        }
+    }
+    return result;
+}
+
+} // unnamed namespace
 
 void
 ASTVisitor::
-addMacros()
+populateMacros()
 {
-    for (MacroDefinition const& m : macroDefs_)
+    for (CollectedMacro const& m : macroDefs_)
     {
-        MRDOCS_CHECK_OR_CONTINUE(!m.ClangMacro->isUsedForHeaderGuard());
+        clang::MacroInfo const* const MI = m.Info;
+
+        // Header guards are `#define`s too, but they are an
+        // implementation detail of inclusion, not part of the API.
+        MRDOCS_CHECK_OR_CONTINUE(!MI->isUsedForHeaderGuard());
+
+        std::string const name = m.Identifier->getName().str();
+        clang::SourceLocation const defLoc = MI->getDefinitionLoc();
 
         // `findFileInfo` returns null only for invalid `SourceLocation`
         // values and a handful of exotic `FileID` kinds (predefined-macro
         // buffers, unusual `#line` situations). `MacroCollector` already
         // drops invalid locations, builtins, and system headers, so
         // anything reaching here points at a real source file.
-        FileInfo* file = findFileInfo(m.DefLoc);
+        FileInfo* file = findFileInfo(defLoc);
         MRDOCS_ASSERT(file);
 
         clang::PresumedLoc const presLoc =
-            source_.getPresumedLoc(m.DefLoc, false);
+            source_.getPresumedLoc(defLoc, false);
         MRDOCS_CHECK_OR_CONTINUE(presLoc.isValid());
 
         // Stable `SymbolID` derived from the source-relative
         // path, line number, and macro name.
         std::string const usr = std::format(
             "macro:{}@{}:{}",
-            m.Name,
+            name,
             file->short_path,
             presLoc.getLine());
         std::array<std::uint8_t, 20> const h =
@@ -129,35 +158,17 @@ addMacros()
 
         // Apply user-configured filters: by name (symbol
         // patterns) and by source location (file patterns).
-        ExtractionMode const mode = macroNameMode(m.Name);
+        ExtractionMode const mode = macroNameMode(name);
         MRDOCS_CHECK_OR_CONTINUE(mode != ExtractionMode::Dependency);
         MRDOCS_CHECK_OR_CONTINUE(checkFileFilters(file->full_path));
 
-        std::unique_ptr<MacroSymbol> sym =
-            std::make_unique<MacroSymbol>(id);
-        sym->Name = m.Name;
-        sym->IsFunctionLike = !m.IsObjectLike;
-        sym->IsVariadic = m.IsVariadic;
-        sym->Parameters = m.Parameters;
-        sym->Source = m.Source;
-        sym->Parent = SymbolID::invalid;
+        auto sym = std::make_unique<MacroSymbol>(id);
+        sym->Name = name;
+        // Macros have no C++ scope, so they live in the global
+        // namespace's tranche, like any other top-level symbol.
+        sym->Parent = SymbolID::global;
         sym->Extraction = mode;
-
-        if (clang::RawComment const* RC =
-                context_.getRawCommentForAnyRedecl(m.ClangMacro))
-        {
-            // Macros have no `Decl`, but `RawComment::parse` requires a
-            // non-null, valid one (it dereferences it), so pass the
-            // translation unit.
-            clang::comments::FullComment* FC = RC->parse(
-                context_, &sema_.getPreprocessor(),
-                context_.getTranslationUnitDecl());
-            if (FC)
-            {
-                populateDocComment(
-                    sym->doc, FC, context_, config_, diags_);
-            }
-        }
+        populate(*sym, MI);
 
         // When `extract-all` is off, require a doc comment.
         // Undocumented macros are dropped entirely.
@@ -176,12 +187,43 @@ addMacros()
         // macros are already dropped above when `extract-all` is off.)
         if (config_->warnIfUndocumented && !sym->doc)
         {
-            UndocumentedSymbol undoc(id, m.Name, SymbolKind::Macro);
+            UndocumentedSymbol undoc(id, name, SymbolKind::Macro);
             undoc.Loc = sym->Loc;
             undocumented_.insert(std::move(undoc));
         }
 
+        // Record the macro in the global namespace's member list so
+        // it is reached by the normal scope traversal, like every
+        // other symbol.
+        Symbol* global = find(SymbolID::global);
+        MRDOCS_ASSERT(global);
+        addMember(global->asNamespace(), *sym);
+
         info_.emplace(std::move(sym));
+    }
+}
+
+void
+ASTVisitor::
+populate(MacroSymbol& I, clang::MacroInfo const* MI)
+{
+    I.IsFunctionLike = !MI->isObjectLike();
+    I.IsVariadic = MI->isVariadic();
+    I.Parameters = gatherMacroParameters(MI);
+
+    if (clang::RawComment const* RC =
+            context_.getRawCommentForAnyRedecl(MI))
+    {
+        // A macro has no `Decl`, but `RawComment::parse` dereferences
+        // its `Decl` argument, so pass the translation unit as a
+        // valid, non-null stand-in.
+        clang::comments::FullComment* FC = RC->parse(
+            context_, &sema_.getPreprocessor(),
+            context_.getTranslationUnitDecl());
+        if (FC)
+        {
+            populateDocComment(I.doc, FC, context_, config_, diags_);
+        }
     }
 }
 
@@ -2194,6 +2236,11 @@ addMember(
     if (auto const* U = Member.asUsingPtr())
     {
         addMember(I.Members.Usings, *U);
+        return;
+    }
+    if (auto const* U = Member.asMacroPtr())
+    {
+        addMember(I.Members.Macros, *U);
         return;
     }
     report::error("Cannot push {} of type {} into members of namespace {}",

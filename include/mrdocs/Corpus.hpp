@@ -192,19 +192,6 @@ public:
     NamespaceSymbol const&
     globalNamespace() const noexcept;
 
-    /** Return all preprocessor macros in the corpus.
-
-        Macros are stored at the corpus root, not under any
-        namespace, since they are not in any C++ scope. The
-        result is sorted by macro name, with source location
-        as a tiebreaker, so iteration order is stable across
-        runs.
-
-        @return All MacroSymbols in stable iteration order.
-    */
-    std::vector<MacroSymbol const*>
-    macros() const;
-
     /** Visit the specified Symbol IDs
 
         This function invokes the specified function `f`

@@ -4,9 +4,19 @@
 [#index]
 == Global namespace
 
+=== Macros
 
-[#macros]
-== Macros
+[cols="1,4"]
+|===
+| Name| Description
+| link:#EXAMPLE_ABI_VERSION[`EXAMPLE&lowbar;ABI&lowbar;VERSION`] 
+| The library&apos;s ABI version&period;
+| link:#EXAMPLE_CLAMP[`EXAMPLE&lowbar;CLAMP`] 
+| Clamp `x` to the closed range &lsqb;`lo`, `hi`&rsqb;&period;
+| link:#EXAMPLE_LOG[`EXAMPLE&lowbar;LOG`] 
+| Log a formatted message&period;
+|===
+
 
 [#EXAMPLE_ABI_VERSION]
 == EXAMPLE&lowbar;ABI&lowbar;VERSION
@@ -19,7 +29,8 @@ Declared in `&lt;macros&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-&num;define EXAMPLE&lowbar;ABI&lowbar;VERSION 3
+#define EXAMPLE&lowbar;ABI&lowbar;VERSION
+
 ----
 
 [#EXAMPLE_CLAMP]
@@ -33,7 +44,8 @@ Declared in `&lt;macros&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-&num;define EXAMPLE&lowbar;CLAMP(x, lo, hi) ((x) &lt; (lo) ? (lo) &colon; ((x) &gt; (hi) ? (hi) &colon; (x)))
+#define EXAMPLE&lowbar;CLAMP(x, lo, hi)
+
 ----
 
 === Return Value
@@ -64,7 +76,8 @@ Declared in `&lt;macros&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-&num;define EXAMPLE&lowbar;LOG(fmt, &period;&period;&period;) &colon;&colon;example&colon;&colon;log&lowbar;impl((fmt), &lowbar;&lowbar;VA&lowbar;ARGS&lowbar;&lowbar;)
+#define EXAMPLE&lowbar;LOG(fmt, ...)
+
 ----
 
 === Parameters

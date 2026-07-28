@@ -44,7 +44,7 @@ class ASTVisitorConsumer
     ConfigImpl const& config_;
     ExecutionContext& ex_;
     clang::CompilerInstance& compiler_;
-    std::vector<MacroDefinition>& macroDefs_;
+    std::vector<CollectedMacro>& macroDefs_;
     clang::Sema* sema_ = nullptr;
 
 public:
@@ -52,7 +52,7 @@ public:
         ConfigImpl const& config,
         ExecutionContext& ex,
         clang::CompilerInstance& compiler,
-        std::vector<MacroDefinition>& macroDefs) noexcept
+        std::vector<CollectedMacro>& macroDefs) noexcept
         : config_(config)
         , ex_(ex)
         , compiler_(compiler)

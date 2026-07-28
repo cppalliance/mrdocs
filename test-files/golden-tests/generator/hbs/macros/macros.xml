@@ -5,6 +5,9 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>BXjLH3FoLuneZMZEsmHVVLE95m2 4QC1G22zW8fuoswW2heMXiU3sKXW 3TgUu4akaEHtmpZHsYDRxsyAgVni</macros>
+  </members>
 </namespace>
 <macro>
   <name>EXAMPLE_ABI_VERSION</name>
@@ -20,6 +23,7 @@
   <kind>macro</kind>
   <id>BXjLH3FoLuneZMZEsmHVVLE95m2</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -31,7 +35,6 @@
       </children>
     </brief>
   </doc>
-  <source>#define EXAMPLE_ABI_VERSION 3</source>
 </macro>
 <macro>
   <name>EXAMPLE_CLAMP</name>
@@ -47,6 +50,7 @@
   <kind>macro</kind>
   <id>4QC1G22zW8fuoswW2heMXiU3sKXW</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -155,7 +159,6 @@
     <string>lo</string>
     <string>hi</string>
   </parameters>
-  <source>#define EXAMPLE_CLAMP(x, lo, hi) ((x) &lt; (lo) ? (lo) : ((x) &gt; (hi) ? (hi) : (x)))</source>
 </macro>
 <macro>
   <name>EXAMPLE_LOG</name>
@@ -171,6 +174,7 @@
   <kind>macro</kind>
   <id>3TgUu4akaEHtmpZHsYDRxsyAgVni</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -235,6 +239,5 @@
     <string>fmt</string>
   </parameters>
   <isVariadic/>
-  <source>#define EXAMPLE_LOG(fmt, ...) ::example::log_impl((fmt), __VA_ARGS__)</source>
 </macro>
 </mrdocs>

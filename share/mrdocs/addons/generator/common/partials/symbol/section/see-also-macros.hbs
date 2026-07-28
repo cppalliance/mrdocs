@@ -1,8 +1,0 @@
-{{!--
-    Links the global-namespace page to the corpus-level macros index.
-
-    Expected Context: {Root Context Object}
---}}
-{{#if (and @root.config.multipage (not symbol.parent) @root.corpusMacros)}}
-{{#>markup/p}}See also: {{#>markup/a href=@root.corpusMacrosUrl}}Macros{{/markup/a}}{{/markup/p}}
-{{/if}}

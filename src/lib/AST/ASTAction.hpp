@@ -46,7 +46,7 @@ class ASTAction
     ExecutionContext& ex_;
     ConfigImpl const& config_;
     MissingSymbolSink* missingSink_ = nullptr;
-    std::vector<MacroDefinition> macroDefs_;
+    std::vector<CollectedMacro> macroDefs_;
 
 public:
     ASTAction(

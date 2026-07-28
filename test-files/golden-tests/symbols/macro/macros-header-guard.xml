@@ -5,6 +5,9 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>1gwTwMaiDbHBadfKwUXwHkduac7</macros>
+  </members>
 </namespace>
 <macro>
   <name>MHG_LIMIT</name>
@@ -20,6 +23,7 @@
   <kind>macro</kind>
   <id>1gwTwMaiDbHBadfKwUXwHkduac7</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -31,6 +35,5 @@
       </children>
     </brief>
   </doc>
-  <source>#define MHG_LIMIT 256</source>
 </macro>
 </mrdocs>

@@ -5,7 +5,37 @@
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
+  <members>
+    <macros>25TXh1YkaJx4KSKRnd6vM4Cz56V8 3swZTuggskjgutsth2qaMNHouYwY</macros>
+  </members>
 </namespace>
+<macro>
+  <name>MYLIB_VERSION</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-excluded.cpp</shortPath>
+      <sourcePath>macros-excluded.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>25TXh1YkaJx4KSKRnd6vM4Cz56V8</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public macro, kept.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
 <macro>
   <name>MYLIB_ASSERT</name>
   <loc>
@@ -20,6 +50,7 @@
   <kind>macro</kind>
   <id>3swZTuggskjgutsth2qaMNHouYwY</id>
   <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
     <brief>
       <kind>brief</kind>
@@ -35,33 +66,5 @@
   <parameters>
     <string>x</string>
   </parameters>
-  <source>#define MYLIB_ASSERT(x) ((x) ? (void)0 : abort())</source>
-</macro>
-<macro>
-  <name>MYLIB_VERSION</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-excluded.cpp</shortPath>
-      <sourcePath>macros-excluded.cpp</sourcePath>
-      <lineNumber>4</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>25TXh1YkaJx4KSKRnd6vM4Cz56V8</id>
-  <extraction>regular</extraction>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Public macro, kept.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-  <source>#define MYLIB_VERSION 1</source>
 </macro>
 </mrdocs>
