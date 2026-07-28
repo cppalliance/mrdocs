@@ -8,7 +8,7 @@ Computes the integer square root stem:[\lfloor\sqrt{value}\rfloor]&period;
 
 === Synopsis
 
-Declared in `&lt;sqrt&period;cpp&gt;`
+Declared in `&lt;sqrt&period;hpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

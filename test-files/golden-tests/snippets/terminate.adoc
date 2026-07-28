@@ -8,7 +8,7 @@ Exit the program&period;
 
 === Synopsis
 
-Declared in `&lt;terminate&period;cpp&gt;`
+Declared in `&lt;terminate&period;hpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
