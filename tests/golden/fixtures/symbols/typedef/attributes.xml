@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <typedefs>mdtsn1qoRk4BbXrakJM7M1r4Zch</typedefs>
+  </members>
+</namespace>
+<typedef>
+  <name>extension_type</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes.cpp</shortPath>
+        <sourcePath>attributes.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>typedef</kind>
+  <id>mdtsn1qoRk4BbXrakJM7M1r4Zch</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use extent_type&quot;</string>
+      </balancedTokens>
+      <message>use extent_type</message>
+    </deprecated>
+  </attributes>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <isUsing/>
+</typedef>
+</mrdocs>

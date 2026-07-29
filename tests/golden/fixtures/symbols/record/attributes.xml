@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>rLRfnantjWExC2zy8BXsDnF5eKP 4STgDrwLeHv7mqV5anD6cJEd6K4T</records>
+  </members>
+</namespace>
+<record>
+  <name>Aligned</name>
+  <loc>
+    <defLoc>
+      <shortPath>attributes.cpp</shortPath>
+      <sourcePath>attributes.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>rLRfnantjWExC2zy8BXsDnF5eKP</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <other>
+      <kind>other</kind>
+      <name>gnu::aligned</name>
+      <balancedTokens>
+        <string>16</string>
+      </balancedTokens>
+    </other>
+  </attributes>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>Widget</name>
+  <loc>
+    <defLoc>
+      <shortPath>attributes.cpp</shortPath>
+      <sourcePath>attributes.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>4STgDrwLeHv7mqV5anD6cJEd6K4T</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use Widget2&quot;</string>
+      </balancedTokens>
+      <message>use Widget2</message>
+    </deprecated>
+  </attributes>
+  <keyKind>struct</keyKind>
+</record>
+</mrdocs>

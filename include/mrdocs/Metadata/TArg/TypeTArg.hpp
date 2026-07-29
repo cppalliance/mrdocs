@@ -17,8 +17,8 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Support/CompareReflectedType.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -15,8 +16,8 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Support/Describe.hpp>
-#include <mrdocs/Support/MapReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 

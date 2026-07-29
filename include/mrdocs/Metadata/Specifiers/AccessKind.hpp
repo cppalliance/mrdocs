@@ -15,7 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 #include <string>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 

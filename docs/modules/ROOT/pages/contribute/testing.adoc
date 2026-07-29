@@ -4,10 +4,10 @@ All new features should be accompanied by tests.
 The `mrdocs-test` target is used to run the test suites.
 This target has its entry point in `src/test/TestMain.cpp`, which can take two paths:
 
-* Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the `DoTestAction()` that iterates all files in `test-files` comparing the input source files with the expected XML output files.
+* Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the `DoTestAction()` that iterates all files in `tests/golden/fixtures` comparing the input source files with the expected XML output files.
 * Unit testing: When no input paths are provided, all unit tests will be run via `unit_test_main()`, defined by our test-suite library in `src/test_suite/test_suite.cpp`.
 
-The fixtures for golden testing are defined in `test-files/golden-tests`, where files in each directory have the following format:
+The fixtures for golden testing are defined in `tests/golden/fixtures`, where files in each directory have the following format:
 
 * `mrdocs.yml`: Basic configuration options for all files in this directory.
 * `<filename>.cpp`: The input source file to extract symbols from.
@@ -17,7 +17,7 @@ The fixtures for golden testing are defined in `test-files/golden-tests`, where 
 
 Multipage golden tests follow a snapshot-based layout:
 
-* The suite defaults to `multipage: false` in `test-files/golden-tests/mrdocs.yml`; a multipage test must provide a `<stem>.yml` that sets `multipage: true`.
+* The suite defaults to `multipage: false` in `tests/golden/fixtures/mrdocs.yml`; a multipage test must provide a `<stem>.yml` that sets `multipage: true`.
 * Expected output lives under `<stem>.multipage/<format>/...` (one directory per generator); single-page siblings like `<stem>.html`/`.xml` must be absent.
 * The harness skips `.multipage/` directories during discovery and compares generated temp output trees to the snapshot (strict tree + content).
 * Add a short comment in the `.cpp` explaining why multipage is required—use it only when single-page output cannot validate the behavior (e.g., relative asset/link handling).

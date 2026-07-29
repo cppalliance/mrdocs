@@ -21,9 +21,9 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockKind.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
-#include <mrdocs/Support/CompareReflectedType.hpp>
-#include <mrdocs/Support/Describe.hpp>
-#include <mrdocs/Support/MapReflectedType.hpp>
+#include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <algorithm>
 #include <string>
 

@@ -13,8 +13,8 @@
 #define MRDOCS_API_SUPPORT_REPORT_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/source_location.hpp>
+#include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/polyfill/source_location.hpp>
 #include <exception>
 #include <format>
 #include <functional>

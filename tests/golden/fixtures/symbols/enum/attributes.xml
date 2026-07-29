@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <enums>4PVPpPqwv3FBieMS7DKsPgXCBjAp</enums>
+  </members>
+</namespace>
+<enum>
+  <name>Color</name>
+  <loc>
+    <defLoc>
+      <shortPath>attributes.cpp</shortPath>
+      <sourcePath>attributes.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>enum</kind>
+  <id>4PVPpPqwv3FBieMS7DKsPgXCBjAp</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use Color2&quot;</string>
+      </balancedTokens>
+      <message>use Color2</message>
+    </deprecated>
+  </attributes>
+  <scoped/>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>4J31Z41F2VZDoxA4GtpA4ZPMNqC f52HBhj3MAyTgmbvGBH4rZkgeNY 32sB5fxNDohavUeaUntbTwN4fqUZ</constants>
+</enum>
+<enumConstant>
+  <name>Red</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes.cpp</shortPath>
+        <sourcePath>attributes.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>4J31Z41F2VZDoxA4GtpA4ZPMNqC</id>
+  <extraction>regular</extraction>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+</enumConstant>
+<enumConstant>
+  <name>Green</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes.cpp</shortPath>
+        <sourcePath>attributes.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>f52HBhj3MAyTgmbvGBH4rZkgeNY</id>
+  <extraction>regular</extraction>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;use Blue&quot;</string>
+      </balancedTokens>
+      <message>use Blue</message>
+    </deprecated>
+  </attributes>
+</enumConstant>
+<enumConstant>
+  <name>Blue</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>attributes.cpp</shortPath>
+        <sourcePath>attributes.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>32sB5fxNDohavUeaUntbTwN4fqUZ</id>
+  <extraction>regular</extraction>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+</enumConstant>
+</mrdocs>

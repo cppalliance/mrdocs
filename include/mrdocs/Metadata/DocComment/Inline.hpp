@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -31,8 +32,8 @@
 #include <mrdocs/Metadata/DocComment/Inline/SubscriptInline.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/SuperscriptInline.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
-#include <mrdocs/Support/Concepts.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/TypeTraits/Concepts.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 #include <compare>
 
 namespace mrdocs::doc {

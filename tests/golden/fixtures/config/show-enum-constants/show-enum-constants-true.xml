@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <enums>4PVPpPqwv3FBieMS7DKsPgXCBjAp</enums>
+  </members>
+</namespace>
+<enum>
+  <name>Color</name>
+  <loc>
+    <defLoc>
+      <shortPath>show-enum-constants-true.cpp</shortPath>
+      <sourcePath>show-enum-constants-true.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>enum</kind>
+  <id>4PVPpPqwv3FBieMS7DKsPgXCBjAp</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A simple enum</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <scoped/>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>4J31Z41F2VZDoxA4GtpA4ZPMNqC f52HBhj3MAyTgmbvGBH4rZkgeNY 32sB5fxNDohavUeaUntbTwN4fqUZ</constants>
+</enum>
+<enumConstant>
+  <name>Red</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>show-enum-constants-true.cpp</shortPath>
+        <sourcePath>show-enum-constants-true.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>4J31Z41F2VZDoxA4GtpA4ZPMNqC</id>
+  <extraction>regular</extraction>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The color red</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+<enumConstant>
+  <name>Green</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>show-enum-constants-true.cpp</shortPath>
+        <sourcePath>show-enum-constants-true.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>f52HBhj3MAyTgmbvGBH4rZkgeNY</id>
+  <extraction>regular</extraction>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The color green</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+<enumConstant>
+  <name>Blue</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>show-enum-constants-true.cpp</shortPath>
+        <sourcePath>show-enum-constants-true.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>32sB5fxNDohavUeaUntbTwN4fqUZ</id>
+  <extraction>regular</extraction>
+  <parent>4PVPpPqwv3FBieMS7DKsPgXCBjAp</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The color blue</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+</mrdocs>

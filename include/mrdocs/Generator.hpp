@@ -19,7 +19,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Error/Error.hpp>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -76,9 +76,9 @@ public:
 
     /** Build the documentation for the corpus.
 
-        The generator reads its configuration from `corpus.config`,
-        resolves its own output location, and writes whatever files it
-        needs.
+        The generator reads its configuration from the `config` passed in
+        (a corpus does not own its configuration), resolves its own output
+        location, and writes whatever files it needs.
 
         @par Thread Safety
         @li Different `corpus` object: may be called concurrently.
@@ -87,11 +87,12 @@ public:
         @return The error, if any occurred.
 
         @param corpus The symbols to emit.
+        @param config The configuration that drove the build.
     */
     MRDOCS_DECL
     virtual
     Expected<void>
-    build(Corpus const& corpus) const = 0;
+    build(Corpus const& corpus, Config const& config) const = 0;
 };
 
 /** Install a custom generator.
@@ -131,6 +132,43 @@ installGenerator(std::unique_ptr<Generator> G);
 MRDOCS_DECL
 Generator const*
 findGenerator(std::string_view id) noexcept;
+
+/** Handlebars-based generators and the pieces that support them.
+
+    The `hbs` namespace groups the operations tied to MrDocs's Handlebars
+    output path, including the discovery of data-driven generators an addon
+    contributes as manifest directories.
+*/
+namespace hbs {
+
+/** Discover addon-defined data-driven generators and install them.
+
+    For each configured addon root, the immediate subdirectories of
+    `<root>/generator/` that ship an `mrdocs-generator.yml` manifest are
+    installed into the global registry as data-driven Handlebars
+    generators (see the manifest format documentation). A built-in
+    generator of the same id takes precedence, so its addon directory is
+    skipped. Directories that hold only shared assets and declare no
+    manifest are skipped too.
+
+    Call this once, after the configuration is resolved and before a
+    generator is looked up by id with @ref findGenerator. It is one of the
+    pieces the command-line tool composes to run its generate step; the
+    order of that step lives in the tool.
+
+    @par Thread Safety
+    Installs into the process-global registry, so it may not be called
+    concurrently with @ref installGenerator.
+
+    @return The error, if any occurred.
+
+    @param config The resolved configuration whose addon roots are walked.
+*/
+MRDOCS_DECL
+Expected<void>
+discoverDataDrivenGenerators(Config const& config);
+
+} // hbs
 
 } // mrdocs
 

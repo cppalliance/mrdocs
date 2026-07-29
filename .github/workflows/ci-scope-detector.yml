@@ -8,7 +8,7 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 # Classifies the changed files in this run into the Danger scope buckets
-# (see `util/danger/logic.ts`) and decides which parts of the build matrix
+# (see `utils/danger/logic.ts`) and decides which parts of the build matrix
 # still need to execute.
 #
 
@@ -91,7 +91,7 @@ jobs:
           node-version: '20'
 
       - name: Install scope classifier
-        working-directory: util/danger
+        working-directory: utils/danger
         run: npm ci --ignore-scripts
 
       - name: Classify changed files
@@ -131,9 +131,9 @@ jobs:
             : > changed-files.txt
           fi
 
-          # The classifier is the one in util/danger/logic.ts — same scope
+          # The classifier is the one in utils/danger/logic.ts — same scope
           # rules Danger uses, so the two reports stay in sync.
-          result=$(npm --prefix util/danger run --silent danger:detect-scopes < changed-files.txt)
+          result=$(npm --prefix utils/danger run --silent danger:detect-scopes < changed-files.txt)
           echo "Detector output: $result"
 
           # Manual overrides: a `[full ci]` marker in the PR body or a

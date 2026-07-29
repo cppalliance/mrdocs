@@ -19,7 +19,8 @@ if (BUILD_TESTING)
                 "-DV2_CONFIG=${CMAKE_CURRENT_SOURCE_DIR}/test/v2/mrdocs.yml"
                 "-DEXPECTED=${CMAKE_CURRENT_SOURCE_DIR}/test/expected.txt"
                 "-DACTUAL=${CMAKE_CURRENT_BINARY_DIR}/actual.txt"
-                "-DMRDOCS_ROOT=${PROJECT_SOURCE_DIR}"
+                "-DDATA_DIR=${PROJECT_SOURCE_DIR}/data"
+                "-DSTAGE_ROOT=${CMAKE_CURRENT_BINARY_DIR}/mrdocs-root"
                 -P "${CMAKE_CURRENT_SOURCE_DIR}/test/run.cmake"
     )
 endif()

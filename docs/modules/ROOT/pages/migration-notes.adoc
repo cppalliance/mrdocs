@@ -1,7 +1,7 @@
 = Migration Notes
 :page-aliases: caveats.adoc
 :url-dependencies: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/dependencies
-:url-snippets: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/test-files/golden-tests/snippets/options
+:url-snippets: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/tests/golden/fixtures/snippets/options
 
 Mr.Docs takes a different shape from other tools. Most of the differences come from one design choice:
 

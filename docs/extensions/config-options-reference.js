@@ -11,7 +11,7 @@ const fs = require('fs')
 const path = require('path')
 
 // Optional per-option fixture under
-// `test-files/golden-tests/snippets/options/<option>/`. The extension
+// `tests/golden/fixtures/snippets/options/<option>/`. The extension
 // uses this to emit an `<em>Example</em>` block under each option's
 // detail, with the .cpp source and the .yml configuration as code
 // blocks. Rendering the .adoc preview inline would require a second
@@ -19,7 +19,7 @@ const path = require('path')
 // preview is handled by the per-category page using `include::`
 // directives instead.
 const OPTIONS_FIXTURES_DIR = path.resolve(
-    __dirname, '..', '..', 'test-files', 'golden-tests', 'snippets', 'options')
+    __dirname, '..', '..', 'tests', 'golden', 'fixtures', 'snippets', 'options')
 
 const ADOC_HEADER_RE = /^= Reference\n:mrdocs:\n\n/
 const ADOC_FOOTER_RE = /\n*\[\.small\]#Created with https:\/\/www\.mrdocs\.com\[MrDocs\]#\s*\n*$/

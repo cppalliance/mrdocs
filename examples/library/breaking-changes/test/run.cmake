@@ -2,7 +2,17 @@ if(NOT TOOL OR NOT V1_CONFIG OR NOT V2_CONFIG OR NOT EXPECTED OR NOT ACTUAL)
     message(FATAL_ERROR "run.cmake: missing required variable")
 endif()
 
-set(ENV{MRDOCS_ROOT} "${MRDOCS_ROOT}")
+# The example resolves shared assets from <mrdocs-root>/share/mrdocs (the
+# installed layout). In the source tree those assets live under data/, so
+# stage a root whose share/ mirrors data/ and point the tool at it. This lets
+# the example keep demonstrating the default install-layout resolution.
+if(DATA_DIR AND STAGE_ROOT)
+    file(REMOVE_RECURSE "${STAGE_ROOT}/share")
+    file(COPY "${DATA_DIR}/" DESTINATION "${STAGE_ROOT}/share")
+    set(ENV{MRDOCS_ROOT} "${STAGE_ROOT}")
+else()
+    set(ENV{MRDOCS_ROOT} "${MRDOCS_ROOT}")
+endif()
 
 execute_process(
     COMMAND "${TOOL}" "${V1_CONFIG}" "${V2_CONFIG}"

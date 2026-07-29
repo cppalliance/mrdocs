@@ -21,7 +21,7 @@ The output is a single file (`reference.xml` by default) regardless of the xref:
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
   <name>logr</name>
   <kind>namespace</kind>
@@ -48,6 +48,6 @@ The canonical https://relaxng.org/[RELAX NG^] schema ships at the URL referenced
 
 [source]
 ----
-https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc
+https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc
 ----
 

@@ -13,7 +13,7 @@
 #define MRDOCS_API_ADT_POLYMORPHIC_HPP
 
 #include <mrdocs/ADT/Nullable.hpp>
-#include <mrdocs/Support/Assert.hpp>
+#include <mrdocs/Support/Error/Assert.hpp>
 #include <concepts>
 #include <utility>
 

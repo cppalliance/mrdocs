@@ -1,10 +1,12 @@
-# $schema: ./mrdocs.schema.json
-# yaml-language-server: $schema=./mrdocs.schema.json
+# $schema: https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.schema.json
+# yaml-language-server: $schema=https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.schema.json
 
 verbose: true
 source-root: ..
 input:
   - ../include
+  - ../libs/dom/include
+  - ../libs/handlebars/include
 file-patterns:
   - '*.hpp'
 include-symbols:
@@ -25,5 +27,5 @@ implementation-defined:
   - '**mrdocs_*_descriptor_fn'
 multipage: true
 generator: adoc
-cmake: '-D MRDOCS_DOCUMENTATION_BUILD=ON'
+cmake: '-D MRDOCS_BUILD_HEADERS_ONLY=ON'
 

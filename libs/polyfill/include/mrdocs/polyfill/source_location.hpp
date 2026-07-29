@@ -1,0 +1,95 @@
+//
+// Licensed under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+//
+// Official repository: https://github.com/cppalliance/mrdocs
+//
+
+#ifndef MRDOCS_API_SUPPORT_SOURCE_LOCATION_HPP
+#define MRDOCS_API_SUPPORT_SOURCE_LOCATION_HPP
+
+#include <version>
+
+#if __cpp_lib_source_location >= 201907L && \
+    __has_include(<source_location>)
+#    include <source_location>
+namespace mrdocs {
+    /** Alias to `std::source_location` when available.
+    */
+    using std::source_location;
+} // mrdocs
+#else
+#    include <cstdint>
+
+namespace mrdocs {
+    /** Lightweight backport of `std::source_location`.
+    */
+    struct source_location
+    {
+        /** Capture the current source location.
+        */
+        static
+        constexpr
+        source_location
+        current(
+            char const* const file = __builtin_FILE(),
+            char const* const function = __builtin_FUNCTION(),
+            const std::uint_least32_t line = __builtin_LINE(),
+            const std::uint_least32_t column = __builtin_COLUMN()) noexcept
+
+        {
+            source_location result;
+            result.file_ = file;
+            result.function_ = function;
+            result.line_ = line;
+            result.column_ = column;
+            return result;
+        }
+
+        /** Return the file name.
+        */
+        constexpr
+        char const*
+        file_name() const noexcept
+        {
+            return file_;
+        }
+        /** Return the function name.
+        */
+        constexpr
+        char const*
+        function_name() const noexcept
+        {
+            return function_;
+        }
+
+        /** Return the source line number.
+        */
+        constexpr
+        std::uint_least32_t
+        line() const noexcept
+        {
+            return line_;
+        }
+        /** Return the source column number.
+        */
+        constexpr
+        std::uint_least32_t
+        column() const noexcept
+        {
+            return column_;
+        }
+
+    private:
+        char const* file_ = "";
+        char const* function_ = "";
+        std::uint_least32_t line_ = 0;
+        std::uint_least32_t column_ = 0;
+    };
+} // mrdocs
+#endif
+#endif

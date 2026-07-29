@@ -19,9 +19,9 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
-#include <mrdocs/Support/CompareReflectedType.hpp>
 #include <mrdocs/Metadata/TParam/TParamKeyKind.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 

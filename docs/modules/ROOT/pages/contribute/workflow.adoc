@@ -34,7 +34,7 @@ Why This Approach:
 General Advice: When in doubt, copy the style of the surrounding code.
 The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
 
-The utility script `./util/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
+The utility script `./utils/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
 
 == Contributing
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>Aogu97rog8dE5dx3yjBKKz4Jd3e</functions>
+  </members>
+</namespace>
+<function>
+  <name>f</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>return-based.cpp</shortPath>
+        <sourcePath>return-based.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>Aogu97rog8dE5dx3yjBKKz4Jd3e</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <constraints>
+        <string>std::is_class_v&lt;T&gt;</string>
+      </constraints>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+  <funcClass>normal</funcClass>
+  <requires>std::is_class_v&lt;T&gt;</requires>
+</function>
+</mrdocs>

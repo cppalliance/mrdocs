@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>45Fwe5kYuv1Y5U477G1sB17ZooGh</records>
+    <variables>3teBgBFbjkf2aYcWAmuBzCfP2uZL 2zKGYeMATLdFDztgqcmVxqYn6wCw KPRXXqAm3b1E9nwFLvxbyyYEtbx</variables>
+  </members>
+</namespace>
+<record>
+  <name>B</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <staticVariables>31yVSuz2c5Re3hTorPMrL2C7zq3i 2GQmFB5yrtf9RyaxUFWEdEcxvYMi 3iYpnJbP9XS8BKADZTqftWC9P5EY</staticVariables>
+    </public>
+  </interface>
+</record>
+<variable>
+  <name>C</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>31yVSuz2c5Re3hTorPMrL2C7zq3i</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned int</fundamentalType>
+    </named>
+  </type>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+  <initializer>0</initializer>
+  <storageClass>static</storageClass>
+  <isInline/>
+</variable>
+<variable>
+  <name>C</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>2GQmFB5yrtf9RyaxUFWEdEcxvYMi</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned int</fundamentalType>
+    </named>
+  </type>
+  <template>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+  </template>
+  <initializer>-1</initializer>
+  <storageClass>static</storageClass>
+  <isInline/>
+</variable>
+<variable>
+  <name>C</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>18</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>3iYpnJbP9XS8BKADZTqftWC9P5EY</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>45Fwe5kYuv1Y5U477G1sB17ZooGh</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned int</fundamentalType>
+    </named>
+  </type>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <pointer>
+            <kind>pointer</kind>
+            <pointeeType>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>T</identifier>
+                  </identifier>
+                </name>
+              </named>
+            </pointeeType>
+          </pointer>
+        </type>
+      </type>
+    </args>
+  </template>
+  <initializer>sizeof(T)</initializer>
+  <storageClass>static</storageClass>
+  <isInline/>
+</variable>
+<variable>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>3teBgBFbjkf2aYcWAmuBzCfP2uZL</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned int</fundamentalType>
+    </named>
+  </type>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+  <initializer>sizeof(T)</initializer>
+</variable>
+<variable>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>2zKGYeMATLdFDztgqcmVxqYn6wCw</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned int</fundamentalType>
+    </named>
+  </type>
+  <template>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>void</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>void</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+  </template>
+  <initializer>0</initializer>
+</variable>
+<variable>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>var-template.cpp</shortPath>
+      <sourcePath>var-template.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>KPRXXqAm3b1E9nwFLvxbyyYEtbx</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned int</fundamentalType>
+    </named>
+  </type>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <lValueReference>
+            <kind>lvalue-reference</kind>
+            <pointeeType>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>T</identifier>
+                  </identifier>
+                </name>
+              </named>
+            </pointeeType>
+          </lValueReference>
+        </type>
+      </type>
+    </args>
+  </template>
+  <initializer>sizeof(T)</initializer>
+</variable>
+</mrdocs>

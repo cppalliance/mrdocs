@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <macros>QG5iRzeDE2tatU6QHB3vtFnqFhG 2vqFfC4Y3Y3Ru4FxrrfLh9FYKv8S</macros>
+  </members>
+</namespace>
+<macro>
+  <name>SHARED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-multi-file.hpp</shortPath>
+      <sourcePath>macros-multi-file.hpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>QG5iRzeDE2tatU6QHB3vtFnqFhG</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>SHARED_MACRO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-multi-file.cpp</shortPath>
+      <sourcePath>macros-multi-file.cpp</sourcePath>
+      <lineNumber>10</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2vqFfC4Y3Y3Ru4FxrrfLh9FYKv8S</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+</mrdocs>

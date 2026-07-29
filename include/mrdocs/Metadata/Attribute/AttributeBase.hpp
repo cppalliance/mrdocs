@@ -14,8 +14,8 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Attribute/AttributeKind.hpp>
-#include <mrdocs/Support/CompareReflectedType.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <string>
 #include <vector>
 

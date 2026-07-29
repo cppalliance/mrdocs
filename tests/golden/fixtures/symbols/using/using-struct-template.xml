@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>UfKicPw9MTYUQKvc95J7sgwZujx</namespaces>
+    <usings>PWxK8cc9wX3kPXbdZ3mF7Wn2niG 3uf2HfjvXNxJbrbrwb84BtEWkuWS</usings>
+  </members>
+</namespace>
+<namespace>
+  <name>LongName</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-struct-template.cpp</shortPath>
+        <sourcePath>using-struct-template.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>2QH38GpLjeijJPQLMaiLb2uxyhmF 3EppEuznKQh2pvaqTDnVmPno8Rq</records>
+  </members>
+</namespace>
+<record>
+  <name>S1</name>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct-template.cpp</shortPath>
+      <sourcePath>using-struct-template.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2QH38GpLjeijJPQLMaiLb2uxyhmF</id>
+  <extraction>regular</extraction>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>S2</name>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct-template.cpp</shortPath>
+      <sourcePath>using-struct-template.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3EppEuznKQh2pvaqTDnVmPno8Rq</id>
+  <extraction>regular</extraction>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
+</record>
+<using>
+  <name>S1</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-struct-template.cpp</shortPath>
+        <sourcePath>using-struct-template.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>PWxK8cc9wX3kPXbdZ3mF7Wn2niG</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>S1</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+          <identifier>LongName</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>2QH38GpLjeijJPQLMaiLb2uxyhmF</shadowDeclarations>
+</using>
+<record>
+  <name>S1</name>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct-template.cpp</shortPath>
+      <sourcePath>using-struct-template.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2QH38GpLjeijJPQLMaiLb2uxyhmF</id>
+  <extraction>regular</extraction>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
+</record>
+<using>
+  <name>S2</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-struct-template.cpp</shortPath>
+        <sourcePath>using-struct-template.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>3uf2HfjvXNxJbrbrwb84BtEWkuWS</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>S2</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+          <identifier>LongName</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+  <shadowDeclarations>3EppEuznKQh2pvaqTDnVmPno8Rq</shadowDeclarations>
+</using>
+<record>
+  <name>S2</name>
+  <loc>
+    <defLoc>
+      <shortPath>using-struct-template.cpp</shortPath>
+      <sourcePath>using-struct-template.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3EppEuznKQh2pvaqTDnVmPno8Rq</id>
+  <extraction>regular</extraction>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
+</record>
+</mrdocs>

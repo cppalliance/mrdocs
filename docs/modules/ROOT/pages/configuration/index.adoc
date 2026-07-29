@@ -90,4 +90,4 @@ A JSON schema for `mrdocs.yml` is published on https://www.schemastore.org/json/
 include::partial$mrdocs-schema-example.yml[]
 ----
 
-The schema is also attached to this site: xref:attachment$mrdocs.schema.json[mrdocs.schema.json].
+The schema is also attached to this site: xref:attachment$schemas/mrdocs.schema.json[mrdocs.schema.json].

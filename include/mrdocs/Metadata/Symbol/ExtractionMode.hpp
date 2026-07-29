@@ -14,7 +14,7 @@
 #define MRDOCS_API_METADATA_SYMBOL_EXTRACTIONMODE_HPP
 
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 

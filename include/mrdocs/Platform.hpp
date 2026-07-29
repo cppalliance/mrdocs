@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -11,7 +12,7 @@
 #ifndef MRDOCS_API_PLATFORM_HPP
 #define MRDOCS_API_PLATFORM_HPP
 
-#include <mrdocs/Support/Assert.hpp>
+#include <mrdocs/Support/Error/Assert.hpp>
 #include <type_traits>
 
 #if __cplusplus < 202002L

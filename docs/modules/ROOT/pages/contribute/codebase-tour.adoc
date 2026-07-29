@@ -18,34 +18,47 @@ This directory contains the public headers for the MrDocs library.
 
 * `include/mrdocs/`—The core library headers
 ** `include/mrdocs/ADT`—Data Structures
-** `include/mrdocs/Dom`—The Document Object Model for Abstract Trees
+** `include/mrdocs/Config`—Configuration classes
 ** `include/mrdocs/Metadata`—`Symbol` nodes and metadata classes
 ** `include/mrdocs/Support`—Various utility classes
 
 ==== `src/`—The main source directory
 
-This directory contains the source code for the MrDocs library and private headers.
+This directory contains the source code for the MrDocs core library and its private headers.
 
-* `src/lib/`—The core library
-** `src/lib/AST/`—The AST traversal code
-** `src/lib/Dom/`—The Document Object Model for Abstract Trees
-** `src/lib/Gen/`—Generators
-** `src/lib/Lib/`—The core library classes
-** `src/lib/Metadata/`—`Symbol` nodes and metadata classes
-** `src/lib/Support/`—Various utility classes
-* `src/test/`—The test directory
-* `src/test_suite/`—The library used for testing
-* `src/tool/`—The main program
+* `src/mrdocs/`—The core library
+** `src/mrdocs/AST/`—The AST traversal code
+** `src/mrdocs/Gen/`—Generators
+** `src/mrdocs/Metadata/`—`Symbol` nodes and metadata classes
+** `src/mrdocs/Support/`—Various utility classes
 
-==== `share/`—Shared resources
+==== `libs/`—Standalone libraries
+
+Self-contained libraries extracted from the core so each can be built and tested on its own.
+
+* `libs/dom/`—The Document Object Model for Abstract Trees
+* `libs/handlebars/`—The Handlebars template engine
+* `libs/polyfill/`—Standard-library polyfills
+* `libs/test_suite/`—The library used for testing
+
+==== `tools/`—Executables
+
+* `tools/mrdocs/`—The main program
+
+==== `tests/`—Tests
+
+* `tests/unit/`—Unit tests
+* `tests/golden/`—Golden-file regression tests and their fixtures
+
+==== `data/`—Shared resources
 
 This directory contains shared resources for the documentation generators and utilities for developers.
 Its subdirectories are installed in the `share` directory of the installation.
 
-* `share/`—Shared resources for the documentation generators
-* `share/cmake/`—CMake modules to generate the documentation
-* `share/gdb/`—GDB pretty printers
-* `share/mrdocs/`—Shared resources for the documentation generators
+* `data/`—Shared resources for the documentation generators
+* `data/cmake/`—CMake modules to generate the documentation
+* `data/gdb/`—GDB pretty printers
+* `data/mrdocs/`—Shared resources for the documentation generators
 
 ==== `docs`—Documentation
 
@@ -56,6 +69,6 @@ The documentation is written in AsciiDoc and can be built using the Antora tool.
 ** `docs/modules/`—The documentation asciidoc files
 ** `docs/extensions`—Antora extensions for the documentation
 
-==== `third-party/`—Helpers for third-party libraries
+==== `utils/bootstrap/`—Helpers for third-party libraries
 
 This directory contains build scripts and configuration files for third-party libraries.

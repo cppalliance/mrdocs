@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>3pckmfiVbXAYjwBs44JCuEmQATU1</records>
+  </members>
+</namespace>
+<record>
+  <name>X</name>
+  <loc>
+    <defLoc>
+      <shortPath>returns-from-brief.cpp</shortPath>
+      <sourcePath>returns-from-brief.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3pckmfiVbXAYjwBs44JCuEmQATU1</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Test class</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>mQ6ihkrPXmxpwexhkMorKUYiVxT 47FUXohTQg9stCzbqmjznFSNBbYx 49ovTo6r2XQyctH922tPdcwhKu3L</functions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>empty</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-brief.cpp</shortPath>
+        <sourcePath>returns-from-brief.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>mQ6ihkrPXmxpwexhkMorKUYiVxT</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Determines whether the range is empty.</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>whether the range is empty.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>bool</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>bool</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>front</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-brief.cpp</shortPath>
+        <sourcePath>returns-from-brief.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>47FUXohTQg9stCzbqmjznFSNBbYx</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Returns the first element of the range.</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>the first element of the range.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
+</function>
+<function>
+  <name>size</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>returns-from-brief.cpp</shortPath>
+        <sourcePath>returns-from-brief.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>49ovTo6r2XQyctH922tPdcwhKu3L</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3pckmfiVbXAYjwBs44JCuEmQATU1</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Get the range size.</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>the range size.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
+</function>
+</mrdocs>

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,16 +14,11 @@
 #define MRDOCS_API_CONFIG_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ConfigSchema.hpp>
 #include <mrdocs/Dom/Object.hpp>
-#include <mrdocs/PublicSettings.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <functional>
-#include <memory>
+#include <mrdocs/Support/Error/Error.hpp>
 #include <string>
 #include <string_view>
-#include <system_error>
-#include <utility>
-#include <vector>
 
 namespace llvm::yaml {
 
@@ -34,193 +30,108 @@ struct MappingTraits;
 
 namespace mrdocs {
 
-class ThreadPool;
+/** Configuration used to generate the Corpus and Docs.
 
-/** Configuration used to generate the Corpus and Docs
+    Holds the public options (in their original data types) read from the
+    command line and the YAML file, plus the DOM view of those options that
+    templates consume. It is a plain value: copy or move it freely, and pass
+    it by reference to the steps that need it.
 
-    This contains all the public settings applied
-    from the command line and the YML file (if any).
-
-    This class stores the original and public config
-    options as they are passed to MrDocs, in their original
-    data types, such as strings and bools.
-
-    This class is an abstract interface whose private
-    concrete implementation typically includes these
-    parsed configuration values in a more convenient form
-    for use by MrDocs.
-
-    Meanwhile, this class is provided publicly to plugins.
-
-    The configuration is always connected to the
-    directory of the mrdocs.yml file from which
-    absolute paths are calculated from relative paths.
-
+    The configuration is connected to the directory of the mrdocs.yml file,
+    from which absolute paths are resolved from relative paths. Reference
+    directories (working directory, mrdocs root) are not stored here; they
+    flow through the workflow as a separate @ref ReferenceDirectories.
 */
 class MRDOCS_DECL
-    Config
+    Config : public ConfigSchema
 {
-protected:
-    /** Construct an empty configuration interface.
-        Implementations populate settings in derived classes.
-    */
-    Config() noexcept;
-
 public:
-    /** Settings values used to generate the Corpus and Docs
+    /** Load the configuration options from a YAML string.
+
+        Populates the options from the YAML and records the DOM view. Paths
+        are resolved later by @ref normalize.
+
+        @param c The configuration to populate.
+        @param configYaml The configuration YAML.
+        @return Nothing on success, otherwise an error.
     */
-    struct Settings : public PublicSettings
-    {
-        /** @brief Loads the public configuration settings from the specified YAML file.
-         *
-         * This function takes a YAML file and a set of reference directories as input.
-         * It parses the YAML file and loads the configuration settings into a Config::Settings object.
-         * The reference directories are used to resolve any relative paths in the configuration settings.
-         *
-         * @param s A reference to a Config::Settings object where the configuration settings will be loaded.
-         * @param configYaml A string view representing the YAML file containing the configuration settings.
-         * @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
-         * @return An Expected object containing a Config::Settings object if the YAML file was successfully parsed and the configuration settings were loaded, or an error otherwise.
-        */
-        static
-        Expected<void>
-        load(
-            Config::Settings &s,
-            std::string_view configYaml,
-            ReferenceDirectories const& dirs);
-
-        /** Loads the public configuration settings from the specified file.
-
-            This function takes a file path and a set of reference directories as input.
-            It reads the file and loads the configuration settings into a Config::Settings object.
-            The reference directories are used to resolve any relative paths in the configuration settings.
-
-            @param s A reference to a Config::Settings object where the configuration settings will be loaded.
-            @param configPath A string view representing the file path of the configuration settings.
-            @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
-
-            @return An Expected object containing void if the file was successfully read and the configuration settings were loaded, or an error otherwise.
-        */
-        static Expected<void>
-        load_file(
-            Config::Settings &s,
-            std::string_view configPath,
-            ReferenceDirectories const& dirs);
-
-        /** @copydoc PublicSettings::normalize
-        */
-        Expected<void>
-        normalize(ReferenceDirectories const& dirs);
-
-        //--------------------------------------------
-        // Preprocessed options
-        //
-        // Options derived from the PublicSettings that
-        // are reused often.
-
-        /** Full path to the config file directory
-
-            The reference directory for most MrDocs
-            options is the directory of the
-            mrdocs.yml file.
-
-            It is used to calculate full paths
-            from relative paths.
-
-            This string will always be native style
-            and have a trailing directory separator.
-
-            @return The full path to the config file directory.
-        */
-        std::string
-        configDir() const;
-
-        /** Full path to the mrdocs root directory
-
-            This is the directory containing the
-            mrdocs executable and the shared files.
-
-            This string will always be native style
-            and have a trailing directory separator.
-        */
-        std::string mrdocsRootDir;
-
-        /** Full path to the current working directory
-
-            This string will always be native style
-            and have a trailing directory separator.
-        */
-        std::string cwdDir = ".";
-
-        /** A string holding the complete configuration YAML.
-        */
-        std::string configYaml;
-
-        /** Provide pointer-like access to settings fields.
-            @return Pointer to this Settings instance.
-        */
-        constexpr Settings const*
-        operator->() const noexcept
-        {
-            return this;
-        }
-
-    private:
-        template<class T>
-        friend struct llvm::yaml::MappingTraits;
-    };
-
-    /** Destructor.
-    */
-    MRDOCS_DECL
-    virtual
-    ~Config() noexcept = 0;
-
-    /** Create a Config from normalized public settings.
-
-        The settings must already be normalized against
-        the reference directories (call
-        @ref Settings::normalize first).
-
-        @param settings   Normalized public settings.
-        @param dirs       Reference directories used to resolve relative paths.
-        @param threadPool Thread pool that the resulting Config will own a reference to.
-        @return A shared, immutable Config on success, otherwise an Error.
-    */
-    MRDOCS_DECL
     static
-    Expected<std::shared_ptr<Config const>>
+    Expected<void>
     load(
-        Settings const& settings,
-        ReferenceDirectories const& dirs,
-        ThreadPool& threadPool);
+        Config& c,
+        std::string_view configYaml);
 
-    /** Return a pool of threads for executing work.
-    */
-    MRDOCS_DECL
-    virtual
-    ThreadPool&
-    threadPool() const noexcept = 0;
+    /** Load the configuration options from a YAML file.
 
-    /** Return the settings used to generate the Corpus and Docs.
+        @param c The configuration to populate.
+        @param configPath The path to the configuration file.
+        @return Nothing on success, otherwise an error.
     */
-    virtual Settings const& settings() const noexcept = 0;
+    static
+    Expected<void>
+    load_file(
+        Config& c,
+        std::string_view configPath);
+
+    /** Normalize the options against the reference directories.
+
+        Applies defaults, validates values, and resolves relative paths.
+        Call this after any command-line overrides are applied.
+
+        @param dirs The reference directories used to resolve relative paths.
+        @return Nothing on success, otherwise an error.
+    */
+    Expected<void>
+    normalize(ReferenceDirectories const& dirs);
+
+    /** Full path to the config file directory.
+
+        The reference directory for most MrDocs options is the directory of
+        the mrdocs.yml file; it is used to resolve relative paths. The string
+        is native style with a trailing directory separator.
+
+        @return The full path to the config file directory.
+    */
+    std::string
+    configDir() const;
 
     /** Return a DOM object representing the configuration keys.
 
-        The object is invalidated when the configuration
-        is moved or destroyed.
+        The object is valid for the lifetime of the configuration.
 
+        @return The configuration as a DOM object.
     */
-    virtual dom::Object const& object() const = 0;
-
-    /// @copydoc settings()
-    constexpr Settings const*
-    operator->() const noexcept
+    dom::Object const&
+    object() const
     {
-        return &settings();
+        return configObj_;
     }
+
+private:
+    dom::Object configObj_;
+
+    template<class T>
+    friend struct llvm::yaml::MappingTraits;
+
+    /** Overlay the typed option values onto the DOM view.
+    */
+    void
+    updateConfigDom();
 };
+
+//------------------------------------------------
+
+/** Parse a YAML document into a DOM object.
+
+    Unknown keys are preserved and scalars are converted to the matching DOM
+    type (integer, then boolean, then null, otherwise string). The result is
+    empty when the YAML is empty or its root is not a mapping.
+
+    @param yaml The YAML document to parse.
+    @return The parsed DOM object.
+*/
+dom::Object
+toDomObject(std::string_view yaml);
 
 } // mrdocs
 

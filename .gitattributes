@@ -1,3 +1,2 @@
-test-files/**/*.xml binary
-test-files/golden-tests/** text eol=lf
+tests/golden/fixtures/** text eol=lf
 **.sh text eol=lf

@@ -43,10 +43,10 @@ jobs:
         run: |
           set -eux
           pip install --quiet coverage
-          python3 -m coverage run -m unittest discover -s util/bootstrap/tests/
-          python3 -m coverage report
-          python3 -m coverage report --fail-under=84
-          python3 -m coverage xml -o bootstrap-coverage.xml
+          python3 -m coverage run --rcfile=utils/bootstrap/pyproject.toml -m unittest discover -s utils/bootstrap/tests/
+          python3 -m coverage report --rcfile=utils/bootstrap/pyproject.toml
+          python3 -m coverage report --rcfile=utils/bootstrap/pyproject.toml --fail-under=84
+          python3 -m coverage xml --rcfile=utils/bootstrap/pyproject.toml -o bootstrap-coverage.xml
 
       - name: Upload Bootstrap Coverage to Codecov
         uses: codecov/codecov-action@v7
@@ -58,18 +58,18 @@ jobs:
           verbose: true
 
       - name: Danger.js Tests
-        working-directory: util/danger
+        working-directory: utils/danger
         run: |
           npm ci --ignore-scripts
           npx vitest run
 
       - name: Check YAML schema
         run: |
-          python3 ./util/generate-yaml-schema.py --check
-          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
+          python3 ./utils/codegen/generate-yaml-schema.py --check
+          npx -y -p ajv-cli -- ajv compile -s docs/modules/ROOT/attachments/schemas/mrdocs.schema.json
 
       - name: Check bootstrap options partial is up to date
-        run: python3 ./util/docs/generate_bootstrap_options.py --check
+        run: python3 ./utils/docs/generate_bootstrap_options.py --check
 
       # When the Coverage matrix entry was skipped because the develop cache is
       # warm, fetch develop's LCOV report and re-upload it tagged with the PR's

@@ -13,12 +13,12 @@
 #define MRDOCS_API_METADATA_NAME_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/Name/SpecializationName.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Support/MapReflectedType.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 
 namespace mrdocs {
 
