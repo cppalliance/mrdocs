@@ -1,0 +1,5 @@
+include-macros:
+  - 'MY_LIB_*'
+exclude-macros:
+  - 'MY_LIB_DETAIL_*'
+  - '*_IMPL'

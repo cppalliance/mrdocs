@@ -1,0 +1,2 @@
+extract-all-macros: true
+warn-if-undocumented: false

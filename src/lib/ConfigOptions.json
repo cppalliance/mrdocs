@@ -223,6 +223,27 @@
         "default": []
       },
       {
+        "name": "extract-all-macros",
+        "brief": "Extract all macros",
+        "details": "Like `extract-all`, but for preprocessor macros. When `false` (the default), MrDocs extracts only macros that carry a documentation comment, on the assumption that an undocumented macro is an implementation detail while a documented one is public API meant to be shown. When `true`, every macro that passes the macro filters is extracted whether documented or not. This is independent of `extract-all`, which does not apply to macros.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "include-macros",
+        "brief": "Macro patterns to include",
+        "details": "If any patterns are defined here, only macros whose name matches one of them (or one of `include-symbols`) are extracted. When empty (the default), every macro is a candidate, so with `extract-all-macros` off the documented macros are shown and can then be narrowed with these patterns. Macro names are unqualified, so namespace-scoped `include-symbols` patterns never match a macro; use these patterns to scope macros by name (e.g. `MY_LIB_*`). A macro also listed in `include-symbols` is still included. See `include-symbols` for the pattern syntax.",
+        "type": "list<symbol-glob>",
+        "default": []
+      },
+      {
+        "name": "exclude-macros",
+        "brief": "Macro patterns to exclude",
+        "details": "A macro whose name matches one of these patterns, or one of `exclude-symbols`, is not extracted even if it would otherwise be included. See `include-symbols` for the pattern syntax.",
+        "type": "list<symbol-glob>",
+        "default": []
+      },
+      {
         "name": "auto-function-objects",
         "brief": "Automatically detect algorithm function objects",
         "details": "When true, Mr.Docs automatically detects algorithm function objects (informally known as niebloids): variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members); it may be placed on the variable or on the function-object record. When a variable is treated as an algorithm function object, its documentation comes from the record's operator() overloads, falling back to the variable's own doc comment when operator() is undocumented; the record's own doc comment is not used.",

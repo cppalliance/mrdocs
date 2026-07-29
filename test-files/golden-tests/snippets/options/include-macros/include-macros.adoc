@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#MY_LIB_VERSION]
+== MY&lowbar;LIB&lowbar;VERSION
+
+The public version macro&period;
+
+=== Synopsis
+
+Declared in `&lt;include&hyphen;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+#define MY&lowbar;LIB&lowbar;VERSION
+
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

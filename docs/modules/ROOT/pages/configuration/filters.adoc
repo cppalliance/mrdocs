@@ -226,6 +226,84 @@ include::example$snippets/options/extract-private/extract-private.yml[tags=!test
 include::example$snippets/options/extract-private/extract-private.adoc[tags=!footer]
 ========
 
+== Macros
+
+MrDocs also documents macros.
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/extract-all-macros/extract-all-macros.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/extract-all-macros/extract-all-macros.adoc[tags=!footer]
+========
+
+By default, only documented macros are included in the documentation. Here the public `MY_LIB_VERSION_STRING` is kept, while the intermediary `MY_LIB_DETAIL_STRINGIZE` helper, which carries an ordinary comment rather than a documentation comment, is dropped. This is because the xref:configuration/reference.adoc#extract-all-macros_option[`extract-all-macros`] option defaults to `false`. Set it to `true` to extract every macro that passes the filters, whether it is documented or not.
+
+Macros follow different rules from other symbols, so they get their own name filters, which otherwise work like their symbol counterparts: xref:configuration/reference.adoc#include-macros_option[`include-macros`] and xref:configuration/reference.adoc#exclude-macros_option[`exclude-macros`]. `include-macros` narrows the extracted macros by name:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/include-macros/include-macros.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/include-macros/include-macros.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/include-macros/include-macros.adoc[tags=!footer]
+========
+
+`MY_LIB_VERSION` is kept; `OTHER_HELPER` falls outside the `MY_LIB_*` allowlist.
+
+=== Excluding macros
+
+`exclude-macros` drops macros by name, which suits the helpers a library defines only as an implementation detail:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/exclude-macros/exclude-macros.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/exclude-macros/exclude-macros.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/exclude-macros/exclude-macros.adoc[tags=!footer]
+========
+
+`MY_LIB_ASSERT` is kept; the `MY_LIB_DETAIL_*` and `+*_IMPL+` helpers are dropped.
+
+NOTE: Macros have only include and exclude filters, with no xref:configuration/reference.adoc#implementation-defined_option[`implementation-defined`] or xref:configuration/reference.adoc#see-below_option[`see-below`] equivalents. Those modes keep a symbol in the corpus while hiding its scope or eliding its synopsis body, and neither fits a macro: a macro has no members to hide, and since the preprocessor replaces macros before the other symbols are extracted, a macro never appears in another symbol's synopsis. A macro is therefore only ever included or excluded.
+
+=== Feature testing macros
+
+A feature-test or configuration macro is often not defined in the build MrDocs sees, so the preprocessor never reports it. MrDocs always defines `+__MRDOCS__+`, so guard a definition with it to document the macro anyway:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/macros-guard/macros-guard.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/macros-guard/macros-guard.adoc[tags=!footer]
+========
+
 == Glob syntax
 
 Symbol and file patterns share the same wildcards (the file form uses `/` as the path delimiter; the symbol form uses `::`):

@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#MY_LIB_VERSION_STRING]
+== MY&lowbar;LIB&lowbar;VERSION&lowbar;STRING
+
+The library version, as a string literal&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;all&hyphen;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+#define MY&lowbar;LIB&lowbar;VERSION&lowbar;STRING
+
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

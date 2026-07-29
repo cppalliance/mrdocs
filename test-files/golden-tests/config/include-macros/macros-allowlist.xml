@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <macros>6oML46RphGNbT5N6xF9kXpXn57i n5QAufKQ7hqBwDXk7Ecp6GzZHLE 2MoUpS3Z8krDThUcEryJorBPvsJp</macros>
+  </members>
+</namespace>
+<macro>
+  <name>MYLIB_VERSION</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-allowlist.cpp</shortPath>
+      <sourcePath>macros-allowlist.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>6oML46RphGNbT5N6xF9kXpXn57i</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public API version.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
+<macro>
+  <name>MYLIB_ASSERT</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-allowlist.cpp</shortPath>
+      <sourcePath>macros-allowlist.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>n5QAufKQ7hqBwDXk7Ecp6GzZHLE</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public assert.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+  </parameters>
+</macro>
+<macro>
+  <name>MYLIB_DETAIL_INTERNAL</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-allowlist.cpp</shortPath>
+      <sourcePath>macros-allowlist.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2MoUpS3Z8krDThUcEryJorBPvsJp</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Implementation detail, still under MYLIB_, so still allowed.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
+</mrdocs>

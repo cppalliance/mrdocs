@@ -170,9 +170,10 @@ populateMacros()
         sym->Extraction = mode;
         populate(*sym, MI);
 
-        // When `extract-all` is off, require a doc comment.
-        // Undocumented macros are dropped entirely.
-        MRDOCS_CHECK_OR_CONTINUE(config_->extractAll || sym->doc);
+        // When `extract-all-macros` is off (the default), require a doc
+        // comment: an undocumented macro is treated as an implementation
+        // detail and dropped, while a documented one is public API.
+        MRDOCS_CHECK_OR_CONTINUE(config_->extractAllMacros || sym->doc);
 
         sym->Loc.DefLoc = Location(
             file->full_path,
@@ -237,19 +238,26 @@ macroNameMode(std::string_view name) const
     {
         return checkSymbolFiltersImpl<Strict>(p, name);
     };
-    if (matches(config_->excludeSymbols))
+    // Macros only need include/exclude filtering. The
+    // implementation-defined and see-below modes don't apply: a macro
+    // has no scope to hide and no synopsis body to abbreviate, so
+    // "implementation-defined" is just exclusion and "see-below" has
+    // nothing to elide.
+    //
+    // Exclusion is the union of the macro-specific and general exclude
+    // lists: a name excluded anywhere is excluded here too.
+    if (matches(config_->excludeMacros) || matches(config_->excludeSymbols))
     {
         return ExtractionMode::Dependency;
     }
-    if (matches(config_->implementationDefined))
-    {
-        return ExtractionMode::ImplementationDefined;
-    }
-    if (matches(config_->seeBelow))
-    {
-        return ExtractionMode::SeeBelow;
-    }
-    if (!config_->includeSymbols.empty() &&
+    // Inclusion: the macro-specific list is the restrictor. Empty means
+    // "every macro is a candidate" (so documented macros surface with no
+    // configuration). When non-empty, a macro is kept if it matches that
+    // list or is explicitly named in the general include-symbols list.
+    // Namespace-scoped include-symbols never restricts macros, since
+    // macro names are unqualified and can't match a scoped pattern.
+    if (!config_->includeMacros.empty() &&
+        !matches(config_->includeMacros) &&
         !matches(config_->includeSymbols))
     {
         return ExtractionMode::Dependency;
