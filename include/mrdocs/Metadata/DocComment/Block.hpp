@@ -32,7 +32,7 @@
 #include <mrdocs/Metadata/DocComment/Block/TableBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ThematicBreakBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ThrowsBlock.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 
 /** Doc-comment enums and helpers that describe admonition kinds. */
 namespace mrdocs::doc {

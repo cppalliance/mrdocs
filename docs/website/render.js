@@ -75,7 +75,7 @@ if (!fs.existsSync(mrdocsExecutable)) {
 // Override with SNIPPETS_PATH to point at a different snippet root.
 const absSnippetsDir = process.env.SNIPPETS_PATH
     ? path.resolve(process.env.SNIPPETS_PATH)
-    : path.resolve(__dirname, '..', '..', 'test-files', 'golden-tests', 'snippets')
+    : path.resolve(__dirname, '..', '..', 'tests', 'golden', 'fixtures', 'snippets')
 
 // The mrdocs HTML generator emits synopsis code blocks as
 // <pre><code class="source-code cpp">...</code></pre> and leaves them

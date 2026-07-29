@@ -1,0 +1,58 @@
+//
+// Licensed under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+//
+// Official repository: https://github.com/cppalliance/mrdocs
+//
+
+#include "Debug.hpp"
+#include "Radix.hpp"
+#include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Metadata/Symbol/Record.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
+#include <format>
+#include <memory>
+
+
+namespace mrdocs {
+
+void
+debugEnableHeapChecking()
+{
+#if defined(_MSC_VER) && ! defined(NDEBUG)
+    int flags = _CrtSetDbgFlag(
+        _CRTDBG_REPORT_FLAG);
+    flags |= _CRTDBG_LEAK_CHECK_DF;
+    _CrtSetDbgFlag(flags);
+#endif
+}
+
+} // mrdocs
+
+
+std::string
+std::formatter<mrdocs::Symbol>::toString(mrdocs::Symbol const &i) {
+  std::string str = std::format("Info: kind = {}", i.Kind);
+  if (!i.Name.empty()) {
+    str += std::format(", name = '{}'", i.Name);
+  }
+  str += std::format(", ID = {}", i.id);
+  mrdocs::SymbolID curParent = i.Parent;
+  std::string namespaces;
+  while (curParent) {
+    namespaces += std::format("{}", curParent);
+    curParent = i.Parent;
+    if (curParent) {
+      namespaces += "::";
+    }
+  }
+  if (!namespaces.empty()) {
+    str += std::format(", namespace = {}", namespaces);
+  }
+  return str;
+}

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>py9LKA7N6XHWx31nJCjhre3iKsW</namespaces>
+    <macros>LBrdDbU1mAnHHHb6uYccUsa4UVE</macros>
+  </members>
+</namespace>
+<namespace>
+  <name>widget</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>macros-with-symbols.cpp</shortPath>
+        <sourcePath>macros-with-symbols.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>py9LKA7N6XHWx31nJCjhre3iKsW</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3iqodPZa5WPhQmTTuaiSyMjSpne8</records>
+    <functions>hsVk6NuBm4h7myX7qyMYpi6VG4t</functions>
+  </members>
+</namespace>
+<record>
+  <name>Config</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-with-symbols.cpp</shortPath>
+      <sourcePath>macros-with-symbols.cpp</sourcePath>
+      <lineNumber>17</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3iqodPZa5WPhQmTTuaiSyMjSpne8</id>
+  <extraction>regular</extraction>
+  <parent>py9LKA7N6XHWx31nJCjhre3iKsW</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular struct.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+</record>
+<function>
+  <name>configure</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>macros-with-symbols.cpp</shortPath>
+        <sourcePath>macros-with-symbols.cpp</sourcePath>
+        <lineNumber>14</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>hsVk6NuBm4h7myX7qyMYpi6VG4t</id>
+  <extraction>regular</extraction>
+  <parent>py9LKA7N6XHWx31nJCjhre3iKsW</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular function.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<macro>
+  <name>WIDGET_ASSERT</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-with-symbols.cpp</shortPath>
+      <sourcePath>macros-with-symbols.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>LBrdDbU1mAnHHHb6uYccUsa4UVE</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documented function-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>cond</string>
+  </parameters>
+</macro>
+</mrdocs>

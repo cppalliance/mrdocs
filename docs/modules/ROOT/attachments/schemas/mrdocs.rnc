@@ -1,0 +1,458 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2023 Klemens Morgenstern (klemens.morgenstern@gmx.net)
+# Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+# Copyright (c) 2024 Fernando Pelliccioni (fpelliccioni@gmail.com)
+# Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+# RELAX NG (compact) schema for the XML that the `xml` generator emits. It
+# lives here, under the Antora attachments, so it is published on the docs site
+# alongside the config and DOM schemas at a stable, project-domain URL:
+# `https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc`.
+# Every generated XML document points its `xsi:noNamespaceSchemaLocation` at
+# that URL (see XMLWriter.cpp). Changing this file's path changes that public
+# URL and requires regenerating the golden fixtures.
+#
+# https://relaxng.org/compact-tutorial-20030326.html
+#
+# convert to mrdocs.rng with utils/codegen/trang.jar (https://relaxng.org/jclark/trang.html)
+# when commiting because xmllint doesn't understand the compact format
+#
+
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+grammar
+{
+    start = Mrdocs | Tagfile
+
+    Mrdocs =
+        element mrdocs
+        {
+            attribute xsi:noNamespaceSchemaLocation { xsd:string }?,
+            AnySymbol*
+        }
+
+    #---------------------------------------------
+    # Common leaf types
+    #---------------------------------------------
+
+    Id = xsd:string                 # Base64-encoded SymbolID
+    IdList = list { xsd:string* }   # whitespace-separated SymbolIDs (rule 6a)
+    Bool = empty                    # presence = true; absent = false (rule 3)
+    Kind = element kind { xsd:string }
+
+    # A ConstantExprInfo: its written source form plus, when known, the
+    # evaluated integer value. An expression with no written form is omitted.
+    ConstantExpr = ( element written { xsd:string } | element value { xsd:integer } )*
+    Strings = element string { xsd:string }*   # whitespace-capable scalar list (rule 6b)
+
+    ExtractionMode = "regular" | "see-below" | "implementation-defined" | "dependency"
+    FunctionClass = "normal" | "constructor" | "conversion" | "destructor"
+    RecordKeyKind = "struct" | "class" | "union"
+    UsingClass = "normal" | "typename" | "enum"
+    AccessSpecifier = "public" | "private" | "protected"
+    AdmonitionKind = "note" | "tip" | "important" | "warning" | "caution"
+    ListKind = "ordered" | "unordered" | "task"
+    ParamDirection = "in" | "out" | "inout"
+
+    #---------------------------------------------
+    # Source location
+    #---------------------------------------------
+
+    LocationFields =
+        ( element shortPath { xsd:string }
+        | element sourcePath { xsd:string }
+        | element lineNumber { xsd:integer }
+        | element columnNumber { xsd:integer }
+        | element documented { Bool } )
+
+    Location = element location { LocationFields* }
+
+    # SourceInfo: the `loc` field of a symbol.
+    SourceInfo =
+        element loc
+        {
+            ( element loc { Location* }
+            | element defLoc { LocationFields* } )*
+        }
+
+    #---------------------------------------------
+    # Name (used inside types and some symbols)
+    #---------------------------------------------
+
+    # A name field wraps the concrete name kind it holds (rule 8).
+    Name = element name { NameKind }
+
+    # A concrete name: an identifier, or a specialization carrying its template
+    # arguments. A prefix (the qualifier before `::`) wraps another name kind.
+    NameKind =
+        ( element identifier
+            { ( Kind | element id { Id } | element identifier { xsd:string }
+              | element prefix { NameKind } )* }
+        | element specialization
+            { ( Kind | element id { Id } | element identifier { xsd:string }
+              | element prefix { NameKind } | element templateArgs { AnyTArg* } )* } )
+
+    #---------------------------------------------
+    # Types (variant)
+    #---------------------------------------------
+
+    TypeField =
+        ( Kind
+        | element isPackExpansion { Bool }
+        | element isConst { Bool }
+        | element isVolatile { Bool }
+        | element constraints { Strings } )
+
+    # A type field wraps its concrete type element (rules 8, 9).
+    AnyType =
+        ( element named { ( TypeField | Name | element fundamentalType { xsd:string } )* }
+        | element pointer { ( TypeField | element pointeeType { AnyType } )* }
+        | element lValueReference { ( TypeField | element pointeeType { AnyType } )* }
+        | element rValueReference { ( TypeField | element pointeeType { AnyType } )* }
+        | element memberPointer { ( TypeField | element parentType { AnyType } | element pointeeType { AnyType } )* }
+        | element array { ( TypeField | element elementType { AnyType } | element bounds { ConstantExpr } )* }
+        | element decltype { ( TypeField | element operand { xsd:string } )* }
+        | element auto { ( TypeField | element keyword { xsd:string } | element constraint { NameKind* | text } )* }
+        | element function { ( TypeField | element returnType { AnyType } | element paramTypes { AnyType* } | element isVariadic { Bool } )* } )
+
+    #---------------------------------------------
+    # Template parameters and arguments (variants)
+    #---------------------------------------------
+
+    AnyTParam =
+        ( element type
+            { ( Kind | element name { xsd:string } | element isParameterPack { Bool }
+              | element keyKind { xsd:string } | element default { AnyTArg } | element constraint { NameKind* | text } )* }
+        | element constant
+            { ( Kind | element name { xsd:string } | element isParameterPack { Bool }
+              | element type { AnyType } | element default { AnyTArg } )* }
+        | element template
+            { ( Kind | element name { xsd:string } | element isParameterPack { Bool }
+              | element params { AnyTParam* } )* } )
+
+    AnyTArg =
+        ( element type { ( Kind | element isPackExpansion { Bool } | element type { AnyType } )* }
+        | element constant { ( Kind | element isPackExpansion { Bool } | element value { xsd:string } )* } )
+
+    Template =
+        element template
+        {
+            ( element params { AnyTParam* }
+            | element args { AnyTArg* }
+            | element primary { Id }
+            | element requires { xsd:string } )*
+        }
+
+    #---------------------------------------------
+    # Doc comment
+    #---------------------------------------------
+
+    Children = element children { AnyInline* }
+
+    AnyInline =
+        ( element text { ( Kind | element literal { xsd:string } )* }
+        | element code { ( Kind | Children | element literal { xsd:string } )* }
+        | element strong { ( Kind | Children )* }
+        | element emph { ( Kind | Children )* }
+        | element strikethrough { ( Kind | Children )* }
+        | element subscript { ( Kind | Children )* }
+        | element superscript { ( Kind | Children )* }
+        | element highlight { ( Kind | Children )* }
+        | element math { ( Kind | element literal { xsd:string } )* }
+        | element image { ( Kind | Children | element src { xsd:string } | element alt { xsd:string } )* }
+        | element footnoteReference { ( Kind | element label { xsd:string } )* }
+        | element link { ( Kind | Children | element href { xsd:string } )* }
+        | element reference { ( Kind | element literal { xsd:string } | element id { Id } )* } )
+
+    Reference = element reference { ( Kind | element literal { xsd:string } | element id { Id } )* }
+
+    AnyBlock =
+        ( element paragraph { ( Kind | Children )* }
+        | element admonition { ( Kind | element blocks { AnyBlock* } | element admonish { AdmonitionKind } )* }
+        | element list { ( Kind | element items { ( element listItem { element blocks { AnyBlock* }* } | TableRow )* } | element listKind { ListKind } )* }
+        | element heading { ( Kind | Children | element level { xsd:integer } )* }
+        | element code { ( Kind | Children | element literal { xsd:string } )* }
+        | element math { ( Kind | element literal { xsd:string } )* }
+        | element footnoteDefinition { ( Kind | element blocks { AnyBlock* } | element label { xsd:string } )* }
+        | element table { ( Kind | element items { TableRow* } )* } )
+
+    TableRow =
+        element tableRow
+        {
+            ( element isHeader { Bool } | element cells { element tableCell { Children* }* } )*
+        }
+
+    Doc =
+        element doc
+        {
+            ( element brief { ( Kind | Children | element copiedFrom { Strings } )* }
+            | element document { AnyBlock* }
+            | element related { Reference* }
+            | element relates { Reference* }
+            | element returns { element returns { ( Kind | Children )* }* }
+            | element params { element param { ( Kind | Children | element name { xsd:string } | element direction { ParamDirection } )* }* }
+            | element tparams { element tParam { ( Kind | Children | element name { xsd:string } )* }* }
+            | element exceptions { element throws { ( Kind | Children | element exception { ( Kind | element literal { xsd:string } | element id { Id } )* } )* }* }
+            | element sees { element see { ( Kind | Children )* }* }
+            | element preconditions { element precondition { ( Kind | Children )* }* }
+            | element postconditions { element postcondition { ( Kind | Children )* }* }
+            | element footnotes { element footnoteDefinition { ( Kind | element blocks { AnyBlock* } | element label { xsd:string } )* }* } )*
+        }
+
+    #---------------------------------------------
+    # Attributes (variant)
+    #---------------------------------------------
+
+    AttrField =
+        ( Kind | element name { xsd:string } | element balancedTokens { Strings } )
+
+    Attributes =
+        element attributes
+        {
+            ( element other { AttrField* }
+            | element noreturn { AttrField* }
+            | element maybeUnused { AttrField* }
+            | element deprecated { ( AttrField | element message { xsd:string } )* }
+            | element nodiscard { ( AttrField | element reason { xsd:string } )* } )*
+        }
+
+    #---------------------------------------------
+    # Symbols
+    #---------------------------------------------
+
+    # Fields common to every symbol.
+    SymbolField =
+        ( element name { xsd:string }
+        | SourceInfo
+        | Kind
+        | element id { Id }
+        | element access { AccessSpecifier }
+        | element extraction { ExtractionMode }
+        | element isCopyFromInherited { Bool }
+        | element parent { Id }
+        | Doc
+        | Attributes )
+
+    # A tranche of member id lists.
+    Tranche =
+        ( element namespaces { IdList }
+        | element namespaceAliases { IdList }
+        | element typedefs { IdList }
+        | element records { IdList }
+        | element enums { IdList }
+        | element functions { IdList }
+        | element staticFunctions { IdList }
+        | element variables { IdList }
+        | element staticVariables { IdList }
+        | element concepts { IdList }
+        | element guides { IdList }
+        | element usings { IdList }
+        | element macros { IdList } )
+
+    Namespace =
+        element namespace
+        {
+            ( SymbolField
+            | element isInline { Bool }
+            | element isAnonymous { Bool }
+            | element members { Tranche* }
+            | element usingDirectives { NameKind* } )*
+        }
+
+    Record =
+        element record
+        {
+            ( SymbolField
+            | element keyKind { RecordKeyKind }
+            | Template
+            | element isTypeDef { Bool }
+            | element isFinal { Bool }
+            | element isFinalDestructor { Bool }
+            | element bases { element baseInfo { ( element type { AnyType } | element access { AccessSpecifier } | element isVirtual { Bool } )* }* }
+            | element interface
+                { ( element public { Tranche* } | element protected { Tranche* } | element private { Tranche* } )* }
+            | element derived { IdList }
+            | element friends { element friendInfo { ( element id { Id } | element type { AnyType } )* }* }
+            | element isListedOnPrimary { Bool }
+            | element specializations { IdList }
+            | element deductionGuides { IdList } )*
+        }
+
+    Function =
+        element function
+        {
+            ( SymbolField
+            | element returnType { AnyType }
+            | element params { element param { ( element name { xsd:string } | element type { AnyType } | element default { xsd:string } )* }* }
+            | element paramTypes { AnyType* }
+            | Template
+            | element funcClass { FunctionClass }
+            | element overloadedOperator { xsd:string }
+            | element refQualifier { xsd:string }
+            | element requires { xsd:string }
+            | element isVariadic { Bool }
+            | element isDefaulted { Bool }
+            | element isExplicitlyDefaulted { Bool }
+            | element isDeleted { Bool }
+            | element isDeletedAsWritten { Bool }
+            | element hasOverrideAttr { Bool }
+            | element hasTrailingReturn { Bool }
+            | element isExplicitObjectMemberFunction { Bool }
+            | element constexpr { xsd:string }
+            | element storageClass { xsd:string }
+            | element isRecordMethod { Bool }
+            | element isVirtual { Bool }
+            | element isVirtualAsWritten { Bool }
+            | element isPure { Bool }
+            | element isConst { Bool }
+            | element isVolatile { Bool }
+            | element isFinal { Bool }
+            | element isPackExpansion { Bool }
+            | element functionObjectImpl { Id }
+            | element isListedOnPrimary { Bool }
+            | element specializations { IdList } )*
+        }
+
+    Guide =
+        element guide
+        {
+            ( SymbolField
+            | element deduced { AnyType }
+            | Template
+            | element params { element param { ( element name { xsd:string } | element type { AnyType } | element default { xsd:string } )* }* } )*
+        }
+
+    Enum =
+        element enum
+        {
+            ( SymbolField
+            | element scoped { Bool }
+            | element underlyingType { AnyType }
+            | element constants { IdList } )*
+        }
+
+    EnumConstant =
+        element enumConstant
+        {
+            ( SymbolField | element initializer { ConstantExpr } )*
+        }
+
+    Typedef =
+        element typedef
+        {
+            ( SymbolField
+            | element type { AnyType }
+            | element isUsing { Bool }
+            | Template )*
+        }
+
+    Variable =
+        element variable
+        {
+            ( SymbolField
+            | element type { AnyType }
+            | Template
+            | element initializer { xsd:string }
+            | element storageClass { xsd:string }
+            | element isInline { Bool }
+            | element isConstexpr { Bool }
+            | element isConstinit { Bool }
+            | element isThreadLocal { Bool }
+            | element isRecordField { Bool }
+            | element isMutable { Bool }
+            | element isVariant { Bool }
+            | element isBitfield { Bool }
+            | element bitfieldWidth { ConstantExpr } )*
+        }
+
+    NamespaceAlias =
+        element namespaceAlias
+        {
+            ( SymbolField
+            | element aliasedSymbol
+                { ( Kind | element id { Id } | element identifier { xsd:string } | element prefix { NameKind } )* } )*
+        }
+
+    Using =
+        element using
+        {
+            ( SymbolField
+            | element class { UsingClass }
+            | element introducedName { NameKind* }
+            | element shadowDeclarations { IdList } )*
+        }
+
+    Concept =
+        element concept
+        {
+            ( SymbolField | Template | element constraint { NameKind* | text } )*
+        }
+
+    Macro =
+        element macro
+        {
+            ( SymbolField
+            | element isFunctionLike { Bool }
+            | element parameters { Strings }
+            | element isVariadic { Bool } )*
+        }
+
+    Overloads =
+        element overloads
+        {
+            ( SymbolField
+            | element funcClass { FunctionClass }
+            | element overloadedOperator { xsd:string }
+            | element members { IdList }
+            | element returnType { AnyType } )*
+        }
+
+    AnySymbol =
+        ( Namespace | Record | Function | Typedef | Enum | EnumConstant
+        | Variable | Guide | NamespaceAlias | Using | Concept | Macro | Overloads )
+
+    #---------------------------------------------
+    # Tagfile
+    #---------------------------------------------
+
+    Tagfile =
+        element tagfile
+        {
+            TagCompound+
+        }
+
+    TagCompound =
+        element compound
+        {
+            attribute kind { "namespace" | "class" },
+            element name { xsd:string },
+            element filename { xsd:string },
+            (TagClass | TagMember)*
+        }
+
+    TagClass =
+        element class
+        {
+            attribute kind { "class" },
+            xsd:string
+        }
+
+    TagMember =
+        element member
+        {
+            attribute kind { "function" },
+            element type { xsd:string },
+            element name { xsd:string },
+            element anchorfile { xsd:string },
+            element anchor { xsd:string },
+            element arglist { xsd:string }
+        }
+}

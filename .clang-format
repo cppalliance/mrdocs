@@ -4,6 +4,11 @@
 # Distributed under the Boost Software License, Version 1.0.
 # See accompanying file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt
 #
+# clang-format searches upward from each formatted file for the nearest
+# .clang-format, so this must live at the repository root (the common ancestor
+# of include/, src/, libs/, tools/, tests/) to apply project-wide. Moving it
+# into a subdirectory would only style that subtree.
+#
 
 # ---------------------------------------------------------------------------
 # MrDocs Formatting Guidelines (Clang-Format Reference)
@@ -198,12 +203,10 @@ IncludeBlocks: Merge
 IncludeCategories:
   - Regex: '^<mrdocs/Platform\.hpp>$'            # always first
     Priority: 0
-  - Regex: '^".*"'                               # quoted includes come next
+  - Regex: '^".*"'                               # quoted (private, relative) come first
     Priority: 1
-  - Regex: '^<lib/.*>'                           # internal project headers
+  - Regex: '^<mrdocs/.*>'                        # public project headers
     Priority: 2
-  - Regex: '^<mrdocs/.*>'                        # internal project headers
-    Priority: 3
   - Regex: '^<test_suite/.*>'                    # test suite headers
     Priority: 4
   - Regex: '^<clang/.*>'                         # clang headers

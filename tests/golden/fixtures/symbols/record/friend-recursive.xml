@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>25nS9SA2iJ6bvopD2mHUzyPCiMBJ</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>repro</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>friend-recursive.cpp</shortPath>
+        <sourcePath>friend-recursive.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>25nS9SA2iJ6bvopD2mHUzyPCiMBJ</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>HJ7wQBUhskcVu1mCzKYM7zr1sgL</records>
+  </members>
+</namespace>
+<record>
+  <name>FriendLoop</name>
+  <loc>
+    <defLoc>
+      <shortPath>friend-recursive.cpp</shortPath>
+      <sourcePath>friend-recursive.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>HJ7wQBUhskcVu1mCzKYM7zr1sgL</id>
+  <extraction>regular</extraction>
+  <parent>25nS9SA2iJ6bvopD2mHUzyPCiMBJ</parent>
+  <keyKind>struct</keyKind>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+  </template>
+  <friends>
+    <friendInfo>
+      <id>HJ7wQBUhskcVu1mCzKYM7zr1sgL</id>
+    </friendInfo>
+  </friends>
+</record>
+</mrdocs>

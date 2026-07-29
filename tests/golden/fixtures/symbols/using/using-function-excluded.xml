@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2xwtzebgDk4MeocbdM1v5JoV4Xvj</namespaces>
+    <usings>Jqq7dYCKs8tnjqSAy6xfv6XdZPj</usings>
+  </members>
+</namespace>
+<using>
+  <name>f</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-function-excluded.cpp</shortPath>
+        <sourcePath>using-function-excluded.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>Jqq7dYCKs8tnjqSAy6xfv6XdZPj</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>No shadow should be listed because A::f is excluded.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Only included symbols are listed in the shadow list.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Using excluded function f</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>f</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2xwtzebgDk4MeocbdM1v5JoV4Xvj</id>
+          <identifier>A</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+</using>
+</mrdocs>

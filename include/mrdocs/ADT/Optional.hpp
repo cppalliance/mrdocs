@@ -15,7 +15,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Nullable.hpp>
-#include <mrdocs/Support/Concepts.hpp>
+#include <mrdocs/Support/TypeTraits/Concepts.hpp>
 #include <compare>
 #include <optional>
 #include <type_traits>

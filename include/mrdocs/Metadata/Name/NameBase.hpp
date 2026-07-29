@@ -15,7 +15,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Name/NameKind.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 

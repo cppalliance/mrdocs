@@ -3,10 +3,11 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+//
 
 #include "BreakingChangesGenerator.hpp"
 #include "Diff.hpp"
-
 #include <algorithm>
 #include <iostream>
 
@@ -106,7 +107,7 @@ writeReport(std::ostream& os, DiffResult const& d)
 // to bring its output to the screen instead of writing files.
 Expected<void>
 BreakingChangesGenerator::
-build(Corpus const& current) const
+build(Corpus const& current, Config const& config) const
 {
     writeReport(std::cout, diff(*baseline_, current));
     return {};

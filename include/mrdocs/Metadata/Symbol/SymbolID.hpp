@@ -69,7 +69,7 @@ public:
     template <std::convertible_to<value_type> Char>
     constexpr SymbolID(Char const* src)
     {
-        int i = 0;
+        [[maybe_unused]] int i = 0;
         for(value_type& c : data_)
         {
             c = *src++;

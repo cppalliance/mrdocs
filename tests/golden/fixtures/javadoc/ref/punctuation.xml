@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>2if7W2yae7MLawKNuq1XwahifSpZ 9SrB1UL3KesEDpt7G1mT9bvMnqC 3ugjxNbHHSuxBbaHt8ENMWRLxFAS</functions>
+  </members>
+</namespace>
+<function>
+  <name>f0</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>punctuation.cpp</shortPath>
+        <sourcePath>punctuation.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2if7W2yae7MLawKNuq1XwahifSpZ</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>f1</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>punctuation.cpp</shortPath>
+        <sourcePath>punctuation.cpp</sourcePath>
+        <lineNumber>3</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>f2</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>punctuation.cpp</shortPath>
+        <sourcePath>punctuation.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3ugjxNbHHSuxBbaHt8ENMWRLxFAS</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>See </literal>
+        </text>
+        <reference>
+          <kind>reference</kind>
+          <literal>f0</literal>
+          <id>2if7W2yae7MLawKNuq1XwahifSpZ</id>
+        </reference>
+        <text>
+          <kind>text</kind>
+          <literal>, </literal>
+        </text>
+        <reference>
+          <kind>reference</kind>
+          <literal>f1</literal>
+          <id>9SrB1UL3KesEDpt7G1mT9bvMnqC</id>
+        </reference>
+        <text>
+          <kind>text</kind>
+          <literal>.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

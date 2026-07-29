@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2024 Fernando Pelliccioni (fpelliccioni@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
@@ -14,11 +15,11 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Support/Describe.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <vector>
 
 namespace mrdocs {

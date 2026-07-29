@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_VERSION_HPP
-#define MRDOCS_VERSION_HPP
+#ifndef MRDOCS_API_VERSION_HPP_IN
+#define MRDOCS_API_VERSION_HPP_IN
 
 #include <string_view>
 #include <cstddef>

@@ -16,7 +16,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/String.hpp>
 #include <string>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 

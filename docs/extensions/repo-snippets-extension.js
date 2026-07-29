@@ -31,7 +31,7 @@
 //
 //   - require: ./extensions/repo-snippets-extension.js
 //     mounts:
-//       - source: test-files/golden-tests/snippets
+//       - source: tests/golden/fixtures/snippets
 //         target: snippets
 //         strip_page_wrapper: true
 //

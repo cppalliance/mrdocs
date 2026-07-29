@@ -17,7 +17,7 @@
 #include <mrdocs/Metadata/DocComment/Block/DefinitionListItem.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ListKind.hpp>
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <string>
 #include <vector>
 

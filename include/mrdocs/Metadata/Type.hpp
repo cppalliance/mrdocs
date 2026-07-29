@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -24,8 +25,8 @@
 #include <mrdocs/Metadata/Type/PointerType.hpp>
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
-#include <mrdocs/Support/TypeTraits.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/TypeTraits/TypeTraits.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 
 namespace mrdocs {
 

@@ -1,0 +1,591 @@
+//
+// This is a derivative work. originally part of the LLVM Project.
+// Licensed under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+//
+// Official repository: https://github.com/cppalliance/mrdocs
+//
+
+#include <mrdocs/Support/Container/Algorithm.hpp>
+#include <mrdocs/Support/Filesystem/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
+#include <llvm/ADT/SmallString.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
+#include <algorithm>
+#include <cstdlib>
+#include <fstream>
+
+
+namespace mrdocs {
+
+/** A reasonably sized small string for paths.
+
+    This is for local variables not for use
+    as data members of long-lived types.
+*/
+using SmallPathString = llvm::SmallString<340>;
+
+AnyFileVisitor::
+~AnyFileVisitor() = default;
+
+//------------------------------------------------
+
+Expected<void>
+forEachFile(
+    std::string_view dirPath,
+    bool recursive,
+    AnyFileVisitor& visitor)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    std::error_code ec;
+    fs::directory_iterator const end{};
+    fs::directory_iterator it(dirPath, ec, false);
+    MRDOCS_CHECK(!ec, formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec));
+    while (it != end)
+    {
+        if(it->type() == fs::file_type::directory_file)
+        {
+            auto s = it->path();
+            MRDOCS_TRY(visitor.visitFile(s));
+            if (recursive)
+            {
+                MRDOCS_TRY(forEachFile(it->path(), recursive, visitor));
+            }
+        }
+        else if (it->type() == fs::file_type::regular_file)
+        {
+            MRDOCS_TRY(visitor.visitFile(it->path()));
+        }
+        // else, we don't handle this type
+        it.increment(ec);
+        MRDOCS_CHECK(!ec, formatError("directory_iterator::increment returned \"{}\"", ec));
+    }
+    return {};
+}
+
+//------------------------------------------------
+//
+// files
+//
+//------------------------------------------------
+
+namespace files {
+
+Expected<FileType>
+getFileType(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if(auto ec = fs::status(pathName, fileStatus))
+    {
+        if(ec == std::errc::no_such_file_or_directory)
+            return FileType::not_found;
+        return Unexpected(Error(ec));
+    }
+    switch(fileStatus.type())
+    {
+    case fs::file_type::regular_file:
+        return FileType::regular;
+
+    case fs::file_type::directory_file:
+        return FileType::directory;
+
+    case fs::file_type::symlink_file:
+    case fs::file_type::block_file:
+    case fs::file_type::character_file:
+    case fs::file_type::fifo_file:
+    case fs::file_type::socket_file:
+    case fs::file_type::type_unknown:
+        return FileType::other;
+
+    case fs::file_type::file_not_found:
+    case fs::file_type::status_error:
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+bool
+isAbsolute(
+    std::string_view pathName) noexcept
+{
+    namespace path = llvm::sys::path;
+
+    return path::is_absolute(pathName);
+}
+
+Expected<void>
+requireAbsolute(
+    std::string_view pathName)
+{
+    MRDOCS_CHECK(isAbsolute(pathName), formatError("\"{}\" is not an absolute path"));
+    return {};
+}
+
+bool
+isDirsy(
+    std::string_view pathName) noexcept
+{
+    namespace path = llvm::sys::path;
+
+    if(pathName.empty())
+        return false;
+    if(! path::is_separator(
+           pathName.back(),
+           path::Style::native))
+        return false;
+    return true;
+}
+
+std::string
+normalizePath(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+    SmallPathString result(pathName);
+    path::remove_dots(result, true);
+    return static_cast<std::string>(result.str());
+}
+
+std::string
+normalizeDir(
+    std::string_view pathName)
+{
+    return normalizePath(pathName);
+}
+
+std::string_view
+getParentDir(
+    std::string_view pathName)
+{
+    return llvm::sys::path::parent_path(pathName);
+}
+
+std::string
+getParentDir(
+    std::string_view const pathName,
+    unsigned const levels)
+{
+    std::string_view res = pathName;
+    for (unsigned i = 0; i < levels; ++i)
+    {
+        res = getParentDir(res);
+    }
+    return std::string(res);
+}
+
+std::string_view
+getFileName(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+
+    return path::filename(pathName);
+}
+
+std::string_view
+makeProjectRelative(
+    std::string_view pathName) noexcept
+{
+    // __FILE__ here is "<project-root>/src/mrdocs/Support/Filesystem/Path.cpp"
+    // (the build passes absolute source paths). The project-root prefix is
+    // therefore __FILE__ minus this file's own path relative to the root;
+    // stripping that prefix yields a project-relative name. Deriving the root
+    // this way keeps it out of any marker file at the repository root. (Path
+    // separators may differ across platforms, but the lengths match.)
+    constexpr std::string_view thisFile = __FILE__;
+    constexpr std::string_view thisRelPath =
+        "src/mrdocs/Support/Filesystem/Path.cpp";
+    constexpr std::size_t prefix =
+        thisFile.size() > thisRelPath.size()
+            ? thisFile.size() - thisRelPath.size()
+            : 0;
+
+    if (prefix != 0 &&
+        pathName.size() > prefix &&
+        pathName.substr(0, prefix) == thisFile.substr(0, prefix))
+    {
+        return pathName.substr(prefix);
+    }
+
+    // Not under the project root: fall back to the bare file name.
+    return getFileName(pathName);
+}
+
+Expected<std::string>
+getFileText(
+    std::string_view pathName)
+{
+    std::ifstream file((std::string(pathName)));
+    if(! file.good())
+        return Unexpected(formatError("std::ifstream(\"{}\" returned \"{}\"",
+            pathName, std::error_code(errno, std::generic_category())));
+    std::istreambuf_iterator<char> it(file);
+    std::istreambuf_iterator<char> const end;
+    std::string text(it, end);
+    if(file.fail() && ! file.eof())
+        return Unexpected(formatError("getFileText(\"{}\") returned \"{}\"",
+            pathName, std::error_code(errno, std::generic_category())));
+    return text;
+}
+
+std::string
+makeDirsy(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+
+    std::string result = static_cast<std::string>(pathName);
+    if (!result.empty())
+    {
+        const char c = result.back();
+        if (!path::is_separator(c, path::Style::windows_slash))
+        {
+            auto const sep = path::get_separator(path::Style::native);
+            result.push_back(sep.front());
+        }
+    }
+    return result;
+}
+
+Expected<std::string>
+makeAbsolute(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    SmallPathString result(pathName);
+    if(auto ec = fs::make_absolute(result))
+        return Unexpected(formatError("fs::make_absolute(\"{}\") returned \"{}\"", pathName, ec));
+    return static_cast<std::string>(result);
+}
+
+std::string
+makeAbsolute(
+    std::string_view pathName,
+    std::string_view workingDir)
+{
+    namespace path = llvm::sys::path;
+
+    if(! path::is_absolute(pathName))
+    {
+        SmallPathString result(workingDir);
+        path::append(result, path::Style::native, pathName);
+        path::remove_dots(result, true);//, path::Style::native);
+        return std::string(result);
+    }
+
+    SmallPathString result(pathName);
+    path::remove_dots(result, true, path::Style::native);
+    return std::string(result);
+}
+
+std::string
+makePosixStyle(std::string_view pathName)
+{
+    SmallPathString result(pathName);
+    llvm::sys::path::native(result, llvm::sys::path::Style::posix);
+    return std::string(result);
+}
+
+std::string
+makeRealPath(std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+
+    if (pathName.empty())
+    {
+        return std::string(pathName);
+    }
+    SmallPathString resolved;
+    if (fs::real_path(pathName, resolved))
+    {
+        // The path does not exist or cannot be resolved (for example a
+        // virtual or in-memory file, or a path that has not been created
+        // yet). Leave it untouched apart from POSIX normalization so callers
+        // can always fall back to comparing the path as written.
+        return makePosixStyle(pathName);
+    }
+    return makePosixStyle(resolved.str());
+}
+
+bool
+isResolvedSubpathOf(
+    std::string_view pathName,
+    std::string_view prefix)
+{
+    namespace fs = llvm::sys::fs;
+
+    // Cheap path first: the literal spelling already matches.
+    if (isSubpathOf(pathName, prefix))
+    {
+        return true;
+    }
+    // Otherwise compare the real (symlink-resolved) locations, so a file
+    // reached through a symlinked directory still counts as being under
+    // `prefix`. Resolve into a stack buffer rather than allocating: on
+    // failure (a virtual or non-existent path) fall back to the path as
+    // written, which is what isSubpathOf already rejected, so the result
+    // stays correct. isSubpathOf is slash-insensitive, so the resolved
+    // paths need no POSIX normalization before comparing.
+    auto resolve = [](std::string_view p, SmallPathString& buf)
+        -> std::string_view
+    {
+        if (fs::real_path(p, buf))
+        {
+            buf.assign(p.begin(), p.end());
+        }
+        return std::string_view(buf.data(), buf.size());
+    };
+    SmallPathString pathBuf;
+    SmallPathString prefixBuf;
+    return isSubpathOf(resolve(pathName, pathBuf), resolve(prefix, prefixBuf));
+}
+
+bool
+isPosixStyle(std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+
+    if(pathName.empty())
+    {
+        return true;
+    }
+    llvm::StringRef separator = llvm::sys::path::get_separator(path::Style::windows);
+    if (pathName.find(separator) != llvm::StringRef::npos)
+    {
+        return false;
+    }
+    return true;
+}
+
+
+std::string
+withExtension(
+    std::string_view fileName,
+    std::string_view ext)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(fileName);
+    path::replace_extension(
+        temp, ext, path::Style::windows_slash);
+    return std::string(temp);
+}
+
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name)
+{
+    namespace path = llvm::sys::path;
+    SmallPathString temp(basePath);
+    path::append(temp, name);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(basePath);
+    path::append(temp, name1, name2);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2,
+    std::string_view name3)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(basePath);
+    path::append(temp, name1, name2, name3);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2,
+    std::string_view name3,
+    std::string_view name4)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(basePath);
+    path::append(temp, name1, name2, name3, name4);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
+Expected<void>
+requireDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+
+    fs::file_status fileStatus;
+    auto ec = fs::status(pathName, fileStatus);
+    MRDOCS_CHECK(!ec, formatError(R"(fs::status("{}") returned "{}")", pathName, ec));
+    MRDOCS_CHECK(fileStatus.type() == fs::file_type::directory_file, formatError("\"{}\" is not a directory", pathName));
+    return {};
+}
+
+bool
+isDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if (auto ec = fs::status(pathName, fileStatus))
+    {
+        return false;
+    }
+    return fileStatus.type() == fs::file_type::directory_file;
+}
+
+bool
+isRegularFile(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if (auto ec = fs::status(pathName, fileStatus))
+    {
+        return false;
+    }
+    return fileStatus.type() == fs::file_type::regular_file;
+}
+
+bool
+looksLikeDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if (auto const ec = fs::status(pathName, fileStatus);
+        ec ||
+        fileStatus.type() == fs::file_type::file_not_found)
+    {
+        // The path does not exist yet: guess from the last segment, which
+        // looks like a directory when it has no extension.
+        auto const filename = getFileName(pathName);
+        return !contains(filename, '.');
+    }
+    return fileStatus.type() == fs::file_type::directory_file;
+}
+
+bool
+looksLikeFile(
+    std::string_view pathName)
+{
+    return !looksLikeDirectory(pathName);
+}
+
+bool
+exists(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if(auto ec = fs::status(pathName, fileStatus))
+        return false;
+    return exists(fileStatus);
+}
+
+std::string_view
+getSourceFilename(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+    auto const begin = path::rend(pathName);
+    auto it = path::rbegin(pathName);
+    auto prev = it;
+    while(it != begin)
+    {
+        if(*it == "source")
+        {
+            return pathName.substr(prev - begin);
+        }
+        if(*it == "include")
+        {
+            return pathName.substr(prev - begin);
+        }
+        prev = it;
+        ++it;
+    }
+    return pathName;
+}
+
+Expected<void>
+createDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+
+    auto kind = files::getFileType(pathName);
+    MRDOCS_CHECK(kind, kind.error());
+    MRDOCS_CHECK_OR(*kind != files::FileType::directory, {});
+    MRDOCS_CHECK(
+        *kind == files::FileType::not_found,
+        formatError("creating the directory \"{}\""
+                    " would overwrite an existing file", pathName));
+    auto ec = fs::create_directories(pathName);
+    MRDOCS_CHECK(!ec, formatError("fs::create_directories(\"{}\") returned \"{}\"", pathName, ec));
+    return {};
+}
+
+bool
+isSubpathOf(
+    std::string_view pathName,
+    std::string_view prefix)
+{
+    // Find the first position where the two paths diverge, treating a forward
+    // slash and a backslash as the same separator.
+    auto const [itPath, itPrefix] = std::ranges::mismatch(
+        pathName, prefix,
+        [](char const a, char const b)
+        {
+            return (a == '\\' ? '/' : a) == (b == '\\' ? '/' : b);
+        });
+    if (itPrefix != prefix.end())
+    {
+        // `prefix` couldn't be fully matched
+        return false;
+    }
+    // the path matched completely
+    if (itPath == pathName.end())
+    {
+        return true;
+    }
+    // The path has extra characters after the prefix and it still
+    // counts as a subpath, but only if the next character is a separator.
+    // That is so that, for example, `/abc` is a subpath of `/abc` but
+    // `/abcdef` is not.
+    return *itPath == '/' || *itPath == '\\';
+}
+
+} // files
+
+} // mrdocs

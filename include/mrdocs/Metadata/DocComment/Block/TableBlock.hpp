@@ -17,7 +17,7 @@
 #include <mrdocs/Metadata/DocComment/Block/ParagraphBlock.hpp>
 #include <mrdocs/Metadata/DocComment/Block/TableAlignmentKind.hpp>
 #include <mrdocs/Metadata/DocComment/Block/TableRow.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <string>
 #include <vector>
 

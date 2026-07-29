@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -21,9 +22,9 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolKind.hpp>
-#include <mrdocs/Support/CompareReflectedType.hpp>
-#include <mrdocs/Support/Describe.hpp>
-#include <mrdocs/Support/MapReflectedType.hpp>
+#include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 

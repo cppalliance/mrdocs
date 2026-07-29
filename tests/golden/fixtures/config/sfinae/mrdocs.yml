@@ -1,0 +1,4 @@
+# Use the bundled standard library, not the host's, so the IDs of the
+# std symbols this fixture references stay stable across toolchains.
+use-system-stdlib: false
+use-system-libc: false

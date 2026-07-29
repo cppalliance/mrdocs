@@ -3,14 +3,15 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+//
 
 #ifndef MRDOCS_EXAMPLE_BREAKING_CHANGES_GENERATOR_HPP
 #define MRDOCS_EXAMPLE_BREAKING_CHANGES_GENERATOR_HPP
 
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Generator.hpp>
-#include <mrdocs/Support/Error.hpp>
-
+#include <mrdocs/Support/Error/Error.hpp>
 #include <ostream>
 #include <string_view>
 
@@ -34,7 +35,7 @@ public:
     std::string_view fileExtension()const noexcept override;
 
     Expected<void>
-    build(Corpus const& current) const override;
+    build(Corpus const& current, Config const& config) const override;
 
 private:
     Corpus const* baseline_;

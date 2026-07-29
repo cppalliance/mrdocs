@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz 45Fwe5kYuv1Y5U477G1sB17ZooGh 3Soa5UMUK6mpXxd7WpLnPeRteoxc 4HL2MTMD4VLzdb164R11dGPakUVn 2WkYAgtGEk9mHh6EQh5wPtVeRooq 3n9TfJ5xqC5ahMX6wZdPCDjKA13a 3HU2xLtravcmixJLjtHjxshp7by7 CfitQsx1Kbhb7Rz1P3wnmkiDzdV</records>
+  </members>
+</namespace>
+<record>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>B</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>45Fwe5kYuv1Y5U477G1sB17ZooGh</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>Ba</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3Soa5UMUK6mpXxd7WpLnPeRteoxc</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>Bx</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>4HL2MTMD4VLzdb164R11dGPakUVn</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>a</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2WkYAgtGEk9mHh6EQh5wPtVeRooq</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>b</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3n9TfJ5xqC5ahMX6wZdPCDjKA13a</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>bA</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3HU2xLtravcmixJLjtHjxshp7by7</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>ba</name>
+  <loc>
+    <defLoc>
+      <shortPath>canonical_1.cpp</shortPath>
+      <sourcePath>canonical_1.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>CfitQsx1Kbhb7Rz1P3wnmkiDzdV</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+</mrdocs>

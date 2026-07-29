@@ -1,5 +1,5 @@
-// Auto-generated from util/bootstrap/src/__main__.py.
-// Run `python util/docs/generate_bootstrap_options.py --update` to regenerate.
+// Auto-generated from utils/bootstrap/src/__main__.py.
+// Run `python utils/docs/generate_bootstrap_options.py --update` to regenerate.
 // Do not edit by hand; CI checks this file matches the parser.
 
 [#build-configuration]

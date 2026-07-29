@@ -68,7 +68,7 @@ for project_args in \
     if [[ "$RUNNER_OS" == 'Linux' ]]; then
         src="$base/adoc"
         dst="$base/adoc-asciidoc"
-        stylesheet="$(pwd)/share/mrdocs/addons/generator/common/layouts/style.css"
+        stylesheet="$(pwd)/data/mrdocs/addons/generator/common/layouts/style.css"
 
         [[ -d "$src" ]] || continue
 

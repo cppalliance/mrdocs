@@ -19,7 +19,7 @@
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TArg/TemplateTArg.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 
 namespace mrdocs {
 

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU</functions>
+  </members>
+</namespace>
+<function>
+  <name>f</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-markers.cpp</shortPath>
+        <sourcePath>inline-markers.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>HTML form (works in tight notation): H</literal>
+          </text>
+          <subscript>
+            <kind>subscript</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>2</literal>
+              </text>
+            </children>
+          </subscript>
+          <text>
+            <kind>text</kind>
+            <literal>O is water; x</literal>
+          </text>
+          <superscript>
+            <kind>superscript</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>2</literal>
+              </text>
+            </children>
+          </superscript>
+          <text>
+            <kind>text</kind>
+            <literal> is x squared. </literal>
+          </text>
+          <strong>
+            <kind>strong</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>Bold</literal>
+              </text>
+            </children>
+          </strong>
+          <text>
+            <kind>text</kind>
+            <literal>, </literal>
+          </text>
+          <highlight>
+            <kind>highlight</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>highlighted</literal>
+              </text>
+            </children>
+          </highlight>
+          <text>
+            <kind>text</kind>
+            <literal>, </literal>
+          </text>
+          <strikethrough>
+            <kind>strikethrough</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>struck-through</literal>
+              </text>
+            </children>
+          </strikethrough>
+          <text>
+            <kind>text</kind>
+            <literal>, and </literal>
+          </text>
+          <strikethrough>
+            <kind>strikethrough</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>also struck</literal>
+              </text>
+            </children>
+          </strikethrough>
+          <text>
+            <kind>text</kind>
+            <literal> text.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Markdown form (requires whitespace flanks): Subscript: </literal>
+          </text>
+          <subscript>
+            <kind>subscript</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>i</literal>
+              </text>
+            </children>
+          </subscript>
+          <text>
+            <kind>text</kind>
+            <literal> indicates an index. Superscript: raise to the </literal>
+          </text>
+          <superscript>
+            <kind>superscript</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>n</literal>
+              </text>
+            </children>
+          </superscript>
+          <text>
+            <kind>text</kind>
+            <literal> power. Strong: </literal>
+          </text>
+          <strong>
+            <kind>strong</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>bold</literal>
+              </text>
+            </children>
+          </strong>
+          <text>
+            <kind>text</kind>
+            <literal>. Highlight: </literal>
+          </text>
+          <highlight>
+            <kind>highlight</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>highlighted</literal>
+              </text>
+            </children>
+          </highlight>
+          <text>
+            <kind>text</kind>
+            <literal>. Strikethrough: </literal>
+          </text>
+          <strikethrough>
+            <kind>strikethrough</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>struck-through</literal>
+              </text>
+            </children>
+          </strikethrough>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Exercise the inline markup kinds (HTML and Markdown forms): subscript, superscript, highlight, strikethrough.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

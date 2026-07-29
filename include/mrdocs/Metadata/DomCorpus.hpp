@@ -15,7 +15,6 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
-#include <memory>
 
 namespace mrdocs {
 
@@ -37,9 +36,7 @@ class SymbolID;
 class MRDOCS_DECL
     DomCorpus
 {
-    class Impl;
-
-    std::unique_ptr<Impl> impl_;
+    Corpus const& corpus_;
 
 public:
     /** Destructor.

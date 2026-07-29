@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>3f6aJNgmMhwqQarbp4uXGhhRkqaN 3RnCpjXqT9XkHX6pwCXim3WgD44Q</namespaces>
+    <functions>3MKtxxUbNvYuhM1wMHjtmnGSNroV</functions>
+  </members>
+</namespace>
+<namespace>
+  <name>M</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>qualified-params.cpp</shortPath>
+        <sourcePath>qualified-params.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>3f6aJNgmMhwqQarbp4uXGhhRkqaN</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>4YyYzkFSWsZVB2gWFADLq1uwzhgK</records>
+  </members>
+</namespace>
+<record>
+  <name>D</name>
+  <loc>
+    <defLoc>
+      <shortPath>qualified-params.cpp</shortPath>
+      <sourcePath>qualified-params.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>4YyYzkFSWsZVB2gWFADLq1uwzhgK</id>
+  <extraction>regular</extraction>
+  <parent>3f6aJNgmMhwqQarbp4uXGhhRkqaN</parent>
+  <keyKind>class</keyKind>
+</record>
+<namespace>
+  <name>N</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>qualified-params.cpp</shortPath>
+        <sourcePath>qualified-params.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3TtGtGf2CToEZnVRpxuF6qiW7ijn</records>
+  </members>
+</namespace>
+<record>
+  <name>C</name>
+  <loc>
+    <defLoc>
+      <shortPath>qualified-params.cpp</shortPath>
+      <sourcePath>qualified-params.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3TtGtGf2CToEZnVRpxuF6qiW7ijn</id>
+  <extraction>regular</extraction>
+  <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <keyKind>class</keyKind>
+</record>
+<function>
+  <name>foo</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>qualified-params.cpp</shortPath>
+        <sourcePath>qualified-params.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3MKtxxUbNvYuhM1wMHjtmnGSNroV</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3TtGtGf2CToEZnVRpxuF6qiW7ijn</id>
+          <identifier>C</identifier>
+          <prefix>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3RnCpjXqT9XkHX6pwCXim3WgD44Q</id>
+              <identifier>N</identifier>
+            </identifier>
+          </prefix>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>4YyYzkFSWsZVB2gWFADLq1uwzhgK</id>
+              <identifier>D</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3f6aJNgmMhwqQarbp4uXGhhRkqaN</id>
+                  <identifier>M</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <name>v</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

@@ -3,6 +3,8 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+//
 // MrDocs example: breaking-change detector.
 //
 // Loads two corpora described by two `mrdocs.yml` configurations
@@ -21,16 +23,14 @@
 
 #include "BreakingChangesGenerator.hpp"
 #include "Corpus.hpp"
-
 #include <mrdocs/Generator.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Report.hpp>
-#include <mrdocs/Support/ThreadPool.hpp>
-
+#include <mrdocs/Support/Concurrency/ThreadPool.hpp>
 #include <cstdio>
 #include <cstdlib>
-#include <iostream>
 #include <memory>
+#include <print>
 #include <string>
 
 int main(int argc, char const** argv)
@@ -39,8 +39,8 @@ int main(int argc, char const** argv)
 
     if (argc < 3)
     {
-        std::fprintf(stderr,
-            "usage: %s <v1/mrdocs.yml> <v2/mrdocs.yml>\n",
+        std::println(stderr,
+            "usage: {} <v1/mrdocs.yml> <v2/mrdocs.yml>",
             argv[0] ? argv[0] : "breaking-changes");
         return 2;
     }
@@ -52,50 +52,42 @@ int main(int argc, char const** argv)
     {
         dirs.mrdocsRoot = root;
     }
-    ThreadPool threadPool(/*concurrency=*/1);
-
-    auto v1Corpus = example::loadCorpusFromConfig(
-        argv[1], dirs, threadPool);
+    auto v1Corpus = example::loadCorpusFromConfig(argv[1], dirs);
     if (!v1Corpus)
     {
-        std::fprintf(stderr, "v1: %s\n",
-            v1Corpus.error().reason().c_str());
+        std::println(stderr, "v1: {}", v1Corpus.error().reason());
         return 1;
     }
-    auto v2Corpus = example::loadCorpusFromConfig(
-        argv[2], dirs, threadPool);
+    auto v2Corpus = example::loadCorpusFromConfig(argv[2], dirs);
     if (!v2Corpus)
     {
-        std::fprintf(stderr, "v2: %s\n",
-            v2Corpus.error().reason().c_str());
+        std::println(stderr, "v2: {}", v2Corpus.error().reason());
         return 1;
     }
 
     // tag::install-and-run[]
     auto installed = installGenerator(
-        std::make_unique<example::BreakingChangesGenerator>(**v1Corpus));
+        std::make_unique<example::BreakingChangesGenerator>(*v1Corpus));
     if (!installed)
     {
-        std::fprintf(stderr,
-            "installGenerator: %s\n",
-            installed.error().reason().c_str());
+        std::println(stderr,
+            "installGenerator: {}", installed.error().reason());
         return 1;
     }
 
     Generator const* gen = findGenerator("breaking-changes");
     if (!gen)
     {
-        std::fprintf(stderr,
-            "findGenerator: breaking-changes not installed\n");
+        std::println(stderr,
+            "findGenerator: breaking-changes not installed");
         return 1;
     }
 
-    auto wrote = gen->build(**v2Corpus);
+    auto wrote = gen->build(*v2Corpus, Config{});
     if (!wrote)
     {
-        std::fprintf(stderr,
-            "Generator::build: %s\n",
-            wrote.error().reason().c_str());
+        std::println(stderr,
+            "Generator::build: {}", wrote.error().reason());
         return 1;
     }
     // end::install-and-run[]

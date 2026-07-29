@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</namespaces>
+    <records>YoUdont482ARHaRDHHpkefwb85c</records>
+  </members>
+</namespace>
+<namespace>
+  <name>see_below_ns</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>see-below-base.cpp</shortPath>
+        <sourcePath>see-below-base.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</id>
+  <extraction>see-below</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>2Q4oHJNirNS7b6v5NaFH5tS6U81W</records>
+  </members>
+</namespace>
+<record>
+  <name>base_see</name>
+  <loc>
+    <defLoc>
+      <shortPath>see-below-base.cpp</shortPath>
+      <sourcePath>see-below-base.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2Q4oHJNirNS7b6v5NaFH5tS6U81W</id>
+  <extraction>see-below</extraction>
+  <parent>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</parent>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>qSSGjoKqVSSFJUByahfUzokvS4z</functions>
+    </public>
+  </interface>
+</record>
+<record>
+  <name>derived_see</name>
+  <loc>
+    <defLoc>
+      <shortPath>see-below-base.cpp</shortPath>
+      <sourcePath>see-below-base.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>YoUdont482ARHaRDHHpkefwb85c</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>2Q4oHJNirNS7b6v5NaFH5tS6U81W</id>
+              <identifier>base_see</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2iTX7iCr1aU5wW4FvT3UU4N2KU5F</id>
+                  <identifier>see_below_ns</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+  <interface>
+    <public>
+      <functions>3Bn6d6j5FrNLAxTNNKbbZhyS9G9V 2mA7bFFrGxLPKRFraE192ibRCzPq</functions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>do_other</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>see-below-base.cpp</shortPath>
+        <sourcePath>see-below-base.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3Bn6d6j5FrNLAxTNNKbbZhyS9G9V</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <isCopyFromInherited/>
+  <parent>YoUdont482ARHaRDHHpkefwb85c</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Describes the see-below member</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>own</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>see-below-base.cpp</shortPath>
+        <sourcePath>see-below-base.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2mA7bFFrGxLPKRFraE192ibRCzPq</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>YoUdont482ARHaRDHHpkefwb85c</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+</mrdocs>

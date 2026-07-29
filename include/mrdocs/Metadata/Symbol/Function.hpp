@@ -5,8 +5,8 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
-// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
@@ -21,8 +21,8 @@
 #include <mrdocs/Metadata/Symbol/Param.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolBase.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Support/Describe.hpp>
-#include <mrdocs/Support/MapReflectedType.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <string>
 #include <vector>
 

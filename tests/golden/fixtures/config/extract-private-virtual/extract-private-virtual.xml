@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>2Nkohq7e7VYjm412uPP8Ja4rS6tz</records>
+  </members>
+</namespace>
+<record>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>extract-private-virtual.cpp</shortPath>
+      <sourcePath>extract-private-virtual.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2Nkohq7e7VYjm412uPP8Ja4rS6tz</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>class</keyKind>
+  <interface>
+    <public>
+      <functions>2rEeE5D6XJJUMSEvvPgQNwi5XX4v</functions>
+    </public>
+    <private>
+      <functions>TytQM2d8RyWHWRuSS5B2sNgRtQf</functions>
+    </private>
+  </interface>
+</record>
+<function>
+  <name>f</name>
+  <loc>
+    <defLoc>
+      <shortPath>extract-private-virtual.cpp</shortPath>
+      <sourcePath>extract-private-virtual.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>3</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>2rEeE5D6XJJUMSEvvPgQNwi5XX4v</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isVirtualAsWritten/>
+</function>
+<function>
+  <name>g</name>
+  <loc>
+    <defLoc>
+      <shortPath>extract-private-virtual.cpp</shortPath>
+      <sourcePath>extract-private-virtual.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>3</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>TytQM2d8RyWHWRuSS5B2sNgRtQf</id>
+  <access>private</access>
+  <extraction>regular</extraction>
+  <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isVirtual/>
+  <isVirtualAsWritten/>
+</function>
+</mrdocs>

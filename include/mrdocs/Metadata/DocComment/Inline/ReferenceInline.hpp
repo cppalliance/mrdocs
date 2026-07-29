@@ -17,7 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/TextInline.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <string>
 
 namespace mrdocs::doc {

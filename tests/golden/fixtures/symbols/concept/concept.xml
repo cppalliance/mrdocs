@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>sRogJY533qTwDRYtF4NSM9eyQya</functions>
+    <variables>3bTa6hZH47eKcEmtzUEw1Us7DSPL</variables>
+    <concepts>6qQBFa3NuRU4jJfNNHzE4qPGzwa</concepts>
+  </members>
+</namespace>
+<function>
+  <name>f</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>concept.cpp</shortPath>
+        <sourcePath>concept.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>sRogJY533qTwDRYtF4NSM9eyQya</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>class</keyKind>
+        <constraint>
+          <identifier>
+            <kind>identifier</kind>
+            <id>6qQBFa3NuRU4jJfNNHzE4qPGzwa</id>
+            <identifier>C</identifier>
+          </identifier>
+        </constraint>
+      </type>
+    </params>
+  </template>
+  <funcClass>normal</funcClass>
+</function>
+<variable>
+  <name>x</name>
+  <loc>
+    <defLoc>
+      <shortPath>concept.cpp</shortPath>
+      <sourcePath>concept.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>3bTa6hZH47eKcEmtzUEw1Us7DSPL</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <auto>
+      <kind>auto</kind>
+      <keyword>auto</keyword>
+      <constraint>
+        <identifier>
+          <kind>identifier</kind>
+          <id>6qQBFa3NuRU4jJfNNHzE4qPGzwa</id>
+          <identifier>C</identifier>
+        </identifier>
+      </constraint>
+    </auto>
+  </type>
+  <initializer>0</initializer>
+</variable>
+<concept>
+  <name>C</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>concept.cpp</shortPath>
+        <sourcePath>concept.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>concept</kind>
+  <id>6qQBFa3NuRU4jJfNNHzE4qPGzwa</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+  <constraint>sizeof(T) == sizeof(int)</constraint>
+</concept>
+</mrdocs>

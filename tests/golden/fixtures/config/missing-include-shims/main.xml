@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>1XBSLJvax29j7ArpmtgK9wgp2t8</namespaces>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU</functions>
+  </members>
+</namespace>
+<function>
+  <name>f</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>main.cpp</shortPath>
+        <sourcePath>main.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Function satisfied by missing-include-shims</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>An empty string of a type defined in the shims.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>4JVgES6tJFvn4eAujfAebh8M8wFd</id>
+          <identifier>StringRef</identifier>
+          <prefix>
+            <identifier>
+              <kind>identifier</kind>
+              <id>1XBSLJvax29j7ArpmtgK9wgp2t8</id>
+              <identifier>llvm</identifier>
+            </identifier>
+          </prefix>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>oaLFdY3TZqofASNZ124cA3rMeZq</records>
+    <functions>37HgvEwyKyFSFmY5HKMdJATE92KV</functions>
+  </members>
+</namespace>
+<record>
+  <name>Task</name>
+  <loc>
+    <defLoc>
+      <shortPath>empty_template_args.cpp</shortPath>
+      <sourcePath>empty_template_args.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>oaLFdY3TZqofASNZ124cA3rMeZq</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <default>
+          <type>
+            <kind>type</kind>
+            <type>
+              <named>
+                <kind>named</kind>
+                <name>
+                  <identifier>
+                    <kind>identifier</kind>
+                    <identifier>int</identifier>
+                  </identifier>
+                </name>
+                <fundamentalType>int</fundamentalType>
+              </named>
+            </type>
+          </type>
+        </default>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+</record>
+<function>
+  <name>handshake</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>empty_template_args.cpp</shortPath>
+        <sourcePath>empty_template_args.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>37HgvEwyKyFSFmY5HKMdJATE92KV</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <specialization>
+          <kind>specialization</kind>
+          <id>oaLFdY3TZqofASNZ124cA3rMeZq</id>
+          <identifier>Task</identifier>
+        </specialization>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

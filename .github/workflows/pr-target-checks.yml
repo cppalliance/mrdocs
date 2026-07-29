@@ -31,9 +31,9 @@ jobs:
           node-version: 20
 
       - name: Install repo-check tools
-        run: npm --prefix util/danger ci
+        run: npm --prefix utils/danger ci
 
       - name: Repo checks (Danger.js)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx --prefix util/danger danger ci --dangerfile util/danger/dangerfile.ts
+        run: npx --prefix utils/danger danger ci --dangerfile utils/danger/dangerfile.ts

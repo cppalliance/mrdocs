@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>A6m5tmdDqHesPqWnbghHwBRz8uZ</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>TEST</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>include-self.cpp</shortPath>
+        <sourcePath>include-self.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>A6m5tmdDqHesPqWnbghHwBRz8uZ</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>46LXdT31ckaT8d49norRJ7BUYNn6</records>
+  </members>
+</namespace>
+<record>
+  <name>SUCCESS</name>
+  <loc>
+    <defLoc>
+      <shortPath>include-self.cpp</shortPath>
+      <sourcePath>include-self.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>5</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>46LXdT31ckaT8d49norRJ7BUYNn6</id>
+  <extraction>regular</extraction>
+  <parent>A6m5tmdDqHesPqWnbghHwBRz8uZ</parent>
+  <keyKind>struct</keyKind>
+</record>
+</mrdocs>

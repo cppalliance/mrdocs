@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>UfKicPw9MTYUQKvc95J7sgwZujx</namespaces>
+    <namespaceAliases>4NK4m3Xjmth56pq1Lp7Meh6uBv3d 3f8Z4V4VZGc8ZVuMt9bZfBue53d7</namespaceAliases>
+  </members>
+</namespace>
+<namespace>
+  <name>LongName</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>KuPJQQiefs1Xpfc3cwGmm7a1Ahr</records>
+  </members>
+</namespace>
+<record>
+  <name>A</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>record</kind>
+  <id>KuPJQQiefs1Xpfc3cwGmm7a1Ahr</id>
+  <extraction>regular</extraction>
+  <parent>UfKicPw9MTYUQKvc95J7sgwZujx</parent>
+  <keyKind>struct</keyKind>
+</record>
+<namespaceAlias>
+  <name>A</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace-alias</kind>
+  <id>4NK4m3Xjmth56pq1Lp7Meh6uBv3d</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <aliasedSymbol>
+    <kind>identifier</kind>
+    <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+    <identifier>LongName</identifier>
+  </aliasedSymbol>
+</namespaceAlias>
+<namespaceAlias>
+  <name>B</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>namespace-alias-2.cpp</shortPath>
+        <sourcePath>namespace-alias-2.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace-alias</kind>
+  <id>3f8Z4V4VZGc8ZVuMt9bZfBue53d7</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <aliasedSymbol>
+    <kind>identifier</kind>
+    <id>UfKicPw9MTYUQKvc95J7sgwZujx</id>
+    <identifier>LongName</identifier>
+  </aliasedSymbol>
+</namespaceAlias>
+</mrdocs>

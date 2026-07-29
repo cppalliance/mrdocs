@@ -19,7 +19,7 @@
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/TParam/TemplateTParam.hpp>
 #include <mrdocs/Metadata/TParam/TypeTParam.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 
 namespace mrdocs {
 

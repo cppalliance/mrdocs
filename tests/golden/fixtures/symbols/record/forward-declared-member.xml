@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2bkixAJJyMzoJUUh3J672FpQ6vLD 2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>fmt</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>forward-declared-member.cpp</shortPath>
+        <sourcePath>forward-declared-member.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2bkixAJJyMzoJUUh3J672FpQ6vLD</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>4C7j16NbY2Ftfhi6TdkDKr5aCTCb</records>
+  </members>
+</namespace>
+<record>
+  <name>path</name>
+  <loc>
+    <defLoc>
+      <shortPath>forward-declared-member.cpp</shortPath>
+      <sourcePath>forward-declared-member.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>3</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>4C7j16NbY2Ftfhi6TdkDKr5aCTCb</id>
+  <extraction>regular</extraction>
+  <parent>2bkixAJJyMzoJUUh3J672FpQ6vLD</parent>
+  <keyKind>struct</keyKind>
+  <bases>
+    <baseInfo>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <id>3bGp4RSgzEYBvpUzVa5oHMewqGZQ</id>
+              <identifier>path</identifier>
+              <prefix>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>2gQYpYhLmwB2jja6qUZm6ZYuK3Xy</id>
+                  <identifier>std</identifier>
+                </identifier>
+              </prefix>
+            </identifier>
+          </name>
+        </named>
+      </type>
+      <access>public</access>
+    </baseInfo>
+  </bases>
+</record>
+</mrdocs>

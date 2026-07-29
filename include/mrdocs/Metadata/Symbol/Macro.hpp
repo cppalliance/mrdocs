@@ -13,7 +13,7 @@
 #define MRDOCS_API_METADATA_SYMBOL_MACRO_HPP
 
 #include <mrdocs/Metadata/Symbol.hpp>
-#include <mrdocs/Support/Describe.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <string>
 #include <vector>
 

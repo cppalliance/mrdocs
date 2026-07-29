@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t 1YWrSpfV88zbfQ3PBCGBoYZMGKW</records>
+  </members>
+</namespace>
+<record>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>ct_expl.cpp</shortPath>
+      <sourcePath>ct_expl.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>4DXECWsw8UfKpZwrQBmtBTThqd1t</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+  <interface>
+    <public>
+      <functions>2cMeQjuQcpTPhbY6f3vK8Un6jDdo</functions>
+    </public>
+  </interface>
+  <specializations>1YWrSpfV88zbfQ3PBCGBoYZMGKW</specializations>
+</record>
+<function>
+  <name>f</name>
+  <loc>
+    <defLoc>
+      <shortPath>ct_expl.cpp</shortPath>
+      <sourcePath>ct_expl.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>12</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>2cMeQjuQcpTPhbY6f3vK8Un6jDdo</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>4DXECWsw8UfKpZwrQBmtBTThqd1t</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+<record>
+  <name>A</name>
+  <loc>
+    <defLoc>
+      <shortPath>ct_expl.cpp</shortPath>
+      <sourcePath>ct_expl.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>1YWrSpfV88zbfQ3PBCGBoYZMGKW</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+  <template>
+    <args>
+      <type>
+        <kind>type</kind>
+        <type>
+          <named>
+            <kind>named</kind>
+            <name>
+              <identifier>
+                <kind>identifier</kind>
+                <identifier>int</identifier>
+              </identifier>
+            </name>
+            <fundamentalType>int</fundamentalType>
+          </named>
+        </type>
+      </type>
+    </args>
+    <primary>4DXECWsw8UfKpZwrQBmtBTThqd1t</primary>
+  </template>
+  <interface>
+    <public>
+      <functions>j9itov97yw2Es8GAiUX55hu3uv7</functions>
+    </public>
+  </interface>
+  <isListedOnPrimary/>
+</record>
+<function>
+  <name>g</name>
+  <loc>
+    <defLoc>
+      <shortPath>ct_expl.cpp</shortPath>
+      <sourcePath>ct_expl.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>17</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>j9itov97yw2Es8GAiUX55hu3uv7</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>1YWrSpfV88zbfQ3PBCGBoYZMGKW</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+</mrdocs>

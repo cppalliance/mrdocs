@@ -27,7 +27,7 @@
 #include <mrdocs/Metadata/Attribute/NoreturnAttribute.hpp>
 #include <mrdocs/Metadata/Attribute/OtherAttribute.hpp>
 #include <mrdocs/Metadata/Attribute/UnlikelyAttribute.hpp>
-#include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 
 namespace mrdocs {
 

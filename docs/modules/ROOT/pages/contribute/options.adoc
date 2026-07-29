@@ -6,14 +6,14 @@
 Mr.Docs options affect the behavior of the compilation database, how symbols are extracted, and how the documentation is generated.
 They are parsed from the command line and configuration file.
 
-The main entry point of Mr.Docs is the `DoGenerateAction` function in `src/tool/GenerateAction.cpp`.
+The main entry point of Mr.Docs is the `mrdocs` tool in `tools/mrdocs/src/Main.cpp`; its `DoGenerateAction` helper does the work.
 It loads the options, creates the compilation database, and runs the extraction and generation steps.
 The options are formed from a combination of command line arguments and configuration file settings.
 
 === Command Line Options
 
-Command line and common options are defined in `src/tool/ToolArgs.hpp`.
-The `ToolArgs` class uses the `llvm::cl` library to define and parse the command line arguments.
+The command line options are the generated `PublicToolArgs` (produced from `src/mrdocs/ConfigOptions.json` into the build tree), which uses the `llvm::cl` library to define and parse the arguments.
+The tool has no options of its own, so `Main.cpp` uses a single `PublicToolArgs` instance directly rather than a subclass.
 
 === Configuration File
 
@@ -21,19 +21,19 @@ Common options are defined in `mrdocs/Config.hpp`.
 The `Config` class represents all public options that could be defined in a configuration file.
 It also provides a representation plugins can use to access public options from the command line or configuration file.
 
-The function `mrdocs::loadConfig` is also provided to parse all public options from a YAML configuration file.
+The `Config::load_file` function parses all public options from a YAML configuration file.
 
-Internally, Mr.Docs uses the derived `mrdocs::ConfigImpl` class (`src/lib/Lib/ConfigImpl.hpp`) to also store the private representation of parsed options, such as filters.
+`Config` is a concrete value: besides the public options it also holds the private representation of parsed options (such as filters) and the DOM view templates consume. There is no separate implementation class.
 
 === Finalizing Options
 
-Common options are stored in the `Config` class, while the `ToolArgs` class stores common options and the command line options.
+The `Config` class stores the options that can appear in a configuration file, while `PublicToolArgs` stores those plus the command-line-only options.
 For instance, the `config` option can only be set from the command line, as it would be illogical to expect the location of the configuration file to be defined in the configuration file itself.
 On the other hand, the `output` option can be set from both the command line and the configuration file so that the user can define a default output location in the configuration file.
 
-Thus, after the command line and configuration file options are parsed, they are finalized in the `DoGenerateAction` function by calling `ToolArgs::apply`, which overrides the configuration file options in `Config` with the command line options, when applicable.
+Thus, after the command line and configuration file options are parsed, they are finalized in `DoGenerateAction` by calling `PublicToolArgs::apply`, which overrides the configuration file options in `Config` with the command line options, when applicable.
 
-As a last step, `DoGenerateAction` converts the public `Config` settings into a `ConfigImpl` object, which is used by the rest of the program with the parsed options.
+As a last step, `DoGenerateAction` calls `Config::normalize` to apply defaults, validate values, and resolve relative paths; the resulting `Config` is used by the rest of the program.
 
 [#representing_symbols]
 == Representing Symbols
@@ -114,7 +114,7 @@ The `clang::tooling::ClangTool::run` method takes a `clang::tooling::ToolAction`
 The action object usually comes from a `clang::tooling::FrontendActionFactory`.
 In the example above, the `SyntaxOnlyAction` is used to parse the source code and generate the AST without any further processing.
 
-In MrDocs, this process happens in `mrdocs::CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where we call `Tool.run` for each object in the database with our custom `ASTAction` action and `ASTActionFactory` factory (`src/lib/AST/ASTVisitor.cpp`).
+In MrDocs, this process happens in `mrdocs::Corpus::build` (`src/mrdocs/Corpus.cpp`), where we call `Tool.run` for each object in the database with our custom `ASTAction` action and `ASTActionFactory` factory (`src/mrdocs/AST/ASTVisitor.cpp`).
 
 ==== AST Traversal
 
@@ -134,10 +134,10 @@ This is necessary to generate the full interface for user-defined types.
 
 ==== Finalizing the Corpus
 
-After running the AST traversal on all translation units, `CorpusImpl::build` contains finalization steps for the `Corpus` object.
+After running the AST traversal on all translation units, `Corpus::build` contains finalization steps for the `Corpus` object.
 At this point, we process C++ constructs that are not directly represented in the AST.
 
-The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Symbol` objects from a single translation unit are merged into a map containing the merged results from all other TUs.
+The first finalization step happens in `Corpus::build` (`src/mrdocs/Corpus.cpp`), where the `Symbol` objects from a single translation unit are merged into a map containing the merged results from all other TUs.
 The merging step is necessary as there may be multiple identical definitions of the same entity.
 For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
 At this step, the doc comments are also finalized.

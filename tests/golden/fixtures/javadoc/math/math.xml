@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<namespace>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>34qLJpLx5zqxgfiGJzrnUXMvEF95</functions>
+  </members>
+</namespace>
+<function>
+  <name>circle_area</name>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>math.cpp</shortPath>
+        <sourcePath>math.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>34qLJpLx5zqxgfiGJzrnUXMvEF95</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Inline math with Doxygen delimiters: </literal>
+          </text>
+          <math>
+            <kind>math</kind>
+            <literal>e^{i\pi} + 1 = 0</literal>
+          </math>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A standalone Markdown display span is a block:</literal>
+          </text>
+        </children>
+      </paragraph>
+      <math>
+        <kind>math</kind>
+        <literal>\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}</literal>
+      </math>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A display block with Doxygen delimiters:</literal>
+          </text>
+        </children>
+      </paragraph>
+      <math>
+        <kind>math</kind>
+        <literal>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</literal>
+      </math>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Computes the area of a circle: </literal>
+        </text>
+        <math>
+          <kind>math</kind>
+          <literal>A = \pi r^2</literal>
+        </math>
+        <text>
+          <kind>text</kind>
+          <literal>.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>double</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>double</fundamentalType>
+        </named>
+      </type>
+      <name>r</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

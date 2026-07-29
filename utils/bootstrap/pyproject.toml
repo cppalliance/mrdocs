@@ -1,0 +1,17 @@
+# Python coverage configuration for the bootstrap tooling test suite. It lives
+# with the code it measures (utils/bootstrap) rather than at the repo root. CI
+# runs coverage from the repository root and points at it with
+# `--rcfile=utils/bootstrap/pyproject.toml`; the source path below stays
+# relative to that root. It is not a Python packaging manifest; MrDocs is C++.
+[tool.coverage.run]
+branch = true
+source = ["utils/bootstrap/src"]
+omit = ["utils/bootstrap/tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "if __name__",
+    "if TYPE_CHECKING",
+    "pragma: no cover",
+]
