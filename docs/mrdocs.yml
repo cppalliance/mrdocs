@@ -9,6 +9,16 @@ file-patterns:
   - '*.hpp'
 include-symbols:
   - 'mrdocs::**'
+# MrDocs's own macros are maintainer-facing implementation helpers, not
+# public API: the MRDOCS_* support macros and the internal X-macros
+# (INFO/LOG/F) and compat shims used across the headers. Keep them out of
+# MrDocs's own reference.
+exclude-macros:
+  - 'MRDOCS_*'
+  - 'INFO'
+  - 'LOG'
+  - 'F'
+  - 'FMT_CONSTEVAL'
 implementation-defined:
   - '**::detail'
     # Injected by the MRDOCS_DESCRIBE_* macros

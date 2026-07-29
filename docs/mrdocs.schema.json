@@ -135,6 +135,15 @@
       "title": "Input directories to exclude",
       "type": "array"
     },
+    "exclude-macros": {
+      "default": [],
+      "description": "A macro whose name matches one of these patterns, or one of `exclude-symbols`, is not extracted even if it would otherwise be included. See `include-symbols` for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Macro patterns to exclude",
+      "type": "array"
+    },
     "exclude-patterns": {
       "default": [],
       "description": "Files matching these glob patterns are skipped, even when they sit inside an included directory. The patterns are relative to the configuration file. A single `*` matches everything in a directory; `**` matches everything in a directory and its subdirectories.",
@@ -161,6 +170,16 @@
         false
       ],
       "title": "Extract all symbols",
+      "type": "boolean"
+    },
+    "extract-all-macros": {
+      "default": false,
+      "description": "Like `extract-all`, but for preprocessor macros. When `false` (the default), MrDocs extracts only macros that carry a documentation comment, on the assumption that an undocumented macro is an implementation detail while a documented one is public API meant to be shown. When `true`, every macro that passes the macro filters is extracted whether documented or not. This is independent of `extract-all`, which does not apply to macros.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extract all macros",
       "type": "boolean"
     },
     "extract-anonymous-namespaces": {
@@ -337,6 +356,15 @@
         "type": "string"
       },
       "title": "Symbols rendered as \"implementation-defined\"",
+      "type": "array"
+    },
+    "include-macros": {
+      "default": [],
+      "description": "If any patterns are defined here, only macros whose name matches one of them (or one of `include-symbols`) are extracted. When empty (the default), every macro is a candidate, so with `extract-all-macros` off the documented macros are shown and can then be narrowed with these patterns. Macro names are unqualified, so namespace-scoped `include-symbols` patterns never match a macro; use these patterns to scope macros by name (e.g. `MY_LIB_*`). A macro also listed in `include-symbols` is still included. See `include-symbols` for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Macro patterns to include",
       "type": "array"
     },
     "include-symbols": {

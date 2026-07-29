@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#MY_LIB_HAS_INT128]
+== MY&lowbar;LIB&lowbar;HAS&lowbar;INT128
+
+Defined by the library when 128&hyphen;bit integer support is available&period;
+
+=== Synopsis
+
+Declared in `&lt;macros&hyphen;guard&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+#define MY&lowbar;LIB&lowbar;HAS&lowbar;INT128
+
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

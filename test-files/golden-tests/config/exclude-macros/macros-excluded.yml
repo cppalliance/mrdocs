@@ -1,0 +1,2 @@
+exclude-macros:
+  - 'MYLIB_DETAIL_*'

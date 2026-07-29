@@ -1,0 +1,20 @@
+= Reference
+:mrdocs:
+
+[#MY_LIB_ASSERT]
+== MY&lowbar;LIB&lowbar;ASSERT
+
+The public assertion macro&period;
+
+=== Synopsis
+
+Declared in `&lt;exclude&hyphen;macros&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+#define MY&lowbar;LIB&lowbar;ASSERT(x)
+
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

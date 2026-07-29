@@ -1,0 +1,2 @@
+include-macros:
+  - 'MY_LIB_*'
