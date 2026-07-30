@@ -6,36 +6,9 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <macros>6oML46RphGNbT5N6xF9kXpXn57i n5QAufKQ7hqBwDXk7Ecp6GzZHLE 2MoUpS3Z8krDThUcEryJorBPvsJp</macros>
+    <macros>n5QAufKQ7hqBwDXk7Ecp6GzZHLE 2MoUpS3Z8krDThUcEryJorBPvsJp 6oML46RphGNbT5N6xF9kXpXn57i</macros>
   </members>
 </namespace>
-<macro>
-  <name>MYLIB_VERSION</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-allowlist.cpp</shortPath>
-      <sourcePath>macros-allowlist.cpp</sourcePath>
-      <lineNumber>6</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>6oML46RphGNbT5N6xF9kXpXn57i</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Public API version.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-</macro>
 <macro>
   <name>MYLIB_ASSERT</name>
   <loc>
@@ -89,6 +62,33 @@
         <text>
           <kind>text</kind>
           <literal>Implementation detail, still under MYLIB_, so still allowed.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
+<macro>
+  <name>MYLIB_VERSION</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-allowlist.cpp</shortPath>
+      <sourcePath>macros-allowlist.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>6oML46RphGNbT5N6xF9kXpXn57i</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Public API version.</literal>
         </text>
       </children>
     </brief>

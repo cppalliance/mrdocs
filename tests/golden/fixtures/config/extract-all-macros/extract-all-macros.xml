@@ -6,23 +6,39 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <macros>tQFuKKgXKZ1UPrAexsi9ALYdgMN 4N9PhViqArL8roP1btrbEg6udQs7 i8TH7jf7ovtrtBTF3HpHBvRTvAg 28RUXy6f87xcyyVYtJrwNuMNbb75</macros>
+    <macros>28RUXy6f87xcyyVYtJrwNuMNbb75 4N9PhViqArL8roP1btrbEg6udQs7 i8TH7jf7ovtrtBTF3HpHBvRTvAg tQFuKKgXKZ1UPrAexsi9ALYdgMN</macros>
   </members>
 </namespace>
 <macro>
-  <name>UNDOC_OBJECT</name>
+  <name>DOC_FUNC</name>
   <loc>
     <defLoc>
       <shortPath>extract-all-macros.cpp</shortPath>
       <sourcePath>extract-all-macros.cpp</sourcePath>
-      <lineNumber>4</lineNumber>
+      <lineNumber>12</lineNumber>
       <columnNumber>9</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>macro</kind>
-  <id>tQFuKKgXKZ1UPrAexsi9ALYdgMN</id>
+  <id>28RUXy6f87xcyyVYtJrwNuMNbb75</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documented function-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+  </parameters>
 </macro>
 <macro>
   <name>DOC_OBJECT</name>
@@ -71,34 +87,18 @@
   </parameters>
 </macro>
 <macro>
-  <name>DOC_FUNC</name>
+  <name>UNDOC_OBJECT</name>
   <loc>
     <defLoc>
       <shortPath>extract-all-macros.cpp</shortPath>
       <sourcePath>extract-all-macros.cpp</sourcePath>
-      <lineNumber>12</lineNumber>
+      <lineNumber>4</lineNumber>
       <columnNumber>9</columnNumber>
-      <documented/>
     </defLoc>
   </loc>
   <kind>macro</kind>
-  <id>28RUXy6f87xcyyVYtJrwNuMNbb75</id>
+  <id>tQFuKKgXKZ1UPrAexsi9ALYdgMN</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Documented function-like macro.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-  <isFunctionLike/>
-  <parameters>
-    <string>x</string>
-  </parameters>
 </macro>
 </mrdocs>

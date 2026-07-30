@@ -6,36 +6,9 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <macros>vdpMVAYZuWBsRhcnASK83Yx5S4F 2dFYE4LwLyAkA3uA7Kd4gfZhuyLt</macros>
+    <macros>2dFYE4LwLyAkA3uA7Kd4gfZhuyLt vdpMVAYZuWBsRhcnASK83Yx5S4F</macros>
   </members>
 </namespace>
-<macro>
-  <name>EMBED_OBJECT</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-embedded.cpp</shortPath>
-      <sourcePath>macros-embedded.cpp</sourcePath>
-      <lineNumber>8</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>vdpMVAYZuWBsRhcnASK83Yx5S4F</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>A simple object-like macro.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-</macro>
 <macro>
   <name>EMBED_FUNC</name>
   <loc>
@@ -78,5 +51,32 @@
   <parameters>
     <string>x</string>
   </parameters>
+</macro>
+<macro>
+  <name>EMBED_OBJECT</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-embedded.cpp</shortPath>
+      <sourcePath>macros-embedded.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>vdpMVAYZuWBsRhcnASK83Yx5S4F</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A simple object-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
 </macro>
 </mrdocs>
