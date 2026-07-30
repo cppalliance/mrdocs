@@ -6,9 +6,49 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <macros>taiRsNxDnEPbGDX6TUAdTGe8FsT 2gZEKEXddibTYTDBviFnMfz3ri1H 2RxkLvemUQ3X8C4baVnh1hcpUDq1 2CjEHzyvJeernxCXkT7QGgKDP22D 3hM8jc31JWkocdaQKVddcEVJSd7F</macros>
+    <macros>2CjEHzyvJeernxCXkT7QGgKDP22D taiRsNxDnEPbGDX6TUAdTGe8FsT 2gZEKEXddibTYTDBviFnMfz3ri1H 2RxkLvemUQ3X8C4baVnh1hcpUDq1 3hM8jc31JWkocdaQKVddcEVJSd7F</macros>
   </members>
 </namespace>
+<macro>
+  <name>DOC_THEN_BLANK</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros-edge-cases.cpp</shortPath>
+      <sourcePath>macros-edge-cases.cpp</sourcePath>
+      <lineNumber>26</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2CjEHzyvJeernxCXkT7QGgKDP22D</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documentation for </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>DOC_THEN_BLANK</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal>; one blank line separates this comment from the macro definition.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
 <macro>
   <name>FIRST_THING_IN_FILE</name>
   <loc>
@@ -53,46 +93,6 @@
   <id>2RxkLvemUQ3X8C4baVnh1hcpUDq1</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-</macro>
-<macro>
-  <name>DOC_THEN_BLANK</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros-edge-cases.cpp</shortPath>
-      <sourcePath>macros-edge-cases.cpp</sourcePath>
-      <lineNumber>26</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2CjEHzyvJeernxCXkT7QGgKDP22D</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Documentation for </literal>
-        </text>
-        <code>
-          <kind>code</kind>
-          <children>
-            <text>
-              <kind>text</kind>
-              <literal>DOC_THEN_BLANK</literal>
-            </text>
-          </children>
-        </code>
-        <text>
-          <kind>text</kind>
-          <literal>; one blank line separates this comment from the macro definition.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
 </macro>
 <macro>
   <name>SAME_LINE</name>

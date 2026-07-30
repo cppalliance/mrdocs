@@ -276,33 +276,21 @@ void
 SortMembersFinalizer::
 sortMembers(NamespaceTranche& T)
 {
-    sortMembers(T.Namespaces);
-    sortMembers(T.NamespaceAliases);
-    sortMembers(T.Typedefs);
-    sortMembers(T.Records);
-    sortMembers(T.Enums);
-    sortMembers(T.Functions);
-    sortMembers(T.Variables);
-    sortMembers(T.Concepts);
-    sortMembers(T.Guides);
-    sortMembers(T.Usings);
+    // Sort every member bucket. The lists are discovered by reflection,
+    // so adding a member to NamespaceTranche (e.g. Macros) is sorted
+    // automatically, with no hand-maintained list to keep in sync.
+    describe::for_each_member<NamespaceTranche>([&](auto const d) {
+        sortMembers(T.*d.pointer);
+    });
 }
 
 void
 SortMembersFinalizer::
 sortMembers(RecordTranche& T)
 {
-    sortMembers(T.NamespaceAliases);
-    sortMembers(T.Typedefs);
-    sortMembers(T.Records);
-    sortMembers(T.Enums);
-    sortMembers(T.Functions);
-    sortMembers(T.StaticFunctions);
-    sortMembers(T.Variables);
-    sortMembers(T.StaticVariables);
-    sortMembers(T.Concepts);
-    sortMembers(T.Guides);
-    sortMembers(T.Usings);
+    describe::for_each_member<RecordTranche>([&](auto const d) {
+        sortMembers(T.*d.pointer);
+    });
 }
 
 void

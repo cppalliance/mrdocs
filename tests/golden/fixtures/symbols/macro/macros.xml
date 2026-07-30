@@ -6,81 +6,9 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <macros>3KokfPfZXiD4EAfFZytrfCT6Qjxr idKKNbHYquVJgZX7GPChW7WYqSh 3XnVYwGqrtnkzT5sMaWVCDsKLdD2 bNPfz3TBGnpgJaxGa5wc1r85hq7 gbEzDQ11PFhDs5EXfjVsHNukAc5 4Q7TTx3mZusx1BmztiXtcv41BEPz 4F6vnNtWjsCJvAspRPpFz3FtrdA3 4Fbi3tQEeTohxw38nyq4Ju4oFmzj 2mse2tzUeyDpF8QrLzMBXzyzhUUm 3g9xse138ygnrEV7iXMcAhvEwHzP 3uc94queU1WFsN6HZDjAQbRedRwv 2EefAggSG8L7H4vHJtCnn85PFMfw 3Syex11XobpE3ALhGXqz1zpq97TH 2YmbqbEZhyx5i19pKEaBDjHm4yKS 3ec1weFMC8QuRH2sXH5b8jFFozUR 3kxr1ifc8LVeq2pHKi7RFJoMJBEC 4YvEmEyzaDiEZ22KKjKi8pPZFqN5 2DeCzuXQbMbRRHU6BnKV9exULsuV 2Q78jvu4FSWoSEUrSMNs6wmhxSvK nsoUTEXNh8agVJaaYL2Hb2SnmiW</macros>
+    <macros>gbEzDQ11PFhDs5EXfjVsHNukAc5 2mse2tzUeyDpF8QrLzMBXzyzhUUm 4YvEmEyzaDiEZ22KKjKi8pPZFqN5 bNPfz3TBGnpgJaxGa5wc1r85hq7 3KokfPfZXiD4EAfFZytrfCT6Qjxr 3XnVYwGqrtnkzT5sMaWVCDsKLdD2 4Q7TTx3mZusx1BmztiXtcv41BEPz 4F6vnNtWjsCJvAspRPpFz3FtrdA3 3kxr1ifc8LVeq2pHKi7RFJoMJBEC 3g9xse138ygnrEV7iXMcAhvEwHzP 2EefAggSG8L7H4vHJtCnn85PFMfw 2Q78jvu4FSWoSEUrSMNs6wmhxSvK nsoUTEXNh8agVJaaYL2Hb2SnmiW idKKNbHYquVJgZX7GPChW7WYqSh 2YmbqbEZhyx5i19pKEaBDjHm4yKS 3uc94queU1WFsN6HZDjAQbRedRwv 3Syex11XobpE3ALhGXqz1zpq97TH 4Fbi3tQEeTohxw38nyq4Ju4oFmzj 3ec1weFMC8QuRH2sXH5b8jFFozUR 2DeCzuXQbMbRRHU6BnKV9exULsuV</macros>
   </members>
 </namespace>
-<macro>
-  <name>FOO</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>3</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>3KokfPfZXiD4EAfFZytrfCT6Qjxr</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>A documentation comment.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-</macro>
-<macro>
-  <name>PI</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>4</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>idKKNbHYquVJgZX7GPChW7WYqSh</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-</macro>
-<macro>
-  <name>GREETING</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>5</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>3XnVYwGqrtnkzT5sMaWVCDsKLdD2</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-</macro>
-<macro>
-  <name>EMPTY</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>8</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>bNPfz3TBGnpgJaxGa5wc1r85hq7</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-</macro>
 <macro>
   <name>ADD</name>
   <loc>
@@ -134,6 +62,131 @@
     <string>a</string>
     <string>b</string>
   </parameters>
+</macro>
+<macro>
+  <name>ANSWER</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>30</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2mse2tzUeyDpF8QrLzMBXzyzhUUm</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>DUP</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>96</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>4YvEmEyzaDiEZ22KKjKi8pPZFqN5</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Duplicate parameter documentation.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>One thing.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Same thing again.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+  </parameters>
+</macro>
+<macro>
+  <name>EMPTY</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>bNPfz3TBGnpgJaxGa5wc1r85hq7</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>FOO</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>3</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3KokfPfZXiD4EAfFZytrfCT6Qjxr</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documentation comment.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
+<macro>
+  <name>GREETING</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3XnVYwGqrtnkzT5sMaWVCDsKLdD2</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
 </macro>
 <macro>
   <name>LOG</name>
@@ -225,289 +278,6 @@
   <isVariadic/>
 </macro>
 <macro>
-  <name>VLOG</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>27</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>4Fbi3tQEeTohxw38nyq4Ju4oFmzj</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <isFunctionLike/>
-  <isVariadic/>
-</macro>
-<macro>
-  <name>ANSWER</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>30</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2mse2tzUeyDpF8QrLzMBXzyzhUUm</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-</macro>
-<macro>
-  <name>MIN</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>36</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>3g9xse138ygnrEV7iXMcAhvEwHzP</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <isFunctionLike/>
-  <parameters>
-    <string>a</string>
-    <string>b</string>
-  </parameters>
-</macro>
-<macro>
-  <name>SQUARE</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>44</lineNumber>
-      <columnNumber>12</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>3uc94queU1WFsN6HZDjAQbRedRwv</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <isFunctionLike/>
-  <parameters>
-    <string>x</string>
-  </parameters>
-</macro>
-<macro>
-  <name>MISALIGNED</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>52</lineNumber>
-      <columnNumber>12</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2EefAggSG8L7H4vHJtCnn85PFMfw</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <isFunctionLike/>
-  <parameters>
-    <string>x</string>
-  </parameters>
-</macro>
-<macro>
-  <name>SUM</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>59</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>3Syex11XobpE3ALhGXqz1zpq97TH</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Sum a variadic list of values.</literal>
-        </text>
-      </children>
-    </brief>
-    <params>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>The values to sum.</literal>
-          </text>
-        </children>
-        <name>...</name>
-      </param>
-    </params>
-  </doc>
-  <isFunctionLike/>
-  <isVariadic/>
-</macro>
-<macro>
-  <name>PRINTF</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>67</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>2YmbqbEZhyx5i19pKEaBDjHm4yKS</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Variadic </literal>
-        </text>
-        <code>
-          <kind>code</kind>
-          <children>
-            <text>
-              <kind>text</kind>
-              <literal>printf</literal>
-            </text>
-          </children>
-        </code>
-        <text>
-          <kind>text</kind>
-          <literal> wrapper, documenting the variadic argument list with the conventional </literal>
-        </text>
-        <code>
-          <kind>code</kind>
-          <children>
-            <text>
-              <kind>text</kind>
-              <literal>...</literal>
-            </text>
-          </children>
-        </code>
-        <text>
-          <kind>text</kind>
-          <literal> form.</literal>
-        </text>
-      </children>
-    </brief>
-    <params>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>The format string.</literal>
-          </text>
-        </children>
-        <name>fmt</name>
-      </param>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>Format arguments.</literal>
-          </text>
-        </children>
-        <name>...</name>
-      </param>
-    </params>
-  </doc>
-  <isFunctionLike/>
-  <parameters>
-    <string>fmt</string>
-  </parameters>
-  <isVariadic/>
-</macro>
-<macro>
-  <name>VPRINTF</name>
-  <loc>
-    <defLoc>
-      <shortPath>macros.cpp</shortPath>
-      <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>75</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>3ec1weFMC8QuRH2sXH5b8jFFozUR</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Variadic printf wrapper, documented with the explicit </literal>
-        </text>
-        <code>
-          <kind>code</kind>
-          <children>
-            <strong>
-              <kind>strong</kind>
-              <children>
-                <text>
-                  <kind>text</kind>
-                  <literal>VA_ARGS</literal>
-                </text>
-              </children>
-            </strong>
-          </children>
-        </code>
-        <text>
-          <kind>text</kind>
-          <literal> name.</literal>
-        </text>
-      </children>
-    </brief>
-    <params>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>The format string.</literal>
-          </text>
-        </children>
-        <name>fmt</name>
-      </param>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>Format arguments.</literal>
-          </text>
-        </children>
-        <name>__VA_ARGS__</name>
-      </param>
-    </params>
-  </doc>
-  <isFunctionLike/>
-  <parameters>
-    <string>fmt</string>
-  </parameters>
-  <isVariadic/>
-</macro>
-<macro>
   <name>MEDIAN3</name>
   <loc>
     <defLoc>
@@ -553,96 +323,39 @@
   </parameters>
 </macro>
 <macro>
-  <name>DUP</name>
+  <name>MIN</name>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
       <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>96</lineNumber>
+      <lineNumber>36</lineNumber>
       <columnNumber>9</columnNumber>
-      <documented/>
     </defLoc>
   </loc>
   <kind>macro</kind>
-  <id>4YvEmEyzaDiEZ22KKjKi8pPZFqN5</id>
+  <id>3g9xse138ygnrEV7iXMcAhvEwHzP</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Duplicate parameter documentation.</literal>
-        </text>
-      </children>
-    </brief>
-    <params>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>One thing.</literal>
-          </text>
-        </children>
-        <name>x</name>
-      </param>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>Same thing again.</literal>
-          </text>
-        </children>
-        <name>x</name>
-      </param>
-    </params>
-  </doc>
   <isFunctionLike/>
   <parameters>
-    <string>x</string>
+    <string>a</string>
+    <string>b</string>
   </parameters>
 </macro>
 <macro>
-  <name>WRONG_PARAM</name>
+  <name>MISALIGNED</name>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
       <sourcePath>macros.cpp</sourcePath>
-      <lineNumber>103</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
+      <lineNumber>52</lineNumber>
+      <columnNumber>12</columnNumber>
     </defLoc>
   </loc>
   <kind>macro</kind>
-  <id>2DeCzuXQbMbRRHU6BnKV9exULsuV</id>
+  <id>2EefAggSG8L7H4vHJtCnn85PFMfw</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Documentation that names a parameter the macro does not actually have.</literal>
-        </text>
-      </children>
-    </brief>
-    <params>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>Not actually a parameter of WRONG_PARAM.</literal>
-          </text>
-        </children>
-        <name>y</name>
-      </param>
-    </params>
-  </doc>
   <isFunctionLike/>
   <parameters>
     <string>x</string>
@@ -739,5 +452,292 @@
       </param>
     </params>
   </doc>
+</macro>
+<macro>
+  <name>PI</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>4</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>idKKNbHYquVJgZX7GPChW7WYqSh</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+</macro>
+<macro>
+  <name>PRINTF</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>67</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2YmbqbEZhyx5i19pKEaBDjHm4yKS</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Variadic </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>printf</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> wrapper, documenting the variadic argument list with the conventional </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>...</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> form.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The format string.</literal>
+          </text>
+        </children>
+        <name>fmt</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Format arguments.</literal>
+          </text>
+        </children>
+        <name>...</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>fmt</string>
+  </parameters>
+  <isVariadic/>
+</macro>
+<macro>
+  <name>SQUARE</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>44</lineNumber>
+      <columnNumber>12</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3uc94queU1WFsN6HZDjAQbRedRwv</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+  </parameters>
+</macro>
+<macro>
+  <name>SUM</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>59</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3Syex11XobpE3ALhGXqz1zpq97TH</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Sum a variadic list of values.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The values to sum.</literal>
+          </text>
+        </children>
+        <name>...</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <isVariadic/>
+</macro>
+<macro>
+  <name>VLOG</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>27</lineNumber>
+      <columnNumber>9</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>4Fbi3tQEeTohxw38nyq4Ju4oFmzj</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <isFunctionLike/>
+  <isVariadic/>
+</macro>
+<macro>
+  <name>VPRINTF</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>75</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>3ec1weFMC8QuRH2sXH5b8jFFozUR</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Variadic printf wrapper, documented with the explicit </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <strong>
+              <kind>strong</kind>
+              <children>
+                <text>
+                  <kind>text</kind>
+                  <literal>VA_ARGS</literal>
+                </text>
+              </children>
+            </strong>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> name.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The format string.</literal>
+          </text>
+        </children>
+        <name>fmt</name>
+      </param>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Format arguments.</literal>
+          </text>
+        </children>
+        <name>__VA_ARGS__</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>fmt</string>
+  </parameters>
+  <isVariadic/>
+</macro>
+<macro>
+  <name>WRONG_PARAM</name>
+  <loc>
+    <defLoc>
+      <shortPath>macros.cpp</shortPath>
+      <sourcePath>macros.cpp</sourcePath>
+      <lineNumber>103</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>2DeCzuXQbMbRRHU6BnKV9exULsuV</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documentation that names a parameter the macro does not actually have.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Not actually a parameter of WRONG_PARAM.</literal>
+          </text>
+        </children>
+        <name>y</name>
+      </param>
+    </params>
+  </doc>
+  <isFunctionLike/>
+  <parameters>
+    <string>x</string>
+  </parameters>
 </macro>
 </mrdocs>

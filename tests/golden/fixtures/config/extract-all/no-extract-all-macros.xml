@@ -6,36 +6,9 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <macros>ifZRvs46MXdbXRNPkmDXUFZWNfX 2MJA7aC2EtYDDyqqWvAzp1EbS7FY</macros>
+    <macros>2MJA7aC2EtYDDyqqWvAzp1EbS7FY ifZRvs46MXdbXRNPkmDXUFZWNfX</macros>
   </members>
 </namespace>
-<macro>
-  <name>DOC_OBJECT</name>
-  <loc>
-    <defLoc>
-      <shortPath>no-extract-all-macros.cpp</shortPath>
-      <sourcePath>no-extract-all-macros.cpp</sourcePath>
-      <lineNumber>6</lineNumber>
-      <columnNumber>9</columnNumber>
-      <documented/>
-    </defLoc>
-  </loc>
-  <kind>macro</kind>
-  <id>ifZRvs46MXdbXRNPkmDXUFZWNfX</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Documented object-like macro.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-</macro>
 <macro>
   <name>DOC_FUNC</name>
   <loc>
@@ -78,5 +51,32 @@
   <parameters>
     <string>x</string>
   </parameters>
+</macro>
+<macro>
+  <name>DOC_OBJECT</name>
+  <loc>
+    <defLoc>
+      <shortPath>no-extract-all-macros.cpp</shortPath>
+      <sourcePath>no-extract-all-macros.cpp</sourcePath>
+      <lineNumber>6</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>ifZRvs46MXdbXRNPkmDXUFZWNfX</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documented object-like macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
 </macro>
 </mrdocs>
