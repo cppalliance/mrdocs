@@ -398,6 +398,14 @@
   /* ---- Code block ------------------------------------------------- */
   --ds-code-radius: var(--ds-radius);
   --ds-code-font: var(--ds-font-mono);
+
+  /* ---- Hero title (comic "Main Title" — Figma spec) --------------- */
+  --ds-title-size: clamp(3rem, 8vw, 6rem); /* 96px desktop peak */
+  --ds-title-leading: 0.9; /* Figma line-height 90% */
+  --ds-title-color: var(--ds-blue-200); /* nearest to Figma #93C5FD */
+  --ds-title-ink: var(--ds-navy-900); /* outline + shadow; nearest #0F172A */
+  --ds-title-outline-width: 4px;
+  --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
 }
 
 :root {
@@ -2344,6 +2352,7 @@ header h1, header h2, main h1, main h2,
 .principles-features h4 {
     --font-weight: 400;
     font-family: var(--display-font);
+    font-style: italic;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     line-height: 1.05
@@ -2357,6 +2366,7 @@ header h1, header h2, main h1, main h2,
 .snippet-documentation-panel h3, .snippet-documentation-panel h4,
 .snippet-documentation-panel h5, .snippet-documentation-panel h6 {
     font-family: var(--font-family);
+    font-style: normal;
     text-transform: none;
     letter-spacing: normal
 }
@@ -2486,6 +2496,18 @@ header h1, header p {
 
 header h1 {
     margin-bottom: var(--spacing)
+}
+
+/* Comic "Main Title" treatment (Figma): oversized Bangers with a navy
+   letter outline and hard offset shadow. Hero only. */
+header .header-content h1 {
+    font-size: var(--ds-title-size);
+    line-height: var(--ds-title-leading);
+    text-transform: uppercase;
+    color: var(--ds-title-color);
+    -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
+    paint-order: stroke fill;
+    text-shadow: var(--ds-title-shadow);
 }
 
 header h1 ~ p {
@@ -3418,6 +3440,157 @@ footer a:focus {
 }
 
 /* ===========================
+   Comic navbar (B1 — Figma spec)
+   Light frame given; dark derived (page loads data-theme="dark").
+=========================== */
+:root {
+    /* default = dark */
+    --navc-bg: #141e26;
+    --navc-ink: #e9edf2;
+    --navc-border: #33454f;
+    --navc-gold: #facc15;
+    --navc-toggle-bg: rgba(120, 180, 255, 0.14);
+    --navc-shadow: #05080a;
+}
+:root[data-theme="light"] {
+    --navc-bg: #ffffff;
+    --navc-ink: #0f172a;
+    --navc-border: #0f172a;
+    --navc-gold: #facc15;
+    --navc-toggle-bg: rgba(30, 120, 255, 0.10);
+    --navc-shadow: #0f172a;
+}
+
+.nav {
+    background: var(--navc-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom: 2px solid var(--navc-border);
+    height: auto;
+    min-height: 64px;
+    max-height: none;
+    overflow: visible;
+    padding: 0 30px;
+}
+.nav .logo-link { padding-left: 0; }
+/* Real two-tone vector lockup (skull + MR.DOCS wordmark, from Figma). Theme by
+   recoloring the black parts (skull outline/features + wordmark) and the white
+   detail overlay. Light: ink skull/word + white details. Dark: invert — white
+   skull/word + nav-colored details (so the details read as cut-outs). */
+.nav .logo-link .brand-lockup { height: 40px; width: auto; display: none; }
+:root[data-theme="light"] .nav .logo-link .mark-light { display: block; }
+:root[data-theme="dark"]  .nav .logo-link .mark-dark  { display: block; }
+.nav .logo-link .mark-light path[fill="black"] { fill: #0f172a; }
+.nav .logo-link .mark-light path[fill="white"] { fill: #ffffff; }
+.nav .logo-link .mark-dark  path[fill="black"] { fill: #141e26; }
+.nav .logo-link .mark-dark  path[fill="white"] { fill: #e9edf2; }
+
+.nav .nav-section:last-child {
+    gap: 22px;
+    padding-right: 0;
+    color: var(--navc-ink);
+}
+.nav ul.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+}
+.nav ul.nav-menu > li { list-style: none; margin: 0; }
+.nav ul.nav-menu > li.nav-link > a {
+    font-family: "Special Elite", ui-monospace, monospace;
+    font-size: 14px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--navc-ink);
+}
+.nav ul.nav-menu > li.nav-link > a:hover,
+.nav ul.nav-menu > li.nav-link > a:focus { color: var(--navc-ink); transform: translateY(-1px); }
+
+/* comic buttons (GitHub + theme toggle) */
+.nav .nav-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2px solid var(--navc-border);
+    box-shadow: 2px 2px 0 var(--navc-shadow);
+    background: var(--navc-bg);
+    color: var(--navc-ink);
+    font-family: "Special Elite", ui-monospace, monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .06s ease, box-shadow .06s ease;
+}
+.nav .nav-btn:hover { transform: translateY(-2px); box-shadow: 4px 4px 0 var(--navc-shadow); color: var(--navc-ink); }
+.nav .nav-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--navc-shadow); }
+.nav .nav-btn--gh { background: var(--navc-gold); color: #0f172a; }
+.nav .nav-btn--gh svg { width: 18px; height: 18px; color: #0f172a; }
+/* gold button label stays ink in both themes (beats the nav-link color) */
+.nav ul.nav-menu > li.nav-link > a.nav-btn--gh,
+.nav ul.nav-menu > li.nav-link > a.nav-btn--gh:hover,
+.nav ul.nav-menu > li.nav-link > a.nav-btn--gh:focus { color: #0f172a; }
+.nav .nav-btn--toggle { background: var(--navc-toggle-bg); width: 38px; height: 38px; padding: 5px; }
+.nav .nav-btn--toggle svg { width: 22px; height: 22px; }
+.nav .nav-btn--toggle .icon-sun,
+.nav .nav-btn--toggle .icon-moon { display: none; }
+:root[data-theme="light"] .nav .nav-btn--toggle .icon-sun { display: block; }
+:root[data-theme="dark"]  .nav .nav-btn--toggle .icon-moon { display: block; }
+.nav .nav-toggle-li, .nav .nav-cta-li { display: flex; align-items: center; }
+
+/* Hamburger — shown only on mobile */
+.nav { position: relative; }
+.nav .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 42px; height: 38px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border: 2px solid var(--navc-border);
+    box-shadow: 2px 2px 0 var(--navc-shadow);
+    background: var(--navc-bg);
+    cursor: pointer;
+}
+.nav .nav-hamburger span { display: block; height: 2.5px; border-radius: 2px; background: var(--navc-ink); }
+
+@media (max-width: 767px) {
+    .nav { padding: 0 16px; }
+    .nav .nav-hamburger { display: inline-flex; }
+    .nav ul.nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin: 0;
+        padding: 6px 16px 16px;
+        background: var(--navc-bg);
+        border-bottom: 2px solid var(--navc-border);
+        z-index: 60;
+    }
+    .nav.nav-open ul.nav-menu { display: flex; }
+    .nav ul.nav-menu > li { width: 100%; margin: 0; }
+    .nav ul.nav-menu > li.nav-link > a {
+        display: block;
+        padding: 13px 2px;
+        font-size: 15px;
+        border-bottom: 1px solid color-mix(in srgb, var(--navc-border) 45%, transparent);
+    }
+    .nav .nav-btn--gh { width: 100%; justify-content: center; margin-top: 12px; padding: 10px 14px; }
+    .nav .nav-btn--gh span { display: inline; }
+    .nav .nav-toggle-li { margin-top: 12px; justify-content: flex-start; }
+}
+
+/* ===========================
    Cutout Styles
 =========================== */
 
@@ -3603,7 +3776,10 @@ footer a:focus {
     display: inline-flex;
     align-items: center;
     height: var(--ds-btn-height);
+    font-family: var(--ds-font-display);
+    font-style: italic;
     font-weight: var(--ds-weight-medium);
+    text-transform: uppercase;
     padding: 0 var(--ds-btn-padding-x);
     white-space: nowrap;
     text-decoration: none;

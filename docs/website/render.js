@@ -175,6 +175,12 @@ let logoPath = path.join(__dirname, '..', 'ui', 'src', 'partials', 'logo.hbs');
 let logoContent = fs.readFileSync(logoPath, 'utf8');
 templateSource = templateSource.replace(/\s*\{\{>\s*logo\s*\}\}\s*/g, logoContent);
 
+// Cache-bust the stylesheet so browsers reliably pick up CSS changes in dev
+// (and on deploy). Version = styles.css mtime, so it only changes when the CSS does.
+const cssPath = path.join(__dirname, 'styles.css');
+const cssVer = fs.existsSync(cssPath) ? Math.round(fs.statSync(cssPath).mtimeMs) : Date.now();
+templateSource = templateSource.replace('href="styles.css"', `href="styles.css?v=${cssVer}"`);
+
 // Compile the template AFTER replacement
 let template = Handlebars.compile(templateSource);
 
