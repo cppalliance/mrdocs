@@ -152,6 +152,19 @@ buildGeneratorContext(
     ctx.set("output", buildOutputApi(sink));
     ctx.set("config", describedToDom(config));
     ctx.set("params", dom::Value(generatorParams(config, id)));
+    // `ctx.stringify(value)` -- serialize any value to a compact JSON string
+    // through the DOM encoder, so a script can emit JSON without building it
+    // by hand. JavaScript has `JSON.stringify` natively; this gives Lua the
+    // same, and behaves identically in both. The argument is whatever the
+    // script passes (a table/array or a `ctx.corpus` value), converted to a
+    // DOM value by the engine before this runs.
+    ctx.set("stringify", dom::Value(dom::makeVariadicInvocable(
+        [](dom::Array const& args) -> Expected<dom::Value, dom::Error>
+        {
+            dom::Value const v =
+                args.empty() ? dom::Value(nullptr) : args.get(0);
+            return dom::Value(dom::JSON::stringify(v));
+        })));
     return {std::move(ctx)};
 }
 
