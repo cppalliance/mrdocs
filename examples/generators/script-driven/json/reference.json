@@ -1,0 +1,316 @@
+[
+  {
+    "$meta": {
+      "type": "NamespaceSymbol",
+      "bases": [
+        "SymbolCommonBase",
+        "Symbol"
+      ]
+    },
+    "anchor": "index",
+    "loc": {
+      "$meta": {
+        "type": "SourceInfo",
+        "bases": []
+      },
+      "loc": []
+    },
+    "kind": "namespace",
+    "id": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+    "extraction": "regular",
+    "isCopyFromInherited": false,
+    "attributes": [],
+    "isInline": false,
+    "isAnonymous": false,
+    "usingDirectives": [],
+    "members": {
+      "$meta": {
+        "type": "NamespaceTranche",
+        "bases": []
+      },
+      "namespaces": [],
+      "namespaceAliases": [],
+      "typedefs": [],
+      "records": [
+        "43E6qXkmkkfeWwCdMLUnhvUC5tmQ"
+      ],
+      "enums": [],
+      "functions": [],
+      "variables": [],
+      "concepts": [],
+      "guides": [],
+      "usings": [],
+      "macros": []
+    }
+  },
+  {
+    "$meta": {
+      "type": "RecordSymbol",
+      "bases": [
+        "SymbolCommonBase",
+        "Symbol"
+      ]
+    },
+    "name": "Vector",
+    "anchor": "Vector",
+    "loc": {
+      "$meta": {
+        "type": "SourceInfo",
+        "bases": []
+      },
+      "defLoc": {
+        "$meta": {
+          "type": "Location",
+          "bases": []
+        },
+        "shortPath": "simple.cpp",
+        "sourcePath": "simple.cpp",
+        "lineNumber": 2,
+        "columnNumber": 1,
+        "documented": true
+      },
+      "loc": []
+    },
+    "kind": "record",
+    "id": "43E6qXkmkkfeWwCdMLUnhvUC5tmQ",
+    "extraction": "regular",
+    "isCopyFromInherited": false,
+    "parent": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+    "doc": {
+      "$meta": {
+        "type": "DocComment",
+        "bases": []
+      },
+      "document": [],
+      "brief": {
+        "$meta": {
+          "type": "BriefBlock",
+          "bases": [
+            "BlockCommonBase",
+            "Block",
+            "InlineContainer"
+          ]
+        },
+        "kind": "brief",
+        "children": [
+          {
+            "$meta": {
+              "type": "TextInline",
+              "bases": [
+                "InlineCommonBase",
+                "Inline"
+              ]
+            },
+            "kind": "text",
+            "literal": "A vector in the Euclidean plane."
+          }
+        ],
+        "copiedFrom": []
+      },
+      "returns": [],
+      "params": [],
+      "tparams": [],
+      "exceptions": [],
+      "sees": [],
+      "preconditions": [],
+      "postconditions": [],
+      "footnotes": [],
+      "relates": [],
+      "related": []
+    },
+    "attributes": [],
+    "keyKind": "struct",
+    "isTypeDef": false,
+    "isFinal": false,
+    "isFinalDestructor": false,
+    "bases": [],
+    "derived": [],
+    "interface": {
+      "$meta": {
+        "type": "RecordInterface",
+        "bases": []
+      },
+      "public": {
+        "$meta": {
+          "type": "RecordTranche",
+          "bases": []
+        },
+        "namespaceAliases": [],
+        "typedefs": [],
+        "records": [],
+        "enums": [],
+        "functions": [
+          "GXXakstjmNYc2ajd9fKxmictVSf"
+        ],
+        "staticFunctions": [],
+        "variables": [],
+        "staticVariables": [],
+        "concepts": [],
+        "guides": [],
+        "usings": []
+      },
+      "protected": {
+        "$meta": {
+          "type": "RecordTranche",
+          "bases": []
+        },
+        "namespaceAliases": [],
+        "typedefs": [],
+        "records": [],
+        "enums": [],
+        "functions": [],
+        "staticFunctions": [],
+        "variables": [],
+        "staticVariables": [],
+        "concepts": [],
+        "guides": [],
+        "usings": []
+      },
+      "private": {
+        "$meta": {
+          "type": "RecordTranche",
+          "bases": []
+        },
+        "namespaceAliases": [],
+        "typedefs": [],
+        "records": [],
+        "enums": [],
+        "functions": [],
+        "staticFunctions": [],
+        "variables": [],
+        "staticVariables": [],
+        "concepts": [],
+        "guides": [],
+        "usings": []
+      }
+    },
+    "friends": [],
+    "isListedOnPrimary": false,
+    "specializations": [],
+    "deductionGuides": []
+  },
+  {
+    "$meta": {
+      "type": "FunctionSymbol",
+      "bases": [
+        "SymbolCommonBase",
+        "Symbol"
+      ]
+    },
+    "name": "length",
+    "anchor": "length",
+    "loc": {
+      "$meta": {
+        "type": "SourceInfo",
+        "bases": []
+      },
+      "loc": [
+        {
+          "$meta": {
+            "type": "Location",
+            "bases": []
+          },
+          "shortPath": "simple.cpp",
+          "sourcePath": "simple.cpp",
+          "lineNumber": 5,
+          "columnNumber": 5,
+          "documented": true
+        }
+      ]
+    },
+    "kind": "function",
+    "id": "GXXakstjmNYc2ajd9fKxmictVSf",
+    "access": "public",
+    "extraction": "regular",
+    "isCopyFromInherited": false,
+    "parent": "43E6qXkmkkfeWwCdMLUnhvUC5tmQ",
+    "doc": {
+      "$meta": {
+        "type": "DocComment",
+        "bases": []
+      },
+      "document": [],
+      "brief": {
+        "$meta": {
+          "type": "BriefBlock",
+          "bases": [
+            "BlockCommonBase",
+            "Block",
+            "InlineContainer"
+          ]
+        },
+        "kind": "brief",
+        "children": [
+          {
+            "$meta": {
+              "type": "TextInline",
+              "bases": [
+                "InlineCommonBase",
+                "Inline"
+              ]
+            },
+            "kind": "text",
+            "literal": "The length (magnitude) of the vector."
+          }
+        ],
+        "copiedFrom": []
+      },
+      "returns": [],
+      "params": [],
+      "tparams": [],
+      "exceptions": [],
+      "sees": [],
+      "preconditions": [],
+      "postconditions": [],
+      "footnotes": [],
+      "relates": [],
+      "related": []
+    },
+    "attributes": [],
+    "returnType": {
+      "$meta": {
+        "type": "NamedType",
+        "bases": [
+          "Type"
+        ]
+      },
+      "kind": "named",
+      "isPackExpansion": false,
+      "isConst": false,
+      "isVolatile": false,
+      "constraints": [],
+      "name": {
+        "$meta": {
+          "type": "IdentifierName",
+          "bases": [
+            "Name"
+          ]
+        },
+        "kind": "identifier",
+        "identifier": "double"
+      },
+      "fundamentalType": "double"
+    },
+    "params": [],
+    "funcClass": "normal",
+    "noexcept": "",
+    "isVariadic": false,
+    "isDefaulted": false,
+    "isExplicitlyDefaulted": false,
+    "isDeleted": false,
+    "isDeletedAsWritten": false,
+    "hasOverrideAttr": false,
+    "hasTrailingReturn": false,
+    "isExplicitObjectMemberFunction": false,
+    "isRecordMethod": true,
+    "isVirtual": false,
+    "isVirtualAsWritten": false,
+    "isPure": false,
+    "isConst": true,
+    "isVolatile": false,
+    "isFinal": false,
+    "explicit": "",
+    "isListedOnPrimary": false,
+    "specializations": []
+  }
+]

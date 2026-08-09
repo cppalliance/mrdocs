@@ -1,0 +1,12 @@
+addons-supplemental:
+  - addons
+generator: json
+multipage: false
+show-namespaces: false
+warn-if-undocumented: false
+source-root: .
+input:
+  - .
+generator-options:
+  json:
+    indent: 2
