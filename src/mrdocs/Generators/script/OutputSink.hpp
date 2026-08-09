@@ -52,10 +52,13 @@ public:
         @param relPath The destination path, relative to the output
             directory.
         @param contents The bytes to write.
+        @param append When true, append to the file instead of truncating
+            it, so a large artifact can be streamed in small chunks without
+            ever holding the whole thing in memory.
         @return Success, or an error describing why the write failed.
     */
     Expected<void>
-    write(std::string_view relPath, std::string_view contents);
+    write(std::string_view relPath, std::string_view contents, bool append = false);
 };
 
 } // mrdocs::script

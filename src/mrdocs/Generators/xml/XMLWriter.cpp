@@ -149,8 +149,7 @@ Expected<void>
 XMLWriter::build()
 {
     os_ << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        << "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-           "       xsi:noNamespaceSchemaLocation=\"https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc\">\n";
+        << "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng\">\n";
     (*this)(corpus_.globalNamespace());
     os_ << "</mrdocs>\n";
     return {};

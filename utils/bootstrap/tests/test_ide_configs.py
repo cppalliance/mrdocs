@@ -779,13 +779,13 @@ class TestGenerateVSTaskConfigs(unittest.TestCase):
     @patch("src.configs.visual_studio.load_json_file", return_value=None)
     @patch("src.configs.visual_studio.ensure_dir")
     def test_relaxng_schema_task(self, mock_ensure, mock_load, mock_write):
-        configs = [{"name": "Generate RelaxNG Schema", "script": "trang"}]
+        configs = [{"name": "Generate DOM Schemas", "script": "generate-schema.sh"}]
         generate_visual_studio_run_configs(
             configs, "/src", "/src/build", "release", dry_run=False, ui=_ui()
         )
         tasks_data = json.loads(mock_write.call_args_list[1][0][1])
         task = tasks_data["tasks"][0]
-        self.assertEqual(task["appliesTo"], "docs/modules/ROOT/attachments/schemas/mrdocs.rnc")
+        self.assertEqual(task["appliesTo"], "docs/mrdocs/extensions/schema.js")
 
     @patch("src.configs.visual_studio.write_text")
     @patch("src.configs.visual_studio.load_json_file", return_value=None)
@@ -797,7 +797,7 @@ class TestGenerateVSTaskConfigs(unittest.TestCase):
         )
         tasks_data = json.loads(mock_write.call_args_list[1][0][1])
         task = tasks_data["tasks"][0]
-        self.assertEqual(task["appliesTo"], "mrdocs.rng")
+        self.assertEqual(task["appliesTo"], "docs/modules/ROOT/attachments/schemas/generators/mrdocs.rng")
 
     @patch("src.configs.visual_studio.write_text")
     @patch("src.configs.visual_studio.load_json_file", return_value=None)

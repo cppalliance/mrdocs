@@ -1,0 +1,5 @@
+generator: json
+generator-options:
+  json:
+    include-meta: false
+    emit-empty: true

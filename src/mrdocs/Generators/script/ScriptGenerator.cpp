@@ -91,39 +91,63 @@ buildGeneratorCorpus(Corpus const& corpus, DomCorpus const& domCorpus)
     return {std::move(corpusObj)};
 }
 
-// Build the `ctx.output` object and its `write(path, contents)` method.
-// The method is a DOM invocable that routes to the sink; the same value
-// is callable from both Lua and JavaScript, so one output API serves
-// either language. The sink outlives the call (a local in
-// `ScriptGenerator::build`), so capturing it by pointer is safe.
+// Build the `ctx.output` object with its `write(path, contents[, append])`
+// and `append(path, contents)` methods. Each is a DOM invocable that routes
+// to the sink; the same value is callable from both Lua and JavaScript, so
+// one output API serves either language. The sink outlives the call (a local
+// in `ScriptGenerator::build`), so capturing it by pointer is safe.
+//
+// `append` lets a generator stream a large artifact in small chunks instead
+// of building the whole string in the interpreter heap and writing it once,
+// which matters for the small JerryScript heap on a large corpus.
 dom::Value
 buildOutputApi(OutputSink& sink)
 {
     OutputSink* sinkPtr = &sink;
-    dom::Object api;
-    api.set("write", dom::Value(dom::makeVariadicInvocable(
-        [sinkPtr](dom::Array const& args) -> Expected<dom::Value, dom::Error>
+    auto const writeImpl =
+        [sinkPtr](dom::Array const& args, bool append)
+            -> Expected<dom::Value, dom::Error>
         {
+            char const* who = append ? "output.append" : "output.write";
             Expected<dom::Value, dom::Error> result;
             if (args.size() < 2 ||
                 !args.get(0).isString() ||
                 !args.get(1).isString())
             {
                 result = Unexpected(dom::Error(
-                    "output.write: expected (string path, string contents)"));
-            }
-            else if (Expected<void> wrote = sinkPtr->write(
-                         args.get(0).getString().get(),
-                         args.get(1).getString().get());
-                     !wrote)
-            {
-                result = Unexpected(dom::Error(std::string(wrote.error().message())));
+                    std::string(who) + ": expected (string path, string contents)"));
             }
             else
             {
-                result = dom::Value();
+                // output.write accepts an optional third argument that
+                // requests append mode; output.append always appends.
+                bool const doAppend = append ||
+                    (args.size() >= 3 && args.get(2).isTruthy());
+                if (Expected<void> wrote = sinkPtr->write(
+                        args.get(0).getString().get(),
+                        args.get(1).getString().get(),
+                        doAppend);
+                    !wrote)
+                {
+                    result = Unexpected(dom::Error(std::string(wrote.error().message())));
+                }
+                else
+                {
+                    result = dom::Value();
+                }
             }
             return result;
+        };
+    dom::Object api;
+    api.set("write", dom::Value(dom::makeVariadicInvocable(
+        [writeImpl](dom::Array const& args) -> Expected<dom::Value, dom::Error>
+        {
+            return writeImpl(args, false);
+        })));
+    api.set("append", dom::Value(dom::makeVariadicInvocable(
+        [writeImpl](dom::Array const& args) -> Expected<dom::Value, dom::Error>
+        {
+            return writeImpl(args, true);
         })));
     return dom::Value(std::move(api));
 }

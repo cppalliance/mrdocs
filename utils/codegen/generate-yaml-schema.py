@@ -139,6 +139,7 @@ def generate_yaml_schema(config: list[OptionGroup]):
         "type": "object",
         "properties": {},
         "required": [],
+        "additionalProperties": False,
     }
 
     for category in config:
@@ -164,7 +165,7 @@ def main():
     # Determine the schema path
     mrdocs_root_dir = os.path.join(os.path.dirname(__file__), '..', '..')
     default_schema_path = os.path.join(
-        mrdocs_root_dir, 'docs', 'modules', 'ROOT', 'attachments', 'schemas', 'mrdocs.schema.json')
+        mrdocs_root_dir, 'docs', 'modules', 'ROOT', 'attachments', 'schemas', 'config', 'mrdocs.schema.json')
     mrdocs_schema_path = args.output if args.output else default_schema_path
     if not os.path.isabs(mrdocs_schema_path):
         mrdocs_schema_path = os.path.abspath(os.path.join(mrdocs_root_dir, mrdocs_schema_path))

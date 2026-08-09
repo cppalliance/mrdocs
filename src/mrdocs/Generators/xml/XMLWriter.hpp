@@ -33,7 +33,7 @@ class jit_indenter;
     @li Field names use camelCase (the member name with its first letter
         lowered).
     @li Leaves use the built-in XSD datatypes (xsd:integer, xsd:string), as
-        declared in `mrdocs.rnc`.
+        declared in `schemas/generators/mrdocs.rng`.
     @li A boolean is written as presence: `true` is an empty element
         (`<isVariadic/>`) and `false` is omitted entirely, since an absent
         element reads as false.

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
 <namespace>
   <anchor>index</anchor>
   <kind>namespace</kind>

@@ -6,7 +6,7 @@ project ships to its users (user-facing executables live in `tools/`).
 
 ## Contents
 - `bootstrap/` — the `bootstrap.py` dependency/build setup tool and its Python tests.
-- `codegen/` — code generators (config-info, YAML schema, and `trang.jar` for the XML schema).
+- `codegen/` — code generators (config-info and the YAML config schema).
 - `danger/` — the Danger.js pull-request size and hygiene checks run in CI.
 - `docs/` — docs-tooling checks and generators, such as the bootstrap-options generator.
 - `linting/` — formatting helpers (`reformat.py` / clang-format) and checkers

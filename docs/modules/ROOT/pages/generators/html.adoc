@@ -62,4 +62,4 @@ mrdocs --generator=html --stylesheets=custom.css --linkcss --stylesdir=css
 
 == Customizing the markup
 
-The page structure itself is rendered from xref:extensions/handlebars-extensions.adoc[Handlebars templates] under `<mrdocs-root>/share/mrdocs/addons/generator/html/`. Layer overrides on top with the xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] option to change a single partial without copying the whole tree. The data your overrides see is documented in the xref:extensions/dom-reference.adoc[DOM reference].
+The page structure itself is rendered from xref:extensions/handlebars-extensions.adoc[Handlebars templates] under `<mrdocs-root>/share/mrdocs/addons/generator/html/`. Layer overrides on top with the xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] option to change a single partial without copying the whole tree. The data your overrides see is documented in the xref:generators/reference.adoc[DOM reference].

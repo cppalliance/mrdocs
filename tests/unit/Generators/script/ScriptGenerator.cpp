@@ -166,6 +166,34 @@ struct ScriptGeneratorTest
     }
 
     void
+    testSinkAppends()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        OutputSink sink(td.path());
+        std::string const file = files::appendPath(td.path(), "streamed.txt");
+        // The first write truncates; subsequent appends accumulate, so a large
+        // artifact can be streamed in chunks.
+        BOOST_TEST(sink.write("streamed.txt", "one").has_value());
+        BOOST_TEST(sink.write("streamed.txt", "-two", true).has_value());
+        BOOST_TEST(sink.write("streamed.txt", "-three", true).has_value());
+        Expected<std::string> got = files::getFileText(file);
+        BOOST_TEST(got.has_value());
+        if (got)
+        {
+            BOOST_TEST(*got == "one-two-three");
+        }
+        // A plain (non-append) write truncates what the appends built.
+        BOOST_TEST(sink.write("streamed.txt", "fresh").has_value());
+        got = files::getFileText(file);
+        BOOST_TEST(got.has_value());
+        if (got)
+        {
+            BOOST_TEST(*got == "fresh");
+        }
+    }
+
+    void
     testSinkRejectsAbsolutePath()
     {
         ScopedTempDirectory td("mrdocs-scriptgen");
@@ -406,6 +434,7 @@ end)
         setup();
 
         testSinkWritesUnderRoot();
+        testSinkAppends();
         testSinkRejectsAbsolutePath();
         testSinkRejectsEscape();
 

@@ -46,11 +46,7 @@ The generator reads two options from xref:configuration/reference.adoc#generator
 
 [source,yaml]
 ----
-generator: json
-generator-options:
-  json:
-    include-meta: false   # keep the reflection $meta field (default false)
-    emit-empty: true      # emit empty fields and elements (default true)
+include::example$snippets/generators/json/options.yml[]
 ----
 
 * `include-meta`: each object in the DOM carries a `$meta` field (`{ "type": ..., "bases": [...] }`) describing the reflected C++ type it came from. It's on the object the templates see, but it's usually noise for an external consumer, so the generator drops it by default. Set `include-meta: true` to keep it.
@@ -58,7 +54,7 @@ generator-options:
 
 == Schema
 
-The JSON mirrors the DOM one-to-one: every field is named exactly as the xref:extensions/dom-reference.adoc[DOM reference] documents it, since the generator serializes that DOM directly. A field shown as `members` in the DOM is a `members` key here, `loc` is `loc`, and so on. Values follow JSON types: strings, numbers, booleans, arrays, and nested objects.
+The JSON mirrors the DOM one-to-one: every field is named exactly as the xref:generators/reference.adoc[DOM reference] documents it, since the generator serializes that DOM directly. A field shown as `members` in the DOM is a `members` key here, `loc` is `loc`, and so on. Values follow JSON types: strings, numbers, booleans, arrays, and nested objects.
 
 == Rolling your own with a script
 
