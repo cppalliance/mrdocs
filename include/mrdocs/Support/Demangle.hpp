@@ -43,18 +43,21 @@ namespace mrdocs {
 
 namespace detail {
 
-/** Drop everything up to and including the last `::` in a type name.
+/** Drop the namespace qualifiers (and any template arguments) from a type name.
 
-    E.g. `"mrdocs::FunctionSymbol"` becomes `"FunctionSymbol"`.
+    E.g. `"mrdocs::FunctionSymbol"` becomes `"FunctionSymbol"`, and
+    `"mrdocs::SymbolCommonBase<mrdocs::SymbolKind::EnumConstant>"` becomes
+    `"SymbolCommonBase"`.
 */
 constexpr std::string_view
 removeNamespaceQualifiers(std::string_view name)
 {
+    std::string_view const head = name.substr(0, name.find('<'));
     constexpr std::string_view scopeDelimiter = "::";
-    std::string_view::size_type const pos = name.rfind(scopeDelimiter);
+    std::string_view::size_type const pos = head.rfind(scopeDelimiter);
     return pos != std::string_view::npos
-        ? name.substr(pos + scopeDelimiter.size())
-        : name;
+        ? head.substr(pos + scopeDelimiter.size())
+        : head;
 }
 
 } // namespace detail

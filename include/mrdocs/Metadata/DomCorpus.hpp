@@ -131,6 +131,19 @@ dom::Value buildCorpusDom(Corpus& corpus);
 */
 dom::Value buildCorpusDom(Corpus const& corpus);
 
+/** Build the DOM value for a single symbol.
+
+    Visits the symbol's polymorphic kind and returns a read-only reflection
+    proxy for the concrete derived type: the same per-symbol object that
+    `corpus.symbols` yields. A caller that wants to walk the corpus one
+    symbol at a time (for example a generator serializing each symbol) uses
+    this instead of reaching into the shape of @ref buildCorpusDom.
+
+    @param sym The symbol to project.
+    @return A DOM value proxying the symbol.
+*/
+dom::Value buildSymbolDom(Symbol const& sym);
+
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_DOMCORPUS_HPP

@@ -739,6 +739,10 @@ stringify(
         indent.resize(indent.size() - 4);
         dest.append(indent);
         dest.append("]");
+        // Leave the path so a sibling that shares this array (an acyclic
+        // repeat) still serializes fully; only a true ancestor cycle above
+        // is reported as recursive.
+        visited.erase(arr.impl().get());
         break;
     }
     case Kind::Object:
@@ -779,6 +783,10 @@ stringify(
         indent.resize(indent.size() - 4);
         dest.append(indent);
         dest.append("}");
+        // Leave the path so a sibling that shares this object (an acyclic
+        // repeat) still serializes fully; only a true ancestor cycle above
+        // is reported as recursive.
+        visited.erase(obj.impl().get());
         break;
     }
     default:

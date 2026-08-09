@@ -1,0 +1,2 @@
+/// A widget.
+struct Widget {};

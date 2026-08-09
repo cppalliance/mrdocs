@@ -26,6 +26,10 @@ makeXMLGenerator();
 
 extern
 std::unique_ptr<Generator>
+makeJSONGenerator();
+
+extern
+std::unique_ptr<Generator>
 makeHTMLGenerator();
 
 extern
@@ -47,6 +51,7 @@ GeneratorRegistryImpl()
 {
     insert(makeAdocGenerator());
     insert(makeXMLGenerator());
+    insert(makeJSONGenerator());
     insert(makeHTMLGenerator());
     insert(makeNoopGenerator());
 }
