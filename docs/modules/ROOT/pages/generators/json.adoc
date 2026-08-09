@@ -59,3 +59,7 @@ generator-options:
 == Schema
 
 The JSON mirrors the DOM one-to-one: every field is named exactly as the xref:extensions/dom-reference.adoc[DOM reference] documents it, since the generator serializes that DOM directly. A field shown as `members` in the DOM is a `members` key here, `loc` is `loc`, and so on. Values follow JSON types: strings, numbers, booleans, arrays, and nested objects.
+
+== Rolling your own with a script
+
+This built-in is a convenience. The corpus reaches a script as plain data too, so the same output is a few lines of JavaScript through a xref:extensions/corpus-extensions.adoc#generators[script-driven generator]: `JSON.stringify(ctx.corpus.symbols)` serializes it directly. Reach for a script when you want to reshape the JSON, filter symbols, or wire up your own options; a script generator registered under `json` even replaces this built-in. The xref:extensions/corpus-extensions.adoc#generators[JSON example] under corpus extensions shows the whole thing.

@@ -237,9 +237,45 @@ The function receives the same `ctx` a transform does, plus `ctx.output`:
 
 Because the script owns the output, it also owns what a per-page generator would otherwise do for it: the URLs it emits, and any escaping of the content it writes. Mr.Docs does not apply an escape map to a generator's output.
 
+=== Example: emitting the corpus as JSON
+
+The smallest useful generator hands the corpus straight to `JSON.stringify`. A complete, runnable example lives at `examples/generators/script-driven/json/`. Given this input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$script-driven-generators/json/simple.cpp[]
+----
+
+the extension declares a `json` generator that writes every symbol to a single `reference.json`:
+
+.`addons/extensions/json.js`
+[source,js]
+----
+include::example$script-driven-generators/json/addons/extensions/json.js[]
+----
+
+Select it with `--generator=json`. Because `ctx.corpus.symbols` is already plain data, the whole generator is one `JSON.stringify` call, and the shape is yours: `map` or `filter` the array, or read `ctx.params` to add options, before writing it. A script generator takes precedence over a built-in of the same name, so this replaces the built-in xref:generators/json.adoc[JSON generator], which is the same idea implemented in C++.
+
+The output is the array of every symbol, each the full DOM object the templates see, with parent/child expressed as `id` references. Its first entry, the global namespace, begins (the file continues with one object per symbol):
+
+.`reference.json` (excerpt)
+[source,json]
+----
+include::example$script-driven-generators/json/reference.json[lines=1..45]
+----
+
 === Example: a search index
 
-A complete, runnable example lives at `examples/generators/script-driven/search-index/`. The extension declares a `search-index` generator that emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
+A complete, runnable example lives at `examples/generators/script-driven/search-index/`. Given this input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$script-driven-generators/search-index/simple.cpp[]
+----
+
+the extension declares a `search-index` generator that emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
 
 .`addons/extensions/search_index.lua`
 [source,lua]
@@ -247,4 +283,10 @@ A complete, runnable example lives at `examples/generators/script-driven/search-
 include::example$script-driven-generators/search-index/addons/extensions/search_index.lua[]
 ----
 
-Select it with `--generator=search-index`; it writes search-index.json into the output directory.
+Select it with `--generator=search-index`; it writes search-index.json into the output directory: one entry per named symbol.
+
+.`search-index.json`
+[source,json]
+----
+include::example$script-driven-generators/search-index/search-index.json[]
+----

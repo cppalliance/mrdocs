@@ -29,13 +29,15 @@ foreach (data_driven IN ITEMS md tex jsonl)
     )
 endforeach ()
 
-# Script-driven generator example (a shell driver that invokes mrdocs).
-add_test(
-    NAME mrdocs-generator-script-driven-search-index
-    COMMAND bash run.sh
-            --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
-            --output=${CMAKE_CURRENT_BINARY_DIR}/script-driven/search-index/reference-output
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/script-driven/search-index
-)
-set_property(TEST mrdocs-generator-script-driven-search-index PROPERTY
-    ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+# Script-driven generator examples (a shell driver that invokes mrdocs).
+foreach (script_driven IN ITEMS search-index json)
+    add_test(
+        NAME mrdocs-generator-script-driven-${script_driven}
+        COMMAND bash run.sh
+                --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
+                --output=${CMAKE_CURRENT_BINARY_DIR}/script-driven/${script_driven}/reference-output
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/script-driven/${script_driven}
+    )
+    set_property(TEST mrdocs-generator-script-driven-${script_driven} PROPERTY
+        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+endforeach ()
