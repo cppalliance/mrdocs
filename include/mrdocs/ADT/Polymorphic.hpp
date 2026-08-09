@@ -14,6 +14,7 @@
 
 #include <mrdocs/ADT/Nullable.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>
+#include <mrdocs/Support/TypeTraits/Visitor.hpp>
 #include <concepts>
 #include <utility>
 
@@ -221,7 +222,7 @@ struct VisitCompareFn
 template <class Base>
 concept CanVisitCompare = requires(Base const& b)
 {
-    visit(b, VisitCompareFn<Base>{ b });
+    ::mrdocs::visit(b, VisitCompareFn<Base>{ b });
 };
 
 template <class T> inline constexpr bool IsPolymorphic = false;
@@ -237,7 +238,7 @@ CompareDerived(Base const& lhs, Base const& rhs)
 {
     if (lhs.Kind == rhs.Kind)
     {
-        return visit(lhs, detail::VisitCompareFn<Base>(rhs));
+        return ::mrdocs::visit(lhs, detail::VisitCompareFn<Base>(rhs));
     }
     return lhs.Kind <=> rhs.Kind;
 }

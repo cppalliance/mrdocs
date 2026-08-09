@@ -22,7 +22,6 @@
 #include <mrdocs/Metadata/Symbol/SymbolBase.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <string>
 #include <vector>
 
@@ -187,22 +186,6 @@ MRDOCS_DESCRIBE_STRUCT(
      IsListedOnPrimary, Specializations)
 )
 
-/** Map a vector of parameters to a @ref dom::Value object.
-
-    @param v The output parameter to receive the dom::Value.
-    @param params The list of parameters to convert.
-    @param domCorpus The DomCorpus used to resolve references.
- */
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    std::vector<Param> const& params,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyArray(params, domCorpus);
-}
 
 /** Check whether a function is a default constructor.
 

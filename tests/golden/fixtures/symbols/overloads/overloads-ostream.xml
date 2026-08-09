@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <namespace>
   <name>left_shift</name>
+  <anchor>left_shift</anchor>
   <loc>
     <loc>
       <location>
@@ -32,6 +34,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads-ostream.cpp</shortPath>
@@ -53,6 +56,7 @@
 </record>
 <overloads>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift-00</anchor>
   <loc>
     <loc>
       <location>
@@ -108,6 +112,7 @@
 </overloads>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -197,6 +202,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -286,6 +292,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift</anchor>
   <loc>
     <loc>
       <location>
@@ -355,6 +362,7 @@
 </function>
 <namespace>
   <name>ostream</name>
+  <anchor>ostream</anchor>
   <loc>
     <loc>
       <location>
@@ -376,6 +384,7 @@
 </namespace>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads-ostream.cpp</shortPath>
@@ -397,6 +406,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads-ostream.cpp</shortPath>
@@ -413,6 +423,7 @@
 </record>
 <record>
   <name>OStream</name>
+  <anchor>OStream</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads-ostream.cpp</shortPath>
@@ -443,6 +454,7 @@
 </record>
 <overloads>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -498,6 +510,7 @@
 </overloads>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -623,6 +636,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift-0a</anchor>
   <loc>
     <loc>
       <location>

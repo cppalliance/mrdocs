@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>conversion.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <overloads>
   <name>operator=</name>
+  <anchor>operator_assign-04</anchor>
   <loc>
     <loc>
       <location>
@@ -112,6 +115,7 @@
 </overloads>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-08</anchor>
   <loc>
     <loc>
       <location>
@@ -208,6 +212,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-00</anchor>
   <loc>
     <loc>
       <location>
@@ -307,6 +312,7 @@
 </function>
 <function>
   <name>operator string_type</name>
+  <anchor>2conversion-02</anchor>
   <loc>
     <loc>
       <location>
@@ -363,6 +369,7 @@
 </function>
 <function>
   <name>operator string_view_type</name>
+  <anchor>2conversion-00</anchor>
   <loc>
     <loc>
       <location>
@@ -422,6 +429,7 @@
 </function>
 <record>
   <name>string_type</name>
+  <anchor>string_type</anchor>
   <loc>
     <loc>
       <location>
@@ -440,6 +448,7 @@
 </record>
 <record>
   <name>string_view_type</name>
+  <anchor>string_view_type</anchor>
   <loc>
     <loc>
       <location>

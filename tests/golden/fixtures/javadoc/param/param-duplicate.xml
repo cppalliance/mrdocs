@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <defLoc>
       <shortPath>param-duplicate.cpp</shortPath>
@@ -71,6 +73,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <defLoc>
       <shortPath>param-duplicate.cpp</shortPath>
@@ -131,6 +134,7 @@
 </function>
 <function>
   <name>g0</name>
+  <anchor>g0</anchor>
   <loc>
     <defLoc>
       <shortPath>param-duplicate.cpp</shortPath>
@@ -210,6 +214,7 @@
 </function>
 <function>
   <name>g1</name>
+  <anchor>g1</anchor>
   <loc>
     <defLoc>
       <shortPath>param-duplicate.cpp</shortPath>
@@ -289,6 +294,7 @@
 </function>
 <function>
   <name>h0</name>
+  <anchor>h0</anchor>
   <loc>
     <defLoc>
       <shortPath>param-duplicate.cpp</shortPath>
@@ -360,6 +366,7 @@
 </function>
 <function>
   <name>h1</name>
+  <anchor>h1</anchor>
   <loc>
     <defLoc>
       <shortPath>param-duplicate.cpp</shortPath>

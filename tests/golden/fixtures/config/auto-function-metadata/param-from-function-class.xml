@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>param-from-function-class.cpp</shortPath>
@@ -39,6 +41,7 @@
 </record>
 <record>
   <name>X</name>
+  <anchor>X</anchor>
   <loc>
     <defLoc>
       <shortPath>param-from-function-class.cpp</shortPath>
@@ -72,6 +75,7 @@
 </record>
 <overloads>
   <name>X</name>
+  <anchor>2constructor-08</anchor>
   <loc>
     <loc>
       <location>
@@ -139,6 +143,7 @@
 </overloads>
 <function>
   <name>X</name>
+  <anchor>2constructor-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -217,6 +222,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-06</anchor>
   <loc>
     <loc>
       <location>
@@ -294,6 +300,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-07</anchor>
   <loc>
     <loc>
       <location>
@@ -375,6 +382,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -462,6 +470,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-00</anchor>
   <loc>
     <loc>
       <location>
@@ -548,6 +557,7 @@
 </function>
 <overloads>
   <name>operator=</name>
+  <anchor>operator_assign-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -621,6 +631,7 @@
 </overloads>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-06</anchor>
   <loc>
     <loc>
       <location>
@@ -716,6 +727,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -810,6 +822,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-07f</anchor>
   <loc>
     <loc>
       <location>
@@ -899,6 +912,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -994,6 +1008,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-07e</anchor>
   <loc>
     <loc>
       <location>

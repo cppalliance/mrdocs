@@ -1,11 +1,11 @@
 {{! Public base classes. }}
-{{#if (any_of_by symbol.bases "isPublic")}}
+{{#if (any_of_by symbol.bases "access" "public")}}
 {{#> markup/section name="base-classes"}}
 {{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h~}}
 {{> markup/table
     weights=(arr 1 4)
     headers=(arr "Name" "Description")
-    items=(filter_by symbol.bases "isPublic")
-    columns=(arr "type" "type.name.id.doc.brief") }}
+    items=(zip_objects (arr "type" "brief") (pluck (filter_by symbol.bases "access" "public") "type") (pluck (transform (pluck (filter_by symbol.bases "access" "public") "type.name.id") @root.mrdocs.corpus.get) "doc.brief"))
+    columns=(arr "type" "brief") }}
 {{/markup/section}}
 {{/if}}

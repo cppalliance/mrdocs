@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <typedef>
   <name>U1</name>
+  <anchor>U1</anchor>
   <loc>
     <loc>
       <location>
@@ -48,6 +50,7 @@
 </typedef>
 <typedef>
   <name>U2</name>
+  <anchor>U2</anchor>
   <loc>
     <loc>
       <location>
@@ -91,6 +94,7 @@
 </typedef>
 <typedef>
   <name>U3</name>
+  <anchor>U3</anchor>
   <loc>
     <loc>
       <location>
@@ -127,6 +131,7 @@
 </typedef>
 <record>
   <name>R0</name>
+  <anchor>R0</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -171,6 +176,7 @@
 </record>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -188,6 +194,7 @@
 </record>
 <record>
   <name>R1</name>
+  <anchor>R1</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -234,6 +241,7 @@
 </record>
 <record>
   <name>R2</name>
+  <anchor>R2</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -273,6 +281,7 @@
 </record>
 <record>
   <name>S0</name>
+  <anchor>S0-0cf</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -338,6 +347,7 @@
 </record>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -355,6 +365,7 @@
 </record>
 <record>
   <name>S0</name>
+  <anchor>S0-09</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -386,6 +397,7 @@
 </record>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -404,6 +416,7 @@
 </record>
 <record>
   <name>S0</name>
+  <anchor>S0-073</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -431,6 +444,7 @@
 </record>
 <record>
   <name>S0</name>
+  <anchor>S0-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>
@@ -462,6 +476,7 @@
 </record>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <loc>
       <location>
@@ -481,6 +496,7 @@
 </record>
 <record>
   <name>S0</name>
+  <anchor>S0-07e</anchor>
   <loc>
     <defLoc>
       <shortPath>template-specialization-inheritance.cpp</shortPath>

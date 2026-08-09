@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <enum>
   <name>E0</name>
+  <anchor>E0</anchor>
   <loc>
     <defLoc>
       <shortPath>enum.cpp</shortPath>
@@ -50,6 +52,7 @@
 </enum>
 <enumConstant>
   <name>e0</name>
+  <anchor>e0</anchor>
   <loc>
     <loc>
       <location>
@@ -94,6 +97,7 @@
 </enumConstant>
 <enumConstant>
   <name>e1</name>
+  <anchor>e1</anchor>
   <loc>
     <loc>
       <location>
@@ -134,6 +138,7 @@
 </enumConstant>
 <enum>
   <name>E1</name>
+  <anchor>E1</anchor>
   <loc>
     <defLoc>
       <shortPath>enum.cpp</shortPath>
@@ -162,6 +167,7 @@
 </enum>
 <enumConstant>
   <name>e2</name>
+  <anchor>e2</anchor>
   <loc>
     <loc>
       <location>
@@ -179,6 +185,7 @@
 </enumConstant>
 <enumConstant>
   <name>e3</name>
+  <anchor>e3</anchor>
   <loc>
     <loc>
       <location>
@@ -196,6 +203,7 @@
 </enumConstant>
 <enum>
   <name>E2</name>
+  <anchor>E2</anchor>
   <loc>
     <defLoc>
       <shortPath>enum.cpp</shortPath>
@@ -248,6 +256,7 @@
 </enum>
 <enumConstant>
   <name>e4</name>
+  <anchor>e4</anchor>
   <loc>
     <loc>
       <location>
@@ -288,6 +297,7 @@
 </enumConstant>
 <enumConstant>
   <name>e5</name>
+  <anchor>e5</anchor>
   <loc>
     <loc>
       <location>
@@ -328,6 +338,7 @@
 </enumConstant>
 <enum>
   <name>E3</name>
+  <anchor>E3</anchor>
   <loc>
     <defLoc>
       <shortPath>enum.cpp</shortPath>
@@ -357,6 +368,7 @@
 </enum>
 <enumConstant>
   <name>e6</name>
+  <anchor>e6</anchor>
   <loc>
     <loc>
       <location>
@@ -374,6 +386,7 @@
 </enumConstant>
 <enumConstant>
   <name>e7</name>
+  <anchor>e7</anchor>
   <loc>
     <loc>
       <location>

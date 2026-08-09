@@ -140,15 +140,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Kind, IsPackExpansion, IsConst, IsVolatile, Constraints)
 )
 
-/** Serialize a Type into a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Type const& I,
-    DomCorpus const* domCorpus);
 
 /** CRTP base that ties a concrete type to a fixed TypeKind.
 */
@@ -213,12 +204,18 @@ std::strong_ordering
 operator<=>(Polymorphic<Type> const&, Polymorphic<Type> const&);
 
 /** Equality for two polymorphic types.
+
+    Declared here, next to `operator<=>`, and defined out of line in
+    Type.cpp. It must be visible wherever `Polymorphic<Type>` is compared,
+    so that `equality_comparable<Polymorphic<Type>>` holds (for example when
+    an `Optional<Polymorphic<Type>>` member is compared through the reflected
+    `operator<=>`). Keeping the body out of line also keeps it away from the
+    kind registration hazard that a header-inline body would hit (see
+    Type.cpp).
 */
-inline bool
-operator==(Polymorphic<Type> const& a, Polymorphic<Type> const& b)
-{
-    return std::is_eq(a <=> b);
-}
+MRDOCS_DECL
+bool
+operator==(Polymorphic<Type> const&, Polymorphic<Type> const&);
 
 } // mrdocs
 

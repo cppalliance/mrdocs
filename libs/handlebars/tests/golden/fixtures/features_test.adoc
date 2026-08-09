@@ -259,6 +259,23 @@ People:
                 "account_id": "account-x11",
                 "product": "Desk"
             }
+        ],
+        "nested_array": [
+            {
+                "ref": {
+                    "name": "Alpha",
+                    "id": "a1"
+                }
+            },
+            {
+                "ref": {
+                    "name": "Beta",
+                    "id": "b1"
+                }
+            },
+            {
+                "other": "no-ref"
+            }
         ]
     },
     "symbol": {
@@ -1332,6 +1349,29 @@ c
     "Chair",
     "Bookcase",
     "Desk"
+]
+// pluck (dotted path; position-preserving, undefined where it does not resolve)
+[
+    "Alpha",
+    "Beta",
+]
+[
+    "a1",
+    "b1",
+]
+// zip_objects
+[
+    {
+        "name": "Alpha",
+        "id": "a1"
+    },
+    {
+        "name": "Beta",
+        "id": "b1"
+    },
+    {
+
+    }
 ]
 // unique
 [

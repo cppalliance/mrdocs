@@ -16,7 +16,7 @@
 #define MRDOCS_LIB_AST_ASTACTION_HPP
 
 #include <mrdocs/Platform.hpp>
-#include "../Support/ExecutionContext.hpp"
+#include <mrdocs/Support/ExecutionContext.hpp>
 #include "MacroCollector.hpp"
 #include "MissingSymbolSink.hpp"
 #include <mrdocs/Config.hpp>

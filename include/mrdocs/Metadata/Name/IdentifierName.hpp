@@ -32,6 +32,9 @@ namespace mrdocs {
 struct IdentifierName final
     : Name
 {
+    /** The variant discriminator constant of this concrete name kind. */
+    static constexpr NameKind kind_id = NameKind::Identifier;
+
     /** Default-construct an identifier with kind Identifier.
     */
     constexpr

@@ -10,7 +10,7 @@
 //
 
 #include "LuaBinding.hpp"
-#include "../Gen/script/ScriptGenerator.hpp"
+#include <mrdocs/Generators/script/ScriptGenerator.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Engines/Lua.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>

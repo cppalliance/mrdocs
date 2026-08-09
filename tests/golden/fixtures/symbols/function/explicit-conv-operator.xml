@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>Explicit</name>
+  <anchor>Explicit</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-conv-operator.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -104,6 +107,7 @@
 </function>
 <record>
   <name>ExplicitExpression</name>
+  <anchor>ExplicitExpression</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-conv-operator.cpp</shortPath>
@@ -145,6 +149,7 @@
 </record>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -217,6 +222,7 @@
 </function>
 <record>
   <name>ExplicitFalse</name>
+  <anchor>ExplicitFalse</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-conv-operator.cpp</shortPath>
@@ -238,6 +244,7 @@
 </record>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -310,6 +317,7 @@
 </function>
 <record>
   <name>ExplicitTrue</name>
+  <anchor>ExplicitTrue</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-conv-operator.cpp</shortPath>
@@ -331,6 +339,7 @@
 </record>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>

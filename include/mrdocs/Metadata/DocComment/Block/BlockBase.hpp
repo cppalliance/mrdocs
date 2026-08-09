@@ -17,13 +17,10 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/ArrayView.hpp>
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Block/BlockKind.hpp>
 #include <mrdocs/Metadata/DocComment/Inline.hpp>
 #include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <algorithm>
 #include <string>
 
@@ -228,18 +225,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (blocks)
 )
 
-/** Convert a polymorphic block storage into a DOM value.
-    @param io Destination value to fill.
-    @param I Block to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-template <class IO, polymorphic_storage_for<Block> BlockTy>
-void
-tag_invoke(
-    dom::ValueFromTag,
-    IO& io,
-    BlockTy const& I,
-    DomCorpus const* domCorpus);
 
 /** Removes leading whitespace from the first text elements
 

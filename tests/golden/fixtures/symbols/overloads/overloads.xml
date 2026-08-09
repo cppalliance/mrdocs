@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads.cpp</shortPath>
@@ -42,6 +44,7 @@
 </record>
 <overloads>
   <name>f</name>
+  <anchor>f-07</anchor>
   <loc>
     <loc>
       <location>
@@ -74,6 +77,7 @@
 </overloads>
 <function>
   <name>f</name>
+  <anchor>f-08</anchor>
   <loc>
     <loc>
       <location>
@@ -106,6 +110,7 @@
 </function>
 <function>
   <name>f</name>
+  <anchor>f-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -154,6 +159,7 @@
 </function>
 <overloads>
   <name>g</name>
+  <anchor>g-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -186,6 +192,7 @@
 </overloads>
 <function>
   <name>g</name>
+  <anchor>g-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -219,6 +226,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-01</anchor>
   <loc>
     <loc>
       <location>
@@ -268,6 +276,7 @@
 </function>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads.cpp</shortPath>
@@ -298,6 +307,7 @@
 </record>
 <overloads>
   <name>f</name>
+  <anchor>f-0c</anchor>
   <loc>
     <loc>
       <location>
@@ -329,6 +339,7 @@
 </overloads>
 <function>
   <name>f</name>
+  <anchor>f-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -359,6 +370,7 @@
 </function>
 <function>
   <name>f</name>
+  <anchor>f-06</anchor>
   <loc>
     <loc>
       <location>
@@ -405,6 +417,7 @@
 </function>
 <overloads>
   <name>operator==</name>
+  <anchor>operator_eq-073</anchor>
   <loc>
     <loc>
       <location>
@@ -467,6 +480,7 @@
 </overloads>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -597,6 +611,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -727,6 +742,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq-08</anchor>
   <loc>
     <loc>
       <location>
@@ -863,6 +879,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq-071</anchor>
   <loc>
     <loc>
       <location>

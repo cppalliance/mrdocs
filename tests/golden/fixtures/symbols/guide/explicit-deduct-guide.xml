@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>X</name>
+  <anchor>X-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-deduct-guide.cpp</shortPath>
@@ -48,6 +50,7 @@
 </record>
 <guide>
   <name>X</name>
+  <anchor>X-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -99,6 +102,7 @@
 </guide>
 <guide>
   <name>X</name>
+  <anchor>X-00</anchor>
   <loc>
     <loc>
       <location>
@@ -150,6 +154,7 @@
 </guide>
 <guide>
   <name>X</name>
+  <anchor>X-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -201,6 +206,7 @@
 </guide>
 <guide>
   <name>X</name>
+  <anchor>X-06</anchor>
   <loc>
     <loc>
       <location>

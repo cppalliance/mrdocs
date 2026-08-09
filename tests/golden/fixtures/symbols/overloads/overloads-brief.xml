@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads-brief.cpp</shortPath>
@@ -52,6 +54,7 @@
 </record>
 <overloads>
   <name>A</name>
+  <anchor>2constructor-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -115,6 +118,7 @@
 </overloads>
 <function>
   <name>A</name>
+  <anchor>2constructor-03</anchor>
   <loc>
     <loc>
       <location>
@@ -159,6 +163,7 @@
 </function>
 <function>
   <name>A</name>
+  <anchor>2constructor-01</anchor>
   <loc>
     <loc>
       <location>
@@ -232,6 +237,7 @@
 </function>
 <overloads>
   <name>operator=</name>
+  <anchor>operator_assign-04c</anchor>
   <loc>
     <loc>
       <location>
@@ -317,6 +323,7 @@
 </overloads>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-045</anchor>
   <loc>
     <loc>
       <location>
@@ -418,6 +425,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-06</anchor>
   <loc>
     <loc>
       <location>
@@ -513,6 +521,7 @@
 </function>
 <overloads>
   <name>operator+</name>
+  <anchor>operator_plus-00</anchor>
   <loc>
     <loc>
       <location>
@@ -593,6 +602,7 @@
 </overloads>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus-0c</anchor>
   <loc>
     <loc>
       <location>
@@ -683,6 +693,7 @@
 </function>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -779,6 +790,7 @@
 </function>
 <overloads>
   <name>operator-</name>
+  <anchor>operator_minus-09</anchor>
   <loc>
     <loc>
       <location>
@@ -842,6 +854,7 @@
 </overloads>
 <function>
   <name>operator-</name>
+  <anchor>operator_minus-02</anchor>
   <loc>
     <loc>
       <location>
@@ -909,6 +922,7 @@
 </function>
 <function>
   <name>operator-</name>
+  <anchor>operator_minus-0c</anchor>
   <loc>
     <loc>
       <location>
@@ -1011,6 +1025,7 @@
 </function>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>overloads-brief.cpp</shortPath>
@@ -1046,6 +1061,7 @@
 </record>
 <overloads>
   <name>no_way_to_infer_this_brief</name>
+  <anchor>no_way_to_infer_this_brief-04</anchor>
   <loc>
     <loc>
       <location>
@@ -1117,6 +1133,7 @@
 </overloads>
 <function>
   <name>no_way_to_infer_this_brief</name>
+  <anchor>no_way_to_infer_this_brief-02</anchor>
   <loc>
     <loc>
       <location>
@@ -1159,6 +1176,7 @@
 </function>
 <function>
   <name>no_way_to_infer_this_brief</name>
+  <anchor>no_way_to_infer_this_brief-01</anchor>
   <loc>
     <loc>
       <location>
@@ -1230,6 +1248,7 @@
 </function>
 <overloads>
   <name>operator+</name>
+  <anchor>operator_plus-09</anchor>
   <loc>
     <loc>
       <location>
@@ -1292,6 +1311,7 @@
 </overloads>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -1388,6 +1408,7 @@
 </function>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus-06</anchor>
   <loc>
     <loc>
       <location>
@@ -1484,6 +1505,7 @@
 </function>
 <overloads>
   <name>sameBrief</name>
+  <anchor>sameBrief-07</anchor>
   <loc>
     <loc>
       <location>
@@ -1556,6 +1578,7 @@
 </overloads>
 <function>
   <name>sameBrief</name>
+  <anchor>sameBrief-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -1627,6 +1650,7 @@
 </function>
 <function>
   <name>sameBrief</name>
+  <anchor>sameBrief-0e</anchor>
   <loc>
     <loc>
       <location>

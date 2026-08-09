@@ -1,4 +1,4 @@
 {{! Specializations of this primary, listed on its own page rather than the parent scope. }}
 {{#if symbol.specializations}}
-{{>symbol/members-table members=symbol.specializations title="Specializations"}}
+{{>symbol/members-table members=(transform symbol.specializations @root.mrdocs.corpus.get) title="Specializations"}}
 {{/if}}

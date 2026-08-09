@@ -12,7 +12,7 @@
 //
 
 #include "ExecutionContext.hpp"
-#include "../Metadata/Reduce.hpp"
+#include <mrdocs/Metadata/Reduce.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>

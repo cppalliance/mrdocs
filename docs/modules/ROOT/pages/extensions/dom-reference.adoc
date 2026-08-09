@@ -3,6 +3,7 @@
 
 The Document Object Model (DOM) is a tree structure that represents the symbols extracted from the source code. The DOM is used by the generator to render the documentation.
 
+
 == Top-Level Fields
 
 The top-level object in the DOM is the context for a template. The top-level object has the following properties:
@@ -48,29 +49,13 @@ The `Symbol` object represents a symbol extracted from the source code. The symb
 | `string`
 | The extraction mode of the symbol according to the specified filters. (e.g., `regular`, `see-below`, `implementation-defined`, `dependency`)
 
-| `isRegular`
-| `bool`
-| Whether the symbol extraction mode is `regular`.
-
-| `isSeeBelow`
-| `bool`
-| Whether the symbol extraction mode is `see-below`.
-
-| `isImplementationDefined`
-| `bool`
-| Whether the symbol extraction mode is `implementation-defined`.
-
-| `isDependency`
-| `bool`
-| Whether the symbol extraction mode is `dependency`.
-
-| `parents`
-| `<<symbol-fields,Symbol Object[]>>`
-| The parent contexts (namespaces or records) of the symbol.
+| `anchor`
+| `string`
+| The symbol's own (unqualified) URL- and filename-safe legible name. Generators join these along the parent chain to form a page-unique id or path.
 
 | `parent`
-| `<<symbol-fields,Symbol Object>>`
-| The parent context (namespace or record) of the symbol.
+| `string`
+| The id of the symbol's parent context (namespace or record), or absent for the global namespace. Resolve it to a Symbol with `@root.mrdocs.corpus.get`.
 
 | `doc`
 | `Any`
@@ -136,18 +121,20 @@ When the attribute kind is `assume`, the attribute object has the following addi
 | The assumed expression (the C++23 `[[assume(expression)]]` form).
 |===
 
-Handlebars generators extend each symbol with the following fields:
+Handlebars generators expose corpus functions that compute a symbol's
+links. Call them with a symbol object, for example
+`(@root.mrdocs.corpus.getUrl symbol)`:
 
 |===
-|Property |Type| Description
+|Function |Returns| Description
 
-| `url`
+| `getUrl`
 | `string`
-| The URL of the symbol. If the documentation is a single page, this is the anchor link to the symbol starting with `#`. If the documentation is multipage, this is the path to the symbol starting with `/`.
+| The symbol's URL: a `#`-prefixed fragment on a single page, or a `/`-prefixed path (with the file extension) in multipage output.
 
-| `anchor`
+| `qualifiedAnchor`
 | `string`
-| The anchor link to the symbol. This is used for section IDs in the documentation.
+| The symbol's page-unique anchor id: the qualified legible name joined with `-`, used as a heading or section id. (The per-symbol `anchor` field above is only the unqualified component.)
 
 |===
 
@@ -158,12 +145,12 @@ The following table lists the additional properties for symbols that contain inf
 |Property |Type| Description
 
 | `members`
-| `<<symbol-fields,Symbol Object[]>>`
-| The members of that scope (e.g., member functions, namespace symbols).
+| `string[]`
+| The ids of the members of that scope (e.g., member functions, namespace symbols). Resolve each with `@root.mrdocs.corpus.get`.
 
 | `overloads`
-| `<<symbol-fields,Symbol Object[]>>`
-| Same as `members`, but groups overloaded functions as unique symbols of kind `overload`.
+| `string[]`
+| Same as `members`, but groups overloaded functions as unique symbols of kind `overload`. These are ids; resolve each with `@root.mrdocs.corpus.get`.
 |===
 
 Symbol objects that contain information about the location include the following properties:
@@ -186,8 +173,8 @@ When the symbol kind is `namespace`, the symbol object has the following additio
 | The interface of the namespace.
 
 | `usingDirectives`
-| `<<symbol-fields,Symbol Object[]>>`
-| The using directives of the namespace.
+| `string[]`
+| The ids of the namespace's using directives. Resolve each with `@root.mrdocs.corpus.get`.
 |===
 
 When the symbol kind is `record` (e.g., `class`, `struct`, `union`), the symbol object has the following additional properties:
@@ -439,13 +426,13 @@ When the symbol kind is `friend`, the symbol object has the following additional
 | `string`
 | The name of the friend symbol or type.
 
-| `symbol`
-| <<symbol-fields,Symbol Object>>
-| The friend symbol.
+| `id`
+| `string`
+| The id of the friend symbol (when a symbol is befriended). Resolve with `@root.mrdocs.corpus.get`.
 
 | `type`
 | <<type-info-fields,Type Object>>
-| The friend type.
+| The friend type (when a type is befriended).
 |===
 
 When the symbol kind is `namespace-alias`, the symbol object has the following additional properties:
@@ -468,8 +455,8 @@ When the symbol kind is `using`, the symbol object has the following additional 
 | The class of the using declaration (e.g., `normal`, `typename`, `enum`).
 
 | `shadows`
-| <<symbol-fields,Symbol Object[]>>
-| The symbols being used.
+| `string[]`
+| The ids of the symbols being used. Resolve each with `@root.mrdocs.corpus.get`.
 
 | `qualifier`
 | `<<name-info-fields,Name Object>>`
@@ -550,24 +537,24 @@ The tranche object has the following properties:
 |Property |Type| Description
 
 | (symbol kind in plural form: e.g., `classes`, `functions`, `variables`)
-| `<<symbol-fields,Symbol Object[]>>`
-| The symbols of that kind in the scope.
+| `string[]`
+| The ids of the symbols of that kind in the scope. Resolve each with `@root.mrdocs.corpus.get`.
 
 | `types`
-| `<<symbol-fields,Symbol Object[]>>`
-| The types in the scope.
+| `string[]`
+| The ids of the types in the scope. Resolve each with `@root.mrdocs.corpus.get`.
 
 | `staticfuncs`
-| `<<symbol-fields,Symbol Object[]>>`
-| The static functions in the scope.
+| `string[]`
+| The ids of the static functions in the scope. Resolve each with `@root.mrdocs.corpus.get`.
 
 | `overloads`
-| `<<symbol-fields,Symbol Object[]>>`
-| The overloads in the scope.
+| `string[]`
+| The ids of the overloads in the scope. Resolve each with `@root.mrdocs.corpus.get`.
 
 | `staticoverloads`
-| `<<symbol-fields,Symbol Object[]>>`
-| The static overloads in the scope.
+| `string[]`
+| The ids of the static overloads in the scope. Resolve each with `@root.mrdocs.corpus.get`.
 |===
 
 [#interface-fields]
@@ -628,8 +615,8 @@ The template info object has the following properties:
 | The kind of template (e.g., `explicit`, `partial`).
 
 | `primary`
-| `<<symbol-fields,Symbol Object>>`
-| The primary template.
+| `string`
+| The id of the primary template. Resolve with `@root.mrdocs.corpus.get`.
 
 | `params`
 | `<<tparam-fields,tParam Object[]>>`

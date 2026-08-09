@@ -8,5 +8,5 @@
 {{else if (eq symbol.kind "namespace")}}
 {{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
 {{else if (eq symbol.kind "enum")}}
-{{>symbol/members-table members=symbol.constants title="Members"}}
+{{>symbol/members-table members=(transform symbol.constants @root.mrdocs.corpus.get) title="Members"}}
 {{/if}}

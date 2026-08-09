@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>S</name>
+  <anchor>S</anchor>
   <loc>
     <defLoc>
       <shortPath>member-pointer.cpp</shortPath>
@@ -45,6 +47,7 @@
 </record>
 <variable>
   <name>x</name>
+  <anchor>x</anchor>
   <loc>
     <loc>
       <location>
@@ -76,6 +79,7 @@
 </variable>
 <variable>
   <name>y</name>
+  <anchor>y</anchor>
   <loc>
     <loc>
       <location>
@@ -107,6 +111,7 @@
 </variable>
 <variable>
   <name>mp_double</name>
+  <anchor>mp_double</anchor>
   <loc>
     <defLoc>
       <shortPath>member-pointer.cpp</shortPath>
@@ -164,6 +169,7 @@
 </variable>
 <variable>
   <name>mp_int</name>
+  <anchor>mp_int</anchor>
   <loc>
     <defLoc>
       <shortPath>member-pointer.cpp</shortPath>

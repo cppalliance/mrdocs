@@ -10,9 +10,10 @@
 //
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ConfigSchema.hpp>
 #include <mrdocs/Support/Debug.hpp>
 #include <mrdocs/Support/ReportImpl.hpp>
-#include "TestArgs.hpp"
+#include "TestCliArgs.hpp"
 #include "TestRunner.hpp"
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
@@ -22,6 +23,7 @@
 #include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
+#include <sstream>
 #include <stdlib.h>
 
 int main(int argc, char const** argv);
@@ -33,10 +35,9 @@ void DoTestAction(char const** argv)
 {
     using namespace mrdocs;
 
-    std::vector<std::string> testPaths(
-        testArgs.cmdLineInputs.begin(),
-        testArgs.cmdLineInputs.end());
-    testArgs.cmdLineInputs.clear();
+    // The test paths are the positional arguments; configuration options were
+    // recognized during parsing and left in argv for Config::load to apply.
+    std::vector<std::string> const& testPaths = testCliArgs.inputs;
     for (auto const& inputPath: testPaths)
     {
         if (!files::exists(inputPath))
@@ -56,7 +57,7 @@ void DoTestAction(char const** argv)
     auto const& results = runner.results;
 
     std::stringstream os;
-    switch(testArgs.action)
+    switch(testCliArgs.action)
     {
     case Action::test:
         os << "Test action: ";
@@ -96,19 +97,33 @@ int test_main(int argc, char const** argv)
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::setBugReportMsg("PLEASE submit a bug report to https://github.com/cppalliance/mrdocs/issues/ and include the crash backtrace.\n");
 
-    testArgs.hideForeignOptions();
-    if (!llvm::cl::ParseCommandLineOptions(argc, argv, testArgs.usageText))
+    // Parse the harness's own options and test paths straight from argv;
+    // configuration options are left in argv for Config::load to apply.
+    testCliArgs = parseTestCommandLine(argc, argv);
+    if (testCliArgs.showHelp)
     {
-        return EXIT_FAILURE;
+        llvm::outs() <<
+R"(USAGE: mrdocs-test [options] ( dir | file )...
+
+  --action=test|create|update  Compare, create, or rewrite fixtures.
+  --bad                        Write a .bad.<ext> file for each failure.
+  --force                      With update, rewrite even when normalized output matches.
+  --log-level=<level>          Reporting level (trace|debug|info|warn|error|fatal).
+  --help                       Print this help and exit.
+
+Configuration options (for example --addons, --stdlib-includes) are also
+accepted and applied like the mrdocs tool.
+)";
+        return EXIT_SUCCESS;
     }
 
     // Apply log-level
     auto ll = ConfigSchema::LogLevel::Info;
-    ConfigSchema::fromString(testArgs.logLevel.getValue(), ll);
+    ConfigSchema::fromString(testCliArgs.logLevel, ll);
     report::setMinimumLevel(static_cast<report::Level>(ll));
     report::setSourceLocationWarnings(false);
 
-    if (!testArgs.cmdLineInputs.empty())
+    if (!testCliArgs.inputs.empty())
     {
         DoTestAction(argv);
     }

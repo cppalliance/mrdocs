@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>param-from-operator.cpp</shortPath>
@@ -40,6 +42,7 @@
 </record>
 <record>
   <name>X</name>
+  <anchor>X</anchor>
   <loc>
     <defLoc>
       <shortPath>param-from-operator.cpp</shortPath>
@@ -85,6 +88,7 @@
 </record>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus</anchor>
   <loc>
     <loc>
       <location>
@@ -176,6 +180,7 @@
 </function>
 <record>
   <name>ostream</name>
+  <anchor>ostream</anchor>
   <loc>
     <defLoc>
       <shortPath>param-from-operator.cpp</shortPath>
@@ -211,6 +216,7 @@
 </record>
 <function>
   <name>operator-</name>
+  <anchor>operator_minus</anchor>
   <loc>
     <loc>
       <location>
@@ -337,6 +343,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift</anchor>
   <loc>
     <defLoc>
       <shortPath>param-from-operator.cpp</shortPath>
@@ -465,6 +472,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>

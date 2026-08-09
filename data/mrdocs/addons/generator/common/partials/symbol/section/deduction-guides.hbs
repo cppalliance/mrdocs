@@ -1,4 +1,4 @@
 {{! Deduction guides for this class template, listed on its own page rather than the parent scope. }}
 {{#if symbol.deductionGuides}}
-{{>symbol/members-table members=symbol.deductionGuides title="Deduction Guides"}}
+{{>symbol/members-table members=(transform symbol.deductionGuides @root.mrdocs.corpus.get) title="Deduction Guides"}}
 {{/if}}

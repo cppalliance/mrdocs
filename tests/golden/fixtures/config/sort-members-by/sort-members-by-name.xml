@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>Z</name>
+  <anchor>Z</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-members-by-name.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <overloads>
   <name>Z</name>
+  <anchor>2constructor-00</anchor>
   <loc>
     <loc>
       <location>
@@ -81,6 +84,7 @@
 </overloads>
 <function>
   <name>Z</name>
+  <anchor>2constructor-05</anchor>
   <loc>
     <loc>
       <location>
@@ -124,6 +128,7 @@
 </function>
 <function>
   <name>Z</name>
+  <anchor>2constructor-06</anchor>
   <loc>
     <loc>
       <location>
@@ -205,6 +210,7 @@
 </function>
 <function>
   <name>~Z</name>
+  <anchor>2destructor</anchor>
   <loc>
     <loc>
       <location>
@@ -248,6 +254,7 @@
 </function>
 <function>
   <name>bar</name>
+  <anchor>bar</anchor>
   <loc>
     <loc>
       <location>
@@ -281,6 +288,7 @@
 </function>
 <function>
   <name>foo</name>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -314,6 +322,7 @@
 </function>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -387,6 +396,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>
@@ -465,6 +475,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -578,6 +589,7 @@
 </function>
 <function>
   <name>operator!=</name>
+  <anchor>operator_not_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -691,6 +703,7 @@
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
+  <anchor>operator_3way</anchor>
   <loc>
     <loc>
       <location>

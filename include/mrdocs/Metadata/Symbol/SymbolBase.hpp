@@ -24,7 +24,6 @@
 #include <mrdocs/Metadata/Symbol/SymbolKind.hpp>
 #include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -39,6 +38,19 @@ struct MRDOCS_VISIBLE Symbol {
     /** The unqualified name.
     */
     std::string Name;
+
+    /** A legible, filesystem- and URL-safe name for this symbol.
+
+        This is the symbol's own unqualified name: unique among its
+        siblings, case-insensitive, and composed only of characters valid
+        in both filenames and URL paths. Generators assemble a qualified
+        fragment or multipage path by walking the parent chain and joining
+        these per-symbol anchors, so the parent portion is not stored here.
+
+        It is populated during finalization by the legible-names pass;
+        it is empty until then.
+    */
+    std::string Anchor;
 
     /** The source location information.
     */
@@ -188,31 +200,9 @@ protected:
 MRDOCS_DESCRIBE_STRUCT(
     Symbol,
     (),
-    (Name, Loc, Kind, id, Access,
+    (Name, Anchor, Loc, Kind, id, Access,
      Extraction, IsCopyFromInherited, Parent, doc, Attributes)
 )
-
-/** Map a Symbol to a dom::Object with computed extraction properties.
-    @param io The IO object to map into.
-    @param I The Symbol to map.
-    @param domCorpus The DomCorpus context.
-*/
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Symbol const& I,
-    DomCorpus const* domCorpus)
-{
-    MRDOCS_ASSERT(domCorpus);
-    mapReflectedType<false>(io, I, domCorpus);
-    io.map("class", std::string("symbol"));
-    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
-    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
-    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
-    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
-}
 
 //------------------------------------------------
 

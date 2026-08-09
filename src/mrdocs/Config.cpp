@@ -11,14 +11,19 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include "Support/CliOverride.hpp"
 #include "Support/Filesystem/Temp.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Dom/Array.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Dom/Value.hpp>
+#include <mrdocs/Support/Filesystem/Glob.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/String/StringList.hpp>
 #include <mrdocs/Support/TypeTraits/Concepts.hpp>
+#include <mrdocs/Support/TypeTraits/TypeTraits.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -26,9 +31,12 @@
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 #include <charconv>
+#include <map>
 #include <ranges>
 #include <thread>
+#include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace mrdocs {
 
@@ -121,8 +129,177 @@ toDom(llvm::yaml::Node* Value)
     {
         return toDomScalar(ValueString);
     }
+    // A block scalar (YAML `|` / `>`) is always literal text, e.g. the
+    // multi-line shim content in `missing-include-shims`. Take its value
+    // verbatim, with no int/bool/null coercion.
+    auto *ValueBlock = clang::dyn_cast<llvm::yaml::BlockScalarNode>(Value);
+    if (ValueBlock)
+    {
+        return dom::Value(ValueBlock->getValue().str());
+    }
     return nullptr;
 }
+
+/* Assign a value from the configuration to a typed schema member.
+
+   This is the one place that turns a parsed value (a scalar, sequence, or
+   mapping, already normalized to a `dom::Value`) into whatever type the
+   option has, using reflection for the categories that need it
+   (enumerators). Both the YAML loader and the command-line overrides route
+   through it, so a value behaves the same whichever source it comes from.
+   Free-form object options keep their DOM shape.
+
+   @param out The option member to assign.
+   @param v The value from the configuration file or command line.
+   @return Nothing on success, otherwise a description of the mismatch.
+*/
+template <class T>
+Expected<void>
+assignConfigValue(T& out, dom::Value const& v)
+{
+    if constexpr (std::is_same_v<T, bool>)
+    {
+        // A boolean, or any truthy scalar (e.g. `1`), enables the flag.
+        out = v.isBoolean() ? v.getBool() : v.isTruthy();
+        return {};
+    }
+    else if constexpr (std::is_enum_v<T>)
+    {
+        if (!v.isString())
+        {
+            return Unexpected(formatError(
+                "expected a string for an enumerated option"));
+        }
+        std::string_view const s = v.getString();
+        Expected<void> result =
+            Unexpected(formatError("invalid value \"{}\"", s));
+        describe::for_each(
+            describe::describe_enumerators<T>{},
+            [&](auto d)
+            {
+                if (toString(d.value) == s)
+                {
+                    out = d.value;
+                    result = {};
+                }
+            });
+        return result;
+    }
+    else if constexpr (std::is_integral_v<T>)
+    {
+        if (!v.isInteger())
+        {
+            return Unexpected(formatError("expected an integer"));
+        }
+        out = static_cast<T>(v.getInteger());
+        return {};
+    }
+    else if constexpr (std::is_same_v<T, std::string>)
+    {
+        if (!v.isString())
+        {
+            return Unexpected(formatError("expected a string"));
+        }
+        out = std::string(v.getString());
+        return {};
+    }
+    else if constexpr (std::is_same_v<T, StringList>)
+    {
+        // A string or a sequence of strings.
+        std::vector<std::string> values;
+        if (v.isArray())
+        {
+            dom::Array const& arr = v.getArray();
+            for (std::size_t i = 0; i < arr.size(); ++i)
+            {
+                values.emplace_back(arr.get(i).getString());
+            }
+        }
+        else if (v.isString())
+        {
+            values.emplace_back(v.getString());
+        }
+        out = StringList(std::move(values));
+        return {};
+    }
+    else if constexpr (
+        std::is_same_v<T, PathGlobPattern> ||
+        std::is_same_v<T, SymbolGlobPattern>)
+    {
+        if (!v.isString())
+        {
+            return Unexpected(formatError("expected a glob pattern string"));
+        }
+        auto pattern = T::create(v.getString());
+        if (!pattern)
+        {
+            return Unexpected(pattern.error());
+        }
+        out = std::move(pattern.value());
+        return {};
+    }
+    else if constexpr (std::is_same_v<T, dom::Object>)
+    {
+        // Free-form option blocks (generator-options / transform-options)
+        // keep their DOM shape.
+        if (v.isObject())
+        {
+            out = v.getObject();
+        }
+        return {};
+    }
+    else if constexpr (mrdocs::specialization_of<T, std::vector>)
+    {
+        using Element = typename T::value_type;
+        out.clear();
+        if (v.isArray())
+        {
+            dom::Array const& arr = v.getArray();
+            for (std::size_t i = 0; i < arr.size(); ++i)
+            {
+                Element element{};
+                MRDOCS_TRY(assignConfigValue(element, arr.get(i)));
+                out.push_back(std::move(element));
+            }
+        }
+        return {};
+    }
+    else if constexpr (mrdocs::specialization_of<T, std::map>)
+    {
+        using Mapped = typename T::mapped_type;
+        out.clear();
+        if (v.isObject())
+        {
+            Expected<void> result;
+            v.getObject().visit(
+                [&](dom::String const& key, dom::Value const& value) -> bool
+                {
+                    Mapped mapped{};
+                    if (auto e = assignConfigValue(mapped, value); !e)
+                    {
+                        result = Unexpected(e.error());
+                        return false;
+                    }
+                    out.emplace(
+                        std::string(std::string_view(key)), std::move(mapped));
+                    return true;
+                });
+            return result;
+        }
+        return {};
+    }
+    else
+    {
+        return Unexpected(formatError(
+            "unsupported configuration option type"));
+    }
+}
+
+// Apply the `--option` overrides parsed from argv onto a schema. Internal to
+// this translation unit; the only public entry points are load / load_file,
+// which route through it. Defined below, after the reflection helpers it uses.
+Expected<void>
+applyCommandLineOverrides(ConfigSchema& c, char const** argv);
 
 } // (anon)
 
@@ -167,50 +344,242 @@ Expected<void>
 Config::
 load(
     Config& c,
-    std::string_view const configYaml)
+    std::string_view const configYaml,
+    char const** argv)
 {
-    // Typed options from the YAML.
-    MRDOCS_TRY(ConfigSchema::load(c, configYaml));
-
-    // DOM view of the same YAML, preserving unknown keys for templates.
-    c.configObj_ = toDomObject(configYaml);
-
-    // The free-form per-generator options live only in the DOM; lift them
-    // into the typed map (llvm::yaml cannot map their dynamic shape).
-    c.generatorOptions.clear();
-    if (dom::Value const go = c.configObj_.get("generator-options");
-        go.isObject())
+    // Walk the YAML mapping once and route each value straight to the schema
+    // member with the matching key. Reflection over the schema (forEach) yields
+    // the option's kebab-case key and its type, so a single value conversion
+    // (assignConfigValue, shared with the command line) turns the parsed
+    // scalar, sequence, or mapping into the option's type, including the
+    // free-form object options. A key matching no option is recorded and
+    // reported once the log level is configured (see reportUnknownConfigKeys),
+    // because config loading runs before that.
+    c.unknownConfigKeys.clear();
+    llvm::SourceMgr SM;
+    llvm::yaml::Stream stream(configYaml, SM);
+    llvm::yaml::document_iterator I = stream.begin();
+    llvm::yaml::MappingNode* mapping = nullptr;
+    if (I != stream.end())
     {
-        go.getObject().visit(
-            [&c](dom::String const& key, dom::Value const& value)
-            {
-                if (value.isObject())
-                {
-                    c.generatorOptions.emplace(
-                        std::string(std::string_view(key)),
-                        value.getObject());
-                }
-            });
+        mapping = clang::dyn_cast<llvm::yaml::MappingNode>(I->getRoot());
     }
-
-    // The free-form per-transform options are lifted the same way.
-    c.transformOptions.clear();
-    if (dom::Value const to = c.configObj_.get("transform-options");
-        to.isObject())
+    Expected<void> result;
+    // An empty document (or a non-mapping root) contributes no values, but the
+    // command-line overrides below still apply, so the walk is simply skipped.
+    if (mapping)
     {
-        to.getObject().visit(
-            [&c](dom::String const& key, dom::Value const& value)
+        for (auto& pair : *mapping)
+        {
+            auto* keyNode =
+                clang::dyn_cast<llvm::yaml::ScalarNode>(pair.getKey());
+            if (!keyNode)
             {
-                if (value.isObject())
+                continue;
+            }
+            llvm::SmallString<32> keyStorage;
+            std::string_view const key(keyNode->getValue(keyStorage));
+            llvm::yaml::Node* valueNode = pair.getValue();
+            dom::Value const value =
+                valueNode ? toDom(valueNode) : dom::Value(dom::Kind::Undefined);
+            bool matched = false;
+            c.forEach(
+                [&](std::string_view const name, auto& member)
                 {
-                    c.transformOptions.emplace(
-                        std::string(std::string_view(key)),
-                        value.getObject());
-                }
-            });
+                    if (matched || name != key)
+                    {
+                        return;
+                    }
+                    matched = true;
+                    if (result)
+                    {
+                        if (auto e = assignConfigValue(member, value); !e)
+                        {
+                            result = Unexpected(e.error());
+                        }
+                    }
+                });
+            if (!matched)
+            {
+                c.unknownConfigKeys.emplace_back(key);
+            }
+        }
     }
-    return {};
+    // Apply the command-line overrides on top of the file's values (a no-op
+    // when argv is null). This is the single place the command line is folded
+    // into the configuration, so applyCommandLineOverrides stays private.
+    if (!result)
+    {
+        return result;
+    }
+    return applyCommandLineOverrides(c, argv);
 }
+
+//------------------------------------------------
+
+namespace {
+
+// Whether `key` names an option that takes a command-line value. Object-map
+// options have no scalar flag (their nested keys arrive as dotted overrides),
+// so they are not command-line keys in this sense. Reflection makes the check
+// cheap enough to run per token instead of precomputing a set.
+bool
+isCommandLineOptionKey(ConfigSchema const& c, std::string_view const key)
+{
+    bool found = false;
+    c.forEach(
+        [&](std::string_view const name, auto const& member)
+        {
+            using M = std::decay_t<decltype(member)>;
+            if constexpr (!std::is_same_v<M, std::map<std::string, dom::Object>>)
+            {
+                if (name == key)
+                {
+                    found = true;
+                }
+            }
+        });
+    return found;
+}
+
+// Whether `key` names a boolean option, so a bare `--flag` reads as true.
+bool
+isBooleanOptionKey(ConfigSchema const& c, std::string_view const key)
+{
+    bool result = false;
+    c.forEach(
+        [&](std::string_view const name, auto const& member)
+        {
+            if constexpr (std::is_same_v<std::decay_t<decltype(member)>, bool>)
+            {
+                if (name == key)
+                {
+                    result = true;
+                }
+            }
+        });
+    return result;
+}
+
+Expected<void>
+applyCommandLineOverrides(ConfigSchema& c, char const** argv)
+{
+    if (!argv)
+    {
+        return {};
+    }
+
+    // Gather the string value(s) supplied for each option, in order. A
+    // repeated option accumulates (list options), a boolean flag with no
+    // value reads as "true", and the `--key value` form consumes the next
+    // token. Tokens that name no option (and positionals) are left to the
+    // command-line parser.
+    std::map<std::string, std::vector<std::string>, std::less<>> supplied;
+    for (char const** p = argv; *p != nullptr; ++p)
+    {
+        std::string_view arg(*p);
+        if (!arg.starts_with("--"))
+        {
+            continue;
+        }
+        arg.remove_prefix(2);
+        auto const eq = arg.find('=');
+        std::string_view const key =
+            eq == std::string_view::npos ? arg : arg.substr(0, eq);
+        // Dotted overrides address object options and are applied separately.
+        if (key.find('.') != std::string_view::npos)
+        {
+            continue;
+        }
+        if (!isCommandLineOptionKey(c, key))
+        {
+            continue;
+        }
+        if (eq != std::string_view::npos)
+        {
+            supplied[std::string(key)].emplace_back(arg.substr(eq + 1));
+        }
+        else if (isBooleanOptionKey(c, key))
+        {
+            supplied[std::string(key)].emplace_back("true");
+        }
+        else if (*(p + 1) != nullptr)
+        {
+            ++p;
+            supplied[std::string(key)].emplace_back(*p);
+        }
+    }
+
+    // Assign each supplied option through the shared value conversion, and
+    // fold the dotted object overrides onto the object-map options.
+    Expected<void> result;
+    c.forEach(
+        [&](std::string_view const name, auto& member)
+        {
+            if (!result)
+            {
+                return;
+            }
+            using M = std::decay_t<decltype(member)>;
+            if constexpr (std::is_same_v<M, std::map<std::string, dom::Object>>)
+            {
+                if (auto e = applyDottedObjectOverrides(member, name, argv); !e)
+                {
+                    result = Unexpected(e.error());
+                }
+            }
+            else
+            {
+                auto const it = supplied.find(name);
+                if (it == supplied.end())
+                {
+                    return;
+                }
+                std::vector<std::string> const& values = it->second;
+                if constexpr (
+                    std::is_same_v<M, std::map<std::string, std::string>>)
+                {
+                    // Each value is a `key=value` pair, the command-line form
+                    // of a string map (e.g. `--missing-include-shims=k=v`).
+                    for (std::string_view const entry : values)
+                    {
+                        auto const sep = entry.find('=');
+                        if (sep == std::string_view::npos)
+                        {
+                            result = Unexpected(formatError(
+                                "`--{}` override needs `key=value`, got \"{}\"",
+                                name, entry));
+                            return;
+                        }
+                        member[std::string(entry.substr(0, sep))] =
+                            std::string(entry.substr(sep + 1));
+                    }
+                }
+                else if constexpr (
+                    std::is_same_v<M, StringList> ||
+                    mrdocs::specialization_of<M, std::vector>)
+                {
+                    dom::Array arr;
+                    for (std::string const& v : values)
+                    {
+                        arr.push_back(parseCliScalarValue(v));
+                    }
+                    if (auto e = assignConfigValue(member, dom::Value(arr)); !e)
+                    {
+                        result = Unexpected(e.error());
+                    }
+                }
+                else if (auto e = assignConfigValue(
+                             member, parseCliScalarValue(values.back())); !e)
+                {
+                    result = Unexpected(e.error());
+                }
+            }
+        });
+    return result;
+}
+
+} // (anon)
 
 //------------------------------------------------
 
@@ -233,6 +602,53 @@ load_file(
     MRDOCS_CHECK(ft.value() == files::FileType::not_found,
         formatError("Config file is not regular file: \"{}\"", configPath));
     return {};
+}
+
+//------------------------------------------------
+
+Expected<void>
+Config::
+load_file(
+    Config& c,
+    std::string_view const configPath,
+    ReferenceDirectories const& dirs,
+    char const** argv)
+{
+    // Read the config file (an empty document when it is absent) and load it
+    // with the command-line overrides applied on top, then finalize.
+    std::string configYaml;
+    auto ft = files::getFileType(configPath);
+    MRDOCS_CHECK(ft, formatError(
+        "Config file does not exist: \"{}\"", ft.error(), configPath));
+    if (ft.value() == files::FileType::regular)
+    {
+        c.config = configPath;
+        configYaml = files::getFileText(c.config).value();
+    }
+    else
+    {
+        MRDOCS_CHECK(ft.value() == files::FileType::not_found,
+            formatError("Config file is not regular file: \"{}\"", configPath));
+    }
+    MRDOCS_TRY(Config::load(c, configYaml, argv));
+    MRDOCS_TRY(c.normalize(dirs));
+    // Startup forces the log level low (errors only) so option parsing stays
+    // quiet; now that the configured level is known, restore it and surface
+    // the unknown-key warnings that were deferred until this point.
+    report::setMinimumLevel(static_cast<report::Level>(c.logLevel));
+    c.reportUnknownConfigKeys();
+    return {};
+}
+
+Expected<void>
+Config::
+load_file(
+    Config& c,
+    std::string_view const configPath,
+    ReferenceDirectories const& dirs)
+{
+    char const* argv[] = { nullptr };
+    return Config::load_file(c, configPath, dirs, argv);
 }
 
 struct ConfigSchemaVisitor {
@@ -485,7 +901,7 @@ struct ConfigSchemaVisitor {
             std::string const& destOption = it->second;
             bool foundOption = false;
             bool setOption = false;
-            self.visit(
+            self.forEach(
                 [&]<typename U>(
                     std::string_view const optionName, U& optionValue)
             {
@@ -588,7 +1004,7 @@ struct ConfigSchemaVisitor {
         Expected<std::string> res =
             Unexpected(formatError("unknown relative-to value: \"{}\"", relativeTo));
         bool found = false;
-        self.visit([&]<typename T>(std::string_view const optionName, T& value)
+        self.forEach([&]<typename T>(std::string_view const optionName, T& value)
         {
             if constexpr (std::convertible_to<T, std::string_view>)
             {
@@ -715,8 +1131,6 @@ Config::
 normalize(ReferenceDirectories const& dirs)
 {
     MRDOCS_TRY(ConfigSchema::normalize(dirs, ConfigSchemaVisitor{}));
-    // Overlay the now-normalized typed values onto the DOM view.
-    updateConfigDom();
     return {};
 }
 
@@ -729,56 +1143,16 @@ configDir() const
 
 void
 Config::
-updateConfigDom()
+reportUnknownConfigKeys() const
 {
-    // configObj_ already holds the keys present in the YAML; add the typed
-    // value for each option the YAML did not set.
-    this->visit([this]<class T>(std::string_view name, T& value) {
-        MRDOCS_CHECK_OR(!configObj_.exists(name));
-        if constexpr (std::convertible_to<T, std::string_view>)
-        {
-            configObj_.set(name, std::string(value));
-        }
-        else if constexpr (range_of_tuple_like<T>)
-        {
-            dom::Object obj;
-            auto keys = value | std::views::keys;
-            auto vals = value | std::views::values;
-            auto zip = std::views::zip(keys, vals);
-            for (auto const& [k, v] : zip)
-            {
-                obj.set(k, v);
-            }
-            configObj_.set(name, std::move(obj));
-        }
-        else if constexpr (std::ranges::range<T>)
-        {
-            using ValueType = std::ranges::range_value_t<T>;
-            dom::Array arr;
-            for (auto const& v : value)
-            {
-                if constexpr (
-                    std::is_same_v<ValueType, PathGlobPattern> ||
-                    std::is_same_v<ValueType, SymbolGlobPattern>)
-                {
-                    arr.emplace_back(v.pattern());
-                }
-                else
-                {
-                    arr.emplace_back(v);
-                }
-            }
-            configObj_.set(name, std::move(arr));
-        }
-        else if constexpr (std::is_enum_v<T>)
-        {
-            configObj_.set(name, to_string(value));
-        }
-        else
-        {
-            configObj_.set(name, value);
-        }
-    });
+    MRDOCS_CHECK_OR(warnUnknownConfigKeys);
+    auto const level = warnAsError
+        ? report::Level::error
+        : report::Level::warn;
+    for (std::string const& key : unknownConfigKeys)
+    {
+        report::log(level, "unknown configuration key: \"{}\"", key);
+    }
 }
 
 } // mrdocs

@@ -6,19 +6,25 @@
                  Optional; if absent, no header row is emitted.
         items:   array of source items; one item per row.
         columns: array of dotted paths into each item; one path per
-                 column. Use "." to mean "the item itself". Each
-                 extracted value is dispatched through markup/cell,
-                 which routes by `$meta.type` to the appropriate
-                 print partial.
+                 column. Use "." to mean "the item itself". Each extracted
+                 value is dispatched through markup/cell, which routes by
+                 `$meta.type` to the appropriate print partial. This partial
+                 only reads fields; a caller that needs a referenced symbol
+                 resolves the id to a symbol before passing `items` (see the
+                 example), so every column here stays a plain field path.
         weights: accepted for parity with other formats; HTML ignores
                  column-weight hints (browsers handle widths via CSS).
 
-    Example:
+    Example (the caller assembles each row with zip_objects: the "self"
+    column keeps the reference for the name cell, while the "brief" column
+    resolves the referenced symbol for the description cell):
         {{> markup/table
             weights=(arr 1 4)
             headers=(arr "Name" "Description")
-            items=(filter_by symbol.bases "isPublic")
-            columns=(arr "type" "type.name.id.doc.brief") }}
+            items=(zip_objects (arr "self" "brief")
+                     symbol.friends
+                     (pluck (transform (pluck symbol.friends "id") @root.mrdocs.corpus.get) "doc.brief"))
+            columns=(arr "self" "brief") }}
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
@@ -27,6 +33,6 @@
 <tr>{{#each headers}}<th>{{this}}</th>{{/each}}</tr>
 </thead>
 {{/if}}<tbody>
-{{#each items as | row |}}<tr>{{#each ../columns as | col |}}<td>{{> markup/cell (lookup row col)}}</td>{{/each}}</tr>
+{{#each items as | item |}}<tr>{{#each ../columns as | column_spec |}}<td>{{> markup/cell (lookup item column_spec)}}</td>{{/each}}</tr>
 {{/each}}</tbody>
 </table>

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>flag</name>
+  <anchor>flag-0e6</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
@@ -58,6 +60,7 @@
 </record>
 <record>
   <name>tag_base</name>
+  <anchor>tag_base</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
@@ -75,6 +78,7 @@
 </record>
 <variable>
   <name>braced</name>
+  <anchor>braced</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
@@ -115,6 +119,7 @@
 </variable>
 <variable>
   <name>flag</name>
+  <anchor>flag-0e0</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
@@ -142,6 +147,7 @@
 </variable>
 <variable>
   <name>flag_copy</name>
+  <anchor>flag_copy</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
@@ -176,6 +182,7 @@
 </variable>
 <variable>
   <name>literal</name>
+  <anchor>literal</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>

@@ -10,8 +10,8 @@
 //
 
 #include "JsBinding.hpp"
-#include "../Engines/StdGlobals.hpp"
-#include "../Gen/script/ScriptGenerator.hpp"
+#include <mrdocs/Engines/StdGlobals.hpp>
+#include <mrdocs/Generators/script/ScriptGenerator.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Engines/JavaScript.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>

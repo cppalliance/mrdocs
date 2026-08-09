@@ -13,9 +13,9 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include "../Diagnostics.hpp"
-#include "../Support/Filesystem/Temp.hpp"
-#include "../Support/Radix.hpp"
+#include <mrdocs/Diagnostics.hpp>
+#include <mrdocs/Support/Filesystem/Temp.hpp>
+#include <mrdocs/Support/Radix.hpp>
 #include "ASTVisitor.hpp"
 #include "ClangHelpers.hpp"
 #include "ExtractDocComment.hpp"

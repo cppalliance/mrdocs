@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <namespace>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <loc>
       <location>
@@ -32,6 +34,7 @@
 </namespace>
 <typedef>
   <name>BInt</name>
+  <anchor>BInt</anchor>
   <loc>
     <loc>
       <location>
@@ -94,6 +97,7 @@
 </typedef>
 <typedef>
   <name>BInt2</name>
+  <anchor>BInt2</anchor>
   <loc>
     <loc>
       <location>
@@ -160,6 +164,7 @@
 </typedef>
 <typedef>
   <name>B_t</name>
+  <anchor>B_t</anchor>
   <loc>
     <loc>
       <location>
@@ -262,6 +267,7 @@
 </typedef>
 <typedef>
   <name>CDTrue</name>
+  <anchor>CDTrue</anchor>
   <loc>
     <loc>
       <location>
@@ -328,6 +334,7 @@
 </typedef>
 <typedef>
   <name>CIntTrue</name>
+  <anchor>CIntTrue</anchor>
   <loc>
     <loc>
       <location>
@@ -394,6 +401,7 @@
 </typedef>
 <typedef>
   <name>C_t</name>
+  <anchor>C_t</anchor>
   <loc>
     <loc>
       <location>
@@ -496,6 +504,7 @@
 </typedef>
 <record>
   <name>B</name>
+  <anchor>B-08</anchor>
   <loc>
     <loc>
       <location>
@@ -579,6 +588,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-09</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -628,6 +638,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -681,6 +692,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-05</anchor>
   <loc>
     <loc>
       <location>
@@ -764,6 +776,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-0f</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -817,6 +830,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -870,6 +884,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <loc>
       <location>

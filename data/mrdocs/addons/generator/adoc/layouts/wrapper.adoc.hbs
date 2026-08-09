@@ -15,7 +15,7 @@
     This is only necessary in multipage mode.
 --}}
 {{#if @root.config.multipage }}
-[#{{{symbol.anchor}}}]
+[#{{{@root.mrdocs.corpus.qualifiedAnchor symbol}}}]
 = {{> symbol/qualified-name-title symbol }}
 {{#if page.relfileprefix}}
 :relfileprefix: {{{ page.relfileprefix }}}

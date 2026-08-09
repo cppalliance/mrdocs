@@ -80,21 +80,6 @@ MRDOCS_DECL
 Optional<Location>
 getPrimaryLocation(SourceInfo const& I, bool preferDefinition);
 
-namespace dom { struct LazyObjectMapTag; }
-
-/** Map the SourceInfo to a lazy DOM object.
-*/
-template <class IO>
-void tag_invoke(dom::LazyObjectMapTag, IO&, SourceInfo const&);
-
-/** Serialize source locations into a DOM value.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    SourceInfo const& I);
-
 } // mrdocs
 
 #endif // MRDOCS_API_METADATA_SYMBOL_SOURCE_HPP

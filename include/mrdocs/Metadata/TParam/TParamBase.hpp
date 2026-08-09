@@ -122,14 +122,6 @@ protected:
 
 MRDOCS_DESCRIBE_STRUCT(TParam, (), (Kind, Name, IsParameterPack, Default))
 
-/** Serialize a template parameter into a DOM value.
-*/
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TParam const& I,
-    DomCorpus const* domCorpus);
 
 /** CRTP base that fixes the parameter kind.
 */

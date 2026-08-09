@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_inline.cpp</shortPath>
@@ -41,6 +43,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-07</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_inline.cpp</shortPath>
@@ -73,6 +76,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_inline.cpp</shortPath>
@@ -103,6 +107,7 @@
 </function>
 <record>
   <name>B</name>
+  <anchor>B-06</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_inline.cpp</shortPath>
@@ -146,6 +151,7 @@
 </record>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_inline.cpp</shortPath>

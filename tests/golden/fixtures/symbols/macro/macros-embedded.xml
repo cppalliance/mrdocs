@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <macro>
   <name>EMBED_FUNC</name>
+  <anchor>EMBED_FUNC</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-embedded.cpp</shortPath>
@@ -54,6 +56,7 @@
 </macro>
 <macro>
   <name>EMBED_OBJECT</name>
+  <anchor>EMBED_OBJECT</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-embedded.cpp</shortPath>

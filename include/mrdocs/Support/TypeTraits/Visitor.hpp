@@ -13,116 +13,95 @@
 #define MRDOCS_API_SUPPORT_TYPETRAITS_VISITOR_HPP
 
 #include <mrdocs/Support/TypeTraits/TypeTraits.hpp>
-#include <tuple>
+#include <mrdocs/Support/Error/Assert.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <type_traits>
 #include <utility>
 
 namespace mrdocs {
 
-/** A visitor for a type
+namespace detail {
 
-    This class is used to implement the visitor
-    pattern. It stores a reference to an object
-    of type `Base`, and a function object `Fn`
-    which is called with the derived type as
-    the first argument, followed by `Args`.
+/** Match a runtime kind against a list of derived types and dispatch.
 
-    The visitor is constructed with the object
-    to visit, the function object, and the
-    arguments to pass to the function object.
+    Walks the derived types `Head, Tail...`, comparing `info.Kind`
+    against each type's `kind_id` constant. On the match, `info` is
+    downcast to that derived type, keeping its cv and reference
+    qualifiers, and `fn` is called with the downcast object followed by
+    `args`. The list is exhaustive for a well-formed object, so a value
+    matching none is unreachable.
 
-    The method `visit` is a template which
-    accepts a derived type of `Base`. It calls
-    the function object with the derived type
-    as the first argument, followed by the
-    arguments passed to the constructor.
+    @param info The object whose `Kind` selects the derived type.
+    @param fn The function called with the downcast object and `args`.
+    @param args Extra arguments forwarded to `fn`.
+    @return The result of calling `fn`.
+*/
+template<class Head, class... Tail, class Info, class Fn, class... Args>
+decltype(auto)
+visitByKindId(Info& info, Fn&& fn, Args&&... args)
+{
+    if (info.Kind == Head::kind_id)
+    {
+        return std::forward<Fn>(fn)(
+            static_cast<add_cvref_from_t<Info&, Head>>(info),
+            std::forward<Args>(args)...);
+    }
+    if constexpr (sizeof...(Tail) > 0)
+    {
+        return visitByKindId<Tail...>(
+            info, std::forward<Fn>(fn), std::forward<Args>(args)...);
+    }
+    else
+    {
+        MRDOCS_UNREACHABLE();
+    }
+}
 
-    @tparam Base The base type of the object
-    @tparam Fn The function object type
-    @tparam Args The argument types
+} // namespace detail
+
+/** Visit a polymorphic object by matching its kind to a derived type.
+
+    Accepts either a polymorphic base registered with
+    `MRDOCS_DESCRIBE_KINDS`, or one of its concrete kinds (a type carrying
+    a `kind_id`).
+
+    Given a base, it reads the concrete kinds from
+    `describe::describe_kinds` and calls `fn` with the object downcast to
+    the kind whose `kind_id` equals `info.Kind`, followed by `args`.
+
+    Given a concrete kind, the type is already known statically, so there
+    is nothing to dispatch: `fn` is called with `info` directly. This lets
+    a caller that already holds a concrete node (e.g. the global
+    `NamespaceSymbol`) pass it without casting to the base first.
+
+    @param info The object to visit; when it is a base, `info.Kind`
+        selects the derived type.
+    @param fn The function called with the concrete object and `args`.
+    @param args Extra arguments forwarded to `fn`.
+    @return The result of calling `fn` with the concrete object.
 */
 template<
-    typename Base,
-    typename Fn,
-    typename... Args>
-class Visitor
+    class Info,
+    class Fn,
+    class... Args>
+    requires (describe::has_describe_kinds<std::remove_cvref_t<Info>>::value
+        || requires { std::remove_cvref_t<Info>::kind_id; })
+decltype(auto)
+visit(Info& info, Fn&& fn, Args&&... args)
 {
-    Base&& obj_;
-    Fn&& fn_;
-    std::tuple<Args&&...> args_;
-
-public:
-    /** Constructor
-
-        @param obj The object to visit
-        @param fn The function object to call
-        @param args The arguments to pass to the function object
-    */
-    Visitor(Base&& obj, Fn&& fn, Args&&... args)
-        : obj_(std::forward<Base>(obj))
-        , fn_(std::forward<Fn>(fn))
-        , args_(std::forward<Args>(args)...)
+    using Base = std::remove_cvref_t<Info>;
+    if constexpr (describe::has_describe_kinds<Base>::value)
     {
+        return [&]<class... Kinds>(describe::list<Kinds...>) -> decltype(auto)
+        {
+            return detail::visitByKindId<typename Kinds::type...>(
+                info, std::forward<Fn>(fn), std::forward<Args>(args)...);
+        }(describe::describe_kinds<Base>{});
     }
-
-    /** Visit a derived type
-
-        This method calls the function object with
-        the derived type as the first argument,
-        followed by the arguments passed to the
-        constructor.
-
-        @tparam Derived The derived type to visit
-        @return The result of calling the function object
-    */
-    template <std::derived_from<std::remove_cvref_t<Base>> Derived>
-    decltype(auto)
-    visit()
+    else
     {
-        return std::apply(
-            std::forward<Fn>(fn_),
-            std::tuple_cat(
-                std::forward_as_tuple(
-                    static_cast<add_cvref_from_t<
-                        Base, Derived>&&>(obj_)),
-                std::move(args_)));
+        return std::forward<Fn>(fn)(info, std::forward<Args>(args)...);
     }
-};
-
-/** Make a visitor for a base type
-
-    The returned visitor is an object with a template
-    method `visit` which can be called with a derived
-    type of the object being visited.
-
-    The visitor stores the arguments `args` passed to
-    this function, and its method `visit` calls the
-    function `fn` with the derived type as the first
-    argument, followed by `args`.
-
-    @param obj The object to visit
-    @param fn The function object to call
-    @param args The arguments to pass to the function object
-    @return The common return type of `fn` when called
-            with a derived type of `obj` and `args`
-*/
-template<
-    typename BaseTy,
-    typename ObjectTy,
-    typename FnTy,
-    typename... ArgsTy>
-auto
-makeVisitor(
-    ObjectTy&& obj,
-    FnTy&& fn,
-    ArgsTy&&... args)
-{
-    using VisitorTy = Visitor<
-        add_cvref_from_t<ObjectTy, BaseTy>,
-        FnTy, ArgsTy...>;
-    return VisitorTy(
-        std::forward<ObjectTy>(obj),
-        std::forward<FnTy>(fn),
-        std::forward<ArgsTy>(args)...);
 }
 
 } // mrdocs

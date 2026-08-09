@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <namespace>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <loc>
       <location>
@@ -33,6 +35,7 @@
 </namespace>
 <namespace>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -53,6 +56,7 @@
 </namespace>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -83,6 +87,7 @@
 </function>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <loc>
       <location>
@@ -113,6 +118,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>
@@ -143,6 +149,7 @@
 </function>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -173,6 +180,7 @@
 </function>
 <namespace>
   <name>E</name>
+  <anchor>E</anchor>
   <loc>
     <loc>
       <location>
@@ -193,6 +201,7 @@
 </namespace>
 <function>
   <name>f6</name>
+  <anchor>f6</anchor>
   <loc>
     <loc>
       <location>
@@ -223,6 +232,7 @@
 </function>
 <namespace>
   <name>G</name>
+  <anchor>G</anchor>
   <loc>
     <loc>
       <location>
@@ -243,6 +253,7 @@
 </namespace>
 <function>
   <name>f11</name>
+  <anchor>f11</anchor>
   <loc>
     <loc>
       <location>
@@ -273,6 +284,7 @@
 </function>
 <namespace>
   <name>I</name>
+  <anchor>I</anchor>
   <loc>
     <loc>
       <location>
@@ -293,6 +305,7 @@
 </namespace>
 <function>
   <name>f14</name>
+  <anchor>f14</anchor>
   <loc>
     <loc>
       <location>
@@ -323,6 +336,7 @@
 </function>
 <function>
   <name>f10</name>
+  <anchor>f10</anchor>
   <loc>
     <loc>
       <location>
@@ -353,6 +367,7 @@
 </function>
 <function>
   <name>f12</name>
+  <anchor>f12</anchor>
   <loc>
     <loc>
       <location>
@@ -383,6 +398,7 @@
 </function>
 <function>
   <name>f5</name>
+  <anchor>f5</anchor>
   <loc>
     <loc>
       <location>
@@ -413,6 +429,7 @@
 </function>
 <function>
   <name>f7</name>
+  <anchor>f7</anchor>
   <loc>
     <loc>
       <location>
@@ -443,6 +460,7 @@
 </function>
 <function>
   <name>f8</name>
+  <anchor>f8</anchor>
   <loc>
     <loc>
       <location>

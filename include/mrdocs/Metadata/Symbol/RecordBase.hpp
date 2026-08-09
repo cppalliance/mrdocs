@@ -17,7 +17,6 @@
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -67,34 +66,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type, Access, IsVirtual)
 )
 
-/** Map a BaseInfo to a dom::Object with computed access booleans.
-    @param io The IO object to map into.
-    @param I The BaseInfo to map.
-    @param domCorpus The DomCorpus context.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    BaseInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-    io.map("isPublic", I.Access == AccessKind::Public);
-    io.map("isProtected", I.Access == AccessKind::Protected);
-    io.map("isPrivate", I.Access == AccessKind::Private);
-}
-
-/** Serialize a base description into a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    BaseInfo const& I,
-    DomCorpus const* domCorpus);
 
 } // mrdocs
 

@@ -5,7 +5,7 @@
 {{> markup/table
     weights=(arr 1 4)
     headers=(arr "Name" "Description")
-    items=symbol.derived
+    items=(transform symbol.derived @root.mrdocs.corpus.get)
     columns=(arr "." "doc.brief") }}
 {{/markup/section}}
 {{/if}}

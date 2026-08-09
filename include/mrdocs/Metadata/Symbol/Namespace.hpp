@@ -13,7 +13,6 @@
 #ifndef MRDOCS_API_METADATA_SYMBOL_NAMESPACE_HPP
 #define MRDOCS_API_METADATA_SYMBOL_NAMESPACE_HPP
 
-#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>

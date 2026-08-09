@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>T</name>
+  <anchor>T</anchor>
   <loc>
     <defLoc>
       <shortPath>record-data.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <variable>
   <name>i</name>
+  <anchor>i</anchor>
   <loc>
     <loc>
       <location>
@@ -63,6 +66,7 @@
 </variable>
 <variable>
   <name>j</name>
+  <anchor>j</anchor>
   <loc>
     <loc>
       <location>
@@ -94,6 +98,7 @@
 </variable>
 <variable>
   <name>k</name>
+  <anchor>k</anchor>
   <loc>
     <loc>
       <location>
@@ -126,6 +131,7 @@
 </variable>
 <variable>
   <name>l</name>
+  <anchor>l</anchor>
   <loc>
     <loc>
       <location>
@@ -162,6 +168,7 @@
 </variable>
 <variable>
   <name>m</name>
+  <anchor>m</anchor>
   <loc>
     <loc>
       <location>
@@ -198,6 +205,7 @@
 </variable>
 <record>
   <name>U</name>
+  <anchor>U</anchor>
   <loc>
     <defLoc>
       <shortPath>record-data.cpp</shortPath>
@@ -219,6 +227,7 @@
 </record>
 <variable>
   <name>t</name>
+  <anchor>t</anchor>
   <loc>
     <loc>
       <location>
@@ -250,6 +259,7 @@
 </variable>
 <record>
   <name>V</name>
+  <anchor>V</anchor>
   <loc>
     <defLoc>
       <shortPath>record-data.cpp</shortPath>
@@ -274,6 +284,7 @@
 </record>
 <variable>
   <name>j</name>
+  <anchor>j</anchor>
   <loc>
     <loc>
       <location>
@@ -305,6 +316,7 @@
 </variable>
 <variable>
   <name>i</name>
+  <anchor>i</anchor>
   <loc>
     <loc>
       <location>
@@ -336,6 +348,7 @@
 </variable>
 <variable>
   <name>k</name>
+  <anchor>k</anchor>
   <loc>
     <loc>
       <location>
@@ -367,6 +380,7 @@
 </variable>
 <record>
   <name>W</name>
+  <anchor>W</anchor>
   <loc>
     <defLoc>
       <shortPath>record-data.cpp</shortPath>
@@ -388,6 +402,7 @@
 </record>
 <variable>
   <name>buf</name>
+  <anchor>buf</anchor>
   <loc>
     <loc>
       <location>
@@ -424,6 +439,7 @@
 </variable>
 <record>
   <name>X</name>
+  <anchor>X</anchor>
   <loc>
     <defLoc>
       <shortPath>record-data.cpp</shortPath>
@@ -471,6 +487,7 @@
 </record>
 <typedef>
   <name>Q</name>
+  <anchor>Q</anchor>
   <loc>
     <loc>
       <location>
@@ -501,6 +518,7 @@
 </typedef>
 <variable>
   <name>x0</name>
+  <anchor>x0</anchor>
   <loc>
     <loc>
       <location>
@@ -533,6 +551,7 @@
 </variable>
 <variable>
   <name>x1</name>
+  <anchor>x1</anchor>
   <loc>
     <loc>
       <location>
@@ -563,6 +582,7 @@
 </variable>
 <variable>
   <name>x2</name>
+  <anchor>x2</anchor>
   <loc>
     <loc>
       <location>
@@ -599,6 +619,7 @@
 </variable>
 <variable>
   <name>x3</name>
+  <anchor>x3</anchor>
   <loc>
     <loc>
       <location>
@@ -630,6 +651,7 @@
 </variable>
 <variable>
   <name>x4</name>
+  <anchor>x4</anchor>
   <loc>
     <loc>
       <location>

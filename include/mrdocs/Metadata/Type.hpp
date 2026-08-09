@@ -30,35 +30,13 @@
 
 namespace mrdocs {
 
-/** Visit a @ref Type with the provided callable.
-
-    @param info The type instance to visit.
-    @param fn The callable to dispatch to the concrete type.
-    @param args Additional arguments forwarded to the callable.
-    @return Whatever the callable returns.
-*/
-template<
-    std::derived_from<Type> TypeTy,
-    class F,
-    class... Args>
-decltype(auto)
-visit(
-    TypeTy& info,
-    F&& fn,
-    Args&&... args)
-{
-    auto visitor = makeVisitor<Type>(
-        info, std::forward<F>(fn),
-        std::forward<Args>(args)...);
-    switch(info.Kind)
-    {
-    #define INFO(T) case TypeKind::T: \
-        return visitor.template visit<T##Type>();
+// Register Type's concrete kinds for the generic visit
+// (Support/Reflection/Describe.hpp).
+#define INFO(X) MRDOCS_KIND_ENTRY(Type, X##Type)
+MRDOCS_DESCRIBE_KINDS_BEGIN(Type)
 #include <mrdocs/Metadata/Type/TypeNodes.inc>
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
+MRDOCS_DESCRIBE_KINDS_END(Type)
+#undef INFO
 
 
 /** Return the inner type.
@@ -116,39 +94,6 @@ std::string
 toString(
     Type const& T,
     std::string_view Name = "");
-
-/** Serialize a polymorphic type into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Polymorphic<Type> const& I,
-    DomCorpus const* domCorpus)
-{
-    MRDOCS_ASSERT(!I.valueless_after_move());
-    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
-}
-
-/** Serialize an optional polymorphic type into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Optional<Polymorphic<Type>> const& I,
-    DomCorpus const* domCorpus)
-{
-    if (!I)
-    {
-        v = nullptr;
-        return;
-    }
-    MRDOCS_ASSERT(!I->valueless_after_move());
-    tag_invoke(dom::ValueFromTag{}, v, **I, domCorpus);
-}
 
 
 } // mrdocs

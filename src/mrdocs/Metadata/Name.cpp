@@ -10,11 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <span>
 
 namespace mrdocs {
@@ -69,6 +66,17 @@ operator<=>(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs)
         return visit(*lhs, detail::VisitCompareFn<Name>(*rhs));
     }
     return lhs->Kind <=> rhs->Kind;
+}
+
+// Defined out of line, not inline in a header: the body resolves `lhs <=>
+// rhs`, which drives the visitor comparison and `has_describe_kinds<Name>`.
+// This translation unit includes Name.hpp, so the kinds are already
+// registered here; a header-inline body could be parsed before the
+// registration and cache the trait as false (Clang <= 19).
+bool
+operator==(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs)
+{
+    return std::is_eq(lhs <=> rhs);
 }
 
 static
@@ -131,14 +139,5 @@ toString(Name const& N)
     return result;
 }
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Name const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs

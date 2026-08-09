@@ -12,7 +12,7 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if id.isImplementationDefined~}}
+{{#if (eq (lookup (@root.mrdocs.corpus.get id) "extraction") "implementation-defined")~}}
     {{! The name refers to a symbol that's implementation defined. These are special names that should not be linked. ~}}
     {{~> symbol/signature/implementation-defined ~}}
 {{else~}}
@@ -20,18 +20,18 @@
         {{> type/name-info prefix link-components-impl=link-components-impl~}}::
     {{~/if~}}
     {{! Render the name of the symbol. ~}}
-    {{#if (and id.url (or link-components-impl (is_undefined link-components-impl)))~}}
+    {{#if (and (@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id)) (or link-components-impl (is_undefined link-components-impl)))~}}
         {{! Link to the symbol's documentation. ~}}
-        {{#>markup/a href=id.url}}{{name}}{{/markup/a~}}
+        {{#>markup/a href=(@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id))}}{{identifier}}{{/markup/a~}}
     {{else~}}
         {{! No link, just the name. ~}}
-        {{name~}}
+        {{identifier~}}
     {{/if~}}
     {{#if (eq kind "specialization")~}}
         {{! Render the template arguments of the symbol. The
             check is on `kind` rather than `args`, since an empty
             argument list is still meaningful: `T<>` must render
             as `T<>`, not `T`. ~}}
-        {{>template/args args=args link-components-impl=link-components-impl~}}
+        {{>template/args args=templateArgs link-components-impl=link-components-impl~}}
     {{/if~}}
 {{/if~}}

@@ -14,7 +14,6 @@
 #define MRDOCS_API_METADATA_SYMBOL_USING_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>Base</name>
+  <anchor>Base</anchor>
   <loc>
     <defLoc>
       <shortPath>base-overload-set.cpp</shortPath>
@@ -50,6 +52,7 @@
 </record>
 <overloads>
   <name>foo</name>
+  <anchor>foo-04</anchor>
   <loc>
     <loc>
       <location>
@@ -93,6 +96,7 @@
 </overloads>
 <function>
   <name>foo</name>
+  <anchor>foo-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -130,6 +134,7 @@
 </function>
 <function>
   <name>foo</name>
+  <anchor>foo-08</anchor>
   <loc>
     <loc>
       <location>
@@ -168,6 +173,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>base-overload-set.cpp</shortPath>
@@ -206,6 +212,7 @@
 </record>
 <overloads>
   <name>foo</name>
+  <anchor>foo-04</anchor>
   <loc>
     <loc>
       <location>
@@ -249,6 +256,7 @@
 </overloads>
 <function>
   <name>foo</name>
+  <anchor>foo-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -286,6 +294,7 @@
 </function>
 <function>
   <name>foo</name>
+  <anchor>foo-08</anchor>
   <loc>
     <loc>
       <location>
@@ -324,6 +333,7 @@
 </function>
 <record>
   <name>ConstBase</name>
+  <anchor>ConstBase</anchor>
   <loc>
     <defLoc>
       <shortPath>base-overload-set.cpp</shortPath>
@@ -346,6 +356,7 @@
 </record>
 <function>
   <name>foo</name>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>

@@ -11,8 +11,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Template.hpp>
@@ -72,29 +70,6 @@ toString(
     });
 }
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TArg const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(I, [&]<typename T>(T const& t) {
-        v = dom::LazyObject(t, domCorpus);
-    });
-}
-
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TParam const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(I, [&]<typename T>(T const& t) {
-        v = dom::LazyObject(t, domCorpus);
-    });
-}
 
 void
 merge(TemplateInfo& I, TemplateInfo&& Other)
@@ -155,14 +130,5 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     }
 }
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TemplateInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
 
 } // mrdocs

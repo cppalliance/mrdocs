@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -27,6 +29,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -43,6 +46,7 @@
 </record>
 <record>
   <name>Ba</name>
+  <anchor>Ba</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -59,6 +63,7 @@
 </record>
 <record>
   <name>Bx</name>
+  <anchor>Bx</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -75,6 +80,7 @@
 </record>
 <record>
   <name>a</name>
+  <anchor>a</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -91,6 +97,7 @@
 </record>
 <record>
   <name>b</name>
+  <anchor>b</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -107,6 +114,7 @@
 </record>
 <record>
   <name>bA</name>
+  <anchor>bA</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -123,6 +131,7 @@
 </record>
 <record>
   <name>ba</name>
+  <anchor>ba</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>

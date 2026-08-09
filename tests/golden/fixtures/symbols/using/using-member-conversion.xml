@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <typedef>
   <name>fun_ptr</name>
+  <anchor>fun_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -64,6 +66,7 @@
 </typedef>
 <record>
   <name>X</name>
+  <anchor>X</anchor>
   <loc>
     <defLoc>
       <shortPath>using-member-conversion.cpp</shortPath>
@@ -98,6 +101,7 @@
 </record>
 <function>
   <name>operator void(*)()</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -154,6 +158,7 @@
 </function>
 <record>
   <name>Y</name>
+  <anchor>Y</anchor>
   <loc>
     <defLoc>
       <shortPath>using-member-conversion.cpp</shortPath>
@@ -205,6 +210,7 @@
 </record>
 <function>
   <name>operator void(*)()</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -261,6 +267,7 @@
 </function>
 <using>
   <name>operator void(*)()</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -306,6 +313,7 @@
 </using>
 <function>
   <name>operator void(*)()</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>

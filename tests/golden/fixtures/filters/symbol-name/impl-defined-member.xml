@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <namespace>
   <name>detail</name>
+  <anchor>detail</anchor>
   <loc>
     <loc>
       <location>
@@ -32,6 +34,7 @@
 </namespace>
 <record>
   <name>absolute_uri_rule_t</name>
+  <anchor>absolute_uri_rule_t</anchor>
   <loc>
     <defLoc>
       <shortPath>impl-defined-member.cpp</shortPath>
@@ -48,6 +51,7 @@
 </record>
 <namespace>
   <name>regular</name>
+  <anchor>regular</anchor>
   <loc>
     <loc>
       <location>
@@ -68,6 +72,7 @@
 </namespace>
 <record>
   <name>absolute_uri_rule_t</name>
+  <anchor>absolute_uri_rule_t</anchor>
   <loc>
     <defLoc>
       <shortPath>impl-defined-member.cpp</shortPath>
@@ -84,6 +89,7 @@
 </record>
 <variable>
   <name>absolute_uri_rule</name>
+  <anchor>absolute_uri_rule</anchor>
   <loc>
     <defLoc>
       <shortPath>impl-defined-member.cpp</shortPath>
@@ -120,6 +126,7 @@
 </variable>
 <variable>
   <name>regular_absolute_uri_rule</name>
+  <anchor>regular_absolute_uri_rule</anchor>
   <loc>
     <defLoc>
       <shortPath>impl-defined-member.cpp</shortPath>

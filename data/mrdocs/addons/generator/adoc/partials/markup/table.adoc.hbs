@@ -6,21 +6,27 @@
                  Optional; if absent, no header row is emitted.
         items:   array of source items; one item per row.
         columns: array of dotted paths into each item; one path per
-                 column. Use "." to mean "the item itself". Each
-                 extracted value is dispatched through markup/cell,
-                 which routes by `$meta.type` to the appropriate
-                 print partial.
+                 column. Use "." to mean "the item itself". Each extracted
+                 value is dispatched through markup/cell, which routes by
+                 `$meta.type` to the appropriate print partial. This partial
+                 only reads fields; a caller that needs a referenced symbol
+                 resolves the id to a symbol before passing `items` (see the
+                 example), so every column here stays a plain field path.
         weights: optional array of relative column weights, e.g.
                  (arr 1 4) for a 1:4 ratio.  Format-agnostic data;
                  each format renders it as appropriate (AsciiDoc
                  emits `[cols="1,4"]`; HTML lets CSS handle widths).
 
-    Example:
+    Example (the caller assembles each row with zip_objects: the "self"
+    column keeps the reference for the name cell, while the "brief" column
+    resolves the referenced symbol for the description cell):
         {{> markup/table
             weights=(arr 1 4)
             headers=(arr "Name" "Description")
-            items=(filter_by symbol.bases "isPublic")
-            columns=(arr "type" "type.name.id.doc.brief") }}
+            items=(zip_objects (arr "self" "brief")
+                     symbol.friends
+                     (pluck (transform (pluck symbol.friends "id") @root.mrdocs.corpus.get) "doc.brief"))
+            columns=(arr "self" "brief") }}
 
     A trailing blank line follows so the next block parses cleanly.
 
@@ -30,9 +36,9 @@
 |===
 {{#if headers}}{{#each headers}}| {{this}}{{/each}}
 {{/if~}}
-{{#each items as | row |}}
-{{#each ../columns as | col |~}}
-| {{> markup/cell (lookup row col)}}
+{{#each items as | item |}}
+{{#each ../columns as | column_spec |~}}
+| {{> markup/cell (lookup item column_spec)}}
 {{/each~}}
 {{/each~}}
 |===

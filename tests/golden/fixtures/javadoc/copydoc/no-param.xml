@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <function>
   <name>copyFromNoParam</name>
+  <anchor>copyFromNoParam</anchor>
   <loc>
     <loc>
       <location>
@@ -97,6 +99,7 @@
 </function>
 <function>
   <name>copyfromOverloads</name>
+  <anchor>copyfromOverloads</anchor>
   <loc>
     <loc>
       <location>
@@ -174,6 +177,7 @@
 </function>
 <overloads>
   <name>foo</name>
+  <anchor>foo-02</anchor>
   <loc>
     <loc>
       <location>
@@ -256,6 +260,7 @@
 </overloads>
 <function>
   <name>foo</name>
+  <anchor>foo-0c</anchor>
   <loc>
     <loc>
       <location>
@@ -330,6 +335,7 @@
 </function>
 <function>
   <name>foo</name>
+  <anchor>foo-0a</anchor>
   <loc>
     <loc>
       <location>

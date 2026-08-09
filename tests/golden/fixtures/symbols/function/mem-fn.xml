@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>T01</name>
+  <anchor>T01</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -64,6 +67,7 @@
 </function>
 <record>
   <name>T02</name>
+  <anchor>T02</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -85,6 +89,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -118,6 +123,7 @@
 </function>
 <record>
   <name>T03</name>
+  <anchor>T03</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -139,6 +145,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -172,6 +179,7 @@
 </function>
 <record>
   <name>T04</name>
+  <anchor>T04</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -193,6 +201,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -226,6 +235,7 @@
 </function>
 <record>
   <name>T05</name>
+  <anchor>T05</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -247,6 +257,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -280,6 +291,7 @@
 </function>
 <record>
   <name>T06</name>
+  <anchor>T06</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -301,6 +313,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -332,6 +345,7 @@
 </function>
 <record>
   <name>T08</name>
+  <anchor>T08</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -353,6 +367,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -385,6 +400,7 @@
 </function>
 <record>
   <name>T09</name>
+  <anchor>T09</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -406,6 +422,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -438,6 +455,7 @@
 </function>
 <record>
   <name>T10</name>
+  <anchor>T10</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -459,6 +477,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -492,6 +511,7 @@
 </function>
 <record>
   <name>T11</name>
+  <anchor>T11</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -513,6 +533,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -546,6 +567,7 @@
 </function>
 <record>
   <name>T12</name>
+  <anchor>T12</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -567,6 +589,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -600,6 +623,7 @@
 </function>
 <record>
   <name>T13</name>
+  <anchor>T13</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -621,6 +645,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -655,6 +680,7 @@
 </function>
 <record>
   <name>T14</name>
+  <anchor>T14</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -677,6 +703,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -712,6 +739,7 @@
 </function>
 <record>
   <name>T15</name>
+  <anchor>T15</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -733,6 +761,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -766,6 +795,7 @@
 </function>
 <record>
   <name>T16</name>
+  <anchor>T16</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -787,6 +817,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -820,6 +851,7 @@
 </function>
 <record>
   <name>T17</name>
+  <anchor>T17</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -858,6 +890,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -892,6 +925,7 @@
 </function>
 <record>
   <name>U</name>
+  <anchor>U</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -915,6 +949,7 @@
 </record>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -950,6 +985,7 @@
 </function>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -987,6 +1023,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -1020,6 +1057,7 @@
 </function>
 <record>
   <name>V</name>
+  <anchor>V</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -1059,6 +1097,7 @@
 </record>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>
@@ -1094,6 +1133,7 @@
 </function>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -1130,6 +1170,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <defLoc>
       <shortPath>mem-fn.cpp</shortPath>

@@ -15,7 +15,6 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 #include <concepts>
@@ -101,38 +100,6 @@ static void merge(
     }
 }
 
-/** Map an ExprInfo to a @ref dom::Value object.
-
-    @param v The output parameter to receive the dom::Value.
-    @param expr The expression info to convert.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    ExprInfo const& expr,
-    DomCorpus const*)
-{
-    v = expr.Written;
-}
-
-/** Map an ExprInfo to a @ref dom::Value object.
-
-    @param v The output parameter to receive the dom::Value.
-    @param expr The expression info to convert.
-*/
-inline
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    dom::Value& v,
-    ExprInfo const& expr,
-    DomCorpus const*
-)
-{
-    v = expr.Written;
-}
 
 } // mrdocs
 

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>Documented</name>
+  <anchor>Documented</anchor>
   <loc>
     <defLoc>
       <shortPath>warn-when-undocumented.cpp</shortPath>
@@ -40,6 +42,7 @@
 </record>
 <function>
   <name>documentedFunction</name>
+  <anchor>documentedFunction</anchor>
   <loc>
     <loc>
       <location>

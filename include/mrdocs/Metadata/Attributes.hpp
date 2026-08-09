@@ -31,49 +31,13 @@
 
 namespace mrdocs {
 
-/** Visit an @ref Attribute with the provided callable.
-
-    @param info The attribute instance to visit.
-    @param fn The callable to dispatch to the concrete attribute.
-    @param args Additional arguments forwarded to the callable.
-    @return Whatever the callable returns.
-*/
-template<
-    std::derived_from<Attribute> AttributeTy,
-    class F,
-    class... Args>
-decltype(auto)
-visit(
-    AttributeTy& info,
-    F&& fn,
-    Args&&... args)
-{
-    auto visitor = makeVisitor<Attribute>(
-        info, std::forward<F>(fn),
-        std::forward<Args>(args)...);
-    switch(info.Kind)
-    {
-    #define INFO(PascalName) case AttributeKind::PascalName: \
-        return visitor.template visit<PascalName##Attribute>();
+// Register Attribute's concrete kinds so the generic `visit`
+// (Support/Reflection/Describe.hpp) can dispatch over them.
+#define INFO(X) MRDOCS_KIND_ENTRY(Attribute, X##Attribute)
+MRDOCS_DESCRIBE_KINDS_BEGIN(Attribute)
 #include <mrdocs/Metadata/Attribute/AttributeNodes.inc>
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-/** Serialize a polymorphic attribute into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Polymorphic<Attribute> const& I,
-    DomCorpus const* domCorpus)
-{
-    MRDOCS_ASSERT(!I.valueless_after_move());
-    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
-}
+MRDOCS_DESCRIBE_KINDS_END(Attribute)
+#undef INFO
 
 } // mrdocs
 

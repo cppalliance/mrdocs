@@ -15,13 +15,10 @@
 #define MRDOCS_API_METADATA_DOCCOMMENT_INLINE_INLINEBASE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/InlineKind.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <string>
 
 namespace mrdocs::doc {
@@ -418,18 +415,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (children)
 )
 
-/** Serialize a polymorphic inline node into a DOM value.
-    @param io Destination value.
-    @param I Inline storage to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-template <class IO, polymorphic_storage_for<Inline> InlineTy>
-void
-tag_invoke(
-    dom::ValueFromTag,
-    IO& io,
-    InlineTy const& I,
-    DomCorpus const* domCorpus);
 
 /** Removes leading whitespace from the first text element in the given InlineContainer.
 

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <macro>
   <name>ADD</name>
+  <anchor>ADD</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -65,6 +67,7 @@
 </macro>
 <macro>
   <name>ANSWER</name>
+  <anchor>ANSWER</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -80,6 +83,7 @@
 </macro>
 <macro>
   <name>DUP</name>
+  <anchor>DUP</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -133,6 +137,7 @@
 </macro>
 <macro>
   <name>EMPTY</name>
+  <anchor>EMPTY</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -148,6 +153,7 @@
 </macro>
 <macro>
   <name>FOO</name>
+  <anchor>FOO</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -175,6 +181,7 @@
 </macro>
 <macro>
   <name>GREETING</name>
+  <anchor>GREETING</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -190,6 +197,7 @@
 </macro>
 <macro>
   <name>LOG</name>
+  <anchor>LOG</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -259,6 +267,7 @@
 </macro>
 <macro>
   <name>LOG_F</name>
+  <anchor>LOG_F</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -279,6 +288,7 @@
 </macro>
 <macro>
   <name>MEDIAN3</name>
+  <anchor>MEDIAN3</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -324,6 +334,7 @@
 </macro>
 <macro>
   <name>MIN</name>
+  <anchor>MIN</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -344,6 +355,7 @@
 </macro>
 <macro>
   <name>MISALIGNED</name>
+  <anchor>MISALIGNED</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -363,6 +375,7 @@
 </macro>
 <macro>
   <name>NON_VARIADIC</name>
+  <anchor>NON_VARIADIC</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -416,6 +429,7 @@
 </macro>
 <macro>
   <name>OBJECT_WITH_PARAM</name>
+  <anchor>OBJECT_WITH_PARAM</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -455,6 +469,7 @@
 </macro>
 <macro>
   <name>PI</name>
+  <anchor>PI</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -470,6 +485,7 @@
 </macro>
 <macro>
   <name>PRINTF</name>
+  <anchor>PRINTF</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -550,6 +566,7 @@
 </macro>
 <macro>
   <name>SQUARE</name>
+  <anchor>SQUARE</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -569,6 +586,7 @@
 </macro>
 <macro>
   <name>SUM</name>
+  <anchor>SUM</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -610,6 +628,7 @@
 </macro>
 <macro>
   <name>VLOG</name>
+  <anchor>VLOG</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -627,6 +646,7 @@
 </macro>
 <macro>
   <name>VPRINTF</name>
+  <anchor>VPRINTF</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -699,6 +719,7 @@
 </macro>
 <macro>
   <name>WRONG_PARAM</name>
+  <anchor>WRONG_PARAM</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>

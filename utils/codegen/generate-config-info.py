@@ -287,7 +287,7 @@ def find_options_for_enum(options, enum_values):
     return result
 
 
-def generate_public_settings_hpp(config):
+def generate_config_schema_hpp(config):
     # Generate a header file with the configuration information
     header_comment = generate_header_comment()
     contents = header_comment
@@ -302,7 +302,10 @@ def generate_public_settings_hpp(config):
         '<mrdocs/Support/Error/Error.hpp>',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<mrdocs/Dom/Object.hpp>',
+        '<mrdocs/Support/Reflection/Describe.hpp>',
         '<string>',
+        '<string_view>',
+        '<span>',
         '<vector>',
         '<optional>',
         '<variant>',
@@ -379,24 +382,6 @@ def generate_public_settings_hpp(config):
         for option in category['options']:
             contents += indent(generate_option_declaration(option), 4)
             contents += '\n\n'
-
-    contents += '    /** Load the configuration from a YAML string\n'
-    contents += '        \n'
-    contents += '        This function loads the values from the YAML string without\n'
-    contents += '        normalizing or validating them.\n'
-    contents += '        \n'
-    contents += '        After calling this function, call `normalize` to normalize\n'
-    contents += '        and validate the options.\n'
-    contents += '        \n'
-    contents += '        @param s The ConfigSchema object to load the configuration into\n'
-    contents += '        @param configYaml The YAML string with the configuration\n'
-    contents += '        @return Expected<void> with the error if any\n'
-    contents += '     */\n'
-    contents += '    static\n'
-    contents += '    Expected<void>\n'
-    contents += '    load(\n'
-    contents += '        ConfigSchema &s,\n'
-    contents += '        std::string_view configYaml);\n\n'
 
     flat_options = flat_config_options(config)
     flat_option_types = set([option['type'] for option in flat_options])
@@ -482,32 +467,69 @@ def generate_public_settings_hpp(config):
     contents += '        return {};\n'
     contents += '    }\n\n'
 
-    # Function to visit all the options
-    contents += '    /** Visit all options\n'
+    # Command-line help metadata, so `--help` is printed from the schema.
+    contents += '    /** Command-line help metadata for one option. */\n'
+    contents += '    struct CommandLineOptionInfo {\n'
+    contents += '        std::string_view category;\n'
+    contents += '        std::string_view name;\n'
+    contents += '        std::string_view brief;\n'
+    contents += '        bool takesValue;\n'
+    contents += '    };\n\n'
+
+    contents += '    /** Every option with its command-line help metadata.\n\n'
+    contents += '        `--help` iterates these and prints them grouped by\n'
+    contents += '        category, so the help text is driven by the schema.\n'
+    contents += '     */\n'
+    contents += '    static\n'
+    contents += '    std::span<CommandLineOptionInfo const>\n'
+    contents += '    commandLineOptionInfos()\n'
+    contents += '    {\n'
+    contents += '        static constexpr CommandLineOptionInfo infos[] = {\n'
+    for category in config:
+        category_name = category['category']
+        for option in flat_config_options_impl([category], ''):
+            takes_value = 'false' if option['type'] == 'bool' else 'true'
+            contents += (
+                f'            {{ {escape_as_cpp_string(category_name)}, '
+                f'{escape_as_cpp_string(option["name"])}, '
+                f'{escape_as_cpp_string(option["brief"])}, {takes_value} }},\n')
+    contents += '        };\n'
+    contents += '        return infos;\n'
+    contents += '    }\n\n'
+
+    # Function to visit every option (name and member reference).
+    contents += '    /** Call `f(name, member)` for every option\n'
     contents += '        \n'
-    contents += '        @param f The visitor\n'
+    contents += '        @param f The callback invoked once per option\n'
     contents += '     */\n'
     contents += '    template <class F>\n'
     contents += '    void\n'
-    contents += '    visit(F&& f)\n'
+    contents += '    forEach(F&& f)\n'
     contents += '    {\n'
     for option in flat_options:
         contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
     contents += '    }\n\n'
 
-    contents += '    /** Visit all options\n'
+    contents += '    /** Call `f(name, member)` for every option\n'
     contents += '        \n'
-    contents += '        @param f The visitor\n'
+    contents += '        @param f The callback invoked once per option\n'
     contents += '     */\n'
     contents += '    template <class F>\n'
     contents += '    void\n'
-    contents += '    visit(F&& f) const\n'
+    contents += '    forEach(F&& f) const\n'
     contents += '    {\n'
     for option in flat_options:
         contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
     contents += '    }\n\n'
 
     contents += '}; // struct ConfigSchema\n\n'
+
+    # Describe the struct so the reflection-to-DOM bridge (describedToDom)
+    # can project a ConfigSchema the same way it projects symbols, instead
+    # of relying on a hand-materialized dom::Object.
+    member_names = ', '.join(
+        to_camel_case(option["name"]) for option in flat_options)
+    contents += f'MRDOCS_DESCRIBE_STRUCT(ConfigSchema, (), ({member_names}))\n\n'
 
     # Functions to convert enums to strings
     for [enum_name, enum_values] in get_valid_enum_categories().items():
@@ -527,144 +549,19 @@ def generate_public_settings_hpp(config):
         contents += '    return {};\n'
         contents += '}\n\n'
 
+    # Describe each enum so the reflection-based config loader can map a
+    # YAML string to its enumerator (via describe::describe_enumerators and
+    # toString), instead of a hand-written llvm::yaml ScalarEnumerationTraits.
+    for [enum_name, enum_values] in get_valid_enum_categories().items():
+        enum_class_name = to_pascal_case(enum_name)
+        enumerators = ', '.join(
+            to_pascal_case(enum_value) for enum_value in enum_values)
+        contents += (
+            f'MRDOCS_DESCRIBE_ENUM('
+            f'ConfigSchema::{enum_class_name}, {enumerators})\n\n')
+
     contents += '} // namespace mrdocs\n\n'
     contents += f'#endif // {header_guard}\n'
-    return contents
-
-
-def generate_public_toolargs_hpp(config):
-    # Generate a header file with the configuration information
-    header_comment = generate_header_comment()
-    contents = header_comment
-
-    header_guard = 'MRDOCS_PUBLIC_TOOLARGS_HPP'
-    contents += f'#ifndef {header_guard}\n'
-    contents += f'#define {header_guard}\n\n'
-
-    headers = [
-        '<mrdocs/Config.hpp>',
-        '<mrdocs/Config/ReferenceDirectories.hpp>',
-        '<llvm/Support/CommandLine.h>',
-        '<span>',
-        '<string>',
-        '<string_view>',
-    ]
-    for header in headers:
-        contents += f'#include {header}\n'
-    contents += '\n'
-
-    contents += '\n'
-    contents += 'namespace mrdocs {\n\n'
-    contents += 'struct PublicToolArgs {\n\n'
-
-    contents += '    /// Construct the PublicToolArgs object\n'
-    contents += '    PublicToolArgs();\n\n'
-
-    contents += '    /// Override settings with unnormalized values from the command line\n'
-    contents += '    Expected<void>\n'
-    contents += '    apply(\n'
-    contents += '        ConfigSchema& s,\n'
-    contents += '        ReferenceDirectories const& dirs,\n'
-    contents += '        char const** argv);\n\n'
-
-    contents += '    //--------------------------------------------\n'
-    contents += '    // Option Categories\n'
-    contents += '    //--------------------------------------------\n'
-    for category in config:
-        brief = category['brief']
-        contents += indent(f'/** {text_wrap(brief, 76)}', 4) + '\n'
-        if 'details' in category and category['details']:
-            contents += '\n'
-            contents += indent(f'{text_wrap(category["details"], 76)}', 8) + '\n'
-        contents += f'     */\n'
-        contents += f'    llvm::cl::OptionCategory {to_camel_case(category["category"])}Cat;\n\n'
-    contents += '\n'
-
-    for category in config:
-        category_name = category['category']
-        category_brief = category['brief']
-
-        contents += '    //--------------------------------------------\n'
-        contents += f'    // {category_name}\n'
-        if category_brief:
-            contents += f'    // \n'
-            contents += f'    // {category_brief}\n'
-        contents += '    //--------------------------------------------\n\n'
-
-        for option in category['options']:
-            # map<string,object> is configuration-file only (no command-line flag).
-            if option["type"] == 'map<string,object>':
-                continue
-            contents += indent(generate_option_declaration(option, 'toolargs'), 4)
-            contents += '\n\n'
-
-    # Function to visit all the options
-    contents += '    /** Visit all options\n'
-    contents += '     */\n'
-    contents += '    template <class F>\n'
-    contents += '    void\n'
-    contents += '    visit(F&& f)\n'
-    contents += '    {\n'
-    flat_options = flat_config_options(config)
-    for option in flat_options:
-        if option["type"] == 'map<string,object>':
-            continue
-        contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
-    contents += '    }\n\n'
-
-    # Names of the map<string,object> options. These have no fixed flag;
-    # their nested keys are supplied as --<name>.<key>.<field>=<value> and
-    # must be stripped before the registered options are parsed.
-    object_option_names = [
-        option["name"] for option in flat_options
-        if option["type"] == 'map<string,object>'
-    ]
-    contents += '    /** Names of the options whose keys are set as\n'
-    contents += '        `--<name>.<key>.<field>=<value>` on the command line.\n'
-    contents += '     */\n'
-    contents += '    static\n'
-    contents += '    std::span<std::string_view const>\n'
-    contents += '    objectOptionNames()\n'
-    contents += '    {\n'
-    if object_option_names:
-        names = ', '.join(escape_as_cpp_string(n) for n in object_option_names)
-        contents += f'        static constexpr std::string_view names[] = {{ {names} }};\n'
-        contents += '        return names;\n'
-    else:
-        contents += '        return {};\n'
-    contents += '    }\n\n'
-
-    contents += '}; // struct PublicToolArgs\n\n'
-    contents += '} // namespace mrdocs\n'
-    contents += f'#endif // {header_guard}\n'
-    return contents
-
-
-def generate_yaml_mapping_traits(option, namespace=None):
-    if namespace is None:
-        namespace = 'mrdocs::ConfigSchema'
-
-    contents = ''
-    if 'options' in option:
-        cpp_option_type = f'{namespace}::{to_pascal_case(option["name"])}Options'
-
-        for suboption in option['options']:
-            contents += generate_yaml_mapping_traits(suboption, cpp_option_type)
-
-        cpp_option_type = f'{cpp_option_type}'
-        contents += f'template<>\n'
-        contents += f'struct llvm::yaml::MappingTraits<\n'
-        contents += f'    {cpp_option_type}>\n'
-        contents += '{\n'
-        contents += f'    static void mapping(\n'
-        contents += f'        llvm::yaml::IO& io,\n'
-        contents += f'        {cpp_option_type}& f)\n'
-        contents += '    {\n'
-        for suboption in option['options']:
-            contents += f'        // {suboption["brief"]}\n'
-            contents += f'        io.mapOptional("{suboption["name"]}", f.{to_camel_case(suboption["name"])});\n'
-        contents += '    }\n'
-        contents += '};\n\n'
     return contents
 
 
@@ -713,161 +610,6 @@ def get_reference_dir_from_path(path):
     return None
 
 
-def generate_public_settings_cpp(config, priv_rel):
-    # Generate a header file with the configuration information
-    contents = generate_header_comment()
-
-    headers = [
-        '<mrdocs/ConfigSchema.hpp>',
-        '<mrdocs/Support/Error/Error.hpp>',
-        '<mrdocs/Support/Filesystem/Path.hpp>',
-        f'"{priv_rel}/Support/Yaml.hpp"',
-        f'"{priv_rel}/Support/StringListYaml.hpp"',
-        '<llvm/Support/YAMLTraits.h>',
-        '<thread>',
-        '<utility>'
-    ]
-    for header in headers:
-        contents += f'#include {header}\n'
-    contents += '\n'
-
-    contents += '// std::map<std::string, std::string> should be considered a YAML map\n'
-    contents += 'LLVM_YAML_IS_STRING_MAP(std::string)\n\n'
-
-    # Generate the LLVM YAML traits for each enum, such as:
-    for [enum_name, enum_values] in get_valid_enum_categories().items():
-        cpp_enum_type = f'mrdocs::ConfigSchema::{to_pascal_case(enum_name)}'
-        contents += f'template<>\n'
-        contents += f'struct llvm::yaml::ScalarEnumerationTraits<\n'
-        contents += f'    {cpp_enum_type}>\n'
-        contents += '{\n'
-        contents += f'    static void enumeration(\n'
-        contents += f'        llvm::yaml::IO& io,\n'
-        contents += f'        {cpp_enum_type}& value)\n'
-        contents += '    {\n'
-        for enum_value in enum_values:
-            contents += f'        io.enumCase(value, "{enum_value}", {cpp_enum_type}::{to_pascal_case(enum_value)});\n'
-        contents += '    }\n'
-        contents += '};\n\n'
-
-    # Generate the LLVM YAML traits for each type struct with suboptions
-    for category in config:
-        for option in category['options']:
-            contents += generate_yaml_mapping_traits(option)
-
-    # Generate the LLVM YAML traits for glob patterns, such as:
-    for name in ['PathGlobPattern', 'SymbolGlobPattern']:
-        qualified_name = f'mrdocs::{name}'
-        contents += f'template<>\n'
-        contents += f'struct llvm::yaml::ScalarTraits<\n'
-        contents += f'    {qualified_name}>\n'
-        contents += '{\n'
-        contents += f'    static\n'
-        contents += f'    void\n'
-        contents += f'    output(\n'
-        contents += f'        {qualified_name} const& value,\n'
-        contents += f'        void *ctx,\n'
-        contents += f'        llvm::raw_ostream &out)\n'
-        contents += '    {\n'
-        contents += f'        out << value.pattern();\n'
-        contents += '    }\n\n'
-        contents += f'    static\n'
-        contents += f'    llvm::StringRef\n'
-        contents += f'    input(\n'
-        contents += f'        llvm::StringRef scalar,\n'
-        contents += f'        void *ctx,\n'
-        contents += f'        {qualified_name} &value)\n'
-        contents += '    {\n'
-        contents += f'        auto result = {qualified_name}::create(scalar);\n'
-        contents += '        if (!result) {\n'
-        contents += f'            return "Invalid {name}";\n'
-        contents += '        }\n'
-        contents += '        value = result.value();\n'
-        contents += '        return {};\n'
-        contents += '    }\n\n'
-        contents += '    static\n'
-        contents += '    QuotingType\n'
-        contents += '    mustQuote(llvm::StringRef)\n'
-        contents += '    {\n'
-        contents += '        return QuotingType::None;\n'
-        contents += '    }\n'
-        contents += '};\n\n'
-
-        vector_typename = f'std::vector<{qualified_name}>'
-        contents += f'template<>\n'
-        contents += f'struct llvm::yaml::SequenceTraits<\n'
-        contents += f'    {vector_typename}>\n'
-        contents += '{\n'
-        contents += f'    static\n'
-        contents += f'    std::size_t\n'
-        contents += f'    size(\n'
-        contents += f'        IO& io,\n'
-        contents += f'        {vector_typename}& list)\n'
-        contents += '    {\n'
-        contents += f'        return list.size();\n'
-        contents += '    }\n\n'
-        contents += f'    static\n'
-        contents += f'    {qualified_name}&\n'
-        contents += f'    element(\n'
-        contents += f'        IO& io,\n'
-        contents += f'        {vector_typename} &list,\n'
-        contents += f'        std::size_t index)\n'
-        contents += '    {\n'
-        contents += '        if (index >= list.size())\n'
-        contents += '            list.resize(index + 1);\n'
-        contents += '        return list[index];\n'
-        contents += '    }\n\n'
-        contents += '};\n\n'
-
-    # Generate the LLVM YAML traits for all ConfigSchema
-    contents += f'template<>\n'
-    contents += f'struct llvm::yaml::MappingTraits<\n'
-    contents += f'    mrdocs::ConfigSchema>\n'
-    contents += '{\n'
-    contents += f'    static void mapping(\n'
-    contents += f'        llvm::yaml::IO& io,\n'
-    contents += f'        mrdocs::ConfigSchema& s)\n'
-    contents += '    {\n'
-    for category in config:
-        for option in category['options']:
-            # map<string,object> holds free-form DOM values that do not parse
-            # through llvm::yaml; Config populates the typed map from the
-            # config DOM it already parses instead.
-            if not option["command-line-only"] and option["type"] != 'map<string,object>':
-                contents += f'        // {option["brief"]}\n'
-                contents += f'        io.mapOptional("{option["name"]}", s.{to_camel_case(option["name"])});\n'
-    contents += '    }\n'
-    contents += '};\n\n'
-
-    contents += '\n'
-    contents += 'namespace mrdocs {\n\n'
-
-    # Main function to load the configuration from a YAML file
-    contents += 'Expected<void>\n'
-    contents += 'ConfigSchema::\n'
-    contents += 'load(\n'
-    contents += '    ConfigSchema &s,\n'
-    contents += '    std::string_view configYaml)\n'
-    contents += '{\n'
-    contents += '    YamlReporter reporter;\n'
-    contents += '    llvm::yaml::Input yin(\n'
-    contents += '        configYaml,\n'
-    contents += '        &reporter,\n'
-    contents += '        reporter);\n'
-    contents += '    yin.setAllowUnknownKeys(true);\n'
-    contents += '    yin >> s;\n'
-    contents += '    Error e(yin.error());\n'
-    contents += '    if (e.failed())\n'
-    contents += '    {\n'
-    contents += '        return Unexpected(e);\n'
-    contents += '    }\n'
-    contents += '    return {};\n'
-    contents += '}\n\n'
-
-    contents += '} // namespace mrdocs\n'
-    return contents
-
-
 def escape_as_cpp_string(s):
     # Replace backslashes first to avoid escaping the escape characters added later
     s = s.replace("\\", "\\\\")
@@ -901,249 +643,6 @@ def to_cpp_value(option, v):
     if isinstance(v, list):
         return '{' + ', '.join([to_cpp_value(option, x) for x in v]) + '}'
     raise ValueError(f'Unsupported value type {type(v)}')
-
-
-def generate_toolargs_final_option_initializer(option, category_str, parents=None):
-    contents = f'{to_camel_case(option["name"])}(\n'
-    constructor_args = []
-    if parents is None:
-        constructor_args.append(escape_as_cpp_string(option["name"]))
-    else:
-        constructor_args.append(escape_as_cpp_string('.'.join(parents + [option["name"]])))
-
-    if option['command-line-sink']:
-        constructor_args.append('llvm::cl::Sink')
-    if 'default' in option:
-        # if option["type"] in ['string', 'enum']:
-        #     constructor_args.append(f'llvm::cl::init("{option["default"]}")')
-        # elif option["type"] in ['path', 'file-path', 'dir-path']:
-        #     constructor_args.append(f'llvm::cl::init("{remove_reference_dir_from_path(option["default"])}")')
-        if option['type'] in ['unsigned', 'int']:
-            constructor_args.append(f'llvm::cl::init({option["default"]})')
-        elif option['type'] == 'bool':
-            bool_str = 'true' if option['default'] else 'false'
-            constructor_args.append(f'llvm::cl::init({bool_str})')
-    constructor_args.append(f'llvm::cl::cat({category_str})')
-    constructor_args.append(f'llvm::cl::desc({escape_as_cpp_string(option["brief"])})')
-    contents += indent(',\n'.join(constructor_args), 8)
-    contents += ')\n'
-    return contents
-
-
-def generate_toolargs_suboption_constructor(option, parent_classes, parents=None):
-    class_name = to_pascal_case(option["name"]) + 'Options'
-    parents_with_this = parents + [option["name"]] if parents else [option["name"]]
-
-    # Recursively generate constructor for any suboptions
-    contents = ''
-    for suboption in option['options']:
-        has_suboptions = 'options' in suboption
-        if has_suboptions:
-            contents += generate_toolargs_suboption_constructor(suboption, parent_classes + [class_name],
-                                                                parents_with_this)
-        contents += '\n'
-
-    for parent_class in parent_classes:
-        contents += f'{parent_class}::\n'
-    contents += f'{class_name}::\n'
-    contents += f'{class_name}(llvm::cl::OptionCategory &cat)\n'
-    is_first = True
-    for suboption in option['options']:
-        if is_first:
-            contents += '    : '
-            is_first = False
-        else:
-            contents += '    , '
-        has_suboptions = 'options' in suboption
-        if has_suboptions:
-            contents += f'{to_camel_case(suboption["name"])}(cat)\n'
-        else:
-            contents += generate_toolargs_final_option_initializer(suboption, 'cat', parents_with_this)
-    contents += '{}\n\n'
-    return contents
-
-
-def generate_public_toolargs_cpp(config, priv_rel):
-    # Generate a header file with the configuration information
-    contents = generate_header_comment()
-
-    headers = [
-        '"PublicToolArgs.hpp"',
-        # '"Addons.hpp"',
-        '<mrdocs/Config/ReferenceDirectories.hpp>',
-        f'"{priv_rel}/Support/CliOverride.hpp"',
-        f'"{priv_rel}/Support/ReportImpl.hpp"',
-        f'"{priv_rel}/Support/Filesystem/Temp.hpp"',
-        '<cstddef>',
-        '<vector>',
-        '<string>',
-        '<ranges>',
-        '<thread>'
-    ]
-    for header in headers:
-        contents += f'#include {header}\n'
-    contents += '\n'
-
-    contents += '''
-template <class T>
-struct std::formatter<llvm::cl::opt<T>>
-    : std::formatter<T> {
-  template <class FmtContext>
-  auto format(llvm::cl::opt<T> const &value, FmtContext &ctx) const {
-    return std::formatter<T>::format(value.getValue(), ctx);
-  }
-};
-    '''
-
-    contents += 'namespace mrdocs {\n\n'
-
-    # Main constructor that initializes all options
-    contents += 'PublicToolArgs::\n'
-    contents += 'PublicToolArgs()\n'
-    contents += '    // Option categories\n'
-    first_option = True
-    for category in config:
-        if first_option:
-            contents += '    : '
-            first_option = False
-        else:
-            contents += '    , '
-        contents += f'{to_camel_case(category["category"])}Cat("{category["brief"]}")\n'
-    contents += '\n'
-    for category in config:
-        contents += f'    // {category["category"]}\n'
-        for option in category['options']:
-            # map<string,object> has no command-line flag (config-file only).
-            if option["type"] == 'map<string,object>':
-                continue
-            has_suboptions = 'options' in option
-            if has_suboptions:
-                contents += f'    , {to_camel_case(option["name"])}({to_camel_case(category["category"])}Cat)\n'
-            else:
-                contents += '    , '
-                contents += generate_toolargs_final_option_initializer(option,
-                                                                       to_camel_case(category["category"]) + "Cat")
-        contents += '\n'
-    contents += '{}\n'
-
-    # Recursively generate constructors for the suboption objects
-    for category in config:
-        for option in category['options']:
-            has_suboptions = 'options' in option
-            if not has_suboptions:
-                continue
-            contents += generate_toolargs_suboption_constructor(option, ['PublicToolArgs'])
-
-    contents += 'Expected<void>\n'
-    contents += 'PublicToolArgs::\n'
-    contents += 'apply(\n'
-    contents += '    ConfigSchema& s,\n'
-    contents += '    ReferenceDirectories const& dirs,\n'
-    contents += '    char const** argv)\n'
-    contents += '{\n'
-
-    # auto argv_end = argv;
-    contents += '    // Helper to determine if a key is explicitly set in the command line\n'
-    contents += '    auto argv_end = argv;\n'
-    contents += '    for (; *argv_end; ++argv_end);\n'
-    contents += '    auto toSV = [](auto arg) { return std::string_view(arg); };\n'
-    contents += '    auto isKey = [](std::string_view arg) { return arg.starts_with("--"); };\n'
-    contents += '    auto getKey = [](std::string_view arg) { return arg.substr(2, arg.find_first_of(\'=\') - 2); };\n'
-    contents += '    auto argKeys =\n'
-    contents += '        std::ranges::subrange(argv, argv_end) |\n'
-    contents += '        // Convert to string_view\n'
-    contents += '        std::ranges::views::transform(toSV) |\n'
-    contents += '        // Filter out non-keys\n'
-    contents += '        std::ranges::views::filter(isKey) |\n'
-    contents += '        // Extract the key\n'
-    contents += '        std::ranges::views::transform(getKey);\n'
-    contents += '    auto const keyIsSet = [&argKeys](\n'
-    contents += '        std::string_view key) -> bool\n'
-    contents += '    {\n'
-    contents += '        return std::ranges::find(argKeys, key) != argKeys.end();\n'
-    contents += '    };\n\n'
-
-    contents += '    // Override any option explicitly set in the command line\n'
-    for option in flat_config_options(config):
-        # map<string,object> has no fixed flag; its keys are dynamic, so
-        # nested overrides arrive as --<name>.<key>.<field>=<value> tokens
-        # and are merged onto the values already loaded from the config file.
-        if option["type"] == 'map<string,object>':
-            contents += f'    MRDOCS_TRY(applyDottedObjectOverrides(s.{to_camel_case(option["name"])}, {escape_as_cpp_string(option["name"])}, argv));\n\n'
-            continue
-        camel_name = to_camel_case(option['name'])
-        option_contents = ''
-        if option["type"].startswith('list<') or option["type"] == 'string-list':
-           option_contents += f'if (!this->{camel_name}.empty())\n'
-        else:
-           option_contents += f'if (keyIsSet({escape_as_cpp_string(option["name"])}))\n'
-        option_contents += '{\n'
-        if option["type"] == "enum":
-            is_first = True
-            for enum_value in option["values"]:
-                # conditional_keyword = None
-                if is_first:
-                    conditional_keyword = 'if'
-                    is_first = False
-                else:
-                    conditional_keyword = 'else if'
-                option_contents += f'    {conditional_keyword} (this->{camel_name} == "{enum_value}")\n'
-                option_contents += f'    {{\n'
-                option_contents += f'        s.{camel_name} = ConfigSchema::{to_pascal_case(get_enum_category_name(option["values"]))}::{to_pascal_case(enum_value)};\n'
-                option_contents += f'    }}\n'
-            option_contents += f'    else\n'
-            option_contents += f'    {{\n'
-            option_contents += f'        return Unexpected(formatError("`{option["name"]}` option: invalid value: {{}}", this->{camel_name}));\n'
-            option_contents += f'    }}\n'
-        elif option["type"] == 'string-list':
-            option_contents += f'    s.{camel_name}.values.assign(this->{camel_name}.begin(), this->{camel_name}.end());\n'
-        elif option["type"] in ['list<path-glob>', 'list<symbol-glob>']:
-            cpp_type = 'PathGlobPattern' if option["type"] == 'list<path-glob>' else 'SymbolGlobPattern'
-            option_contents += f'    s.{camel_name}.clear();\n'
-            option_contents += f'    for (auto& pattern : this->{camel_name})\n'
-            option_contents += f'    {{\n'
-            option_contents += f'        MRDOCS_TRY(auto temp, {cpp_type}::create(pattern));\n'
-            option_contents += f'        s.{camel_name}.push_back(temp);\n'
-            option_contents += f'    }}\n'
-        elif option["type"] in ['map<string,string>']:
-            #         s.missingIncludeShims.clear();
-            #         for (std::string const& stringPair : this->missingIncludeShims)
-            #         {
-            #             // Split the string as "key=value"
-            #             auto pos = stringPair.find('=');
-            #             if (pos == std::string::npos)
-            #             {
-            #                 return Unexpected(formatError("`missing-include-shims` option: invalid format (expected key=value): {}", stringPair));
-            #             }
-            #             std::string key = stringPair.substr(0, pos);
-            #             std::string value = stringPair.substr(pos + 1);
-            #             s.missingIncludeShims[std::move(key)] = std::move(value);
-            #         }
-            option_contents += f'    s.{camel_name}.clear();\n'
-            option_contents += f'    for (std::string const& stringPair : this->{camel_name})\n'
-            option_contents += f'    {{\n'
-            option_contents += f'        // Split the string as "key=value"\n'
-            option_contents += f'        auto pos = stringPair.find(\'=\');\n'
-            option_contents += f'        if (pos == std::string::npos)\n'
-            option_contents += f'        {{\n'
-            option_contents += f'            return Unexpected(formatError("`{option["name"]}` option: invalid format (expected key=value): {{}}", stringPair));\n'
-            option_contents += f'        }}\n'
-            option_contents += f'        std::string key = stringPair.substr(0, pos);\n'
-            option_contents += f'        std::string value = stringPair.substr(pos + 1);\n'
-            option_contents += f'        s.{camel_name}[std::move(key)] = std::move(value);\n'
-            option_contents += f'    }}\n'
-        else:
-            option_contents += f'    s.{camel_name} = this->{camel_name};\n'
-        option_contents += '}\n'
-        option_contents += '\n'
-        contents += indent(option_contents, 4)
-        contents += '\n'
-
-    contents += '    return {};\n'
-    contents += '}\n'
-
-    contents += '} // namespace mrdocs\n'
-    return contents
 
 
 def indent(text, spaces):
@@ -1434,31 +933,15 @@ def generate(config, output_dir, source_mrdocs_dir):
     mrdocs_build_include_dir = os.path.join(output_dir, 'include', 'mrdocs')
     if not os.path.exists(mrdocs_build_include_dir):
         os.makedirs(mrdocs_build_include_dir)
-    mrdocs_build_lib_dir = os.path.join(output_dir, 'src', 'lib', 'Lib')
-    if not os.path.exists(mrdocs_build_lib_dir):
-        os.makedirs(mrdocs_build_lib_dir)
-    mrdocs_build_tool_dir = os.path.join(output_dir, 'src', 'tool')
-    if not os.path.exists(mrdocs_build_tool_dir):
-        os.makedirs(mrdocs_build_tool_dir)
 
-    public_settings_hpp = generate_public_settings_hpp(config)
+    # The schema is a single header now. The command line is parsed straight
+    # from argv against this schema (see Config::load and
+    # applyCommandLineOverrides), and `--help` is printed from the option
+    # metadata the header carries, so there are no longer any generated
+    # ConfigSchema.cpp or PublicToolArgs sources.
+    config_schema_hpp = generate_config_schema_hpp(config)
     with open(os.path.join(mrdocs_build_include_dir, 'ConfigSchema.hpp'), 'w') as f:
-        f.write(public_settings_hpp)
-
-    rel_from_lib = _include_base(source_mrdocs_dir, mrdocs_build_lib_dir)
-    rel_from_tool = _include_base(source_mrdocs_dir, mrdocs_build_tool_dir)
-
-    public_settings_cpp = generate_public_settings_cpp(config, rel_from_lib)
-    with open(os.path.join(mrdocs_build_lib_dir, 'ConfigSchema.cpp'), 'w') as f:
-        f.write(public_settings_cpp)
-
-    public_toolargs_hpp = generate_public_toolargs_hpp(config)
-    with open(os.path.join(mrdocs_build_tool_dir, 'PublicToolArgs.hpp'), 'w') as f:
-        f.write(public_toolargs_hpp)
-
-    public_toolargs_cpp = generate_public_toolargs_cpp(config, rel_from_tool)
-    with open(os.path.join(mrdocs_build_tool_dir, 'PublicToolArgs.cpp'), 'w') as f:
-        f.write(public_toolargs_cpp)
+        f.write(config_schema_hpp)
 
 
 def main():

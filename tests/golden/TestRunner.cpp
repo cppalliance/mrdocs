@@ -17,7 +17,7 @@
 #include <mrdocs/Support/ReportImpl.hpp>
 #include "Support/Comparison.hpp"
 #include "Support/TextNormalization.hpp"
-#include "TestArgs.hpp"
+#include "TestCliArgs.hpp"
 #include "TestRunner.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
@@ -112,9 +112,11 @@ makeBaseSettings(
     dirs.cwd = std::string(root);
     dirs.mrdocsRoot = files::getParentDir(root, 2);
 
-    // Load base configuration files from root to inputDir
+    // Load base configuration files from root to inputDir. The command line is
+    // the lowest-priority layer for tests: load it alone first (empty YAML, argv only),
+    // then merge the config files on top.
     Config settings;
-    testArgs.apply(settings, dirs, argv);
+    MRDOCS_TRY(Config::load(settings, "", argv));
     for (std::string_view dir = root; dir != inputDir; )
     {
         MRDOCS_TRY(settings, loadDirConfig(std::string(dir), std::move(settings), dirs));
@@ -395,7 +397,7 @@ handleFile(
         MRDOCS_TRY_BIND(
             (fileSettings, scratch),
             buildTestLayout(
-                filePath, loaded, gen->fileExtension(), dirs, testArgs.action));
+                filePath, loaded, gen->fileExtension(), dirs, testCliArgs.action));
 
         // Run this iteration as a single-generator configuration so that
         // it doesn't write into a per-id subdirectory.
@@ -460,9 +462,9 @@ TestRunner::handleCompilationDatabase(
         .corpus = corpus,
         .config = config,
         .filePath = filePath,
-        .action = testArgs.action,
-        .writeBad = testArgs.badOption.getValue(),
-        .forceUpdate = testArgs.forceOption.getValue(),
+        .action = testCliArgs.action,
+        .writeBad = testCliArgs.bad,
+        .forceUpdate = testCliArgs.force,
         .results = results
     }));
     return {};

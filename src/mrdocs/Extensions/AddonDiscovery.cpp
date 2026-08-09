@@ -9,7 +9,7 @@
 //
 
 #include "AddonDiscovery.hpp"
-#include "../Support/AddonRoots.hpp"
+#include <mrdocs/Support/AddonRoots.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <algorithm>
@@ -69,28 +69,21 @@ Expected<std::vector<std::string>>
 collectExtensionScripts(Config const& config)
 {
     std::vector<std::string> scripts;
-    Expected<void> status;
-    std::vector<std::string> const roots = addonRoots(config);
-    for (std::string const& root : roots)
+    for (std::string const& root : addonRoots(config))
     {
         std::string const dir = files::appendPath(root, "extensions");
-        if (status.has_value() && files::exists(dir))
+        if (!files::exists(dir))
         {
-            status = collectFromDirectory(dir, scripts);
+            continue;
+        }
+        if (Expected<void> status = collectFromDirectory(dir, scripts);
+            !status)
+        {
+            return Unexpected(status.error());
         }
     }
-
-    Expected<std::vector<std::string>> result;
-    if (status.has_value())
-    {
-        std::sort(scripts.begin(), scripts.end());
-        result = std::move(scripts);
-    }
-    else
-    {
-        result = Unexpected(status.error());
-    }
-    return result;
+    std::sort(scripts.begin(), scripts.end());
+    return scripts;
 }
 
 } // mrdocs

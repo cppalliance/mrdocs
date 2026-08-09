@@ -219,51 +219,6 @@ tag_invoke(
     dom::Value& v,
     SymbolID const& id);
 
-/** Convert SymbolID to dom::Value object in the DOM using Corpus
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    SymbolID const& id,
-    DomCorpus const* domCorpus);
-
-/** Convert an optional SymbolID to dom::Value or null.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Optional<SymbolID> const& id,
-    DomCorpus const* domCorpus)
-{
-    if (!id)
-    {
-        v = nullptr;
-    }
-    else
-    {
-        tag_invoke(dom::ValueFromTag{}, v, *id, domCorpus);
-    }
-}
-
-/** Convert SymbolID pointers to dom::Value or null.
-
-    @param v The output parameter to receive the dom::Value.
-    @param t The SymbolID pointer to convert. If null, the
-        dom::Value is set to null.
-    @param domCorpus The DomCorpus to use, or nullptr. If null,
-        the SymbolID is converted to a base16 string.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    std::unique_ptr<SymbolID> const& t,
-    DomCorpus const* domCorpus);
 
 } // mrdocs
 

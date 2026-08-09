@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <namespace>
   <name>N0</name>
+  <anchor>N0</anchor>
   <loc>
     <loc>
       <location>
@@ -53,6 +55,7 @@
 </namespace>
 <function>
   <name>f0_WL</name>
+  <anchor>f0_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -104,6 +107,7 @@
 </function>
 <namespace>
   <name>N1</name>
+  <anchor>N1</anchor>
   <loc>
     <loc>
       <location>
@@ -158,6 +162,7 @@
 </namespace>
 <namespace>
   <name>N3_WL</name>
+  <anchor>N3_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -199,6 +204,7 @@
 </namespace>
 <function>
   <name>f1_WL</name>
+  <anchor>f1_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -254,6 +260,7 @@
 </function>
 <namespace>
   <name>N4</name>
+  <anchor>N4</anchor>
   <loc>
     <loc>
       <location>
@@ -295,6 +302,7 @@
 </namespace>
 <function>
   <name>f1_WL</name>
+  <anchor>f1_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -346,6 +354,7 @@
 </function>
 <namespace>
   <name>N5</name>
+  <anchor>N5</anchor>
   <loc>
     <loc>
       <location>
@@ -387,6 +396,7 @@
 </namespace>
 <namespace>
   <name>N6</name>
+  <anchor>N6</anchor>
   <loc>
     <loc>
       <location>
@@ -428,6 +438,7 @@
 </namespace>
 <namespace>
   <name>M7</name>
+  <anchor>M7</anchor>
   <loc>
     <loc>
       <location>
@@ -469,6 +480,7 @@
 </namespace>
 <function>
   <name>f2_WL</name>
+  <anchor>f2_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -533,6 +545,7 @@
 </function>
 <namespace>
   <name>N7</name>
+  <anchor>N7</anchor>
   <loc>
     <loc>
       <location>
@@ -574,6 +587,7 @@
 </namespace>
 <function>
   <name>f2_WL</name>
+  <anchor>f2_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -638,6 +652,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>whitelist_0.cpp</shortPath>
@@ -681,6 +696,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>whitelist_0.cpp</shortPath>
@@ -724,6 +740,7 @@
 </record>
 <function>
   <name>f1_WL</name>
+  <anchor>f1_WL</anchor>
   <loc>
     <loc>
       <location>
@@ -777,6 +794,7 @@
 </function>
 <function>
   <name>f0_WL</name>
+  <anchor>f0_WL</anchor>
   <loc>
     <loc>
       <location>

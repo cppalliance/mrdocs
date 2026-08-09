@@ -16,6 +16,7 @@
 #include "AST/MrDocsFileSystem.hpp"
 #include "AST/ParseRef.hpp"
 #include "CompilationDatabaseBuilder.hpp"
+#include "Metadata/Finalizers/AnchorFinalizer.hpp"
 #include "Metadata/Finalizers/BaseMembersFinalizer.hpp"
 #include "Metadata/Finalizers/DerivedFinalizer.hpp"
 #include "Metadata/Finalizers/DocCommentFinalizer.hpp"
@@ -756,6 +757,13 @@ Corpus::finalize(Config const& config)
     {
         report::debug("  - Finalizing documentation comments");
         DocCommentFinalizer finalizer(*this, config);
+        finalizer.build();
+    }
+
+    // Populate the legible anchor name of every symbol.
+    {
+        report::debug("  - Finalizing symbol anchors");
+        AnchorFinalizer finalizer(*this, config);
         finalizer.build();
     }
 }

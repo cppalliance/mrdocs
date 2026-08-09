@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -42,6 +44,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-07</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -74,6 +77,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -91,6 +95,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-09</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -118,6 +123,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0f</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -156,6 +162,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-00</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -199,6 +206,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -216,6 +224,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-09</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -243,6 +252,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0d</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -281,6 +291,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-01</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -323,6 +334,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-07</anchor>
   <loc>
     <loc>
       <location>
@@ -351,6 +363,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-08</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -394,6 +407,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -411,6 +425,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0ae</anchor>
   <loc>
     <loc>
       <location>
@@ -439,6 +454,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0af</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -477,6 +493,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -519,6 +536,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0b</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -559,6 +577,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -576,6 +595,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-00</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -603,6 +623,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0b</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -641,6 +662,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0d</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -684,6 +706,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -701,6 +724,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0c</anchor>
   <loc>
     <loc>
       <location>
@@ -729,6 +753,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-03</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -767,6 +792,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-08</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -810,6 +836,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -827,6 +854,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-08</anchor>
   <loc>
     <loc>
       <location>
@@ -855,6 +883,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-03</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -893,6 +922,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-00</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -935,6 +965,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -963,6 +994,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-07</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1006,6 +1038,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -1025,6 +1058,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-015b</anchor>
   <loc>
     <loc>
       <location>
@@ -1053,6 +1087,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0150</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1091,6 +1126,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-00</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1134,6 +1170,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1151,6 +1188,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-03</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1178,6 +1216,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-07</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1216,6 +1255,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-07</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1258,6 +1298,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-03a</anchor>
   <loc>
     <loc>
       <location>
@@ -1286,6 +1327,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-03e</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1329,6 +1371,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -1348,6 +1391,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-01</anchor>
   <loc>
     <loc>
       <location>
@@ -1376,6 +1420,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0f</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1414,6 +1459,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-05</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1457,6 +1503,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1474,6 +1521,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -1502,6 +1550,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-01</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1540,6 +1589,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -1561,6 +1611,7 @@
 </record>
 <variable>
   <name>m0</name>
+  <anchor>m0</anchor>
   <loc>
     <loc>
       <location>
@@ -1633,6 +1684,7 @@
 </variable>
 <variable>
   <name>m1</name>
+  <anchor>m1</anchor>
   <loc>
     <loc>
       <location>
@@ -1705,6 +1757,7 @@
 </variable>
 <variable>
   <name>m10</name>
+  <anchor>m10</anchor>
   <loc>
     <loc>
       <location>
@@ -1801,6 +1854,7 @@
 </variable>
 <variable>
   <name>m11</name>
+  <anchor>m11</anchor>
   <loc>
     <loc>
       <location>
@@ -1897,6 +1951,7 @@
 </variable>
 <variable>
   <name>m12</name>
+  <anchor>m12</anchor>
   <loc>
     <loc>
       <location>
@@ -1993,6 +2048,7 @@
 </variable>
 <variable>
   <name>m13</name>
+  <anchor>m13</anchor>
   <loc>
     <loc>
       <location>
@@ -2089,6 +2145,7 @@
 </variable>
 <variable>
   <name>m14</name>
+  <anchor>m14</anchor>
   <loc>
     <loc>
       <location>
@@ -2185,6 +2242,7 @@
 </variable>
 <variable>
   <name>m2</name>
+  <anchor>m2</anchor>
   <loc>
     <loc>
       <location>
@@ -2257,6 +2315,7 @@
 </variable>
 <variable>
   <name>m3</name>
+  <anchor>m3</anchor>
   <loc>
     <loc>
       <location>
@@ -2329,6 +2388,7 @@
 </variable>
 <variable>
   <name>m4</name>
+  <anchor>m4</anchor>
   <loc>
     <loc>
       <location>
@@ -2401,6 +2461,7 @@
 </variable>
 <variable>
   <name>m5</name>
+  <anchor>m5</anchor>
   <loc>
     <loc>
       <location>
@@ -2480,6 +2541,7 @@
 </variable>
 <variable>
   <name>m6</name>
+  <anchor>m6</anchor>
   <loc>
     <loc>
       <location>
@@ -2559,6 +2621,7 @@
 </variable>
 <variable>
   <name>m7</name>
+  <anchor>m7</anchor>
   <loc>
     <loc>
       <location>
@@ -2638,6 +2701,7 @@
 </variable>
 <variable>
   <name>m8</name>
+  <anchor>m8</anchor>
   <loc>
     <loc>
       <location>
@@ -2717,6 +2781,7 @@
 </variable>
 <variable>
   <name>m9</name>
+  <anchor>m9</anchor>
   <loc>
     <loc>
       <location>

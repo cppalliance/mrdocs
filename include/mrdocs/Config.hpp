@@ -17,16 +17,11 @@
 #include <mrdocs/ConfigSchema.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <mrdocs/Config/ReferenceDirectories.hpp>
 #include <string>
 #include <string_view>
-
-namespace llvm::yaml {
-
-template<class T>
-struct MappingTraits;
-
-} // llvm::yaml
-
+#include <vector>
 
 namespace mrdocs {
 
@@ -46,20 +41,24 @@ class MRDOCS_DECL
     Config : public ConfigSchema
 {
 public:
-    /** Load the configuration options from a YAML string.
+    /** Load the configuration options from a YAML string and command line.
 
-        Populates the options from the YAML and records the DOM view. Paths
+        Populates the options from the YAML, then applies the `--option`
+        overrides parsed from @p argv on top (a no-op when @p argv is null).
+        Pass an empty @p configYaml to apply command-line values alone. Paths
         are resolved later by @ref normalize.
 
         @param c The configuration to populate.
-        @param configYaml The configuration YAML.
+        @param configYaml The configuration YAML (may be empty).
+        @param argv A null-terminated command line, or null for none.
         @return Nothing on success, otherwise an error.
     */
     static
     Expected<void>
     load(
         Config& c,
-        std::string_view configYaml);
+        std::string_view configYaml,
+        char const** argv = nullptr);
 
     /** Load the configuration options from a YAML file.
 
@@ -72,6 +71,38 @@ public:
     load_file(
         Config& c,
         std::string_view configPath);
+
+    /** Load a config file, apply command-line overrides, and finalize it.
+
+        The single entry point for the common case: it reads @p configPath,
+        applies the `--option` overrides parsed from @p argv on top of it,
+        normalizes and validates everything against @p dirs, restores the
+        configured log level (startup forces it low so option parsing stays
+        quiet), and reports any unrecognized keys. @p argv is a
+        null-terminated array; use the overload without it when there is no
+        command line to apply.
+
+        @param c The configuration to populate.
+        @param configPath The path to the configuration file.
+        @param dirs The reference directories used to resolve relative paths.
+        @param argv The command line whose `--option` values override the file.
+        @return Nothing on success, otherwise an error.
+    */
+    static
+    Expected<void>
+    load_file(
+        Config& c,
+        std::string_view configPath,
+        ReferenceDirectories const& dirs,
+        char const** argv);
+
+    /// @copydoc load_file(Config&, std::string_view, ReferenceDirectories const&, char const**)
+    static
+    Expected<void>
+    load_file(
+        Config& c,
+        std::string_view configPath,
+        ReferenceDirectories const& dirs);
 
     /** Normalize the options against the reference directories.
 
@@ -95,29 +126,31 @@ public:
     std::string
     configDir() const;
 
-    /** Return a DOM object representing the configuration keys.
+    /** Warn about configuration keys that match no known option.
 
-        The object is valid for the lifetime of the configuration.
-
-        @return The configuration as a DOM object.
-    */
-    dom::Object const&
-    object() const
-    {
-        return configObj_;
-    }
-
-private:
-    dom::Object configObj_;
-
-    template<class T>
-    friend struct llvm::yaml::MappingTraits;
-
-    /** Overlay the typed option values onto the DOM view.
+        Reports each key collected during load: as a warning, or as an
+        error under `warn-as-error`, and does nothing when
+        `warn-unknown-config-keys` is disabled. This is a separate,
+        explicitly-called step rather than part of load because the log
+        level is only configured after loading finishes, so a warning
+        emitted during load would be filtered out. The caller invokes it
+        once the level is set.
     */
     void
-    updateConfigDom();
+    reportUnknownConfigKeys() const;
+
+private:
+    /** Keys found in the configuration file that match no known option.
+
+        Populated during load and surfaced by @ref reportUnknownConfigKeys.
+    */
+    std::vector<std::string> unknownConfigKeys;
 };
+
+// Config adds no reflected options of its own; it only inherits the
+// schema. Describing that inheritance lets the reflection-to-DOM bridge
+// project a Config directly, without a cast to its ConfigSchema base.
+MRDOCS_DESCRIBE_STRUCT(Config, (ConfigSchema), ())
 
 //------------------------------------------------
 

@@ -22,7 +22,6 @@
 #include <mrdocs/Metadata/Symbol/RecordKeyKind.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -155,22 +154,6 @@ getDefaultAccessString(
     }
 }
 
-/** Map a RecordSymbol to a dom::Object with computed defaultAccess.
-    @param io The IO object to map into.
-    @param I The RecordSymbol to map.
-    @param domCorpus The DomCorpus context.
-*/
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    RecordSymbol const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-    io.map("defaultAccess", std::string(getDefaultAccessString(I.KeyKind)));
-}
 
 /** View all record members across access levels.
     @return Lazy view traversing every tranche.

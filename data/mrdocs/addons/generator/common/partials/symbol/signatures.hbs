@@ -17,12 +17,12 @@
 {{> symbol/signature }}
 {{/markup/code-block~}}
 {{else}}
-{{#each members as | member |}}
+{{#each (transform members @root.mrdocs.corpus.get) as | member |}}
 {{#if member.doc.brief}}{{> doc/block/brief member.doc.brief }}{{/if}}
 {{#> markup/code-block~}}
 {{> symbol/signature/function member force-link=true }}
 {{/markup/code-block~}}
-{{#> markup/span class="small" }}{{#> markup/a href=member.url }}{{#>markup/em }}» more{{ str "..." }}{{/markup/em}}{{/markup/a}}{{/markup/span}}
+{{#> markup/span class="small" }}{{#> markup/a href=(@root.mrdocs.corpus.getUrl member) }}{{#>markup/em }}» more{{ str "..." }}{{/markup/em}}{{/markup/a}}{{/markup/span}}
 
 {{/each}}
 {{/if}}

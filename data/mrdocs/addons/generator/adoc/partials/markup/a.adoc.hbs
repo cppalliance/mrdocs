@@ -3,7 +3,7 @@
 
     https://gitlab.com/antora/antora/-/issues/428
 }}
-{{#if (eq href @root.symbol.url)~}}
+{{#if (eq href (@root.mrdocs.corpus.getUrl @root.symbol))~}}
     {{{> @partial-block }}}
 {{~else if (starts_with href "#")~}}
     link:{{{ href }}}[{{> @partial-block }}]

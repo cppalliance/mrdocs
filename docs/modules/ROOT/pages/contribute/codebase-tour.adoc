@@ -28,7 +28,7 @@ This directory contains the source code for the MrDocs core library and its priv
 
 * `src/mrdocs/`—The core library
 ** `src/mrdocs/AST/`—The AST traversal code
-** `src/mrdocs/Gen/`—Generators
+** `src/mrdocs/Generators/`—Generators
 ** `src/mrdocs/Metadata/`—`Symbol` nodes and metadata classes
 ** `src/mrdocs/Support/`—Various utility classes
 

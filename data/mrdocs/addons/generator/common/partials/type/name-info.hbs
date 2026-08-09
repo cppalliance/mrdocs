@@ -12,8 +12,8 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if (and id.url (or link-components-impl (is_undefined link-components-impl))) ~}}
-{{~#>markup/a href=id.url}}{{> type/name-info-text . ~}}{{/markup/a~}}
+{{#if (and (@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id)) (or link-components-impl (is_undefined link-components-impl))) ~}}
+{{~#>markup/a href=(@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id))}}{{> type/name-info-text . ~}}{{/markup/a~}}
 {{~else~}}
 {{~> type/name-info-text . ~}}
 {{~/if~}}

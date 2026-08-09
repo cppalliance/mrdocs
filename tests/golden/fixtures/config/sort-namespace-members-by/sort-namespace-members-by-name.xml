@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -47,6 +49,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0b</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -78,6 +81,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-04</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -130,6 +134,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-05</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -188,6 +193,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-0f</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -236,6 +242,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-03</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -273,6 +280,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-0d</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -325,6 +333,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -341,6 +350,7 @@
 </record>
 <record>
   <name>Z</name>
+  <anchor>Z</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -362,6 +372,7 @@
 </record>
 <overloads>
   <name>Z</name>
+  <anchor>2constructor-00</anchor>
   <loc>
     <loc>
       <location>
@@ -411,6 +422,7 @@
 </overloads>
 <function>
   <name>Z</name>
+  <anchor>2constructor-05</anchor>
   <loc>
     <loc>
       <location>
@@ -454,6 +466,7 @@
 </function>
 <function>
   <name>Z</name>
+  <anchor>2constructor-06</anchor>
   <loc>
     <loc>
       <location>
@@ -535,6 +548,7 @@
 </function>
 <function>
   <name>~Z</name>
+  <anchor>2destructor</anchor>
   <loc>
     <loc>
       <location>
@@ -578,6 +592,7 @@
 </function>
 <function>
   <name>foo</name>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -611,6 +626,7 @@
 </function>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion</anchor>
   <loc>
     <loc>
       <location>
@@ -684,6 +700,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>
@@ -762,6 +779,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -875,6 +893,7 @@
 </function>
 <function>
   <name>operator!=</name>
+  <anchor>operator_not_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -988,6 +1007,7 @@
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
+  <anchor>operator_3way</anchor>
   <loc>
     <loc>
       <location>
@@ -1073,6 +1093,7 @@
 </function>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -1103,6 +1124,7 @@
 </function>
 <overloads>
   <name>g</name>
+  <anchor>g-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -1170,6 +1192,7 @@
 </overloads>
 <function>
   <name>g</name>
+  <anchor>g-0e3</anchor>
   <loc>
     <loc>
       <location>
@@ -1200,6 +1223,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-06</anchor>
   <loc>
     <loc>
       <location>
@@ -1246,6 +1270,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-04</anchor>
   <loc>
     <loc>
       <location>
@@ -1298,6 +1323,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-03a</anchor>
   <loc>
     <loc>
       <location>
@@ -1358,6 +1384,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -1432,6 +1459,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-03c</anchor>
   <loc>
     <loc>
       <location>
@@ -1513,6 +1541,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g-0e4</anchor>
   <loc>
     <loc>
       <location>
@@ -1608,6 +1637,7 @@
 </function>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <loc>
       <location>
@@ -1638,6 +1668,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>
@@ -1755,6 +1786,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1903,6 +1935,7 @@
 </function>
 <function>
   <name>operator!=</name>
+  <anchor>operator_not_eq</anchor>
   <loc>
     <loc>
       <location>

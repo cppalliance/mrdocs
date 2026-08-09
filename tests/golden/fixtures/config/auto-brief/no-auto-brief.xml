@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <function>
   <name>copyBriefFromCopyBrief</name>
+  <anchor>copyBriefFromCopyBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -56,6 +58,7 @@
 </function>
 <function>
   <name>copyBriefFromExplicitBrief</name>
+  <anchor>copyBriefFromExplicitBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -101,6 +104,7 @@
 </function>
 <function>
   <name>copyBriefFromFirstSentenceAsBrief</name>
+  <anchor>copyBriefFromFirstSentenceAsBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -132,6 +136,7 @@
 </function>
 <function>
   <name>copyBriefFromFirstValid</name>
+  <anchor>copyBriefFromFirstValid</anchor>
   <loc>
     <loc>
       <location>
@@ -179,6 +184,7 @@
 </function>
 <function>
   <name>copyDetailsFromCopyBrief</name>
+  <anchor>copyDetailsFromCopyBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -221,6 +227,7 @@
 </function>
 <function>
   <name>copyDetailsFromDocNoBrief</name>
+  <anchor>copyDetailsFromDocNoBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -263,6 +270,7 @@
 </function>
 <function>
   <name>copyDetailsFromExplicitBrief</name>
+  <anchor>copyDetailsFromExplicitBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -307,6 +315,7 @@
 </function>
 <function>
   <name>copyDetailsFromFirstSentenceAsBrief</name>
+  <anchor>copyDetailsFromFirstSentenceAsBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -360,6 +369,7 @@
 </function>
 <function>
   <name>copyDetailsFromNoDoc</name>
+  <anchor>copyDetailsFromNoDoc</anchor>
   <loc>
     <loc>
       <location>
@@ -402,6 +412,7 @@
 </function>
 <function>
   <name>copyDocFromCopyBrief</name>
+  <anchor>copyDocFromCopyBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -458,6 +469,7 @@
 </function>
 <function>
   <name>copyDocFromExplicitBrief</name>
+  <anchor>copyDocFromExplicitBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -514,6 +526,7 @@
 </function>
 <function>
   <name>copyDocFromFirstSentenceAsBrief</name>
+  <anchor>copyDocFromFirstSentenceAsBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -567,6 +580,7 @@
 </function>
 <function>
   <name>docNoBriefFunction</name>
+  <anchor>docNoBriefFunction</anchor>
   <loc>
     <loc>
       <location>
@@ -611,6 +625,7 @@
 </function>
 <function>
   <name>explicitBriefFunction</name>
+  <anchor>explicitBriefFunction</anchor>
   <loc>
     <loc>
       <location>
@@ -664,6 +679,7 @@
 </function>
 <function>
   <name>explicitBriefFunction2</name>
+  <anchor>explicitBriefFunction2</anchor>
   <loc>
     <loc>
       <location>
@@ -717,6 +733,7 @@
 </function>
 <function>
   <name>failCircularReferenceCopyFunction</name>
+  <anchor>failCircularReferenceCopyFunction</anchor>
   <loc>
     <loc>
       <location>
@@ -748,6 +765,7 @@
 </function>
 <function>
   <name>failCircularSourceFunctionA</name>
+  <anchor>failCircularSourceFunctionA</anchor>
   <loc>
     <loc>
       <location>
@@ -779,6 +797,7 @@
 </function>
 <function>
   <name>failCircularSourceFunctionB</name>
+  <anchor>failCircularSourceFunctionB</anchor>
   <loc>
     <loc>
       <location>
@@ -810,6 +829,7 @@
 </function>
 <function>
   <name>failCopyBriefFromDocNoBrief</name>
+  <anchor>failCopyBriefFromDocNoBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -841,6 +861,7 @@
 </function>
 <function>
   <name>failCopyBriefFromInvalidReference</name>
+  <anchor>failCopyBriefFromInvalidReference</anchor>
   <loc>
     <loc>
       <location>
@@ -872,6 +893,7 @@
 </function>
 <function>
   <name>failCopyBriefFromNoDoc</name>
+  <anchor>failCopyBriefFromNoDoc</anchor>
   <loc>
     <loc>
       <location>
@@ -903,6 +925,7 @@
 </function>
 <function>
   <name>failCopyDetailsFromInvalidReference</name>
+  <anchor>failCopyDetailsFromInvalidReference</anchor>
   <loc>
     <loc>
       <location>
@@ -934,6 +957,7 @@
 </function>
 <function>
   <name>failCopyDocFromDocNoBrief</name>
+  <anchor>failCopyDocFromDocNoBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -978,6 +1002,7 @@
 </function>
 <function>
   <name>failCopyDocFromInvalidReference</name>
+  <anchor>failCopyDocFromInvalidReference</anchor>
   <loc>
     <loc>
       <location>
@@ -1009,6 +1034,7 @@
 </function>
 <function>
   <name>failCopyDocFromNoDoc</name>
+  <anchor>failCopyDocFromNoDoc</anchor>
   <loc>
     <loc>
       <location>
@@ -1040,6 +1066,7 @@
 </function>
 <function>
   <name>failInvalidReferenceCopyFunctions</name>
+  <anchor>failInvalidReferenceCopyFunctions</anchor>
   <loc>
     <loc>
       <location>
@@ -1071,6 +1098,7 @@
 </function>
 <function>
   <name>firstSentenceAsBriefFunction</name>
+  <anchor>firstSentenceAsBriefFunction</anchor>
   <loc>
     <loc>
       <location>
@@ -1124,6 +1152,7 @@
 </function>
 <function>
   <name>noDocFunction</name>
+  <anchor>noDocFunction</anchor>
   <loc>
     <loc>
       <location>
@@ -1154,6 +1183,7 @@
 </function>
 <function>
   <name>recursiveReferenceCopyFunction</name>
+  <anchor>recursiveReferenceCopyFunction</anchor>
   <loc>
     <loc>
       <location>
@@ -1199,6 +1229,7 @@
 </function>
 <function>
   <name>recursiveSourceFunctionA</name>
+  <anchor>recursiveSourceFunctionA</anchor>
   <loc>
     <loc>
       <location>
@@ -1241,6 +1272,7 @@
 </function>
 <function>
   <name>recursiveSourceFunctionB</name>
+  <anchor>recursiveSourceFunctionB</anchor>
   <loc>
     <loc>
       <location>

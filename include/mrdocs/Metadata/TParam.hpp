@@ -23,35 +23,13 @@
 
 namespace mrdocs {
 
-/** Visit a template parameter, dispatching to its concrete type.
-    @param P Parameter to visit.
-    @param f Callable to receive the concrete parameter.
-    @param args Additional arguments forwarded to the callable.
-    @return Whatever the callable returns.
-*/
-template<
-    typename TParamTy,
-    typename F,
-    typename... Args>
-    requires std::derived_from<TParamTy, TParam>
-constexpr
-decltype(auto)
-visit(
-    TParamTy& P,
-    F&& f,
-    Args&&... args)
-{
-    auto visitor = makeVisitor<TParam>(
-        P, std::forward<F>(f), std::forward<Args>(args)...);
-    switch(P.Kind)
-    {
-    #define INFO(Type) case TParamKind::Type: \
-        return visitor.template visit<Type##TParam>();
+// Register TParam's concrete kinds for the generic visit
+// (Support/Reflection/Describe.hpp).
+#define INFO(X) MRDOCS_KIND_ENTRY(TParam, X##TParam)
+MRDOCS_DESCRIBE_KINDS_BEGIN(TParam)
 #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
+MRDOCS_DESCRIBE_KINDS_END(TParam)
+#undef INFO
 
 /** Compare polymorphic template parameters.
 */
@@ -65,20 +43,6 @@ inline
 bool
 operator==(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
-}
-
-/** Serialize a polymorphic template parameter.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Polymorphic<TParam> const& I,
-    DomCorpus const* domCorpus)
-{
-    MRDOCS_ASSERT(!I.valueless_after_move());
-    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
 

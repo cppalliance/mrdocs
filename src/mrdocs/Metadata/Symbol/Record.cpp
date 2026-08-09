@@ -10,7 +10,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <mrdocs/Metadata/Symbol/RecordInterface.hpp>
@@ -60,17 +59,6 @@ operator<=>(RecordSymbol const& other) const
     }
     return this->asInfo() <=> other.asInfo();
 }
-
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    BaseInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
 
 
 } // mrdocs

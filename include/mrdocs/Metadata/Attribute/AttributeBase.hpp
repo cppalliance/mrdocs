@@ -127,15 +127,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Kind, Name, balancedTokens)
 )
 
-/** Serialize an Attribute into a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Attribute const& I,
-    DomCorpus const* domCorpus);
 
 /** CRTP base that ties a concrete attribute to a fixed AttributeKind.
 */
@@ -167,12 +158,18 @@ std::strong_ordering
 operator<=>(Polymorphic<Attribute> const&, Polymorphic<Attribute> const&);
 
 /** Equality for two polymorphic attributes.
+
+    Declared here, next to `operator<=>`, and defined out of line in
+    Attributes.cpp. It must be visible wherever `Polymorphic<Attribute>` is
+    compared, so that `equality_comparable<Polymorphic<Attribute>>` holds
+    (for example when an `Optional<Polymorphic<Attribute>>` member is
+    compared through the reflected `operator<=>`). Keeping the body out of
+    line also keeps it away from the kind registration hazard that a
+    header-inline body would hit (see Attributes.cpp).
 */
-inline bool
-operator==(Polymorphic<Attribute> const& a, Polymorphic<Attribute> const& b)
-{
-    return std::is_eq(a <=> b);
-}
+MRDOCS_DECL
+bool
+operator==(Polymorphic<Attribute> const&, Polymorphic<Attribute> const&);
 
 } // mrdocs
 

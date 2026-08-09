@@ -16,7 +16,6 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -52,25 +51,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (Type, id)
 )
 
-/** Map a FriendInfo to a dom::Object with deferred name lookup.
-    @param io The IO object to map into.
-    @param I The FriendInfo to map.
-    @param domCorpus The DomCorpus context.
-*/
-template <typename IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    FriendInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    mapReflectedType<true>(io, I, domCorpus);
-    if (I.id)
-    {
-        io.defer("name", [&I, domCorpus]{ return dom::ValueFrom(I.id, domCorpus).get("name"); });
-    }
-}
 
 /** Merge friend declarations, deduplicating by symbol ID.
 

@@ -38,78 +38,13 @@
 
 namespace mrdocs::doc {
 
-/** Visit an inline.
-
-    @param el The inline element to visit.
-    @param fn The function to call for each inline.
-    @param args Additional arguments to pass to the function.
-    @return The result of calling the function.
-*/
-template<
-    class InlineTy,
-    class Fn,
-    class... Args>
-    requires std::derived_from<InlineTy, Inline>
-decltype(auto)
-visit(
-    InlineTy& el,
-    Fn&& fn,
-    Args&&... args)
-{
-    auto visitor = makeVisitor<Inline>(
-        el, std::forward<Fn>(fn),
-        std::forward<Args>(args)...);
-    switch(el.Kind)
-    {
-        #define INFO(Type) case InlineKind::Type: \
-            return visitor.template visit<Type##Inline>();
+// Register Inline's concrete kinds for the generic visit
+// (Support/Reflection/Describe.hpp).
+#define INFO(X) MRDOCS_KIND_ENTRY(Inline, X##Inline)
+MRDOCS_DESCRIBE_KINDS_BEGIN(Inline)
 #include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-/** Traverse a list of inlines.
-
-    @param list The list of texts to traverse.
-    @param f The function to call for each text.
-    @param args Additional arguments to pass to the function.
-*/
-template<class F, class T, class... Args>
-requires std::derived_from<T, Inline>
-void traverse(
-    std::vector<std::unique_ptr<T>> const& list,
-    F&& f, Args&&... args)
-{
-    for(auto const& el : list)
-        visit(*el,
-            std::forward<F>(f),
-            std::forward<Args>(args)...);
-}
-
-/** Map the Polymorphic Inline as a @ref dom::Value object.
-
-    @param io The output parameter to receive the dom::Object.
-    @param I The input object.
-    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
-*/
-template <class IO, polymorphic_storage_for<Inline> InlineTy>
-void
-tag_invoke(
-    dom::ValueFromTag,
-    IO& io,
-    InlineTy const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(*I, [&](auto const& U)
-    {
-        tag_invoke(
-            dom::ValueFromTag{},
-            io,
-            U,
-            domCorpus);
-    });
-}
+MRDOCS_DESCRIBE_KINDS_END(Inline)
+#undef INFO
 
 /** Three-way comparison for polymorphic inline elements.
 */

@@ -143,7 +143,6 @@ file(
 list(APPEND LIB_SOURCES
     ${PROJECT_BINARY_DIR}/include/mrdocs/Version.hpp
     ${PROJECT_BINARY_DIR}/include/mrdocs/ConfigSchema.hpp
-    ${PROJECT_BINARY_DIR}/src/lib/Lib/ConfigSchema.cpp
 )
 # These are produced at build time by the mrdocs-codegen target (utils/codegen).
 # The GENERATED property set there is directory-scoped (CMP0118 is OLD at our
@@ -152,7 +151,6 @@ list(APPEND LIB_SOURCES
 set_source_files_properties(
     ${PROJECT_BINARY_DIR}/include/mrdocs/Version.hpp
     ${PROJECT_BINARY_DIR}/include/mrdocs/ConfigSchema.hpp
-    ${PROJECT_BINARY_DIR}/src/lib/Lib/ConfigSchema.cpp
     PROPERTIES GENERATED TRUE)
 add_library(mrdocs-core ${LIB_SOURCES})
 target_compile_features(mrdocs-core PUBLIC cxx_std_23)
@@ -162,6 +160,7 @@ target_include_directories(mrdocs-core
     "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
+    "${PROJECT_SOURCE_DIR}/src"
     "${PROJECT_BINARY_DIR}/src"
 )
 target_compile_definitions(

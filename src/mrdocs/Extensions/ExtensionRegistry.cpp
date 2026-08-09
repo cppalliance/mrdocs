@@ -11,7 +11,7 @@
 
 #include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include "AddonDiscovery.hpp"
-#include "CorpusDom.hpp"
+#include "ExtensionContext.hpp"
 #include "JsBinding.hpp"
 #include "LoadedExtensions.hpp"
 #include "LuaBinding.hpp"
@@ -88,7 +88,7 @@ ExtensionRegistry::applyTransforms(Corpus& corpus, Config const& config) const
         dom::Value const corpusDom = buildCorpusDom(corpus);
         for (auto const& [id, transform] : script.transforms)
         {
-            dom::Value ctx = buildTransformContext(corpusDom, config, id);
+            dom::Value ctx = buildExtensionContext(corpusDom, config, id);
             Expected<dom::Value> invoked = transform.try_invoke(ctx);
             if (!invoked.has_value())
             {

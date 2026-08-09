@@ -161,15 +161,6 @@ MRDOCS_DECL
 std::string
 toString(Name const& N);
 
-/** Serialize a name into a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Name const& I,
-    DomCorpus const* domCorpus);
 
 /** Compare two polymorphic names by visitor dispatch.
 */
@@ -178,12 +169,18 @@ std::strong_ordering
 operator<=>(Polymorphic<Name> const&, Polymorphic<Name> const&);
 
 /** Equality for two polymorphic names.
+
+    Declared here, next to `operator<=>`, and defined out of line in
+    Name.cpp. It must be visible wherever `Polymorphic<Name>` is compared,
+    so that `equality_comparable<Polymorphic<Name>>` holds (for example when
+    an `Optional<Polymorphic<Name>>` member is compared through the reflected
+    `operator<=>`). Keeping the body out of line also keeps it away from the
+    kind registration hazard that a header-inline body would hit (see
+    Name.cpp).
 */
-inline bool
-operator==(Polymorphic<Name> const& a, Polymorphic<Name> const& b)
-{
-    return std::is_eq(a <=> b);
-}
+MRDOCS_DECL
+bool
+operator==(Polymorphic<Name> const&, Polymorphic<Name> const&);
 
 } // mrdocs
 

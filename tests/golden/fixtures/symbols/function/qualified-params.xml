@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <namespace>
   <name>M</name>
+  <anchor>M</anchor>
   <loc>
     <loc>
       <location>
@@ -32,6 +34,7 @@
 </namespace>
 <record>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>qualified-params.cpp</shortPath>
@@ -48,6 +51,7 @@
 </record>
 <namespace>
   <name>N</name>
+  <anchor>N</anchor>
   <loc>
     <loc>
       <location>
@@ -68,6 +72,7 @@
 </namespace>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>qualified-params.cpp</shortPath>
@@ -84,6 +89,7 @@
 </record>
 <function>
   <name>foo</name>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>

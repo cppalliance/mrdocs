@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -37,6 +39,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-06</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -79,6 +82,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-0b</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -111,6 +115,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E-01</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -138,6 +143,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E-04</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -192,6 +198,7 @@
 </record>
 <record>
   <name>F</name>
+  <anchor>F</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -209,6 +216,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-04</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -252,6 +260,7 @@
 </record>
 <record>
   <name>G</name>
+  <anchor>G-06</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -279,6 +288,7 @@
 </record>
 <record>
   <name>G</name>
+  <anchor>G-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -328,6 +338,7 @@
 </record>
 <record>
   <name>D</name>
+  <anchor>D-07</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -371,6 +382,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E-07</anchor>
   <loc>
     <loc>
       <location>
@@ -399,6 +411,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E-01</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -447,6 +460,7 @@
 </record>
 <record>
   <name>F</name>
+  <anchor>F</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -472,6 +486,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-02</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -519,6 +534,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-06</anchor>
   <loc>
     <loc>
       <location>
@@ -547,6 +563,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0d</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -585,6 +602,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-05</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -633,6 +651,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -658,6 +677,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-03</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -711,6 +731,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-05</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -738,6 +759,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-0b</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -776,6 +798,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-01</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -830,6 +853,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
