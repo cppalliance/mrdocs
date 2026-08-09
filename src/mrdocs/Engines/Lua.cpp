@@ -700,20 +700,28 @@ domFunction_push_metatable(
     {
         Access A(L);
         int const top = lua_gettop(A);
-        dom::Array args;
-        for (int i = 2; i <= top; ++i)
+        // Keep every C++ object (args, fn, result, and any Error the result
+        // holds) inside this scope so all of them are destroyed before a
+        // failure raises a Lua error. lua_error never returns: it longjmps,
+        // skipping C++ destructors, so an object alive across it leaks. On
+        // failure the message is copied onto the Lua stack first; the error
+        // is raised only after the scope exits and the C++ objects are gone.
         {
-            args.push_back(luaValueToDom(L, i));
+            dom::Array args;
+            for (int i = 2; i <= top; ++i)
+            {
+                args.push_back(luaValueToDom(L, i));
+            }
+            dom::Function fn = domFunction_get(A, 1);
+            Expected<dom::Value> result = fn.call(args);
+            if (result)
+            {
+                domValue_push(A, *result);
+                return 1;
+            }
+            lua_pushstring(L, result.error().reason().c_str());
         }
-        dom::Function fn = domFunction_get(A, 1);
-        Expected<dom::Value> result = fn.call(args);
-        if (! result)
-        {
-            return luaL_error(L, "%s",
-                result.error().reason().c_str());
-        }
-        domValue_push(A, *result);
-        return 1;
+        return lua_error(L);
     });
     lua_settable(A, -3);
 
