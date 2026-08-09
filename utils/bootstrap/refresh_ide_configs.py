@@ -28,7 +28,7 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(ROOT, "util"))
+sys.path.insert(0, os.path.join(ROOT, "utils"))
 
 from bootstrap.src.installer import MrDocsInstaller  # noqa: E402
 from bootstrap.src.configs import generate_run_configs  # noqa: E402

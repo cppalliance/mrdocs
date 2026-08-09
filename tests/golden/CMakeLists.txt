@@ -70,30 +70,38 @@ foreach (action IN ITEMS test create update)
     )
 endforeach ()
 
-# XML lint: validate the golden XML fixtures against the RELAX NG schema
-# generated from mrdocs.rnc (via trang).
+# XML lint: validate the golden XML fixtures against the RELAX NG schema. The
+# schema is reflected from MrDocs's own DOM types by the script-driven `schema`
+# generator (docs/mrdocs/extensions/schema.js) and committed at
+# schemas/generators/mrdocs.rng, so no trang/Java conversion step is needed.
 if (MRDOCS_BUILD_STRICT_TESTS)
     find_package(LibXml2 REQUIRED)
 else ()
     find_package(LibXml2)
 endif()
 if (LibXml2_FOUND)
-    find_package(Java REQUIRED Runtime)
-    if (NOT Java_FOUND)
-        message(FATAL_ERROR "Java is needed to run xml-lint")
-    endif()
-
-    add_custom_command(
-        COMMAND ${Java_JAVA_EXECUTABLE} -jar ${PROJECT_SOURCE_DIR}/utils/codegen/trang.jar
-            ${PROJECT_SOURCE_DIR}/docs/modules/ROOT/attachments/schemas/mrdocs.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
-        OUTPUT mrdocs.rng
-        DEPENDS ${PROJECT_SOURCE_DIR}/docs/modules/ROOT/attachments/schemas/mrdocs.rnc)
-    add_custom_target(mrdocs_rng ALL DEPENDS mrdocs.rng)
-
     file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/*.xml)
     add_test(NAME xml-lint
              COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
-             --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng ${XML_SOURCES}
+             --relaxng ${PROJECT_SOURCE_DIR}/docs/modules/ROOT/attachments/schemas/generators/mrdocs.rng ${XML_SOURCES}
              WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+endif()
+
+# Schema up-to-date check: reflect the DOM schema from MrDocs's own types with
+# the `schema` generator and confirm the committed artifacts (mrdocs.rng, the
+# JSON schema, and the reference partial) match. Sits beside xml-lint since both
+# guard the same reflected schema. It mirrors the mrdocs-self-doc invocation so
+# extraction is identical, and shells out to a bash helper, so it is skipped
+# where bash is unavailable (Windows).
+find_program(BASH_PROGRAM bash)
+if (BASH_PROGRAM AND NOT WIN32)
+    set(MRDOCS_SCHEMA_STDLIB "--stdlib-includes=${LIBCXX_DIR}")
+    if (STDLIB_INCLUDE_DIR)
+        string(APPEND MRDOCS_SCHEMA_STDLIB " --stdlib-includes=${STDLIB_INCLUDE_DIR}")
+    endif()
+    add_test(NAME schema-check
+        COMMAND ${BASH_PROGRAM} "${PROJECT_SOURCE_DIR}/utils/codegen/generate-schema.sh" --check)
+    set_tests_properties(schema-check PROPERTIES ENVIRONMENT
+        "MRDOCS=$<TARGET_FILE:mrdocs>;ADDONS=${PROJECT_SOURCE_DIR}/data/mrdocs/addons;MRDOCS_INPUT=${PROJECT_SOURCE_DIR}/CMakeLists.txt;MRDOCS_EXTRA_ARGS=${MRDOCS_SCHEMA_STDLIB} --libc-includes=${PROJECT_SOURCE_DIR}/data/mrdocs/headers/libc-stubs --concurrency=16")
 endif()

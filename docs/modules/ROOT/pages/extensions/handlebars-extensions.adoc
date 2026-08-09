@@ -145,7 +145,7 @@ Mr.Docs registers the default helpers in C++ before any user code runs. They cov
 * Antora-aware link helpers, most notably `relativize` for rewriting an absolute target into a path relative to the current page.
 * Mr.Docs-specific helpers like `primary_location`, which picks the source location Mr.Docs links to from a symbol's synopsis.
 
-The xref:extensions/dom-reference.adoc[DOM reference] documents the values that helpers receive (symbol fields, document blocks, type nodes) so a helper knows what shape it is reading.
+The xref:generators/reference.adoc[DOM reference] documents the values that helpers receive (symbol fields, document blocks, type nodes) so a helper knows what shape it is reading.
 
 == Adding a helper
 

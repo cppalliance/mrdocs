@@ -54,4 +54,4 @@ The xref:configuration/reference.adoc#no-default-styles_option[`no-default-style
 
 == Customizing the markup
 
-The pages themselves come from xref:extensions/handlebars-extensions.adoc[Handlebars templates] under `<mrdocs-root>/share/mrdocs/addons/generator/adoc/`. Override a single partial via xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] to tweak the output without copying the whole tree. The data the templates see is documented in the xref:extensions/dom-reference.adoc[DOM reference].
+The pages themselves come from xref:extensions/handlebars-extensions.adoc[Handlebars templates] under `<mrdocs-root>/share/mrdocs/addons/generator/adoc/`. Override a single partial via xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] to tweak the output without copying the whole tree. The data the templates see is documented in the xref:generators/reference.adoc[DOM reference].

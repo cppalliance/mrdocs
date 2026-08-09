@@ -140,12 +140,12 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
         self.assertGreater(len(boost), 0)
         self.assertIn("Boost.Url Documentation", boost[0]["name"])
 
-    def test_java_config_added(self):
+    def test_schema_config_added(self):
         opts = _make_options()
         defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="/usr/bin/java")
-        java_configs = [c for c in configs if "RelaxNG" in c.get("name", "")]
-        self.assertEqual(len(java_configs), 1)
+        configs = get_dynamic_run_configs(opts, defaults)
+        schema_configs = [c for c in configs if c.get("name") == "Generate DOM Schemas"]
+        self.assertEqual(len(schema_configs), 1)
 
     @patch("src.configs.run_configs.is_windows", return_value=False)
     def test_java_and_libxml2_unix(self, _mock_win):
@@ -172,10 +172,18 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
         xml_files = [a for a in args if a.endswith(".xml") and "rng" not in a]
         self.assertEqual(len(xml_files), 2)  # a.xml and c.xml, not b.bad.xml
 
-    def test_no_libxml2_without_java(self):
+    @patch("src.configs.run_configs.is_windows", return_value=False)
+    def test_lint_without_java(self, _mock_win):
         opts = _make_options()
         defaults = _make_options()
         configs = get_dynamic_run_configs(opts, defaults, java_path="", libxml2_root="/opt/libxml2")
+        lint = [c for c in configs if "XML Lint" in c.get("name", "")]
+        self.assertEqual(len(lint), 1)
+
+    def test_no_lint_without_libxml2(self):
+        opts = _make_options()
+        defaults = _make_options()
+        configs = get_dynamic_run_configs(opts, defaults, java_path="", libxml2_root=None)
         lint = [c for c in configs if "XML Lint" in c.get("name", "")]
         self.assertEqual(len(lint), 0)
 

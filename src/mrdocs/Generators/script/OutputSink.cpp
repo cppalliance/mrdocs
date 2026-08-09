@@ -56,12 +56,13 @@ resolveUnderRoot(std::string_view relPath) const
 
 Expected<void>
 OutputSink::
-write(std::string_view relPath, std::string_view contents)
+write(std::string_view relPath, std::string_view contents, bool append)
 {
     MRDOCS_TRY(std::string full, resolveUnderRoot(relPath));
     MRDOCS_TRY(files::createDirectory(files::getParentDir(full)));
 
-    std::ofstream os(full, std::ios::binary | std::ios::trunc);
+    std::ofstream os(full, std::ios::binary |
+        (append ? std::ios::app : std::ios::trunc));
     Expected<void> result;
     if (!os)
     {

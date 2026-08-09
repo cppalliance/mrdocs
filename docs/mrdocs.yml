@@ -1,7 +1,12 @@
-# $schema: https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.schema.json
-# yaml-language-server: $schema=https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.schema.json
+# $schema: https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/config/mrdocs.schema.json
+# yaml-language-server: $schema=https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/config/mrdocs.schema.json
 
 verbose: true
+# The `mrdocs` addon (docs/mrdocs/extensions/) provides the script-driven
+# `schema` generator used to reflect the DOM schema from MrDocs's own types.
+# It is inert for the default adoc build and active when run with `--generator=schema`.
+addons-supplemental:
+  - mrdocs
 source-root: ..
 input:
   - ../include

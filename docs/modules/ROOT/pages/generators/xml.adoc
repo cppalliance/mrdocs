@@ -20,8 +20,7 @@ The output is a single file (`reference.xml` by default) regardless of the xref:
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
 <namespace>
   <name>logr</name>
   <kind>namespace</kind>
@@ -42,12 +41,12 @@ Symbols are emitted flat as siblings of the root; parent/child relationships are
 
 == Schema
 
-The schema is the same model Mr.Docs uses internally, just serialized. The xref:extensions/dom-reference.adoc[DOM reference] documents every field by name, and applies to the XML output element-for-element: a field shown as `Name` in the DOM appears as `<name>` in the XML, `Loc` as `<location>`, and so on.
+The schema is the same model Mr.Docs uses internally, just serialized. The xref:generators/reference.adoc[DOM reference] documents every field by name, and applies to the XML output element-for-element: a field shown as `Name` in the DOM appears as `<name>` in the XML, `Loc` as `<location>`, and so on.
 
 The canonical https://relaxng.org/[RELAX NG^] schema ships at the URL referenced in the root element:
 
 [source]
 ----
-https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc
+https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng
 ----
 

@@ -23,13 +23,13 @@
 ** xref:generators/adoc.adoc[AsciiDoc]
 ** xref:generators/json.adoc[JSON]
 ** xref:generators/xml.adoc[XML]
+** xref:generators/reference.adoc[Reference]
 * Extensions
 ** xref:extensions/corpus-extensions.adoc[Extensions]
 ** xref:extensions/handlebars-extensions.adoc[Handlebars Extensions]
 ** xref:extensions/data-driven-generators.adoc[Data-Driven Generators]
 ** xref:extensions/antora.adoc[Antora Extensions]
 ** xref:extensions/as-library.adoc[Mr.Docs as a Library]
-** xref:extensions/dom-reference.adoc[DOM Reference]
 ** xref:reference:index.adoc[Library Reference]
 * Contribute
 ** xref:contribute/quickstart.adoc[]

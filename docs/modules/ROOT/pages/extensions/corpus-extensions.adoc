@@ -95,7 +95,7 @@ end)
 ----
 ======
 
-Each entry in `ctx.corpus.symbols` is a proxy for a live Mr.Docs symbol. The fields of each object are at xref:extensions/dom-reference.adoc[the DOM reference].
+Each entry in `ctx.corpus.symbols` is a proxy for a live Mr.Docs symbol. The fields of each object are at xref:generators/reference.adoc[the DOM reference].
 
 When a script knows a symbol's id and needs to act on that one symbol:
 
@@ -232,7 +232,7 @@ The function receives the same `ctx` a transform does, plus `ctx.output`:
 
 * `ctx.corpus.symbols` is the array of every symbol. Each carries the same fields the template and helper layers see, plus a flat `_id` string suitable as a stable per-symbol URL fragment. A generator reads the corpus rather than mutating it.
 * `ctx.config` is the resolved configuration, as above.
-* `ctx.output.write(relativePath, contents)` writes one file under the configured output directory, which is the path specified with `--output` on the command line, or with the `output` key in the config file; that's the same location the built-in generators write to. The path is resolved relative to that directory and may not escape it; an absolute path or one that climbs above the output directory is rejected. Parent directories are created as needed.
+* `ctx.output.write(relativePath, contents)` writes one file under the configured output directory, which is the path specified with `--output` on the command line, or with the `output` key in the config file; that's the same location the built-in generators write to. The path is resolved relative to that directory and may not escape it; an absolute path or one that climbs above the output directory is rejected. Parent directories are created as needed. Pass a truthy third argument, or call `ctx.output.append(relativePath, contents)`, to append instead of truncate, so a large artifact can be streamed in chunks rather than built whole in memory.
 * `ctx.params` is this generator's own options: the `generator-options.<id>` block from the configuration, keyed by the `id` the generator registered under, or an empty object when none is set. It lets a generator be configured without adding command-line options. For example, `generator-options: { search-index: { stop-words: [the, a, an] } }` reaches the `search-index` generator as `ctx.params.stop-words`.
 * `ctx.stringify(value)` serializes any value to a JSON string, so a script can emit JSON without building it by hand. JavaScript already has `JSON.stringify`; this gives Lua the same, and behaves identically in both.
 

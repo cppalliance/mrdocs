@@ -410,7 +410,7 @@ def pick_default_preset(source_dir: str, active_preset: str) -> str:
     preset when scoring is unavailable.
     """
     try:
-        runner_path = os.path.join(source_dir, "util", "testing/run_all_tests.py")
+        runner_path = os.path.join(source_dir, "utils", "testing/run_all_tests.py")
         spec = importlib.util.spec_from_file_location("_mrdocs_run_all_tests", runner_path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)

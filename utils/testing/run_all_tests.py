@@ -377,9 +377,9 @@ def main() -> None:
                 "to see the exact failures, fix the code/test, then rerun."
             ),
             "xml-lint": (
-                "XML lint failed. Ensure Java and libxml2 are installed and on PATH. "
+                "XML lint failed. Ensure libxml2 (xmllint) is installed and on PATH. "
                 "Reproduce with `ctest --test-dir {build} -V -R xml-lint`. "
-                "If trang/rng files are missing, verify utils/codegen/trang.jar exists."
+                "If the RELAX NG schema is stale, regenerate it with `utils/codegen/generate-schema.sh`."
             ),
             "yaml-schema-check": (
                 "YAML schema check failed. Run `python utils/codegen/generate-yaml-schema.py --check` from the repo root, "
@@ -391,8 +391,13 @@ def main() -> None:
                 "to inspect mrdocs output. Common issues: wrong stdlib/libc include paths, "
                 "doc warnings promoted to errors when MRDOCS_BUILD_STRICT_TESTS=ON, or stale docs/mrdocs.yml config."
             ),
+            "schema-check": (
+                "DOM schema out of date. The committed mrdocs.rng / JSON schema / reference partial "
+                "no longer match MrDocs's types. Regenerate with `utils/codegen/generate-schema.sh` "
+                "(MRDOCS=<built mrdocs> ADDONS=data/mrdocs/addons) and commit the result."
+            ),
         }
-        for name in non_golden_tests or ["mrdocs-unit-tests", "xml-lint", "yaml-schema-check", "mrdocs-self-doc"]:
+        for name in non_golden_tests or ["mrdocs-unit-tests", "xml-lint", "yaml-schema-check", "mrdocs-self-doc", "schema-check"]:
             rc = run_ctest_case(build_dir, name)
             if rc != 0:
                 error(f"Test failed: {name}")

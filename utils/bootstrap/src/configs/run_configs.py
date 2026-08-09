@@ -302,7 +302,7 @@ def get_dynamic_run_configs(
         {
             "name": "Test Getting-Started Examples",
             "group": "Documentation",
-            "script": os.path.join(options.source_dir, "util", "docs", "test_getting_started.sh"),
+            "script": os.path.join(options.source_dir, "utils", "docs", "test_getting_started.sh"),
             "folder": "Render Docs",
             "args": [],
             "cwd": options.source_dir,
@@ -340,65 +340,69 @@ def get_dynamic_run_configs(
                         ],
                     })
 
-    # XML / RelaxNG tasks requiring Java and libxml2
-    if java_path:
-        configs.append({
-            "name": "Generate RelaxNG Schema",
-            "group": "Codegen",
-            "script": java_path,
-            "args": [
-                "-jar",
-                os.path.join(options.source_dir, "utils", "codegen", "trang.jar"),
-                os.path.join(options.source_dir, "docs", "modules", "ROOT", "attachments", "schemas", "mrdocs.rnc"),
-                os.path.join(options.build_dir, "mrdocs.rng"),
-            ],
-            "cwd": options.source_dir,
-        })
+    # DOM schema regeneration and XML lint. The RELAX NG schema is reflected
+    # from MrDocs's own types by the `schema` generator and committed at
+    # schemas/generators/mrdocs.rng, so there is no trang conversion step.
+    mrdocs_rng = os.path.join(
+        options.source_dir, "docs", "modules", "ROOT", "attachments",
+        "schemas", "generators", "mrdocs.rng")
 
-        if libxml2_root:
-            libxml2_xmllint_executable = os.path.join(libxml2_root, "bin", "xmllint")
-            xml_sources_dir = os.path.join(options.source_dir, "tests", "golden", "fixtures")
+    configs.append({
+        "name": "Generate DOM Schemas",
+        "group": "Codegen",
+        "script": os.path.join(options.source_dir, "utils", "codegen", "generate-schema.sh"),
+        "args": [],
+        "cwd": options.source_dir,
+        "env": {
+            "MRDOCS": os.path.join(options.install_dir, "bin", "mrdocs"),
+            "ADDONS": os.path.join(options.source_dir, "share", "mrdocs", "addons"),
+        },
+    })
 
-            if is_windows():
-                xml_sources = []
-                for root, _, files in os.walk(xml_sources_dir):
-                    for file in files:
-                        if file.endswith(".xml") and not file.endswith(".bad.xml"):
-                            xml_sources.append(os.path.join(root, file))
-                configs.append({
-                    "name": "XML Lint with RelaxNG Schema",
-                    "group": "Test",
-                    "script": libxml2_xmllint_executable,
-                    "args": [
-                        "--dropdtd",
-                        "--noout",
-                        "--relaxng",
-                        os.path.join(options.build_dir, "mrdocs.rng"),
-                        *xml_sources,
-                    ],
-                    "cwd": options.source_dir,
-                })
-            else:
-                configs.append({
-                    "name": "XML Lint with RelaxNG Schema",
-                    "group": "Test",
-                    "script": "find",
-                    "args": [
-                        xml_sources_dir,
-                        "-type", "f",
-                        "-name", "*.xml",
-                        "!", "-name", "*.bad.xml",
-                        "-exec",
-                        libxml2_xmllint_executable,
-                        "--dropdtd",
-                        "--noout",
-                        "--relaxng",
-                        os.path.join(options.build_dir, "mrdocs.rng"),
-                        "{}",
-                        "+",
-                    ],
-                    "cwd": options.source_dir,
-                })
+    if libxml2_root:
+        libxml2_xmllint_executable = os.path.join(libxml2_root, "bin", "xmllint")
+        xml_sources_dir = os.path.join(options.source_dir, "tests", "golden", "fixtures")
+
+        if is_windows():
+            xml_sources = []
+            for root, _, files in os.walk(xml_sources_dir):
+                for file in files:
+                    if file.endswith(".xml") and not file.endswith(".bad.xml"):
+                        xml_sources.append(os.path.join(root, file))
+            configs.append({
+                "name": "XML Lint with RelaxNG Schema",
+                "group": "Test",
+                "script": libxml2_xmllint_executable,
+                "args": [
+                    "--dropdtd",
+                    "--noout",
+                    "--relaxng",
+                    mrdocs_rng,
+                    *xml_sources,
+                ],
+                "cwd": options.source_dir,
+            })
+        else:
+            configs.append({
+                "name": "XML Lint with RelaxNG Schema",
+                "group": "Test",
+                "script": "find",
+                "args": [
+                    xml_sources_dir,
+                    "-type", "f",
+                    "-name", "*.xml",
+                    "!", "-name", "*.bad.xml",
+                    "-exec",
+                    libxml2_xmllint_executable,
+                    "--dropdtd",
+                    "--noout",
+                    "--relaxng",
+                    mrdocs_rng,
+                    "{}",
+                    "+",
+                ],
+                "cwd": options.source_dir,
+            })
 
     return configs
 
