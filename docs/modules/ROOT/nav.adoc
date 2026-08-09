@@ -21,6 +21,7 @@
 ** xref:generators/index.adoc[Overview]
 ** xref:generators/html.adoc[HTML]
 ** xref:generators/adoc.adoc[AsciiDoc]
+** xref:generators/json.adoc[JSON]
 ** xref:generators/xml.adoc[XML]
 * Extensions
 ** xref:extensions/corpus-extensions.adoc[Extensions]

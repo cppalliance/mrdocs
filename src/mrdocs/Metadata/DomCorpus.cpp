@@ -187,6 +187,12 @@ buildCorpusDom(Corpus const& corpus)
     return buildCorpusDomImpl(corpus);
 }
 
+dom::Value
+buildSymbolDom(Symbol const& sym)
+{
+    return makeSymbolProxyValue(sym);
+}
+
 DomCorpus::
 ~DomCorpus() = default;
 

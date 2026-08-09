@@ -1,0 +1,44 @@
+{
+    "symbols": [
+        {
+            "anchor": "index",
+            "kind": "namespace",
+            "id": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+            "extraction": "regular",
+            "members": {
+                "records": [
+                    "4STgDrwLeHv7mqV5anD6cJEd6K4T"
+                ]
+            }
+        },
+        {
+            "name": "Widget",
+            "anchor": "Widget",
+            "loc": {
+                "defLoc": {
+                    "shortPath": "example.cpp",
+                    "sourcePath": "example.cpp",
+                    "lineNumber": 2,
+                    "columnNumber": 1,
+                    "documented": true
+                }
+            },
+            "kind": "record",
+            "id": "4STgDrwLeHv7mqV5anD6cJEd6K4T",
+            "extraction": "regular",
+            "parent": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+            "doc": {
+                "brief": {
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "kind": "text",
+                            "literal": "A widget."
+                        }
+                    ]
+                }
+            },
+            "keyKind": "struct"
+        }
+    ]
+}

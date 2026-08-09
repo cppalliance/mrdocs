@@ -1,0 +1,909 @@
+{
+    "symbols": [
+        {
+            "$meta": {
+                "type": "NamespaceSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "anchor": "index",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": []
+            },
+            "kind": "namespace",
+            "id": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "attributes": [],
+            "isInline": false,
+            "isAnonymous": false,
+            "usingDirectives": [],
+            "members": {
+                "$meta": {
+                    "type": "NamespaceTranche",
+                    "bases": []
+                },
+                "namespaces": [
+                    "2buXaq5YEtJhY4cNxSRtzAbdAXba"
+                ],
+                "namespaceAliases": [],
+                "typedefs": [],
+                "records": [],
+                "enums": [],
+                "functions": [],
+                "variables": [],
+                "concepts": [],
+                "guides": [],
+                "usings": [],
+                "macros": []
+            }
+        },
+        {
+            "$meta": {
+                "type": "NamespaceSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "app",
+            "anchor": "app",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 1,
+                        "columnNumber": 1,
+                        "documented": false
+                    }
+                ]
+            },
+            "kind": "namespace",
+            "id": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+            "attributes": [],
+            "isInline": false,
+            "isAnonymous": false,
+            "usingDirectives": [],
+            "members": {
+                "$meta": {
+                    "type": "NamespaceTranche",
+                    "bases": []
+                },
+                "namespaces": [],
+                "namespaceAliases": [],
+                "typedefs": [],
+                "records": [
+                    "2Nz2w6tGeUqMfpD9XGS9bwRoksYa"
+                ],
+                "enums": [
+                    "2NGNPuH6Wf1qSUSK1aUim5a2aFgA"
+                ],
+                "functions": [
+                    "2BciL9YHnssEJRqzovTQyhLr46Hs"
+                ],
+                "variables": [],
+                "concepts": [],
+                "guides": [],
+                "usings": [],
+                "macros": []
+            }
+        },
+        {
+            "$meta": {
+                "type": "RecordSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "Widget",
+            "anchor": "Widget",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "defLoc": {
+                    "$meta": {
+                        "type": "Location",
+                        "bases": []
+                    },
+                    "shortPath": "with-meta.cpp",
+                    "sourcePath": "with-meta.cpp",
+                    "lineNumber": 12,
+                    "columnNumber": 1,
+                    "documented": true
+                },
+                "loc": []
+            },
+            "kind": "record",
+            "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "doc": {
+                "$meta": {
+                    "type": "DocComment",
+                    "bases": []
+                },
+                "document": [],
+                "brief": {
+                    "$meta": {
+                        "type": "BriefBlock",
+                        "bases": [
+                            "BlockCommonBase",
+                            "Block",
+                            "InlineContainer"
+                        ]
+                    },
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "$meta": {
+                                "type": "TextInline",
+                                "bases": [
+                                    "InlineCommonBase",
+                                    "Inline"
+                                ]
+                            },
+                            "kind": "text",
+                            "literal": "A widget."
+                        }
+                    ],
+                    "copiedFrom": []
+                },
+                "returns": [],
+                "params": [],
+                "tparams": [],
+                "exceptions": [],
+                "sees": [],
+                "preconditions": [],
+                "postconditions": [],
+                "footnotes": [],
+                "relates": [],
+                "related": [
+                    {
+                        "$meta": {
+                            "type": "ReferenceInline",
+                            "bases": [
+                                "InlineCommonBase",
+                                "Inline"
+                            ]
+                        },
+                        "kind": "reference",
+                        "literal": "make",
+                        "id": "2BciL9YHnssEJRqzovTQyhLr46Hs"
+                    }
+                ]
+            },
+            "attributes": [],
+            "keyKind": "struct",
+            "isTypeDef": false,
+            "isFinal": false,
+            "isFinalDestructor": false,
+            "bases": [],
+            "derived": [],
+            "interface": {
+                "$meta": {
+                    "type": "RecordInterface",
+                    "bases": []
+                },
+                "public": {
+                    "$meta": {
+                        "type": "RecordTranche",
+                        "bases": []
+                    },
+                    "namespaceAliases": [],
+                    "typedefs": [],
+                    "records": [],
+                    "enums": [],
+                    "functions": [
+                        "3X4hXD9TNfeSsq4SZ12tSt2KLtxe"
+                    ],
+                    "staticFunctions": [],
+                    "variables": [
+                        "3eU5ivokqDnUqojf2Q55FpAp5TwT"
+                    ],
+                    "staticVariables": [],
+                    "concepts": [],
+                    "guides": [],
+                    "usings": []
+                },
+                "protected": {
+                    "$meta": {
+                        "type": "RecordTranche",
+                        "bases": []
+                    },
+                    "namespaceAliases": [],
+                    "typedefs": [],
+                    "records": [],
+                    "enums": [],
+                    "functions": [],
+                    "staticFunctions": [],
+                    "variables": [],
+                    "staticVariables": [],
+                    "concepts": [],
+                    "guides": [],
+                    "usings": []
+                },
+                "private": {
+                    "$meta": {
+                        "type": "RecordTranche",
+                        "bases": []
+                    },
+                    "namespaceAliases": [],
+                    "typedefs": [],
+                    "records": [],
+                    "enums": [],
+                    "functions": [],
+                    "staticFunctions": [],
+                    "variables": [],
+                    "staticVariables": [],
+                    "concepts": [],
+                    "guides": [],
+                    "usings": []
+                }
+            },
+            "friends": [],
+            "isListedOnPrimary": false,
+            "specializations": [],
+            "deductionGuides": []
+        },
+        {
+            "$meta": {
+                "type": "FunctionSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "value",
+            "anchor": "value",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 15,
+                        "columnNumber": 5,
+                        "documented": true
+                    }
+                ]
+            },
+            "kind": "function",
+            "id": "3X4hXD9TNfeSsq4SZ12tSt2KLtxe",
+            "access": "public",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+            "doc": {
+                "$meta": {
+                    "type": "DocComment",
+                    "bases": []
+                },
+                "document": [],
+                "brief": {
+                    "$meta": {
+                        "type": "BriefBlock",
+                        "bases": [
+                            "BlockCommonBase",
+                            "Block",
+                            "InlineContainer"
+                        ]
+                    },
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "$meta": {
+                                "type": "TextInline",
+                                "bases": [
+                                    "InlineCommonBase",
+                                    "Inline"
+                                ]
+                            },
+                            "kind": "text",
+                            "literal": "The current value."
+                        }
+                    ],
+                    "copiedFrom": []
+                },
+                "returns": [],
+                "params": [],
+                "tparams": [],
+                "exceptions": [],
+                "sees": [],
+                "preconditions": [],
+                "postconditions": [],
+                "footnotes": [],
+                "relates": [],
+                "related": []
+            },
+            "attributes": [],
+            "returnType": {
+                "$meta": {
+                    "type": "NamedType",
+                    "bases": [
+                        "Type"
+                    ]
+                },
+                "kind": "named",
+                "isPackExpansion": false,
+                "isConst": false,
+                "isVolatile": false,
+                "constraints": [],
+                "name": {
+                    "$meta": {
+                        "type": "IdentifierName",
+                        "bases": [
+                            "Name"
+                        ]
+                    },
+                    "kind": "identifier",
+                    "identifier": "int"
+                },
+                "fundamentalType": "int"
+            },
+            "params": [],
+            "funcClass": "normal",
+            "noexcept": "",
+            "isVariadic": false,
+            "isDefaulted": false,
+            "isExplicitlyDefaulted": false,
+            "isDeleted": false,
+            "isDeletedAsWritten": false,
+            "hasOverrideAttr": false,
+            "hasTrailingReturn": false,
+            "isExplicitObjectMemberFunction": false,
+            "isRecordMethod": true,
+            "isVirtual": false,
+            "isVirtualAsWritten": false,
+            "isPure": false,
+            "isConst": true,
+            "isVolatile": false,
+            "isFinal": false,
+            "explicit": "",
+            "isListedOnPrimary": false,
+            "specializations": []
+        },
+        {
+            "$meta": {
+                "type": "VariableSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "color",
+            "anchor": "color",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 18,
+                        "columnNumber": 5,
+                        "documented": true
+                    }
+                ]
+            },
+            "kind": "variable",
+            "id": "3eU5ivokqDnUqojf2Q55FpAp5TwT",
+            "access": "public",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+            "doc": {
+                "$meta": {
+                    "type": "DocComment",
+                    "bases": []
+                },
+                "document": [],
+                "brief": {
+                    "$meta": {
+                        "type": "BriefBlock",
+                        "bases": [
+                            "BlockCommonBase",
+                            "Block",
+                            "InlineContainer"
+                        ]
+                    },
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "$meta": {
+                                "type": "TextInline",
+                                "bases": [
+                                    "InlineCommonBase",
+                                    "Inline"
+                                ]
+                            },
+                            "kind": "text",
+                            "literal": "The color."
+                        }
+                    ],
+                    "copiedFrom": []
+                },
+                "returns": [],
+                "params": [],
+                "tparams": [],
+                "exceptions": [],
+                "sees": [],
+                "preconditions": [],
+                "postconditions": [],
+                "footnotes": [],
+                "relates": [],
+                "related": []
+            },
+            "attributes": [],
+            "type": {
+                "$meta": {
+                    "type": "NamedType",
+                    "bases": [
+                        "Type"
+                    ]
+                },
+                "kind": "named",
+                "isPackExpansion": false,
+                "isConst": false,
+                "isVolatile": false,
+                "constraints": [],
+                "name": {
+                    "$meta": {
+                        "type": "IdentifierName",
+                        "bases": [
+                            "Name"
+                        ]
+                    },
+                    "kind": "identifier",
+                    "id": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+                    "identifier": "Color"
+                }
+            },
+            "isInline": false,
+            "isConstexpr": false,
+            "isConstinit": false,
+            "isThreadLocal": false,
+            "isRecordField": true,
+            "isMutable": false,
+            "isVariant": false,
+            "isBitfield": false
+        },
+        {
+            "$meta": {
+                "type": "EnumSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "Color",
+            "anchor": "Color",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "defLoc": {
+                    "$meta": {
+                        "type": "Location",
+                        "bases": []
+                    },
+                    "shortPath": "with-meta.cpp",
+                    "sourcePath": "with-meta.cpp",
+                    "lineNumber": 4,
+                    "columnNumber": 1,
+                    "documented": true
+                },
+                "loc": []
+            },
+            "kind": "enum",
+            "id": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "doc": {
+                "$meta": {
+                    "type": "DocComment",
+                    "bases": []
+                },
+                "document": [],
+                "brief": {
+                    "$meta": {
+                        "type": "BriefBlock",
+                        "bases": [
+                            "BlockCommonBase",
+                            "Block",
+                            "InlineContainer"
+                        ]
+                    },
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "$meta": {
+                                "type": "TextInline",
+                                "bases": [
+                                    "InlineCommonBase",
+                                    "Inline"
+                                ]
+                            },
+                            "kind": "text",
+                            "literal": "A color."
+                        }
+                    ],
+                    "copiedFrom": []
+                },
+                "returns": [],
+                "params": [],
+                "tparams": [],
+                "exceptions": [],
+                "sees": [],
+                "preconditions": [],
+                "postconditions": [],
+                "footnotes": [],
+                "relates": [],
+                "related": []
+            },
+            "attributes": [],
+            "scoped": true,
+            "underlyingType": {
+                "$meta": {
+                    "type": "NamedType",
+                    "bases": [
+                        "Type"
+                    ]
+                },
+                "kind": "named",
+                "isPackExpansion": false,
+                "isConst": false,
+                "isVolatile": false,
+                "constraints": [],
+                "name": {
+                    "$meta": {
+                        "type": "IdentifierName",
+                        "bases": [
+                            "Name"
+                        ]
+                    },
+                    "kind": "identifier",
+                    "identifier": "int"
+                },
+                "fundamentalType": "int"
+            },
+            "constants": [
+                "4ZRDsE6wESeYiUKghM5Xvav4SjGV",
+                "4VCyAYZLGPwhe89MZcFXYDFKRgng",
+                "2AZJRFhGNfHzTVTY7DFuAtM1W2Ga"
+            ]
+        },
+        {
+            "$meta": {
+                "type": "EnumConstantSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "red",
+            "anchor": "red",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 6,
+                        "columnNumber": 5,
+                        "documented": false
+                    }
+                ]
+            },
+            "kind": "enum-constant",
+            "id": "4ZRDsE6wESeYiUKghM5Xvav4SjGV",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "attributes": [],
+            "initializer": {
+                "$meta": {
+                    "type": "ConstantExprInfo",
+                    "bases": [
+                        "ExprInfo"
+                    ]
+                },
+                "value": 0
+            }
+        },
+        {
+            "$meta": {
+                "type": "EnumConstantSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "green",
+            "anchor": "green",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 7,
+                        "columnNumber": 5,
+                        "documented": false
+                    }
+                ]
+            },
+            "kind": "enum-constant",
+            "id": "4VCyAYZLGPwhe89MZcFXYDFKRgng",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "attributes": [],
+            "initializer": {
+                "$meta": {
+                    "type": "ConstantExprInfo",
+                    "bases": [
+                        "ExprInfo"
+                    ]
+                },
+                "value": 1
+            }
+        },
+        {
+            "$meta": {
+                "type": "EnumConstantSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "blue",
+            "anchor": "blue",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 8,
+                        "columnNumber": 5,
+                        "documented": false
+                    }
+                ]
+            },
+            "kind": "enum-constant",
+            "id": "2AZJRFhGNfHzTVTY7DFuAtM1W2Ga",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "attributes": [],
+            "initializer": {
+                "$meta": {
+                    "type": "ConstantExprInfo",
+                    "bases": [
+                        "ExprInfo"
+                    ]
+                },
+                "value": 2
+            }
+        },
+        {
+            "$meta": {
+                "type": "FunctionSymbol",
+                "bases": [
+                    "SymbolCommonBase",
+                    "Symbol"
+                ]
+            },
+            "name": "make",
+            "anchor": "make",
+            "loc": {
+                "$meta": {
+                    "type": "SourceInfo",
+                    "bases": []
+                },
+                "loc": [
+                    {
+                        "$meta": {
+                            "type": "Location",
+                            "bases": []
+                        },
+                        "shortPath": "with-meta.cpp",
+                        "sourcePath": "with-meta.cpp",
+                        "lineNumber": 22,
+                        "columnNumber": 1,
+                        "documented": true
+                    }
+                ]
+            },
+            "kind": "function",
+            "id": "2BciL9YHnssEJRqzovTQyhLr46Hs",
+            "extraction": "regular",
+            "isCopyFromInherited": false,
+            "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "doc": {
+                "$meta": {
+                    "type": "DocComment",
+                    "bases": []
+                },
+                "document": [],
+                "brief": {
+                    "$meta": {
+                        "type": "BriefBlock",
+                        "bases": [
+                            "BlockCommonBase",
+                            "Block",
+                            "InlineContainer"
+                        ]
+                    },
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "$meta": {
+                                "type": "TextInline",
+                                "bases": [
+                                    "InlineCommonBase",
+                                    "Inline"
+                                ]
+                            },
+                            "kind": "text",
+                            "literal": "Make a widget."
+                        }
+                    ],
+                    "copiedFrom": []
+                },
+                "returns": [
+                    {
+                        "$meta": {
+                            "type": "ReturnsBlock",
+                            "bases": [
+                                "BlockCommonBase",
+                                "Block",
+                                "InlineContainer"
+                            ]
+                        },
+                        "kind": "returns",
+                        "children": [
+                            {
+                                "$meta": {
+                                    "type": "TextInline",
+                                    "bases": [
+                                        "InlineCommonBase",
+                                        "Inline"
+                                    ]
+                                },
+                                "kind": "text",
+                                "literal": "A widget."
+                            }
+                        ]
+                    }
+                ],
+                "params": [],
+                "tparams": [],
+                "exceptions": [],
+                "sees": [],
+                "preconditions": [],
+                "postconditions": [],
+                "footnotes": [],
+                "relates": [
+                    {
+                        "$meta": {
+                            "type": "ReferenceInline",
+                            "bases": [
+                                "InlineCommonBase",
+                                "Inline"
+                            ]
+                        },
+                        "kind": "reference",
+                        "literal": "Widget",
+                        "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa"
+                    }
+                ],
+                "related": []
+            },
+            "attributes": [],
+            "returnType": {
+                "$meta": {
+                    "type": "NamedType",
+                    "bases": [
+                        "Type"
+                    ]
+                },
+                "kind": "named",
+                "isPackExpansion": false,
+                "isConst": false,
+                "isVolatile": false,
+                "constraints": [],
+                "name": {
+                    "$meta": {
+                        "type": "IdentifierName",
+                        "bases": [
+                            "Name"
+                        ]
+                    },
+                    "kind": "identifier",
+                    "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+                    "identifier": "Widget"
+                }
+            },
+            "params": [],
+            "funcClass": "normal",
+            "noexcept": "",
+            "isVariadic": false,
+            "isDefaulted": false,
+            "isExplicitlyDefaulted": false,
+            "isDeleted": false,
+            "isDeletedAsWritten": false,
+            "hasOverrideAttr": false,
+            "hasTrailingReturn": false,
+            "isExplicitObjectMemberFunction": false,
+            "isRecordMethod": false,
+            "isVirtual": false,
+            "isVirtualAsWritten": false,
+            "isPure": false,
+            "isConst": false,
+            "isVolatile": false,
+            "isFinal": false,
+            "explicit": "",
+            "isListedOnPrimary": false,
+            "specializations": []
+        }
+    ]
+}

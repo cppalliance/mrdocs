@@ -1,0 +1,334 @@
+{
+    "symbols": [
+        {
+            "anchor": "index",
+            "kind": "namespace",
+            "id": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+            "extraction": "regular",
+            "members": {
+                "namespaces": [
+                    "2buXaq5YEtJhY4cNxSRtzAbdAXba"
+                ]
+            }
+        },
+        {
+            "name": "app",
+            "anchor": "app",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 1,
+                        "columnNumber": 1
+                    }
+                ]
+            },
+            "kind": "namespace",
+            "id": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "extraction": "regular",
+            "parent": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
+            "members": {
+                "records": [
+                    "2Nz2w6tGeUqMfpD9XGS9bwRoksYa"
+                ],
+                "enums": [
+                    "2NGNPuH6Wf1qSUSK1aUim5a2aFgA"
+                ],
+                "functions": [
+                    "2BciL9YHnssEJRqzovTQyhLr46Hs"
+                ]
+            }
+        },
+        {
+            "name": "Widget",
+            "anchor": "Widget",
+            "loc": {
+                "defLoc": {
+                    "shortPath": "compact.cpp",
+                    "sourcePath": "compact.cpp",
+                    "lineNumber": 12,
+                    "columnNumber": 1,
+                    "documented": true
+                }
+            },
+            "kind": "record",
+            "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+            "extraction": "regular",
+            "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "doc": {
+                "brief": {
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "kind": "text",
+                            "literal": "A widget."
+                        }
+                    ]
+                },
+                "related": [
+                    {
+                        "kind": "reference",
+                        "literal": "make",
+                        "id": "2BciL9YHnssEJRqzovTQyhLr46Hs"
+                    }
+                ]
+            },
+            "keyKind": "struct",
+            "interface": {
+                "public": {
+                    "functions": [
+                        "3X4hXD9TNfeSsq4SZ12tSt2KLtxe"
+                    ],
+                    "variables": [
+                        "3eU5ivokqDnUqojf2Q55FpAp5TwT"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "value",
+            "anchor": "value",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 15,
+                        "columnNumber": 5,
+                        "documented": true
+                    }
+                ]
+            },
+            "kind": "function",
+            "id": "3X4hXD9TNfeSsq4SZ12tSt2KLtxe",
+            "access": "public",
+            "extraction": "regular",
+            "parent": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+            "doc": {
+                "brief": {
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "kind": "text",
+                            "literal": "The current value."
+                        }
+                    ]
+                }
+            },
+            "returnType": {
+                "kind": "named",
+                "name": {
+                    "kind": "identifier",
+                    "identifier": "int"
+                },
+                "fundamentalType": "int"
+            },
+            "funcClass": "normal",
+            "isRecordMethod": true,
+            "isConst": true
+        },
+        {
+            "name": "color",
+            "anchor": "color",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 18,
+                        "columnNumber": 5,
+                        "documented": true
+                    }
+                ]
+            },
+            "kind": "variable",
+            "id": "3eU5ivokqDnUqojf2Q55FpAp5TwT",
+            "access": "public",
+            "extraction": "regular",
+            "parent": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+            "doc": {
+                "brief": {
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "kind": "text",
+                            "literal": "The color."
+                        }
+                    ]
+                }
+            },
+            "type": {
+                "kind": "named",
+                "name": {
+                    "kind": "identifier",
+                    "id": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+                    "identifier": "Color"
+                }
+            },
+            "isRecordField": true
+        },
+        {
+            "name": "Color",
+            "anchor": "Color",
+            "loc": {
+                "defLoc": {
+                    "shortPath": "compact.cpp",
+                    "sourcePath": "compact.cpp",
+                    "lineNumber": 4,
+                    "columnNumber": 1,
+                    "documented": true
+                }
+            },
+            "kind": "enum",
+            "id": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "extraction": "regular",
+            "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "doc": {
+                "brief": {
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "kind": "text",
+                            "literal": "A color."
+                        }
+                    ]
+                }
+            },
+            "scoped": true,
+            "underlyingType": {
+                "kind": "named",
+                "name": {
+                    "kind": "identifier",
+                    "identifier": "int"
+                },
+                "fundamentalType": "int"
+            },
+            "constants": [
+                "4ZRDsE6wESeYiUKghM5Xvav4SjGV",
+                "4VCyAYZLGPwhe89MZcFXYDFKRgng",
+                "2AZJRFhGNfHzTVTY7DFuAtM1W2Ga"
+            ]
+        },
+        {
+            "name": "red",
+            "anchor": "red",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 6,
+                        "columnNumber": 5
+                    }
+                ]
+            },
+            "kind": "enum-constant",
+            "id": "4ZRDsE6wESeYiUKghM5Xvav4SjGV",
+            "extraction": "regular",
+            "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "initializer": {
+                "value": 0
+            }
+        },
+        {
+            "name": "green",
+            "anchor": "green",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 7,
+                        "columnNumber": 5
+                    }
+                ]
+            },
+            "kind": "enum-constant",
+            "id": "4VCyAYZLGPwhe89MZcFXYDFKRgng",
+            "extraction": "regular",
+            "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "initializer": {
+                "value": 1
+            }
+        },
+        {
+            "name": "blue",
+            "anchor": "blue",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 8,
+                        "columnNumber": 5
+                    }
+                ]
+            },
+            "kind": "enum-constant",
+            "id": "2AZJRFhGNfHzTVTY7DFuAtM1W2Ga",
+            "extraction": "regular",
+            "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
+            "initializer": {
+                "value": 2
+            }
+        },
+        {
+            "name": "make",
+            "anchor": "make",
+            "loc": {
+                "loc": [
+                    {
+                        "shortPath": "compact.cpp",
+                        "sourcePath": "compact.cpp",
+                        "lineNumber": 22,
+                        "columnNumber": 1,
+                        "documented": true
+                    }
+                ]
+            },
+            "kind": "function",
+            "id": "2BciL9YHnssEJRqzovTQyhLr46Hs",
+            "extraction": "regular",
+            "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
+            "doc": {
+                "brief": {
+                    "kind": "brief",
+                    "children": [
+                        {
+                            "kind": "text",
+                            "literal": "Make a widget."
+                        }
+                    ]
+                },
+                "returns": [
+                    {
+                        "kind": "returns",
+                        "children": [
+                            {
+                                "kind": "text",
+                                "literal": "A widget."
+                            }
+                        ]
+                    }
+                ],
+                "relates": [
+                    {
+                        "kind": "reference",
+                        "literal": "Widget",
+                        "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa"
+                    }
+                ]
+            },
+            "returnType": {
+                "kind": "named",
+                "name": {
+                    "kind": "identifier",
+                    "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
+                    "identifier": "Widget"
+                }
+            },
+            "funcClass": "normal"
+        }
+    ]
+}
