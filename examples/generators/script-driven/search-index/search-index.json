@@ -1,1 +1,14 @@
-[{"name":"Vector","url":"43E6qXkmkkfeWwCdMLUnhvUC5tmQ.html"},{"name":"length","url":"GXXakstjmNYc2ajd9fKxmictVSf.html"},{"name":"scale","url":"3La6GUi4PG1gLn7kKCAQpUDY22fu.html"}]
+[
+    {
+        "name": "Vector",
+        "url": "Vector.html"
+    },
+    {
+        "name": "length",
+        "url": "Vector/length.html"
+    },
+    {
+        "name": "scale",
+        "url": "Vector/scale.html"
+    }
+]
