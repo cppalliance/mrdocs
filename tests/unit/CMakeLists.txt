@@ -12,13 +12,13 @@
 file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
-# TODO: Gen/script/ScriptGenerator.cpp came from develop written against the
-# old polymorphic Config/ConfigImpl and Corpus API. The encapsulation made
+# TODO: Generators/script/ScriptGenerator.cpp came from develop written against
+# the old polymorphic Config/ConfigImpl and Corpus API. The encapsulation made
 # Config and Corpus concrete (no StubConfig/StubCorpus subclassing, no
 # ConfigImpl), so this test needs re-authoring against Config::load and
 # Corpus::build before it can compile. Excluded from the build until then.
 list(REMOVE_ITEM UNIT_TEST_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/Gen/script/ScriptGenerator.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/Generators/script/ScriptGenerator.cpp)
 add_executable(mrdocs-unit-tests ${UNIT_TEST_SOURCES})
 target_include_directories(mrdocs-unit-tests
         PUBLIC

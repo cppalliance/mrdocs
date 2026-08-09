@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -80,6 +82,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -184,6 +187,7 @@
 </function>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -288,6 +292,7 @@
 </function>
 <function>
   <name>i</name>
+  <anchor>i</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -393,6 +398,7 @@
 </function>
 <function>
   <name>j</name>
+  <anchor>j</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -497,6 +503,7 @@
 </function>
 <function>
   <name>k</name>
+  <anchor>k</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -636,6 +643,7 @@
 </function>
 <function>
   <name>l</name>
+  <anchor>l</anchor>
   <loc>
     <defLoc>
       <shortPath>param-direction.cpp</shortPath>
@@ -789,6 +797,7 @@
 </function>
 <function>
   <name>m</name>
+  <anchor>m</anchor>
   <loc>
     <loc>
       <location>
@@ -903,6 +912,7 @@
 </function>
 <function>
   <name>n</name>
+  <anchor>n</anchor>
   <loc>
     <loc>
       <location>
@@ -982,6 +992,7 @@
 </function>
 <function>
   <name>o</name>
+  <anchor>o</anchor>
   <loc>
     <loc>
       <location>

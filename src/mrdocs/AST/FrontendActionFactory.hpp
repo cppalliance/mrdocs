@@ -14,7 +14,7 @@
 #ifndef MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP
 #define MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP
 
-#include "../Support/ExecutionContext.hpp"
+#include <mrdocs/Support/ExecutionContext.hpp>
 #include "MissingSymbolSink.hpp"
 #include <mrdocs/Config.hpp>
 #include <clang/Tooling/Tooling.h>

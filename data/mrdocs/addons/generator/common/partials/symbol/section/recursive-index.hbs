@@ -1,9 +1,9 @@
 {{! Recursive symbol index: only emitted when rendering the global namespace as an index page. }}
-{{#if (and (eq symbol.kind "namespace") @root.config.multipage @root.config.global-namespace-index (eq @root.symbol.kind "namespace") (not @root.symbol.name) (not @root.symbol.parent)) }}
-{{#each symbol.members.namespaces}}
-{{#if isRegular}}
-{{#> markup/dynamic-level-h id=null }}{{> symbol/qualified-name . }} namespace{{/markup/dynamic-level-h~}}
-{{> symbol symbol=. id=null traversing-global-namespace=true }}
+{{#if (and (eq symbol.kind "namespace") @root.config.multipage @root.config.globalNamespaceIndex (eq @root.symbol.kind "namespace") (not @root.symbol.name) (not @root.symbol.parent)) }}
+{{#each (transform symbol.members.namespaces @root.mrdocs.corpus.get) as |ns|}}
+{{#if (eq ns.extraction "regular")}}
+{{#> markup/dynamic-level-h id=null class="symbol" }}{{> symbol/qualified-name ns }} namespace{{/markup/dynamic-level-h~}}
+{{> symbol symbol=ns id=null traversing-global-namespace=true }}
 {{/if}}
 {{/each}}
 {{/if}}

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <macro>
   <name>DOC_THEN_BLANK</name>
+  <anchor>DOC_THEN_BLANK</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-edge-cases.cpp</shortPath>
@@ -51,6 +53,7 @@
 </macro>
 <macro>
   <name>FIRST_THING_IN_FILE</name>
+  <anchor>FIRST_THING_IN_FILE</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-edge-cases.cpp</shortPath>
@@ -66,6 +69,7 @@
 </macro>
 <macro>
   <name>REDEFINED_MACRO</name>
+  <anchor>REDEFINED_MACRO-07</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-edge-cases.cpp</shortPath>
@@ -81,6 +85,7 @@
 </macro>
 <macro>
   <name>REDEFINED_MACRO</name>
+  <anchor>REDEFINED_MACRO-06</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-edge-cases.cpp</shortPath>
@@ -96,6 +101,7 @@
 </macro>
 <macro>
   <name>SAME_LINE</name>
+  <anchor>SAME_LINE</anchor>
   <loc>
     <defLoc>
       <shortPath>macros-edge-cases.cpp</shortPath>

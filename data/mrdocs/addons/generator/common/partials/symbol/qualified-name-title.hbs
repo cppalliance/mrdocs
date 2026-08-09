@@ -20,8 +20,8 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{~#if (and parent parent.parent)~}}
-{{~> symbol/qualified-name-title parent is-qualified-name-parent=true ~}}{{#if parent.name }}::{{/if}}
+{{~#if (and parent (lookup (@root.mrdocs.corpus.get parent) "parent"))~}}
+{{~> symbol/qualified-name-title (@root.mrdocs.corpus.get parent) is-qualified-name-parent=true ~}}{{#if (lookup (@root.mrdocs.corpus.get parent) "name") }}::{{/if}}
 {{~/if~}}
 {{~#if (and (eq kind "function") (eq funcClass "conversion"))~}}
     {{~> symbol/name . ~}}
@@ -32,10 +32,10 @@
     {{~/if~}}
 {{~else if (eq kind "guide")~}}
     {{>type/declarator deduced ~}}
-{{~else if (contains (arr "explicit" "partial") template.kind)~}}
+{{~else if template.primary~}}
     {{!~ If the last part is a template specialization, we include links to primary template and the arguments. ~}}
     {{!~ If the primary template wasn't correctly extracted for some reason, we just print the name as usual. ~}}
-    {{#if template.primary }}{{~>symbol/name template.primary ~}}{{else}}{{ name }}{{/if}}{{>template/args args=template.args ~}}
+    {{#if template.primary }}{{~>symbol/name (@root.mrdocs.corpus.get template.primary) ~}}{{else}}{{ name }}{{/if}}{{>template/args args=template.args ~}}
 {{~else~}}
     {{~> symbol/name-text . ~}}
 {{~/if~}}

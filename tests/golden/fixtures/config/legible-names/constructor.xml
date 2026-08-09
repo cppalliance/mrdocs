@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>X</name>
+  <anchor>X</anchor>
   <loc>
     <defLoc>
       <shortPath>constructor.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <overloads>
   <name>X</name>
+  <anchor>2constructor-08</anchor>
   <loc>
     <loc>
       <location>
@@ -99,6 +102,7 @@
 </overloads>
 <function>
   <name>X</name>
+  <anchor>2constructor-0e8</anchor>
   <loc>
     <loc>
       <location>
@@ -142,6 +146,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-0e0</anchor>
   <loc>
     <loc>
       <location>
@@ -220,6 +225,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-069</anchor>
   <loc>
     <loc>
       <location>
@@ -297,6 +303,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-06f</anchor>
   <loc>
     <loc>
       <location>
@@ -378,6 +385,7 @@
 </function>
 <function>
   <name>X</name>
+  <anchor>2constructor-07</anchor>
   <loc>
     <loc>
       <location>

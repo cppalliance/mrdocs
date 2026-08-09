@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>const-mutable.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <overloads>
   <name>foo</name>
+  <anchor>foo-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -75,6 +78,7 @@
 </overloads>
 <function>
   <name>foo</name>
+  <anchor>foo-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -112,6 +116,7 @@
 </function>
 <function>
   <name>foo</name>
+  <anchor>foo-07</anchor>
   <loc>
     <loc>
       <location>

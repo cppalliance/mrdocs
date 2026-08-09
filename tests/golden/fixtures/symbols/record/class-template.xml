@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>C0</name>
+  <anchor>C0</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -42,6 +44,7 @@
 </record>
 <record>
   <name>N0</name>
+  <anchor>N0</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -64,6 +67,7 @@
 </record>
 <variable>
   <name>z</name>
+  <anchor>z</anchor>
   <loc>
     <loc>
       <location>
@@ -95,6 +99,7 @@
 </variable>
 <variable>
   <name>w</name>
+  <anchor>w</anchor>
   <loc>
     <loc>
       <location>
@@ -126,6 +131,7 @@
 </variable>
 <variable>
   <name>x</name>
+  <anchor>x</anchor>
   <loc>
     <loc>
       <location>
@@ -157,6 +163,7 @@
 </variable>
 <variable>
   <name>y</name>
+  <anchor>y</anchor>
   <loc>
     <loc>
       <location>
@@ -187,6 +194,7 @@
 </variable>
 <record>
   <name>C1</name>
+  <anchor>C1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -209,6 +217,7 @@
 </record>
 <record>
   <name>N1</name>
+  <anchor>N1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -240,6 +249,7 @@
 </record>
 <variable>
   <name>x</name>
+  <anchor>x</anchor>
   <loc>
     <loc>
       <location>
@@ -271,6 +281,7 @@
 </variable>
 <variable>
   <name>y</name>
+  <anchor>y</anchor>
   <loc>
     <loc>
       <location>
@@ -301,6 +312,7 @@
 </variable>
 <variable>
   <name>z</name>
+  <anchor>z</anchor>
   <loc>
     <loc>
       <location>
@@ -332,6 +344,7 @@
 </variable>
 <variable>
   <name>w</name>
+  <anchor>w</anchor>
   <loc>
     <loc>
       <location>
@@ -363,6 +376,7 @@
 </variable>
 <record>
   <name>C2</name>
+  <anchor>C2</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -394,6 +408,7 @@
 </record>
 <record>
   <name>N2</name>
+  <anchor>N2</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -425,6 +440,7 @@
 </record>
 <variable>
   <name>w</name>
+  <anchor>w</anchor>
   <loc>
     <loc>
       <location>
@@ -456,6 +472,7 @@
 </variable>
 <variable>
   <name>x</name>
+  <anchor>x</anchor>
   <loc>
     <loc>
       <location>
@@ -486,6 +503,7 @@
 </variable>
 <variable>
   <name>y</name>
+  <anchor>y</anchor>
   <loc>
     <loc>
       <location>
@@ -516,6 +534,7 @@
 </variable>
 <variable>
   <name>z</name>
+  <anchor>z</anchor>
   <loc>
     <loc>
       <location>
@@ -547,6 +566,7 @@
 </variable>
 <variable>
   <name>v</name>
+  <anchor>v</anchor>
   <loc>
     <loc>
       <location>
@@ -578,6 +598,7 @@
 </variable>
 <record>
   <name>C3</name>
+  <anchor>C3</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>
@@ -616,6 +637,7 @@
 </record>
 <variable>
   <name>v</name>
+  <anchor>v</anchor>
   <loc>
     <loc>
       <location>
@@ -647,6 +669,7 @@
 </variable>
 <record>
   <name>S</name>
+  <anchor>S</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template.cpp</shortPath>

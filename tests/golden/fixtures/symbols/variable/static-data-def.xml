@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -42,6 +44,7 @@
 </record>
 <variable>
   <name>v0</name>
+  <anchor>v0</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -80,6 +83,7 @@
 </variable>
 <variable>
   <name>v1</name>
+  <anchor>v1</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -119,6 +123,7 @@
 </variable>
 <variable>
   <name>v2</name>
+  <anchor>v2</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -159,6 +164,7 @@
 </variable>
 <variable>
   <name>v3</name>
+  <anchor>v3</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -199,6 +205,7 @@
 </variable>
 <variable>
   <name>v4</name>
+  <anchor>v4</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -238,6 +245,7 @@
 </variable>
 <variable>
   <name>v5</name>
+  <anchor>v5</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -269,6 +277,7 @@
 </variable>
 <variable>
   <name>v6</name>
+  <anchor>v6</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -301,6 +310,7 @@
 </variable>
 <variable>
   <name>v7</name>
+  <anchor>v7</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -333,6 +343,7 @@
 </variable>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -354,6 +365,7 @@
 </record>
 <variable>
   <name>x0</name>
+  <anchor>x0</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -394,6 +406,7 @@
 </variable>
 <variable>
   <name>x1</name>
+  <anchor>x1</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>
@@ -427,6 +440,7 @@
 </variable>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-def.cpp</shortPath>

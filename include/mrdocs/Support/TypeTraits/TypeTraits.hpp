@@ -14,7 +14,6 @@
 #define MRDOCS_API_SUPPORT_TYPETRAITS_TYPETRAITS_HPP
 
 #include <mrdocs/ADT/Optional.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <type_traits>
 #include <vector>
 
@@ -32,6 +31,18 @@ inline constexpr bool is_specialization_of_v = false;
 /// @copydoc is_specialization_of_v
 template <template <typename...> class Template, typename... Args>
 inline constexpr bool is_specialization_of_v<Template<Args...>, Template> = true;
+
+/** Satisfied when `T` is a specialization of the class template `Template`.
+
+    The concept form of @ref is_specialization_of_v, for use as a
+    constraint: `specialization_of<T, std::vector> auto` or
+    `requires specialization_of<T, mrdocs::Optional>`.
+
+    @tparam T The type to test.
+    @tparam Template The class template to test against.
+*/
+template <typename T, template <typename...> class Template>
+concept specialization_of = is_specialization_of_v<T, Template>;
 
 /** Return the value as its underlying type.
 

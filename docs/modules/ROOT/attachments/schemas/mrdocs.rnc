@@ -231,6 +231,7 @@ grammar
     # Fields common to every symbol.
     SymbolField =
         ( element name { xsd:string }
+        | element anchor { xsd:string }
         | SourceInfo
         | Kind
         | element id { Id }

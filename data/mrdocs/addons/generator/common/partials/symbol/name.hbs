@@ -17,8 +17,8 @@
 {{~else if (eq kind "guide")~}}
     {{! Deduction guide: "deduced" type declarator ~}}
     {{>type/declarator deduced ~}}
-{{~else if url~}}
-    {{#>markup/a href=url}}{{>symbol/name-text}}{{/markup/a~}}
+{{~else if (@root.mrdocs.corpus.getUrl this)~}}
+    {{#>markup/a href=(@root.mrdocs.corpus.getUrl this)}}{{>symbol/name-text}}{{/markup/a~}}
 {{~else~}}
     {{~>symbol/name-text~}}
 {{~/if~}}

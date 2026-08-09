@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>C0</name>
+  <anchor>C0</anchor>
   <loc>
     <defLoc>
       <shortPath>record-access.cpp</shortPath>
@@ -38,6 +40,7 @@
 </record>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>
@@ -70,6 +73,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -102,6 +106,7 @@
 </function>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <loc>
       <location>
@@ -134,6 +139,7 @@
 </function>
 <record>
   <name>S0</name>
+  <anchor>S0</anchor>
   <loc>
     <defLoc>
       <shortPath>record-access.cpp</shortPath>
@@ -161,6 +167,7 @@
 </record>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <loc>
       <location>
@@ -193,6 +200,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -225,6 +233,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>
@@ -257,6 +266,7 @@
 </function>
 <record>
   <name>U0</name>
+  <anchor>U0</anchor>
   <loc>
     <defLoc>
       <shortPath>record-access.cpp</shortPath>
@@ -284,6 +294,7 @@
 </record>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <loc>
       <location>
@@ -316,6 +327,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -348,6 +360,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>

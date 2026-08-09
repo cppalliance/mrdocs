@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>base</name>
+  <anchor>base</anchor>
   <loc>
     <defLoc>
       <shortPath>reference.cpp</shortPath>
@@ -65,6 +67,7 @@
 </record>
 <function>
   <name>base_base_inherited</name>
+  <anchor>base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -125,6 +128,7 @@
 </function>
 <function>
   <name>base_inherited</name>
+  <anchor>base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -185,6 +189,7 @@
 </function>
 <function>
   <name>base_shadowed</name>
+  <anchor>base_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -245,6 +250,7 @@
 </function>
 <function>
   <name>derived_shadowed</name>
+  <anchor>derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -305,6 +311,7 @@
 </function>
 <function>
   <name>do_base_base_inherited</name>
+  <anchor>do_base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -365,6 +372,7 @@
 </function>
 <function>
   <name>do_base_inherited</name>
+  <anchor>do_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -425,6 +433,7 @@
 </function>
 <function>
   <name>do_base_shadowed</name>
+  <anchor>do_base_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -485,6 +494,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -545,6 +555,7 @@
 </function>
 <record>
   <name>base_base</name>
+  <anchor>base_base</anchor>
   <loc>
     <defLoc>
       <shortPath>reference.cpp</shortPath>
@@ -579,6 +590,7 @@
 </record>
 <function>
   <name>base_base_inherited</name>
+  <anchor>base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -639,6 +651,7 @@
 </function>
 <function>
   <name>do_base_base_inherited</name>
+  <anchor>do_base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -699,6 +712,7 @@
 </function>
 <record>
   <name>derived</name>
+  <anchor>derived</anchor>
   <loc>
     <defLoc>
       <shortPath>reference.cpp</shortPath>
@@ -767,6 +781,7 @@
 </record>
 <function>
   <name>base_base_inherited</name>
+  <anchor>base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -827,6 +842,7 @@
 </function>
 <function>
   <name>base_inherited</name>
+  <anchor>base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -887,6 +903,7 @@
 </function>
 <function>
   <name>base_shadowed</name>
+  <anchor>base_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -947,6 +964,7 @@
 </function>
 <function>
   <name>derived_shadowed</name>
+  <anchor>derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1007,6 +1025,7 @@
 </function>
 <function>
   <name>do_base_base_inherited</name>
+  <anchor>do_base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -1067,6 +1086,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1127,6 +1147,7 @@
 </function>
 <function>
   <name>do_base_inherited</name>
+  <anchor>do_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -1187,6 +1208,7 @@
 </function>
 <function>
   <name>do_base_shadowed</name>
+  <anchor>do_base_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1247,6 +1269,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1307,6 +1330,7 @@
 </function>
 <record>
   <name>private_derived</name>
+  <anchor>private_derived</anchor>
   <loc>
     <defLoc>
       <shortPath>reference.cpp</shortPath>
@@ -1372,6 +1396,7 @@
 </record>
 <function>
   <name>derived_shadowed</name>
+  <anchor>derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1432,6 +1457,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1492,6 +1518,7 @@
 </function>
 <record>
   <name>protected_derived</name>
+  <anchor>protected_derived</anchor>
   <loc>
     <defLoc>
       <shortPath>reference.cpp</shortPath>
@@ -1560,6 +1587,7 @@
 </record>
 <function>
   <name>derived_shadowed</name>
+  <anchor>derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1620,6 +1648,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1680,6 +1709,7 @@
 </function>
 <function>
   <name>base_base_inherited</name>
+  <anchor>base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -1740,6 +1770,7 @@
 </function>
 <function>
   <name>base_inherited</name>
+  <anchor>base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -1800,6 +1831,7 @@
 </function>
 <function>
   <name>base_shadowed</name>
+  <anchor>base_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1860,6 +1892,7 @@
 </function>
 <function>
   <name>derived_shadowed</name>
+  <anchor>derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1920,6 +1953,7 @@
 </function>
 <function>
   <name>do_base_base_inherited</name>
+  <anchor>do_base_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -1980,6 +2014,7 @@
 </function>
 <function>
   <name>do_base_inherited</name>
+  <anchor>do_base_inherited</anchor>
   <loc>
     <loc>
       <location>
@@ -2040,6 +2075,7 @@
 </function>
 <function>
   <name>do_base_shadowed</name>
+  <anchor>do_base_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -2100,6 +2136,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>

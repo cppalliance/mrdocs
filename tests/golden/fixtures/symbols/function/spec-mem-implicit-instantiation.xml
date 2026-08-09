@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -43,6 +45,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -75,6 +78,7 @@
 </record>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -105,6 +109,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -137,6 +142,7 @@
 </record>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -167,6 +173,7 @@
 </function>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -197,6 +204,7 @@
 </function>
 <record>
   <name>A</name>
+  <anchor>A-0f</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -240,6 +248,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -268,6 +277,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-00</anchor>
   <loc>
     <loc>
       <location>
@@ -296,6 +306,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C-01</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -344,6 +355,7 @@
 </record>
 <function>
   <name>j</name>
+  <anchor>j</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -382,6 +394,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -436,6 +449,7 @@
 </record>
 <function>
   <name>j</name>
+  <anchor>j</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -466,6 +480,7 @@
 </function>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -498,6 +513,7 @@
 </function>
 <record>
   <name>A</name>
+  <anchor>A-000</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -541,6 +557,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-03</anchor>
   <loc>
     <loc>
       <location>
@@ -569,6 +586,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B-09</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -612,6 +630,7 @@
 </record>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -650,6 +669,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -678,6 +698,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -716,6 +737,7 @@
 </function>
 <record>
   <name>A</name>
+  <anchor>A-00b</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -759,6 +781,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -787,6 +810,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -826,6 +850,7 @@
 </record>
 <function>
   <name>i</name>
+  <anchor>i</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -856,6 +881,7 @@
 </function>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -888,6 +914,7 @@
 </function>
 <record>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -909,6 +936,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -941,6 +969,7 @@
 </record>
 <function>
   <name>k</name>
+  <anchor>k</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -971,6 +1000,7 @@
 </function>
 <record>
   <name>E</name>
+  <anchor>E-0d</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -1014,6 +1044,7 @@
 </record>
 <function>
   <name>k</name>
+  <anchor>k</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>

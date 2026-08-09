@@ -33,6 +33,7 @@
 #define MRDOCS_API_SUPPORT_REFLECTION_DESCRIBE_HPP
 
 #include <mrdocs/Support/String/String.hpp>
+#include <mrdocs/Support/Demangle.hpp>
 #include <array>
 #include <compare>
 #include <concepts>
@@ -177,13 +178,12 @@ template<class E>
 struct has_describe_enumerators_impl<E,
     std::void_t<describe_enumerators<E>>> : std::true_type {};
 
-// Descriptor for one concrete kind of a polymorphic base: it checks that `D`
-// derives from `C` and exposes the derived type as its `type` alias.
+// Descriptor for one concrete kind of a polymorphic base: it exposes the
+// derived type as its `type` alias. `D` may be incomplete (only named),
+// so a kind list can be registered from forward declarations.
 template<class C, class D>
 struct kind_descriptor
 {
-    static_assert(std::is_base_of_v<C, D>,
-        "A type listed as a kind is not actually derived from C");
     using type = D;
 };
 
@@ -281,6 +281,76 @@ for_each_member(F&& f)
     }
 }
 
+namespace detail {
+// Invoke `f(args...)`; when it returns void the call is treated as
+// "keep going" (true), otherwise its result is contextually converted
+// to bool. This lets a callback opt into early-exit just by returning a
+// bool instead of void.
+template<class F, class... Args>
+constexpr bool
+invokeContinue(F&& f, Args&&... args)
+{
+    if constexpr (std::is_void_v<std::invoke_result_t<F, Args...>>)
+    {
+        std::forward<F>(f)(std::forward<Args>(args)...);
+        return true;
+    }
+    else
+    {
+        return static_cast<bool>(
+            std::forward<F>(f)(std::forward<Args>(args)...));
+    }
+}
+} // namespace detail
+
+/** Invoke `f` with the name and value of each reflected member of `obj`.
+
+    A value-yielding companion to `for_each_member<T>(f)`: instead of
+    descriptors it hands the callback each member's source name (a
+    `std::string_view`) and a reference to that member taken from `obj`.
+    The reference keeps `obj`'s cv-qualification, so a `const` object
+    yields `const` members. Inherited members are included; each
+    descriptor's pointer applies to `obj` directly, so bases need no
+    separate handling by the caller.
+
+    `f` may be invoked as `f(name, value)` or as `f(value)`. If `f`
+    returns `void` the walk always continues; if it returns something
+    convertible to `bool`, a `false` result stops the walk early.
+
+    @param obj The (possibly `const`) described object to walk.
+    @param f   The callback; see above for the accepted forms.
+    @return `true` if every member was visited, `false` if `f` stopped
+            the walk early.
+*/
+template<class U, class F>
+    requires described<std::remove_cvref_t<U>>
+constexpr bool
+for_each_member(U&& obj, F&& f)
+{
+    using T = std::remove_cvref_t<U>;
+    bool keepGoing = true;
+    for_each_member<T>(
+        [&](auto d)
+        {
+            if (!keepGoing)
+            {
+                return;
+            }
+            auto& value = obj.*d.pointer;
+            if constexpr (std::is_invocable_v<
+                    F&, std::string_view, decltype(value)>)
+            {
+                keepGoing = detail::invokeContinue(
+                    f, std::string_view(d.name), value);
+            }
+            else
+            {
+                keepGoing = detail::invokeContinue(f, value);
+            }
+        });
+    return keepGoing;
+}
+
 /** The number of reflected members of `T`, counting inherited ones.
 
     @return The member count across `T` and its reflected base classes.
@@ -355,6 +425,27 @@ describedMembersAllText()
     }
     return allText;
 }
+
+/** Whether a described type collapses to a single string.
+
+    `true` when `T` is a described struct whose only reflected member
+    (inherited ones included) is a plain string. Such a type is
+    represented as that one string rather than as a nested object, both
+    in the XML output and in the reflection DOM. This is the single
+    source of truth for that rule, shared by the XML writer and the
+    `describedToDom` proxy.
+
+    Examples:
+    @li `ExprInfo` (its only member is the written expression) ->
+        `true`; reflects as the written string.
+    @li `SourceInfo`, `FunctionSymbol` (many members) -> `false`.
+    @li a described struct with one non-string member -> `false`.
+*/
+template<class T>
+concept isSingleStringObject =
+    has_describe_members<T>::value &&
+    describedMemberCount<T>() == 1 &&
+    describedMembersAllText<T>();
 
 // --- Enumerator <-> string -----------------------------------------
 
@@ -625,6 +716,91 @@ toString(E e) noexcept
 #define MRDOCS_PP_FOR_EACH_48(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_47(F, a, __VA_ARGS__))
 #define MRDOCS_PP_FOR_EACH_49(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_48(F, a, __VA_ARGS__))
 #define MRDOCS_PP_FOR_EACH_50(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_49(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_51(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_50(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_52(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_51(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_53(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_52(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_54(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_53(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_55(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_54(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_56(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_55(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_57(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_56(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_58(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_57(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_59(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_58(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_60(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_59(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_61(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_60(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_62(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_61(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_63(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_62(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_64(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_63(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_65(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_64(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_66(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_65(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_67(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_66(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_68(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_67(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_69(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_68(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_70(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_69(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_71(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_70(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_72(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_71(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_73(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_72(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_74(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_73(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_75(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_74(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_76(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_75(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_77(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_76(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_78(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_77(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_79(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_78(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_80(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_79(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_81(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_80(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_82(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_81(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_83(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_82(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_84(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_83(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_85(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_84(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_86(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_85(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_87(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_86(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_88(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_87(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_89(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_88(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_90(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_89(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_91(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_90(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_92(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_91(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_93(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_92(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_94(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_93(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_95(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_94(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_96(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_95(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_97(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_96(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_98(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_97(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_99(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_98(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_100(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_99(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_101(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_100(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_102(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_101(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_103(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_102(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_104(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_103(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_105(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_104(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_106(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_105(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_107(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_106(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_108(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_107(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_109(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_108(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_110(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_109(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_111(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_110(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_112(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_111(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_113(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_112(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_114(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_113(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_115(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_114(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_116(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_115(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_117(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_116(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_118(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_117(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_119(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_118(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_120(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_119(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_121(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_120(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_122(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_121(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_123(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_122(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_124(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_123(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_125(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_124(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_126(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_125(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_127(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_126(F, a, __VA_ARGS__))
+#define MRDOCS_PP_FOR_EACH_128(F, a, x, ...) MRDOCS_PP_EXPAND(MRDOCS_PP_CALL(F, a, x) MRDOCS_PP_FOR_EACH_127(F, a, __VA_ARGS__))
+
+// This per-arity ladder is the standard preprocessor technique for member
+// enumeration. Boost.Describe does the same: BOOST_DESCRIBE_PP_FOR_EACH is
+// a fixed-maximum FOR_EACH generated the same way. It is verbose but not
+// fragile, since adding arities only extends the ladder. The alternative,
+// structured-binding reflection (Boost.PFR), avoids the macro but only
+// works for aggregates and carries its own generated arity limit.
 
 // --- Count arguments -----------------------------------------------
 
@@ -634,11 +810,96 @@ toString(E e) noexcept
     _20, _21, _22, _23, _24, _25, _26, _27, _28, _29,               \
     _30, _31, _32, _33, _34, _35, _36, _37, _38, _39,               \
     _40, _41, _42, _43, _44, _45, _46, _47, _48, _49,               \
-    _50, V, ...) V
+    _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, \
+    _60, _61, _62, _63, _64, _65, _66, _67, _68, _69, \
+    _70, _71, _72, _73, _74, _75, _76, _77, _78, _79, \
+    _80, _81, _82, _83, _84, _85, _86, _87, _88, _89, \
+    _90, _91, _92, _93, _94, _95, _96, _97, _98, _99, \
+    _100, _101, _102, _103, _104, _105, _106, _107, _108, _109, \
+    _110, _111, _112, _113, _114, _115, _116, _117, _118, _119, \
+    _120, _121, _122, _123, _124, _125, _126, _127, _128, V, ...) V
 
 #define MRDOCS_PP_FOR_EACH(F, ...)                                  \
     MRDOCS_PP_EXPAND(MRDOCS_PP_EXPAND(                              \
         MRDOCS_PP_FE_EXTRACT(__VA_ARGS__,                           \
+            MRDOCS_PP_FOR_EACH_128,                                 \
+            MRDOCS_PP_FOR_EACH_127,                                 \
+            MRDOCS_PP_FOR_EACH_126,                                 \
+            MRDOCS_PP_FOR_EACH_125,                                 \
+            MRDOCS_PP_FOR_EACH_124,                                 \
+            MRDOCS_PP_FOR_EACH_123,                                 \
+            MRDOCS_PP_FOR_EACH_122,                                 \
+            MRDOCS_PP_FOR_EACH_121,                                 \
+            MRDOCS_PP_FOR_EACH_120,                                 \
+            MRDOCS_PP_FOR_EACH_119,                                 \
+            MRDOCS_PP_FOR_EACH_118,                                 \
+            MRDOCS_PP_FOR_EACH_117,                                 \
+            MRDOCS_PP_FOR_EACH_116,                                 \
+            MRDOCS_PP_FOR_EACH_115,                                 \
+            MRDOCS_PP_FOR_EACH_114,                                 \
+            MRDOCS_PP_FOR_EACH_113,                                 \
+            MRDOCS_PP_FOR_EACH_112,                                 \
+            MRDOCS_PP_FOR_EACH_111,                                 \
+            MRDOCS_PP_FOR_EACH_110,                                 \
+            MRDOCS_PP_FOR_EACH_109,                                 \
+            MRDOCS_PP_FOR_EACH_108,                                 \
+            MRDOCS_PP_FOR_EACH_107,                                 \
+            MRDOCS_PP_FOR_EACH_106,                                 \
+            MRDOCS_PP_FOR_EACH_105,                                 \
+            MRDOCS_PP_FOR_EACH_104,                                 \
+            MRDOCS_PP_FOR_EACH_103,                                 \
+            MRDOCS_PP_FOR_EACH_102,                                 \
+            MRDOCS_PP_FOR_EACH_101,                                 \
+            MRDOCS_PP_FOR_EACH_100,                                 \
+            MRDOCS_PP_FOR_EACH_99,                                 \
+            MRDOCS_PP_FOR_EACH_98,                                 \
+            MRDOCS_PP_FOR_EACH_97,                                 \
+            MRDOCS_PP_FOR_EACH_96,                                 \
+            MRDOCS_PP_FOR_EACH_95,                                 \
+            MRDOCS_PP_FOR_EACH_94,                                 \
+            MRDOCS_PP_FOR_EACH_93,                                 \
+            MRDOCS_PP_FOR_EACH_92,                                 \
+            MRDOCS_PP_FOR_EACH_91,                                 \
+            MRDOCS_PP_FOR_EACH_90,                                 \
+            MRDOCS_PP_FOR_EACH_89,                                 \
+            MRDOCS_PP_FOR_EACH_88,                                 \
+            MRDOCS_PP_FOR_EACH_87,                                 \
+            MRDOCS_PP_FOR_EACH_86,                                 \
+            MRDOCS_PP_FOR_EACH_85,                                 \
+            MRDOCS_PP_FOR_EACH_84,                                 \
+            MRDOCS_PP_FOR_EACH_83,                                 \
+            MRDOCS_PP_FOR_EACH_82,                                 \
+            MRDOCS_PP_FOR_EACH_81,                                 \
+            MRDOCS_PP_FOR_EACH_80,                                 \
+            MRDOCS_PP_FOR_EACH_79,                                 \
+            MRDOCS_PP_FOR_EACH_78,                                 \
+            MRDOCS_PP_FOR_EACH_77,                                 \
+            MRDOCS_PP_FOR_EACH_76,                                 \
+            MRDOCS_PP_FOR_EACH_75,                                 \
+            MRDOCS_PP_FOR_EACH_74,                                 \
+            MRDOCS_PP_FOR_EACH_73,                                 \
+            MRDOCS_PP_FOR_EACH_72,                                 \
+            MRDOCS_PP_FOR_EACH_71,                                 \
+            MRDOCS_PP_FOR_EACH_70,                                 \
+            MRDOCS_PP_FOR_EACH_69,                                 \
+            MRDOCS_PP_FOR_EACH_68,                                 \
+            MRDOCS_PP_FOR_EACH_67,                                 \
+            MRDOCS_PP_FOR_EACH_66,                                 \
+            MRDOCS_PP_FOR_EACH_65,                                 \
+            MRDOCS_PP_FOR_EACH_64,                                 \
+            MRDOCS_PP_FOR_EACH_63,                                 \
+            MRDOCS_PP_FOR_EACH_62,                                 \
+            MRDOCS_PP_FOR_EACH_61,                                 \
+            MRDOCS_PP_FOR_EACH_60,                                 \
+            MRDOCS_PP_FOR_EACH_59,                                 \
+            MRDOCS_PP_FOR_EACH_58,                                 \
+            MRDOCS_PP_FOR_EACH_57,                                 \
+            MRDOCS_PP_FOR_EACH_56,                                 \
+            MRDOCS_PP_FOR_EACH_55,                                 \
+            MRDOCS_PP_FOR_EACH_54,                                 \
+            MRDOCS_PP_FOR_EACH_53,                                 \
+            MRDOCS_PP_FOR_EACH_52,                                 \
+            MRDOCS_PP_FOR_EACH_51,                                 \
             MRDOCS_PP_FOR_EACH_50,                                  \
             MRDOCS_PP_FOR_EACH_49,                                  \
             MRDOCS_PP_FOR_EACH_48,                                  \

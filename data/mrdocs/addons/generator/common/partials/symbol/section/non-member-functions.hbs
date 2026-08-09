@@ -5,7 +5,7 @@
 {{> markup/table
     weights=(arr 1 4)
     headers=(arr "Name" "Description")
-    items=symbol.doc.related
-    columns=(arr "." "id.doc.brief") }}
+    items=(zip_objects (arr "self" "brief") symbol.doc.related (pluck (transform (pluck symbol.doc.related "id") @root.mrdocs.corpus.get) "doc.brief"))
+    columns=(arr "self" "brief") }}
 {{/markup/section}}
 {{/if}}

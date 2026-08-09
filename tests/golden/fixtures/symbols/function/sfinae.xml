@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -13,6 +14,7 @@
 </namespace>
 <namespace>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -33,6 +35,7 @@
 </namespace>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -58,6 +61,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-09</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -118,6 +122,7 @@
 </record>
 <record>
   <name>A</name>
+  <anchor>A-07</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -174,6 +179,7 @@
 </record>
 <record>
   <name>S</name>
+  <anchor>S-02</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -239,6 +245,7 @@
 </record>
 <function>
   <name>store</name>
+  <anchor>store</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -291,6 +298,7 @@
 </function>
 <record>
   <name>S</name>
+  <anchor>S-08</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -401,6 +409,7 @@
 </record>
 <function>
   <name>store</name>
+  <anchor>store</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -453,6 +462,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -523,6 +533,7 @@
 </function>
 <function>
   <name>f10</name>
+  <anchor>f10</anchor>
   <loc>
     <loc>
       <location>
@@ -620,6 +631,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>
@@ -691,6 +703,7 @@
 </function>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -776,6 +789,7 @@
 </function>
 <function>
   <name>f4</name>
+  <anchor>f4</anchor>
   <loc>
     <loc>
       <location>
@@ -846,6 +860,7 @@
 </function>
 <function>
   <name>f5</name>
+  <anchor>f5</anchor>
   <loc>
     <loc>
       <location>
@@ -913,6 +928,7 @@
 </function>
 <function>
   <name>f6</name>
+  <anchor>f6</anchor>
   <loc>
     <loc>
       <location>
@@ -980,6 +996,7 @@
 </function>
 <function>
   <name>f7</name>
+  <anchor>f7</anchor>
   <loc>
     <loc>
       <location>
@@ -1048,6 +1065,7 @@
 </function>
 <function>
   <name>f8</name>
+  <anchor>f8</anchor>
   <loc>
     <loc>
       <location>
@@ -1115,6 +1133,7 @@
 </function>
 <function>
   <name>f9</name>
+  <anchor>f9</anchor>
   <loc>
     <loc>
       <location>

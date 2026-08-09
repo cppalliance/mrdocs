@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -13,6 +14,7 @@
 </namespace>
 <namespace>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <loc>
       <location>
@@ -34,6 +36,7 @@
 </namespace>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>ref.cpp</shortPath>
@@ -110,6 +113,7 @@
 </record>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>
@@ -142,6 +146,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>ref.cpp</shortPath>
@@ -164,6 +169,7 @@
 </record>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -196,6 +202,7 @@
 </function>
 <function>
   <name>f4</name>
+  <anchor>f4</anchor>
   <loc>
     <loc>
       <location>
@@ -228,6 +235,7 @@
 </function>
 <record>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>ref.cpp</shortPath>
@@ -267,6 +275,7 @@
 </record>
 <record>
   <name>E</name>
+  <anchor>E</anchor>
   <loc>
     <defLoc>
       <shortPath>ref.cpp</shortPath>
@@ -331,6 +340,7 @@
 </record>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -363,6 +373,7 @@
 </function>
 <function>
   <name>f4</name>
+  <anchor>f4</anchor>
   <loc>
     <loc>
       <location>
@@ -395,6 +406,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -458,6 +470,7 @@
 </function>
 <record>
   <name>F</name>
+  <anchor>F</anchor>
   <loc>
     <defLoc>
       <shortPath>ref.cpp</shortPath>
@@ -479,6 +492,7 @@
 </record>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign</anchor>
   <loc>
     <loc>
       <location>
@@ -534,6 +548,7 @@
 </function>
 <function>
   <name>operator%</name>
+  <anchor>operator_mod</anchor>
   <loc>
     <loc>
       <location>
@@ -589,6 +604,7 @@
 </function>
 <function>
   <name>operator%=</name>
+  <anchor>operator_mod_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -644,6 +660,7 @@
 </function>
 <function>
   <name>operator&amp;</name>
+  <anchor>operator_bitand</anchor>
   <loc>
     <loc>
       <location>
@@ -699,6 +716,7 @@
 </function>
 <function>
   <name>operator&amp;&amp;</name>
+  <anchor>operator_and</anchor>
   <loc>
     <loc>
       <location>
@@ -754,6 +772,7 @@
 </function>
 <function>
   <name>operator&amp;=</name>
+  <anchor>operator_and_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -809,6 +828,7 @@
 </function>
 <function>
   <name>operator()</name>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -864,6 +884,7 @@
 </function>
 <function>
   <name>operator*</name>
+  <anchor>operator_star</anchor>
   <loc>
     <loc>
       <location>
@@ -919,6 +940,7 @@
 </function>
 <function>
   <name>operator*=</name>
+  <anchor>operator_star_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -974,6 +996,7 @@
 </function>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus</anchor>
   <loc>
     <loc>
       <location>
@@ -1029,6 +1052,7 @@
 </function>
 <function>
   <name>operator++</name>
+  <anchor>operator_inc</anchor>
   <loc>
     <loc>
       <location>
@@ -1062,6 +1086,7 @@
 </function>
 <function>
   <name>operator+=</name>
+  <anchor>operator_plus_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1117,6 +1142,7 @@
 </function>
 <function>
   <name>operator,</name>
+  <anchor>operator_comma</anchor>
   <loc>
     <loc>
       <location>
@@ -1172,6 +1198,7 @@
 </function>
 <function>
   <name>operator-</name>
+  <anchor>operator_minus</anchor>
   <loc>
     <loc>
       <location>
@@ -1227,6 +1254,7 @@
 </function>
 <function>
   <name>operator--</name>
+  <anchor>operator_dec</anchor>
   <loc>
     <loc>
       <location>
@@ -1260,6 +1288,7 @@
 </function>
 <function>
   <name>operator-=</name>
+  <anchor>operator_minus_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1315,6 +1344,7 @@
 </function>
 <function>
   <name>operator-&gt;</name>
+  <anchor>operator_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -1348,6 +1378,7 @@
 </function>
 <function>
   <name>operator-&gt;*</name>
+  <anchor>operator_ptrmem</anchor>
   <loc>
     <loc>
       <location>
@@ -1403,6 +1434,7 @@
 </function>
 <function>
   <name>operator/</name>
+  <anchor>operator_slash</anchor>
   <loc>
     <loc>
       <location>
@@ -1458,6 +1490,7 @@
 </function>
 <function>
   <name>operator/=</name>
+  <anchor>operator_slash_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1513,6 +1546,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;=</name>
+  <anchor>operator_lshift_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1568,6 +1602,7 @@
 </function>
 <function>
   <name>operator&gt;&gt;</name>
+  <anchor>operator_rshift</anchor>
   <loc>
     <loc>
       <location>
@@ -1623,6 +1658,7 @@
 </function>
 <function>
   <name>operator&gt;&gt;=</name>
+  <anchor>operator_rshift_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1678,6 +1714,7 @@
 </function>
 <function>
   <name>operator[]</name>
+  <anchor>operator_subs</anchor>
   <loc>
     <loc>
       <location>
@@ -1733,6 +1770,7 @@
 </function>
 <function>
   <name>operator^</name>
+  <anchor>operator_xor</anchor>
   <loc>
     <loc>
       <location>
@@ -1788,6 +1826,7 @@
 </function>
 <function>
   <name>operator^=</name>
+  <anchor>operator_xor_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1843,6 +1882,7 @@
 </function>
 <function>
   <name>operator|</name>
+  <anchor>operator_bitor</anchor>
   <loc>
     <loc>
       <location>
@@ -1898,6 +1938,7 @@
 </function>
 <function>
   <name>operator|=</name>
+  <anchor>operator_or_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1953,6 +1994,7 @@
 </function>
 <function>
   <name>operator||</name>
+  <anchor>operator_or</anchor>
   <loc>
     <loc>
       <location>
@@ -2008,6 +2050,7 @@
 </function>
 <function>
   <name>operator~</name>
+  <anchor>operator_bitnot</anchor>
   <loc>
     <loc>
       <location>
@@ -2041,6 +2084,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift</anchor>
   <loc>
     <loc>
       <location>
@@ -2096,6 +2140,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>
@@ -2129,6 +2174,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -2184,6 +2230,7 @@
 </function>
 <function>
   <name>operator!=</name>
+  <anchor>operator_not_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -2239,6 +2286,7 @@
 </function>
 <function>
   <name>operator&lt;</name>
+  <anchor>operator_lt</anchor>
   <loc>
     <loc>
       <location>
@@ -2294,6 +2342,7 @@
 </function>
 <function>
   <name>operator&lt;=</name>
+  <anchor>operator_le</anchor>
   <loc>
     <loc>
       <location>
@@ -2349,6 +2398,7 @@
 </function>
 <function>
   <name>operator&gt;</name>
+  <anchor>operator_gt</anchor>
   <loc>
     <loc>
       <location>
@@ -2404,6 +2454,7 @@
 </function>
 <function>
   <name>operator&gt;=</name>
+  <anchor>operator_ge</anchor>
   <loc>
     <loc>
       <location>
@@ -2459,6 +2510,7 @@
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
+  <anchor>operator_3way</anchor>
   <loc>
     <loc>
       <location>
@@ -2514,6 +2566,7 @@
 </function>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <loc>
       <location>
@@ -2544,6 +2597,7 @@
 </function>
 <function>
   <name>f5</name>
+  <anchor>f5</anchor>
   <loc>
     <loc>
       <location>
@@ -2607,6 +2661,7 @@
 </function>
 <function>
   <name>f6</name>
+  <anchor>f6</anchor>
   <loc>
     <loc>
       <location>

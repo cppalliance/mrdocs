@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>conditional-explicit.cpp</shortPath>
@@ -41,6 +43,7 @@
 </record>
 <overloads>
   <name>A</name>
+  <anchor>2constructor-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -106,6 +109,7 @@
 </overloads>
 <function>
   <name>A</name>
+  <anchor>2constructor-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -179,6 +183,7 @@
 </function>
 <function>
   <name>A</name>
+  <anchor>2constructor-00</anchor>
   <loc>
     <loc>
       <location>
@@ -252,6 +257,7 @@
 </function>
 <function>
   <name>A</name>
+  <anchor>2constructor-01</anchor>
   <loc>
     <loc>
       <location>
@@ -325,6 +331,7 @@
 </function>
 <function>
   <name>A</name>
+  <anchor>2constructor-02</anchor>
   <loc>
     <loc>
       <location>
@@ -406,6 +413,7 @@
 </function>
 <function>
   <name>operator </name>
+  <anchor>2conversion-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -479,6 +487,7 @@
 </function>
 <function>
   <name>operator bool</name>
+  <anchor>2conversion-00</anchor>
   <loc>
     <loc>
       <location>
@@ -544,6 +553,7 @@
 </function>
 <function>
   <name>operator char</name>
+  <anchor>2conversion-04</anchor>
   <loc>
     <loc>
       <location>
@@ -609,6 +619,7 @@
 </function>
 <function>
   <name>operator double</name>
+  <anchor>2conversion-01</anchor>
   <loc>
     <loc>
       <location>

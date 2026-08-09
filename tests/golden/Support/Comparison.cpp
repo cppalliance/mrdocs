@@ -10,7 +10,7 @@
 #include <mrdocs/Support/Filesystem/Temp.hpp>
 #include <mrdocs/Support/Generator.hpp>
 #include <mrdocs/Support/ReportImpl.hpp>
-#include "../TestArgs.hpp"
+#include "../Action.hpp"
 #include "../TestRunner.hpp"
 #include "TextNormalization.hpp"
 #include <mrdocs/Generator.hpp>

@@ -12,7 +12,7 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{! We remove whitespace between all tag so the result is in a single line ~}}
-{{~#if (and parent parent.parent)~}}
-{{~> symbol/qualified-names parent ~}}::
+{{~#if (and parent (lookup (@root.mrdocs.corpus.get parent) "parent"))~}}
+{{~> symbol/qualified-names (@root.mrdocs.corpus.get parent) ~}}::
 {{~/if~}}
 {{~> symbol/name . ~}}

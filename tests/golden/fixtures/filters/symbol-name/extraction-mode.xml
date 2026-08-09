@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -14,6 +15,7 @@
 </namespace>
 <namespace>
   <name>implementation_defined_ns</name>
+  <anchor>implementation_defined_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -54,6 +56,7 @@
 </namespace>
 <namespace>
   <name>regular_ns</name>
+  <anchor>regular_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -87,6 +90,7 @@
 </namespace>
 <record>
   <name>implementation_defined</name>
+  <anchor>implementation_defined</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -126,6 +130,7 @@
 </record>
 <record>
   <name>regular</name>
+  <anchor>regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -177,6 +182,7 @@
 </record>
 <record>
   <name>also_regular</name>
+  <anchor>also_regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -211,6 +217,7 @@
 </record>
 <record>
   <name>regular_as_well</name>
+  <anchor>regular_as_well</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -240,6 +247,7 @@
 </record>
 <record>
   <name>see_below</name>
+  <anchor>see_below</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -279,6 +287,7 @@
 </record>
 <function>
   <name>get_dependency</name>
+  <anchor>get_dependency</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -330,6 +339,7 @@
 </function>
 <function>
   <name>get_implementation_defined</name>
+  <anchor>get_implementation_defined</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -401,6 +411,7 @@
 </function>
 <function>
   <name>get_regular</name>
+  <anchor>get_regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -470,6 +481,7 @@
 </function>
 <function>
   <name>get_see_below</name>
+  <anchor>get_see_below</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -532,6 +544,7 @@
 </function>
 <namespace>
   <name>see_below_ns</name>
+  <anchor>see_below_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -585,6 +598,7 @@
 </namespace>
 <record>
   <name>implementation_defined</name>
+  <anchor>implementation_defined</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -633,6 +647,7 @@
 </record>
 <record>
   <name>regular</name>
+  <anchor>regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -672,6 +687,7 @@
 </record>
 <record>
   <name>see_below</name>
+  <anchor>see_below</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -711,6 +727,7 @@
 </record>
 <function>
   <name>get_dependency</name>
+  <anchor>get_dependency</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -771,6 +788,7 @@
 </function>
 <function>
   <name>get_implementation_defined</name>
+  <anchor>get_implementation_defined</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -842,6 +860,7 @@
 </function>
 <namespaceAlias>
   <name>dependency_ns_alias</name>
+  <anchor>dependency_ns_alias</anchor>
   <loc>
     <loc>
       <location>
@@ -875,6 +894,7 @@
 </namespaceAlias>
 <namespaceAlias>
   <name>implementation_defined_ns_alias</name>
+  <anchor>implementation_defined_ns_alias</anchor>
   <loc>
     <loc>
       <location>
@@ -909,6 +929,7 @@
 </namespaceAlias>
 <namespaceAlias>
   <name>see_below_ns_alias</name>
+  <anchor>see_below_ns_alias</anchor>
   <loc>
     <loc>
       <location>
@@ -954,6 +975,7 @@
 </namespaceAlias>
 <record>
   <name>implementation_defined</name>
+  <anchor>implementation_defined</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -993,6 +1015,7 @@
 </record>
 <record>
   <name>regular</name>
+  <anchor>regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1044,6 +1067,7 @@
 </record>
 <record>
   <name>also_regular</name>
+  <anchor>also_regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1078,6 +1102,7 @@
 </record>
 <record>
   <name>regular_as_well</name>
+  <anchor>regular_as_well</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1107,6 +1132,7 @@
 </record>
 <record>
   <name>see_below</name>
+  <anchor>see_below</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1155,6 +1181,7 @@
 </record>
 <function>
   <name>get_dependency</name>
+  <anchor>get_dependency</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1206,6 +1233,7 @@
 </function>
 <function>
   <name>get_implementation_defined</name>
+  <anchor>get_implementation_defined</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1277,6 +1305,7 @@
 </function>
 <function>
   <name>get_regular</name>
+  <anchor>get_regular</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>
@@ -1346,6 +1375,7 @@
 </function>
 <function>
   <name>get_see_below</name>
+  <anchor>get_see_below</anchor>
   <loc>
     <defLoc>
       <shortPath>extraction-mode.cpp</shortPath>

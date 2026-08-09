@@ -16,13 +16,11 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/TArg.hpp>
 #include <mrdocs/Metadata/TParam.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 #include <vector>
 
 namespace mrdocs {
@@ -42,7 +40,6 @@ enum class TemplateSpecKind
 MRDOCS_DESCRIBE_ENUM(
     TemplateSpecKind,
     Primary, Explicit, Partial)
-
 
 
 /** Information about templates and specializations thereof.
@@ -89,64 +86,12 @@ struct TemplateInfo final
 
 MRDOCS_DESCRIBE_STRUCT(TemplateInfo, (), (Params, Args, Requires, Primary))
 
-/** Map a TemplateInfo to a dom::Object with computed specialization kind.
-    @param io The IO object to map into.
-    @param I The TemplateInfo to map.
-    @param domCorpus The DomCorpus context.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    TemplateInfo const& I,
-    DomCorpus const* domCorpus)
-{
-    io.defer("kind", [&] {
-        return std::string(toString(I.specializationKind()));
-    });
-    if (I.Primary != SymbolID::invalid)
-    {
-        io.map("primary", I.Primary);
-    }
-    io.map("params", dom::LazyArray(I.Params, domCorpus));
-    io.map("args", dom::LazyArray(I.Args, domCorpus));
-    io.map("requires", dom::stringOrNull(I.Requires.Written));
-}
 
 /** Merge partial template info, filling missing pieces.
 */
 MRDOCS_DECL
 void
 merge(TemplateInfo& I, TemplateInfo&& Other);
-
-/** Serialize template info into a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TemplateInfo const& I,
-    DomCorpus const* domCorpus);
-
-/** Serialize an optional template info into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Optional<TemplateInfo> const& I,
-    DomCorpus const* domCorpus)
-{
-    if (!I)
-    {
-        v = nullptr;
-        return;
-    }
-    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
-}
 
 
 } // mrdocs

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <macro>
   <name>EXAMPLE_ABI_VERSION</name>
+  <anchor>EXAMPLE_ABI_VERSION</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -38,6 +40,7 @@
 </macro>
 <macro>
   <name>EXAMPLE_CLAMP</name>
+  <anchor>EXAMPLE_CLAMP</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>
@@ -162,6 +165,7 @@
 </macro>
 <macro>
   <name>EXAMPLE_LOG</name>
+  <anchor>EXAMPLE_LOG</anchor>
   <loc>
     <defLoc>
       <shortPath>macros.cpp</shortPath>

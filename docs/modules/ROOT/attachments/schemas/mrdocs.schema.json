@@ -409,12 +409,12 @@
     },
     "legible-names": {
       "default": true,
-      "description": "Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.",
+      "description": "Use legible names for IDs in the documentation. When set to true, MrDocs uses legible names for symbol anchors in the corpus. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID to avoid conflicts.",
       "enum": [
         true,
         false
       ],
-      "title": "Use legible names",
+      "title": "Use legible names for anchors",
       "type": "boolean"
     },
     "libc-includes": {
@@ -784,6 +784,16 @@
         false
       ],
       "title": "Warn if parameters are not documented",
+      "type": "boolean"
+    },
+    "warn-unknown-config-keys": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning for each key in the configuration file that does not correspond to a known option. Unknown keys are otherwise ignored.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn about unrecognized configuration keys",
       "type": "boolean"
     },
     "warn-unnamed-param": {

@@ -12,7 +12,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
@@ -335,15 +334,6 @@ merge(std::vector<Param>& dst, std::vector<Param>&& src)
     }
 }
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Param const& p,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(p, domCorpus);
-}
 
 std::strong_ordering
 FunctionSymbol::

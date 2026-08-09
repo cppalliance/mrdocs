@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -19,6 +20,7 @@
 </namespace>
 <namespace>
   <name>documented_ns</name>
+  <anchor>documented_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -48,6 +50,7 @@
 </namespace>
 <namespace>
   <name>implementation_defined_ns</name>
+  <anchor>implementation_defined_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -77,6 +80,7 @@
 </namespace>
 <namespace>
   <name>mixed_ns</name>
+  <anchor>mixed_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -109,6 +113,7 @@
 </namespace>
 <record>
   <name>ImplementationDefinedStructB</name>
+  <anchor>ImplementationDefinedStructB</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -125,6 +130,7 @@
 </record>
 <record>
   <name>SeeBelowStructA</name>
+  <anchor>SeeBelowStructA</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -141,6 +147,7 @@
 </record>
 <namespace>
   <name>mixed_regular_ns</name>
+  <anchor>mixed_regular_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -173,6 +180,7 @@
 </namespace>
 <record>
   <name>ImplementationDefinedStructC</name>
+  <anchor>ImplementationDefinedStructC</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -189,6 +197,7 @@
 </record>
 <record>
   <name>RegularStructA</name>
+  <anchor>RegularStructA</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -205,6 +214,7 @@
 </record>
 <record>
   <name>SeeBelowStructB</name>
+  <anchor>SeeBelowStructB</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -221,6 +231,7 @@
 </record>
 <namespace>
   <name>regular_ns</name>
+  <anchor>regular_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -253,6 +264,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -269,6 +281,7 @@
 </record>
 <namespace>
   <name>see_below_ns</name>
+  <anchor>see_below_ns</anchor>
   <loc>
     <loc>
       <location>
@@ -301,6 +314,7 @@
 </namespace>
 <record>
   <name>SeeBelowStructA</name>
+  <anchor>SeeBelowStructA</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -317,6 +331,7 @@
 </record>
 <record>
   <name>SeeBelowStructB</name>
+  <anchor>SeeBelowStructB</anchor>
   <loc>
     <defLoc>
       <shortPath>no-extract-empty-namespaces.cpp</shortPath>
@@ -333,6 +348,7 @@
 </record>
 <namespaceAlias>
   <name>empty_ns_alias</name>
+  <anchor>empty_ns_alias</anchor>
   <loc>
     <loc>
       <location>
@@ -366,6 +382,7 @@
 </namespaceAlias>
 <namespaceAlias>
   <name>regular_ns_alias</name>
+  <anchor>regular_ns_alias</anchor>
   <loc>
     <loc>
       <location>

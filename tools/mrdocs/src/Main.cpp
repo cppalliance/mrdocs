@@ -12,6 +12,7 @@
 //
 
 #include <mrdocs/Config.hpp>
+#include <mrdocs/ConfigSchema.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include <mrdocs/Generator.hpp>
@@ -19,8 +20,6 @@
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Version.hpp>
-#include <tool/PublicToolArgs.hpp>
-#include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
@@ -44,82 +43,162 @@ namespace mrdocs {
 //
 //------------------------------------------------
 
-// The tool's command-line options are exactly the generated PublicToolArgs; the
-// tool adds no options of its own, so it uses a single PublicToolArgs instance
-// directly rather than a subclass. llvm::cl registers options globally on
-// construction, so exactly one instance may exist.
-static PublicToolArgs toolArgs;
-
+// The tool adds no options of its own: every option is a config option, so the
+// command line is parsed straight from argv against the reflected config schema
+// and the values are applied by Config::load_file. There is no generated
+// options table and no llvm::cl registration.
 static char const* const usageText = "Generate C++ reference documentation";
 
-static llvm::cl::extrahelp toolExtraHelp(
-R"(
-EXAMPLES:
-    mrdocs
-    mrdocs docs/mrdocs.yml
-    mrdocs docs/mrdocs.yml ../build/compile_commands.json
-)");
-
-// Whether `arg` is a `--<name>.<...>` override for one of the object
-// options (a `map<string,object>` config option). Those nested keys have no
-// registered llvm::cl flag, so they must be hidden from the parser and are
-// applied later by PublicToolArgs::apply from the original argv. This is a
-// tool-only, temporary concern: kept here rather than in the library.
-static bool
-isObjectOverrideArg(
-    std::string_view arg,
-    std::span<std::string_view const> objectOptionNames)
+// The result of scanning argv: the framework flags, the config-file override,
+// the positional inputs (config / compile-commands files), and any tokens that
+// name no option.
+struct CommandLine
 {
-    if (!arg.starts_with("--"))
+    bool showHelp = false;
+    bool showVersion = false;
+    std::string configOption;
+    std::vector<std::string> inputs;
+    std::vector<std::string> unknownOptions;
+};
+
+// Pad `text` to `width` columns (a left-justified name column for --help).
+static void
+printPadded(llvm::raw_ostream& os, std::string_view text, std::size_t width)
+{
+    os << text;
+    if (text.size() < width)
     {
-        return false;
+        os << std::string(width - text.size(), ' ');
     }
-    std::string_view key = arg.substr(2);
-    key = key.substr(0, key.find('='));
-    auto const dot = key.find('.');
-    if (dot == std::string_view::npos)
-    {
-        return false;
-    }
-    std::string_view const head = key.substr(0, dot);
-    return std::ranges::find(objectOptionNames, head) != objectOptionNames.end();
 }
 
-// Return argv without the dotted object-override arguments; argv[0] is kept.
-static std::vector<char const*>
-filterCommandLine(int argc, char const** argv)
+// Print the option list grouped by category, straight from the schema's
+// command-line metadata. This is why the tool needs no generated options
+// table: the schema already carries every option's name, category, and brief.
+static void
+printHelp(llvm::raw_ostream& os)
 {
-    std::vector<char const*> result;
-    result.reserve(static_cast<std::size_t>(argc));
-    auto const names = PublicToolArgs::objectOptionNames();
-    for (int i = 0; i < argc; ++i)
+    os << "USAGE: mrdocs [options] [<config-file>] [<compile-commands>]\n\n";
+    os << usageText << "\n\n";
+    os << "EXAMPLES:\n";
+    os << "    mrdocs\n";
+    os << "    mrdocs docs/mrdocs.yml\n";
+    os << "    mrdocs docs/mrdocs.yml ../build/compile_commands.json\n\n";
+    os << "OPTIONS:\n";
+    std::string_view currentCategory;
+    for (auto const& info : ConfigSchema::commandLineOptionInfos())
     {
-        if (i > 0 && isObjectOverrideArg(argv[i], names))
+        if (info.category != currentCategory)
+        {
+            currentCategory = info.category;
+            os << "\n  " << currentCategory << ":\n";
+        }
+        std::string flag = "--";
+        flag += info.name;
+        if (info.takesValue)
+        {
+            flag += "=<value>";
+        }
+        os << "    ";
+        printPadded(os, flag, 42);
+        os << info.brief << "\n";
+    }
+    os << "\n  General:\n";
+    os << "    ";
+    printPadded(os, "--help", 42);
+    os << "Print this help and exit.\n";
+    os << "    ";
+    printPadded(os, "--version", 42);
+    os << "Print version information and exit.\n";
+}
+
+static void
+printVersion(llvm::raw_ostream& os, std::string const& execPath)
+{
+    os << project_name << " version " << project_version_with_build << "\n";
+    os << "Built with LLVM " << LLVM_VERSION_STRING << "\n";
+    os << "Build SHA: " << project_version_build << "\n";
+    os << "Target: " << llvm::sys::getDefaultTargetTriple() << "\n";
+    os << "InstalledDir: " << files::getParentDir(execPath) << "\n";
+}
+
+// Scan argv into a CommandLine. The schema's command-line metadata tells us
+// which options take a value, so `--opt value` is not mistaken for a positional
+// input. Option values themselves are applied later by Config::load_file from
+// the same argv; here we only need the framework flags, the config path, and
+// the positionals.
+static CommandLine
+parseCommandLine(int argc, char const** argv)
+{
+    CommandLine cl;
+    auto const infos = ConfigSchema::commandLineOptionInfos();
+    auto findInfo = [&](std::string_view key)
+        -> ConfigSchema::CommandLineOptionInfo const*
+    {
+        for (auto const& info : infos)
+        {
+            if (info.name == key)
+            {
+                return &info;
+            }
+        }
+        return nullptr;
+    };
+    for (int i = 1; i < argc; ++i)
+    {
+        std::string_view const arg(argv[i]);
+        if (arg == "--help" || arg == "-h")
+        {
+            cl.showHelp = true;
+            continue;
+        }
+        if (arg == "--version")
+        {
+            cl.showVersion = true;
+            continue;
+        }
+        if (!arg.starts_with("--"))
+        {
+            cl.inputs.emplace_back(arg);
+            continue;
+        }
+        std::string_view const body = arg.substr(2);
+        auto const eq = body.find('=');
+        bool const hasValue = eq != std::string_view::npos;
+        std::string_view const key =
+            hasValue ? body.substr(0, eq) : body;
+        // A dotted key (`--generator-options.x=y`) is an object override,
+        // applied later from the full argv; accept it here.
+        if (key.find('.') != std::string_view::npos)
         {
             continue;
         }
-        result.push_back(argv[i]);
+        if (key == "config")
+        {
+            if (hasValue)
+            {
+                cl.configOption = std::string(body.substr(eq + 1));
+            }
+            else if (i + 1 < argc)
+            {
+                cl.configOption = argv[++i];
+            }
+            continue;
+        }
+        auto const* info = findInfo(key);
+        if (info == nullptr)
+        {
+            cl.unknownOptions.emplace_back(arg);
+            continue;
+        }
+        // Consume the value token of `--opt value` so it is not read as a
+        // positional input; the value is applied later by Config::load_file.
+        if (info->takesValue && !hasValue && i + 1 < argc)
+        {
+            ++i;
+        }
     }
-    return result;
-}
-
-// Hide every registered llvm::cl option that is not one of ours.
-static void
-hideForeignOptions()
-{
-    std::vector<llvm::cl::Option const*> oursOptions;
-    toolArgs.visit([&](std::string_view, auto const& opt)
-    {
-        oursOptions.push_back(std::addressof(opt));
-    });
-    auto optionMap = llvm::cl::getRegisteredOptions();
-    for (auto& opt : optionMap)
-    {
-        opt.second->setHiddenFlag(
-            std::ranges::find(oursOptions, opt.second) != oursOptions.end() ?
-            llvm::cl::NotHidden :
-            llvm::cl::ReallyHidden);
-    }
+    return cl;
 }
 
 //------------------------------------------------
@@ -141,10 +220,7 @@ DoGenerateAction(
     //
     // --------------------------------------------------------------
     Config config;
-    MRDOCS_TRY(Config::load_file(config, configPath));
-    MRDOCS_TRY(toolArgs.apply(config, dirs, argv));
-    MRDOCS_TRY(config.normalize(dirs));
-    report::setMinimumLevel(static_cast<report::Level>(config.logLevel));
+    MRDOCS_TRY(Config::load_file(config, configPath, dirs, argv));
 
     // --------------------------------------------------------------
     //
@@ -251,21 +327,23 @@ getReferenceDirectories(std::string const& execPath)
 
 static
 Expected<std::string>
-getConfigPath(ReferenceDirectories const& dirs)
+getConfigPath(ReferenceDirectories const& dirs, CommandLine const& cl)
 {
     std::string configPath;
-    auto cmdLineFilenames = std::ranges::views::transform(
-        toolArgs.cmdLineInputs, files::getFileName);
-    if (!toolArgs.config.getValue().empty())
+    if (!cl.configOption.empty())
     {
         // From explicit --config argument
-        configPath = toolArgs.config.getValue();
+        configPath = cl.configOption;
     }
-    else if (auto const it = std::ranges::find(cmdLineFilenames, "mrdocs.yml");
-             it != cmdLineFilenames.end())
+    else if (auto const it = std::ranges::find_if(cl.inputs,
+                 [](std::string_view const p)
+                 {
+                     return files::getFileName(p) == "mrdocs.yml";
+                 });
+             it != cl.inputs.end())
     {
         // From implicit command line inputs
-        configPath = *(it.base());
+        configPath = *it;
     }
     else if (files::exists("./mrdocs.yml"))
     {
@@ -301,29 +379,26 @@ mrdocs_main(int argc, char const** argv)
     std::string execPath = llvm::sys::fs::
         getMainExecutable(argv[0], addressOfMain);
 
-    // Parse command line options
-    llvm::cl::SetVersionPrinter([execPath](llvm::raw_ostream& os) {
-        os << project_name << " version " << project_version_with_build << "\n";
-        os << "Built with LLVM " << LLVM_VERSION_STRING << "\n";
-        os << "Build SHA: " << project_version_build << "\n";
-        os << "Target: " << llvm::sys::getDefaultTargetTriple() << "\n";
-        os << "InstalledDir: " << files::getParentDir(execPath) << "\n";
-    });
-
-    hideForeignOptions();
-
-    // Dotted overrides for object options (--<name>.<key>.<field>=<value>)
-    // address dynamic keys with no registered flag, so they are hidden from
-    // the llvm::cl parser here and applied later from the original argv.
-    std::vector<char const*> parsedArgv = filterCommandLine(argc, argv);
-
-    if (!llvm::cl::ParseCommandLineOptions(
-        static_cast<int>(parsedArgv.size()),
-        parsedArgv.data(), usageText))
+    // Parse the command line straight from argv against the config schema.
+    CommandLine const cl = parseCommandLine(argc, argv);
+    if (cl.showHelp)
     {
+        printHelp(llvm::outs());
+        return EXIT_SUCCESS;
+    }
+    if (cl.showVersion)
+    {
+        printVersion(llvm::outs(), execPath);
+        return EXIT_SUCCESS;
+    }
+    if (!cl.unknownOptions.empty())
+    {
+        for (std::string const& opt : cl.unknownOptions)
+        {
+            report::error("Unknown option: {} (use --help to list options)", opt);
+        }
         return EXIT_FAILURE;
     }
-
 
     // Before `DoGenerateAction`, we use an error reporting level.
     // DoGenerateAction will set the level to whatever is specified in
@@ -337,7 +412,7 @@ mrdocs_main(int argc, char const** argv)
     }
     auto dirs = *std::move(res);
 
-    auto expConfigPath = getConfigPath(dirs);
+    auto expConfigPath = getConfigPath(dirs, cl);
     if (!expConfigPath)
     {
         report::fatal("Failed to determine config path: {}", expConfigPath.error().message());

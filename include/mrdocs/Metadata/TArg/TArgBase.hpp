@@ -149,15 +149,6 @@ MRDOCS_DECL
 std::string
 toString(TArg const& arg) noexcept;
 
-/** Serialize the argument to a DOM value.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    TArg const& I,
-    DomCorpus const* domCorpus);
 
 } // mrdocs
 

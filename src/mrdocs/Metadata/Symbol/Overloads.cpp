@@ -9,9 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "../../Support/Radix.hpp"
+#include <mrdocs/Support/Radix.hpp>
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>

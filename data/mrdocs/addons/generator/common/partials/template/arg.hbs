@@ -14,12 +14,12 @@
     {{! TArg is a type: render the declarator ~}}
     {{~>type/declarator type link-components-impl=link-components-impl~}}
 {{else if (eq kind "constant")~}}
-    {{! TArg is a constant: render the value string as is ~}}
+    {{! TArg is a constant: render the value expression ~}}
     {{~value~}}
 {{else if (eq kind "template")~}}
     {{! TArg is another template: render the template head ~}}
-    {{~#if (and template template.url (or link-components-impl (is_undefined link-components-impl)))~}}
-        {{~#>markup/a href=template.url~}}
+    {{~#if (and template (@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get template.id)) (or link-components-impl (is_undefined link-components-impl)))~}}
+        {{~#>markup/a href=(@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get template.id))~}}
             {{~name~}}
         {{~/markup/a~}}
     {{~else~}}

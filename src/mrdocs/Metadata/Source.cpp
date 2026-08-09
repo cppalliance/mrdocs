@@ -11,8 +11,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/FileKind.hpp>
 #include <mrdocs/Metadata/Symbol/Location.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
@@ -82,9 +80,9 @@ getPrimaryLocation(SourceInfo const& I, bool const preferDefinition)
             I.Loc, &Location::Documented);
     if (documentedIt != I.Loc.end())
     {
-        return Optional<Location>(*documentedIt);
+        return {*documentedIt};
     }
-    return Optional<Location>(I.Loc.front());
+    return {I.Loc.front()};
 }
 
 } // mrdocs

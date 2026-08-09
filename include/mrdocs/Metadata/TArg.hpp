@@ -23,30 +23,13 @@
 
 namespace mrdocs {
 
-/** Visit a template argument, dispatching on its concrete kind.
-*/
-template<
-    std::derived_from<TArg> TArgTy,
-    class F,
-    class... Args>
-constexpr
-decltype(auto)
-visit(
-    TArgTy& A,
-    F&& f,
-    Args&&... args)
-{
-    auto visitor = makeVisitor<TArg>(
-        A, std::forward<F>(f), std::forward<Args>(args)...);
-    switch(A.Kind)
-    {
-    #define INFO(Type) case TArgKind::Type: \
-        return visitor.template visit<Type##TArg>();
+// Register TArg's concrete kinds for the generic visit
+// (Support/Reflection/Describe.hpp).
+#define INFO(X) MRDOCS_KIND_ENTRY(TArg, X##TArg)
+MRDOCS_DESCRIBE_KINDS_BEGIN(TArg)
 #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
+MRDOCS_DESCRIBE_KINDS_END(TArg)
+#undef INFO
 
 /** Compare polymorphic template arguments.
 */
@@ -62,19 +45,6 @@ operator==(Polymorphic<TArg> const& a, Polymorphic<TArg> const& b)
     return std::is_eq(a <=> b);
 }
 
-/** Serialize a polymorphic template argument into a DOM value.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Polymorphic<TArg> const& I,
-    DomCorpus const* domCorpus)
-{
-    MRDOCS_ASSERT(!I.valueless_after_move());
-    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
-}
 
 } // mrdocs
 

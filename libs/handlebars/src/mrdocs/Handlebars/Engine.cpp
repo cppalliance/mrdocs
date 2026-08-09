@@ -1751,6 +1751,24 @@ evalExpr(
             auto [fn, found] = getHelper(helper, false);
             if (!found)
             {
+                // Make a function stored on the context usable as a subexpression
+                // `{{arg1 (fn fnarg1 fnarg2)}}`.
+                // The engine applies the same context-callable fallback in
+                // the other two positions a helper can occupy: a mustache
+                // expression head (`{{fn arg}}`, the "Helper as expression"
+                // path) and a block head (`{{#fn arg}} ... {{/fn}}`).
+                if (auto exp = evalExpr(context, helper, state, opt, false))
+                {
+                    if (auto const& res = *exp;
+                        res.found && res.value.isFunction())
+                    {
+                        fn = res.value.getFunction();
+                        found = true;
+                    }
+                }
+            }
+            if (!found)
+            {
                 auto res = find_position_in_text(state.rootTemplateText, helper);
                 std::string msg(helper);
                 msg += " is not a function";

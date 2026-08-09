@@ -19,25 +19,25 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{#if is-namespace}}
-{{>symbol/members-table members=tranche.namespaces title="Namespaces"}}
-{{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
-{{>symbol/members-table members=(reject_by tranche.records "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}
-{{>symbol/members-table members=tranche.typedefs title=(concat (select label (concat label " ") "") "Type Aliases")}}
-{{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
-{{>symbol/members-table members=(reject_by tranche.functions "isListedOnPrimary") title="Functions"}}
-{{>symbol/members-table members=tranche.variables title="Variables"}}
-{{>symbol/members-table members=tranche.concepts title="Concepts"}}
-{{>symbol/members-table members=tranche.usings title=(concat (select label (concat label " ") "") "Using Declarations")}}
-{{>symbol/members-table members=tranche.macros title="Macros"}}
+{{>symbol/members-table members=(transform tranche.namespaces @root.mrdocs.corpus.get) title="Namespaces"}}
+{{>symbol/members-table members=(transform tranche.namespaceAliases @root.mrdocs.corpus.get) title="Namespace Aliases"}}
+{{>symbol/members-table members=(reject_by (transform tranche.records @root.mrdocs.corpus.get) "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=(transform tranche.typedefs @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Type Aliases")}}
+{{>symbol/members-table members=(transform tranche.enums @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Enums")}}
+{{>symbol/members-table members=(reject_by (transform tranche.functions @root.mrdocs.corpus.get) "isListedOnPrimary") title="Functions"}}
+{{>symbol/members-table members=(transform tranche.variables @root.mrdocs.corpus.get) title="Variables"}}
+{{>symbol/members-table members=(transform tranche.concepts @root.mrdocs.corpus.get) title="Concepts"}}
+{{>symbol/members-table members=(transform tranche.usings @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Using Declarations")}}
+{{>symbol/members-table members=(transform tranche.macros @root.mrdocs.corpus.get) title="Macros"}}
 {{else}}
-{{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
-{{>symbol/members-table members=(reject_by tranche.records "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}
-{{>symbol/members-table members=tranche.typedefs title=(concat (select label (concat label " ") "") "Type Aliases")}}
-{{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
-{{>symbol/members-table members=(reject_by tranche.functions "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Member Functions")}}
-{{>symbol/members-table members=(reject_by tranche.staticFunctions "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Static Member Functions")}}
-{{>symbol/members-table members=tranche.variables title=(concat (select label (concat label " ") "") "Data Members")}}
-{{>symbol/members-table members=tranche.staticVariables title=(concat (select label (concat label " ") "") "Static Data Members")}}
-{{>symbol/members-table members=tranche.aliases title=(concat (select label (concat label " ") "") "Aliases")}}
-{{>symbol/members-table members=tranche.usings title=(concat (select label (concat label " ") "") "Using Declarations")}}
+{{>symbol/members-table members=(transform tranche.namespaceAliases @root.mrdocs.corpus.get) title="Namespace Aliases"}}
+{{>symbol/members-table members=(reject_by (transform tranche.records @root.mrdocs.corpus.get) "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Types")}}
+{{>symbol/members-table members=(transform tranche.typedefs @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Type Aliases")}}
+{{>symbol/members-table members=(transform tranche.enums @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Enums")}}
+{{>symbol/members-table members=(reject_by (transform tranche.functions @root.mrdocs.corpus.get) "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Member Functions")}}
+{{>symbol/members-table members=(reject_by (transform tranche.staticFunctions @root.mrdocs.corpus.get) "isListedOnPrimary") title=(concat (select label (concat label " ") "") "Static Member Functions")}}
+{{>symbol/members-table members=(transform tranche.variables @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Data Members")}}
+{{>symbol/members-table members=(transform tranche.staticVariables @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Static Data Members")}}
+{{>symbol/members-table members=(transform tranche.aliases @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Aliases")}}
+{{>symbol/members-table members=(transform tranche.usings @root.mrdocs.corpus.get) title=(concat (select label (concat label " ") "") "Using Declarations")}}
 {{/if}}

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <namespace>
   <name>detail</name>
+  <anchor>detail</anchor>
   <loc>
     <loc>
       <location>
@@ -32,6 +34,7 @@
 </namespace>
 <record>
   <name>base_detail</name>
+  <anchor>base_detail</anchor>
   <loc>
     <defLoc>
       <shortPath>impl-defined-base.cpp</shortPath>
@@ -53,6 +56,7 @@
 </record>
 <function>
   <name>do_it</name>
+  <anchor>do_it</anchor>
   <loc>
     <loc>
       <location>
@@ -97,6 +101,7 @@
 </function>
 <record>
   <name>derived</name>
+  <anchor>derived</anchor>
   <loc>
     <defLoc>
       <shortPath>impl-defined-base.cpp</shortPath>
@@ -142,6 +147,7 @@
 </record>
 <function>
   <name>do_it</name>
+  <anchor>do_it</anchor>
   <loc>
     <loc>
       <location>
@@ -187,6 +193,7 @@
 </function>
 <function>
   <name>own</name>
+  <anchor>own</anchor>
   <loc>
     <loc>
       <location>

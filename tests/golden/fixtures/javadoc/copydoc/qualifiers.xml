@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>qualifiers.cpp</shortPath>
@@ -33,6 +35,7 @@
 </record>
 <record>
   <name>const_iterator</name>
+  <anchor>const_iterator</anchor>
   <loc>
     <loc>
       <location>
@@ -52,6 +55,7 @@
 </record>
 <record>
   <name>iterator</name>
+  <anchor>iterator</anchor>
   <loc>
     <loc>
       <location>
@@ -71,6 +75,7 @@
 </record>
 <overloads>
   <name>begin</name>
+  <anchor>begin-03</anchor>
   <loc>
     <loc>
       <location>
@@ -145,6 +150,7 @@
 </overloads>
 <function>
   <name>begin</name>
+  <anchor>begin-06</anchor>
   <loc>
     <loc>
       <location>
@@ -211,6 +217,7 @@
 </function>
 <function>
   <name>begin</name>
+  <anchor>begin-0c</anchor>
   <loc>
     <loc>
       <location>
@@ -278,6 +285,7 @@
 </function>
 <function>
   <name>cbegin</name>
+  <anchor>cbegin</anchor>
   <loc>
     <loc>
       <location>
@@ -348,6 +356,7 @@
 </function>
 <function>
   <name>crvalue</name>
+  <anchor>crvalue</anchor>
   <loc>
     <loc>
       <location>
@@ -413,6 +422,7 @@
 </function>
 <overloads>
   <name>ref</name>
+  <anchor>ref-05f</anchor>
   <loc>
     <loc>
       <location>
@@ -492,6 +502,7 @@
 </overloads>
 <function>
   <name>ref</name>
+  <anchor>ref-051</anchor>
   <loc>
     <loc>
       <location>
@@ -553,6 +564,7 @@
 </function>
 <function>
   <name>ref</name>
+  <anchor>ref-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -614,6 +626,7 @@
 </function>
 <function>
   <name>ref</name>
+  <anchor>ref-04</anchor>
   <loc>
     <loc>
       <location>
@@ -677,6 +690,7 @@
 </function>
 <function>
   <name>ref</name>
+  <anchor>ref-07</anchor>
   <loc>
     <loc>
       <location>
@@ -740,6 +754,7 @@
 </function>
 <function>
   <name>rvalue</name>
+  <anchor>rvalue</anchor>
   <loc>
     <loc>
       <location>

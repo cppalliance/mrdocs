@@ -37,34 +37,13 @@
 /** Doc-comment enums and helpers that describe admonition kinds. */
 namespace mrdocs::doc {
 
-/** Visit a block.
-
-    @param info The block to visit.
-    @param fn The function to call for each block.
-    @param args Additional arguments to pass to the function.
-    @return The result of calling the function.
-*/
-template<
-    std::derived_from<Block> BlockTy,
-    class Fn,
-    class... Args>
-decltype(auto)
-visit(
-    BlockTy& info,
-    Fn&& fn,
-    Args&&... args)
-{
-    auto visitor = makeVisitor<Block>(
-        info, std::forward<Fn>(fn), std::forward<Args>(args)...);
-    switch(info.Kind)
-    {
-    #define INFO(Type) case BlockKind::Type: \
-        return visitor.template visit<Type##Block>();
+// Register Block's concrete kinds for the generic visit
+// (Support/Reflection/Describe.hpp).
+#define INFO(X) MRDOCS_KIND_ENTRY(Block, X##Block)
+MRDOCS_DESCRIBE_KINDS_BEGIN(Block)
 #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
+MRDOCS_DESCRIBE_KINDS_END(Block)
+#undef INFO
 
 /** Three-way comparison between polymorphic block wrappers.
 */
@@ -80,75 +59,6 @@ operator==(Polymorphic<Block> const& lhs, Polymorphic<Block> const& rhs)
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
-/** Map the Polymorphic Block to a @ref dom::Object.
-
-    @param io The output parameter to receive the dom::Object.
-    @param I The polymorphic Block to convert.
-    @param domCorpus The DomCorpus used to resolve references.
-*/
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    Polymorphic<Block> const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(*I, [&](auto const& U)
-    {
-        tag_invoke(
-            dom::LazyObjectMapTag{},
-            io,
-            U,
-            domCorpus);
-    });
-}
-
-/** Map the Polymorphic Block as a @ref dom::Value object.
-
-    @param v The output parameter to receive the dom::Value.
-    @param I The polymorphic Block to convert.
-    @param domCorpus The DomCorpus used to resolve references.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Polymorphic<Block> const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(*I, [&](auto const& U)
-    {
-        tag_invoke(
-            dom::ValueFromTag{},
-            v,
-            U,
-            domCorpus);
-    });
-}
-
-/** Map an optional polymorphic block into a DOM value, producing null when empty.
-    @param v Destination value.
-    @param I Optional block to convert.
-    @param domCorpus Corpus context for lazy resolution.
-*/
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Optional<Polymorphic<Block>> const& I,
-    DomCorpus const* domCorpus)
-{
-    if (!I)
-    {
-        v = nullptr;
-        return;
-    }
-    MRDOCS_ASSERT(!I->valueless_after_move());
-    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
-}
 
 /** Removes leading whitespace from the block.
 

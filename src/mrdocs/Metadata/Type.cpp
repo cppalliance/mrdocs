@@ -10,13 +10,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/NamedType.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 
@@ -315,17 +312,6 @@ toString(Type const& T,
     return write();
 }
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Type const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(I, [&]<typename T>(T const& t) {
-        v = dom::LazyObject(t, domCorpus);
-    });
-}
 
 // Custom (not the generic described-enum name): renders the C++ type spelling
 // (`unsigned int`, `std::nullptr_t`, ...), used as the written type name.
@@ -611,6 +597,17 @@ operator<=>(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs)
         return visit(lhsRef, detail::VisitCompareFn<Type>(rhsRef));
     }
     return lhsRef.Kind <=> rhsRef.Kind;
+}
+
+// Defined out of line, not inline in a header: the body resolves `lhs <=>
+// rhs`, which drives the visitor comparison and `has_describe_kinds<Type>`.
+// This translation unit includes Type.hpp, so the kinds are already
+// registered here; a header-inline body could be parsed before the
+// registration and cache the trait as false (Clang <= 19).
+bool
+operator==(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs)
+{
+    return std::is_eq(lhs <=> rhs);
 }
 
 namespace {

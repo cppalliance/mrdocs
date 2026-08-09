@@ -97,9 +97,6 @@ set(CONFIG_GEN_INPUT_FILES
 )
 set(CONFIG_GEN_OUTPUT_FILES
     ${CONFIG_GEN_OUTPUT_DIR}/include/mrdocs/ConfigSchema.hpp
-    ${CONFIG_GEN_OUTPUT_DIR}/src/lib/Lib/ConfigSchema.cpp
-    ${CONFIG_GEN_OUTPUT_DIR}/src/tool/PublicToolArgs.hpp
-    ${CONFIG_GEN_OUTPUT_DIR}/src/tool/PublicToolArgs.cpp
 )
 if (MRDOCS_BUILD_HEADERS_ONLY)
     # Create the files at configure time: the src/ header build parses the

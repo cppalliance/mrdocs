@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <namespace>
   <name>boost</name>
+  <anchor>boost</anchor>
   <loc>
     <loc>
       <location>
@@ -31,6 +33,7 @@
 </namespace>
 <namespace>
   <name>openmethod</name>
+  <anchor>openmethod</anchor>
   <loc>
     <loc>
       <location>
@@ -52,6 +55,7 @@
 </namespace>
 <namespace>
   <name>policies</name>
+  <anchor>policies</anchor>
   <loc>
     <loc>
       <location>
@@ -72,6 +76,7 @@
 </namespace>
 <namespace>
   <name>runtime_checks</name>
+  <anchor>runtime_checks</anchor>
   <loc>
     <loc>
       <location>
@@ -92,6 +97,7 @@
 </namespace>
 <record>
   <name>runtime_checks</name>
+  <anchor>runtime_checks</anchor>
   <loc>
     <loc>
       <location>
@@ -138,6 +144,7 @@
 </record>
 <overloads>
   <name>final_virtual_ptr</name>
+  <anchor>final_virtual_ptr-04</anchor>
   <loc>
     <loc>
       <location>
@@ -169,6 +176,7 @@
 </overloads>
 <function>
   <name>final_virtual_ptr</name>
+  <anchor>final_virtual_ptr-08</anchor>
   <loc>
     <loc>
       <location>
@@ -223,6 +231,7 @@
 </function>
 <function>
   <name>final_virtual_ptr</name>
+  <anchor>final_virtual_ptr-03</anchor>
   <loc>
     <loc>
       <location>

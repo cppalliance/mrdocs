@@ -8,25 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Attributes.hpp>
 #include <mrdocs/Support/Reflection/CompareReflectedType.hpp>
-#include <mrdocs/Support/Reflection/MapReflectedType.hpp>
 
 namespace mrdocs {
 
-
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Attribute const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(I, [&]<typename T>(T const& t) {
-        v = dom::LazyObject(t, domCorpus);
-    });
-}
 
 std::strong_ordering
 operator<=>(Polymorphic<Attribute> const& lhs, Polymorphic<Attribute> const& rhs)
@@ -40,6 +26,17 @@ operator<=>(Polymorphic<Attribute> const& lhs, Polymorphic<Attribute> const& rhs
         return visit(lhsRef, detail::VisitCompareFn<Attribute>(rhsRef));
     }
     return lhsRef.Kind <=> rhsRef.Kind;
+}
+
+// Defined out of line, not inline in a header: the body resolves `lhs <=>
+// rhs`, which drives the visitor comparison and `has_describe_kinds<Attribute>`.
+// This translation unit includes Attributes.hpp, so the kinds are already
+// registered here; a header-inline body could be parsed before the
+// registration and cache the trait as false (Clang <= 19).
+bool
+operator==(Polymorphic<Attribute> const& lhs, Polymorphic<Attribute> const& rhs)
+{
+    return std::is_eq(lhs <=> rhs);
 }
 
 } // mrdocs

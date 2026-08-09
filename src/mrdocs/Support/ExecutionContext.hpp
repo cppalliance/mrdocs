@@ -14,7 +14,7 @@
 #ifndef MRDOCS_LIB_SUPPORT_EXECUTIONCONTEXT_HPP
 #define MRDOCS_LIB_SUPPORT_EXECUTIONCONTEXT_HPP
 
-#include "../Diagnostics.hpp"
+#include <mrdocs/Diagnostics.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/detail/Corpus.hpp>
 #include <mrdocs/Support/Error/Error.hpp>

@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -13,6 +14,7 @@
 </namespace>
 <typedef>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -43,6 +45,7 @@
 </typedef>
 <typedef>
   <name>D</name>
+  <anchor>D</anchor>
   <loc>
     <loc>
       <location>
@@ -105,6 +108,7 @@
 </typedef>
 <typedef>
   <name>E</name>
+  <anchor>E</anchor>
   <loc>
     <loc>
       <location>
@@ -175,6 +179,7 @@
 </typedef>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>type-resolution.cpp</shortPath>
@@ -191,6 +196,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>type-resolution.cpp</shortPath>
@@ -221,6 +227,7 @@
 </record>
 <function>
   <name>f0</name>
+  <anchor>f0</anchor>
   <loc>
     <loc>
       <location>
@@ -267,6 +274,7 @@
 </function>
 <function>
   <name>f1</name>
+  <anchor>f1</anchor>
   <loc>
     <loc>
       <location>
@@ -314,6 +322,7 @@
 </function>
 <function>
   <name>f2</name>
+  <anchor>f2</anchor>
   <loc>
     <loc>
       <location>
@@ -365,6 +374,7 @@
 </function>
 <function>
   <name>f3</name>
+  <anchor>f3</anchor>
   <loc>
     <loc>
       <location>
@@ -417,6 +427,7 @@
 </function>
 <function>
   <name>f4</name>
+  <anchor>f4</anchor>
   <loc>
     <loc>
       <location>
@@ -468,6 +479,7 @@
 </function>
 <function>
   <name>f5</name>
+  <anchor>f5</anchor>
   <loc>
     <loc>
       <location>
@@ -520,6 +532,7 @@
 </function>
 <function>
   <name>f6</name>
+  <anchor>f6</anchor>
   <loc>
     <loc>
       <location>
@@ -576,6 +589,7 @@
 </function>
 <function>
   <name>f7</name>
+  <anchor>f7</anchor>
   <loc>
     <loc>
       <location>
@@ -633,6 +647,7 @@
 </function>
 <function>
   <name>f8</name>
+  <anchor>f8</anchor>
   <loc>
     <loc>
       <location>
@@ -691,6 +706,7 @@
 </function>
 <function>
   <name>g0</name>
+  <anchor>g0</anchor>
   <loc>
     <loc>
       <location>
@@ -737,6 +753,7 @@
 </function>
 <function>
   <name>g1</name>
+  <anchor>g1</anchor>
   <loc>
     <loc>
       <location>
@@ -784,6 +801,7 @@
 </function>
 <function>
   <name>g2</name>
+  <anchor>g2</anchor>
   <loc>
     <loc>
       <location>
@@ -835,6 +853,7 @@
 </function>
 <function>
   <name>g3</name>
+  <anchor>g3</anchor>
   <loc>
     <loc>
       <location>
@@ -887,6 +906,7 @@
 </function>
 <function>
   <name>g4</name>
+  <anchor>g4</anchor>
   <loc>
     <loc>
       <location>
@@ -938,6 +958,7 @@
 </function>
 <function>
   <name>g5</name>
+  <anchor>g5</anchor>
   <loc>
     <loc>
       <location>
@@ -990,6 +1011,7 @@
 </function>
 <function>
   <name>g6</name>
+  <anchor>g6</anchor>
   <loc>
     <loc>
       <location>
@@ -1046,6 +1068,7 @@
 </function>
 <function>
   <name>g7</name>
+  <anchor>g7</anchor>
   <loc>
     <loc>
       <location>
@@ -1103,6 +1126,7 @@
 </function>
 <function>
   <name>g8</name>
+  <anchor>g8</anchor>
   <loc>
     <loc>
       <location>
@@ -1161,6 +1185,7 @@
 </function>
 <function>
   <name>h0</name>
+  <anchor>h0</anchor>
   <loc>
     <loc>
       <location>
@@ -1239,6 +1264,7 @@
 </function>
 <function>
   <name>h1</name>
+  <anchor>h1</anchor>
   <loc>
     <loc>
       <location>
@@ -1318,6 +1344,7 @@
 </function>
 <function>
   <name>h2</name>
+  <anchor>h2</anchor>
   <loc>
     <loc>
       <location>
@@ -1401,6 +1428,7 @@
 </function>
 <function>
   <name>h3</name>
+  <anchor>h3</anchor>
   <loc>
     <loc>
       <location>
@@ -1485,6 +1513,7 @@
 </function>
 <function>
   <name>h4</name>
+  <anchor>h4</anchor>
   <loc>
     <loc>
       <location>
@@ -1568,6 +1597,7 @@
 </function>
 <function>
   <name>h5</name>
+  <anchor>h5</anchor>
   <loc>
     <loc>
       <location>
@@ -1652,6 +1682,7 @@
 </function>
 <function>
   <name>h6</name>
+  <anchor>h6</anchor>
   <loc>
     <loc>
       <location>
@@ -1740,6 +1771,7 @@
 </function>
 <function>
   <name>h7</name>
+  <anchor>h7</anchor>
   <loc>
     <loc>
       <location>
@@ -1829,6 +1861,7 @@
 </function>
 <function>
   <name>h8</name>
+  <anchor>h8</anchor>
   <loc>
     <loc>
       <location>
@@ -1919,6 +1952,7 @@
 </function>
 <function>
   <name>i0</name>
+  <anchor>i0</anchor>
   <loc>
     <loc>
       <location>
@@ -1965,6 +1999,7 @@
 </function>
 <function>
   <name>i1</name>
+  <anchor>i1</anchor>
   <loc>
     <loc>
       <location>
@@ -2012,6 +2047,7 @@
 </function>
 <function>
   <name>i2</name>
+  <anchor>i2</anchor>
   <loc>
     <loc>
       <location>
@@ -2063,6 +2099,7 @@
 </function>
 <function>
   <name>i3</name>
+  <anchor>i3</anchor>
   <loc>
     <loc>
       <location>
@@ -2115,6 +2152,7 @@
 </function>
 <function>
   <name>i4</name>
+  <anchor>i4</anchor>
   <loc>
     <loc>
       <location>
@@ -2166,6 +2204,7 @@
 </function>
 <function>
   <name>i5</name>
+  <anchor>i5</anchor>
   <loc>
     <loc>
       <location>
@@ -2218,6 +2257,7 @@
 </function>
 <function>
   <name>i6</name>
+  <anchor>i6</anchor>
   <loc>
     <loc>
       <location>
@@ -2274,6 +2314,7 @@
 </function>
 <function>
   <name>i7</name>
+  <anchor>i7</anchor>
   <loc>
     <loc>
       <location>
@@ -2331,6 +2372,7 @@
 </function>
 <function>
   <name>i8</name>
+  <anchor>i8</anchor>
   <loc>
     <loc>
       <location>
@@ -2389,6 +2431,7 @@
 </function>
 <function>
   <name>j0</name>
+  <anchor>j0</anchor>
   <loc>
     <loc>
       <location>
@@ -2452,6 +2495,7 @@
 </function>
 <function>
   <name>j1</name>
+  <anchor>j1</anchor>
   <loc>
     <loc>
       <location>
@@ -2516,6 +2560,7 @@
 </function>
 <function>
   <name>j2</name>
+  <anchor>j2</anchor>
   <loc>
     <loc>
       <location>
@@ -2584,6 +2629,7 @@
 </function>
 <function>
   <name>j3</name>
+  <anchor>j3</anchor>
   <loc>
     <loc>
       <location>
@@ -2653,6 +2699,7 @@
 </function>
 <function>
   <name>j4</name>
+  <anchor>j4</anchor>
   <loc>
     <loc>
       <location>
@@ -2721,6 +2768,7 @@
 </function>
 <function>
   <name>j5</name>
+  <anchor>j5</anchor>
   <loc>
     <loc>
       <location>
@@ -2790,6 +2838,7 @@
 </function>
 <function>
   <name>j6</name>
+  <anchor>j6</anchor>
   <loc>
     <loc>
       <location>
@@ -2863,6 +2912,7 @@
 </function>
 <function>
   <name>j7</name>
+  <anchor>j7</anchor>
   <loc>
     <loc>
       <location>
@@ -2937,6 +2987,7 @@
 </function>
 <function>
   <name>j8</name>
+  <anchor>j8</anchor>
   <loc>
     <loc>
       <location>

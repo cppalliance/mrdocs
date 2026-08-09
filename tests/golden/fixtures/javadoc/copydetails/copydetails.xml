@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <function>
   <name>dest</name>
+  <anchor>dest</anchor>
   <loc>
     <loc>
       <location>
@@ -216,6 +218,7 @@
 </function>
 <function>
   <name>destOverride</name>
+  <anchor>destOverride</anchor>
   <loc>
     <loc>
       <location>
@@ -485,6 +488,7 @@
 </function>
 <function>
   <name>source</name>
+  <anchor>source</anchor>
   <loc>
     <loc>
       <location>

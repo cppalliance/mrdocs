@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <namespace>
   <name>LongName</name>
+  <anchor>LongName</anchor>
   <loc>
     <loc>
       <location>
@@ -32,6 +34,7 @@
 </namespace>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <defLoc>
       <shortPath>using-struct.cpp</shortPath>
@@ -48,6 +51,7 @@
 </record>
 <record>
   <name>S2</name>
+  <anchor>S2</anchor>
   <loc>
     <defLoc>
       <shortPath>using-struct.cpp</shortPath>
@@ -64,6 +68,7 @@
 </record>
 <using>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <loc>
       <location>
@@ -96,6 +101,7 @@
 </using>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <defLoc>
       <shortPath>using-struct.cpp</shortPath>
@@ -112,6 +118,7 @@
 </record>
 <using>
   <name>S2</name>
+  <anchor>S2</anchor>
   <loc>
     <loc>
       <location>
@@ -144,6 +151,7 @@
 </using>
 <record>
   <name>S2</name>
+  <anchor>S2</anchor>
   <loc>
     <defLoc>
       <shortPath>using-struct.cpp</shortPath>

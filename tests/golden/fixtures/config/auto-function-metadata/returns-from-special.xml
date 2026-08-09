@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>returns-from-special.cpp</shortPath>
@@ -82,6 +84,7 @@
 </record>
 <record>
   <name>Undoc</name>
+  <anchor>Undoc</anchor>
   <loc>
     <defLoc>
       <shortPath>returns-from-special.cpp</shortPath>
@@ -98,6 +101,7 @@
 </record>
 <record>
   <name>X</name>
+  <anchor>X</anchor>
   <loc>
     <defLoc>
       <shortPath>returns-from-special.cpp</shortPath>
@@ -131,6 +135,7 @@
 </record>
 <overloads>
   <name>operator=</name>
+  <anchor>operator_assign-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -175,6 +180,7 @@
 </overloads>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -270,6 +276,7 @@
 </function>
 <function>
   <name>operator=</name>
+  <anchor>operator_assign-07</anchor>
   <loc>
     <loc>
       <location>
@@ -364,6 +371,7 @@
 </function>
 <function>
   <name>operator+</name>
+  <anchor>operator_plus</anchor>
   <loc>
     <loc>
       <location>
@@ -455,6 +463,7 @@
 </function>
 <function>
   <name>operator-&gt;</name>
+  <anchor>operator_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -515,6 +524,7 @@
 </function>
 <function>
   <name>operator A</name>
+  <anchor>2conversion-00</anchor>
   <loc>
     <loc>
       <location>
@@ -579,6 +589,7 @@
 </function>
 <function>
   <name>operator Undoc</name>
+  <anchor>2conversion-03</anchor>
   <loc>
     <loc>
       <location>
@@ -652,6 +663,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>
@@ -730,6 +742,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -843,6 +856,7 @@
 </function>
 <function>
   <name>operator!=</name>
+  <anchor>operator_not_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -956,6 +970,7 @@
 </function>
 <function>
   <name>operator&lt;</name>
+  <anchor>operator_lt</anchor>
   <loc>
     <loc>
       <location>
@@ -1069,6 +1084,7 @@
 </function>
 <function>
   <name>operator&lt;=</name>
+  <anchor>operator_le</anchor>
   <loc>
     <loc>
       <location>
@@ -1182,6 +1198,7 @@
 </function>
 <function>
   <name>operator&gt;</name>
+  <anchor>operator_gt</anchor>
   <loc>
     <loc>
       <location>
@@ -1295,6 +1312,7 @@
 </function>
 <function>
   <name>operator&gt;=</name>
+  <anchor>operator_ge</anchor>
   <loc>
     <loc>
       <location>
@@ -1408,6 +1426,7 @@
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
+  <anchor>operator_3way</anchor>
   <loc>
     <loc>
       <location>
@@ -1493,6 +1512,7 @@
 </function>
 <record>
   <name>ostream</name>
+  <anchor>ostream</anchor>
   <loc>
     <loc>
       <location>
@@ -1530,6 +1550,7 @@
 </record>
 <function>
   <name>operator&lt;&lt;</name>
+  <anchor>operator_lshift</anchor>
   <loc>
     <loc>
       <location>
@@ -1660,6 +1681,7 @@
 </function>
 <function>
   <name>operator!</name>
+  <anchor>operator_not</anchor>
   <loc>
     <loc>
       <location>
@@ -1777,6 +1799,7 @@
 </function>
 <function>
   <name>operator==</name>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -1925,6 +1948,7 @@
 </function>
 <function>
   <name>operator!=</name>
+  <anchor>operator_not_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -2073,6 +2097,7 @@
 </function>
 <function>
   <name>operator&lt;</name>
+  <anchor>operator_lt</anchor>
   <loc>
     <loc>
       <location>
@@ -2221,6 +2246,7 @@
 </function>
 <function>
   <name>operator&lt;=</name>
+  <anchor>operator_le</anchor>
   <loc>
     <loc>
       <location>
@@ -2369,6 +2395,7 @@
 </function>
 <function>
   <name>operator&gt;</name>
+  <anchor>operator_gt</anchor>
   <loc>
     <loc>
       <location>
@@ -2517,6 +2544,7 @@
 </function>
 <function>
   <name>operator&gt;=</name>
+  <anchor>operator_ge</anchor>
   <loc>
     <loc>
       <location>
@@ -2665,6 +2693,7 @@
 </function>
 <function>
   <name>operator&lt;=&gt;</name>
+  <anchor>operator_3way</anchor>
   <loc>
     <loc>
       <location>

@@ -848,6 +848,11 @@ No city found
 {{! to_string (pluck containers.object 'account_id') }}
 {{ to_string (pluck containers.object_array 'account_id') }}
 {{ to_string (pluck containers.object_array 'product') }}
+// pluck (dotted path; position-preserving, undefined where it does not resolve)
+{{ to_string (pluck containers.nested_array 'ref.name') }}
+{{ to_string (pluck containers.nested_array 'ref.id') }}
+// zip_objects
+{{ to_string (zip_objects (arr 'name' 'id') (pluck containers.nested_array 'ref.name') (pluck containers.nested_array 'ref.id')) }}
 // unique
 {{ to_string (unique (concat containers.array containers.array2)) }}
 {{! to_string (unique (concat containers.object containers.object2)) }}

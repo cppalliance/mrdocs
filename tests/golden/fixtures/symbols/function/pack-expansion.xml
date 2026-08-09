@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <function>
   <name>by_const_ref</name>
+  <anchor>by_const_ref</anchor>
   <loc>
     <loc>
       <location>
@@ -74,6 +76,7 @@
 </function>
 <function>
   <name>by_pointer</name>
+  <anchor>by_pointer</anchor>
   <loc>
     <loc>
       <location>
@@ -136,6 +139,7 @@
 </function>
 <function>
   <name>by_ref</name>
+  <anchor>by_ref</anchor>
   <loc>
     <loc>
       <location>
@@ -198,6 +202,7 @@
 </function>
 <function>
   <name>by_value</name>
+  <anchor>by_value</anchor>
   <loc>
     <loc>
       <location>
@@ -255,6 +260,7 @@
 </function>
 <function>
   <name>forward_all</name>
+  <anchor>forward_all</anchor>
   <loc>
     <loc>
       <location>
@@ -317,6 +323,7 @@
 </function>
 <function>
   <name>make_ptr</name>
+  <anchor>make_ptr</anchor>
   <loc>
     <loc>
       <location>

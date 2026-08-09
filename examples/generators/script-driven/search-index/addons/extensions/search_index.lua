@@ -5,9 +5,9 @@
 -- `mrdocs.register_generator(id, fn)` declares it next to any
 -- `mrdocs.register_transform` a script might also declare; selecting
 -- `generator: <id>` runs `fn` with one `ctx`. `ctx.corpus.symbols` is
--- every symbol (each tagged with a flat `_id` so the generator can form
--- stable per-symbol URLs) and `ctx.output.write` emits files under the
--- output directory.
+-- every symbol (each reflecting its `id`, the base58 SymbolID string, so
+-- the generator can form stable per-symbol URLs) and `ctx.output.write`
+-- emits files under the output directory.
 
 -- Quote a string as a JSON value.
 local function json_string(s)
@@ -22,7 +22,7 @@ mrdocs.register_generator("search-index", function(ctx)
     if name ~= "" then
       entries[#entries + 1] =
         '{"name":' .. json_string(name) ..
-        ',"url":' .. json_string(sym._id .. ".html") .. "}"
+        ',"url":' .. json_string(sym.id .. ".html") .. "}"
     end
   end
   ctx.output.write(

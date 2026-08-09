@@ -26,8 +26,8 @@
     {{~else ~}}
         Global namespace
     {{~/if~}}
-    {{~#if (contains (arr "explicit" "partial") template.kind)~}}
-        {{! Explicit or partial template: render the template arguments ~}}
+    {{~#if template.primary~}}
+        {{! Explicit or partial template (has a primary): render the template arguments ~}}
         {{>template/args-text args=template.args ~}}
     {{~/if~}}
 {{~/if~}}

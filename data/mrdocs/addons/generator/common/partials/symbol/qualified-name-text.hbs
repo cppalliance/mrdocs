@@ -10,8 +10,8 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{~#if (and parent parent.parent)~}}
-{{~> symbol/qualified-name-text parent ~}}::
+{{~#if (and parent (lookup (@root.mrdocs.corpus.get parent) "parent"))~}}
+{{~> symbol/qualified-name-text (@root.mrdocs.corpus.get parent) ~}}::
 {{~/if~}}
 {{~#if name ~}}
 {{~> symbol/name-text . ~}}

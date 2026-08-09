@@ -66,33 +66,6 @@ MRDOCS_DESCRIBE_STRUCT(
     (copiedFrom)
 )
 
-/** Map an optional brief block to a DOM value, yielding null when absent.
-    @param v Destination value.
-    @param I Optional brief block to convert.
-    @param domCorpus Corpus context for lazy references.
-*/
-inline
-void
-tag_invoke(
-    mrdocs::dom::ValueFromTag,
-    mrdocs::dom::Value& v,
-    Optional<BriefBlock> const& I,
-    DomCorpus const* domCorpus)
-{
-    if (!I)
-    {
-        v = nullptr;
-        return;
-    }
-    tag_invoke(mrdocs::dom::ValueFromTag{}, v, *I, domCorpus);
-}
-
-static_assert(dom::HasValueFrom<BriefBlock, DomCorpus const*>);
-static_assert(dom::HasValueFromWithContext<BriefBlock, DomCorpus const*>);
-
-static_assert(dom::HasValueFrom<Optional<BriefBlock>, DomCorpus const*>);
-static_assert(dom::HasValueFromWithContext<Optional<BriefBlock>, DomCorpus const*>);
-
 } // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_DOCCOMMENT_BLOCK_BRIEFBLOCK_HPP

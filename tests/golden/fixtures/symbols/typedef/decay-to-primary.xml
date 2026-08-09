@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <typedef>
   <name>A0</name>
+  <anchor>A0</anchor>
   <loc>
     <loc>
       <location>
@@ -59,6 +61,7 @@
 </typedef>
 <typedef>
   <name>A1</name>
+  <anchor>A1</anchor>
   <loc>
     <loc>
       <location>
@@ -120,6 +123,7 @@
 </typedef>
 <record>
   <name>S0</name>
+  <anchor>S0-03</anchor>
   <loc>
     <defLoc>
       <shortPath>decay-to-primary.cpp</shortPath>
@@ -151,6 +155,7 @@
 </record>
 <typedef>
   <name>M0</name>
+  <anchor>M0</anchor>
   <loc>
     <loc>
       <location>
@@ -181,6 +186,7 @@
 </typedef>
 <typedef>
   <name>M1</name>
+  <anchor>M1</anchor>
   <loc>
     <loc>
       <location>
@@ -237,6 +243,7 @@
 </typedef>
 <record>
   <name>S0</name>
+  <anchor>S0-09</anchor>
   <loc>
     <defLoc>
       <shortPath>decay-to-primary.cpp</shortPath>
@@ -279,6 +286,7 @@
 </record>
 <typedef>
   <name>M0</name>
+  <anchor>M0</anchor>
   <loc>
     <loc>
       <location>
@@ -310,6 +318,7 @@
 </typedef>
 <typedef>
   <name>M1</name>
+  <anchor>M1</anchor>
   <loc>
     <loc>
       <location>
@@ -366,6 +375,7 @@
 </typedef>
 <record>
   <name>S0</name>
+  <anchor>S0-00</anchor>
   <loc>
     <defLoc>
       <shortPath>decay-to-primary.cpp</shortPath>
@@ -408,6 +418,7 @@
 </record>
 <typedef>
   <name>M0</name>
+  <anchor>M0</anchor>
   <loc>
     <loc>
       <location>
@@ -439,6 +450,7 @@
 </typedef>
 <typedef>
   <name>M1</name>
+  <anchor>M1</anchor>
   <loc>
     <loc>
       <location>

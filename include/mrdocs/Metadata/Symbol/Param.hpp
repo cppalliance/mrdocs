@@ -75,15 +75,6 @@ MRDOCS_DECL
 void
 merge(std::vector<Param>& dst, std::vector<Param>&& src);
 
-/** Return the Param as a @ref dom::Value object.
-*/
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Param const& p,
-    DomCorpus const* domCorpus);
 
 } // mrdocs
 

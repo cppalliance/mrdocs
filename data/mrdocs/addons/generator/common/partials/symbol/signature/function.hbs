@@ -18,8 +18,8 @@
 {{>symbol/name symbol }}
 {{~else if (eq funcClass "conversion")~}}
 {{>symbol/name symbol }}
-{{~else if (contains (arr "explicit" "partial") template.kind)~}}
-{{>symbol/name template.primary ~}}{{>template/args-text args=template.args ~}}
+{{~else if template.primary~}}
+{{>symbol/name (@root.mrdocs.corpus.get template.primary) ~}}{{>template/args-text args=template.args ~}}
 {{~else~}}
 {{>symbol/name-text symbol }}
 {{~/if~}}

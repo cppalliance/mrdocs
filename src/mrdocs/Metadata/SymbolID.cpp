@@ -10,7 +10,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "../Support/Radix.hpp"
+#include <mrdocs/Support/Radix.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
@@ -207,32 +207,6 @@ tag_invoke(
     {
         v = {};
     }
-}
-
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    SymbolID const& id,
-    DomCorpus const* domCorpus)
-{
-    v = domCorpus->get(id);
-}
-
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    std::unique_ptr<SymbolID> const& t,
-    DomCorpus const* domCorpus)
-{
-    if (!t)
-    {
-        v = nullptr;
-        return;
-    }
-    v = dom::ValueFrom(*t, domCorpus);
 }
 
 

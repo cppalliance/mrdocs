@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>C0</name>
+  <anchor>C0</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -28,6 +30,7 @@
 </record>
 <record>
   <name>C1</name>
+  <anchor>C1</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -61,6 +64,7 @@
 </record>
 <record>
   <name>C2</name>
+  <anchor>C2</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -94,6 +98,7 @@
 </record>
 <record>
   <name>C3</name>
+  <anchor>C3</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -127,6 +132,7 @@
 </record>
 <record>
   <name>C4</name>
+  <anchor>C4</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -160,6 +166,7 @@
 </record>
 <record>
   <name>C5</name>
+  <anchor>C5</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -195,6 +202,7 @@
 </record>
 <record>
   <name>C6</name>
+  <anchor>C6</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -230,6 +238,7 @@
 </record>
 <record>
   <name>C7</name>
+  <anchor>C7</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -278,6 +287,7 @@
 </record>
 <record>
   <name>S0</name>
+  <anchor>S0</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -295,6 +305,7 @@
 </record>
 <record>
   <name>S1</name>
+  <anchor>S1</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -320,6 +331,7 @@
 </record>
 <record>
   <name>S2</name>
+  <anchor>S2</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -354,6 +366,7 @@
 </record>
 <record>
   <name>S3</name>
+  <anchor>S3</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -388,6 +401,7 @@
 </record>
 <record>
   <name>S4</name>
+  <anchor>S4</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -436,6 +450,7 @@
 </record>
 <record>
   <name>S5</name>
+  <anchor>S5</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -484,6 +499,7 @@
 </record>
 <record>
   <name>S6</name>
+  <anchor>S6</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>
@@ -527,6 +543,7 @@
 </record>
 <record>
   <name>U0</name>
+  <anchor>U0</anchor>
   <loc>
     <defLoc>
       <shortPath>record-inheritance.cpp</shortPath>

@@ -14,8 +14,6 @@
 #define MRDOCS_API_METADATA_SYMBOL_RECORDTRANCHE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 #include <vector>

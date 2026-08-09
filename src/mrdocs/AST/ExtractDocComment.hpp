@@ -14,7 +14,7 @@
 #define MRDOCS_LIB_AST_EXTRACTDOCCOMMENT_HPP
 
 #include <mrdocs/Platform.hpp>
-#include "../Diagnostics.hpp"
+#include <mrdocs/Diagnostics.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
 

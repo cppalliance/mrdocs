@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <enum>
   <name>Color</name>
+  <anchor>Color</anchor>
   <loc>
     <defLoc>
       <shortPath>show-enum-constants-true.cpp</shortPath>
@@ -52,6 +54,7 @@
 </enum>
 <enumConstant>
   <name>Red</name>
+  <anchor>Red</anchor>
   <loc>
     <loc>
       <location>
@@ -81,6 +84,7 @@
 </enumConstant>
 <enumConstant>
   <name>Green</name>
+  <anchor>Green</anchor>
   <loc>
     <loc>
       <location>
@@ -110,6 +114,7 @@
 </enumConstant>
 <enumConstant>
   <name>Blue</name>
+  <anchor>Blue</anchor>
   <loc>
     <loc>
       <location>

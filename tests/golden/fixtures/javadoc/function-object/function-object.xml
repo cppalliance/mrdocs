@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>auto_detected_fn</name>
+  <anchor>auto_detected_fn</anchor>
   <loc>
     <defLoc>
       <shortPath>function-object.cpp</shortPath>
@@ -45,6 +47,7 @@
 </record>
 <function>
   <name>operator()</name>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -102,6 +105,7 @@
 </function>
 <record>
   <name>doc_on_struct_fn</name>
+  <anchor>doc_on_struct_fn</anchor>
   <loc>
     <defLoc>
       <shortPath>function-object.cpp</shortPath>
@@ -135,6 +139,7 @@
 </record>
 <function>
   <name>operator()</name>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -192,6 +197,7 @@
 </function>
 <record>
   <name>forced_fn</name>
+  <anchor>forced_fn</anchor>
   <loc>
     <defLoc>
       <shortPath>function-object.cpp</shortPath>
@@ -236,6 +242,7 @@
 </record>
 <function>
   <name>name</name>
+  <anchor>name</anchor>
   <loc>
     <loc>
       <location>
@@ -287,6 +294,7 @@
 </function>
 <function>
   <name>operator()</name>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -344,6 +352,7 @@
 </function>
 <record>
   <name>undocumented_fn</name>
+  <anchor>undocumented_fn</anchor>
   <loc>
     <defLoc>
       <shortPath>function-object.cpp</shortPath>
@@ -365,6 +374,7 @@
 </record>
 <function>
   <name>operator()</name>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -422,6 +432,7 @@
 </function>
 <function>
   <name>auto_detected</name>
+  <anchor>auto_detected</anchor>
   <loc>
     <loc>
       <location>
@@ -476,6 +487,7 @@
 </function>
 <function>
   <name>doc_on_struct</name>
+  <anchor>doc_on_struct</anchor>
   <loc>
     <loc>
       <location>
@@ -530,6 +542,7 @@
 </function>
 <function>
   <name>doc_on_variable</name>
+  <anchor>doc_on_variable</anchor>
   <loc>
     <loc>
       <location>
@@ -584,6 +597,7 @@
 </function>
 <function>
   <name>forced</name>
+  <anchor>forced</anchor>
   <loc>
     <loc>
       <location>

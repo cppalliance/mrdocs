@@ -23,6 +23,9 @@ namespace mrdocs {
 struct SpecializationName final
     : Name
 {
+    /** The variant discriminator constant of this concrete name kind. */
+    static constexpr NameKind kind_id = NameKind::Specialization;
+
     /** The template arguments.
     */
     std::vector<Polymorphic<TArg>> TemplateArgs;

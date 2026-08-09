@@ -15,7 +15,7 @@
 #ifndef MRDOCS_LIB_AST_ASTVISITOR_HPP
 #define MRDOCS_LIB_AST_ASTVISITOR_HPP
 
-#include "../Support/ExecutionContext.hpp"
+#include <mrdocs/Support/ExecutionContext.hpp>
 #include "ClangHelpers.hpp"
 #include "MacroCollector.hpp"
 #include <mrdocs/Config.hpp>

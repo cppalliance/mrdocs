@@ -315,6 +315,27 @@ setup_context() const
     account_x12.set("product", "Desk");
     object_array.emplace_back(account_x12);
     containers.set("object_array", object_array);
+
+    // An array of objects with a nested field, for dotted-path pluck and
+    // zip_objects.
+    dom::Array nested_array;
+    dom::Object row_a;
+    dom::Object ref_a;
+    ref_a.set("name", "Alpha");
+    ref_a.set("id", "a1");
+    row_a.set("ref", ref_a);
+    nested_array.emplace_back(row_a);
+    dom::Object row_b;
+    dom::Object ref_b;
+    ref_b.set("name", "Beta");
+    ref_b.set("id", "b1");
+    row_b.set("ref", ref_b);
+    nested_array.emplace_back(row_b);
+    dom::Object row_c;
+    row_c.set("other", "no-ref");
+    nested_array.emplace_back(row_c);
+    containers.set("nested_array", nested_array);
+
     master.context.set("containers", containers);
 
     dom::Object symbol;
@@ -330,6 +351,7 @@ setup_helpers()
     helpers::registerAntoraHelpers(master.hbs);
     helpers::registerStringHelpers(master.hbs);
     helpers::registerContainerHelpers(master.hbs);
+    helpers::registerConstructorHelpers(master.hbs);
 
     master.hbs.registerHelper("progress", dom::makeVariadicInvocable([](
         dom::Array const& arguments)

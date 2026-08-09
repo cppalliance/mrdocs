@@ -1,10 +1,10 @@
 {{#if template}}{{>template/head template}}
 {{/if~}}
 {{#if isFriend}}friend {{/if~}}
-{{~keyKind}} {{#if attributes}}{{>symbol/signature/attributes}} {{/if}}{{#if (contains (arr "explicit" "partial") template.kind)~}}
+{{~keyKind}} {{#if attributes}}{{>symbol/signature/attributes}} {{/if}}{{#if template.primary~}}
     {{!~ If the last part is a template specialization, we include links to primary template and the arguments. ~}}
     {{!~ If the primary template wasn't correctly extracted for some reason, we just print the name as usual. ~}}
-    {{#if template.primary }}{{~>symbol/name template.primary ~}}{{else}}{{ name }}{{/if}}{{>template/args args=template.args ~}}
+    {{#if template.primary }}{{~>symbol/name (@root.mrdocs.corpus.get template.primary) ~}}{{else}}{{ name }}{{/if}}{{>template/args args=template.args ~}}
 {{~else~}}
     {{>symbol/name-text symbol ~}}
 {{~/if}}
@@ -15,7 +15,7 @@
     {{#if @first}}
     :{{else}}
     ,{{/if~}}
-    {{#unless (eq access ../defaultAccess)}} {{access}}{{/unless~}}
+    {{#unless (eq access (select (eq ../keyKind "class") "private" "public"))}} {{access}}{{/unless~}}
     {{#if isVirtual}} virtual{{/if}} {{>type/declarator type~}}
 {{/each~}}
 {{/if}}
@@ -24,5 +24,5 @@
       final;` is ill-formed (`final` can't be used on a non-defining
       declaration). Similarly, don't show a semicolon if there are base
       classes. --}}
-{{~#isSeeBelow}} { {{> symbol/signature/see-below}} }{{/isSeeBelow~}}
-{{#if (or isSeeBelow (and (not isFinal) (eq (len bases) 0)))}};{{/if}}
+{{~#if (eq extraction "see-below")}} { {{> symbol/signature/see-below}} }{{/if~}}
+{{#if (or (eq extraction "see-below") (and (not isFinal) (eq (len bases) 0)))}};{{/if}}

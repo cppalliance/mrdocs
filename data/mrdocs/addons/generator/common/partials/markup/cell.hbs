@@ -17,7 +17,7 @@
 {{#>markup/code}}{{> type/declarator type}}{{/markup/code}}
 {{~else if (eq $meta.type "FriendInfo")~}}
 {{~#if id~}}
-{{#>markup/code}}{{> symbol/qualified-name id}}{{/markup/code}}
+{{#>markup/code}}{{> symbol/qualified-name (@root.mrdocs.corpus.get id)}}{{/markup/code}}
 {{~else if type~}}
 {{#>markup/code}}{{> type/declarator type}}{{/markup/code}}
 {{~/if~}}
@@ -30,16 +30,16 @@
 {{~else if (or (eq $meta.type "ParamBlock") (eq $meta.type "TParamBlock"))~}}
 {{#>markup/b}}{{name}}{{/markup/b}}{{#if direction}} [{{direction}}]{{/if}}
 {{~else if (or (eq $meta.type "Name") (contains $meta.bases "Name"))~}}
-{{~#if id.url~}}
-{{#>markup/a href=id.url}}{{#>markup/code}}{{> type/name-info-text .}}{{/markup/code}}{{/markup/a}}
-{{~else if url~}}
-{{#>markup/a href=url}}{{#>markup/code}}{{> type/name-info-text .}}{{/markup/code}}{{/markup/a}}
+{{~#if (@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id))~}}
+{{#>markup/a href=(@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id))}}{{#>markup/code}}{{> type/name-info-text .}}{{/markup/code}}{{/markup/a}}
+{{~else if (@root.mrdocs.corpus.getUrl this)~}}
+{{#>markup/a href=(@root.mrdocs.corpus.getUrl this)}}{{#>markup/code}}{{> type/name-info-text .}}{{/markup/code}}{{/markup/a}}
 {{~else~}}
 {{> type/name-info-text .}}
 {{~/if~}}
 {{~else if (contains $meta.bases "Symbol")~}}
-{{~#if url~}}
-{{#>markup/a href=url}}{{#>markup/code}}{{> symbol/name-text .}}{{/markup/code}}{{/markup/a}} {{> symbol/special-function-suffix .}}
+{{~#if (@root.mrdocs.corpus.getUrl this)~}}
+{{#>markup/a href=(@root.mrdocs.corpus.getUrl this)}}{{#>markup/code}}{{> symbol/name-text .}}{{/markup/code}}{{/markup/a}} {{> symbol/special-function-suffix .}}
 {{~else~}}
 {{#>markup/code}}{{> symbol/name-text .}}{{/markup/code}} {{> symbol/special-function-suffix .}}
 {{~/if~}}

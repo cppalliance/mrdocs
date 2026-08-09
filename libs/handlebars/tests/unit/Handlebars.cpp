@@ -1899,13 +1899,14 @@ subexpressions()
 
     // subexpression functions on the context
     {
-        hbs.registerHelper("bar", []() {
-            return "LOL";
-        });
+        hbs.unregisterHelper("bar");
+        dom::Object ctx;
+        ctx.set("bar", dom::makeInvocable(
+            []() -> dom::Value { return "LOL"; }));
         hbs.registerHelper("foo", [](dom::Value const& val) {
             return val + val;
         });
-        BOOST_TEST(hbs.render("{{foo (bar)}}!") == "LOLLOL!");
+        BOOST_TEST(hbs.render("{{foo (bar)}}!", ctx) == "LOLLOL!");
     }
 
     // subexpressions can't just be property lookups
@@ -1917,7 +1918,7 @@ subexpressions()
             return val + val;
         });
         BOOST_TEST_THROW_WITH(
-            hbs.render("{{foo (bar)}}!"), handlebars::Error, "bar is not a function - 1:7");
+            hbs.render("{{foo (bar)}}!", ctx), handlebars::Error, "bar is not a function - 1:7");
     }
 }
 

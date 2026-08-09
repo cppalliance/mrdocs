@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>Explicit</name>
+  <anchor>Explicit</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-ctor.cpp</shortPath>
@@ -32,6 +34,7 @@
 </record>
 <overloads>
   <name>Explicit</name>
+  <anchor>2constructor-04</anchor>
   <loc>
     <loc>
       <location>
@@ -93,6 +96,7 @@
 </overloads>
 <function>
   <name>Explicit</name>
+  <anchor>2constructor-02</anchor>
   <loc>
     <loc>
       <location>
@@ -136,6 +140,7 @@
 </function>
 <function>
   <name>Explicit</name>
+  <anchor>2constructor-00</anchor>
   <loc>
     <loc>
       <location>
@@ -214,6 +219,7 @@
 </function>
 <function>
   <name>Explicit</name>
+  <anchor>2constructor-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -291,6 +297,7 @@
 </function>
 <function>
   <name>Explicit</name>
+  <anchor>2constructor-03</anchor>
   <loc>
     <loc>
       <location>
@@ -364,6 +371,7 @@
 </function>
 <record>
   <name>ExplicitExpression</name>
+  <anchor>ExplicitExpression</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-ctor.cpp</shortPath>
@@ -405,6 +413,7 @@
 </record>
 <overloads>
   <name>ExplicitExpression</name>
+  <anchor>2constructor-07</anchor>
   <loc>
     <loc>
       <location>
@@ -466,6 +475,7 @@
 </overloads>
 <function>
   <name>ExplicitExpression</name>
+  <anchor>2constructor-0b</anchor>
   <loc>
     <loc>
       <location>
@@ -509,6 +519,7 @@
 </function>
 <function>
   <name>ExplicitExpression</name>
+  <anchor>2constructor-04</anchor>
   <loc>
     <loc>
       <location>
@@ -587,6 +598,7 @@
 </function>
 <function>
   <name>ExplicitExpression</name>
+  <anchor>2constructor-08</anchor>
   <loc>
     <loc>
       <location>
@@ -664,6 +676,7 @@
 </function>
 <function>
   <name>ExplicitExpression</name>
+  <anchor>2constructor-02</anchor>
   <loc>
     <loc>
       <location>
@@ -737,6 +750,7 @@
 </function>
 <record>
   <name>ExplicitFalse</name>
+  <anchor>ExplicitFalse</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-ctor.cpp</shortPath>
@@ -758,6 +772,7 @@
 </record>
 <overloads>
   <name>ExplicitFalse</name>
+  <anchor>2constructor-07</anchor>
   <loc>
     <loc>
       <location>
@@ -819,6 +834,7 @@
 </overloads>
 <function>
   <name>ExplicitFalse</name>
+  <anchor>2constructor-01</anchor>
   <loc>
     <loc>
       <location>
@@ -862,6 +878,7 @@
 </function>
 <function>
   <name>ExplicitFalse</name>
+  <anchor>2constructor-08</anchor>
   <loc>
     <loc>
       <location>
@@ -940,6 +957,7 @@
 </function>
 <function>
   <name>ExplicitFalse</name>
+  <anchor>2constructor-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -1017,6 +1035,7 @@
 </function>
 <function>
   <name>ExplicitFalse</name>
+  <anchor>2constructor-04</anchor>
   <loc>
     <loc>
       <location>
@@ -1090,6 +1109,7 @@
 </function>
 <record>
   <name>ExplicitTrue</name>
+  <anchor>ExplicitTrue</anchor>
   <loc>
     <defLoc>
       <shortPath>explicit-ctor.cpp</shortPath>
@@ -1111,6 +1131,7 @@
 </record>
 <overloads>
   <name>ExplicitTrue</name>
+  <anchor>2constructor-01</anchor>
   <loc>
     <loc>
       <location>
@@ -1172,6 +1193,7 @@
 </overloads>
 <function>
   <name>ExplicitTrue</name>
+  <anchor>2constructor-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -1215,6 +1237,7 @@
 </function>
 <function>
   <name>ExplicitTrue</name>
+  <anchor>2constructor-04</anchor>
   <loc>
     <loc>
       <location>
@@ -1293,6 +1316,7 @@
 </function>
 <function>
   <name>ExplicitTrue</name>
+  <anchor>2constructor-08</anchor>
   <loc>
     <loc>
       <location>
@@ -1370,6 +1394,7 @@
 </function>
 <function>
   <name>ExplicitTrue</name>
+  <anchor>2constructor-05</anchor>
   <loc>
     <loc>
       <location>

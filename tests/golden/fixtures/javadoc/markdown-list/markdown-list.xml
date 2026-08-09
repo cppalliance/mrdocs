@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <loc>
       <location>
@@ -103,6 +105,7 @@
 </record>
 <record>
   <name>B</name>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -264,6 +267,7 @@
 </record>
 <record>
   <name>C</name>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -328,6 +332,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -444,6 +449,7 @@
 </function>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -597,6 +603,7 @@
 </function>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <loc>
       <location>
@@ -688,6 +695,7 @@
 </function>
 <function>
   <name>i</name>
+  <anchor>i</anchor>
   <loc>
     <loc>
       <location>
@@ -774,6 +782,7 @@
 </function>
 <function>
   <name>j</name>
+  <anchor>j</anchor>
   <loc>
     <loc>
       <location>

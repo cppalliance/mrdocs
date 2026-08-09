@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <typedef>
   <name>A5</name>
+  <anchor>A5</anchor>
   <loc>
     <loc>
       <location>
@@ -59,6 +61,7 @@
 </typedef>
 <typedef>
   <name>A9</name>
+  <anchor>A9</anchor>
   <loc>
     <loc>
       <location>
@@ -168,6 +171,7 @@
 </typedef>
 <record>
   <name>S0</name>
+  <anchor>S0-03</anchor>
   <loc>
     <defLoc>
       <shortPath>implicit-instantiation-member-ref.cpp</shortPath>
@@ -199,6 +203,7 @@
 </record>
 <record>
   <name>S2</name>
+  <anchor>S2</anchor>
   <loc>
     <defLoc>
       <shortPath>implicit-instantiation-member-ref.cpp</shortPath>
@@ -231,6 +236,7 @@
 </record>
 <typedef>
   <name>M2</name>
+  <anchor>M2</anchor>
   <loc>
     <loc>
       <location>
@@ -261,6 +267,7 @@
 </typedef>
 <typedef>
   <name>M3</name>
+  <anchor>M3</anchor>
   <loc>
     <loc>
       <location>
@@ -317,6 +324,7 @@
 </typedef>
 <record>
   <name>S0</name>
+  <anchor>S0-00</anchor>
   <loc>
     <defLoc>
       <shortPath>implicit-instantiation-member-ref.cpp</shortPath>
@@ -359,6 +367,7 @@
 </record>
 <record>
   <name>S2</name>
+  <anchor>S2-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -387,6 +396,7 @@
 </record>
 <record>
   <name>S2</name>
+  <anchor>S2-02</anchor>
   <loc>
     <defLoc>
       <shortPath>implicit-instantiation-member-ref.cpp</shortPath>
@@ -430,6 +440,7 @@
 </record>
 <typedef>
   <name>M2</name>
+  <anchor>M2</anchor>
   <loc>
     <loc>
       <location>
@@ -461,6 +472,7 @@
 </typedef>
 <typedef>
   <name>M3</name>
+  <anchor>M3</anchor>
   <loc>
     <loc>
       <location>

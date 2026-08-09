@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -12,6 +13,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>return-type.cpp</shortPath>
@@ -57,6 +59,7 @@
 </record>
 <record>
   <name>Result</name>
+  <anchor>Result</anchor>
   <loc>
     <defLoc>
       <shortPath>return-type.cpp</shortPath>
@@ -101,6 +104,7 @@
 </record>
 <record>
   <name>SmallVector</name>
+  <anchor>SmallVector</anchor>
   <loc>
     <defLoc>
       <shortPath>return-type.cpp</shortPath>
@@ -161,6 +165,7 @@
 </record>
 <function>
   <name>makeA</name>
+  <anchor>makeA</anchor>
   <loc>
     <loc>
       <location>
@@ -221,6 +226,7 @@
 </function>
 <function>
   <name>makeAs</name>
+  <anchor>makeAs</anchor>
   <loc>
     <loc>
       <location>
@@ -307,6 +313,7 @@
 </function>
 <function>
   <name>tryMakeA</name>
+  <anchor>tryMakeA</anchor>
   <loc>
     <loc>
       <location>

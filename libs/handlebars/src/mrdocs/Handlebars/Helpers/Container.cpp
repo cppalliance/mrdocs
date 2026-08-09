@@ -34,6 +34,54 @@ namespace helpers {
 // `namespace mrdocs { namespace helpers {`. Not a standalone header.
 
 namespace container_helpers_detail {
+
+/* Shared match predicate for `filter_by`, `reject_by`, and `any_of_by`.
+
+   `keys` holds the helper arguments that follow the container (each is a
+   string). The first is a dot-path key; the rest, if any, are values.
+   Two forms are supported:
+
+   - One key: the element matches when the value at that key is truthy.
+     Used for boolean fields or presence checks.
+
+         {{filter_by members "isListedOnPrimary"}}   keep truthy
+         {{any_of_by shadows "doc"}}                  any has a doc?
+         {{any_of_by members "doc.brief"}}            dot-path works too
+
+   - A key plus one or more values: the element matches when the value at
+     the key equals any of those values. This filters by a reflected
+     enum/string field directly, instead of precomputed booleans:
+
+         {{filter_by symbol.bases "access" "public"}}          == "public"
+         {{filter_by members "extraction" "regular" "see-below"}} in {..}
+
+   Non-string keys are ignored (the element does not match), so a
+   mis-typed argument fails closed rather than throwing. `el` that is not
+   an object simply has no value at the key and does not match.
+*/
+inline
+bool
+matchesFilterKeys(dom::Value const& el, std::vector<dom::Value> const& keys)
+{
+    if (keys.empty() || !keys.front().isString())
+    {
+        return false;
+    }
+    dom::Value const actual = el.lookup(keys.front().getString());
+    if (keys.size() == 1)
+    {
+        return actual.isTruthy();
+    }
+    for (std::size_t i = 1; i < keys.size(); ++i)
+    {
+        if (actual == keys[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 auto size_fn = dom::makeInvocable([](
         dom::Value const& val)
     {
@@ -507,17 +555,9 @@ auto filter_by_fn = dom::makeVariadicInvocable([](
                     continue;
                 }
 
-                // If the value is an object but the key doesn't exist,
-                // then we can't filter it by a key, so we just filter it by
-                // whichever has the key
-                auto matchIt = std::ranges::find_if(keys, [&](dom::Value const& key)
-                {
-                    return
-                        el.getObject().exists(key.getString()) &&
-                        el.getObject().get(key.getString()).isTruthy();
-                });
-                if (bool const matchAny = matchIt != keys.end();
-                    !matchAny)
+                // Keep the element when it matches the key (truthy) or
+                // the key/value predicate. See `matchesFilterKeys`.
+                if (!matchesFilterKeys(el, keys))
                 {
                     continue;
                 }
@@ -561,15 +601,9 @@ auto reject_by_fn = dom::makeVariadicInvocable([](
                     continue;
                 }
 
-                auto const matchIt = std::ranges::find_if(
-                    keys,
-                    [&](dom::Value const& key)
-                    {
-                        return
-                            el.getObject().exists(key.getString()) &&
-                            el.getObject().get(key.getString()).isTruthy();
-                    });
-                if (matchIt != keys.end())
+                // Drop the element when it matches the key (truthy) or
+                // the key/value predicate. See `matchesFilterKeys`.
+                if (matchesFilterKeys(el, keys))
                 {
                     continue;
                 }
@@ -613,15 +647,9 @@ auto any_of_by_fn = dom::makeVariadicInvocable([](
                     continue;
                 }
 
-                // If the value is an object but the key doesn't exist,
-                // then we can't any_of it by a key, so we just any_of it by
-                // whichever has the key
-                auto matchIt = std::ranges::find_if(keys, [&](dom::Value const& key)
-                {
-                    return el.lookup(key.getString()).isTruthy();
-                });
-                if (bool const matchAny = matchIt != keys.end();
-                    !matchAny)
+                // Return true when the element matches the key (truthy)
+                // or the key/value predicate. See `matchesFilterKeys`.
+                if (!matchesFilterKeys(el, keys))
                 {
                     continue;
                 }
@@ -757,63 +785,73 @@ auto flattenUnique_fn = dom::makeInvocable([](dom::Value const& collection, dom:
         return result;
     });
 
+// Access & inspection: sizes, key/value access, and endpoints.
 void
-registerContainerHelpers_1(Handlebars& hbs)
+registerContainerAccessHelpers(Handlebars& hbs)
 {
     hbs.registerHelper("size", size_fn);
     hbs.registerHelper("len", size_fn);
+    hbs.registerHelper("count", dom::makeVariadicInvocable(detail::count_fn));
     hbs.registerHelper("keys", keys_fn);
     hbs.registerHelper("list", keys_fn);
     hbs.registerHelper("iter", keys_fn);
     hbs.registerHelper("values", values_fn);
-    hbs.registerHelper("del", del_fn);
-    hbs.registerHelper("delete", del_fn);
-    hbs.registerHelper("find", dom::makeVariadicInvocable(detail::find_index_fn));
-    hbs.registerHelper("index_of", dom::makeVariadicInvocable(detail::find_index_fn));
-    hbs.registerHelper("has", has_fn);
-    hbs.registerHelper("exist", has_fn);
-}
-
-void
-registerContainerHelpers_2(Handlebars& hbs)
-{
-    hbs.registerHelper("contains", has_fn);
-    hbs.registerHelper("has_any", has_any_fn);
-    hbs.registerHelper("exist_any", has_any_fn);
-    hbs.registerHelper("contains_any", has_any_fn);
-    hbs.registerHelper("get", get_fn);
-    hbs.registerHelper("get_or", get_fn);
     hbs.registerHelper("items", items_fn);
     hbs.registerHelper("entries", items_fn);
+    hbs.registerHelper("get", get_fn);
+    hbs.registerHelper("get_or", get_fn);
+    hbs.registerHelper("at", dom::makeInvocable(detail::at_fn));
     hbs.registerHelper("first", first_fn);
     hbs.registerHelper("head", first_fn);
     hbs.registerHelper("front", first_fn);
     hbs.registerHelper("last", last_fn);
-}
-
-void
-registerContainerHelpers_3(Handlebars& hbs)
-{
     hbs.registerHelper("tail", last_fn);
     hbs.registerHelper("back", last_fn);
+}
+
+// Search & membership: locate elements or test for their presence.
+void
+registerContainerSearchHelpers(Handlebars& hbs)
+{
+    hbs.registerHelper("find", dom::makeVariadicInvocable(detail::find_index_fn));
+    hbs.registerHelper("index_of", dom::makeVariadicInvocable(detail::find_index_fn));
+    hbs.registerHelper("has", has_fn);
+    hbs.registerHelper("exist", has_fn);
+    hbs.registerHelper("contains", has_fn);
+    hbs.registerHelper("has_any", has_any_fn);
+    hbs.registerHelper("exist_any", has_any_fn);
+    hbs.registerHelper("contains_any", has_any_fn);
+    hbs.registerHelper("any_of_by", any_of_by_fn);
+}
+
+// Ordering & selection: reorder a range or select a subset of it.
+void
+registerContainerOrderingHelpers(Handlebars& hbs)
+{
     hbs.registerHelper("reverse", reverse_fn);
     hbs.registerHelper("reversed", reverse_fn);
-    hbs.registerHelper("update", update_fn);
-    hbs.registerHelper("merge", update_fn);
     hbs.registerHelper("sort", sort_fn);
     hbs.registerHelper("sort_by", sort_by_fn);
     hbs.registerHelper("filter_by", filter_by_fn);
     hbs.registerHelper("reject_by", reject_by_fn);
-    hbs.registerHelper("any_of_by", any_of_by_fn);
-    hbs.registerHelper("at", dom::makeInvocable(detail::at_fn));
 }
 
+// Mutation: remove, combine, or overwrite entries.
 void
-registerContainerHelpers_4(Handlebars& hbs)
+registerContainerMutationHelpers(Handlebars& hbs)
 {
+    hbs.registerHelper("del", del_fn);
+    hbs.registerHelper("delete", del_fn);
+    hbs.registerHelper("update", update_fn);
+    hbs.registerHelper("merge", update_fn);
     hbs.registerHelper("fill", fill_fn);
-    hbs.registerHelper("count", dom::makeVariadicInvocable(detail::count_fn));
     hbs.registerHelper("replace", dom::makeVariadicInvocable(detail::replace_fn));
+}
+
+// Transformation: derive a new container from an existing one.
+void
+registerContainerTransformHelpers(Handlebars& hbs)
+{
     hbs.registerHelper("chunk", dom::makeInvocable([](
         dom::Value range, dom::Value const& sizeV) -> dom::Value
     {
@@ -933,24 +971,99 @@ registerContainerHelpers_4(Handlebars& hbs)
         {
             return rangeV;
         }
-        // Given an array of objects, take the value of a key from each object
+        // Given an array of objects, take the value at `key` from each
+        // object. `key` may be a dotted path (e.g. "type.name.id"), which
+        // is walked one segment at a time. An element whose path does not
+        // fully resolve yields `undefined`.
+        std::string_view const key = keyV.getString();
+        auto resolve = [&](dom::Value v) -> dom::Value
+        {
+            std::size_t pos = 0;
+            while (pos < key.size())
+            {
+                std::size_t const dot = key.find('.', pos);
+                std::string const seg(key.substr(pos,
+                    dot == std::string_view::npos
+                        ? std::string_view::npos : dot - pos));
+                pos = dot == std::string_view::npos ? key.size() : dot + 1;
+                if (!v.isObject() || !v.getObject().exists(seg))
+                {
+                    return {dom::Kind::Undefined};
+                }
+                v = v.getObject().get(seg);
+            }
+            return v;
+        };
         dom::Array const& range = rangeV.getArray();
-        std::string key(keyV.getString());
         dom::Array res;
         auto n = static_cast<std::int64_t>(range.size());
         for (std::int64_t i = 0; i < n; ++i)
         {
-            if (range.get(i).isObject() && range.get(i).getObject().exists(key))
-            {
-                res.emplace_back(range.get(i).getObject().get(key));
-            }
+            res.emplace_back(resolve(range.get(i)));
         }
         return res;
-    }));}
+    }));
 
-void
-registerContainerHelpers_4b(Handlebars& hbs)
-{
+    // Combine parallel columns into an array of objects (the row-wise
+    // dual of `pluck`). Given a keys array and one column per key, it
+    // returns one object per index i, mapping each key to the i-th value
+    // of its column. This is the "zip into records" operation (cf. Python
+    // `dict(zip(keys, row))`, lodash `zipObject` applied per row): it lets
+    // a caller assemble table rows from separately-derived columns while a
+    // generic table just reads plain fields. The row count is the longest
+    // column; a shorter column yields `undefined` for its missing rows.
+    //
+    //   zip_objects (arr "name" "brief") names briefs
+    //     -> [ { name: names[0], brief: briefs[0] }, ... ]
+    hbs.registerHelper("zip_objects", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        // The last argument is the helper options object. Copy the keys
+        // and column values into owning locals: `arguments.at(i)` yields a
+        // temporary, so binding a reference to its array/string would
+        // dangle.
+        std::size_t const nArgs = arguments.size() - 1;
+        if (nArgs < 1 || !arguments.at(0).isArray())
+        {
+            return dom::Array{};
+        }
+        dom::Value const keysV = arguments.at(0);
+        dom::Array const& keys = keysV.getArray();
+        std::vector<dom::Value> cols;
+        for (std::size_t c = 1; c < nArgs; ++c)
+        {
+            cols.push_back(arguments.at(c));
+        }
+        std::size_t rows = 0;
+        for (dom::Value const& colV : cols)
+        {
+            if (colV.isArray())
+            {
+                rows = (std::max)(rows, colV.getArray().size());
+            }
+        }
+        dom::Array res;
+        for (std::size_t i = 0; i < rows; ++i)
+        {
+            dom::Object row;
+            for (std::size_t k = 0; k < keys.size(); ++k)
+            {
+                dom::Value v{dom::Kind::Undefined};
+                if (k < cols.size() && cols[k].isArray())
+                {
+                    dom::Array const& col = cols[k].getArray();
+                    if (i < col.size())
+                    {
+                        v = col.at(i);
+                    }
+                }
+                dom::Value const keyV = keys.at(k);
+                row.set(std::string(keyV.getString()), v);
+            }
+            res.emplace_back(std::move(row));
+        }
+        return res;
+    }));
     hbs.registerHelper("unique", dom::makeInvocable([](
         dom::Value rangeV) -> dom::Value
     {
@@ -984,6 +1097,47 @@ registerContainerHelpers_4b(Handlebars& hbs)
     hbs.registerHelper("concat", dom::makeVariadicInvocable(detail::concat_fn));
     hbs.registerHelper("flatten", flatten_fn);
     hbs.registerHelper("flattenUnique", flattenUnique_fn);
+
+    // `transform array fn` -- apply the function `fn` to each element of
+    // `array` and return the resulting array. `fn` is any callable value,
+    // including one reached through the context (e.g.
+    // `transform ids @root.mrdocs.corpus.get` to resolve a list of ids to
+    // symbols). A non-array first argument is returned unchanged.
+    hbs.registerHelper("transform", dom::makeVariadicInvocable(
+        [](dom::Array const& args) -> Expected<dom::Value, dom::Error>
+        {
+            if (args.size() < 2)
+            {
+                return Unexpected(dom::Error(
+                    "transform: expected (array, function)"));
+            }
+            dom::Value const rangeV = args.get(0);
+            dom::Value const fnV = args.get(1);
+            if (!rangeV.isArray())
+            {
+                return rangeV;
+            }
+            if (!fnV.isFunction())
+            {
+                return Unexpected(dom::Error(
+                    "transform: second argument must be a function"));
+            }
+            auto fn = fnV.getFunction();
+            dom::Array const& range = rangeV.getArray();
+            dom::Array res;
+            for (std::size_t i = 0; i < range.size(); ++i)
+            {
+                dom::Array callArgs;
+                callArgs.emplace_back(range.get(i));
+                Expected<dom::Value, dom::Error> r = fn.call(callArgs);
+                if (!r)
+                {
+                    return Unexpected(r.error());
+                }
+                res.emplace_back(*r);
+            }
+            return dom::Value(res);
+        }));
 }
 
 } // namespace container_helpers_detail
@@ -991,11 +1145,18 @@ registerContainerHelpers_4b(Handlebars& hbs)
 void
 registerContainerHelpers(Handlebars& hbs)
 {
-    container_helpers_detail::registerContainerHelpers_1(hbs);
-    container_helpers_detail::registerContainerHelpers_2(hbs);
-    container_helpers_detail::registerContainerHelpers_3(hbs);
-    container_helpers_detail::registerContainerHelpers_4(hbs);
-    container_helpers_detail::registerContainerHelpers_4b(hbs);
+    // Registration is split across several functions both to group the
+    // helpers by what they do and to keep each function small: this
+    // translation unit defines many helpers as sizeable lambdas, and
+    // folding every `registerHelper` call into one body inflates compile
+    // time and memory and can hit compiler function-complexity limits
+    // (notably MSVC). The groups are by semantic category, so a new
+    // helper goes with the ones whose job it shares.
+    container_helpers_detail::registerContainerAccessHelpers(hbs);
+    container_helpers_detail::registerContainerSearchHelpers(hbs);
+    container_helpers_detail::registerContainerOrderingHelpers(hbs);
+    container_helpers_detail::registerContainerMutationHelpers(hbs);
+    container_helpers_detail::registerContainerTransformHelpers(hbs);
 }
 
 } // namespace helpers

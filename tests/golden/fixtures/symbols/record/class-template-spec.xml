@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <record>
   <name>A</name>
+  <anchor>A-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -42,6 +44,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -74,6 +77,7 @@
 </function>
 <record>
   <name>A</name>
+  <anchor>A-00</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -116,6 +120,7 @@
 </record>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -148,6 +153,7 @@
 </function>
 <record>
   <name>A</name>
+  <anchor>A-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -190,6 +196,7 @@
 </record>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <loc>
       <location>
@@ -222,6 +229,7 @@
 </function>
 <record>
   <name>B</name>
+  <anchor>B-00</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -253,6 +261,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -285,6 +294,7 @@
 </function>
 <record>
   <name>B</name>
+  <anchor>B-06</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -338,6 +348,7 @@
 </record>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <loc>
       <location>
@@ -370,6 +381,7 @@
 </function>
 <record>
   <name>B</name>
+  <anchor>B-07</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -423,6 +435,7 @@
 </record>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -455,6 +468,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C-0f</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -491,6 +505,7 @@
 </record>
 <function>
   <name>f</name>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -523,6 +538,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C-0a</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -580,6 +596,7 @@
 </record>
 <function>
   <name>g</name>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -612,6 +629,7 @@
 </function>
 <record>
   <name>C</name>
+  <anchor>C-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -680,6 +698,7 @@
 </record>
 <function>
   <name>h</name>
+  <anchor>h</anchor>
   <loc>
     <loc>
       <location>

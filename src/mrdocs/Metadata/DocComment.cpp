@@ -11,7 +11,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "../Support/Debug.hpp"
+#include <mrdocs/Support/Debug.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/Parts.hpp>

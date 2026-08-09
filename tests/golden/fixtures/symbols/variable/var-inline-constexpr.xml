@@ -2,6 +2,7 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/develop/_attachments/schemas/mrdocs.rnc">
 <namespace>
+  <anchor>index</anchor>
   <kind>namespace</kind>
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
@@ -11,6 +12,7 @@
 </namespace>
 <variable>
   <name>var</name>
+  <anchor>var</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -39,6 +41,7 @@
 </variable>
 <variable>
   <name>var_const</name>
+  <anchor>var_const</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -68,6 +71,7 @@
 </variable>
 <variable>
   <name>var_const_t</name>
+  <anchor>var_const_t</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -104,6 +108,7 @@
 </variable>
 <variable>
   <name>var_constexpr</name>
+  <anchor>var_constexpr</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -133,6 +138,7 @@
 </variable>
 <variable>
   <name>var_constexpr_t</name>
+  <anchor>var_constexpr_t</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -169,6 +175,7 @@
 </variable>
 <variable>
   <name>var_inline_const</name>
+  <anchor>var_inline_const</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -199,6 +206,7 @@
 </variable>
 <variable>
   <name>var_inline_const_t</name>
+  <anchor>var_inline_const_t</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -236,6 +244,7 @@
 </variable>
 <variable>
   <name>var_inline_constexpr</name>
+  <anchor>var_inline_constexpr</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -266,6 +275,7 @@
 </variable>
 <variable>
   <name>var_inline_constexpr_t</name>
+  <anchor>var_inline_constexpr_t</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>
@@ -303,6 +313,7 @@
 </variable>
 <variable>
   <name>var_t</name>
+  <anchor>var_t</anchor>
   <loc>
     <defLoc>
       <shortPath>var-inline-constexpr.cpp</shortPath>

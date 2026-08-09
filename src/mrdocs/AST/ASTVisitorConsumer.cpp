@@ -12,7 +12,7 @@
 //
 
 #include "ASTVisitorConsumer.hpp"
-#include "../Support/Filesystem/Temp.hpp"
+#include <mrdocs/Support/Filesystem/Temp.hpp>
 #include "ASTVisitor.hpp"
 
 namespace mrdocs {
