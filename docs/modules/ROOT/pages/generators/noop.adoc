@@ -1,0 +1,69 @@
+= No-op
+
+The `noop` generator lets Mr.Docs extract the corpus and does nothing with it, collecting warning diagnostics from the extraction phase. This can be used to quickly catch undocumented symbols, parameters, incorrect documentation arguments, broken references, and malformed comments in general. Pick it
+through the xref:configuration/reference.adoc#generator_option[`generator`]
+option:
+
+[source,yaml]
+----
+generator: noop
+----
+
+In other words, you can combine it with xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] to get a documentation linter.
+
+== A documentation check
+
+Pair `noop` with xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`]
+and turn on the warnings you care about. Any documentation warning
+exits non-zero, and you can use it as a test. Consider a header that
+documents a function but forgets to document its parameters:
+
+[tabs]
+======
+Config::
++
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/generators/noop/documentation-check/mrdocs.yml[]
+----
+
+Input::
++
+.`include/geo/area.hpp`
+[source,cpp]
+----
+include::example$examples/generators/noop/documentation-check/include/geo/area.hpp[]
+----
+======
+
+Run the check and it names each problem, per symbol.
+
+[source,text]
+----
+include::example$examples/generators/noop/documentation-check/report.txt[]
+----
+
+Wiring it into CTest makes a documentation error fail the build like any other test:
+
+.`CMakeLists.txt`
+[source,cmake]
+----
+include::example$examples/generators/noop/documentation-check/CMakeLists.txt[tag=check,indent=0]
+----
+
+A complete, runnable example lives at `examples/generators/noop/documentation-check/`. Because the run produces no output, this is the cheapest way to ensure documentation is always provided in a codebase.
+
+== Agentic Loop
+
+The report above not only deterministically ensures that the documentation is complete and valid, but also provides a checklist of what is wrong. This makes it a useful tool for AI agents that work on a codebase but would often not ensure they maintain the documentation themselves.
+
+For a project that's already mostly documented, you can use a target like the one above as part of the tests to ensure documentation is included for new functions. For a project that is not well documented, you can create an agentic loop that forces the agent to fix the documentation until it passes the check:
+
+.`fix-docs.py`
+[source,python]
+----
+include::example$examples/generators/noop/fix-loop/fix-docs.py[]
+----
+
+This pattern can be used to give a project a baseline of documentation.

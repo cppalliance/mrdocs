@@ -23,6 +23,7 @@
 ** xref:generators/adoc.adoc[AsciiDoc]
 ** xref:generators/json.adoc[JSON]
 ** xref:generators/xml.adoc[XML]
+** xref:generators/noop.adoc[No-op]
 ** xref:generators/reference.adoc[Reference]
 * Extensions
 ** xref:extensions/handlebars-extensions.adoc[Handlebars Extensions]

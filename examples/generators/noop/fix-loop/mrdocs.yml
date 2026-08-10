@@ -1,0 +1,10 @@
+# Validate documentation and fail on any problem, so fix-docs.py has a report to
+# hand the agent. Same strict check as the documentation-check example.
+generator: noop
+warnings: true
+warn-as-error: true
+warn-if-undocumented: true
+warn-no-paramdoc: true
+source-root: include
+input:
+  - include
