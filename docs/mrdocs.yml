@@ -23,12 +23,15 @@ include-symbols:
 # API, so keep them out of MrDocs's own reference.
 exclude-symbols:
   - 'mrdocs::*Finalizer'
-# MrDocs's own macros are maintainer-facing implementation helpers, not
-# public API: the MRDOCS_* support macros and the internal X-macros
-# (INFO/LOG/F) and compat shims used across the headers. Keep them out of
-# MrDocs's own reference.
+# Almost every macro MrDocs defines is a maintainer-facing implementation
+# helper. The exception is the handful a plugin author writes against, so
+# name those rather than listing every helper to keep out. This has to be
+# an include: exclusion is checked first, so excluding MRDOCS_* would take
+# the plugin macros with it.
+include-macros:
+  - 'MRDOCS_PLUGIN_*'
+# The internal X-macros and compat shims, which no include pattern covers.
 exclude-macros:
-  - 'MRDOCS_*'
   - 'INFO'
   - 'LOG'
   - 'F'
