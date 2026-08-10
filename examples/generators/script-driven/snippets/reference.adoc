@@ -1,0 +1,148 @@
+= Reference
+:mrdocs:
+
+[#app-add]
+== app::add
+
+Add two integers&period;
+
+=== Synopsis
+
+Declared in `&lt;arithmetic&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+add(
+    int a,
+    int b);
+----
+
+=== Description
+
+Returns the arithmetic sum of the two arguments&period; The example lives in this comment and is exported to a file the build compiles, so it never falls out of date&period;
+
+=== Example
+
+[,cpp]
+----
+int s = app::add(2, 3);
+assert(s == 5);
+----
+[#app-is_empty]
+== app::is&lowbar;empty
+
+True when the string has no characters&period;
+
+=== Synopsis
+
+Declared in `&lt;text&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+is&lowbar;empty(char const* s);
+----
+
+=== Description
+
+Only the empty string is blank&semi; any other string, including whitespace, is not&period;
+
+=== Examples
+
+[,cpp]
+----
+assert(app::is_empty(""));
+----
+[,cpp]
+----
+assert(!app::is_empty("abc"));
+----
+[#app-length]
+== app::length
+
+The number of characters before the terminating null&period;
+
+=== Synopsis
+
+Declared in `&lt;text&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+length(char const* s);
+----
+
+=== Description
+
+Counts the bytes up to, but not including, the null terminator&period;
+
+=== Example
+
+[,cpp]
+----
+assert(app::length("abc") == 3);
+----
+[#app-multiply]
+== app::multiply
+
+Multiply two integers&period;
+
+=== Synopsis
+
+Declared in `&lt;arithmetic&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+multiply(
+    int a,
+    int b);
+----
+
+=== Description
+
+Returns the product of the two arguments&period; Its examples are maintained in a separate file&period;
+
+=== Examples
+
+[,cpp]
+----
+int p = app::multiply(4, 5);
+assert(p == 20);
+----
+[,cpp]
+----
+int q = app::multiply(-2, 3);
+assert(q == -6);
+----
+[#app-subtract]
+== app::subtract
+
+Subtract the second integer from the first&period;
+
+=== Synopsis
+
+Declared in `&lt;arithmetic&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+subtract(
+    int a,
+    int b);
+----
+
+=== Description
+
+Returns `a &hyphen; b`&period; Its example is maintained in a separate file&period;
+
+=== Example
+
+[,cpp]
+----
+int d = app::subtract(9, 4);
+assert(d == 5);
+----
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
