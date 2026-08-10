@@ -135,9 +135,57 @@ The base addons still provide every other partial; only `markup/code-block.<form
 include::example$snippets/extensions/override-code-block/override-code-block.adoc[tags=!footer]
 ========
 
-== Built-in helpers
+=== Reordering the Main Template
 
-Mr.Docs registers the default helpers in C++ before any user code runs. They cover:
+Mr.Docs provides a partial template for each symbol page that renders the synopsis, doc comment, and examples in a standard order. A common pattern used by projects is to document the description and examples first and then present the synopsis at the end of each page. Besides customizing the ordering of the sections in this main template, a few placeholders such as xref:commands/reference.adoc#cmd-see-below[`@seebelow`] need to be adapted:
+
+[tabs]
+======
+Config::
++
+.`override-see-below.yml`
+[source,yaml]
+----
+include::example$snippets/extensions/override-see-below/override-see-below.yml[]
+----
+
+Section order::
++
+.`addons/generator/common/partials/symbol.hbs`
+[source,adoc-handlebars]
+----
+include::example$snippets/extensions/override-see-below/addons/generator/common/partials/symbol.hbs[]
+----
+
+Placeholder::
++
+.`addons/generator/common/partials/symbol/signature/see-below.hbs`
+[source,adoc-handlebars]
+----
+include::example$snippets/extensions/override-see-below/addons/generator/common/partials/symbol/signature/see-below.hbs[]
+----
+
+Input::
++
+.`override-see-below.cpp`
+[source,cpp]
+----
+include::example$snippets/extensions/override-see-below/override-see-below.cpp[]
+----
+======
+
+The page then reads discussion-first and the elided synopsis points back up:
+
+[.adoc-preview]
+========
+include::example$snippets/extensions/override-see-below/override-see-below.adoc[tags=!footer]
+========
+
+== Customizing helpers
+
+=== Built-in helpers
+
+Mr.Docs registers the default helpers before any user code runs. They cover:
 
 * String utilities: `lower`, `upper`, `capitalize`, `replace`, `pad_start`, `repeat`, `strip`, and the rest of a Python-style string library.
 * Logical and math helpers: `eq`, `ne`, `and`, `or`, `not`, `add`, `sub`, `mul`, `div`.
@@ -147,7 +195,7 @@ Mr.Docs registers the default helpers in C++ before any user code runs. They cov
 
 The xref:generators/reference.adoc[DOM reference] documents the values that helpers receive (symbol fields, document blocks, type nodes) so a helper knows what shape it is reading.
 
-== Adding a helper
+=== Adding a helper
 
 A user helper is a JavaScript or Lua file that lives under an addons `helpers/` directory and is picked up automatically. The filename without extension becomes the helper name: `slug.js` registers a helper called `slug`, `markdown.lua` registers one called `markdown`, and so on. The file's top-level function (or its `module.exports` in JS) is the helper body.
 

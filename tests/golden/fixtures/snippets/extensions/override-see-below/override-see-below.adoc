@@ -1,0 +1,30 @@
+= Reference
+:mrdocs:
+
+[#net-connection]
+== net::connection
+
+A move&hyphen;only handle to an open TCP connection&period;
+
+=== Description
+
+Obtain one from `connect`&semi; it closes the socket when it goes out of scope&period; Send and receive through the free functions in this namespace&colon;
+
+[,cpp]
+----
+auto c = net::connect("example.org", 80);
+net::write(c, request);
+----
+Its representation is an implementation detail that changes between releases, so the definition is not shown here&semi; use it only through the operations described above&period;
+
+=== Synopsis
+
+Declared in `&lt;override&hyphen;see&hyphen;below&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class connection { &sol;&ast; see above &ast;&sol; };
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
