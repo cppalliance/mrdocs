@@ -1,0 +1,32 @@
+{{!--
+    Project override: render the synopsis last, after the description, so the
+    prose and examples come first on the page. Only the position of
+    `symbol/section/synopsis` changes from the base template.
+--}}
+{{#> markup/section name="symbol"}}
+{{> symbol/section/header}}
+{{> symbol/section/attribute-admonitions ~}}
+{{> symbol/section/function-object-admonition}}
+{{> symbol/section/description}}
+{{> symbol/section/base-classes}}
+{{> symbol/section/protected-base-classes}}
+{{> symbol/section/members}}
+{{> symbol/section/specializations}}
+{{> symbol/section/deduction-guides}}
+{{> symbol/section/friends}}
+{{> symbol/section/using-directives}}
+{{> symbol/section/non-member-functions}}
+{{> symbol/section/derived-classes}}
+{{> symbol/section/introduced-symbols}}
+{{> symbol/section/noexcept-specification}}
+{{> symbol/section/exceptions}}
+{{> symbol/section/return-value}}
+{{> symbol/section/template-parameters}}
+{{> symbol/section/parameters}}
+{{> symbol/section/preconditions}}
+{{> symbol/section/postconditions}}
+{{> symbol/section/see-also}}
+{{> symbol/section/synopsis}}
+{{> symbol/section/recursive-index}}
+{{> symbol/section/footnotes}}
+{{/markup/section}}
