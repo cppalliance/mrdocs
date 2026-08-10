@@ -2,7 +2,7 @@
 
     The program will end immediately.
 
-    @note This function does not return.
+    @note Functions registered with `std::atexit` are not invoked.
 */
 [[noreturn]]
 void
