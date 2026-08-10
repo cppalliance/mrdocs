@@ -123,8 +123,12 @@ function getPostCssPlugins (dest, preview) {
         },
       },
     ]),
-    // Process CSS custom properties
-    postcssVar({ preserve: preview }),
+    // Process CSS custom properties. Keep the original var() references
+    // (preserve: true) rather than flattening them to their :root values —
+    // the light/dark themes override brand tokens at runtime via
+    // [data-theme], which only works if the var() references survive the
+    // build. The plugin still emits static fallbacks for old browsers.
+    postcssVar({ preserve: true }),
     // Calculate CSS values (only in preview mode)
     preview ? postcssCalc : () => {}, // cssnano already applies postcssCalc
     // Add vendor prefixes to CSS rules

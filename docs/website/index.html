@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#11191f">
+    <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="msapplication-TileColor" content="#11191f">
+    <meta name="msapplication-TileColor" content="#0f172a">
     <meta name="application-name" content="Mr.Docs">
     <title>Mr.Docs</title>
     <meta name="description" content="Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs.">
@@ -20,8 +20,28 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="https://www.mrdocs.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="styles.css">
+    <!-- MathJax typesets the \(...\) and \[...\] delimiters that the embedded
+         MrDocs panels emit for stem/latexmath math. -->
+    <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      /* Apply the saved theme before first paint (shared key with the docs
+         site). Falls back to the page's default dark theme when unset. */
+      (function () {
+        try {
+          var t = window.localStorage.getItem('mrdocs-theme')
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t)
+          }
+        } catch (e) { /* ignore */ }
+      })()
+    </script>
 </head>
 
 <body>
@@ -109,6 +129,12 @@
                                 d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
                         </svg>
                     </a>
+                </li>
+            <li class="nav-link">
+                <button type="button" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-13a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zM4 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zm14 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1zM6.34 6.34a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41zm9.19 9.19a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41zM17.66 6.34a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0zM8.46 15.54a1 1 0 0 1 0 1.41l-.71.71a1 1 0 0 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0z"/></svg>
+                </button>
                 </li>
             </ul>
         </div>
@@ -212,14 +238,14 @@
                     </ul>
                     <div class="panel-container">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-comment">/** Exit the program.
+                            <pre><code><span class="hljs-doc-comment">/** Exit the program.
 
     The program will end immediately.
 
-    @note This function does not return.
+    <span class="hljs-doctag">@note</span> Functions registered with <span class="hljs-string">`std::atexit`</span> are not invoked.
 */</span>
-[[noreturn]]
-<span class="hljs-function"><span class="hljs-type">void</span>
+<span class="hljs-meta">[[noreturn]]</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span>
 <span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
                             <div class="snippet-image">
                                 <div class="box3 box-shape3 box270">
@@ -228,35 +254,37 @@
                             </div>
                         </div>
                         <div class="documentation-panel">
-                            <div>
-<div>
-<h2 id="terminate">
-terminate</h2>
-<div>
-<p>Exit the program.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;terminate.cpp&gt;</code></div>
-<pre><code class="source-code cpp">[[noreturn]]
-void
-terminate() noexcept;</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+                            <div class="symbol">
+<div class="header">
+<h2 id="terminate">terminate</h2>
+<div class="brief">
+<p>Exit the program.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;terminate.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-meta">[[noreturn]]</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>The program will end immediately.</p>
 <div class="admonition">
 <h4>NOTE</h4>
 <div>
-<p>This function does not return.</p>
+<p>Functions registered with <code>std::atexit</code> are not invoked.</p>
 </div>
-</div></div>
-
+</div></div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>This function <a href="https://en.cppreference.com/cpp/language/attributes/noreturn" target="_blank" rel="noopener">does not return</a>.</p>
 </div>
+</div></div><!-- /return-value -->
+</div><!-- /symbol -->
 
                         </div>
                     </div>
@@ -267,19 +295,19 @@ Description</h3>
                     </ul>
                     <div class="panel-container">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-comment">/** Return the distance between two points
+                            <pre><code><span class="hljs-doc-comment">/** Return the distance between two points
 
     This function returns the distance between two points
     according to the Euclidean distance formula.
 
-    @param x0 The x-coordinate of the first point
-    @param y0 The y-coordinate of the first point
-    @param x1 The x-coordinate of the second point
-    @param y1 The y-coordinate of the second point
-    @return The distance between the two points
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">x0</span> The x-coordinate of the first point
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">y0</span> The y-coordinate of the first point
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">x1</span> The x-coordinate of the second point
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">y1</span> The y-coordinate of the second point
+    <span class="hljs-doctag">@return</span> The distance between the two points
 */</span>
-<span class="hljs-function"><span class="hljs-type">double</span>
-<span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-type">double</span> x0, <span class="hljs-type">double</span> y0, <span class="hljs-type">double</span> x1, <span class="hljs-type">double</span> y1)</span></span>;</code></pre>
+<span class="hljs-function"><span class="hljs-keyword">double</span>
+<span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x0, <span class="hljs-keyword">double</span> y0, <span class="hljs-keyword">double</span> x1, <span class="hljs-keyword">double</span> y1)</span></span>;</code></pre>
                             <div class="snippet-image">
                                 <div class="box3 box-shape1 box0">
                                     <div class="inner-box shouting"></div>
@@ -287,68 +315,45 @@ Description</h3>
                             </div>
                         </div>
                         <div class="documentation-panel">
-                            <div>
-<div>
-<h2 id="distance">
-distance</h2>
-<div>
-<p>Return the distance between two points</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;distance.cpp&gt;</code></div>
-<pre><code class="source-code cpp">double
-distance(
-    double x0,
-    double y0,
-    double x1,
-    double y1);</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
+                            <div class="symbol">
+<div class="header">
+<h2 id="distance">distance</h2>
+<div class="brief">
+<p>Return the distance between two points</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;distance.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-function"><span class="hljs-keyword">double</span>
+<span class="hljs-title">distance</span><span class="hljs-params">(
+    <span class="hljs-keyword">double</span> x0,
+    <span class="hljs-keyword">double</span> y0,
+    <span class="hljs-keyword">double</span> x1,
+    <span class="hljs-keyword">double</span> y1)</span></span>;</code></pre>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
 <p>This function returns the distance between two points according to the Euclidean distance formula.</p>
-</div>
-
-<div>
-<h3>
-Return Value</h3>
-The distance between the two points
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The distance between the two points</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>x0</strong></td>
-<td>The x-coordinate of the first point</td>
-</tr>
-<tr>
-<td><strong>y0</strong></td>
-<td>The y-coordinate of the first point</td>
-</tr>
-<tr>
-<td><strong>x1</strong></td>
-<td>The x-coordinate of the second point</td>
-</tr>
-<tr>
-<td><strong>y1</strong></td>
-<td>The y-coordinate of the second point</td>
-</tr>
+<tr><td><strong>x0</strong></td><td>The x-coordinate of the first point</td></tr>
+<tr><td><strong>y0</strong></td><td>The y-coordinate of the first point</td></tr>
+<tr><td><strong>x1</strong></td><td>The x-coordinate of the second point</td></tr>
+<tr><td><strong>y1</strong></td><td>The y-coordinate of the second point</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
                         </div>
                     </div>
@@ -359,17 +364,17 @@ Parameters</h3>
                     </ul>
                     <div class="panel-container">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-comment">/** Return true if a number is prime.
+                            <pre><code><span class="hljs-doc-comment">/** Return true if a number is prime.
 
-    @par Complexity
+    <span class="hljs-doctag">@par</span> Complexity
 
     Linear in n.
 
-    @return Whether `n` is prime.
-    @param n The number to test
+    <span class="hljs-doctag">@return</span> Whether <span class="hljs-string">`n`</span> is prime.
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">n</span> The number to test
 */</span>
-<span class="hljs-function"><span class="hljs-type">bool</span>
-<span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+<span class="hljs-function"><span class="hljs-keyword">bool</span>
+<span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
                             <div class="snippet-image">
                                 <div class="box3 box-shape2 box180">
                                     <div class="inner-box glasses"></div>
@@ -377,52 +382,38 @@ Parameters</h3>
                             </div>
                         </div>
                         <div class="documentation-panel">
-                            <div>
-<div>
-<h2 id="is_prime">
-is_prime</h2>
-<div>
-<p>Return true if a number is prime.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;is_prime.cpp&gt;</code></div>
-<pre><code class="source-code cpp">bool
-is_prime(unsigned long long n) noexcept;</code></pre>
-</div>
-<div>
-<h2>
-Complexity</h2>
+                            <div class="symbol">
+<div class="header">
+<h2 id="is_prime">is_prime</h2>
+<div class="brief">
+<p>Return true if a number is prime.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;is_prime.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span>
+<span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Complexity</h3>
 <p>Linear in n.</p>
-</div>
-
-<div>
-<h3>
-Return Value</h3>
-Whether <code>n</code> is prime.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /description -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>Whether <code>n</code> is prime.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>n</strong></td>
-<td>The number to test</td>
-</tr>
+<tr><td><strong>n</strong></td><td>The number to test</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
                         </div>
                     </div>
@@ -433,39 +424,21 @@ Parameters</h3>
                     </ul>
                     <div class="panel-container">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;type_traits&gt;</span></span>
+                            <pre><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
 
-<span class="hljs-comment">/** Computes the square root of an integral value.
+<span class="hljs-doc-comment">/** Computes the integer square root \f$\lfloor\sqrt{value}\rfloor\f$.
 
-    This function calculates the square root of a
-    given integral value using bit manipulation.
+    This function calculates the square root of a given integral value
+    using bit manipulation, in $O(\log value)$ time.
 
-    @throws std::invalid_argument if the input value is negative.
+    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::invalid_argument if the input value is negative.
 
-    @tparam T The type of the input value. Must be an integral type.
-    @param value The integral value to compute the square root of.
-    @return The square root of the input value.
+    <span class="hljs-doctag">@tparam</span> <span class="hljs-name">T</span> The type of the input value. Must be an integral type.
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">value</span> The integral value to compute the square root of.
+    <span class="hljs-doctag">@return</span> The square root of the input value.
  */</span>
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
-std::<span class="hljs-type">enable_if_t</span>&lt;std::is_integral_v&lt;T&gt;, T&gt; <span class="hljs-built_in">sqrt</span>(T value) {
-    <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">0</span>) {
-        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">invalid_argument</span>(
-            <span class="hljs-string">&quot;Cannot compute square root of a negative number&quot;</span>);
-    }
-    T result = <span class="hljs-number">0</span>;
-    <span class="hljs-comment">// The second-to-top bit is set</span>
-    T bit = <span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-built_in">sizeof</span>(T) * <span class="hljs-number">8</span> - <span class="hljs-number">2</span>);
-    <span class="hljs-keyword">while</span> (bit &gt; value) bit &gt;&gt;= <span class="hljs-number">2</span>;
-    <span class="hljs-keyword">while</span> (bit != <span class="hljs-number">0</span>) {
-        <span class="hljs-keyword">if</span> (value &gt;= result + bit) {
-            value -= result + bit;
-            result += bit &lt;&lt; <span class="hljs-number">1</span>;
-        }
-        result &gt;&gt;= <span class="hljs-number">1</span>;
-        bit &gt;&gt;= <span class="hljs-number">2</span>;
-    }
-    <span class="hljs-keyword">return</span> result;
-}
+<span class="hljs-type">std</span>::<span class="hljs-type">enable_if_t</span>&lt;<span class="hljs-type">std</span>::<span class="hljs-type">is_integral_v</span>&lt;T&gt;, T&gt; sqrt(T value);
 </code></pre>
                             <div class="snippet-image">
                                 <div class="box3 box-shape3 box270">
@@ -474,90 +447,62 @@ std::<span class="hljs-type">enable_if_t</span>&lt;std::is_integral_v&lt;T&gt;, 
                             </div>
                         </div>
                         <div class="documentation-panel">
-                            <div>
-<div>
-<h2 id="sqrt">
-sqrt</h2>
-<div>
-<p>Computes the square root of an integral value.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;sqrt.cpp&gt;</code></div>
-<pre><code class="source-code cpp">template&lt;typename T&gt;
+                            <div class="symbol">
+<div class="header">
+<h2 id="sqrt">sqrt</h2>
+<div class="brief">
+<p>Computes the integer square root \(\lfloor\sqrt{value}\rfloor\).</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;sqrt.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 T
-sqrt(T value)
-requires std::is_integral_v&lt;T&gt;;</code></pre>
-</div>
-<div>
-<h3>
-Description</h3>
-<p>This function calculates the square root of a given integral value using bit manipulation.</p>
-</div>
-
-<div>
-<h3>
-Exceptions</h3>
-<table>
+<span class="hljs-title">sqrt</span><span class="hljs-params">(T value)</span>
+<span class="hljs-keyword">requires</span> <span class="hljs-type">std</span>::<span class="hljs-type">is_integral_v</span>&lt;T&gt;</span>;</code></pre>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
+<p>This function calculates the square root of a given integral value using bit manipulation, in \(O(\log value)\) time.</p>
+</div><!-- /description -->
+<div class="exceptions">
+<h3>Exceptions</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Thrown on</th>
-</tr>
+<tr><th>Name</th><th>Thrown on</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><code>std::invalid_argument</code></td>
-<td>if the input value is negative.</td>
-</tr>
+<tr><td><code>std::invalid_argument</code></td><td>if the input value is negative.</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Return Value</h3>
-The square root of the input value.
-</div>
-<div>
-<h3>
-Template Parameters</h3>
-<table>
+</div><!-- /exceptions -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The square root of the input value.</p>
+</div><!-- /return-value -->
+<div class="template-parameters">
+<h3>Template Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>T</strong></td>
-<td>The type of the input value. Must be an integral type.</td>
-</tr>
+<tr><td><strong>T</strong></td><td>The type of the input value. Must be an integral type.</td></tr>
 </tbody>
 </table>
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+</div><!-- /template-parameters -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>value</strong></td>
-<td>The integral value to compute the square root of.</td>
-</tr>
+<tr><td><strong>value</strong></td><td>The integral value to compute the square root of.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
                         </div>
                     </div>
@@ -568,19 +513,19 @@ Parameters</h3>
                     </ul>
                     <div class="panel-container">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">abs_fn</span>
-{
-    <span class="hljs-comment">/** Compute the absolute value.
+                            <pre><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span>
+{</span>
+    <span class="hljs-doc-comment">/** Compute the absolute value.
 
-        @param x The input value.
-        @return The absolute value of x.
+        <span class="hljs-doctag">@param</span> <span class="hljs-name">x</span> The input value.
+        <span class="hljs-doctag">@return</span> The absolute value of x.
     */</span>
-    <span class="hljs-function"><span class="hljs-type">double</span>
-    <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">double</span> x)</span> <span class="hljs-type">const</span> <span class="hljs-keyword">noexcept</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">double</span>
+    <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">noexcept</span></span>;
 };
 
-<span class="hljs-comment">/** Return the absolute value of a number. */</span>
-<span class="hljs-keyword">constexpr</span> abs_fn abs = {};
+<span class="hljs-doc-comment">/** Return the absolute value of a number. */</span>
+<span class="hljs-keyword">constexpr</span> <span class="hljs-type">abs_fn</span> abs = {};
 </code></pre>
                             <div class="snippet-image">
                                 <div class="box3 box-shape1 box0">
@@ -589,52 +534,40 @@ Parameters</h3>
                             </div>
                         </div>
                         <div class="documentation-panel">
-                            <div>
-<div>
-<h2 id="abs">
-abs</h2>
-<div>
-<p>Compute the absolute value.</p>
-</div>
-</div>
-<div>
-<h3>
-Synopsis</h3>
-<div>
-Declared in <code>&lt;function_object.cpp&gt;</code></div>
-<pre><code class="source-code cpp">double
-abs(double x) noexcept;</code></pre>
-</div>
+                            <div class="symbol">
+<div class="header">
+<h2 id="abs">abs</h2>
+<div class="brief">
+<p>Compute the absolute value.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;function_object.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-function"><span class="hljs-keyword">double</span>
+<span class="hljs-title">abs</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+</div><!-- /synopsis -->
 <div class="admonition">
 <h4>NOTE</h4>
 <div>
 <p>This function is defined as an <a href="https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects">Algorithm Function Object (AFO)</a>.</p>
 </div>
 </div>
-<div>
-<h3>
-Return Value</h3>
-The absolute value of x.
-</div>
-<div>
-<h3>
-Parameters</h3>
-<table>
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The absolute value of x.</p>
+</div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
 <thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
+<tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>x</strong></td>
-<td>The input value.</td>
-</tr>
+<tr><td><strong>x</strong></td><td>The input value.</td></tr>
 </tbody>
 </table>
-</div>
-</div>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
 
                         </div>
                     </div>
@@ -702,6 +635,30 @@ Parameters</h3>
                 root.style.setProperty(`--y${i}`, `${cy}%`);
             }
         });
+    </script>
+    <script>
+      /* Light/dark toggle. Initial theme is applied by the head script above;
+         this flips and persists the choice (shared key with the docs site). */
+      (function () {
+        var KEY = 'mrdocs-theme'
+        var root = document.documentElement
+        function effective () {
+          var explicit = root.getAttribute('data-theme')
+          if (explicit === 'light' || explicit === 'dark') return explicit
+          try {
+            var s = window.localStorage.getItem(KEY)
+            if (s === 'light' || s === 'dark') return s
+          } catch (e) {}
+          return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        document.addEventListener('click', function (e) {
+          var btn = e.target.closest && e.target.closest('.theme-toggle-btn')
+          if (!btn) return
+          var next = effective() === 'dark' ? 'light' : 'dark'
+          root.setAttribute('data-theme', next)
+          try { window.localStorage.setItem(KEY, next) } catch (err) {}
+        })
+      })()
     </script>
 </body>
 
