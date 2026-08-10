@@ -1,2 +1,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script>
+      /* Apply the saved (or OS-preferred) theme before first paint to avoid a
+         flash. The toggle button persists the choice under this same key. */
+      (function () {
+        try {
+          var t = window.localStorage.getItem('mrdocs-theme')
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t)
+          }
+        } catch (e) { /* ignore */ }
+      })()
+    </script>

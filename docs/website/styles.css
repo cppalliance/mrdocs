@@ -1,13 +1,51 @@
 @charset "UTF-8";
 
+/* Mr.Docs brand faces: Bangers (display, uppercase) + Special Elite (body). */
+@font-face {
+    font-family: "Bangers";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("assets/fonts/bangers-latin-400-normal.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: "Bangers";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("assets/fonts/bangers-latin-ext-400-normal.woff2") format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: "Special Elite";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("assets/fonts/special-elite-latin-400-normal.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: "Special Elite";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("assets/fonts/special-elite-latin-ext-400-normal.woff2") format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 :root {
-    --font-family: "Roboto", sans-serif;
+    --font-family: "Special Elite", "Roboto", sans-serif;
+    --display-font: "Bangers", "Special Elite", cursive;
     --line-height: 1.5;
     --font-weight: 400;
     --font-weight-bold: 700;
     --font-size: 16px;
     --rem-base: 18;
-    --border-radius: 0.25rem;
+    --border-radius: 0.5rem;
     --border-width: 1px;
     --outline-width: 3px;
     --spacing: 1rem;
@@ -24,11 +62,14 @@
     --nav-link-spacing-horizontal: 0.5rem;
     --form-label-font-weight: var(--font-weight);
     --transition: 0.2s ease-in-out;
-    --function-name-color: rgba(229, 190, 51, 1);
-    --function-name-color-hover: #0091ea;
-    --primary-color:rgba(16, 149, 193, 1);
-    --primary-color-hover:rgba(6, 125, 166, 1);
-    --body-background: #124b83;
+    /* brand yellow accent (function names, hero highlight) */
+    --function-name-color: #facc15;
+    --function-name-color-hover: #3d8bff;
+    /* brand blue accent */
+    --primary-color: #3d8bff;
+    --primary-color-hover: #2563eb;
+    /* Midnight canvas (dark, the default theme) */
+    --body-background: #0f172a;
 }
 
 @media (min-width: 576px) {
@@ -132,7 +173,8 @@ kbd {
 
 :root:not([data-theme=dark]), [data-theme=light] {
     color-scheme: light;
-    --background-color: #fef7e1;
+    --background-color: #fdfaf5;
+    --body-background: #fdfaf5;
     --color: rgba(0, 0, 0, 0.8);
     --h1-color: rgba(0, 0, 0, 0.95);
     --h2-color: rgba(0, 0, 0, 0.9);
@@ -142,9 +184,9 @@ kbd {
     --h6-color: rgba(0, 0, 0, 0.7);
     --muted-color: rgba(0, 0, 0, 0.5);
     --muted-border-color: rgba(0, 0, 0, 0.1);
-    --primary: rgba(16, 149, 193, 1);
-    --primary-hover: rgba(6, 125, 166, 1);
-    --primary-focus: rgba(16, 149, 193, 0.125);
+    --primary: #2563eb;
+    --primary-hover: #3d8bff;
+    --primary-focus: rgba(37, 99, 235, 0.125);
     --primary-inverse: #fff;
     --secondary: rgba(0, 0, 0, 0.4);
     --secondary-hover: rgba(0, 0, 0, 0.6);
@@ -232,6 +274,7 @@ kbd {
 [data-theme=dark] {
     color-scheme: dark;
     --background-color: rgba(0, 0, 0, 0.3);
+    --body-background: #0f172a;
     --color: rgba(255, 255, 255, 0.9);
     --h1-color: rgba(255, 255, 255, 0.98);
     --h2-color: rgba(255, 255, 255, 0.95);
@@ -241,9 +284,9 @@ kbd {
     --h6-color: rgba(255, 255, 255, 0.82);
     --muted-color: rgba(255, 255, 255, 0.6);
     --muted-border-color: rgba(255, 255, 255, 0.1);
-    --primary: rgba(120, 200, 255, 0.9);
-    --primary-hover: rgba(140, 210, 255, 0.95);
-    --primary-focus: rgba(120, 200, 255, 0.2);
+    --primary: #3d8bff;
+    --primary-hover: #93c5fd;
+    --primary-focus: rgba(61, 139, 255, 0.2);
     --primary-inverse: rgba(0, 0, 0, 0.9);
     --secondary: rgba(255, 255, 255, 0.4);
     --secondary-hover: rgba(255, 255, 255, 0.6);
@@ -254,14 +297,14 @@ kbd {
     --contrast-focus: rgba(255, 255, 255, 0.2);
     --contrast-inverse: rgba(0, 0, 0, 0.9);
     --mark-background-color: #d1c284;
-    --mark-color: #11191f;
+    --mark-color: #0f172a;
     --ins-color: #388e3c;
     --del-color: #c62828;
     --blockquote-border-color: var(--muted-border-color);
     --blockquote-footer-color: var(--muted-color);
     --button-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     --button-hover-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-    --form-element-background-color: #11191f;
+    --form-element-background-color: #0f172a;
     --form-element-border-color: #374956;
     --form-element-color: var(--color);
     --form-element-placeholder-color: var(--muted-color);
@@ -1901,22 +1944,39 @@ html {
 
 @media only screen and (prefers-color-scheme: dark) {
     :root:not([data-theme=light]) {
-        --demo-background: linear-gradient(180deg, #11191f 0%,
+        --demo-background: linear-gradient(180deg, #0f172a 0%,
         rgba(10, 53, 67, 0.5) 33%,
         rgba(10, 53, 67, 0.5) 66%,
-        #11191f 100%)
+        #0f172a 100%)
     }
 }
 
 [data-theme=dark] {
-    --demo-background: linear-gradient(180deg, #11191f 0%,
+    --demo-background: linear-gradient(180deg, #0f172a 0%,
     rgba(10, 53, 67, 0.5) 33%,
     rgba(10, 53, 67, 0.5) 66%,
-    #11191f 100%)
+    #0f172a 100%)
 }
 
-header h1, header h2, main h1, main h2 {
-    --font-weight: 800
+header h1, header h2, main h1, main h2,
+.principles-features h4 {
+    --font-weight: 400;
+    font-family: var(--display-font);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    line-height: 1.05
+}
+
+/* The embedded reference-doc panels carry C++ symbol names as headings;
+   keep them in the body face and normal case so they stay readable. */
+.documentation-panel h1, .documentation-panel h2, .documentation-panel h3,
+.documentation-panel h4, .documentation-panel h5, .documentation-panel h6,
+.snippet-documentation-panel h1, .snippet-documentation-panel h2,
+.snippet-documentation-panel h3, .snippet-documentation-panel h4,
+.snippet-documentation-panel h5, .snippet-documentation-panel h6 {
+    font-family: var(--font-family);
+    text-transform: none;
+    letter-spacing: normal
 }
 
 h1 {
@@ -3394,3 +3454,198 @@ footer a {
     transition: transform var(--transition), color var(--transition);
 }
 
+
+/* Mobile groundwork (North #1624 — conference QR-code path). The landing grids
+   are already mobile-first; this keeps the embedded reference-doc panels and
+   their wide code/tables from forcing a horizontal page scroll on phones. */
+@media screen and (max-width: 767px) {
+    body {
+        overflow-x: hidden
+    }
+
+    .documentation-panel,
+    .snippet-documentation-panel {
+        overflow-x: auto
+    }
+
+    .documentation-panel table,
+    .snippet-documentation-panel table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto
+    }
+
+    .banner-snippet pre,
+    .snippet-panel pre,
+    .documentation-panel pre {
+        max-width: 100%;
+        overflow-x: auto
+    }
+}
+
+/* -------------------------------------------------------------------------
+   Theme-consistency fixes. The page ships dark by default; these keep the
+   light toggle readable and keep code/reference surfaces on-brand (Midnight)
+   in BOTH themes, since the embedded MrDocs HTML and the syntax colours are
+   tuned for a dark surface.
+   ------------------------------------------------------------------------- */
+
+/* Reference/snippet panels: solid Midnight cards in both themes. */
+.documentation-panel {
+    background-color: #131c2e;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    color: rgba(237, 242, 249, 0.92);
+    backdrop-filter: none;
+}
+
+.documentation-panel a {
+    color: #93c5fd;
+}
+
+/* The little hero chip under the buttons is a dark pill in both themes. */
+.banner-snippet code {
+    color: #cbd5e1;
+    background-color: #131c2e;
+}
+
+/* Hero secondary ("Get started") outline button: readable on cream. */
+:root:not([data-theme=dark]) a.contrast.outline,
+[data-theme=light] a.contrast.outline {
+    color: #24303f;
+    border-color: #24303f;
+}
+
+/* All highlighted code on the landing sits on Midnight in both themes (the
+   syntax palette, incl. the green doc-comment feature, is tuned for dark). */
+.hljs {
+    background-color: #0f172a;
+    color: #adbac7;
+}
+
+/* Keep the embedded reference-panel section labels legible on the dark card. */
+.documentation-panel h1,
+.documentation-panel h2,
+.documentation-panel h3,
+.documentation-panel h4,
+.documentation-panel h5,
+.documentation-panel h6,
+.documentation-panel small,
+.documentation-panel dt,
+.documentation-panel .paragraph {
+    color: rgba(237, 242, 249, 0.86);
+}
+
+/* Left raw-source snippet panel: a Midnight card that matches the border /
+   radius / padding of the generated-docs card beside it (its <code> carries
+   no .hljs class, only the inner token spans, so target the pre directly). */
+.snippet-panel > pre {
+    background-color: #131c2e;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin: 0;
+    overflow-x: auto;
+}
+
+.snippet-panel > pre,
+.snippet-panel > pre > code {
+    color: #adbac7;
+}
+
+.snippet-panel > pre > code {
+    background-color: transparent;
+}
+
+/* Mobile overflow fixes (North #1624): let the nav and the hero code chip
+   wrap instead of forcing the page wider than the viewport, and cap the
+   mascot art so nothing pushes past a phone screen. */
+@media screen and (max-width: 767px) {
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .nav,
+    .nav ul[role="menubar"],
+    .nav-section {
+        flex-wrap: wrap;
+    }
+
+    .banner-snippet,
+    .banner-snippet small,
+    .banner-snippet code {
+        white-space: normal;
+        word-break: break-word;
+        max-width: 100%;
+    }
+
+    .box3 {
+        width: min(320px, 84vw);
+        height: min(320px, 84vw);
+    }
+
+    .principles-features {
+        gap: 1.5rem;
+    }
+}
+
+/* Landing light/dark toggle button in the nav. */
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: auto;
+    background: transparent;
+    color: var(--contrast);
+    cursor: pointer;
+    line-height: 1;
+    transition: color var(--transition), transform var(--transition);
+}
+
+.theme-toggle-btn:hover {
+    color: var(--primary);
+    transform: translateY(-1px);
+    background: transparent;
+}
+
+.theme-toggle-btn svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: currentColor;
+}
+
+.theme-toggle-btn .icon-sun {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle-btn .icon-sun {
+    display: block;
+}
+
+[data-theme="dark"] .theme-toggle-btn .icon-moon {
+    display: none;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle-btn .icon-sun {
+        display: block;
+    }
+
+    :root:not([data-theme="light"]) .theme-toggle-btn .icon-moon {
+        display: none;
+    }
+}
+
+/* Snippet cards follow the same logic as the documentation: the descriptive
+   body text (descriptions, parameter tables, "declared in") switches to a
+   sans face for legibility. Card titles and section headings keep the
+   typewriter face, and source code / synopsis blocks keep the clean Menlo
+   monospace (set on code/pre elsewhere). */
+.documentation-panel,
+.snippet-documentation-panel {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}

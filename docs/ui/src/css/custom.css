@@ -47,20 +47,30 @@
 }
 
 .doc {
-  color: var(--navbar-font-color);
+  color: var(--doc-font-color);
+  /* Reading body (prose, doc-comment-derived descriptions) in a sans face
+     for legibility. Headings below revert to the brand body face; code keeps
+     the monospace face from base.css. */
+  font-family: var(--doc-body-font);
 }
 
+/* Doc-content headings use the brand heading colour (blue on light, yellow on
+   dark). They deliberately stay in the body face and keep their normal case:
+   in reference pages the headings are C++ symbol names, so uppercasing them or
+   setting the Bangers display face would mangle them. Bangers is reserved for
+   the site/brand title and the landing page. */
 .doc h1,
 .doc h2,
 .doc h3,
 .doc h4,
 .doc h5,
 .doc h6 {
-  color: var(--navbar-font-color);
+  color: var(--heading-font-color);
+  font-family: var(--body-font-family);
 }
 
 .toc.sidebar .toc-menu {
-  color: var(--navbar-font-color);
+  color: var(--toc-font-color);
 }
 
 .breadcrumbs li {
@@ -68,9 +78,101 @@
 }
 
 .toc .toc-menu a.is-active {
-  color: var(--color-white-50);
+  color: var(--link-font-color);
 }
 
 .nav-text {
   color: var(--color-white-50);
+}
+
+/* Brand display face for the site title in the navbar. */
+.navbar-brand .logo-text {
+  font-family: var(--brand-display-font);
+  letter-spacing: 0.6px;
+  font-size: 1.45rem;
+  line-height: 1;
+  color: var(--heading-color);
+}
+
+/* Theme toggle button in the navbar. */
+/* Match the borderless GitHub icon so it sits inline with the other navbar
+   items instead of floating as a boxed control. */
+.navbar-end {
+  align-items: center;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  height: auto;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-white-60);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--navbar_hover-font-color);
+  transform: translateY(-1px);
+}
+
+.theme-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: currentColor;
+}
+
+/* Show the sun in dark mode (click for light), the moon in light mode. */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
+    display: block;
+  }
+
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Mobile groundwork (North #1624 — conference QR-code path).
+   Most attendees hit the site on a phone first, so keep wide reference
+   tables and code from forcing a horizontal page scroll: the table becomes
+   its own horizontal-scroll container (the browser keeps the column grid via
+   an anonymous table box), code already scrolls, and we tighten padding.
+   ------------------------------------------------------------------------- */
+@media screen and (max-width: 768px) {
+  .doc table.tableblock {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .doc pre {
+    max-width: 100%;
+  }
+
+  .doc .dotted,
+  .doc .dotted-right {
+    display: none;
+  }
 }
