@@ -1,0 +1,6 @@
+* xref:geo.html[geo]
+** xref:geo/coord.html[coord]
+*** xref:geo/coord/from_polar.html[from_polar]
+** xref:geo/Point.html[Point]
+** xref:geo/Relation.html[Relation]
+** xref:geo/midpoint.html[midpoint]
