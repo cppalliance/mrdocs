@@ -22,7 +22,7 @@ For instance, consider the `jsonl` generator that ships under {url-data-driven}/
 .`addons/generator/jsonl/mrdocs-generator.yml`
 [source,yaml]
 ----
-include::example$data-driven-generators/jsonl/addons/generator/jsonl/mrdocs-generator.yml[]
+include::example$examples/generators/data-driven/jsonl/addons/generator/jsonl/mrdocs-generator.yml[]
 ----
 
 The `escape:` key holds a sub-mapping from byte-sequence keys to replacement strings.
@@ -32,13 +32,13 @@ We can now define the handlebars templates. The wrapper here is a pass-through, 
 .`addons/generator/jsonl/layouts/wrapper.jsonl.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/jsonl/addons/generator/jsonl/layouts/wrapper.jsonl.hbs[]
+include::example$examples/generators/data-driven/jsonl/addons/generator/jsonl/layouts/wrapper.jsonl.hbs[]
 ----
 
 .`addons/generator/jsonl/layouts/index.jsonl.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/jsonl/addons/generator/jsonl/layouts/index.jsonl.hbs[]
+include::example$examples/generators/data-driven/jsonl/addons/generator/jsonl/layouts/index.jsonl.hbs[]
 ----
 
 The fixture's input:
@@ -46,7 +46,7 @@ The fixture's input:
 .`simple.cpp`
 [source,cpp]
 ----
-include::example$data-driven-generators/jsonl/simple.cpp[]
+include::example$examples/generators/data-driven/jsonl/simple.cpp[]
 ----
 
 Once everything is in place, the format is selectable through the xref:configuration/reference.adoc#generator_option[`generator`] option, just like any built-in format. Mr.Docs writes output files with the `.<name>` extension.
@@ -68,7 +68,7 @@ Rendered output:
 .`simple.jsonl`
 [source,json]
 ----
-include::example$data-driven-generators/jsonl/simple.jsonl[]
+include::example$examples/generators/data-driven/jsonl/simple.jsonl[]
 ----
 
 [[inheriting-from-another-generator]]
@@ -103,7 +103,7 @@ Markdown::
 .`addons/generator/md/mrdocs-generator.yml`
 [source,yaml]
 ----
-include::example$data-driven-generators/md/addons/generator/md/mrdocs-generator.yml[]
+include::example$examples/generators/data-driven/md/addons/generator/md/mrdocs-generator.yml[]
 ----
 
 LaTeX::
@@ -111,7 +111,7 @@ LaTeX::
 .`addons/generator/tex/mrdocs-generator.yml`
 [source,yaml]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/mrdocs-generator.yml[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/mrdocs-generator.yml[]
 ----
 ======
 
@@ -124,13 +124,13 @@ Markdown::
 .`addons/generator/md/layouts/wrapper.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/layouts/wrapper.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/layouts/wrapper.md.hbs[]
 ----
 +
 .`addons/generator/md/layouts/index.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/layouts/index.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/layouts/index.md.hbs[]
 ----
 
 LaTeX::
@@ -138,13 +138,13 @@ LaTeX::
 .`addons/generator/tex/layouts/wrapper.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/layouts/wrapper.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/layouts/wrapper.tex.hbs[]
 ----
 +
 .`addons/generator/tex/layouts/index.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/layouts/index.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/layouts/index.tex.hbs[]
 ----
 ======
 
@@ -157,31 +157,31 @@ Markdown::
 .`addons/generator/md/partials/markup/strong.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/partials/markup/strong.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/partials/markup/strong.md.hbs[]
 ----
 +
 .`addons/generator/md/partials/markup/em.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/partials/markup/em.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/partials/markup/em.md.hbs[]
 ----
 +
 .`addons/generator/md/partials/markup/code.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/partials/markup/code.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/partials/markup/code.md.hbs[]
 ----
 +
 .`addons/generator/md/partials/markup/h.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/partials/markup/h.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/partials/markup/h.md.hbs[]
 ----
 +
 .`addons/generator/md/partials/markup/code-block.md.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/md/addons/generator/md/partials/markup/code-block.md.hbs[]
+include::example$examples/generators/data-driven/md/addons/generator/md/partials/markup/code-block.md.hbs[]
 ----
 
 LaTeX::
@@ -189,31 +189,31 @@ LaTeX::
 .`addons/generator/tex/partials/markup/strong.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/strong.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/partials/markup/strong.tex.hbs[]
 ----
 +
 .`addons/generator/tex/partials/markup/em.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/em.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/partials/markup/em.tex.hbs[]
 ----
 +
 .`addons/generator/tex/partials/markup/code.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/code.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/partials/markup/code.tex.hbs[]
 ----
 +
 .`addons/generator/tex/partials/markup/h.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/h.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/partials/markup/h.tex.hbs[]
 ----
 +
 .`addons/generator/tex/partials/markup/code-block.tex.hbs`
 [source,handlebars]
 ----
-include::example$data-driven-generators/tex/addons/generator/tex/partials/markup/code-block.tex.hbs[]
+include::example$examples/generators/data-driven/tex/addons/generator/tex/partials/markup/code-block.tex.hbs[]
 ----
 ======
 
@@ -222,7 +222,7 @@ The same shape of input as the jsonl section drives both formats:
 .`simple.cpp`
 [source,cpp]
 ----
-include::example$data-driven-generators/md/simple.cpp[]
+include::example$examples/generators/data-driven/md/simple.cpp[]
 ----
 
 Rendered outputs. Both files mix inherited HTML structure (residual `<div>` blocks and tables) with the format-specific markup the overrides supplied. Anything not covered by an override stays HTML, which the surrounding format accepts:
@@ -234,7 +234,7 @@ Markdown::
 .`simple.md`
 [source,markdown]
 ----
-include::example$data-driven-generators/md/simple.md[]
+include::example$examples/generators/data-driven/md/simple.md[]
 ----
 
 LaTeX::
@@ -242,7 +242,7 @@ LaTeX::
 .`simple.tex`
 [source,latex]
 ----
-include::example$data-driven-generators/tex/simple.tex[]
+include::example$examples/generators/data-driven/tex/simple.tex[]
 ----
 ======
 

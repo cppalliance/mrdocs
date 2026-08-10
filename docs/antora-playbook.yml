@@ -60,15 +60,15 @@ antora:
           - mrdocs
     - require: ./extensions/repo-snippets-extension.js
       mounts:
+        # Two roots cover every include. Both carry generated .adoc pages that
+        # need the MrDocs page frame stripped before embedding; strip_page_wrapper
+        # is a no-op on the source and data files they also serve.
         - source: tests/golden/fixtures/snippets
           target: snippets
           strip_page_wrapper: true
-        - source: examples/generators/data-driven
-          target: data-driven-generators
-        - source: examples/generators/script-driven
-          target: script-driven-generators
         - source: examples
           target: examples
+          strip_page_wrapper: true
     - require: ./extensions/commands-registry-extension.js
     - require: ./extensions/adoc-preview-extension.js
 

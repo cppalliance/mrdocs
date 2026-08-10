@@ -227,3 +227,70 @@ The two-pass shape (index, then look up) is the idiom whenever a write needs to 
 Notice in this example that `s.doc.sees` receives a list of polymorphic types that represent a paragraph in `s.doc.sees.children`. These polymorphic objects accept an object with a `kind:` selector that names the concrete derived class to construct.
 ====
 
+[#reading-files]
+== Reading files
+
+After being presented with the xref:design-notes.adoc[arguments for generated reference documentation], a common objection is that the prose should be mostly written by technical writers, not developers. The rationale is not to clutter the headers, and that technical writers can focus on use cases the users are interested in and dedicate themselves to long tutorials.
+
+A transform extension can bridge the two by also reading documentation from external sources. While developers write documentation in code that is verifiably correct and guaranteed never to drift, a writer keeps the extra documentation alongside the project. The ghostwrite transform extension fills in each symbol's description from the corresponding file. A complete, runnable example lives at `examples/extensions/ghostwriter/`.
+
+[tabs]
+======
+Transform::
++
+.`addons/extensions/ghostwriter.lua`
+[source,lua]
+----
+include::example$examples/extensions/ghostwriter/addons/extensions/ghostwriter.lua[]
+----
+
+Input::
++
+.`simple.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/ghostwriter/simple.cpp[]
+----
+
+Vec2 docs::
++
+.`external-docs/app/Vec2.md`
+[source,markdown]
+----
+include::example$examples/extensions/ghostwriter/external-docs/app/Vec2.md[]
+----
+
+Circle docs::
++
+.`external-docs/app/Circle.md`
+[source,markdown]
+----
+include::example$examples/extensions/ghostwriter/external-docs/app/Circle.md[]
+----
+
+distance docs::
++
+.`external-docs/app/distance.md`
+[source,markdown]
+----
+include::example$examples/extensions/ghostwriter/external-docs/app/distance.md[]
+----
+
+Config::
++
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/extensions/ghostwriter/mrdocs.yml[]
+----
+======
+
+The example is a Lua transform that reads the corresponding Markdown files by the technical writer. The code includes a brief for each symbol and its metadata, while the writer provides a longer description. The `mrdocs.yml` configuration file loads the transform and points it at the source directory through  `transform-options.ghostwriter.source`.
+
+The transform reads the file whose path matches each symbol's scope and sets its description from the file's paragraphs. It only touches the description; every other field the developer wrote stays. The `distance` function shows the split: its brief, its `@param` entries, and its `@return` all come from the header, while the writer's file supplies just the longer description. The rendered page carries both sources at once:
+
+[.adoc-preview]
+========
+include::example$examples/extensions/ghostwriter/reference.adoc[]
+========
+

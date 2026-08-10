@@ -23,6 +23,7 @@ endif()
 
 # Each example subdirectory owns the tests that exercise it.
 add_subdirectory(generators)      # data-driven + script-driven generator examples
+add_subdirectory(extensions)      # corpus-transform extension examples
 add_subdirectory(library)         # standalone programs that link mrdocs-core
 add_subdirectory(configuration)   # per-option configuration examples from the docs
 add_subdirectory(getting-started) # starter projects invoked as the docs instruct
