@@ -1,0 +1,17 @@
+addons-supplemental:
+  - addons
+generator:
+  - adoc
+  - snippets
+multipage: false
+show-namespaces: false
+warn-if-undocumented: false
+source-root: include
+input:
+  - include
+transform-options:
+  snippets:
+    source: example-code
+generator-options:
+  snippets:
+    output: exported
