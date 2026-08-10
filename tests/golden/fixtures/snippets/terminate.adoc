@@ -23,7 +23,7 @@ The program will end immediately&period;
 
 [NOTE]
 ====
-This function does not return&period;
+Functions registered with `std&colon;&colon;atexit` are not invoked&period;
 
 ====
 
