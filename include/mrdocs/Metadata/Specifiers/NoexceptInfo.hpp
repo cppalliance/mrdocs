@@ -13,6 +13,7 @@
 #define MRDOCS_API_METADATA_SPECIFIERS_NOEXCEPTINFO_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Specifiers/ConstexprKind.hpp>
 #include <mrdocs/Metadata/Specifiers/ExplicitInfo.hpp>

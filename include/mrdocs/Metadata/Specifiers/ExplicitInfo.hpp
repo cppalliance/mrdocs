@@ -13,6 +13,7 @@
 #define MRDOCS_API_METADATA_SPECIFIERS_EXPLICITINFO_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Specifiers/ExplicitKind.hpp>
 #include <string>
 

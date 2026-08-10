@@ -13,6 +13,7 @@
 #define MRDOCS_API_METADATA_SPECIFIERS_OPERATORKIND_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/String.hpp>
 #include <string>
