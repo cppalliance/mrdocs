@@ -28,7 +28,7 @@ foreach (data_driven IN ITEMS md tex jsonl)
 endforeach ()
 
 # Script-driven generator examples (a shell driver that invokes mrdocs).
-foreach (script_driven IN ITEMS search-index json)
+foreach (script_driven IN ITEMS search-index json toc)
     add_test(
         NAME mrdocs-generator-script-driven-${script_driven}
         COMMAND bash run.sh

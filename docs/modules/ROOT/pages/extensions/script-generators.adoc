@@ -14,7 +14,7 @@ The smallest useful generator hands the corpus straight to `JSON.stringify`. A c
 .`simple.cpp`
 [source,cpp]
 ----
-include::example$script-driven-generators/json/simple.cpp[]
+include::example$examples/generators/script-driven/json/simple.cpp[]
 ----
 
 In very few lines of code, this extension declares a `json` generator that writes every symbol to a single `reference.json`:
@@ -22,7 +22,7 @@ In very few lines of code, this extension declares a `json` generator that write
 .`addons/extensions/json.js`
 [source,js]
 ----
-include::example$script-driven-generators/json/addons/extensions/json.js[]
+include::example$examples/generators/script-driven/json/addons/extensions/json.js[]
 ----
 
 Select it with `--generator=json`. Because `ctx.corpus.symbols` is already plain data, the whole generator is one `JSON.stringify` call, and the shape is yours: `map` or `filter` the array, or read `ctx.params` to add options, before writing it. A script generator takes precedence over a built-in of the same name, so this replaces the built-in xref:generators/json.adoc[JSON generator], which is the same idea implemented in C++.
@@ -32,7 +32,7 @@ The output is an array of every symbol, each a full DOM object as seen by the te
 .`reference.json` (excerpt)
 [source,json]
 ----
-include::example$script-driven-generators/json/reference.json[lines=1..45]
+include::example$examples/generators/script-driven/json/reference.json[lines=1..45]
 ----
 
 == Filtering the corpus
@@ -42,7 +42,7 @@ Consider that you need a JSON file representing a search index for your referenc
 .`simple.cpp`
 [source,cpp]
 ----
-include::example$script-driven-generators/search-index/simple.cpp[]
+include::example$examples/generators/script-driven/search-index/simple.cpp[]
 ----
 
 the extension declares a `search-index` generator that emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
@@ -50,7 +50,7 @@ the extension declares a `search-index` generator that emits a single search-ind
 .`addons/extensions/search_index.lua`
 [source,lua]
 ----
-include::example$script-driven-generators/search-index/addons/extensions/search_index.lua[]
+include::example$examples/generators/script-driven/search-index/addons/extensions/search_index.lua[]
 ----
 
 Select it with `--generator=search-index`; it writes search-index.json into the output directory: one entry per named symbol.
@@ -58,5 +58,67 @@ Select it with `--generator=search-index`; it writes search-index.json into the 
 .`search-index.json`
 [source,json]
 ----
-include::example$script-driven-generators/search-index/search-index.json[]
+include::example$examples/generators/script-driven/search-index/search-index.json[]
 ----
+
+== Navigation lists
+
+A navigation list over the whole API is the same idea as the search index, an artifact aggregated across every symbol, but it emits a nested list instead of JSON objects. Deriving it from the corpus prevents a project from manually maintaining a separate nav partial and re-syncing it whenever the API changes. A complete, runnable example lives at `examples/generators/script-driven/toc/`:
+
+[tabs]
+======
+Generator::
++
+.`addons/extensions/toc.js`
+[source,js]
+----
+include::example$examples/generators/script-driven/toc/addons/extensions/toc.js[]
+----
+
+Input::
++
+.`simple.cpp`
+[source,cpp]
+----
+include::example$examples/generators/script-driven/toc/simple.cpp[]
+----
+
+Config::
++
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/generators/script-driven/toc/mrdocs.yml[]
+----
+======
+
+The generator walks the namespace tree once, then serializes it to three formats from that single walk, so the nav for each output stays in step. The corpus is a tree: the global namespace is the one symbol with no `parent`, and a namespace lists its children in `members`, grouped by category (`namespaces`, `records`, `enums`, `functions`, ...). The walk descends through namespaces and treats every record, enum, and function as a leaf linking to its own page. Select it with `--generator=toc`; it writes one file per format:
+
+[tabs]
+======
+Markdown::
++
+.`toc.md`
+[source,markdown]
+----
+include::example$examples/generators/script-driven/toc/toc.md[]
+----
+
+AsciiDoc::
++
+.`toc.adoc`
+[source,asciidoc]
+----
+include::example$examples/generators/script-driven/toc/toc.adoc[]
+----
+
+HTML::
++
+.`toc.html`
+[source,html]
+----
+include::example$examples/generators/script-driven/toc/toc.html[]
+----
+======
+====
+
