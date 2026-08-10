@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
@@ -97,6 +98,7 @@ struct VariableSymbol final
 
     /** Compare variables by type, flags, and initializer.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(VariableSymbol const& other) const;
 };
