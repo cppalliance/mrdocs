@@ -1,145 +1,224 @@
+/*
+ * Mr.Docs brand theme tokens (light + dark).
+ *
+ * The new brand (Figma "Mr. Docs - External"): a Midnight (#0F172A) dark
+ * theme and a Cream (#FDFAF5) light theme, Bangers display headings,
+ * Special Elite body, blue/yellow/red accents. Code blocks stay Midnight in
+ * both themes to match the brand code panel and keep the doc-comment
+ * highlight colours (highlight.css) valid either way.
+ *
+ * Structure:
+ *   1. Raw brand palette          — theme-independent literals
+ *   2. Semantic brand tokens      — LIGHT defaults on :root, DARK overrides
+ *                                   under prefers-color-scheme + [data-theme]
+ *   3. Antora UI tokens           — mapped ONCE onto the semantic tokens, so
+ *                                   they re-resolve automatically per theme
+ */
+
 :root {
-  /* colors */
-  --color-white: rgba(255, 255, 255, 1);
-  --color-white-50: rgba(255, 255, 255, 0.5);
-  --color-white-60: rgba(255, 255, 255, 0.6);
-  --color-white-75: rgba(255, 255, 255, 0.75);
-  --color-white-80: rgba(255, 255, 255, 0.8);
-  --color-white-15: rgba(255, 255, 255, 0.15);
-  --color-smoke-10: rgba(254, 254, 254, 0.95);
-  --color-smoke-30: rgba(250, 250, 250, 0.9);
-  --color-smoke-50: rgba(245, 245, 245, 0.85);
-  --color-smoke-70: rgba(240, 240, 240, 0.8);
-  --color-smoke-90: rgba(225, 225, 225, 0.75);
-  --color-gray-10: rgba(193, 193, 193, 0.7);
-  --color-gray-30: rgba(156, 156, 156, 0.65);
-  --color-gray-40: rgba(142, 142, 142, 0.6);
-  --color-gray-50: rgba(128, 128, 128, 0.55);
-  --color-gray-70: rgba(93, 93, 93, 0.5);
-  --color-jet-20: rgba(74, 74, 74, 0.45);
-  --color-jet-30: rgba(66, 66, 66, 0.4);
-  --color-jet-50: rgba(51, 51, 51, 0.35);
-  --color-jet-70: rgba(34, 34, 34, 0.3);
-  --color-jet-80: rgba(25, 25, 25, 0.25);
-  --color-black: rgba(0, 0, 0, 0.2);
-  --color-black-75: rgba(0, 0, 0, 0.75);
-  --color-black-15: rgba(0, 0, 0, 0.15);
-  --color-blue-10: rgba(140, 210, 255, 0.95);
-  --color-blue-100: rgb(18, 75, 131);
-  /* fonts */
-  --rem-base: 18; /* used to compute rem value from desired pixel value (e.g., calc(18 / var(--rem-base) * 1rem) = 18px) */
-  --body-font-size: 1.0625em; /* 17px */
-  --body-font-size--desktop: 1.125em; /* 18px */
-  --body-font-size--print: 0.9375em; /* 15px */
-  --body-line-height: 1.15;
-  --body-font-color: var(--color-jet-70);
-  --body-font-family: "Roboto", sans-serif;
-  --body-font-weight-bold: 600;
-  --monospace-font-family: "Roboto Mono", monospace;
+  /* ---- 1. Raw brand palette (theme-independent) ---- */
+  --mr-midnight: #0f172a;
+  --mr-ink: #0b1120;
+  --mr-slate-800: #1e293b;
+  --mr-code-bg: #0f172a;
+  --mr-code-bg-2: #131c2e;
+  --mr-cream: #fdfaf5;
+  --mr-white: #fff;
+  --mr-blue: #3d8bff;
+  --mr-blue-300: #93c5fd;
+  --mr-blue-600: #2563eb;
+  --mr-yellow: #facc15;
+  --mr-yellow-300: #f1d874;
+  --mr-amber-700: #b45309;
+  --mr-red: #ff4c4c;
+  --mr-red-600: #dc2626;
+  --mr-pink: #ec4899;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+
+  /* ---- 2. Semantic brand tokens — LIGHT defaults ---- */
+  --bg: var(--mr-cream);
+  --bg-accent: #f4eee3; /* faintly warmer cream for bands */
+  --surface: var(--mr-white);
+  --surface-2: var(--slate-100);
+  --text: #24303f;
+  --text-strong: #0f172a;
+  --text-muted: #5b6675;
+  --border: #e6e2d8;
+  --border-strong: #cdd5df;
+  --accent: var(--mr-blue-600); /* readable blue on cream */
+  --accent-solid: var(--mr-blue);
+  --accent-warm: var(--mr-amber-700); /* readable "yellow" on light = amber */
+  --accent-warm-solid: var(--mr-yellow);
+  --danger: var(--mr-red-600);
+  --link: var(--mr-blue-600);
+  --link-hover: var(--mr-blue);
+  --heading-color: var(--mr-blue-600);
+  --heading-strong-color: var(--text-strong);
+
+  /* Code surfaces stay Midnight in both themes (brand code panel). */
+  --code-panel-bg: var(--mr-code-bg);
+  --code-panel-fg: #adbac7;
+  --code-panel-border: rgba(148, 163, 184, 0.22);
+  --code-panel-accent: var(--mr-blue);
+
+  /* "text on surface" family — dark in light mode, flips white in dark mode.
+     Component CSS uses these directly for foreground text. */
+  --color-white: var(--text);
+  --color-white-80: rgba(36, 48, 63, 0.86);
+  --color-white-75: rgba(36, 48, 63, 0.8);
+  --color-white-60: rgba(36, 48, 63, 0.64);
+  --color-white-50: rgba(36, 48, 63, 0.52);
+  --color-white-15: rgba(15, 23, 42, 0.08);
+  --color-black-20: rgba(15, 23, 42, 0.06);
+  --color-black-15: rgba(15, 23, 42, 0.06);
+  --color-black-75: rgba(15, 23, 42, 0.72);
+  --color-black: rgba(15, 23, 42, 0.14);
+  --color-blue-10: var(--mr-blue-300);
+  --color-blue-100: var(--mr-blue-600);
+
+  /* ---- fonts ---- */
+  --rem-base: 18;
+  --brand-display-font: "Bangers", "Special Elite", cursive;
+  --body-font-size: 1.0625em;
+  --body-font-size--desktop: 1.125em;
+  --body-font-size--print: 0.9375em;
+  --body-line-height: 1.5;
+  --body-font-color: var(--text);
+  --body-font-family: "Special Elite", "Roboto", ui-monospace, monospace;
+  /* Sans face used ONLY for the documentation reading body (prose / doc
+     comments), where the typewriter face hurts legibility. Titles, navbar,
+     nav tree and TOC stay on the brand body face above. */
+  --doc-body-font:
+    "Roboto",
+    -apple-system,
+    blinkmacsystemfont,
+    "Segoe UI",
+    sans-serif;
+  --body-font-weight-bold: 400;
+  --monospace-font-family: "Menlo", "Roboto Mono", ui-monospace, monospace;
   --monospace-font-weight-bold: 600;
-  /* base */
-  --body-background: var(--color-blue-100);
-  --panel-background: var(--color-black-75);
-  --panel-border-color: var(--color-smoke-90);
-  --scrollbar-track-color: var(--color-smoke-30);
-  --scrollbar-thumb-color: var(--color-gray-10);
-  --scrollbar_hover-thumb-color: var(--color-gray-30);
+
+  /* ---- 3. Antora UI tokens mapped onto the semantic tokens ---- */
+  --body-background: var(--bg);
+  --panel-background: var(--surface);
+  --panel-border-color: var(--border);
+  --scrollbar-track-color: var(--surface-2);
+  --scrollbar-thumb-color: var(--border-strong);
+  --scrollbar_hover-thumb-color: var(--slate-400);
+
   /* navbar */
-  --navbar-background: var(--color-jet-80);
-  --navbar-font-color: var(--color-white);
-  --navbar_hover-background: var(--color-black);
-  --navbar_hover-font-color: var(--color-blue-10);
-  --navbar-button-background: var(--color-white);
-  --navbar-button-border-color: var(--panel-border-color);
-  --navbar-button-font-color: var(--body-font-color);
-  --navbar-menu-border-color: var(--panel-border-color);
-  --navbar-menu-background: var(--color-white);
-  --navbar-menu-font-color: var(--body-font-color);
-  --navbar-menu_hover-background: var(--color-smoke-50);
-  /* nav */
-  --nav-background: var(--panel-background);
-  --nav-border-color: var(--color-gray-10);
+  --navbar-background: var(--surface);
+  --navbar-font-color: var(--text);
+  --navbar_hover-background: var(--surface-2);
+  --navbar_hover-font-color: var(--accent);
+  --navbar-button-background: var(--accent-solid);
+  --navbar-button-border-color: var(--accent);
+  --navbar-button-font-color: var(--mr-white);
+  --navbar-menu-border-color: var(--border);
+  --navbar-menu-background: var(--surface);
+  --navbar-menu-font-color: var(--text);
+  --navbar-menu_hover-background: var(--surface-2);
+
+  /* nav (left tree) */
+  --nav-background: var(--surface);
+  --nav-border-color: var(--border);
   --nav-line-height: 1.35;
-  --nav-heading-font-color: var(--color-jet-30);
-  --nav-muted-color: var(--color-gray-70);
-  --nav-panel-divider-color: var(--color-smoke-90);
-  --nav-secondary-background: var(--color-smoke-70);
+  --nav-heading-font-color: var(--text-muted);
+  --nav-muted-color: var(--text-muted);
+  --nav-panel-divider-color: var(--border);
+  --nav-secondary-background: var(--surface-2);
+
   /* toolbar */
-  --toolbar-background: var(--panel-background);
-  --toolbar-border-color: var(--panel-border-color);
-  --toolbar-font-color: var(--color-gray-70);
-  --toolbar-muted-color: var(--color-gray-40);
-  --page-version-menu-background: var(--color-smoke-70);
-  --page-version-missing-font-color: var(--color-gray-40);
-  /* admonitions */
-  --caution-color: #a0439c;
-  --caution-on-color: var(--color-white);
-  --important-color: #d32f2f;
-  --important-on-color: var(--color-white);
-  --note-color: #217ee7;
-  --note-on-color: var(--color-white);
-  --tip-color: #41af46;
-  --tip-on-color: var(--color-white);
-  --warning-color: #e18114;
-  --warning-on-color: var(--color-white);
+  --toolbar-background: var(--surface);
+  --toolbar-border-color: var(--border);
+  --toolbar-font-color: var(--text-muted);
+  --toolbar-muted-color: var(--text-muted);
+  --page-version-menu-background: var(--surface-2);
+  --page-version-missing-font-color: var(--text-muted);
+
+  /* admonitions (brand accents; readable on both themes) */
+  --caution-color: var(--mr-pink);
+  --caution-on-color: var(--mr-white);
+  --important-color: var(--mr-red-600);
+  --important-on-color: var(--mr-white);
+  --note-color: var(--mr-blue-600);
+  --note-on-color: var(--mr-white);
+  --tip-color: #16a34a;
+  --tip-on-color: var(--mr-white);
+  --warning-color: var(--mr-amber-700);
+  --warning-on-color: var(--mr-white);
+
   /* doc */
-  --doc-font-color: var(--color-white-80);
+  --doc-font-color: var(--text);
   --doc-font-size: inherit;
   --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
-  --doc-line-height: 1.6;
+  --doc-line-height: 1.65;
   --doc-margin: 0 auto;
   --doc-margin--desktop: 0 2rem;
-  --heading-font-color: var(--color-jet-80);
+  --heading-font-color: var(--heading-color);
   --heading-font-weight: normal;
   --alt-heading-font-weight: var(--body-font-weight-bold);
-  --section-divider-color: var(--panel-border-color);
-  --link-font-color: #ffc;
-  --link_hover-font-color: #fff5b3;
+  --section-divider-color: var(--border);
+  --link-font-color: var(--link);
+  --link_hover-font-color: var(--link-hover);
   --link_unresolved-font-color: var(--important-color);
-  --abstract-background: var(--color-smoke-70);
-  --abstract-font-color: var(--color-jet-20);
-  --abstract-border-color: var(--panel-border-color);
-  --admonition-background: var(--color-white-15);
+  --abstract-background: var(--surface-2);
+  --abstract-font-color: var(--text);
+  --abstract-border-color: var(--border);
+  --admonition-background: var(--surface);
   --admonition-label-font-weight: var(--body-font-weight-bold);
-  --caption-font-color: var(--color-white-50);
+  --caption-font-color: var(--text-muted);
   --caption-font-style: italic;
   --caption-font-weight: var(--body-font-weight-bold);
-  --code-background: var(--color-black-15);
-  --code-font-color: var(--color-white);
-  --example-background: var(--color-white);
-  --example-border-color: var(--color-gray-70);
-  --kbd-background: var(--panel-background);
-  --kbd-border-color: var(--color-gray-10);
-  /* GitHub Dark Dimmed canvas — slightly lighter than the standard
-   * Dark theme's near-black `#0d1117`, sits comfortably next to the
-   * page surface rather than fighting it. */
-  --pre-background: #202329;
-  --pre-border-color: var(--panel-border-color);
-  --pre-annotation-font-color: var(--color-gray-50);
-  --quote-background: var(--panel-background);
-  --quote-border-color: var(--color-gray-70);
-  --quote-font-color: var(--color-white-50);
-  --quote-attribution-font-color: var(--color-gray-40);
-  --sidebar-background: var(--color-black-15);
-  --table-border-color: var(--panel-border-color);
-  --table-stripe-background: var(--panel-background);
+
+  /* inline code chip (theme-aware) */
+  --code-background: var(--surface-2);
+  --code-font-color: var(--accent);
+  --example-background: var(--surface);
+  --example-border-color: var(--border);
+  --kbd-background: var(--surface-2);
+  --kbd-border-color: var(--border-strong);
+
+  /* code blocks (Midnight in both themes) */
+  --pre-background: var(--code-panel-bg);
+  --pre-border-color: var(--code-panel-border);
+  --pre-annotation-font-color: var(--slate-500);
+  --quote-background: var(--surface-2);
+  --quote-border-color: var(--accent-warm-solid);
+  --quote-font-color: var(--text-muted);
+  --quote-attribution-font-color: var(--text-muted);
+  --sidebar-background: var(--surface-2);
+  --table-border-color: var(--border);
+  --table-stripe-background: var(--surface-2);
   --table-footer-background:
     linear-gradient(
       to bottom,
-      var(--color-black-15) 0%,
-      var(--color-black-15) 100%
+      var(--surface-2) 0%,
+      var(--surface-2) 100%
     );
+
   /* toc */
-  --toc-font-color: var(--nav-muted-color);
-  --toc-heading-font-color: var(--color-white);
-  --toc-border-color: var(--panel-border-color);
+  --toc-font-color: var(--text-muted);
+  --toc-heading-font-color: var(--text-strong);
+  --toc-border-color: var(--border);
   --toc-line-height: 1.2;
+
   /* footer */
   --footer-line-height: var(--doc-line-height);
-  --footer-background: var(--color-smoke-90);
-  --footer-font-color: var(--color-gray-70);
-  --footer-link-font-color: var(--color-jet-80);
-  /* dimensions and positioning */
+  --footer-background: var(--surface-2);
+  --footer-font-color: var(--text-muted);
+  --footer-link-font-color: var(--accent);
+
+  /* dimensions and positioning (unchanged) */
   --navbar-height: calc(63 / var(--rem-base) * 1rem);
   --toolbar-height: calc(45 / var(--rem-base) * 1rem);
   --drawer-height: var(--toolbar-height);
@@ -156,17 +235,87 @@
   --toc-width--widescreen: calc(216 / var(--rem-base) * 1rem);
   --doc-max-width: calc(720 / var(--rem-base) * 1rem);
   --doc-max-width--desktop: calc(828 / var(--rem-base) * 1rem);
+
   /* stacking */
   --z-index-nav: 1;
   --z-index-toolbar: 2;
   --z-index-page-version-menu: 3;
   --z-index-navbar: 4;
 
-  /* Background gradient position variables */
+  /* background gradient position variables */
   --x1: 20%;
   --y1: 20%;
   --x2: 75%;
   --y2: 25%;
   --x3: 50%;
   --y3: 50%;
+}
+
+/* ---- DARK theme overrides (only the semantic brand tokens change) ---- */
+:root[data-theme="dark"] {
+  --bg: var(--mr-midnight);
+  --bg-accent: #0b1424;
+  --surface: var(--mr-slate-800);
+  --surface-2: #172234;
+  --text: rgba(237, 242, 249, 0.92);
+  --text-strong: #fff;
+  --text-muted: var(--slate-400);
+  --border: rgba(148, 163, 184, 0.18);
+  --border-strong: rgba(148, 163, 184, 0.32);
+  --accent: var(--mr-blue);
+  --accent-solid: var(--mr-blue);
+  --accent-warm: var(--mr-yellow);
+  --accent-warm-solid: var(--mr-yellow);
+  --danger: var(--mr-red);
+  --link: var(--mr-blue);
+  --link-hover: var(--mr-blue-300);
+  --heading-color: var(--mr-yellow);
+  --heading-strong-color: #fff;
+  --color-white: rgba(237, 242, 249, 0.95);
+  --color-white-80: rgba(237, 242, 249, 0.82);
+  --color-white-75: rgba(237, 242, 249, 0.76);
+  --color-white-60: rgba(237, 242, 249, 0.62);
+  --color-white-50: rgba(237, 242, 249, 0.5);
+  --color-white-15: rgba(255, 255, 255, 0.12);
+  --color-black-20: rgba(0, 0, 0, 0.28);
+  --color-black-15: rgba(0, 0, 0, 0.22);
+  --color-black-75: rgba(0, 0, 0, 0.75);
+  --color-black: rgba(0, 0, 0, 0.32);
+  --color-blue-10: var(--mr-blue-300);
+  --color-blue-100: var(--mr-blue);
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--mr-midnight);
+    --bg-accent: #0b1424;
+    --surface: var(--mr-slate-800);
+    --surface-2: #172234;
+    --text: rgba(237, 242, 249, 0.92);
+    --text-strong: #fff;
+    --text-muted: var(--slate-400);
+    --border: rgba(148, 163, 184, 0.18);
+    --border-strong: rgba(148, 163, 184, 0.32);
+    --accent: var(--mr-blue);
+    --accent-solid: var(--mr-blue);
+    --accent-warm: var(--mr-yellow);
+    --accent-warm-solid: var(--mr-yellow);
+    --danger: var(--mr-red);
+    --link: var(--mr-blue);
+    --link-hover: var(--mr-blue-300);
+    --heading-color: var(--mr-yellow);
+    --heading-strong-color: #fff;
+    --color-white: rgba(237, 242, 249, 0.95);
+    --color-white-80: rgba(237, 242, 249, 0.82);
+    --color-white-75: rgba(237, 242, 249, 0.76);
+    --color-white-60: rgba(237, 242, 249, 0.62);
+    --color-white-50: rgba(237, 242, 249, 0.5);
+    --color-white-15: rgba(255, 255, 255, 0.12);
+    --color-black-20: rgba(0, 0, 0, 0.28);
+    --color-black-15: rgba(0, 0, 0, 0.22);
+    --color-black-75: rgba(0, 0, 0, 0.75);
+    --color-black: rgba(0, 0, 0, 0.32);
+    --color-blue-10: var(--mr-blue-300);
+    --color-blue-100: var(--mr-blue);
+  }
 }

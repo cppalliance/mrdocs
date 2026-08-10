@@ -18,6 +18,8 @@
     "@asciidoctor/tabs": "^1.0.0-beta.6",
     "@fontsource/roboto": "~4.5",
     "@fontsource/roboto-mono": "~4.5",
+    "@fontsource/bangers": "~5.2",
+    "@fontsource/special-elite": "~5.2",
     "@vscode/gulp-vinyl-zip": "~2.5",
     "autoprefixer": "~9.7",
     "browser-pack-flat": "~3.4",
