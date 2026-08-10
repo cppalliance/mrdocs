@@ -18,12 +18,17 @@ Generating the reference from the headers fixes the drift, but only if the gener
 
 | Reader-friendly output | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
 | Stays in sync with source | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| IDE friendly | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| AI friendly | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
 | No source-code workarounds | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
 | Low author overhead | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16]
 | Single source of truth | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
 |===
 
 In other words, Mr.Docs gives users a presentable reference section without extra work for developers. It aims to address the reasons developers had to resort to workarounds in their code, so the documented {cpp} code remains the compiled {cpp} code.
+
+[#ide-and-ai]
+Keeping the docs in the header also pays off before any site is generated. Editors show the same `/** ... */` comment on hover and in signature help, and AI coding assistants read it as context while editing the same file, so one comment written next to the declaration serves the reader of the reference, the developer at the call site, and the assistant working alongside them.
 
 == Customization
 

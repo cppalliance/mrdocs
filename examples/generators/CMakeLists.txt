@@ -39,3 +39,7 @@ foreach (script_driven IN ITEMS search-index json toc describe snippets)
     set_property(TEST mrdocs-generator-script-driven-${script_driven} PROPERTY
         ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
 endforeach ()
+
+# No-op generator examples (the documentation check and the AI repair loop).
+# Each owns its own CMakeLists, so add the directory rather than a test here.
+add_subdirectory(noop)

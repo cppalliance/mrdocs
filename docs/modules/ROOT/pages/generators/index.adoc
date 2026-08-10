@@ -2,10 +2,10 @@
 :page-aliases: generators.adoc
 :url-data-driven: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/generators/data-driven
 
-A *generator* turns the extracted symbol corpus into rendered documentation. Mr.Docs ships four built-in formats:
+A *generator* turns the extracted symbol corpus into output. Mr.Docs ships five built-in generators:
 
 |===
-|Format |When to pick it
+|Generator |When to pick it
 
 |xref:generators/html.adoc[HTML]
 |The default. Self-contained pages with a bundled stylesheet, ready to serve from any static host. Pick this for a documentation site without an outer build pipeline.
@@ -18,6 +18,9 @@ A *generator* turns the extracted symbol corpus into rendered documentation. Mr.
 
 |xref:generators/xml.adoc[XML]
 |Structured intermediate format. Pick this when a downstream tool wants every symbol field, when you want to diff the corpus across releases, or when you're testing the corpus shape directly.
+
+|xref:generators/noop.adoc[No-op]
+|Writes nothing at all. Pick this to run extraction on its own, for example to surface warnings about the documentation or to check that a codebase extracts cleanly, without producing any files.
 |===
 
 Defining a new output format via xref:extensions/data-driven-generators.adoc[Data-Driven Generators] is also very cheap. The repository includes a few ready-to-use starting points:
