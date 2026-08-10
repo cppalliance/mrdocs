@@ -9,52 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Specifiers.hpp>
-#include <mrdocs/Support/Container/Algorithm.hpp>
-#include <format>
-
+#include <mrdocs/Metadata/Specifiers/OperatorKind.hpp>
 
 namespace mrdocs {
-
-std::string
-toString(
-    NoexceptInfo const& info,
-    bool resolved,
-    bool implicit)
-{
-    if(! implicit && info.Implicit)
-        return "";
-    if(info.Kind == NoexceptKind::Dependent &&
-        info.Operand.empty())
-        return "";
-    if(info.Kind == NoexceptKind::False &&
-        (resolved || info.Operand.empty()))
-        return "";
-    if(info.Kind == NoexceptKind::True &&
-        (resolved || info.Operand.empty()))
-        return "noexcept";
-    return std::format("noexcept({})", info.Operand);
-}
-
-std::string
-toString(
-    ExplicitInfo const& info,
-    bool resolved,
-    bool implicit)
-{
-    if(! implicit && info.Implicit)
-        return "";
-    if(info.Kind == ExplicitKind::Dependent &&
-        info.Operand.empty())
-        return "";
-    if(info.Kind == ExplicitKind::False &&
-        (resolved || info.Operand.empty()))
-        return "";
-    if(info.Kind == ExplicitKind::True &&
-        (resolved || info.Operand.empty()))
-        return "explicit";
-    return std::format("explicit({})", info.Operand);
-}
 
 bool
 isUnaryOperator(OperatorKind kind) noexcept
@@ -125,7 +82,5 @@ isBinaryOperator(OperatorKind kind) noexcept
         return false;
     }
 }
-
-
 
 } // mrdocs
