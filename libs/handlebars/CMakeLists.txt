@@ -29,7 +29,10 @@ target_link_libraries(mrdocs-handlebars PUBLIC mrdocs::dom mrdocs::polyfill)
 # handlebars owns its export macro (mrdocs/Engines/Handlebars/Platform.hpp ->
 # MRDOCS_HANDLEBARS_DECL); it just needs the link mode so that macro expands the
 # same way (static vs shared) as mrdocs-core, which links this library.
+# `MRDOCS_HANDLEBARS_BUILDING`, set on this target alone, marks its API for
+# export.
 target_compile_definitions(mrdocs-handlebars PUBLIC ${MRDOCS_LINK_MODE_DEFINITION})
+target_compile_definitions(mrdocs-handlebars PRIVATE MRDOCS_HANDLEBARS_BUILDING)
 
 # mrdocs-core links this PUBLIC, so it must be part of the same export set.
 if (MRDOCS_INSTALL)

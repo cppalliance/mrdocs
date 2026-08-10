@@ -12,6 +12,7 @@
 #ifndef MRDOCS_API_SUPPORT_ERROR_ASSERT_HPP
 #define MRDOCS_API_SUPPORT_ERROR_ASSERT_HPP
 
+#include <mrdocs/Support/Export.hpp>
 #include <cstdint>
 
 /** Core MrDocs support utilities.
@@ -21,6 +22,23 @@
     platform specifics into the rest of the codebase.
 */
 namespace mrdocs {
+
+/** Handler invoked when `MRDOCS_ASSERT` fails.
+
+    It is declared, and exported, in every build mode: a plugin built
+    without `NDEBUG` calls it from the inline code of the public
+    headers, whatever mode MrDocs itself was built in.
+
+    @param msg Expression string that failed.
+    @param file Source file where the assertion triggered.
+    @param line Line within the source file.
+*/
+MRDOCS_DECL
+void
+assert_failed(
+    char const* msg,
+    char const* file,
+    std::uint_least32_t line);
 
 #ifdef NDEBUG
     #ifdef __GNUC__
@@ -35,18 +53,6 @@ namespace mrdocs {
     #elif defined(_MSC_VER)
         #define MRDOCS_DETAIL_UNREACHABLE() static_cast<void>(__debugbreak(), __assume(false))
     #endif
-
-    /** Handler invoked when `MRDOCS_ASSERT` fails.
-
-        @param msg Expression string that failed.
-        @param file Source file where the assertion triggered.
-        @param line Line within the source file.
-    */
-    void
-    assert_failed(
-        char const* msg,
-        char const* file,
-        std::uint_least32_t line);
 
     #define MRDOCS_DETAIL_ASSERT(x) static_cast<void>(!! (x) || \
         (assert_failed(#x, __builtin_FILE(), __builtin_LINE()), \
