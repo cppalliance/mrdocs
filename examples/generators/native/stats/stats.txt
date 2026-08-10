@@ -1,0 +1,7 @@
+enum 1
+enum-constant 2
+function 2
+namespace 2
+record 1
+typedef 1
+variable 1

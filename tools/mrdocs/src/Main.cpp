@@ -16,6 +16,7 @@
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Plugin.hpp>
 #include <mrdocs/Support/Chrono.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
@@ -221,6 +222,16 @@ DoGenerateAction(
     // --------------------------------------------------------------
     Config config;
     MRDOCS_TRY(Config::load_file(config, configPath, dirs, argv));
+
+    // --------------------------------------------------------------
+    //
+    // Load plugins
+    //
+    // --------------------------------------------------------------
+    // Plugins come first: one that cannot install what it provides
+    // fails the run, while an addon generator directory whose id is
+    // already taken is skipped.
+    MRDOCS_TRY(loadPlugins(config));
 
     // --------------------------------------------------------------
     //
