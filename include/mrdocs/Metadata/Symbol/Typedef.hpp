@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
@@ -62,6 +63,7 @@ struct TypedefSymbol final
 
     /** Compare typedef symbols, including alias target and template.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(TypedefSymbol const& other) const;
 

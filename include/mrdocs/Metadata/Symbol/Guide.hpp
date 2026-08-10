@@ -58,6 +58,7 @@ struct GuideSymbol final
 
     /** Compare guides by params/deduced/template/explicit.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(GuideSymbol const& other) const;
 };

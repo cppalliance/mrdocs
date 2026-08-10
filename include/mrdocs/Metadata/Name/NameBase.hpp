@@ -73,6 +73,7 @@ struct Name
 
     /** Order names by kind, identifier, id, and prefix.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(Name const& other) const;
 

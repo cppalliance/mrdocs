@@ -123,6 +123,7 @@ struct RecordSymbol final
 
     /** Compare records including bases, members, and flags.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(RecordSymbol const& other) const;
 };

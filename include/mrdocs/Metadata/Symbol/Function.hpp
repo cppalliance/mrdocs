@@ -169,6 +169,7 @@ struct FunctionSymbol final
 
     /** Compare functions by signature, qualifiers, and metadata.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(FunctionSymbol const& other) const;
 };

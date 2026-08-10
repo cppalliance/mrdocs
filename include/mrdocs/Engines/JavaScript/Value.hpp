@@ -74,7 +74,7 @@ public:
         Releases the underlying engine handle; lifetime is tied to the shared
         @ref Context::Impl, not to a stack frame.
     */
-    MRDOCS_DECL ~Value();
+    ~Value();
 
     /** Constructor
 
@@ -84,35 +84,35 @@ public:
         The value is undefined.
 
     */
-    MRDOCS_DECL Value() noexcept;
+    Value() noexcept;
 
     /** Constructor
 
         Duplicates the underlying engine handle held by `value` and shares the
         same runtime state.
     */
-    MRDOCS_DECL Value(Value const&);
+    Value(Value const&);
 
     /** Constructor
 
         The function associates the
         existing value with this object.
     */
-    MRDOCS_DECL Value(Value&&) noexcept;
+    Value(Value&&) noexcept;
 
     /** Copy assignment.
 
         @copydetails Value(Value const&)
 
     */
-    MRDOCS_DECL Value& operator=(Value const&);
+    Value& operator=(Value const&);
 
     /** Move assignment.
 
         @copydetails Value(Value&&)
 
     */
-    MRDOCS_DECL Value& operator=(Value&&) noexcept;
+    Value& operator=(Value&&) noexcept;
 
     /** Return the type of the value.
 
@@ -135,7 +135,7 @@ public:
         internal ECMAScript class `Function`.
 
     */
-    MRDOCS_DECL Type type() const noexcept;
+    Type type() const noexcept;
 
     /** Check if the value is undefined.
 
@@ -389,7 +389,6 @@ public:
         @param key The key to set.
         @param value The value to set.
     */
-    MRDOCS_DECL
     void
     set(
         std::string_view key,
@@ -400,7 +399,6 @@ public:
         @param key The key to set.
         @param value The value to set.
     */
-    MRDOCS_DECL
     void
     set(
         std::string_view key,

@@ -92,11 +92,13 @@ public:
 
     /** Return the begin iterator for the index of all symbols.
     */
+    MRDOCS_DECL
     iterator
     begin() const noexcept;
 
     /** Return the end iterator for the index.
     */
+    MRDOCS_DECL
     iterator
     end() const noexcept;
 
@@ -109,6 +111,7 @@ public:
 
         @return true if the corpus is empty, otherwise false.
     */
+    MRDOCS_DECL
     bool
     empty() const noexcept;
 
@@ -132,11 +135,13 @@ public:
         @return The matching Symbol, or an error if not found. If multiple
             symbols match, one is returned arbitrarily.
     */
+    MRDOCS_DECL
     Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name) const;
 
     /** Return the Symbol with the matching ID, or nullptr.
     */
+    MRDOCS_DECL
     Symbol const*
     find(SymbolID const& id) const noexcept;
 
@@ -172,6 +177,7 @@ public:
 
     /** Return the metadata for the global namespace.
     */
+    MRDOCS_DECL
     NamespaceSymbol const&
     globalNamespace() const noexcept;
 
@@ -336,6 +342,7 @@ public:
         @param I The Symbol to get the qualified name for.
         @param temp The string to store the result in.
     */
+    MRDOCS_DECL
     void
     qualifiedName(
         Symbol const& I,
@@ -356,6 +363,7 @@ public:
         @param context The context used to qualify the name.
         @param result Output string receiving the name.
     */
+    MRDOCS_DECL
     void
     qualifiedName(
         Symbol const& I,
@@ -374,6 +382,7 @@ public:
 
     /** Finalize the corpus.
     */
+    MRDOCS_DECL
     void
     finalize(Config const& config);
 
@@ -402,6 +411,7 @@ public:
 
     /** Return the Symbol with the specified symbol ID, or nullptr.
     */
+    MRDOCS_DECL
     Symbol*
     find(SymbolID const& id) noexcept;
 
@@ -461,6 +471,7 @@ public:
 
     /// @copydoc lookup(SymbolID const&, std::string_view) const
 
+    MRDOCS_DECL
     Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name);
 
