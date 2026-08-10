@@ -17,6 +17,10 @@ set(MRDOCS_BUILT_BUNDLED "@MRDOCS_DO_BUNDLE_DEPENDENCIES@")
 set(MRDOCS_BUILT_REEXPORT_DEPENDENCIES "@MRDOCS_DO_REEXPORT_DEPENDENCIES@")
 set(MRDOCS_BUILT_CXX_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@")
 set(MRDOCS_BUILT_CXX_COMPILER_VERSION "@CMAKE_CXX_COMPILER_VERSION@")
+# Whether this MrDocs can build and load plugins: the value of the
+# `MRDOCS_BUILD_PLUGIN_MODULES` option it was built with, which is off by
+# default for a statically linked or shared build.
+set(MRDOCS_BUILT_PLUGIN_MODULES "@MRDOCS_BUILD_PLUGIN_MODULES@")
 
 # Calendar release this installation was built from (YYYY.M.D), decomposed
 # like mrdocs_VERSION_MAJOR/MINOR/PATCH. Empty/0 when git was unavailable.

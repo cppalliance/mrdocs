@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
@@ -123,4 +124,26 @@ function(mrdocs_collect_static_libs out_var out_system_var)
     endif()
     set(${out_var} "${_static_libs}" PARENT_SCOPE)
     set(${out_system_var} "${_system_libs}" PARENT_SCOPE)
+endfunction()
+
+# mrdocs_add_plugin_module(<target> <source>... [ADDONS <addon-root>])
+#
+# Add a module library built the way a plugin is: linked against the `mrdocs`
+# tool, which passes on what the public headers need, and with hidden
+# visibility, which the Plugins page recommends and which keeps the plugin's
+# own symbols to itself. With ADDONS the library is written to the plugins
+# subdirectory of <addon-root>, where MrDocs looks for it; the generator
+# expression keeps CMake from appending a per-configuration subdirectory,
+# which would put the library somewhere a test cannot name.
+function(mrdocs_add_plugin_module target)
+    cmake_parse_arguments(PARSE_ARGV 1 arg "" "ADDONS" "")
+    add_library(${target} MODULE ${arg_UNPARSED_ARGUMENTS})
+    target_link_libraries(${target} PRIVATE mrdocs)
+    set_target_properties(${target} PROPERTIES
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN ON)
+    if (arg_ADDONS)
+        set_target_properties(${target} PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY "$<1:${arg_ADDONS}/plugins>")
+    endif ()
 endfunction()

@@ -63,6 +63,21 @@ set_ternary(MRDOCS_DO_BUNDLE_DEPENDENCIES "MRDOCS_BUNDLE_DEPENDENCIES AND NOT MR
 set_ternary(MRDOCS_DO_REEXPORT_DEPENDENCIES "NOT MRDOCS_DO_BUNDLE_DEPENDENCIES AND NOT MRDOCS_BUILD_SHARED" ON OFF)
 set_ternary(MRDOCS_GCC   "CMAKE_CXX_COMPILER_ID STREQUAL \"GNU\"" ON OFF)
 set_ternary(MRDOCS_CLANG "CMAKE_CXX_COMPILER_ID MATCHES \"Clang$\"" ON OFF)
+
+# Plugins need a MrDocs that can load a shared library and that a plugin can
+# link against. A statically linked one can do neither: a module library
+# cannot even be linked with the startup files a static link brings in. Nor
+# can a shared build, where the API a plugin calls lives in mrdocs-core
+# rather than in the tool it links. The check only sees -static in the two
+# flag variables below; set the option by hand when the flag comes from
+# somewhere else, such as a toolchain file or LDFLAGS.
+set_ternary(MRDOCS_PLUGIN_MODULES_DEFAULT
+    "MRDOCS_BUILD_SHARED OR CMAKE_CXX_FLAGS MATCHES \"(^| )-static($| )\" OR CMAKE_EXE_LINKER_FLAGS MATCHES \"(^| )-static($| )\""
+    OFF ON)
+option(MRDOCS_BUILD_PLUGIN_MODULES
+    "This MrDocs can build and load plugins; also builds the plugin example and tests"
+    ${MRDOCS_PLUGIN_MODULES_DEFAULT})
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # MSVC flags shared by every mrdocs target below (not installed consumers):
