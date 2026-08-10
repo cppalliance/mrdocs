@@ -1,0 +1,214 @@
+= Reference
+:mrdocs:
+
+[#app-Circle]
+== app::Circle
+
+A circle in the plane&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Circle;
+----
+
+=== Description
+
+A `Circle` is defined entirely by its radius&semi; its center is supplied by the surrounding coordinate system rather than stored here&period; This keeps the type small enough to pass by value&period;
+
+The radius is assumed non&hyphen;negative&period; Passing a negative radius is a precondition violation, not a runtime error, so the geometry helpers do not check for it&period;
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-Circle-area[`area`] 
+| The enclosed area&period;
+|===
+
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-Circle-radius[`radius`] 
+| The radius&period;
+|===
+
+
+[#app-Circle-area]
+== app::link:#app-Circle[Circle]::area
+
+The enclosed area&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+area() const;
+----
+
+=== Return Value
+
+The area enclosed by the circle&period;
+
+[#app-Circle-radius]
+== app::link:#app-Circle[Circle]::radius
+
+The radius&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double radius;
+----
+
+[#app-Vec2]
+== app::Vec2
+
+A point or displacement in the plane&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Vec2;
+----
+
+=== Description
+
+A `Vec2` stores a pair of Cartesian coordinates and doubles as both a point and a displacement&period; Arithmetic on it follows the usual rules for a 2&hyphen;D vector space, so adding two vectors adds their components and scaling multiplies them&period;
+
+Prefer `Vec2` over a bare `std&colon;&colon;pair&lt;double, double&gt;` when the values are geometric&colon; the named `x` and `y` members and the geometry helpers make intent obvious at the call site, and keep unrelated pairs from being mixed in by mistake&period;
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-Vec2-length[`length`] 
+| The Euclidean length&period;
+|===
+
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-Vec2-x[`x`] 
+| The x component&period;
+| link:#app-Vec2-y[`y`] 
+| The y component&period;
+|===
+
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-distance[`distance`]
+| The distance between two points&period;
+|===
+
+[#app-Vec2-length]
+== app::link:#app-Vec2[Vec2]::length
+
+The Euclidean length&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+length() const;
+----
+
+=== Return Value
+
+The straight&hyphen;line length of the vector&period;
+
+[#app-Vec2-x]
+== app::link:#app-Vec2[Vec2]::x
+
+The x component&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double x;
+----
+
+[#app-Vec2-y]
+== app::link:#app-Vec2[Vec2]::y
+
+The y component&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double y;
+----
+
+[#app-distance]
+== app::distance
+
+The distance between two points&period;
+
+=== Synopsis
+
+Declared in `&lt;simple&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+distance(
+    link:#app-Vec2[Vec2] const& a,
+    link:#app-Vec2[Vec2] const& b);
+----
+
+=== Description
+
+`distance` returns the Euclidean distance between two points&colon; the length of the straight segment joining them, or equivalently the square root of the summed squared differences of their `x` and `y` components&period;
+
+The value is symmetric in its arguments and is zero exactly when the two points coincide, so it works well as the basis for an equality&hyphen;with&hyphen;tolerance check&period;
+
+=== Return Value
+
+The straight&hyphen;line distance between `a` and `b`&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| The first point&period;
+| *b*
+| The second point&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
