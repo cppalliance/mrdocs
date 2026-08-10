@@ -144,10 +144,11 @@ xref:configuration/reference.adoc#embedded_option[`embedded`] drops the page wra
 [#addons]
 == Addons
 
-While stylesheets change how the output looks, *addons* change what MrDocs produces. The addon directory is the tree MrDocs reads to shape the output beyond its built-in defaults. Under an addon root, three kinds of behavior can be customized:
+While stylesheets change how the output looks, *addons* change what MrDocs produces. The addon directory is the tree MrDocs reads to shape the output beyond its built-in defaults. Under an addon root, four kinds of behavior can be customized:
 
 * xref:extensions/handlebars-extensions.adoc[Handlebars templates and helpers] in `generator/<format>/`. They define how handlebars-based generators present the information. This is the markup-level counterpart to the stylesheet options above.
 * xref:extensions/data-driven-generators.adoc[Data-driven Generators] in  `generator/<name>/`. A manifest file can be used to declare a new output format (Markdown, RST, anything) described entirely by Handlebars templates.
 * xref:extensions/corpus-transforms.adoc[Corpus transforms] and xref:extensions/script-generators.adoc[Script generators] in `extensions/`. These are `.js` and `.lua` scripts that can extend MrDocs to rewrite metadata before rendering and take over and define new generators.
+* xref:extensions/plugins.adoc[Plugins] in `plugins/`. These are shared libraries written in {cpp} that Mr.Docs loads as it starts up, extending it with compiled code.
 
-The xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] can be used to define extra directories and files on top of the base addons directory provided by default by Mr.Docs. Files in a supplemental directory override the corresponding default file at the same relative path, and MrDocs falls back to its defaults for everything else.
+The xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] can be used to define extra directories and files on top of the base addons directory provided by default by Mr.Docs. Files in a supplemental directory override the corresponding default file at the same relative path, and MrDocs falls back to its defaults for everything else. Plugins are the exception: every `plugins/` directory adds its libraries, and none replaces another.

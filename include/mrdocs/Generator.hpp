@@ -100,8 +100,9 @@ public:
     This function registers a generator with the global
     generator registry, making it available for use.
 
-    Plugins can use this function to register custom
-    generators.
+    A plugin installs its generators through
+    @ref PluginContext::installGenerator, which calls
+    this function.
 
     @par Thread Safety
     This function is thread-safe and may be called

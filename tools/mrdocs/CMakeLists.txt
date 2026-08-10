@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
@@ -17,16 +18,42 @@ file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
 
 add_executable(mrdocs ${TOOL_SOURCES})
 target_include_directories(mrdocs
-    PUBLIC
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/include"
     "${PROJECT_BINARY_DIR}/src"
 )
 
 target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
-target_link_libraries(mrdocs PUBLIC mrdocs-core)
+# The core is linked privately so that a plugin, which links the tool, does not
+# link the core as well: a second copy of a static core would give the plugin
+# its own generator and transform registries. A plugin gets what compiling the
+# public headers takes from `mrdocs-public-headers` instead.
+target_link_libraries(mrdocs
+    PRIVATE mrdocs-core
+    INTERFACE mrdocs-public-headers)
+target_compile_features(mrdocs INTERFACE cxx_std_23)
+
+# A plugin resolves the MrDocs symbols it calls against the tool, so a tool
+# that can load plugins exports its symbols. It also links the whole of
+# mrdocs-core rather than the objects it uses itself, since a plugin calls
+# functions nothing in the tool does, such as `assert_failed` in a Release
+# build.
+if (MRDOCS_BUILD_PLUGIN_MODULES)
+    set_target_properties(mrdocs PROPERTIES ENABLE_EXPORTS ON)
+    if (MSVC)
+        target_link_options(mrdocs PRIVATE
+            "/WHOLEARCHIVE:$<TARGET_FILE:mrdocs-core>")
+    elseif (APPLE)
+        target_link_options(mrdocs PRIVATE
+            "LINKER:-force_load,$<TARGET_FILE:mrdocs-core>")
+    else ()
+        target_link_options(mrdocs PRIVATE
+            "LINKER:--whole-archive"
+            "$<TARGET_FILE:mrdocs-core>"
+            "LINKER:--no-whole-archive")
+    endif ()
+endif ()
+
 # The command-line frontend uses a few LLVM utilities directly (pretty stack
 # traces, host triple), so the tool links LLVM rather than reaching it only
 # through mrdocs-core.

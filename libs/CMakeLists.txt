@@ -41,7 +41,8 @@ elseif (MSVC)
         /wd4456 /wd4457 /wd4458 /wd4459 /wd4701 /wd4702 /wd4703)
     # C4251 and C4275: these libraries export their API so that a plugin can
     # call it, and their exported types have standard library members and bases.
-    # mrdocs-core names the same two, for the same reason; see src/CMakeLists.txt.
+    # mrdocs-public-headers passes the same two on to whatever compiles the
+    # headers; see src/CMakeLists.txt.
     add_compile_options(/wd4251 /wd4275)
     # On develop this code lived in mrdocs-core and inherited these Windows
     # defines from the global add_definitions(${LLVM_DEFINITIONS}); as decoupled

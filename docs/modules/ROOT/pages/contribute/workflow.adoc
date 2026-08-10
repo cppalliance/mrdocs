@@ -15,6 +15,12 @@ This is important for the scripting to work; exceptions are used to propagate er
 For exceptional cases, these thrown exceptions should be uncaught.
 The tool installs an uncaught exception handler that prints a stack trace and exits the process immediately.
 
+=== The plugin interface
+
+A xref:extensions/plugins.adoc[plugin] is compiled against the public headers and loaded into the running tool, so it sees {cpp} types by their layout rather than through an insulating boundary. `MRDOCS_PLUGIN_API_VERSION` is what turns a mismatch into a diagnostic instead of a crash: Mr.Docs refuses to call a plugin that reports a different value, and the plugin's copy of the value comes from the headers it was compiled against.
+
+Raise it in the same commit that changes what a plugin sees. That is wider than the plugin header: it takes in the `Generator` and `Transform` interfaces and every public type a plugin can hold or be handed, so a new member in a symbol type counts, while a change confined to `src/` does not. When in doubt, raise it. The cost of raising it is that plugin authors rebuild; the cost of not raising it is a crash in someone else's process.
+
 == Style Guide
 
 This project follows informal formatting conventions established by previous Boost projects.

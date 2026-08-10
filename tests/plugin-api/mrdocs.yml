@@ -1,0 +1,6 @@
+# The runs this configures are meant to fail. Each test offers MrDocs a
+# plugin that stops the run while it starts up, which is before it reads a
+# compilation database, so the input named here is never compiled.
+source-root: .
+file-patterns:
+  - LinkProbe.cpp

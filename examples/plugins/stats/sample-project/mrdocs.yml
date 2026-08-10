@@ -1,0 +1,4 @@
+generator: stats
+source-root: .
+file-patterns:
+  - simple.cpp
