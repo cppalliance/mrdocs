@@ -1,0 +1,9 @@
+addons-supplemental:
+  - addons
+generator: describe
+multipage: false
+show-namespaces: false
+warn-if-undocumented: false
+source-root: include
+input:
+  - include
