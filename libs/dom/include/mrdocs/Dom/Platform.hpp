@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -34,8 +35,10 @@
 # define MRDOCS_DOM_DECL
 #endif
 
-#if defined(__cpp_lib_no_unique_address)
+#if __has_cpp_attribute(no_unique_address)
 # define MRDOCS_DOM_NO_UNIQUE_ADDRESS [[no_unique_address]]
+#elif __has_cpp_attribute(msvc::no_unique_address)
+# define MRDOCS_DOM_NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
 #else
 # define MRDOCS_DOM_NO_UNIQUE_ADDRESS
 #endif
