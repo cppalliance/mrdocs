@@ -31,7 +31,7 @@ code.hljs {
 }
 
 .hljs {
-  color: #adbac7;
+  color: var(--hl-fg);
   background: var(--pre-background);
 }
 
@@ -41,20 +41,20 @@ code.hljs {
  * to the rendered documentation. */
 .hljs-comment,
 .hljs-quote {
-  color: #768390;
+  color: var(--hl-comment);
   font-style: italic;
 }
 
 /* Keywords, storage, storage modifiers — red. */
 .hljs-keyword,
 .hljs-formula {
-  color: #f47067;
+  color: var(--hl-keyword);
 }
 
 /* Strings, regexes — pale blue. */
 .hljs-string,
 .hljs-regexp {
-  color: #96d0ff;
+  color: var(--hl-string);
 }
 
 /* Numbers, language constants, support symbols, attribute keys,
@@ -72,7 +72,7 @@ code.hljs {
 .hljs-selector-attr,
 .hljs-selector-pseudo,
 .hljs-meta {
-  color: #6cb6ff;
+  color: var(--hl-const);
 }
 
 /* Class/type/entity names, variables — orange. `hljs-params` is
@@ -89,14 +89,14 @@ code.hljs {
 .hljs-title.class_,
 .hljs-name,
 .hljs-variable {
-  color: #f69d50;
+  color: var(--hl-entity);
 }
 
 /* Function names — purple. */
 .hljs-title,
 .hljs-function .hljs-title,
 .hljs-title.function_ {
-  color: #dcbdfb;
+  color: var(--hl-title);
 }
 
 /* Tags, doctags, markup quotes — green. */
@@ -104,7 +104,7 @@ code.hljs {
 .hljs-doctag,
 .hljs-selector-tag,
 .hljs-section {
-  color: #8ddb8c;
+  color: var(--hl-tag);
 }
 
 /*
@@ -119,19 +119,19 @@ code.hljs {
  *     against the darker prose without introducing a third hue.
  */
 .hljs-doc-comment {
-  color: rgb(94, 135, 79);
+  color: var(--hl-doc);
   font-style: italic;
 }
 
 .hljs-doc-comment .hljs-doctag {
-  color: rgb(164, 181, 67);
+  color: var(--hl-doc-strong);
   font-style: normal;
   font-weight: 700;
 }
 
 .hljs-doc-comment .hljs-name,
 .hljs-doc-comment .hljs-string {
-  color: rgb(164, 181, 67);
+  color: var(--hl-doc-strong);
   font-style: italic;
 }
 

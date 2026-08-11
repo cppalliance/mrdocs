@@ -2,13 +2,19 @@
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
   <defs>
     <style>
-      .cls-1 {
-        stroke: #fff;
+      #Layer_1 .cls-1 {
+        stroke: currentColor;
         stroke-width: 2px;
       }
 
-      .cls-1, .cls-2 {
-        fill: #fff;
+      #Layer_1 .cls-1, #Layer_1 .cls-2 {
+        fill: currentColor;
+      }
+
+      #Layer_1 path:not(.cls-1):not(.cls-2),
+      #Layer_1 polygon, #Layer_1 polyline,
+      #Layer_1 circle, #Layer_1 ellipse, #Layer_1 rect {
+        fill: #000;
       }
     </style>
   </defs>

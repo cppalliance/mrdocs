@@ -175,6 +175,28 @@ kbd {
     color-scheme: light;
     --background-color: #fdfaf5;
     --body-background: #fdfaf5;
+    /* code + panel surfaces (light) */
+    --hl-bg: #f6f8fa;
+    --hl-fg: #1f2328;
+    --hl-comment: #6e7781;
+    --hl-keyword: #cf222e;
+    --hl-string: #0a3069;
+    --hl-const: #0550ae;
+    --hl-entity: #953800;
+    --hl-title: #8250df;
+    --hl-tag: #116329;
+    --hl-doc: #43711f;
+    --hl-doc-strong: #4d7c0f;
+    --panel-surface: #ffffff;
+    --panel-border: #d0d7de;
+    --panel-fg: #24303f;
+    --panel-link: #2563eb;
+    --logo-fill: transparent;
+    /* Literal, not var(--color): Pico reassigns --color to the blue link
+       colour on every <a>, and the wordmark lives inside the logo link. */
+    --logo-text-color: rgba(0, 0, 0, 0.8);
+    --box-outline: drop-shadow(0 0 2px rgba(15, 23, 42, 0.3));
+    --panel-title: #2563eb;
     --color: rgba(0, 0, 0, 0.8);
     --h1-color: rgba(0, 0, 0, 0.95);
     --h2-color: rgba(0, 0, 0, 0.9);
@@ -275,6 +297,26 @@ kbd {
     color-scheme: dark;
     --background-color: rgba(0, 0, 0, 0.3);
     --body-background: #0f172a;
+    /* code + panel surfaces (dark) */
+    --hl-bg: #0f172a;
+    --hl-fg: #adbac7;
+    --hl-comment: #768390;
+    --hl-keyword: #f47067;
+    --hl-string: #96d0ff;
+    --hl-const: #6cb6ff;
+    --hl-entity: #f69d50;
+    --hl-title: #dcbdfb;
+    --hl-tag: #8ddb8c;
+    --hl-doc: rgb(94, 135, 79);
+    --hl-doc-strong: rgb(164, 181, 67);
+    --panel-surface: #131c2e;
+    --panel-border: rgba(148, 163, 184, 0.18);
+    --panel-fg: rgba(237, 242, 249, 0.92);
+    --panel-link: #93c5fd;
+    --logo-fill: #fff;
+    --logo-text-color: rgba(255, 255, 255, 0.9);
+    --box-outline: drop-shadow(0 0 0 transparent);
+    --panel-title: #facc15;
     --color: rgba(255, 255, 255, 0.9);
     --h1-color: rgba(255, 255, 255, 0.98);
     --h2-color: rgba(255, 255, 255, 0.95);
@@ -1443,7 +1485,8 @@ pre {
 pre > code {
     display: block;
     padding: var(--spacing);
-		background-color: rgba(0, 0, 0, 0.55);
+    background-color: var(--hl-bg);
+    color: var(--hl-fg);
     font-size: 14px;
     line-height: var(--line-height);
     overflow-x: auto;
@@ -2713,7 +2756,7 @@ section#demo {
 
 .documentation-panel h4 {
     font-size: 0.8125rem;
-    color: #fff;
+    color: var(--panel-fg);
     margin: 0 0 0.375rem 0;
     font-weight: 600;
 }
@@ -2722,7 +2765,7 @@ section#demo {
 .documentation-panel span:not([class^="hljs-"]),
 .documentation-panel div {
     font-size: 0.875rem;
-    color: #fff;
+    color: var(--panel-fg);
 }
 
 .documentation-panel p {
@@ -2737,7 +2780,7 @@ section#demo {
 .documentation-panel table thead th,
 .documentation-panel table thead td {
     background-color: rgba(0, 0, 0, 0.1);
-    color: #fff;
+    color: var(--panel-fg);
     font-size: 0.8rem;
 }
 
@@ -2766,7 +2809,7 @@ section#demo {
 .documentation-panel .admonition h4 {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #7ee0ff;
+    color: var(--panel-link);
     margin-bottom: 0.2em;
     letter-spacing: 0.01em;
 }
@@ -2789,18 +2832,18 @@ section#demo {
  */
 .hljs-comment,
 .hljs-quote {
-    color: #768390;
+    color: var(--hl-comment);
     font-style: italic;
 }
 
 .hljs-keyword,
 .hljs-formula {
-    color: #f47067;
+    color: var(--hl-keyword);
 }
 
 .hljs-string,
 .hljs-regexp {
-    color: #96d0ff;
+    color: var(--hl-string);
 }
 
 .hljs-number,
@@ -2812,7 +2855,7 @@ section#demo {
 .hljs-attribute,
 .hljs-template-variable,
 .hljs-meta {
-    color: #6cb6ff;
+    color: var(--hl-const);
 }
 
 .hljs-built_in,
@@ -2821,20 +2864,20 @@ section#demo {
 .hljs-title.class_,
 .hljs-name,
 .hljs-variable {
-    color: #f69d50;
+    color: var(--hl-entity);
 }
 
 .hljs-title,
 .hljs-function .hljs-title,
 .hljs-title.function_ {
-    color: #dcbdfb;
+    color: var(--hl-title);
 }
 
 .hljs-tag,
 .hljs-doctag,
 .hljs-selector-tag,
 .hljs-section {
-    color: #8ddb8c;
+    color: var(--hl-tag);
 }
 
 /*
@@ -2844,19 +2887,19 @@ section#demo {
  * feed the rendered documentation stand out.
  */
 .hljs-doc-comment {
-    color: rgb(94, 135, 79);
+    color: var(--hl-doc);
     font-style: italic;
 }
 
 .hljs-doc-comment .hljs-doctag {
-    color: rgb(164, 181, 67);
+    color: var(--hl-doc-strong);
     font-style: normal;
     font-weight: 700;
 }
 
 .hljs-doc-comment .hljs-name,
 .hljs-doc-comment .hljs-string {
-    color: rgb(164, 181, 67);
+    color: var(--hl-doc-strong);
     font-style: italic;
 }
 
@@ -2889,13 +2932,17 @@ html {
     height: 48px;
     width: auto;
     flex-shrink: 0;
-    color: var(--nav-logo-color);
+    /* Only the head silhouette follows this colour; the line-work is black in
+       the SVG. Transparent on light gives a black line drawing on the cream
+       chrome, white on dark fills the head under the black features. */
+    color: var(--logo-fill);
 }
 
 .nav .logo-text, .navbar-brand .navbar-item:first-child .logo-text {
+    font-family: var(--display-font);
     font-size: 18px;
     font-weight: 700;
-    color: #fff;
+    color: var(--logo-text-color);
     white-space: nowrap;
 }
 
@@ -2990,7 +3037,7 @@ ol a:focus {
 =========================== */
 
 .nav {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--nav-background-color);
     font-size: 16px;
     font-weight: bold;
     height: 3.5rem;
@@ -3023,7 +3070,11 @@ footer a:visited {
 .nav a:focus,
 footer a:hover,
 footer a:focus {
-    color: #fff;
+    /* Highlight toward the high-contrast colour, which flips per theme:
+       darker than the muted rest colour on the cream page, brighter on the
+       midnight one. A flat #fff highlighted correctly on dark but made links
+       vanish on light. */
+    color: var(--contrast);
     -webkit-text-decoration: none;
     text-decoration: none;
     transform: translateY(-1px);
@@ -3132,12 +3183,12 @@ footer a:focus {
 /***** cutout box rotations *****/
 .box0 {
     position: relative;
-    filter: drop-shadow(7px 10px 0px rgba(0, 0, 0, .7));
+    filter: drop-shadow(7px 10px 0px rgba(0, 0, 0, .7)) var(--box-outline);
 }
 
 .box90 {
     transform: rotate(90deg);
-    filter: drop-shadow(7px -10px 0px rgba(0, 0, 0, .7));
+    filter: drop-shadow(7px -10px 0px rgba(0, 0, 0, .7)) var(--box-outline);
 }
 
 .box90 .inner-box {
@@ -3146,7 +3197,7 @@ footer a:focus {
 
 .box180 {
     transform: rotate(180deg);
-    filter: drop-shadow(-7px -10px 0px rgba(0, 0, 0, .7));
+    filter: drop-shadow(-7px -10px 0px rgba(0, 0, 0, .7)) var(--box-outline);
 }
 
 .box180 .inner-box {
@@ -3155,7 +3206,7 @@ footer a:focus {
 
 .box270 {
     transform: rotate(270deg);
-    filter: drop-shadow(-7px 10px 0px rgba(0, 0, 0, .7));
+    filter: drop-shadow(-7px 10px 0px rgba(0, 0, 0, .7)) var(--box-outline);
 }
 
 .box270 .inner-box {
@@ -3484,28 +3535,28 @@ footer a {
 }
 
 /* -------------------------------------------------------------------------
-   Theme-consistency fixes. The page ships dark by default; these keep the
-   light toggle readable and keep code/reference surfaces on-brand (Midnight)
-   in BOTH themes, since the embedded MrDocs HTML and the syntax colours are
-   tuned for a dark surface.
+   Theme-aware code + reference surfaces. In light mode these use a light code
+   / card surface with dark syntax; in dark mode they keep the Midnight card.
+   Colours come from the --hl-* / --panel-* tokens in the theme blocks above.
    ------------------------------------------------------------------------- */
 
-/* Reference/snippet panels: solid Midnight cards in both themes. */
+/* Reference (generated-docs) card. */
 .documentation-panel {
-    background-color: #131c2e;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    color: rgba(237, 242, 249, 0.92);
+    background-color: var(--panel-surface);
+    border: 1px solid var(--panel-border);
+    color: var(--panel-fg);
     backdrop-filter: none;
 }
 
 .documentation-panel a {
-    color: #93c5fd;
+    color: var(--panel-link);
 }
 
-/* The little hero chip under the buttons is a dark pill in both themes. */
+/* Hero chip under the buttons: a subtle bordered pill in both themes. */
 .banner-snippet code {
-    color: #cbd5e1;
-    background-color: #131c2e;
+    color: var(--color);
+    background-color: var(--code-background-color);
+    border: 1px solid var(--muted-border-color);
 }
 
 /* Hero secondary ("Get started") outline button: readable on cream. */
@@ -3515,14 +3566,13 @@ footer a {
     border-color: #24303f;
 }
 
-/* All highlighted code on the landing sits on Midnight in both themes (the
-   syntax palette, incl. the green doc-comment feature, is tuned for dark). */
+/* All highlighted code sits on the theme code surface. */
 .hljs {
-    background-color: #0f172a;
-    color: #adbac7;
+    background-color: var(--hl-bg);
+    color: var(--hl-fg);
 }
 
-/* Keep the embedded reference-panel section labels legible on the dark card. */
+/* Reference-panel section labels use the card foreground. */
 .documentation-panel h1,
 .documentation-panel h2,
 .documentation-panel h3,
@@ -3532,15 +3582,14 @@ footer a {
 .documentation-panel small,
 .documentation-panel dt,
 .documentation-panel .paragraph {
-    color: rgba(237, 242, 249, 0.86);
+    color: var(--panel-fg);
 }
 
-/* Left raw-source snippet panel: a Midnight card that matches the border /
-   radius / padding of the generated-docs card beside it (its <code> carries
-   no .hljs class, only the inner token spans, so target the pre directly). */
+/* Left raw-source snippet: a code-surface card matching the docs card beside
+   it (its <code> carries no .hljs class, only inner token spans). */
 .snippet-panel > pre {
-    background-color: #131c2e;
-    border: 1px solid rgba(148, 163, 184, 0.18);
+    background-color: var(--hl-bg);
+    border: 1px solid var(--panel-border);
     border-radius: var(--border-radius);
     padding: 1rem;
     margin: 0;
@@ -3549,7 +3598,7 @@ footer a {
 
 .snippet-panel > pre,
 .snippet-panel > pre > code {
-    color: #adbac7;
+    color: var(--hl-fg);
 }
 
 .snippet-panel > pre > code {
@@ -3600,14 +3649,16 @@ footer a {
     border: 0;
     width: auto;
     background: transparent;
-    color: var(--contrast);
+    /* Match the github icon / nav links: muted grey at rest, brightening on
+       hover, rather than the high-contrast near-black/near-white of --contrast. */
+    color: var(--muted-color);
     cursor: pointer;
     line-height: 1;
     transition: color var(--transition), transform var(--transition);
 }
 
 .theme-toggle-btn:hover {
-    color: var(--primary);
+    color: var(--contrast);
     transform: translateY(-1px);
     background: transparent;
 }
@@ -3648,4 +3699,22 @@ footer a {
 .documentation-panel,
 .snippet-documentation-panel {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* -------------------------------------------------------------------------
+   More light-mode fixes.
+   ------------------------------------------------------------------------- */
+
+/* The "Star us on GitHub" band is forced light; give it a surface distinct
+   from the cream page so it reads as a separate strip in both page themes. */
+#star {
+    background-color: #eef1f5;
+    border-top: 1px solid #d7dde5;
+    border-bottom: 1px solid #d7dde5;
+}
+
+/* Symbol-name title keeps a brand accent that reads in both themes. */
+.documentation-panel h2,
+.documentation-panel h2 a {
+    color: var(--panel-title);
 }

@@ -91,7 +91,7 @@
   letter-spacing: 0.6px;
   font-size: 1.45rem;
   line-height: 1;
-  color: var(--heading-color);
+  color: var(--heading-font-color);
 }
 
 /* Theme toggle button in the navbar. */
@@ -175,4 +175,37 @@
   .doc .dotted-right {
     display: none;
   }
+}
+
+/* -------------------------------------------------------------------------
+   Light/dark chrome fixes.
+   Keep the top overscroll area (which shows through in Safari above the fixed
+   navbar) the same colour as the navbar instead of the page background, so
+   there is no mismatched strip. Give the brand logo art a theme-aware fill so
+   the white line-work stays visible on the light chrome.
+   ------------------------------------------------------------------------- */
+html {
+  background-color: var(--navbar-background);
+}
+
+body {
+  background-color: var(--body-background);
+}
+
+.navbar {
+  border-bottom: 1px solid var(--border);
+}
+
+/* Monochrome white status icons (comparison tables, demo gallery) ship as
+   white <img> SVGs, so only a filter can recolour them; invert to dark on the
+   light theme so they don't vanish on the cream page. */
+.doc img[src*="/icons/"] {
+  filter: var(--doc-icon-filter);
+}
+
+.navbar-brand svg {
+  /* Only the head silhouette follows this colour; the line-work is black in
+     the SVG. Transparent on light gives a black line drawing on the cream
+     chrome, white on dark fills the head under the black features. */
+  color: var(--logo-fill);
 }

@@ -23,7 +23,7 @@
 
 .nav .logo-text, .navbar-brand .navbar-item:first-child .logo-text {
     font-weight: 700;
-    color: #fff;
+    color: var(--logo-text-color);
     white-space: nowrap;
     font-size: 1rem;
 }

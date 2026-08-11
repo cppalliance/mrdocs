@@ -855,7 +855,7 @@ html {
 .doc .listingblock pre:not(.highlight),
 .doc .literalblock pre {
   background: var(--pre-background);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--pre-border-color);
   border-radius: 6px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   display: block;
@@ -876,14 +876,14 @@ html {
  */
 .doc .listingblock > .title {
   background: var(--pre-background);
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--hl-comment);
   font-family: var(--body-font-family);
   font-size: calc(13 / var(--rem-base) * 1rem);
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.02em;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--pre-border-color);
+  border-bottom: 1px solid var(--pre-border-color);
   border-radius: 6px 6px 0 0;
   padding: 0.55rem 1.25rem;
   margin-bottom: 0;
