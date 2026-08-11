@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -78,8 +79,10 @@ namespace mrdocs {
 #endif
 
 #ifndef MRDOCS_NO_UNIQUE_ADDRESS
-# if defined(__cpp_lib_no_unique_address)
+# if __has_cpp_attribute(no_unique_address)
 #  define MRDOCS_NO_UNIQUE_ADDRESS [[no_unique_address]]
+# elif __has_cpp_attribute(msvc::no_unique_address)
+#  define MRDOCS_NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
 # else
 #  define MRDOCS_NO_UNIQUE_ADDRESS
 # endif
