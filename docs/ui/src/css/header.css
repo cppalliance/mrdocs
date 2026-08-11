@@ -9,7 +9,7 @@ body {
 }
 
 .navbar {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--navbar-background);
   backdrop-filter: blur(10px);
   color: var(--navbar-font-color);
   font-size: calc(16 / var(--rem-base) * 1rem);
@@ -228,7 +228,7 @@ body {
 
   .navbar-menu {
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
-    background-color: rgb(47 47 94);
+    background-color: var(--navbar-menu-background);
     max-height: var(--body-min-height);
     overflow-y: auto;
     overscroll-behavior: none;

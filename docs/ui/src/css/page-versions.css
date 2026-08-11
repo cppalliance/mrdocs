@@ -12,15 +12,29 @@
 
 .page-versions .version-menu-toggle {
   color: var(--color-white);
-  background: url(../img/chevron.svg) no-repeat;
-  background-position: right 0.5rem top 50%;
-  background-size: auto 0.75em;
+  background: none;
   border: none;
   outline: none;
   line-height: inherit;
   padding: 0.5rem 1.5rem 0.5rem 0.5rem;
   position: relative;
   z-index: var(--z-index-page-version-menu);
+}
+
+/* Chevron on its own pseudo-element rather than as a background on the button:
+   the button also holds the version text, so filtering the button would
+   recolour the text too. The white chevron.svg is inverted to dark on the
+   light theme via the icon filter, leaving the text untouched. */
+.page-versions .version-menu-toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  width: 0.75em;
+  height: 0.75em;
+  transform: translateY(-50%);
+  background: url(../img/chevron.svg) no-repeat center / contain;
+  filter: var(--doc-icon-filter);
 }
 
 .page-versions .version-menu {

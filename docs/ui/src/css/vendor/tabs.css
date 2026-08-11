@@ -1,22 +1,22 @@
 @import "@asciidoctor/tabs";
 
 .tabpanel {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--tab-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--border);
 }
 
 .tablist > ul li {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: var(--tab-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--border);
 }
 
 .tabs.is-loading .tablist li:not(:first-child),
 .tabs:not(.is-loading) .tablist li:not(.is-selected) {
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: var(--tab-inactive-bg);
   backdrop-filter: blur(10px);
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--tab-inactive-color);
   opacity: 0.5;
 }
 

@@ -5,7 +5,7 @@
 }
 
 .nav-container {
-  background-color: rgba(47, 44, 94, 0.75);
+  background-color: var(--nav-secondary-background);
   backdrop-filter: blur(10px);
   position: fixed;
   top: var(--navbar-height);
@@ -19,7 +19,8 @@
 @media screen and (min-width: 769px) {
   .nav-container {
     width: var(--nav-width);
-    background-color: transparent;
+    background-color: var(--nav-panel-background);
+    border-right: 1px solid var(--nav-border-color);
   }
 }
 
@@ -38,7 +39,7 @@
 }
 
 .nav {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--nav-panel-overlay);
   position: relative;
   height: var(--nav-height);
 }
@@ -186,7 +187,7 @@
 }
 
 .nav-panel-explore {
-  background: rgba(47, 44, 94, 0.75);
+  background: var(--nav-secondary-background);
   backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
@@ -199,7 +200,7 @@
 
 @media screen and (min-width: 769px) {
   .nav-panel-explore {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--nav-explore-overlay);
   }
 }
 
@@ -209,7 +210,7 @@
 }
 
 .nav-panel-explore .context {
-  background: rgba(47, 44, 94, 0.75);
+  background: var(--nav-secondary-background);
   font-size: calc(15 / var(--rem-base) * 1rem);
   flex-shrink: 0;
   color: var(--color-white);
@@ -234,6 +235,9 @@
 .nav-panel-explore .context .version::after {
   content: "";
   background: url(../img/chevron.svg) no-repeat center right / auto 100%;
+  /* chevron.svg is fixed white; invert it to dark on the light theme so it
+     stays visible on the light nav panel. */
+  filter: var(--doc-icon-filter);
   width: 1.25em;
   height: 0.75em;
 }
@@ -242,7 +246,7 @@
   line-height: var(--nav-line-height);
   flex-grow: 1;
   box-shadow: 0 2px 8px 0 rgba(30, 50, 70, 0.3);
-  background-color: rgb(29 28 64);
+  background-color: var(--nav-secondary-background);
   padding: 0.75rem 0.75rem 0 0.75rem;
   margin: 0;
   overflow-y: scroll;

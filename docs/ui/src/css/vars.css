@@ -64,11 +64,39 @@
   --heading-color: var(--mr-blue-600);
   --heading-strong-color: var(--text-strong);
 
-  /* Code surfaces stay Midnight in both themes (brand code panel). */
-  --code-panel-bg: var(--mr-code-bg);
-  --code-panel-fg: #adbac7;
-  --code-panel-border: rgba(148, 163, 184, 0.22);
+  /* Code block surface + syntax highlighting. Theme-aware: a light GitHub-
+     style surface in light mode, Midnight in dark mode, with the same hues in
+     both so the doc-comment feature reads the same way either way. */
+  --hl-bg: #f6f8fa;
+  --hl-fg: #1f2328;
+  --hl-comment: #6e7781;
+  --hl-keyword: #cf222e;
+  --hl-string: #0a3069;
+  --hl-const: #0550ae;
+  --hl-entity: #953800;
+  --hl-title: #8250df;
+  --hl-tag: #116329;
+  --hl-doc: #43711f;
+  --hl-doc-strong: #4d7c0f;
+  --hl-border: #d0d7de;
+  --code-panel-bg: var(--hl-bg);
+  --code-panel-fg: var(--hl-fg);
+  --code-panel-border: var(--hl-border);
   --code-panel-accent: var(--mr-blue);
+
+  /* Fill for the logo head silhouette (the line-work stays black either way).
+     Transparent on light leaves a black line drawing on the cream chrome;
+     white on dark fills the head so the black features read on top of it. */
+  --logo-fill: transparent;
+
+  /* Brand wordmark ("Mr.Docs") next to the head. Reuses the flipping text
+     colour so it is dark on the cream chrome and light on the midnight one. */
+  --logo-text-color: var(--color-white);
+
+  /* Monochrome white status icons (yes.svg/no.svg in tables, demo gallery)
+     load as <img>, so only a filter can recolour them: invert to dark on
+     the light theme, leave white on dark. */
+  --doc-icon-filter: invert(1);
 
   /* "text on surface" family — dark in light mode, flips white in dark mode.
      Component CSS uses these directly for foreground text. */
@@ -136,14 +164,31 @@
   --nav-muted-color: var(--text-muted);
   --nav-panel-divider-color: var(--border);
   --nav-secondary-background: var(--surface-2);
+  /* Left nav column: on light a solid panel surface set off from the cream
+     content; on dark a transparent base so the white overlays below keep the
+     current midnight look. The overlays flip to transparent on light so they
+     don't wash the panel back toward the content colour. */
+  --nav-panel-background: var(--surface-2);
+  --nav-panel-overlay: transparent;
+  --nav-explore-overlay: transparent;
 
   /* toolbar */
   --toolbar-background: var(--surface);
+  /* Breadcrumbs strip: on light a solid surface-2 band set off from the cream
+     content (matching the nav column); on dark the white overlay that lifts
+     the midnight page, as before. */
+  --toolbar-strip-bg: var(--surface-2);
   --toolbar-border-color: var(--border);
   --toolbar-font-color: var(--text-muted);
   --toolbar-muted-color: var(--text-muted);
   --page-version-menu-background: var(--surface-2);
   --page-version-missing-font-color: var(--text-muted);
+
+  /* Tabbed code cards (AsciiDoc tabs). Light paints solid surfaces set off
+     from the cream content; dark keeps the white/black overlays it had. */
+  --tab-surface: var(--surface-2);
+  --tab-inactive-bg: var(--slate-200);
+  --tab-inactive-color: var(--text-muted);
 
   /* admonitions (brand accents; readable on both themes) */
   --caution-color: var(--mr-pink);
@@ -283,6 +328,27 @@
   --color-black: rgba(0, 0, 0, 0.32);
   --color-blue-10: var(--mr-blue-300);
   --color-blue-100: var(--mr-blue);
+  --hl-bg: var(--mr-code-bg);
+  --hl-fg: #adbac7;
+  --hl-comment: #768390;
+  --hl-keyword: #f47067;
+  --hl-string: #96d0ff;
+  --hl-const: #6cb6ff;
+  --hl-entity: #f69d50;
+  --hl-title: #dcbdfb;
+  --hl-tag: #8ddb8c;
+  --hl-doc: rgb(94, 135, 79);
+  --hl-doc-strong: rgb(164, 181, 67);
+  --hl-border: rgba(148, 163, 184, 0.22);
+  --logo-fill: #fff;
+  --doc-icon-filter: none;
+  --nav-panel-background: transparent;
+  --nav-panel-overlay: rgba(255, 255, 255, 0.1);
+  --nav-explore-overlay: rgba(255, 255, 255, 0.3);
+  --toolbar-strip-bg: rgba(255, 255, 255, 0.1);
+  --tab-surface: rgba(255, 255, 255, 0.12);
+  --tab-inactive-bg: rgba(0, 0, 0, 0.25);
+  --tab-inactive-color: rgba(255, 255, 255, 0.5);
 }
 
 @media only screen and (prefers-color-scheme: dark) {
@@ -317,5 +383,26 @@
     --color-black: rgba(0, 0, 0, 0.32);
     --color-blue-10: var(--mr-blue-300);
     --color-blue-100: var(--mr-blue);
+    --hl-bg: var(--mr-code-bg);
+    --hl-fg: #adbac7;
+    --hl-comment: #768390;
+    --hl-keyword: #f47067;
+    --hl-string: #96d0ff;
+    --hl-const: #6cb6ff;
+    --hl-entity: #f69d50;
+    --hl-title: #dcbdfb;
+    --hl-tag: #8ddb8c;
+    --hl-doc: rgb(94, 135, 79);
+    --hl-doc-strong: rgb(164, 181, 67);
+    --hl-border: rgba(148, 163, 184, 0.22);
+    --logo-fill: #fff;
+    --doc-icon-filter: none;
+    --nav-panel-background: transparent;
+    --nav-panel-overlay: rgba(255, 255, 255, 0.1);
+    --nav-explore-overlay: rgba(255, 255, 255, 0.3);
+    --toolbar-strip-bg: rgba(255, 255, 255, 0.1);
+    --tab-surface: rgba(255, 255, 255, 0.12);
+    --tab-inactive-bg: rgba(0, 0, 0, 0.25);
+    --tab-inactive-color: rgba(255, 255, 255, 0.5);
   }
 }
