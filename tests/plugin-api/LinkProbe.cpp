@@ -33,8 +33,13 @@
 
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Plugin.hpp>
+#include <mrdocs/Transform.hpp>
 #include <cstddef>
+#include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
 using namespace mrdocs;
 
@@ -64,4 +69,49 @@ Expected<Symbol const&>
 probeLookup(Corpus const& corpus)
 {
     return corpus.lookup("x");
+}
+
+namespace {
+
+class ProbeTransform final
+    : public Transform
+{
+public:
+    std::string_view
+    id() const noexcept override
+    {
+        return "probe";
+    }
+
+    Expected<void>
+    apply(Corpus& corpus, Config const&) const override
+    {
+        Expected<void> result;
+        if (corpus.find(SymbolID::global) == nullptr)
+        {
+            result = Unexpected(formatError("the global namespace is missing"));
+        }
+        return result;
+    }
+};
+
+} // (anon)
+
+Expected<void>
+probeInstallTransform(PluginContext& context)
+{
+    return context.installTransform(std::make_unique<ProbeTransform>());
+}
+
+// A plugin has no use for a registry of its own, but the type is public,
+// and its implicit members are compiled here rather than in the tool.
+Expected<void>
+probeRegistry(Corpus& corpus, Config const& config)
+{
+    std::vector<std::unique_ptr<Transform>> transforms;
+    transforms.push_back(std::make_unique<ProbeTransform>());
+    PluginRegistry registry(std::move(transforms));
+    PluginRegistry moved(std::move(registry));
+    registry = std::move(moved);
+    return registry.applyTransforms(corpus, config);
 }

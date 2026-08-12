@@ -1,7 +1,7 @@
 = Plugins
 :url-plugins: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/plugins
 
-A plugin is a shared library that Mr.Docs loads as it starts up, handing it a context. Through that context, the plugin installs what it provides, so the rest of the run sees it as if it had shipped with the tool. Today, a plugin installs generators.
+A plugin is a shared library that Mr.Docs loads as it starts up, handing it a context. Through that context, the plugin installs what it provides, so the rest of the run sees it as if it had shipped with the tool: generators, which turn the corpus into output, and transforms, which change the corpus before any generator sees it.
 
 Reach for a plugin when you need {cpp}: a format whose rules are awkward to express in templates, work heavy enough to justify compiled code, or a generator that links to a C or C++ library on its own (e.g. SQLite to write the corpus into a database another tool queries, or a PDF library to typeset the reference). The lighter options remain xref:extensions/data-driven-generators.adoc[data-driven generators] (templates only) and xref:extensions/script-generators.adoc[script generators] (Lua or JavaScript). The difference from xref:extensions/as-library.adoc[Mr.Docs as a library] is that a plugin runs inside the ordinary `mrdocs` tool: you keep the command line, the configuration, and everything else Mr.Docs does, and you do not build Mr.Docs or LLVM.
 
@@ -29,7 +29,7 @@ The resulting library has to be built the way the Mr.Docs that will load it was 
 
 == The entry point
 
-The cpp:MRDOCS_PLUGIN_MAIN[] macro defines the function Mr.Docs calls, naming the cpp:PluginContext[] parameter it receives:
+The cpp:MRDOCS_PLUGIN_MAIN[] macro defines the function Mr.Docs calls, naming the cpp:PluginContext[] parameter it receives. This plugin installs one of each thing a plugin can install:
 
 .`plugin.cpp`
 [source,cpp]
@@ -37,7 +37,7 @@ The cpp:MRDOCS_PLUGIN_MAIN[] macro defines the function Mr.Docs calls, naming th
 include::example$examples/plugins/stats/plugin.cpp[tag=main]
 ----
 
-The context is how a plugin reaches Mr.Docs: cpp:PluginContext::installGenerator[] adds a generator, and cpp:PluginContext::config[] returns the configuration the run was started with, already loaded and normalized, in case what the plugin installs depends on it. The reference is valid for the duration of the call.
+The context is how a plugin reaches Mr.Docs: cpp:PluginContext::installGenerator[] adds a generator, cpp:PluginContext::installTransform[] adds a transform, and cpp:PluginContext::config[] returns the configuration the run was started with, already loaded and normalized, in case what the plugin installs depends on it. The reference is valid for the duration of the call.
 
 Along with the entry point, the macro defines two functions that report how the library was built, and Mr.Docs calls both before it calls the plugin. One reports cpp:MRDOCS_PLUGIN_API_VERSION[], the version of the interface; the other reports the toolchain. The macro writes all three from the headers the plugin is compiled against, so they always agree with each other.
 
@@ -51,13 +51,37 @@ A plugin's generator is an ordinary cpp:Generator[] subclass: the same interface
 include::example$examples/plugins/stats/plugin.cpp[tag=generator]
 ----
 
-cpp:Generator::build[] receives the corpus and the configuration, and owns everything from there: where its files go and what goes in them. This one counts the symbols by kind and writes a single file:
+cpp:Generator::build[] receives the corpus and the configuration, and owns everything from there: where its files go and what goes in them. This one counts the symbols by kind, and the symbols that have a brief, and writes a single file:
 
 .`plugin.cpp`
 [source,cpp]
 ----
 include::example$examples/plugins/stats/plugin.cpp[tag=build]
 ----
+
+== Transforming the corpus
+
+A plugin can also install a cpp:Transform[]: a pass that runs once, after the corpus is built and finalized and before any generator runs, so what it changes is what every output format sees. Where a generator is handed the corpus as `const`, a transform is handed it mutable, and may read it, change the symbols it finds, or both. Everything a symbol holds is in reach, including the lists of members that the generators walk to decide what to write, and the generators rely on what finalization left there:
+
+include::partial$transform-invariants.adoc[]
+
+.`plugin.cpp`
+[source,cpp]
+----
+include::example$examples/plugins/stats/plugin.cpp[tag=transform]
+----
+
+The example's transform gives a symbol with no brief a placeholder one, so that the gap shows up in the output instead of a blank space:
+
+.`plugin.cpp`
+[source,cpp]
+----
+include::example$examples/plugins/stats/plugin.cpp[tag=apply]
+----
+
+The sample project leaves one function undocumented, and the global namespace has no doc comment either, so the transform gives both a brief, and the generator counts every symbol among those that have one.
+
+The transforms a plugin installs run before the ones an extension script registers with `mrdocs.register_transform`, and among themselves in the order they were installed. An error from a transform stops the run before any generator sees the corpus, and the diagnostic names the transform through cpp:Transform::id[].
 
 == Installing a plugin
 
@@ -108,7 +132,7 @@ include::example$examples/plugins/stats/sample-project/stats.txt[]
 
 A plugin and Mr.Docs pass {cpp} objects between them: the plugin allocates a generator that Mr.Docs destroys, and both inline the standard library types the API exposes. Two things have to hold for that, and Mr.Docs checks both before it calls a plugin, so a mismatch is a diagnostic naming the library rather than a crash somewhere unrelated.
 
-The first is the interface itself. cpp:MRDOCS_PLUGIN_API_VERSION[] names the version of the plugin API, and its value changes whenever that API changes, so a plugin is rebuilt against the headers of the Mr.Docs it is to be loaded by. The plugin API is everything a plugin sees: the context, the generator interface, and the corpus and configuration a generator is handed, and with the corpus every symbol type it holds. Most changes to the metadata therefore change the plugin API, a new member in a symbol type included.
+The first is the interface itself. cpp:MRDOCS_PLUGIN_API_VERSION[] names the version of the plugin API, and its value changes whenever that API changes, so a plugin is rebuilt against the headers of the Mr.Docs it is to be loaded by. The plugin API is everything a plugin sees: the context, the generator and transform interfaces, and the corpus and configuration they are handed, and with the corpus every symbol type it holds. Most changes to the metadata therefore change the plugin API, a new member in a symbol type included.
 
 The second is the toolchain. The two sides have to be built with the same compiler and standard library, in a configuration that lays those types out the same way, so the plugin reports what it was built with: the compiler and its major version, the standard library, and the settings that move those layouts. Mr.Docs refuses a plugin whose report differs from its own. On MSVC the report is stricter: it carries the exact toolset version and STL update, so a plugin is built with the Visual Studio update Mr.Docs was built with, at the same iterator debug level and with the runtime linked the same way. The package config reports an installation's compiler as `MRDOCS_BUILT_CXX_COMPILER_ID` and `MRDOCS_BUILT_CXX_COMPILER_VERSION`.
 

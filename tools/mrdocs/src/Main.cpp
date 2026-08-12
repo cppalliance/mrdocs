@@ -236,8 +236,9 @@ DoGenerateAction(
     // --------------------------------------------------------------
     // Plugins come first: one that cannot install what it provides
     // fails the run, while an addon generator directory whose id is
-    // already taken is skipped.
-    MRDOCS_TRY(loadPlugins(config));
+    // already taken is skipped. The registry holds the transforms they
+    // installed, which apply once the corpus is built.
+    MRDOCS_TRY(PluginRegistry plugins, loadPlugins(config));
 
     // --------------------------------------------------------------
     //
@@ -276,6 +277,16 @@ DoGenerateAction(
         report::warn("Corpus is empty, not generating docs");
         return {};
     }
+
+    // --------------------------------------------------------------
+    //
+    // Apply plugin transforms
+    //
+    // --------------------------------------------------------------
+    // Plugin transforms run first, which is what this call site ahead of
+    // the extension one decides: what MrDocs was set up with applies
+    // before what a user script asks for.
+    MRDOCS_TRY(plugins.applyTransforms(corpus, config));
 
     // --------------------------------------------------------------
     //

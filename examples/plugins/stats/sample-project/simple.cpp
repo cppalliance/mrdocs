@@ -33,4 +33,7 @@ using Distance = double;
 /// The coordinate system the helpers assume.
 extern System defaultSystem;
 
+// Left without a doc comment, for the example's transform to fill in.
+void normalize(Point& p);
+
 } // namespace geometry
