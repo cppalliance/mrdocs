@@ -8,8 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-// A MrDocs plugin: a shared library that MrDocs loads as it starts up
-// and that installs a generator counting the extracted symbols by kind.
+// A MrDocs plugin: a shared library that MrDocs loads as it starts up. This
+// one installs a generator, which counts the extracted symbols by kind, and
+// a transform, which gives an undocumented symbol a placeholder brief.
 
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
@@ -18,6 +19,7 @@
 #include <mrdocs/Plugin.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
+#include <mrdocs/Transform.hpp>
 #include <filesystem>
 #include <fstream>
 #include <map>
@@ -111,11 +113,67 @@ build(
 }
 // end::build[]
 
+// tag::transform[]
+// A transform that gives a symbol with no brief a placeholder one, so that
+// the gap shows up in the output instead of a blank space.
+class BriefFiller final
+    : public mrdocs::Transform
+{
+public:
+    std::string_view
+    id() const noexcept override
+    {
+        return "brief-filler";
+    }
+
+    mrdocs::Expected<void>
+    apply(
+        mrdocs::Corpus& corpus,
+        mrdocs::Config const& config) const override;
+};
+// end::transform[]
+
+// tag::apply[]
+// Give a symbol a brief if it has none.
+void
+fillBrief(mrdocs::Symbol& symbol)
+{
+    if (!symbol.doc)
+    {
+        symbol.doc.emplace();
+    }
+    mrdocs::DocComment& doc = symbol.doc.value();
+    if (!doc.brief)
+    {
+        doc.brief = mrdocs::doc::BriefBlock("Undocumented.");
+    }
+}
+
+mrdocs::Expected<void>
+BriefFiller::
+apply(
+    mrdocs::Corpus& corpus,
+    mrdocs::Config const&) const
+{
+    // A corpus is walked as const. Changing a symbol means asking for it
+    // by id, which is where the corpus hands out a mutable reference.
+    for (mrdocs::Symbol const& symbol : corpus)
+    {
+        if (mrdocs::Symbol* const target = corpus.find(symbol.id))
+        {
+            fillBrief(*target);
+        }
+    }
+    return {};
+}
+// end::apply[]
+
 } // (anon)
 
 // tag::main[]
 MRDOCS_PLUGIN_MAIN(context)
 {
-    return context.installGenerator(std::make_unique<StatsGenerator>());
+    MRDOCS_TRY(context.installGenerator(std::make_unique<StatsGenerator>()));
+    return context.installTransform(std::make_unique<BriefFiller>());
 }
 // end::main[]
