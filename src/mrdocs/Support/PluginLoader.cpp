@@ -15,6 +15,7 @@
 #include <mrdocs/Support/Error/Expected.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Transform.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/DynamicLibrary.h>
 #include <algorithm>
@@ -23,6 +24,7 @@
 #include <string_view>
 #include <system_error>
 #include <utility>
+#include <vector>
 
 #ifdef _WIN32
 #    ifndef WIN32_LEAN_AND_MEAN
@@ -152,16 +154,20 @@ appendNewLibraries(
 }
 
 // The context handed to a plugin: it reads the configuration MrDocs
-// loaded and forwards what the plugin installs to the global registry.
+// loaded, forwards a generator to the global registry, and collects the
+// transforms for the `PluginRegistry` that `loadPlugins` returns.
 class PluginContextImpl final
     : public PluginContext
 {
     Config const& config_;
+    std::vector<std::unique_ptr<Transform>>& transforms_;
 
 public:
-    explicit
-    PluginContextImpl(Config const& config) noexcept
+    PluginContextImpl(
+        Config const& config,
+        std::vector<std::unique_ptr<Transform>>& transforms) noexcept
         : config_(config)
+        , transforms_(transforms)
     {
     }
 
@@ -175,6 +181,14 @@ public:
     installGenerator(std::unique_ptr<Generator> G) override
     {
         return mrdocs::installGenerator(std::move(G));
+    }
+
+    Expected<void>
+    installTransform(std::unique_ptr<Transform> T) override
+    {
+        MRDOCS_CHECK(T, "cannot install null transform");
+        transforms_.push_back(std::move(T));
+        return {};
     }
 };
 
@@ -217,9 +231,10 @@ Expected<void>
 runEntryPoint(
     PluginMainFn entryPoint,
     std::string_view path,
-    Config const& config)
+    Config const& config,
+    std::vector<std::unique_ptr<Transform>>& transforms)
 {
-    PluginContextImpl context(config);
+    PluginContextImpl context(config, transforms);
     Error error;
     bool const installed = entryPoint(context, &error);
     MRDOCS_CHECK(installed, error.failed()
@@ -305,7 +320,8 @@ openLibrary(std::string const& path, std::string& message)
 Expected<void>
 loadPlugin(
     std::string const& path,
-    Config const& config)
+    Config const& config,
+    std::vector<std::unique_ptr<Transform>>& transforms)
 {
     std::string message;
     llvm::sys::DynamicLibrary library = openLibrary(path, message);
@@ -315,7 +331,7 @@ loadPlugin(
     MRDOCS_TRY(checkBuildTag(library, path));
     MRDOCS_TRY(PluginMainFn const entryPoint,
         findEntryPoint<PluginMainFn>(library, "mrdocs_plugin_main", path));
-    MRDOCS_TRY(runEntryPoint(entryPoint, path, config));
+    MRDOCS_TRY(runEntryPoint(entryPoint, path, config, transforms));
     report::info("Loaded plugin \"{}\"", path);
     return {};
 }
@@ -337,7 +353,35 @@ discoverPlugins(std::vector<std::string> const& roots)
     return paths;
 }
 
+PluginRegistry::
+PluginRegistry(
+    std::vector<std::unique_ptr<Transform>> transforms) noexcept
+    : transforms_(std::move(transforms))
+{
+}
+
 Expected<void>
+PluginRegistry::
+applyTransforms(Corpus& corpus, Config const& config) const
+{
+    Expected<void> result;
+    for (std::unique_ptr<Transform> const& T : transforms_)
+    {
+        if (result)
+        {
+            result = T->apply(corpus, config);
+            if (!result)
+            {
+                result = Unexpected(formatError(
+                    "the transform \"{}\" failed: {}",
+                    T->id(), result.error().reason()));
+            }
+        }
+    }
+    return result;
+}
+
+Expected<PluginRegistry>
 loadPlugins(Config const& config)
 {
     std::vector<std::string> const paths =
@@ -346,11 +390,12 @@ loadPlugins(Config const& config)
         "the plugin \"{}\" cannot be loaded: this MrDocs was built without "
         "plugin support, which is the case for a statically linked MrDocs "
         "such as the Linux release", paths.front()));
+    std::vector<std::unique_ptr<Transform>> transforms;
     for (std::string const& path : paths)
     {
-        MRDOCS_TRY(loadPlugin(path, config));
+        MRDOCS_TRY(loadPlugin(path, config, transforms));
     }
-    return {};
+    return PluginRegistry(std::move(transforms));
 }
 
 } // mrdocs

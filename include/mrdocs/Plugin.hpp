@@ -19,7 +19,9 @@
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
+#include <mrdocs/Transform.hpp>
 #include <memory>
+#include <vector>
 
 /** The version of the interface a plugin is built against.
 
@@ -164,6 +166,20 @@ public:
     virtual
     Expected<void>
     installGenerator(std::unique_ptr<Generator> G) = 0;
+
+    /** Install a corpus transform.
+
+        Transforms a plugin installs run before the ones an extension
+        script registers.
+
+        @return An error if the transform is null.
+
+        @param T The transform to install. Ownership is transferred to
+        MrDocs, which keeps it for the rest of the run.
+    */
+    virtual
+    Expected<void>
+    installTransform(std::unique_ptr<Transform> T) = 0;
 };
 
 /** The type of the version function a plugin exports.
@@ -197,6 +213,56 @@ using PluginBuildTagFn = char const* (*)();
 */
 using PluginMainFn = bool (*)(PluginContext&, Error*);
 
+/** The corpus transforms the plugins installed.
+
+    @ref loadPlugins returns one, holding what each plugin installed
+    through @ref PluginContext::installTransform, and the caller applies
+    it once the corpus is built. The generators a plugin installs go
+    instead to the registry @ref findGenerator searches, next to the
+    ones that ship with MrDocs.
+
+    @code
+    MRDOCS_TRY(PluginRegistry plugins, loadPlugins(config));
+    MRDOCS_TRY(Corpus corpus, Corpus::build(config));
+    MRDOCS_TRY(plugins.applyTransforms(corpus, config));
+    @endcode
+*/
+class MRDOCS_VISIBLE
+    PluginRegistry
+{
+public:
+    /** Constructor.
+
+        @param transforms The transforms to apply, in the order they
+        were installed.
+    */
+    MRDOCS_DECL
+    explicit
+    PluginRegistry(
+        std::vector<std::unique_ptr<Transform>> transforms) noexcept;
+
+    /** Apply the transforms to a corpus.
+
+        Invokes each transform once, in the order they were installed,
+        and stops at the first one that fails.
+
+        Call this after the corpus is built and finalized and before a
+        generator runs.
+
+        @return The error, if any occurred, naming the transform it came
+        from.
+
+        @param corpus The corpus to transform.
+        @param config The configuration that drove the build.
+    */
+    MRDOCS_DECL
+    Expected<void>
+    applyTransforms(Corpus& corpus, Config const& config) const;
+
+private:
+    std::vector<std::unique_ptr<Transform>> transforms_;
+};
+
 /** Load the plugins the configuration makes visible.
 
     Each library directly under the plugins directory of an addon root
@@ -224,13 +290,14 @@ using PluginMainFn = bool (*)(PluginContext&, Error*);
     function are not: both would run the same entry points, and the second
     installation of a generator id fails.
 
-    @return The error, if any occurred.
+    @return The transforms the plugins installed, or the error, if
+    any occurred.
 
     @param config The resolved configuration whose addon roots are
     walked, and which the plugins read.
 */
 MRDOCS_DECL
-Expected<void>
+Expected<PluginRegistry>
 loadPlugins(Config const& config);
 
 } // mrdocs

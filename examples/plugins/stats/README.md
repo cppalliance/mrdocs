@@ -4,8 +4,11 @@ A plugin, and a project documented with it. The two are separate things, and
 this directory holds one of each:
 
 - plugin.cpp is the plugin. It installs a generator, `stats`, which writes one
-  line per symbol kind saying how many symbols of that kind the corpus has.
-- sample-project/ is the project it is run on: a little C++ to document, a
+  line per symbol kind saying how many symbols of that kind the corpus has,
+  and a last line saying how many symbols have a brief; and a transform that
+  gives a symbol without a brief a placeholder one.
+- sample-project/ is the project it is run on: a little C++ to document, one
+  function of it left undocumented for the transform to fill in, a
   mrdocs.yml that asks for `generator: stats`, and stats.txt, what the
   generator writes for that input.
 
