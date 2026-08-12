@@ -1,7 +1,7 @@
 = Plugins
 :url-native: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/generators/native
 
-A plugin is a shared library that Mr.Docs loads as it starts up, handing it a context. Through that context, the plugin installs what it provides, so the rest of the run sees it as if it had shipped with the tool. Today, a plugin installs generators.
+A plugin is a shared library that Mr.Docs loads as it starts up, handing it a context. Through that context, the plugin installs what it provides, so the rest of the run sees it as if it had shipped with the tool: generators, which turn the corpus into output, and transforms, which change the corpus before any generator sees it.
 
 Reach for a plugin when the output needs {cpp}: a format whose rules are awkward to express in templates, a generator that depends on a system library, or one whose work is heavy enough to justify compiled code. The lighter options remain xref:extensions/data-driven-generators.adoc[data-driven generators] (templates only) and script-driven generators (Lua or JavaScript, see xref:extensions/corpus-extensions.adoc[Extensions]). The difference from xref:extensions/as-library.adoc[Mr.Docs as a library] is that a plugin runs inside the ordinary `mrdocs` tool: you keep the command line, the configuration, and everything else Mr.Docs does, and you do not build Mr.Docs or LLVM.
 
@@ -31,7 +31,7 @@ The `MRDOCS_PLUGIN_MAIN` macro defines the function Mr.Docs calls, naming the cp
 include::example$examples/generators/native/stats/plugin.cpp[tag=main]
 ----
 
-The context is how a plugin reaches Mr.Docs: cpp:PluginContext::installGenerator[] adds a generator, and cpp:PluginContext::config[] returns the configuration the run was started with, already loaded and normalized, in case what the plugin installs depends on it. The reference is valid for the duration of the call.
+The context is how a plugin reaches Mr.Docs: cpp:PluginContext::installGenerator[] adds a generator, cpp:PluginContext::installTransform[] adds a transform, and cpp:PluginContext::config[] returns the configuration the run was started with, already loaded and normalized, in case what the plugin installs depends on it. The reference is valid for the duration of the call.
 
 Along with the entry point, the macro defines a function that reports the version of the plugin interface the library was compiled against. Mr.Docs compares it with its own and refuses to call a plugin that was built against a different one. A plugin therefore has to be rebuilt when it is used with a Mr.Docs whose plugin interface has changed.
 
@@ -54,6 +54,36 @@ cpp:Generator::build[] receives the corpus and the configuration, and owns every
 ----
 include::example$examples/generators/native/stats/plugin.cpp[tag=build]
 ----
+
+== Transforming the corpus
+
+A plugin can also install a cpp:Transform[]: a pass that runs once, after the corpus is built and finalized and before any generator runs, so what it changes is what every output format sees. Where a generator is handed the corpus as `const`, a transform is handed it mutable, and may read it, change the symbols it finds, or both. What it cannot do is create a symbol or destroy one, since a corpus keeps its storage to itself. Everything a symbol holds is in reach, though, including the lists of members that the generators walk to decide what to write.
+
+[source,cpp]
+----
+class BriefFiller
+    : public mrdocs::Transform
+{
+public:
+    std::string_view
+    id() const noexcept override
+    {
+        return "brief-filler";
+    }
+
+    mrdocs::Expected<void>
+    apply(
+        mrdocs::Corpus& corpus,
+        mrdocs::Config const& config) const override;
+};
+
+MRDOCS_PLUGIN_MAIN(context)
+{
+    return context.installTransform(std::make_unique<BriefFiller>());
+}
+----
+
+The transforms a plugin installs run before the ones an extension script registers with `mrdocs.register_transform`, and among themselves in the order they were installed. An error from a transform stops the run before any generator sees the corpus, and the diagnostic names the transform through cpp:Transform::id[].
 
 == Building a plugin
 

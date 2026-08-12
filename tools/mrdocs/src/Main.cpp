@@ -20,6 +20,7 @@
 #include <mrdocs/Support/Chrono.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Transform.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/PrettyStackTrace.h>
@@ -270,6 +271,16 @@ DoGenerateAction(
         report::warn("Corpus is empty, not generating docs");
         return {};
     }
+
+    // --------------------------------------------------------------
+    //
+    // Apply plugin transforms
+    //
+    // --------------------------------------------------------------
+    // Plugin transforms run first, which is what this call site ahead of
+    // the extension one decides: what MrDocs was set up with applies
+    // before what a user script asks for.
+    MRDOCS_TRY(applyTransforms(corpus, config));
 
     // --------------------------------------------------------------
     //

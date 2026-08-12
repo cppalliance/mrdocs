@@ -27,7 +27,9 @@
 
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Transform.hpp>
 #include <cstddef>
+#include <memory>
 #include <string>
 
 using namespace mrdocs;
@@ -58,4 +60,36 @@ Expected<Symbol const&>
 probeLookup(Corpus const& corpus)
 {
     return corpus.lookup("x");
+}
+
+namespace {
+
+class ProbeTransform final
+    : public Transform
+{
+public:
+    std::string_view
+    id() const noexcept override
+    {
+        return "probe";
+    }
+
+    Expected<void>
+    apply(Corpus& corpus, Config const&) const override
+    {
+        Expected<void> result;
+        if (corpus.find(SymbolID::global) == nullptr)
+        {
+            result = Unexpected(formatError("the global namespace is missing"));
+        }
+        return result;
+    }
+};
+
+} // (anon)
+
+Expected<void>
+probeInstallTransform()
+{
+    return installTransform(std::make_unique<ProbeTransform>());
 }

@@ -130,6 +130,12 @@ public:
     {
         return mrdocs::installGenerator(std::move(G));
     }
+
+    Expected<void>
+    installTransform(std::unique_ptr<Transform> T) override
+    {
+        return mrdocs::installTransform(std::move(T));
+    }
 };
 
 // Look a plugin entry point up by name.

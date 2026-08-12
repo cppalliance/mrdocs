@@ -19,6 +19,7 @@
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
+#include <mrdocs/Transform.hpp>
 #include <memory>
 
 /** The version of the interface a plugin is built against.
@@ -155,6 +156,23 @@ public:
     virtual
     Expected<void>
     installGenerator(std::unique_ptr<Generator> G) = 0;
+
+    /** Install a corpus transform.
+
+        The transform runs once, after the corpus is built and finalized
+        and before any generator runs, so what it changes is what every
+        output format sees. Transforms a plugin installs run before the
+        ones an extension script registers, and among themselves in the
+        order they were installed.
+
+        @return An error if the transform is null.
+
+        @param T The transform to install. Ownership is transferred to
+        MrDocs, which keeps it for the rest of the run.
+    */
+    virtual
+    Expected<void>
+    installTransform(std::unique_ptr<Transform> T) = 0;
 };
 
 /** The type of the version function a plugin exports.
