@@ -1567,7 +1567,7 @@ populate(
         for (std::size_t i = 0; i < TPL->size(); ++i)
         {
             auto& Param = Result->Params.emplace_back(std::in_place_type<TypeTParam>);
-            populate(Param, TPL->getParam(i));
+            populate(Param, TPL->getParam(static_cast<unsigned>(i)));
         }
         if (TTPD->hasDefaultArgument() && !Result->Default)
         {
@@ -1617,7 +1617,7 @@ populate(
     std::size_t i = 0;
     while (explicitIt != ExplicitTemplateParameters.end())
     {
-        clang::NamedDecl const* P = TPL->getParam(i);
+        clang::NamedDecl const* P = TPL->getParam(static_cast<unsigned>(i));
         Polymorphic<TParam>& Param =
             i < TI.Params.size() ?
                 TI.Params[i] :
@@ -2621,7 +2621,7 @@ extractSFINAEInfo(clang::QualType const T)
     for (std::size_t I = 0; I < Args.size(); ++I)
     {
         if (I < SFINAEControl->ControllingParams.size()
-            && SFINAEControl->ControllingParams[I])
+            && SFINAEControl->ControllingParams[static_cast<unsigned>(I)])
         {
             MRDOCS_SYMBOL_TRACE(Args[I], context_);
             clang::TemplateArgument ArgsI = Args[I];
@@ -2694,7 +2694,7 @@ getSFINAEControlParams(
 
         // Find the index of the parameter that represents the SFINAE result
         // in the primary template arguments
-        unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *resultType);
+        unsigned ParamIdx = static_cast<unsigned>(FindParam(ATD->getInjectedTemplateArgs(context_), *resultType));
 
         // Return the controlling parameters with values corresponding to
         // the primary template arguments
@@ -2706,28 +2706,28 @@ getSFINAEControlParams(
         for (std::size_t i = 0; i < sfinaeControl->ControllingParams.size();
              ++i)
         {
-            if (sfinaeControl->ControllingParams[i])
+            if (sfinaeControl->ControllingParams[static_cast<unsigned>(i)])
             {
                 // Find the index of the parameter that represents the SFINAE
                 // result in the underlying template arguments
-                auto resultType = tryGetTemplateArgument(
+                auto argResultType = tryGetTemplateArgument(
                     sfinaeControl->Parameters,
                     underlyingTemplateInfo->Arguments,
                     i);
-                MRDOCS_CHECK_OR_CONTINUE(resultType);
-                MRDOCS_SYMBOL_TRACE(*resultType, context_);
+                MRDOCS_CHECK_OR_CONTINUE(argResultType);
+                MRDOCS_SYMBOL_TRACE(*argResultType, context_);
 
                 // Find the index of the parameter that represents the param
                 // in the primary template arguments
-                auto ParamIdx = FindParam(
+                auto argParamIdx = FindParam(
                     ATD->getInjectedTemplateArgs(context_),
-                    *resultType);
-                if (ParamIdx == static_cast<std::size_t>(-1))
+                    *argResultType);
+                if (argParamIdx == static_cast<std::size_t>(-1))
                 {
                     continue;
                 }
 
-                primaryControllingParams.set(ParamIdx);
+                primaryControllingParams.set(static_cast<unsigned>(argParamIdx));
             }
         }
 
@@ -2753,7 +2753,7 @@ getSFINAEControlParams(
     // For instance, in the specialization `std::enable_if<true,T>::type`,
     // `type` is `T`, which corresponds to the second template parameter
     // `T`, so `ParamIdx` is `1` to represent the second parameter.
-    unsigned ParamIdx = -1;
+    unsigned ParamIdx = static_cast<unsigned>(-1);
 
     // The `IsMismatch` function checks if there's a mismatch between the
     // clang::CXXRecordDecl of the clang::ClassTemplateDecl and the specified template
@@ -2883,7 +2883,7 @@ getSFINAEControlParams(
             // `type` is `T`, which corresponds to the second template
             // parameter `T`, so `ParamIdx` is `1` to represent the
             // second parameter.
-            ParamIdx = FoundIdx;
+            ParamIdx = static_cast<unsigned>(FoundIdx);
             // Get this primary template argument as a template
             // argument of the current type.
             clang::TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
@@ -2940,7 +2940,7 @@ getSFINAEControlParams(
     // template parameters that control the SFINAE result. The controlling
     // parameters are expressions that cannot be converted to
     // non-type template parameters.
-    llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
+    llvm::SmallBitVector ControllingParams(static_cast<unsigned>(PrimaryArgs.size()));
     for(auto* CTPSD : PartialSpecs) {
         MRDOCS_SYMBOL_TRACE(CTPSD, context_);
         auto PartialArgs = CTPSD->getTemplateArgs().asArray();
@@ -2965,7 +2965,7 @@ getSFINAEControlParams(
             default:
                 continue;
             }
-            ControllingParams.set(i);
+            ControllingParams.set(static_cast<unsigned>(i));
         }
     }
 
@@ -3031,7 +3031,7 @@ tryGetTemplateArgument(
     MRDOCS_CHECK_OR(Index < Parameters->size(), std::nullopt);
 
     // Attempt to get the default argument of the template parameter
-    clang::NamedDecl* ND = Parameters->getParam(Index);
+    clang::NamedDecl* ND = Parameters->getParam(static_cast<unsigned>(Index));
     MRDOCS_SYMBOL_TRACE(ND, context_);
     if(auto* TTPD = dyn_cast<clang::TemplateTypeParmDecl>(ND);
         TTPD && TTPD->hasDefaultArgument())

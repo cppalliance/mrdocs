@@ -22,9 +22,7 @@ foreach (data_driven IN ITEMS md tex jsonl)
             "${CMAKE_CURRENT_SOURCE_DIR}/data-driven/${data_driven}/simple.cpp"
             "--config=${CMAKE_CURRENT_SOURCE_DIR}/data-driven/${data_driven}/mrdocs.yml"
             "--output=${CMAKE_CURRENT_BINARY_DIR}/data-driven/${data_driven}"
-            "--addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons"
-            "--stdlib-includes=${LIBCXX_DIR}"
-            "--libc-includes=${CMAKE_SOURCE_DIR}/data/mrdocs/headers/libc-stubs"
+            ${MRDOCS_BUILTIN_DIR_ARGS}
             --log-level=warn
     )
 endforeach ()
@@ -34,8 +32,8 @@ foreach (script_driven IN ITEMS search-index json)
     add_test(
         NAME mrdocs-generator-script-driven-${script_driven}
         COMMAND bash run.sh
-                --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
                 --output=${CMAKE_CURRENT_BINARY_DIR}/script-driven/${script_driven}/reference-output
+                ${MRDOCS_BUILTIN_DIR_ARGS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/script-driven/${script_driven}
     )
     set_property(TEST mrdocs-generator-script-driven-${script_driven} PROPERTY

@@ -15,8 +15,8 @@ foreach (example IN ITEMS compilation-database cmake cmake-header-only scanned)
     add_test(
         NAME mrdocs-getting-started-${example}
         COMMAND bash run.sh
-                --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
                 --output=${CMAKE_CURRENT_BINARY_DIR}/${example}/reference-output
+                ${MRDOCS_BUILTIN_DIR_ARGS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${example}
     )
     set_property(TEST mrdocs-getting-started-${example} PROPERTY

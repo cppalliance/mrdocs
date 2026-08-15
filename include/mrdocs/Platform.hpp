@@ -85,6 +85,11 @@ namespace mrdocs {
 # endif
 #endif
 
+// Expected root of the MrDocs installation when package is found
+#ifndef MRDOCS_DEFAULT_ROOT
+#define MRDOCS_DEFAULT_ROOT ""
+#endif
+
 } // mrdocs
 
 

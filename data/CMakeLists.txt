@@ -9,10 +9,6 @@
 #
 
 # This directory only installs assets, so it does nothing unless installing.
-if (MRDOCS_BUILD_HEADERS_ONLY OR NOT MRDOCS_INSTALL)
-    return()
-endif()
-
 # Install the shared assets this directory owns into the FHS share/ location.
 # (The LLVM-derived assets, bundled libc++ headers and the clang resource dir,
 # are installed by src/, next to the dependency that provides them.)
@@ -25,7 +21,7 @@ foreach (mrdocs_dir addons)
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
             FILES_MATCHING PATTERN "*")
 endforeach ()
-foreach (data_dir cmake gdb)
+foreach (data_dir gdb)
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${data_dir}
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
             FILES_MATCHING PATTERN "*")

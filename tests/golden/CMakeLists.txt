@@ -51,9 +51,7 @@ add_test(NAME mrdocs-golden-tests
         mrdocs-golden-tests
         --action=test
         "${CMAKE_CURRENT_SOURCE_DIR}/fixtures"
-        "--addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons"
-        "--stdlib-includes=${LIBCXX_DIR}"
-        "--libc-includes=${CMAKE_SOURCE_DIR}/data/mrdocs/headers/libc-stubs"
+        ${MRDOCS_BUILTIN_DIR_ARGS}
         --log-level=warn
 )
 foreach (action IN ITEMS test create update)
@@ -62,9 +60,7 @@ foreach (action IN ITEMS test create update)
             mrdocs-golden-tests
             --action=${action}
             "${CMAKE_CURRENT_SOURCE_DIR}/fixtures"
-            "--addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons"
-            "--stdlib-includes=${LIBCXX_DIR}"
-            "--libc-includes=${CMAKE_SOURCE_DIR}/data/mrdocs/headers/libc-stubs"
+            ${MRDOCS_BUILTIN_DIR_ARGS}
             --log-level=warn
         DEPENDS mrdocs-golden-tests
     )
@@ -96,12 +92,13 @@ endif()
 # where bash is unavailable (Windows).
 find_program(BASH_PROGRAM bash)
 if (BASH_PROGRAM AND NOT WIN32)
-    set(MRDOCS_SCHEMA_STDLIB "--stdlib-includes=${LIBCXX_DIR}")
-    if (STDLIB_INCLUDE_DIR)
-        string(APPEND MRDOCS_SCHEMA_STDLIB " --stdlib-includes=${STDLIB_INCLUDE_DIR}")
-    endif()
+    # generate-schema.sh passes --addons itself (ADDONS env); feed the remaining
+    # built-in dir flags through MRDOCS_EXTRA_ARGS as a space-separated string.
+    set(_schema_extra_args ${MRDOCS_BUILTIN_DIR_ARGS})
+    list(FILTER _schema_extra_args EXCLUDE REGEX "^--addons=")
+    string(REPLACE ";" " " _schema_extra_args "${_schema_extra_args}")
     add_test(NAME schema-check
         COMMAND ${BASH_PROGRAM} "${PROJECT_SOURCE_DIR}/utils/codegen/generate-schema.sh" --check)
     set_tests_properties(schema-check PROPERTIES ENVIRONMENT
-        "MRDOCS=$<TARGET_FILE:mrdocs>;ADDONS=${PROJECT_SOURCE_DIR}/data/mrdocs/addons;MRDOCS_INPUT=${PROJECT_SOURCE_DIR}/CMakeLists.txt;MRDOCS_EXTRA_ARGS=${MRDOCS_SCHEMA_STDLIB} --libc-includes=${PROJECT_SOURCE_DIR}/data/mrdocs/headers/libc-stubs --concurrency=16")
+        "MRDOCS=$<TARGET_FILE:mrdocs>;ADDONS=${PROJECT_SOURCE_DIR}/data/mrdocs/addons;MRDOCS_INPUT=${PROJECT_SOURCE_DIR}/CMakeLists.txt;MRDOCS_EXTRA_ARGS=${_schema_extra_args} --concurrency=16")
 endif()

@@ -81,35 +81,11 @@
         "default": true
       },
       {
-        "name": "stdlib-includes",
-        "brief": "C++ Standard Library include paths",
-        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libcxx"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
         "name": "use-system-libc",
         "brief": "Use the system C standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
         "type": "bool",
         "default": true
-      },
-      {
-        "name": "libc-includes",
-        "brief": "Standard Library include paths",
-        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
       },
       {
         "name": "system-includes",
@@ -506,15 +482,6 @@
         "default": ""
       },
       {
-        "name": "addons",
-        "brief": "Path to the Addons directory",
-        "details": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
-        "type": "path",
-        "default": "<mrdocs-root>/share/mrdocs/addons",
-        "relative-to": "<config-dir>",
-        "must-exist": true
-      },
-      {
         "name": "addons-supplemental",
         "brief": "Additional addons layered on top of the base addons",
         "details": "Optional list of supplemental addons directories that are loaded after the base addons (built-in or replacement). Files in later supplemental directories override files from earlier ones and from the base addons. Use this to add or override a few templates/helpers without copying the entire addons tree.",
@@ -733,6 +700,56 @@
         "details": "When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.",
         "type": "bool",
         "default": false
+      }
+    ]
+  },
+  {
+    "category": "Built-in directories",
+    "brief": "Where MrDocs finds its own bundled resources",
+    "details": "These point at the addons and the parse-time header sets that MrDocs ships with. They default to `<mrdocs-root>/share/mrdocs/...`, derived from the MrDocs root, and are not meant for everyday configuration. They are exposed so tests and unusual installs can redirect MrDocs's built-in directories.",
+    "options": [
+      {
+        "name": "addons",
+        "brief": "Path to the Addons directory",
+        "details": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
+        "type": "path",
+        "default": "<mrdocs-root>/share/mrdocs/addons",
+        "relative-to": "<config-dir>",
+        "must-exist": true
+      },
+      {
+        "name": "stdlib-includes",
+        "brief": "C++ Standard Library include paths",
+        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libcxx"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "libc-includes",
+        "brief": "Standard Library include paths",
+        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "clang-resource-dir",
+        "brief": "Clang resource directory",
+        "details": "Directory holding Clang's builtin headers (`stddef.h`, `stdarg.h`, and the other compiler intrinsics) in its `include/` subdirectory. MrDocs bundles the resource directory that matches its embedded Clang and passes it as `-resource-dir`, so parsing does not depend on a Clang installation on the host. Leave empty to let Clang locate its own resource directory.",
+        "type": "path",
+        "default": "<mrdocs-root>/share/mrdocs/headers/clang",
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
       }
     ]
   }

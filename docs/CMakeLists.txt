@@ -11,30 +11,30 @@
 # The documentation (Antora) build. This is a regular build: when
 # MRDOCS_BUILD_DOCS is on we add custom targets that run mrdocs over its own
 # headers (the reference) and Antora over the site. The separate "compile every
-# public header" build is the MrDocs build, MRDOCS_BUILD_HEADERS_ONLY, and lives in
-# src/ (it compiles a different target and links nothing).
-
-if (MRDOCS_BUILD_HEADERS_ONLY OR NOT MRDOCS_BUILD_DOCS)
-    return()
-endif()
+# public header" build is the MrDocs build (MRDOCS_MRDOCS_BUILD), and lives in
+# docs/mrdocs-build.cmake (it compiles a different target and links nothing).
 
 # ---- Reference (mrdocs run over its own headers) ----
 if (MRDOCS_GENERATE_REFERENCE)
-    include(${PROJECT_SOURCE_DIR}/data/cmake/MrDocs.cmake)
     set(MRDOCS_REFERENCE_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/reference)
     file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS
             ${PROJECT_SOURCE_DIR}/include/*.hpp ${PROJECT_SOURCE_DIR}/include/*.inc)
     set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-    add_mrdocs(generate_reference
-            CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/mrdocs.yml
+    # Run the freshly built mrdocs over its own public headers. In-tree we point
+    # it at the source-tree addons and the bundled libc++ / libc-stub headers
+    # (LIBCXX_DIR comes from src/), so extraction does not depend on the host
+    # toolchain. The config's compilation database drives which sources are read;
+    # REFERENCE_SOURCES is a DEPENDS list so the target reruns when they change.
+    add_custom_target(generate_reference ALL
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${MRDOCS_REFERENCE_OUTPUT_DIR}
+            COMMAND $<TARGET_FILE:mrdocs>
+                --config=${CMAKE_CURRENT_SOURCE_DIR}/mrdocs.yml
+                --output=${MRDOCS_REFERENCE_OUTPUT_DIR}
+                ${MRDOCS_BUILTIN_DIR_ARGS}
+            DEPENDS ${REFERENCE_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/mrdocs.yml
             COMMENT "Generate MrDocs reference"
-            OUTPUT ${MRDOCS_REFERENCE_OUTPUT_DIR}
-            # This in-tree target runs before install, so no build-tree share/
-            # is staged; point add_mrdocs at the addons in the source tree
-            # (they moved to data/mrdocs/addons in the layout refactor) instead
-            # of letting the helper fall through to its "ADDONS not set" error.
-            ADDONS ${PROJECT_SOURCE_DIR}/data/mrdocs/addons
-            ${REFERENCE_SOURCES})
+            USES_TERMINAL)
+    add_dependencies(generate_reference mrdocs)
     if (MRDOCS_GENERATE_ANTORA_REFERENCE)
         set(MRDOCS_ANTORA_REFERENCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules/ROOT/pages/reference)
         add_custom_target(generate_antora_reference

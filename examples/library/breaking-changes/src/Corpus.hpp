@@ -26,7 +26,8 @@ namespace mrdocs::example {
 Expected<Corpus>
 loadCorpusFromConfig(
     std::string const& configPath,
-    ReferenceDirectories const& dirs);
+    ReferenceDirectories const& dirs,
+    char const** argv = nullptr);
 
 } // namespace mrdocs::example
 

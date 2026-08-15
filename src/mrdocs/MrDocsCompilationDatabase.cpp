@@ -422,6 +422,18 @@ adjustCommandLine(
     }
 
     // ------------------------------------------------------
+    // Clang resource directory
+    // ------------------------------------------------------
+    // Point clang at the bundled resource directory so its builtin headers
+    // (stddef.h, stdarg.h, ...) come from the embedded clang rather than the
+    // host. clang appends `/include` to it. Empty lets clang locate its own.
+    if (!config.clangResourceDir.empty())
+    {
+        new_cmdline.emplace_back("-resource-dir");
+        new_cmdline.emplace_back(config.clangResourceDir);
+    }
+
+    // ------------------------------------------------------
     // Add user directories to include search path
     // ------------------------------------------------------
     for (auto const& inc : config.systemIncludes)

@@ -15,7 +15,7 @@ namespace noop {
 
 Expected<void>
 NoopGenerator::
-build(Corpus const&, Config const& config) const
+build(Corpus const&, Config const&) const
 {
     // Extraction has already happened by the time a generator runs;
     // the no-op generator deliberately writes nothing.

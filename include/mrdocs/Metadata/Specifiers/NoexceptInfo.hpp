@@ -68,7 +68,7 @@ toString(
 inline
 void
 tag_invoke(
-    dom::ValueFromTag tag,
+    dom::ValueFromTag,
     dom::Value& v,
     NoexceptInfo const& info)
 {
