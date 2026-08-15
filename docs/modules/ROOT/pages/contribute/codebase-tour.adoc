@@ -56,7 +56,6 @@ This directory contains shared resources for the documentation generators and ut
 Its subdirectories are installed in the `share` directory of the installation.
 
 * `data/`—Shared resources for the documentation generators
-* `data/cmake/`—CMake modules to generate the documentation
 * `data/gdb/`—GDB pretty printers
 * `data/mrdocs/`—Shared resources for the documentation generators
 

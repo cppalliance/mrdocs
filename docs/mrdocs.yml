@@ -12,6 +12,7 @@ input:
   - ../include
   - ../libs/dom/include
   - ../libs/handlebars/include
+  - ../libs/polyfill/include
 file-patterns:
   - '*.hpp'
 include-symbols:
@@ -32,5 +33,5 @@ implementation-defined:
   - '**mrdocs_*_descriptor_fn'
 multipage: true
 generator: adoc
-cmake: '-D MRDOCS_BUILD_HEADERS_ONLY=ON'
+cmake: '-D MRDOCS_MRDOCS_BUILD=ON'
 

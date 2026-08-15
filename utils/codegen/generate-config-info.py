@@ -819,7 +819,12 @@ def generate_option_declaration(option, style=None):
         # Enums should be initialized in the hpp file
         cpp_default_value = to_cpp_default_value(option, True)
         if cpp_default_value:
-            contents += f' = {cpp_default_value}'
+            # Cast a negative default for an unsigned field so MSVC does not warn
+            # C4245 (signed/unsigned mismatch), e.g. `unsigned report = -1`.
+            if option["type"] == 'unsigned' and str(cpp_default_value).startswith('-'):
+                contents += f' = static_cast<unsigned>({cpp_default_value})'
+            else:
+                contents += f' = {cpp_default_value}'
     contents += ';'
     return contents
 

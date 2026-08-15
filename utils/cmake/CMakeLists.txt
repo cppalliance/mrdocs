@@ -8,6 +8,6 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-# Command-line tools. Each tool lives in its own subdirectory with its own
-# CMakeLists; the mrdocs CLI is the only one so far.
-add_subdirectory(mrdocs)
+include(helpers.cmake)
+include(install.cmake)
+

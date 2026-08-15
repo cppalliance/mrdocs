@@ -272,7 +272,7 @@ static
 void
 luaM_report(
     Error const& err,
-    source_location loc =
+    [[maybe_unused]] source_location loc =
         source_location::current())
 {
     SourceLocation Loc(err.location());
@@ -799,7 +799,7 @@ domValue_push(
 static
 char const*
 Reader(
-    lua_State *L,
+    lua_State *,
     void* data,
     size_t* size)
 {

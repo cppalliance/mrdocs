@@ -89,6 +89,14 @@ typedef unsigned int wint_t;
 using errno_t = int;
 
 // max_align_t
+// Guarded with clang's own macro so this stub coexists with clang's
+// __stddef_max_align_t.h (from the resource directory): whichever is included
+// first defines the type and sets the guard, and the other then skips it.
+// Without the guard, both define an anonymous-struct max_align_t and clang
+// rejects the second as a typedef redefinition with a different type.
+#if !defined(__CLANG_MAX_ALIGN_T_DEFINED) && !defined(_GCC_MAX_ALIGN_T)
+#define __CLANG_MAX_ALIGN_T_DEFINED
+#define _GCC_MAX_ALIGN_T
 #if defined(_MSC_VER)
 typedef double max_align_t;
 #elif defined(__APPLE__)
@@ -105,6 +113,7 @@ typedef struct {
         __attribute__((__aligned__(__alignof__(long double))));
 } max_align_t;
 #endif
+#endif // max_align_t guard
 
 // offsetof_t
 #define offsetof(t, d) __builtin_offsetof(t, d)

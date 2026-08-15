@@ -460,7 +460,7 @@ enumeratorKebabSize()
 {
     std::string_view name;
     for_each(describe_enumerators<decltype(V)>{},
-        [&](auto const& D) { if (D.value == V) { name = D.name; } });
+        [&](auto const& D) { if constexpr (std::remove_cvref_t<decltype(D)>::value == V) { name = D.name; } });
     return toKebabCase(name).size();
 }
 
@@ -471,7 +471,7 @@ enumeratorKebabArray()
     std::array<char, enumeratorKebabSize<V>()> arr{};
     std::string_view name;
     for_each(describe_enumerators<decltype(V)>{},
-        [&](auto const& D) { if (D.value == V) { name = D.name; } });
+        [&](auto const& D) { if constexpr (std::remove_cvref_t<decltype(D)>::value == V) { name = D.name; } });
     std::string const kebab = toKebabCase(name);
     for (std::size_t i = 0; i < arr.size(); ++i) { arr[i] = kebab[i]; }
     return arr;

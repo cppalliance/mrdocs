@@ -301,6 +301,9 @@ unexpected(E) -> unexpected<E>;
     this single overload and there is no ADL ambiguity across namespaces. It
     yields exactly `unexpected<E>`, which `expected` recognizes (a derived type
     would not be, breaking `expected<T&>`).
+
+    @param e The error value to wrap.
+    @return An `unexpected` holding the decayed error value.
 */
 template <class E>
 constexpr unexpected<std::remove_cvref_t<E>>

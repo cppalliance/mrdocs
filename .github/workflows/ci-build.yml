@@ -79,6 +79,8 @@ jobs:
             ${{ matrix.bootstrap-sanitizer && format('--sanitizer {0}', matrix.bootstrap-sanitizer) || '' }} \
             ${{ matrix.common-ccflags && format('--cflags="{0}" --cxxflags="{0}"', matrix.common-ccflags) || '' }}
           cat "$RUNNER_TEMP/bootstrap-env.txt" >> "$GITHUB_ENV"
+          # mrdocs install prefix, reused for the install and the consumer test
+          echo "MRDOCS_PREFIX=${GITHUB_WORKSPACE//\\//}/.local" >> "$GITHUB_ENV"
 
       # Save the LLVM cache when bootstrap rebuilt it (cache miss or
       # stale stamp). BOOTSTRAP_REBUILT lists rebuilt recipes.
@@ -129,7 +131,7 @@ jobs:
           generator: Ninja
           build-dir: build/mrdocs
           build-type: ${{ matrix.build-type }}
-          install-prefix: .local
+          install-prefix: ${{ env.MRDOCS_PREFIX }}
           export-compile-commands: true
           run-tests: true
           install: true
@@ -138,6 +140,58 @@ jobs:
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
           ctest-timeout: 9000
+
+      # Consume the freshly installed mrdocs through its exported CMake package,
+      # from an out-of-tree project (tests/cmake): find_package(mrdocs), link
+      # mrdocs::mrdocs-core, and run the installed binary via MRDOCS_EXECUTABLE.
+      # This is the only coverage of mrdocs-as-a-library, so it runs on every
+      # normal build, on every platform (the default static library bundles its
+      # private toolchain, so this is where we prove a consumer links it with no
+      # LLVM/Clang/JerryScript/Lua present). It goes through the same
+      # cmake-workflow action as the main build (configure + build + ctest),
+      # pointed at tests/cmake, discovering the install through mrdocs_ROOT -- the
+      # package-specific find_package hint rather than CMAKE_PREFIX_PATH, so the
+      # <PackageName>_ROOT search path is exercised. Only the ABI flags mrdocs was
+      # built with are reused (the consumer must match the same standard library),
+      # not mrdocs's own -Werror/-static/-WX matrix flags. Coverage/sanitizer
+      # builds use instrumented toolchains an out-of-tree consumer would have to
+      # mirror exactly, so those are skipped. mrdocs_ROOT gets the MRDOCS_PREFIX
+      # resolved above.
+      - name: CMake Consumer Test (cmake test)
+        if: ${{ !matrix.coverage && !matrix.bootstrap-sanitizer }}
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
+        with:
+          cmake-version: '>=3.26'
+          source-dir: tests/cmake
+          build-dir: build/cmake-consumer
+          cxxstd: ${{ matrix.cxxstd }}
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          cxxflags: ${{ env.BOOTSTRAP_CXXFLAGS }}
+          ldflags: ${{ env.BOOTSTRAP_LDFLAGS }}
+          generator: Ninja
+          build-type: ${{ matrix.build-type }}
+          extra-args: -D mrdocs_ROOT=${{ env.MRDOCS_PREFIX }}
+          run-tests: true
+          install: false
+
+      - name: CMake Consumer Test (library example)
+        if: ${{ !matrix.coverage && !matrix.bootstrap-sanitizer }}
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
+        with:
+          cmake-version: '>=3.26'
+          source-dir: examples/library/breaking-changes
+          build-dir: build/example-breaking-changes
+          cxxstd: ${{ matrix.cxxstd }}
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          cxxflags: ${{ env.BOOTSTRAP_CXXFLAGS }}
+          ldflags: ${{ env.BOOTSTRAP_LDFLAGS }}
+          generator: Ninja
+          build-type: ${{ matrix.build-type }}
+          extra-args: -D mrdocs_ROOT=${{ env.MRDOCS_PREFIX }}
+          run-tests: true
+          install: false
 
       # Upload packages for ci-releases.yml to pick up
       - name: Upload GitHub Release Artifacts

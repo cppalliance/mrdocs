@@ -49,6 +49,12 @@ echo "::endgroup::"
 echo "::group::Export environment variables"
 echo "MRDOCS_ROOT=$MRDOCS_INSTALL_DIR"
 echo "MRDOCS_ROOT=$MRDOCS_INSTALL_DIR" >> "$GITHUB_ENV"
+# CMake-valid absolute prefix for find_package(mrdocs). MRDOCS_ROOT above is the
+# Git Bash /d/... form on Windows, which CMake rejects; derive this one from
+# GITHUB_WORKSPACE and normalize backslashes instead.
+MRDOCS_PREFIX="${GITHUB_WORKSPACE//\\//}/.install/mrdocs"
+echo "MRDOCS_PREFIX=$MRDOCS_PREFIX"
+echo "MRDOCS_PREFIX=$MRDOCS_PREFIX" >> "$GITHUB_ENV"
 echo "PATH += $MRDOCS_INSTALL_DIR/bin"
 echo "$MRDOCS_INSTALL_DIR/bin" >> "$GITHUB_PATH"
 echo "::endgroup::"

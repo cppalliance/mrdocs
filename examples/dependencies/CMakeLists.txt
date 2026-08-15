@@ -14,8 +14,8 @@ foreach (example IN ITEMS find shim-files shim-snippets accept-missing)
     add_test(
         NAME mrdocs-dependencies-${example}
         COMMAND mrdocs docs/mrdocs.yml
-                --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
                 --output ${CMAKE_CURRENT_BINARY_DIR}/${example}/reference-output
+                ${MRDOCS_BUILTIN_DIR_ARGS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${example}
     )
 endforeach ()

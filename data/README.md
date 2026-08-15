@@ -8,6 +8,5 @@ mirrored into the `share/` subtree; this README is not installed.
 ## Contents
 - `mrdocs/` — runtime assets installed with MrDocs: `addons/` (Handlebars
   templates and generator helpers) and `headers/` (bundled libc stubs).
-- `cmake/` — `MrDocs.cmake`, the consumer helper for downstream CMake projects.
 - `gdb/` — GDB pretty-printers for MrDocs types.
 - `lldb/` — LLDB data formatters for MrDocs types.

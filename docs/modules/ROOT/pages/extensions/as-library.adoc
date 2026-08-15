@@ -6,14 +6,12 @@ A {cpp} program can also link the cpp:mrdocs[mrdocs-core] library, drive corpus 
 
 == Build integration
 
-cpp:mrdocs[mrdocs-core] is exported through a CMake package config:
+cpp:mrdocs[mrdocs-core] is exported through a CMake package config. The `breaking-changes` example below links it exactly this way:
 
+.`examples/library/breaking-changes/CMakeLists.txt`
 [source,cmake]
 ----
-find_package(mrdocs REQUIRED CONFIG)
-add_executable(my_tool main.cpp)
-target_link_libraries(my_tool PRIVATE mrdocs::mrdocs-core)
-target_compile_features(my_tool PRIVATE cxx_std_23)
+include::example$examples/library/breaking-changes/CMakeLists.txt[tags=package;target]
 ----
 
 == Building a corpus

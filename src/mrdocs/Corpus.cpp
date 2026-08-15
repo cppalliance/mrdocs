@@ -74,7 +74,7 @@ findFirstParentInfo(
         MRDOCS_CHECK_OR(contextUniquePtr, SymbolID::invalid);
         auto& context = *contextUniquePtr;
         bool const isParent = visit(context, []<typename InfoTy>(
-            InfoTy const& I) -> bool
+            InfoTy const&) -> bool
         {
             return SymbolParent<InfoTy>;
         });

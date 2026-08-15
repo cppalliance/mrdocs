@@ -49,7 +49,7 @@ jobs:
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.9.5
         with:
-          apt-get: build-essential asciidoctor cmake bzip2 git rsync
+          apt-get: build-essential asciidoctor cmake ninja-build bzip2 git rsync
 
       - name: Clone MrDocs
         uses: actions/checkout@v6
@@ -100,6 +100,24 @@ jobs:
 
       - name: Install MrDocs from Package
         run: .github/scripts/install-mrdocs-package.sh
+
+      # Discovers the package through mrdocs_ROOT (the package-specific
+      # find_package hint) rather than CMAKE_PREFIX_PATH. install-mrdocs-package.sh
+      # exports MRDOCS_PREFIX as its CMake-valid form.
+      - name: CMake Consumer Test (release package)
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
+        with:
+          cmake-version: '>=3.26'
+          source-dir: tests/cmake
+          build-dir: build/cmake-consumer
+          cxxstd: ${{ matrix.cxxstd }}
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          generator: Ninja
+          build-type: ${{ matrix.build-type }}
+          extra-args: -D mrdocs_ROOT=${{ env.MRDOCS_PREFIX }}
+          run-tests: true
+          install: false
 
       - name: Clone Boost.URL
         uses: alandefreitas/cpp-actions/boost-clone@v1.9.5

@@ -98,7 +98,7 @@ class MrDocsFileSystem : public llvm::vfs::FileSystem {
                 shim_macro += '_';
             } else
             {
-                shim_macro += std::toupper(c);
+                shim_macro += static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
             }
         }
         std::string result;

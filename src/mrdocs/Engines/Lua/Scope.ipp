@@ -72,7 +72,7 @@ Expected<Value>
 Scope::
 getGlobal(
     std::string_view key,
-    source_location loc)
+    [[maybe_unused]] source_location loc)
 {
     Access A(*this);
     lua_pushglobaltable(A);
