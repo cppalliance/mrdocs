@@ -38,6 +38,12 @@
   --ds-gold-500: #e5be33; /* rest / function-name / check accent */
   --ds-gold-700: #c8aa28; /* active / pressed          */
 
+  /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
+  /* Theme-swapped rather than a ramp: the mockups use magenta on the
+     cream/light surfaces and the warmer red on the dark ones. */
+  --ds-pink-500: #e63c90; /* light-theme label         */
+  --ds-red-500: #fc4848; /* dark-theme label          */
+
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
   --ds-black: #000; /* comic borders & hard shadows */
   --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
@@ -218,6 +224,8 @@
   --ds-color-bg: var(--ds-paper);
   --ds-color-surface: var(--ds-paper-raised);
   --ds-color-surface-sunken: var(--ds-paper-code);
+  --ds-color-surface-accent: var(--ds-blue-100);
+  --ds-color-label: var(--ds-pink-500);
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -262,6 +270,8 @@
     --ds-color-bg: var(--ds-navy-800);
     --ds-color-surface: var(--ds-navy-700);
     --ds-color-surface-sunken: var(--ds-navy-600);
+    --ds-color-surface-accent: var(--ds-navy-700);
+    --ds-color-label: var(--ds-red-500);
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -300,6 +310,8 @@
   --ds-color-bg: var(--ds-navy-800);
   --ds-color-surface: var(--ds-navy-700);
   --ds-color-surface-sunken: var(--ds-navy-600);
+  --ds-color-surface-accent: var(--ds-navy-700);
+  --ds-color-label: var(--ds-red-500);
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -334,6 +346,18 @@
  * LAYER 2 — COMPONENT  (reference the semantic layer only)
  * ===================================================================== */
 :root {
+  /* ---- Comic card (feature grid) ---------------------------------- */
+  --ds-feature-bg: var(--ds-color-surface-accent);
+  --ds-feature-border-width: var(--ds-border-width-bold);
+  --ds-feature-border-color: var(--ds-black);
+  --ds-feature-radius: var(--ds-radius);
+  --ds-feature-shadow: var(--ds-shadow-comic);
+  --ds-feature-padding: var(--ds-space-lg);
+  --ds-feature-title-color: var(--ds-color-label);
+  /* Icon sits in its own bordered tile in the mockups. */
+  --ds-feature-icon-size: 2.25rem;
+  --ds-feature-icon-bg: var(--ds-color-surface);
+
   /* ---- Button / CTA (comic) --------------------------------------- */
   --ds-btn-height: 2.5rem;
   --ds-btn-padding-x: 1.5em;

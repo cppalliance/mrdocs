@@ -60,6 +60,12 @@
   --ds-gold-500: #e5be33; /* rest / function-name / check accent */
   --ds-gold-700: #c8aa28; /* active / pressed          */
 
+  /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
+  /* Theme-swapped rather than a ramp: the mockups use magenta on the
+     cream/light surfaces and the warmer red on the dark ones. */
+  --ds-pink-500: #e63c90; /* light-theme label         */
+  --ds-red-500: #fc4848; /* dark-theme label          */
+
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
   --ds-black: #000; /* comic borders & hard shadows */
   --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
@@ -240,6 +246,8 @@
   --ds-color-bg: var(--ds-paper);
   --ds-color-surface: var(--ds-paper-raised);
   --ds-color-surface-sunken: var(--ds-paper-code);
+  --ds-color-surface-accent: var(--ds-blue-100);
+  --ds-color-label: var(--ds-pink-500);
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -284,6 +292,8 @@
     --ds-color-bg: var(--ds-navy-800);
     --ds-color-surface: var(--ds-navy-700);
     --ds-color-surface-sunken: var(--ds-navy-600);
+    --ds-color-surface-accent: var(--ds-navy-700);
+    --ds-color-label: var(--ds-red-500);
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -322,6 +332,8 @@
   --ds-color-bg: var(--ds-navy-800);
   --ds-color-surface: var(--ds-navy-700);
   --ds-color-surface-sunken: var(--ds-navy-600);
+  --ds-color-surface-accent: var(--ds-navy-700);
+  --ds-color-label: var(--ds-red-500);
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -356,6 +368,18 @@
  * LAYER 2 — COMPONENT  (reference the semantic layer only)
  * ===================================================================== */
 :root {
+  /* ---- Comic card (feature grid) ---------------------------------- */
+  --ds-feature-bg: var(--ds-color-surface-accent);
+  --ds-feature-border-width: var(--ds-border-width-bold);
+  --ds-feature-border-color: var(--ds-black);
+  --ds-feature-radius: var(--ds-radius);
+  --ds-feature-shadow: var(--ds-shadow-comic);
+  --ds-feature-padding: var(--ds-space-lg);
+  --ds-feature-title-color: var(--ds-color-label);
+  /* Icon sits in its own bordered tile in the mockups. */
+  --ds-feature-icon-size: 2.25rem;
+  --ds-feature-icon-bg: var(--ds-color-surface);
+
   /* ---- Button / CTA (comic) --------------------------------------- */
   --ds-btn-height: 2.5rem;
   --ds-btn-padding-x: 1.5em;
@@ -3903,13 +3927,48 @@ footer a:focus {
 	.principles-features {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 5rem;
-		row-gap: 1rem;
+		gap: var(--ds-space-lg);
+		row-gap: var(--ds-space-lg);
 	}
 }
 
+/* Comic feature cards: filled panel, hard outline, hard offset shadow.
+   Styled off the bare divs the template emits, so no markup change is
+   needed (index.html is generated and cannot be re-rendered here). */
+.principles-features > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-space-xs);
+    padding: var(--ds-feature-padding);
+    background: var(--ds-feature-bg);
+    border: var(--ds-feature-border-width) solid var(--ds-feature-border-color);
+    border-radius: var(--ds-feature-radius);
+    box-shadow: var(--ds-feature-shadow);
+}
+
 .principles-features svg {
+    box-sizing: content-box;
+    width: var(--ds-feature-icon-size);
+    height: var(--ds-feature-icon-size);
+    padding: var(--ds-space-2xs);
     color: var(--function-name-color);
+    background: var(--ds-feature-icon-bg);
+    border: var(--ds-feature-border-width) solid var(--ds-feature-border-color);
+    border-radius: var(--ds-feature-radius);
+}
+
+/* Card titles take the accent label colour and the underline from the
+   mockups; the display face and italic come from the shared heading rule. */
+.principles-features h4 {
+    margin-bottom: 0;
+    color: var(--ds-feature-title-color);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.principles-features p {
+    margin-bottom: 0;
 }
 
 .features hgroup {
