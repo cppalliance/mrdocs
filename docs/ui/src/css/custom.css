@@ -55,10 +55,11 @@
 }
 
 /* Doc-content headings use the brand heading colour (blue on light, yellow on
-   dark). They deliberately stay in the body face and keep their normal case:
-   in reference pages the headings are C++ symbol names, so uppercasing them or
-   setting the Bangers display face would mangle them. Bangers is reserved for
-   the site/brand title and the landing page. */
+   dark). The face itself is set in doc.css, which puts them on the display
+   face as part of the comic refresh; only the colour belongs here.
+   Note the case is NOT changed: reference headings are C++ symbol names, so
+   uppercasing them would mangle them. That part of the original reasoning
+   still holds and is deliberately preserved. */
 .doc h1,
 .doc h2,
 .doc h3,
@@ -66,7 +67,6 @@
 .doc h5,
 .doc h6 {
   color: var(--heading-font-color);
-  font-family: var(--body-font-family);
 }
 
 .toc.sidebar .toc-menu {
