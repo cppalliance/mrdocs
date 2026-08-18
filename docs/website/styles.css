@@ -380,6 +380,14 @@
   --ds-feature-icon-size: 2.25rem;
   --ds-feature-icon-bg: var(--ds-color-surface);
 
+  /* ---- Code / reference row panels (comic) ------------------------ */
+  --ds-panel-border-width: var(--ds-border-width-bold);
+  --ds-panel-border-color: var(--ds-black);
+  --ds-panel-radius: var(--ds-radius);
+  --ds-panel-shadow: var(--ds-shadow-comic);
+  --ds-panel-heading: var(--ds-color-accent);
+  --ds-panel-gap: var(--ds-space-lg);
+
   /* ---- Button / CTA (comic) --------------------------------------- */
   --ds-btn-height: 2.5rem;
   --ds-btn-padding-x: 1.5em;
@@ -3473,16 +3481,27 @@ footer a:focus {
     --navc-ink: #e9edf2;
     --navc-border: #33454f;
     --navc-gold: #facc15;
-    --navc-toggle-bg: rgba(120, 180, 255, 0.14);
     --navc-shadow: #05080a;
+
+    /* Theme toggle, Figma "Secondary/Default". Edge/icon are their own
+       tokens rather than --navc-border/--navc-shadow: Figma specifies pure
+       black edges here on dark, and those tokens are shared with the navbar
+       rule, GitHub button and hamburger, which have no such spec.
+       Figma uses the same surface tint in both themes. */
+    --navc-toggle-bg: rgba(30, 120, 255, 0.1);
+    --navc-toggle-edge: #000000;
+    --navc-toggle-icon: #ffffff;
 }
 :root[data-theme="light"] {
     --navc-bg: #ffffff;
     --navc-ink: #0f172a;
     --navc-border: #0f172a;
     --navc-gold: #facc15;
-    --navc-toggle-bg: rgba(30, 120, 255, 0.10);
     --navc-shadow: #0f172a;
+
+    --navc-toggle-bg: rgba(30, 120, 255, 0.1);
+    --navc-toggle-edge: #0f172a;
+    --navc-toggle-icon: #0f172a;
 }
 
 .nav {
@@ -3560,13 +3579,10 @@ footer a:focus {
 .nav ul.nav-menu > li.nav-link > a.nav-btn--gh,
 .nav ul.nav-menu > li.nav-link > a.nav-btn--gh:hover,
 .nav ul.nav-menu > li.nav-link > a.nav-btn--gh:focus { color: #0f172a; }
-.nav .nav-btn--toggle { background: var(--navc-toggle-bg); width: 38px; height: 38px; padding: 5px; }
-.nav .nav-btn--toggle svg { width: 22px; height: 22px; }
-.nav .nav-btn--toggle .icon-sun,
-.nav .nav-btn--toggle .icon-moon { display: none; }
-:root[data-theme="light"] .nav .nav-btn--toggle .icon-sun { display: block; }
-:root[data-theme="dark"]  .nav .nav-btn--toggle .icon-moon { display: block; }
-.nav .nav-toggle-li, .nav .nav-cta-li { display: flex; align-items: center; }
+/* The .nav-btn--toggle rules that used to sit here carried this same Figma
+   spec but targeted markup that no longer exists (the shipped toggle is
+   .theme-toggle-btn). Their spec now lives on that rule instead. */
+.nav .nav-cta-li { display: flex; align-items: center; }
 
 /* Hamburger — shown only on mobile */
 .nav { position: relative; }
@@ -4169,33 +4185,48 @@ footer a {
 }
 
 /* Landing light/dark toggle button in the nav. */
+/* Figma "Secondary/Default": 38x38, 5px padding, 2px edge, 2px 2px 0 shadow,
+   22px icon. No border-radius in the spec, so the corners stay square. */
 .theme-toggle-btn {
+    box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    gap: 8px;
+    width: 38px;
+    height: 38px;
+    padding: 5px;
     margin: 0;
-    border: 0;
-    width: auto;
-    background: transparent;
-    /* Match the github icon / nav links: muted grey at rest, brightening on
-       hover, rather than the high-contrast near-black/near-white of --contrast. */
-    color: var(--muted-color);
+    background: var(--navc-toggle-bg);
+    border: var(--ds-border-width-bold) solid var(--navc-toggle-edge);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--navc-toggle-edge);
+    color: var(--navc-toggle-icon);
     cursor: pointer;
     line-height: 1;
-    transition: color var(--transition), transform var(--transition);
+    transition: transform var(--transition), box-shadow var(--transition);
 }
 
+/* No hover/active in the spec; follow the comic pattern the other nav
+   buttons already use so the control still reads as pressable. */
 .theme-toggle-btn:hover {
-    color: var(--contrast);
-    transform: translateY(-1px);
-    background: transparent;
+    background: var(--navc-toggle-bg);
+    color: var(--navc-toggle-icon);
+    transform: var(--ds-lift);
+    box-shadow: 4px 4px 0 var(--navc-toggle-edge);
 }
 
+.theme-toggle-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--navc-toggle-edge);
+}
+
+/* Icons are stroked outlines (Figma "Iconly Pro"), not filled glyphs. A
+   CSS `fill` here would beat the markup's fill="none" and turn them into
+   solid blobs, so it is deliberately not set. */
 .theme-toggle-btn svg {
-    width: 1.15rem;
-    height: 1.15rem;
-    fill: currentColor;
+    width: 22px;
+    height: 22px;
 }
 
 .theme-toggle-btn .icon-sun {
@@ -4246,4 +4277,53 @@ footer a {
 .documentation-panel h2,
 .documentation-panel h2 a {
     color: var(--panel-title);
+}
+
+/* =====================================================================
+ * B3 — comic treatment for the code / reference rows.
+ * Appended last on purpose: the theme-aware surface block above sets the
+ * 1px borders and forces panel headings to --panel-fg, so these rules
+ * have to come after it to win the cascade at equal specificity.
+ * ===================================================================== */
+
+/* Both halves of the row become comic surfaces. The fills stay on the
+   existing theme tokens (--hl-bg / --panel-surface); only the outline
+   and the shadow change. */
+.snippet-panel > pre,
+.documentation-panel {
+    border: var(--ds-panel-border-width) solid var(--ds-panel-border-color);
+    border-radius: var(--ds-panel-radius);
+    box-shadow: var(--ds-panel-shadow);
+    backdrop-filter: none;
+}
+
+.panel-container {
+    gap: var(--ds-panel-gap);
+}
+
+/* Reference-panel labels take the gold accent, uppercase and italic, as
+   the mockups show them. This deliberately overrides the earlier
+   exemption that kept them in the body face: on the landing page the
+   symbols are short curated names (terminate, distance, is_prime, sort),
+   not the arbitrary template signatures that rule exists to protect on
+   the docs site. The exemption still stands there. */
+.documentation-panel h2,
+.documentation-panel h2 a,
+.documentation-panel h3 {
+    color: var(--ds-panel-heading);
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* Body copy, tables and code inside the panel stay in the reading face —
+   only the labels take the display treatment. */
+.documentation-panel h4,
+.documentation-panel h5,
+.documentation-panel h6 {
+    font-family: var(--font-family);
+    font-style: normal;
+    text-transform: none;
+    letter-spacing: normal;
 }

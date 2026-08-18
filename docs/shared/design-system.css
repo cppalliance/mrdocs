@@ -358,6 +358,14 @@
   --ds-feature-icon-size: 2.25rem;
   --ds-feature-icon-bg: var(--ds-color-surface);
 
+  /* ---- Code / reference row panels (comic) ------------------------ */
+  --ds-panel-border-width: var(--ds-border-width-bold);
+  --ds-panel-border-color: var(--ds-black);
+  --ds-panel-radius: var(--ds-radius);
+  --ds-panel-shadow: var(--ds-shadow-comic);
+  --ds-panel-heading: var(--ds-color-accent);
+  --ds-panel-gap: var(--ds-space-lg);
+
   /* ---- Button / CTA (comic) --------------------------------------- */
   --ds-btn-height: 2.5rem;
   --ds-btn-padding-x: 1.5em;
