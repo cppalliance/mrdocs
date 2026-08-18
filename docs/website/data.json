@@ -88,34 +88,40 @@
   ],
   "panels": [
     {
+      "label": "Attributes & Specifiers",
       "description": "Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).",
       "source": "terminate.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270"
     },
     {
+      "label": "Parameters & Returns",
       "description": "Documentation comments become structured reference pages—synopsis, description, parameters, and returns.",
       "source": "distance.cpp",
       "imageClass": "shouting",
       "boxClass": "box3 box-shape1 box0"
     },
     {
+      "label": "Directives & Semantics",
       "description": "Use directives to capture semantics beyond the signature.",
       "source": "is_prime.cpp",
       "imageClass": "glasses",
       "boxClass": "box3 box-shape2 box180"
     },
     {
+      "label": "Templates & SFINAE",
       "description": "Understands concepts, constraints, and SFINAE—rendered as you wrote them.",
       "source": "sqrt.cpp",
       "imageClass": "writing",
       "boxClass": "box3 box-shape3 box270"
     },
     {
+      "label": "Function Objects",
       "description": "Function objects are documented as callable entities—operator() parameter list and return type appear directly on the variable.",
       "source": "function_object.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape1 box0"
     }
-  ]
+  ],
+  "eyebrow": "C++ Documentation Generator"
 }

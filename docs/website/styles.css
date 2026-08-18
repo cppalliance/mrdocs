@@ -63,7 +63,7 @@
   /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
   /* Theme-swapped rather than a ramp: the mockups use magenta on the
      cream/light surfaces and the warmer red on the dark ones. */
-  --ds-pink-500: #e63c90; /* light-theme label         */
+  --ds-pink-500: #ec4899; /* light-theme label (Figma exact) */
   --ds-red-500: #fc4848; /* dark-theme label          */
 
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
@@ -368,6 +368,20 @@
  * LAYER 2 — COMPONENT  (reference the semantic layer only)
  * ===================================================================== */
 :root {
+  /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
+  --ds-badge-bg: var(--ds-color-label);
+  --ds-badge-text: var(--ds-white);
+  --ds-badge-border-width: var(--ds-border-width-bold);
+  /* Figma specifies #0F172A for the edge, not pure black. */
+  --ds-badge-border-color: #0f172a;
+  --ds-badge-shadow: 2px 2px 0 var(--ds-badge-border-color);
+  --ds-badge-radius: 0;
+  --ds-badge-padding: 6px 12px;
+  --ds-badge-font: var(--ds-font-display);
+  --ds-badge-size: 16px;
+  --ds-badge-leading: 16px;
+  --ds-badge-tracking: 0.1em;
+
   /* ---- Comic card (feature grid) ---------------------------------- */
   --ds-feature-bg: var(--ds-color-surface-accent);
   --ds-feature-border-width: var(--ds-border-width-bold);
@@ -4326,4 +4340,39 @@ footer a {
     font-style: normal;
     text-transform: none;
     letter-spacing: normal;
+}
+
+/* =====================================================================
+ * Label pills — the magenta badges above each code/reference row and
+ * over the hero title. Figma "Background" + "Header Text": Bangers at
+ * 16px/16px, 0.1em tracking, white on #EC4899, 2px #0F172A edge with a
+ * 2px 2px 0 shadow, square corners.
+ * ===================================================================== */
+.row-label {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 var(--ds-space-sm);
+    padding: var(--ds-badge-padding);
+    background: var(--ds-badge-bg);
+    color: var(--ds-badge-text);
+    border: var(--ds-badge-border-width) solid var(--ds-badge-border-color);
+    border-radius: var(--ds-badge-radius);
+    box-shadow: var(--ds-badge-shadow);
+    font-family: var(--ds-badge-font);
+    font-size: var(--ds-badge-size);
+    /* Bangers has no italic cut, so this stays upright rather than being
+       synthesised into an oblique. */
+    font-style: normal;
+    font-weight: var(--ds-weight-regular);
+    line-height: var(--ds-badge-leading);
+    text-transform: uppercase;
+    letter-spacing: var(--ds-badge-tracking);
+    /* Hugs its text; the shared paragraph width/margin would stretch it. */
+    width: auto;
+}
+
+/* The hero pill sits above the oversized title, which carries its own
+   tight leading; give it a little more breathing room underneath. */
+.hero-eyebrow {
+    margin-bottom: var(--ds-space-md);
 }

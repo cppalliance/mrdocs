@@ -41,7 +41,7 @@
   /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
   /* Theme-swapped rather than a ramp: the mockups use magenta on the
      cream/light surfaces and the warmer red on the dark ones. */
-  --ds-pink-500: #e63c90; /* light-theme label         */
+  --ds-pink-500: #ec4899; /* light-theme label (Figma exact) */
   --ds-red-500: #fc4848; /* dark-theme label          */
 
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
@@ -346,6 +346,20 @@
  * LAYER 2 — COMPONENT  (reference the semantic layer only)
  * ===================================================================== */
 :root {
+  /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
+  --ds-badge-bg: var(--ds-color-label);
+  --ds-badge-text: var(--ds-white);
+  --ds-badge-border-width: var(--ds-border-width-bold);
+  /* Figma specifies #0F172A for the edge, not pure black. */
+  --ds-badge-border-color: #0f172a;
+  --ds-badge-shadow: 2px 2px 0 var(--ds-badge-border-color);
+  --ds-badge-radius: 0;
+  --ds-badge-padding: 6px 12px;
+  --ds-badge-font: var(--ds-font-display);
+  --ds-badge-size: 16px;
+  --ds-badge-leading: 16px;
+  --ds-badge-tracking: 0.1em;
+
   /* ---- Comic card (feature grid) ---------------------------------- */
   --ds-feature-bg: var(--ds-color-surface-accent);
   --ds-feature-border-width: var(--ds-border-width-bold);
