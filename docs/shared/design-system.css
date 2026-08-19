@@ -226,6 +226,7 @@
   --ds-color-surface-sunken: var(--ds-paper-code);
   --ds-color-surface-accent: var(--ds-blue-100);
   --ds-color-label: var(--ds-pink-500);
+  --ds-color-halftone: rgba(15, 23, 42, 0.1);
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -272,6 +273,7 @@
     --ds-color-surface-sunken: var(--ds-navy-600);
     --ds-color-surface-accent: var(--ds-navy-700);
     --ds-color-label: var(--ds-red-500);
+    --ds-color-halftone: rgba(255, 255, 255, 0.07);
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -312,6 +314,7 @@
   --ds-color-surface-sunken: var(--ds-navy-600);
   --ds-color-surface-accent: var(--ds-navy-700);
   --ds-color-label: var(--ds-red-500);
+  --ds-color-halftone: rgba(255, 255, 255, 0.07);
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -346,6 +349,13 @@
  * LAYER 2 — COMPONENT  (reference the semantic layer only)
  * ===================================================================== */
 :root {
+  /* ---- Halftone dot field (comic print texture) ------------------- */
+  --ds-halftone-dot: var(--ds-color-halftone);
+  --ds-halftone-dot-size: 1.5px;
+  --ds-halftone-gap: 14px;
+  /* How far down the section the field stays visible before fading out. */
+  --ds-halftone-extent: 55%;
+
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
   --ds-badge-bg: var(--ds-color-label);
   --ds-badge-text: var(--ds-white);

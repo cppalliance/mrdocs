@@ -248,6 +248,7 @@
   --ds-color-surface-sunken: var(--ds-paper-code);
   --ds-color-surface-accent: var(--ds-blue-100);
   --ds-color-label: var(--ds-pink-500);
+  --ds-color-halftone: rgba(15, 23, 42, 0.1);
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -294,6 +295,7 @@
     --ds-color-surface-sunken: var(--ds-navy-600);
     --ds-color-surface-accent: var(--ds-navy-700);
     --ds-color-label: var(--ds-red-500);
+    --ds-color-halftone: rgba(255, 255, 255, 0.07);
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -334,6 +336,7 @@
   --ds-color-surface-sunken: var(--ds-navy-600);
   --ds-color-surface-accent: var(--ds-navy-700);
   --ds-color-label: var(--ds-red-500);
+  --ds-color-halftone: rgba(255, 255, 255, 0.07);
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -368,6 +371,13 @@
  * LAYER 2 — COMPONENT  (reference the semantic layer only)
  * ===================================================================== */
 :root {
+  /* ---- Halftone dot field (comic print texture) ------------------- */
+  --ds-halftone-dot: var(--ds-color-halftone);
+  --ds-halftone-dot-size: 1.5px;
+  --ds-halftone-gap: 14px;
+  /* How far down the section the field stays visible before fading out. */
+  --ds-halftone-extent: 55%;
+
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
   --ds-badge-bg: var(--ds-color-label);
   --ds-badge-text: var(--ds-white);
@@ -3342,50 +3352,6 @@ nav {
   background-color:rgba(255, 255, 255, 0.10);
 }
 
-.dotted {
-  background-image: url("./assets/halftone.png");
-  background-size: 158%;
-  background-repeat: repeat-y;
-  background-position: center center;
-  width: 190px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  opacity: .1;
-  top: 0;
-	z-index: -5;
-  pointer-events: none;
-}
-
-.dotted-right {
-  background-image: url("./assets/halftone.png");
-  background-size: 158%;
-  transform: rotate(180deg);
-  background-repeat: repeat-y;
-  background-position: center center;
-  width: 190px;
-  height: 100vh;
-  position: fixed;
-  right: 0;
-  opacity: .1;
-  top: 0;
-	z-index: -5;
-  pointer-events: none;
-}
-
-@media (max-width: 576px) {
-	.dotted, .dotted-right {
-		opacity: 0.05;
-	}
-
-  .dotted {
-    left: -80px;
-  }
-  .dotted-right {
-    right: -80px;
-  }
-}
-
 ul a:hover,
 ol a:hover,
 ul a:focus,
@@ -4375,4 +4341,51 @@ footer a {
    tight leading; give it a little more breathing room underneath. */
 .hero-eyebrow {
     margin-bottom: var(--ds-space-md);
+}
+
+/* =====================================================================
+ * Halftone dot field — the comic print texture behind the hero and the
+ * examples band. Drawn as a pseudo-element rather than a background on
+ * the section itself, so it layers over whatever surface colour the
+ * current theme supplies without replacing it. No image asset: a single
+ * repeated radial-gradient, which stays crisp at any zoom.
+ * ===================================================================== */
+header,
+#features {
+    position: relative;
+    isolation: isolate;
+}
+
+header::before,
+#features::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(
+        var(--ds-halftone-dot) var(--ds-halftone-dot-size),
+        transparent var(--ds-halftone-dot-size)
+    );
+    background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
+    /* Pico resets `background-repeat: no-repeat` on every ::before (styles.css:822),
+       which would render this tile exactly once. Restore the tiling. */
+    background-repeat: repeat;
+    /* Fade out down the band so the dots frame the heading rather than
+       sitting behind the body copy and code panels. */
+    -webkit-mask-image: linear-gradient(
+        to bottom, #000 0%, transparent var(--ds-halftone-extent)
+    );
+    mask-image: linear-gradient(
+        to bottom, #000 0%, transparent var(--ds-halftone-extent)
+    );
+}
+
+/* The dots are decorative; drop them when the reader has asked for more
+   contrast. */
+@media (prefers-contrast: more) {
+    header::before,
+    #features::before {
+        display: none;
+    }
 }
