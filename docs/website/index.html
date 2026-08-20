@@ -20,6 +20,14 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="https://www.mrdocs.com">
+    <!-- Preload the two faces the hero paints with. Without this the page
+         first lays out in the fallback and then reflows by ~170px when
+         Bangers arrives: the stylesheet is what discovers the fonts, so the
+         fetch would otherwise not start until CSS is parsed. Only the latin
+         subsets are preloaded; the -ext ones are not used by this copy.
+         crossorigin is required -- fonts are always fetched in CORS mode. -->
+    <link rel="preload" href="assets/fonts/bangers-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/special-elite-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <!-- MathJax typesets the \(...\) and \[...\] delimiters that the embedded
          MrDocs panels emit for stem/latexmath math. -->

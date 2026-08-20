@@ -73,8 +73,12 @@
     "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace", "Noto Mono",
     "Oxygen Mono", "Liberation Mono", monospace, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  /* Comic display face for headings; falls back to body where unavailable. */
-  --ds-font-display: "Bangers", var(--ds-font-body);
+  /* Comic display face for headings. Fallbacks are heavy/condensed faces
+     rather than the body stack: falling a comic headline through a
+     typewriter face looks broken, and it is what showed during the load
+     flash before the fonts were preloaded. */
+  --ds-font-display: "Bangers", Impact, Haettenschweiler, "Arial Narrow Bold",
+    "Franklin Gothic Bold", sans-serif;
 
   /* --- Typography: weights ----------------------------------------- */
   --ds-weight-regular: 400;
