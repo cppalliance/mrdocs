@@ -128,19 +128,21 @@
             <div class="grid header-banner">
                 <div class="header-content">
                     {{#if eyebrow}}<p class="row-label hero-eyebrow">{{ eyebrow }}</p>{{/if}}
-                    <h1>{{ title }}</h1>
+                    <h1><span class="title-line">Full-fidelity</span> <span class="title-line title-line--alt">C++ docs</span> <span class="title-line title-line--alt">from code.</span></h1>
                     <p>{{ description }}</p>
                     <div class="header-cta">
-                        <a href="docs/" class="contrast outline">Get started</a>
                         <a href="docs/mrdocs/install.html" class="primary">Download</a>
-                    </div>
-                    <div class="banner-snippet">
-                        <small><code>{{ banner.description }}</code></small>
+                        <a href="docs/" class="contrast outline">Get started</a>
                     </div>
                 </div>
                 <div class="header-image">
-                    <div class="box3 box-shape2 box270">
-                        <div class="inner-box mrdocs"></div>
+                    <img class="hero-mascot" src="assets/mrdocs-hero.webp" alt=""
+                         width="1000" height="1332" decoding="async">
+                </div>
+                <div class="hero-code">
+                    <div class="code-panel">
+                        <div class="code-panel-chrome"><span class="code-panel-tab">C++</span></div>
+                        <pre class="code-panel-body"><code><span class="cl"><span class="c">/** Return true if a number is prime.</span></span><span class="cl"><span class="c">    @par Complexity</span></span><span class="cl"><span class="c">    Linear in n.</span></span><span class="cl"><span class="c">    @return Whether `n` is prime.</span></span><span class="cl"><span class="c">    @param n The number to test</span></span><span class="cl"><span class="c">*/</span></span><span class="cl"><span class="k">bool</span></span><span class="cl"><span class="f">is_prime</span>(<span class="k">unsigned long long</span> n) <span class="k">noexcept</span>;</span></code></pre>
                     </div>
                 </div>
             </div>

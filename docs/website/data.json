@@ -1,6 +1,6 @@
 {
   "title": "Mr.Docs",
-  "description": "Full-fidelity C++ documentation, straight from your code.",
+  "description": "Reads your code and comments to produce precise, publish-ready reference docs. Native C++ understanding \u2014 zero workarounds.",
   "page": {
     "title": "Mr.Docs",
     "description": "Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs."

@@ -32,23 +32,30 @@
   --ds-blue-600: #067da6; /* primary hover             */
   --ds-blue-700: #0078c8; /* primary active            */
   --ds-blue-100: #bcebfb; /* demo / tint               */
+  --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
+  --ds-code-800: #272e3e; /* Figma exact: code panel body               */
 
   /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
   --ds-gold-400: #ffd700; /* peak / hover              */
   --ds-gold-500: #e5be33; /* rest / function-name / check accent */
+  --ds-gold-300: #f1d874; /* Figma exact: hero title alt, GitHub button */
   --ds-gold-700: #c8aa28; /* active / pressed          */
 
   /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
   /* Theme-swapped rather than a ramp: the mockups use magenta on the
      cream/light surfaces and the warmer red on the dark ones. */
   --ds-pink-500: #ec4899; /* light-theme label (Figma exact) */
-  --ds-red-500: #fc4848; /* dark-theme label          */
+  --ds-red-500: #ff4c4c; /* dark-theme label (Figma exact) */
 
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
   --ds-black: #000; /* comic borders & hard shadows */
   --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
+  --ds-ink-950: #0f172a; /* Figma exact: outlines, dark fills, panel chrome */
   --ds-white: #fff;
   --ds-paper: #fef7e1; /* warm cream page background  */
+  /* The mockups' page cream. Currently used only as the code panel's plain
+     text colour; re-pointing the page background to it is a follow-up. */
+  --ds-paper-50: #fdfaf5;
   --ds-paper-raised: #fbfbfc; /* cards / dropdowns      */
   --ds-paper-code: #f9fafb; /* inline / block code bg   */
 
@@ -227,6 +234,14 @@
   --ds-color-surface-accent: var(--ds-blue-100);
   --ds-color-label: var(--ds-pink-500);
   --ds-color-halftone: rgba(15, 23, 42, 0.1);
+  /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
+  --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
+  --ds-color-hero-text: var(--ds-ink-950);
+  --ds-color-code-shell: var(--ds-paper-50);
+  --ds-color-code-chrome: var(--ds-ink-950);
+  --ds-color-code-body: var(--ds-code-800); /* #272E3E */
+  --ds-city-opacity: 0.5;
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -274,6 +289,14 @@
     --ds-color-surface-accent: var(--ds-navy-700);
     --ds-color-label: var(--ds-red-500);
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
+    /* Dark uses pure black for outlines, not #0F172A. */
+    --ds-color-outline: #000;
+    --ds-color-title-alt: #facc15;
+    --ds-color-hero-text: var(--ds-white);
+    --ds-color-code-shell: #272e3f;
+    --ds-color-code-chrome: #000;
+    --ds-color-code-body: #141720;
+    --ds-city-opacity: 0.3;
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -315,6 +338,13 @@
   --ds-color-surface-accent: var(--ds-navy-700);
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
+  --ds-color-outline: #000;
+  --ds-color-title-alt: #facc15;
+  --ds-color-hero-text: var(--ds-white);
+  --ds-color-code-shell: #272e3f;
+  --ds-color-code-chrome: #000;
+  --ds-color-code-body: #141720;
+  --ds-city-opacity: 0.3;
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -356,12 +386,33 @@
   /* How far down the section the field stays visible before fading out. */
   --ds-halftone-extent: 55%;
 
+  /* ---- Code panel (hero + example rows) --------------------------- *
+   * Dark in BOTH themes per the mockups, so these are deliberately
+   * theme-invariant: the themed --hl-* vars would go invisible here in
+   * light mode. Syntax colours reuse the brand palette. */
+  --ds-code-panel-bg: var(--ds-color-code-body);
+  --ds-code-panel-chrome: var(--ds-color-code-chrome);
+  --ds-code-panel-border: var(--ds-color-outline);
+  --ds-code-panel-fg: var(--ds-paper-50); /* plain code text; comments use --ds-code-panel-comment */
+  --ds-code-panel-comment: #6e727b;
+  --ds-code-panel-linenum: rgba(255, 255, 255, 0.4);
+  --ds-code-panel-keyword: var(--ds-color-label);
+  --ds-code-panel-fn: var(--ds-blue-300);
+  --ds-code-panel-tab: var(--ds-white);
+
+  /* ---- Hero cityscape ---------------------------------------------- *
+   * Skyline band anchored to the bottom of the hero. Height is width-
+   * relative so the art keeps its 3.07 aspect: on desktop it spans the
+   * viewport exactly (100vw / 3.07 = 32.5vw); on mobile the mockup zooms
+   * it well past the viewport and crops, hence the much larger 92vw. */
+  --ds-city-height: 92vw;
+
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
   --ds-badge-bg: var(--ds-color-label);
   --ds-badge-text: var(--ds-white);
   --ds-badge-border-width: var(--ds-border-width-bold);
   /* Figma specifies #0F172A for the edge, not pure black. */
-  --ds-badge-border-color: #0f172a;
+  --ds-badge-border-color: var(--ds-color-outline);
   --ds-badge-shadow: 2px 2px 0 var(--ds-badge-border-color);
   --ds-badge-radius: 0;
   --ds-badge-padding: 6px 12px;
@@ -436,10 +487,19 @@
   /* ---- Hero title (comic "Main Title" — Figma spec) --------------- */
   /* Figma exact: 96px / 90% / #93C5FD, 4px #0F172A outline + shadow.
      Mapped to nearest existing primitives here (blue-200 / navy-900). */
-  --ds-title-size: clamp(3rem, 8vw, 6rem); /* 96px desktop peak */
+  /* Mobile floor read off the mobile mockup: 60px gives the measured 45px
+     cap height. Desktop peak still to be confirmed against Home-desktop. */
+  /* px, not rem: Pico scales the root font-size up at wide breakpoints,
+     which made the rem ceiling resolve to 120px instead of the intended
+     96px. Desktop mockup cap height is 70px -> ~93px font. */
+  --ds-title-size: clamp(62px, 8vw, 96px);
   --ds-title-leading: 0.9; /* Figma line-height 90% */
-  --ds-title-color: var(--ds-blue-200); /* nearest to Figma #93C5FD */
-  --ds-title-ink: var(--ds-navy-900); /* outline + shadow; nearest #0F172A */
+  /* Read off the Home mockups 2026-08-19: the two "nearest" approximations
+     below were placeholders and are now the exact design values. The hero
+     headline alternates line colours -- line 1 blue, the rest gold. */
+  --ds-title-color: var(--ds-blue-300); /* Figma exact #93C5FD */
+  --ds-title-color-alt: var(--ds-color-title-alt);
+  --ds-title-ink: var(--ds-color-outline);
   --ds-title-outline-width: 4px;
   --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
 }

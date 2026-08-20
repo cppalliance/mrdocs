@@ -54,23 +54,30 @@
   --ds-blue-600: #067da6; /* primary hover             */
   --ds-blue-700: #0078c8; /* primary active            */
   --ds-blue-100: #bcebfb; /* demo / tint               */
+  --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
+  --ds-code-800: #272e3e; /* Figma exact: code panel body               */
 
   /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
   --ds-gold-400: #ffd700; /* peak / hover              */
   --ds-gold-500: #e5be33; /* rest / function-name / check accent */
+  --ds-gold-300: #f1d874; /* Figma exact: hero title alt, GitHub button */
   --ds-gold-700: #c8aa28; /* active / pressed          */
 
   /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
   /* Theme-swapped rather than a ramp: the mockups use magenta on the
      cream/light surfaces and the warmer red on the dark ones. */
   --ds-pink-500: #ec4899; /* light-theme label (Figma exact) */
-  --ds-red-500: #fc4848; /* dark-theme label          */
+  --ds-red-500: #ff4c4c; /* dark-theme label (Figma exact) */
 
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
   --ds-black: #000; /* comic borders & hard shadows */
   --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
+  --ds-ink-950: #0f172a; /* Figma exact: outlines, dark fills, panel chrome */
   --ds-white: #fff;
   --ds-paper: #fef7e1; /* warm cream page background  */
+  /* The mockups' page cream. Currently used only as the code panel's plain
+     text colour; re-pointing the page background to it is a follow-up. */
+  --ds-paper-50: #fdfaf5;
   --ds-paper-raised: #fbfbfc; /* cards / dropdowns      */
   --ds-paper-code: #f9fafb; /* inline / block code bg   */
 
@@ -249,6 +256,14 @@
   --ds-color-surface-accent: var(--ds-blue-100);
   --ds-color-label: var(--ds-pink-500);
   --ds-color-halftone: rgba(15, 23, 42, 0.1);
+  /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
+  --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
+  --ds-color-hero-text: var(--ds-ink-950);
+  --ds-color-code-shell: var(--ds-paper-50);
+  --ds-color-code-chrome: var(--ds-ink-950);
+  --ds-color-code-body: var(--ds-code-800); /* #272E3E */
+  --ds-city-opacity: 0.5;
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -296,6 +311,14 @@
     --ds-color-surface-accent: var(--ds-navy-700);
     --ds-color-label: var(--ds-red-500);
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
+    /* Dark uses pure black for outlines, not #0F172A. */
+    --ds-color-outline: #000;
+    --ds-color-title-alt: #facc15;
+    --ds-color-hero-text: var(--ds-white);
+    --ds-color-code-shell: #272e3f;
+    --ds-color-code-chrome: #000;
+    --ds-color-code-body: #141720;
+    --ds-city-opacity: 0.3;
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -337,6 +360,13 @@
   --ds-color-surface-accent: var(--ds-navy-700);
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
+  --ds-color-outline: #000;
+  --ds-color-title-alt: #facc15;
+  --ds-color-hero-text: var(--ds-white);
+  --ds-color-code-shell: #272e3f;
+  --ds-color-code-chrome: #000;
+  --ds-color-code-body: #141720;
+  --ds-city-opacity: 0.3;
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -378,12 +408,33 @@
   /* How far down the section the field stays visible before fading out. */
   --ds-halftone-extent: 55%;
 
+  /* ---- Code panel (hero + example rows) --------------------------- *
+   * Dark in BOTH themes per the mockups, so these are deliberately
+   * theme-invariant: the themed --hl-* vars would go invisible here in
+   * light mode. Syntax colours reuse the brand palette. */
+  --ds-code-panel-bg: var(--ds-color-code-body);
+  --ds-code-panel-chrome: var(--ds-color-code-chrome);
+  --ds-code-panel-border: var(--ds-color-outline);
+  --ds-code-panel-fg: var(--ds-paper-50); /* plain code text; comments use --ds-code-panel-comment */
+  --ds-code-panel-comment: #6e727b;
+  --ds-code-panel-linenum: rgba(255, 255, 255, 0.4);
+  --ds-code-panel-keyword: var(--ds-color-label);
+  --ds-code-panel-fn: var(--ds-blue-300);
+  --ds-code-panel-tab: var(--ds-white);
+
+  /* ---- Hero cityscape ---------------------------------------------- *
+   * Skyline band anchored to the bottom of the hero. Height is width-
+   * relative so the art keeps its 3.07 aspect: on desktop it spans the
+   * viewport exactly (100vw / 3.07 = 32.5vw); on mobile the mockup zooms
+   * it well past the viewport and crops, hence the much larger 92vw. */
+  --ds-city-height: 92vw;
+
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
   --ds-badge-bg: var(--ds-color-label);
   --ds-badge-text: var(--ds-white);
   --ds-badge-border-width: var(--ds-border-width-bold);
   /* Figma specifies #0F172A for the edge, not pure black. */
-  --ds-badge-border-color: #0f172a;
+  --ds-badge-border-color: var(--ds-color-outline);
   --ds-badge-shadow: 2px 2px 0 var(--ds-badge-border-color);
   --ds-badge-radius: 0;
   --ds-badge-padding: 6px 12px;
@@ -456,10 +507,19 @@
   --ds-code-font: var(--ds-font-mono);
 
   /* ---- Hero title (comic "Main Title" — Figma spec) --------------- */
-  --ds-title-size: clamp(3rem, 8vw, 6rem); /* 96px desktop peak */
+  /* Mobile floor read off the mobile mockup: 60px gives the measured 45px
+     cap height. Desktop peak still to be confirmed against Home-desktop. */
+  /* px, not rem: Pico scales the root font-size up at wide breakpoints,
+     which made the rem ceiling resolve to 120px instead of the intended
+     96px. Desktop mockup cap height is 70px -> ~93px font. */
+  --ds-title-size: clamp(62px, 8vw, 96px);
   --ds-title-leading: 0.9; /* Figma line-height 90% */
-  --ds-title-color: var(--ds-blue-200); /* nearest to Figma #93C5FD */
-  --ds-title-ink: var(--ds-navy-900); /* outline + shadow; nearest #0F172A */
+  /* Read off the Home mockups 2026-08-19: the two "nearest" approximations
+     below were placeholders and are now the exact design values. The hero
+     headline alternates line colours -- line 1 blue, the rest gold. */
+  --ds-title-color: var(--ds-blue-300); /* Figma exact #93C5FD */
+  --ds-title-color-alt: var(--ds-color-title-alt);
+  --ds-title-ink: var(--ds-color-outline);
   --ds-title-outline-width: 4px;
   --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
 }
@@ -496,7 +556,7 @@
     --primary-color: #3d8bff;
     --primary-color-hover: #2563eb;
     /* Midnight canvas (dark, the default theme) */
-    --body-background: #0f172a;
+    --body-background: #272e3f; /* Figma: dark page surface */
 }
 
 /* Responsive base font size is provided by --ds-font-size (see
@@ -702,7 +762,7 @@ kbd {
 [data-theme=dark] {
     color-scheme: dark;
     --background-color: rgba(0, 0, 0, 0.3);
-    --body-background: #0f172a;
+    --body-background: #272e3f; /* Figma: dark page surface */
     /* code + panel surfaces (dark) */
     --hl-bg: #0f172a;
     --hl-fg: #adbac7;
@@ -4084,13 +4144,6 @@ footer a {
     border: 1px solid var(--muted-border-color);
 }
 
-/* Hero secondary ("Get started") outline button: readable on cream. */
-:root:not([data-theme=dark]) a.contrast.outline,
-[data-theme=light] a.contrast.outline {
-    color: #24303f;
-    border-color: #24303f;
-}
-
 /* All highlighted code sits on the theme code surface. */
 .hljs {
     background-color: var(--hl-bg);
@@ -4387,5 +4440,420 @@ header::before,
     header::before,
     #features::before {
         display: none;
+    }
+}
+
+/* =====================================================================
+ * HERO — built to the Home mockups (mobile 402, desktop 1440), 2026-08-19.
+ * Mobile first; the desktop three-column arrangement is a later slice.
+ * Geometry below was measured off the mobile mockup, so the values are
+ * literal px rather than spacing tokens where the design is specific.
+ * ===================================================================== */
+
+/* The mockup hero is left-aligned; the previous treatment centred it. */
+.header-content {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+/* Headline: three lines, line 1 blue and the rest gold. */
+header .header-content h1 .title-line {
+    display: block;
+}
+
+header .header-content h1 .title-line--alt {
+    color: var(--ds-title-color-alt);
+}
+
+header .header-content h1 {
+    /* An earlier rule centres the hero h1 directly, so inheriting
+       text-align from .header-content is not enough. */
+    text-align: left;
+    /* Bangers carries a lot of internal leading above its caps, so the
+       optical gap the mockup shows (28px from the pill) needs a negative
+       margin here -- 30px of real space minus 43px of leading. */
+    margin-block: -13px 0;
+}
+
+header .header-content > p:not(.row-label) {
+    /* Figma: 14px / line-height 1.6 on mobile, 16px / 1.6 on desktop. */
+    font-size: 14px;
+    line-height: 1.6;
+    margin-block: 24px 29px;
+    max-width: none;
+}
+
+.header-cta {
+    display: flex;
+    gap: 16px;
+    /* Zeroed: a generic rule contributes 24px here, which would push the
+       row past the measured position. */
+    margin-top: 0;
+    margin-bottom: 91px;
+}
+
+/* Mockup: DOWNLOAD is the light-blue fill, GET STARTED the navy one.
+   Both carry the ink border and hard offset shadow. */
+.header-cta a.primary {
+    background: var(--ds-blue-300);
+    color: var(--ds-ink-950);
+    border-color: var(--ds-color-outline);
+}
+
+.header-cta a.primary:hover {
+    background: var(--ds-blue-300);
+    border-color: var(--ds-color-outline);
+}
+
+.header-cta a.contrast.outline {
+    background: var(--ds-ink-950);
+    color: var(--ds-paper-50);
+    border-color: var(--ds-color-outline);
+    box-shadow: var(--ds-shadow-comic);
+    backdrop-filter: none;
+}
+
+.header-cta a.contrast.outline:hover {
+    background: var(--ds-ink-950);
+    color: var(--ds-paper-50);
+    border-color: var(--ds-color-outline);
+}
+
+/* ---- Code panel ---------------------------------------------------- */
+.code-panel {
+    background: var(--ds-color-code-shell);
+    border: var(--ds-border-width-bold) solid var(--ds-code-panel-border);
+    /* Figma: the shell carries 2px of padding, so it reads as a thin ring
+       between the ink border and the code surface, plus a hard offset. */
+    padding: 2px;
+    box-shadow: 2px 2px 0 var(--ds-code-panel-border);
+    border-radius: 0;
+    width: 100%;
+    overflow: hidden;
+    /* Figma fixes the panel height and lets the code surface flex-grow into
+       it, rather than padding the body out to size. */
+    display: flex;
+    flex-direction: column;
+    height: 386px;
+}
+
+.code-panel-chrome {
+    background: var(--ds-code-panel-chrome);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    padding: 5px;
+    gap: 10px;
+}
+
+/* Figma fills the space either side of the language tag with five 0.5px
+   rules at a 5px pitch. Drawn as a repeating gradient rather than five
+   elements, since they are purely decorative. */
+.code-panel-chrome::before,
+.code-panel-chrome::after {
+    content: "";
+    flex: 1;
+    align-self: stretch;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.2) 0 0.5px,
+        transparent 0.5px 5.5px
+    );
+    background-repeat: repeat;
+}
+
+.code-panel-tab {
+    font-family: var(--ds-font-mono);
+    font-size: 10.5px;
+    line-height: 1;
+    color: var(--ds-code-panel-tab);
+}
+
+.code-panel-body {
+    margin: 0;
+    /* Pico gives `pre` a border-radius; the panel must stay square. */
+    border-radius: 0;
+    padding: 20px;
+    background: var(--ds-code-panel-bg);
+    border: 0;
+    counter-reset: codeline;
+    overflow-x: auto;
+    flex: 1;
+}
+
+.code-panel-body code {
+    background: none;
+    padding: 0;
+    /* Figma: 13px mobile, 14px desktop, line-height 2.2 in both. */
+    font-size: 13px;
+    line-height: 2.2;
+    color: var(--ds-code-panel-fg);
+}
+
+.code-panel-body .cl {
+    display: block;
+    position: relative;
+    counter-increment: codeline;
+    /* Figma: 9px number column + 30px gap. */
+    padding-left: 39px;
+    white-space: pre-wrap;
+}
+
+.code-panel-body .cl::before {
+    content: counter(codeline);
+    position: absolute;
+    left: 0;
+    width: 9px;
+    text-align: right;
+    color: var(--ds-code-panel-linenum);
+}
+
+.code-panel-body .c { color: var(--ds-code-panel-comment); }
+.code-panel-body .k { color: var(--ds-code-panel-keyword); }
+.code-panel-body .f { color: var(--ds-code-panel-fn); }
+
+/* ---- Hero structure (mobile) --------------------------------------- *
+ * The mockup gutter is 28px, not Pico's 16px. Scoped to the hero for
+ * now; the rest of the page still uses Pico's container padding.
+ * Mobile stacking order is content -> code panel -> mascot, which is
+ * NOT DOM order, so the two visual columns are re-ordered here and
+ * placed properly at the desktop breakpoint later. */
+header .container {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.header-banner {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+}
+
+.header-content { order: 1; }
+.hero-code { order: 2; }
+.header-image { order: 3; }
+
+/* A grid item will not shrink below its min-content width, and this
+   one's min-content is the longest line of code. Kept as a guard so the
+   panel can never widen the hero row; the code scrolls inside instead. */
+.hero-code,
+.code-panel,
+.code-panel-body {
+    min-width: 0;
+}
+
+.header-image {
+    max-width: 100%;
+}
+
+/* Mockup puts 93px between the nav rule and the eyebrow pill. */
+header .container {
+    padding-top: 39px;
+}
+
+/* ---- Hero body copy + button corrections --------------------------- *
+ * The paragraph is centred and muted by an earlier `header p` rule; the
+ * mockup has it left-aligned in full ink. */
+header .header-content > p:not(.row-label) {
+    text-align: left;
+    color: var(--ds-color-hero-text);
+}
+
+/* Pico drives link colour through its own --color custom property, which
+   wins over a plain `color` declaration here, so set both. */
+.header-cta a.contrast.outline,
+.header-cta a.contrast.outline:hover {
+    --color: var(--ds-paper-50);
+    color: var(--ds-paper-50);
+}
+
+/* Mockup offset is 3px, not the 6px used elsewhere on the page. */
+.header-cta a.primary,
+.header-cta a.contrast.outline {
+    box-shadow: 3px 3px 0 var(--ds-color-outline);
+}
+
+/* ---- Hero vertical rhythm ------------------------------------------ *
+ * Set explicitly rather than inherited, so each step is one number that
+ * maps to a measured gap in the mockup. Offsets are glyph-to-glyph, so
+ * the constants absorb each face's internal leading. */
+.header-content > .row-label.hero-eyebrow {
+    margin-block: 0;
+}
+
+header .header-content h1 {
+    margin-block: 14px 0;
+}
+
+header .header-content > p:not(.row-label) {
+    margin-block: 30px 22px;
+}
+
+/* ---- Hero mascot --------------------------------------------------- *
+ * On mobile the figure is left-aligned and bleeds off the left edge only
+ * (its cape tip touches x=0), at 81vw -- measured by matching the cape's
+ * span to the mockup. It also rides up over the panel's lower edge. */
+.header-image {
+    margin-inline: -28px 0;
+    margin-top: -24px;
+    width: 81vw;
+    max-width: none;
+}
+
+.hero-mascot {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* =====================================================================
+ * HERO — desktop. Three columns: copy | mascot | code panel, measured
+ * off the Figma layout export (2000px wide, ~0.655 to page px at 1440):
+ * 78px gutters, columns ~430 / ~381 / ~473.
+ * ===================================================================== */
+@media (min-width: 992px) {
+    /* Pico caps .container at 1130px, which is narrower than the mockup's
+       1284px content box. Widen it for the hero only. */
+    header .container {
+        max-width: none;
+        padding-inline: 78px;
+    }
+
+    .header-banner {
+        /* minmax(0,...) so the oversized mascot overflows its track
+           instead of widening it and squeezing the panel column. */
+        grid-template-columns: minmax(0, 34fr) minmax(0, 30fr) minmax(0, 37fr);
+        column-gap: 0;
+        align-items: center;
+    }
+
+    /* Explicit placement, so the mobile source order (copy, panel,
+       mascot) can put the mascot in the middle here. */
+    .header-content {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .header-image {
+        grid-column: 2;
+        grid-row: 1;
+        margin-inline: 0;
+        width: 100%;
+    }
+
+    .hero-code {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    header .header-content > p:not(.row-label) {
+        font-size: 16px;
+        line-height: 1.6;
+        /* Mockup wraps this to 4 lines across a 339px measure. */
+        max-width: 339px;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Mockup tops the panel and mascot 65px below the eyebrow, rather
+       than centring them against the copy column. */
+    .header-banner {
+        align-items: start;
+    }
+
+    .hero-code {
+        margin-top: 73px;
+    }
+
+    /* Desktop panel: 15px/31px pitch, no wrapping at this width, and a
+       deep bottom well as in the mockup. */
+    .code-panel-body code {
+        font-size: 14px;
+    }
+
+    .code-panel {
+        height: 400px;
+    }
+}
+
+@media (min-width: 992px) {
+    header .container {
+        padding-top: 47px;
+    }
+
+    /* The mascot is wider than its own column in the mockup -- it reads as
+       an overlay that the copy and panel columns sit either side of, so it
+       is sized absolutely and allowed to spill over the column edges. */
+    .header-image {
+        justify-self: center;
+        /* Scaled so the cape matches the mockup's 388px span -- measured
+           on the cape because it is the only saturated red in the art;
+           the tan armour pollutes any gold/hex-badge measurement. */
+        width: 486px;
+        max-width: none;
+        margin-top: 92px;
+        /* Biased left of its own column: in the mockup the figure sits
+           closer to the copy than to the panel, overlapping the copy
+           column rather than centring in the gap. */
+        transform: translateX(-66px);
+    }
+}
+
+/* ---- Hero cityscape ------------------------------------------------ *
+ * Second decorative layer, painted above the halftone (::after follows
+ * ::before in paint order at the same z-index) and below the content.
+ * The art is pre-faded in the asset itself -- its alpha peaks at 77/255
+ * -- so no opacity is applied here. */
+header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--ds-city-height);
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("./assets/mrdocs-hero-city.webp");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: auto 100%;
+    opacity: var(--ds-city-opacity);
+}
+
+@media (min-width: 992px) {
+    :root {
+        --ds-city-height: 32.5vw;
+    }
+}
+
+@media (prefers-contrast: more) {
+    header::after {
+        display: none;
+    }
+}
+
+/* ---- Hero bottom edge ---------------------------------------------- *
+ * Figma gives the cityscape layer a 2px #0F172A bottom rule; it is the
+ * hero's own bottom edge, so it lives on the header. */
+header {
+    border-bottom: var(--ds-border-width-bold) solid var(--ds-color-outline);
+}
+
+/* Hero eyebrow: Figma sizes it 14px/12px on mobile and 16px/16px on desktop,
+   unlike the shared row-label pill used in the panel rows. */
+.hero-eyebrow {
+    font-size: 14px;
+    line-height: 12px;
+}
+
+@media (min-width: 992px) {
+    .hero-eyebrow {
+        font-size: var(--ds-badge-size);
+        line-height: var(--ds-badge-leading);
+    }
+
+    .code-panel-tab {
+        font-size: 14px;
     }
 }
