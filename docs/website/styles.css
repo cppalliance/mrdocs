@@ -264,6 +264,7 @@
   --ds-color-halftone: rgba(15, 23, 42, 0.1);
   /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
   --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-title: var(--ds-blue-300); /* #93C5FD */
   --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
   --ds-color-hero-text: var(--ds-ink-950);
   --ds-color-code-shell: var(--ds-paper-50);
@@ -319,6 +320,7 @@
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
     /* Dark uses pure black for outlines, not #0F172A. */
     --ds-color-outline: #000;
+    --ds-color-title: #3d8bff; /* dark line 1 is a deeper blue than light */
     --ds-color-title-alt: #facc15;
     --ds-color-hero-text: var(--ds-white);
     --ds-color-code-shell: #272e3f;
@@ -367,6 +369,7 @@
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
   --ds-color-outline: #000;
+  --ds-color-title: #3d8bff;
   --ds-color-title-alt: #facc15;
   --ds-color-hero-text: var(--ds-white);
   --ds-color-code-shell: #272e3f;
@@ -523,7 +526,7 @@
   /* Read off the Home mockups 2026-08-19: the two "nearest" approximations
      below were placeholders and are now the exact design values. The hero
      headline alternates line colours -- line 1 blue, the rest gold. */
-  --ds-title-color: var(--ds-blue-300); /* Figma exact #93C5FD */
+  --ds-title-color: var(--ds-color-title);
   --ds-title-color-alt: var(--ds-color-title-alt);
   --ds-title-ink: var(--ds-color-outline);
   --ds-title-outline-width: 4px;
