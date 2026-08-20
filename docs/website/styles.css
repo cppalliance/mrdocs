@@ -3882,26 +3882,6 @@ footer a:focus {
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
 }
 
-.header-cta a.primary {
-    background: var(--ds-color-accent);
-    color: var(--ds-ink-900);
-    box-shadow: var(--ds-shadow-comic);
-    border-color: var(--ds-color-accent);
-}
-
-.header-cta a.primary:hover {
-    background: var(--ds-color-accent-hover);
-    transform: var(--ds-lift);
-    box-shadow: var(--ds-shadow-comic);
-    border-color: var(--ds-color-accent-hover);
-}
-
-.header-cta a.primary:active {
-    background: var(--ds-color-accent-active);
-    border-color: var(--ds-color-accent-active);
-    box-shadow: var(--ds-shadow-comic-pressed);
-}
-
 .header-cta a.secondary {
     background: var(--primary-color);
     color: var(--ds-ink-900);
@@ -3922,28 +3902,6 @@ footer a:focus {
     color: var(--ds-white);
     border-color: var(--ds-blue-700);
     box-shadow: var(--ds-shadow-comic-pressed-soft);
-}
-
-.header-cta a.contrast.outline {
-    background: transparent;
-    color: var(--ds-white);
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-}
-
-.header-cta a.contrast.outline:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--ds-white);
-    border-color: var(--ds-white);
-    transform: var(--ds-lift);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.6);
-}
-
-.header-cta a.contrast.outline:active {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: var(--ds-white);
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 .header-cta a:focus {
@@ -4495,7 +4453,8 @@ header .header-content > p:not(.row-label) {
 
 .header-cta {
     display: flex;
-    gap: 16px;
+    /* Figma Button Container: stackSpacing 24 mobile, 32 desktop. */
+    gap: 24px;
     /* Zeroed: a generic rule contributes 24px here, which would push the
        row past the measured position. */
     margin-top: 0;
@@ -4507,7 +4466,6 @@ header .header-content > p:not(.row-label) {
 .header-cta a.primary {
     background: var(--ds-blue-300);
     color: var(--ds-ink-950);
-    border-color: var(--ds-color-outline);
 }
 
 .header-cta a.primary:hover {
@@ -4518,8 +4476,6 @@ header .header-content > p:not(.row-label) {
 .header-cta a.contrast.outline {
     background: var(--ds-ink-950);
     color: var(--ds-paper-50);
-    border-color: var(--ds-color-outline);
-    box-shadow: var(--ds-shadow-comic);
     backdrop-filter: none;
 }
 
@@ -4677,10 +4633,19 @@ header .header-content > p:not(.row-label) {
     color: var(--ds-paper-50);
 }
 
-/* Mockup offset is 3px, not the 6px used elsewhere on the page. */
+/* Figma has these as a DROP_SHADOW effect: offset 2,2, radius 0, pure
+   black -- not the 6px used elsewhere, and black rather than the outline
+   colour, so it does not follow the theme. */
 .header-cta a.primary,
 .header-cta a.contrast.outline {
-    box-shadow: 3px 3px 0 var(--ds-color-outline);
+    /* Figma nests the button in a 2px-padded wrapper whose fill is the page
+       colour, with the stroke set to OUTSIDE. That reads as a light ring
+       between the black edge and the fill, so: border = the ring, first
+       shadow = the black edge outside it, second = the offset drop. */
+    border-color: var(--body-background);
+    box-shadow:
+        0 0 0 var(--ds-cta-shadow) var(--ds-black),
+        calc(var(--ds-cta-shadow) * 2) calc(var(--ds-cta-shadow) * 2) 0 var(--ds-black);
 }
 
 /* ---- Hero vertical rhythm ------------------------------------------ *
@@ -4864,5 +4829,96 @@ header {
 
     .code-panel-tab {
         font-size: 14px;
+    }
+}
+
+/* ---- Hero button interaction --------------------------------------- *
+ * The Figma file has no hover/pressed variants for these -- only
+ * "Secondary/Default" exists -- so this follows the comic behaviour used
+ * elsewhere on the page: the button lifts and its hard shadow grows by
+ * the same amount, then sinks and the shadow shrinks on press, so the
+ * offset always tracks how far the button sits off the page. Colours do
+ * not change, since the design does not specify hover colours.
+ *
+ * Rest offset is --ds-cta-shadow (1.5px mobile, 2px desktop), doubled
+ * on hover and halved on press.
+ * The colour-pinning in the :hover rules above is deliberate: without it
+ * Pico repaints these on hover. */
+.header-cta a.primary:hover,
+.header-cta a.contrast.outline:hover {
+    transform: var(--ds-lift);
+    box-shadow:
+        0 0 0 var(--ds-cta-shadow) var(--ds-black),
+        calc(var(--ds-cta-shadow) * 3) calc(var(--ds-cta-shadow) * 3) 0 var(--ds-black);
+}
+
+.header-cta a.primary:active,
+.header-cta a.contrast.outline:active {
+    transform: var(--ds-press);
+    box-shadow:
+        0 0 0 var(--ds-cta-shadow) var(--ds-black),
+        var(--ds-cta-shadow) var(--ds-cta-shadow) 0 var(--ds-black);
+}
+
+/* Transition only what actually moves, rather than `all`. */
+.header-cta a {
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header-cta a {
+        transition: none;
+    }
+
+    .header-cta a.primary:hover,
+    .header-cta a.contrast.outline:hover,
+    .header-cta a.primary:active,
+    .header-cta a.contrast.outline:active {
+        transform: none;
+    }
+}
+
+/* Hero button box, from Figma's Button Container. Mobile and desktop
+   differ: 101/116 x 38 with a 24px gap and a 1.5px shadow, against
+   123/140 x 48 with a 32px gap and 2px. Heights are px, not the shared
+   2.5rem token -- Pico scales the root font-size at wide breakpoints, so
+   rem resolved to 50px here.
+   The margin reset needs :not(:last-of-type) to outrank the generic
+   `header a:not(:last-of-type)` rule, which was adding 10px on top of
+   the flex gap. */
+:root {
+    --ds-cta-shadow: 1.5px;
+}
+
+.header-cta a {
+    height: 38px;
+    /* Figma's inner Frame 2 has 16px of horizontal padding; the 2px border
+       here stands in for the symbol's 2px ring. Label is Bangers with 10%
+       tracking, which is most of why the untracked version measured narrow. */
+    padding-inline: 12px;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+}
+
+.header-cta a:not(:last-of-type) {
+    margin-right: 0;
+}
+
+@media (min-width: 992px) {
+    :root {
+        --ds-cta-shadow: 2px;
+    }
+
+    .header-cta a {
+        height: 48px;
+        padding-inline: 16px;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .header-cta {
+        gap: 32px;
     }
 }
