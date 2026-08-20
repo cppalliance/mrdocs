@@ -4687,11 +4687,19 @@ header .header-content > p:not(.row-label) {
  * 78px gutters, columns ~430 / ~381 / ~473.
  * ===================================================================== */
 @media (min-width: 992px) {
-    /* Pico caps .container at 1130px, which is narrower than the mockup's
-       1284px content box. Widen it for the hero only. */
+    /* Pico caps .container at 1130px, narrower than the mockup's 1284px
+       content box, so the hero sets its own. The cap is deliberately the
+       design's content box: 1440 minus the two 78px gutters, which makes
+       this a no-op at the design width and symmetric whitespace beyond it.
+       Without a cap the columns and the code panel grew without limit
+       while the headline, body measure and mascot stayed fixed -- at
+       2560 the panel reached 881px around eight short lines of code.
+       The full-bleed decorative layers (halftone, cityscape) are on the
+       header itself, so they keep spanning the viewport. */
     header .container {
-        max-width: none;
+        max-width: calc(1284px + 2 * 78px);
         padding-inline: 78px;
+        margin-inline: auto;
     }
 
     .header-banner {
