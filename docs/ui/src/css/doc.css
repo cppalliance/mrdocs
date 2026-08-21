@@ -1210,40 +1210,46 @@ html {
   width: 1.5em;
 }
 
+/* The options-reference extension emits its Name/Value column colors as inline
+   styles (darkblue for identifiers, darkgreen for types, orangered for
+   annotations, red for deprecated). Remap them to theme tokens so they read on
+   both the cream and the dark background: darkblue takes the heading color
+   (blue on cream, yellow on dark), the informational text takes the body text
+   color, and deprecated keeps a readable danger red. */
 .tableblock [style*="color: darkblue"],
 .paragraph[id] [style*="color: darkblue"] {
-  color: #fff5b3 !important;
+  color: var(--heading-color) !important;
 }
 
 .paragraph span[style*="color: darkblue"] {
-  color: #fff !important;
+  color: var(--heading-color) !important;
 }
 
 .tableblock [style*="color: darkgreen"],
 .paragraph[id] [style*="color: darkgreen"] {
-  color: #fff !important;
+  color: var(--text) !important;
 }
 
 .paragraph span[style*="color: darkgreen"] {
-  color: #fff !important;
+  color: var(--text) !important;
 }
 
 .paragraph span[style*="color: red"] {
-  color: #fff !important;
+  color: var(--danger) !important;
   font-style: italic;
 }
 
 .paragraph li span[style*="color: orangered"] {
-  color: #fff !important;
+  color: var(--text) !important;
   font-weight: bold;
 }
 
 .tableblock [style*="color: orangered"],
 .paragraph[id] [style*="color: orangered"] {
-  color: #fff !important;
+  color: var(--text) !important;
 }
 
 .tableblock [style*="color: red"],
 .paragraph[id] [style*="color: red"] {
-  color: #fff !important;
+  color: var(--danger) !important;
 }
