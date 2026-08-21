@@ -162,15 +162,21 @@ module.exports = function (registry) {
             const releases = JSON.parse(releasesResponse)
 
             // Each install page is rendered once per component version.
-            // Show only the release whose tag matches that version, so
-            // v0.0.5's page shows v0.0.5 and develop's page shows none
-            // (develop is a branch, not a release). If no release matches,
-            // emit nothing so the page doesn't carry an empty table.
+            // Prefer the release whose tag matches that version, so v0.0.5's
+            // page shows v0.0.5. A branch with no release of its own matches
+            // nothing; rather than leave the page with an empty table, fall
+            // back to the most recent release, which is what a reader wanting a
+            // download actually needs.
             const pageVersion = parent.getDocument().getAttribute(
                 'page-component-version')
-            const matchingReleases = releases.filter((r) =>
-                r.name !== 'llvm-package'
-                && (!pageVersion || r.name === pageVersion))
+            const availableReleases = releases.filter((r) =>
+                r.name !== 'llvm-package')
+            availableReleases.sort((a, b) => getReleaseDate(b) - getReleaseDate(a));
+            let matchingReleases = availableReleases.filter((r) =>
+                !pageVersion || r.name === pageVersion)
+            if (matchingReleases.length === 0 && availableReleases.length > 0) {
+                matchingReleases = [availableReleases[0]]
+            }
             if (matchingReleases.length === 0) {
                 return self.parseContent(parent, '')
             }
