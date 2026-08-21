@@ -174,10 +174,12 @@ module.exports = function (registry) {
     registry.blockMacro('mrdocs-demos', function () {
         const self = this
         self.process(function (parent, target, attrs) {
-            // Each demos page is rendered once per component version. Show
-            // only the demos that match this page's version, so v0.0.5's
-            // page shows v0.0.5 demos and develop's page shows develop
-            // demos. The attribute is set by Antora.
+            // Each demos page is rendered once per component version. Prefer
+            // the demos that match this page's version, so v0.0.5's page
+            // shows v0.0.5 demos. A version with no demos of its own matches
+            // nothing; rather than leave the page empty, fall back to the
+            // best available version (the listing is already sorted with the
+            // newest first). The attribute is set by Antora.
             const pageVersion = parent.getDocument().getAttribute(
                 'page-component-version')
             // Collect all demo URLs. The layout on the server is
@@ -186,8 +188,12 @@ module.exports = function (registry) {
             // full multipage tree (html, adoc, adoc-asciidoc) or a single file
             // (xml); there is no separate single/multi level.
             let finalDemoDirs = [];
-            const versions = getSubdirectoriesSync('https://mrdocs.com/demos/')
+            const availableVersions = getSubdirectoriesSync('https://mrdocs.com/demos/');
+            let versions = availableVersions
                 .filter((v) => !pageVersion || v === pageVersion);
+            if (versions.length === 0 && availableVersions.length > 0) {
+                versions = [availableVersions[0]];
+            }
             for (const version of versions) {
                 const demoLibraries = getSubdirectoriesSync(`https://mrdocs.com/demos/${version}/`);
                 for (const demoLibrary of demoLibraries) {
