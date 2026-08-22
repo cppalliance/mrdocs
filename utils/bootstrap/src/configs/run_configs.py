@@ -265,6 +265,10 @@ def get_dynamic_run_configs(
                 "antora-playbook.yml",
                 "--attribute",
                 "branchesarray=HEAD",
+                "--attribute",
+                "tagsarray=",
+                "--start-page",
+                "mrdocs::index.adoc",
             ],
             "cwd": os.path.join(options.source_dir, "docs"),
             "env": {
@@ -284,6 +288,8 @@ def get_dynamic_run_configs(
                 "branchesarray=HEAD",
                 "--attribute",
                 "tagsarray=",
+                "--start-page",
+                "mrdocs::index.adoc",
             ],
             "cwd": os.path.join(options.source_dir, "docs"),
             "env": {

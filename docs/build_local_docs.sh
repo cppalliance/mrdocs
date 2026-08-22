@@ -23,5 +23,5 @@ echo "Installing npm dependencies..."
 npm ci
 
 echo "Building docs in custom dir..."
-npx antora --clean --fetch antora-playbook.yml --attribute branchesarray=HEAD
+npx antora --clean --fetch antora-playbook.yml --attribute branchesarray=HEAD --attribute tagsarray= --start-page mrdocs::index.adoc
 echo "Done"
