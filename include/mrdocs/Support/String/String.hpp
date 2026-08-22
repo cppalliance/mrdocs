@@ -260,6 +260,30 @@ toLowerCase(std::string_view const s) noexcept
     return result;
 }
 
+/** Compare two strings for case-insensitive ASCII equality.
+
+    @param a First string.
+    @param b Second string.
+    @return `true` if `a` and `b` are equal ignoring ASCII case.
+*/
+constexpr
+bool
+ciEqual(std::string_view const a, std::string_view const b) noexcept
+{
+    if (a.size() != b.size())
+    {
+        return false;
+    }
+    for (std::size_t i = 0; i < a.size(); ++i)
+    {
+        if (toLowerCase(a[i]) != toLowerCase(b[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 /** Convert a character to uppercase ASCII without locale.
 
     @param c Character to convert.
