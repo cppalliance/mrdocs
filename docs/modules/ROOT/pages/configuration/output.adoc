@@ -34,7 +34,7 @@ Each xref:generators/index.adoc[generator] ultimately decides how to interpret t
 
 The same input under three configurations exemplifies the pattern:
 
-[cols="2,1,2",options="header"]
+[cols="2,1,2,3",options="header"]
 |===
 | `generator` | `multipage` | `output` | Result
 
