@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A</anchor>
+  <anchor>A-062</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -28,7 +28,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B</anchor>
+  <anchor>B-0d</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -45,7 +45,7 @@
 </record>
 <record>
   <name>Ba</name>
-  <anchor>Ba</anchor>
+  <anchor>Ba-0af</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -79,7 +79,7 @@
 </record>
 <record>
   <name>a</name>
-  <anchor>a</anchor>
+  <anchor>a-06c</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -96,7 +96,7 @@
 </record>
 <record>
   <name>b</name>
-  <anchor>b</anchor>
+  <anchor>b-0c</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -113,7 +113,7 @@
 </record>
 <record>
   <name>bA</name>
-  <anchor>bA</anchor>
+  <anchor>bA-0a3</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
@@ -130,7 +130,7 @@
 </record>
 <record>
   <name>ba</name>
-  <anchor>ba</anchor>
+  <anchor>ba-00</anchor>
   <loc>
     <defLoc>
       <shortPath>canonical_1.cpp</shortPath>
