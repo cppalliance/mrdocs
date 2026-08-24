@@ -99,7 +99,7 @@
   </interface>
 </record>
 <function>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>
@@ -208,7 +208,7 @@
   </interface>
 </record>
 <function>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>
@@ -265,7 +265,7 @@
   <isConst/>
 </function>
 <using>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>
@@ -298,7 +298,7 @@
   <introducedName>
     <identifier>
       <kind>identifier</kind>
-      <identifier>operator void(*)()</identifier>
+      <identifier>operator fun_ptr</identifier>
       <prefix>
         <identifier>
           <kind>identifier</kind>
@@ -311,7 +311,7 @@
   <shadowDeclarations>2P8vEavoPWWGcmU7e6hJUuaJQJcj</shadowDeclarations>
 </using>
 <function>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>

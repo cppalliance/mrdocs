@@ -785,6 +785,10 @@ private:
     std::string
     extractName(clang::DeclarationName N);
 
+    // Name a conversion function after the type it converts to
+    std::string
+    conversionNameAsWritten(clang::CXXConversionDecl const* D);
+
     llvm::SmallString<256>
     qualifiedName(clang::Decl const* D) const;
 

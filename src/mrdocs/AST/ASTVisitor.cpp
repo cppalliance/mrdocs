@@ -115,6 +115,29 @@ gatherMacroParameters(clang::MacroInfo const* MI)
     return result;
 }
 
+// The conversion function a declaration names, if it names one.
+clang::CXXConversionDecl const*
+underlyingConversion(clang::NamedDecl const* D)
+{
+    clang::NamedDecl const* target = D;
+    if (clang::UsingShadowDecl const* USD =
+            dyn_cast<clang::UsingShadowDecl>(target))
+    {
+        target = USD->getTargetDecl();
+    }
+    else if (clang::UsingDecl const* UD = dyn_cast<clang::UsingDecl>(target);
+             UD && UD->shadow_size() != 0)
+    {
+        target = (*UD->shadow_begin())->getTargetDecl();
+    }
+    if (clang::FunctionTemplateDecl const* FTD =
+            dyn_cast<clang::FunctionTemplateDecl>(target))
+    {
+        target = FTD->getTemplatedDecl();
+    }
+    return dyn_cast<clang::CXXConversionDecl>(target);
+}
+
 } // unnamed namespace
 
 void
@@ -1278,6 +1301,10 @@ populate(
     auto INI = toName(Name, {}, NNS);
     MRDOCS_CHECK_OR(INI);
     I.IntroducedName = *INI;
+    if (clang::CXXConversionDecl const* CD = underlyingConversion(D))
+    {
+        I.IntroducedName->Identifier = conversionNameAsWritten(CD);
+    }
     for (clang::UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
@@ -2218,9 +2245,25 @@ extractName(DeclTy const* D)
 
 std::string
 ASTVisitor::
+conversionNameAsWritten(clang::CXXConversionDecl const* D)
+{
+    return "operator " + mrdocs::toString(*toType(D->getConversionType()));
+}
+
+std::string
+ASTVisitor::
 extractName(clang::NamedDecl const* D)
 {
-    return extractName(D->getDeclName());
+    std::string result;
+    if (clang::CXXConversionDecl const* CD = underlyingConversion(D))
+    {
+        result = conversionNameAsWritten(CD);
+    }
+    else
+    {
+        result = extractName(D->getDeclName());
+    }
+    return result;
 }
 
 std::string
