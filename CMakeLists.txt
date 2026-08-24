@@ -33,7 +33,7 @@ include(utils/cmake/helpers.cmake)
 #
 #-------------------------------------------------
 # What to build
-option(MRDOCS_MRDOCS_BUILD "Build only public-headers for documentation self-reference" OFF)
+option(MRDOCS_MRDOCS_BUILD "Build only public-headers for documentation self-reference" ${MRDOCS_BUILD})
 if (MRDOCS_MRDOCS_BUILD)
     include(docs/mrdocs-build.cmake)
     return()
