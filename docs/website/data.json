@@ -34,19 +34,23 @@
   "features": [
     {
       "title": "Single Source of Truth",
-      "description": "Mr.Docs turns the documentation comments that live next to your C++ declarations into authoritative reference pages. One source of truth—your code."
+      "description": "Mr.Docs turns the documentation comments that live next to your C++ declarations into authoritative reference pages. One source of truth—your code.",
+      "icon": "website-code"
     },
     {
       "title": "Built for C++",
-      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, algorithm function objects, and more."
+      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, algorithm function objects, and more.",
+      "icon": "terminal"
     },
     {
       "title": "Multiple output formats",
-      "description": "Export to AsciiDoc, HTML, or XML - or extend it with your own generator plugins."
+      "description": "Export to AsciiDoc, HTML, or XML - or extend it with your own generator plugins.",
+      "icon": "git-fork"
     },
     {
       "title": "Customizable",
-      "description": "Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.\n"
+      "description": "Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.\n",
+      "icon": "github"
     }
   ],
   "examples": [

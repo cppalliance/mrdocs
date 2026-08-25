@@ -264,6 +264,9 @@
   --ds-color-halftone: rgba(15, 23, 42, 0.1);
   /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
   --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-icon-box: var(--ds-blue-300); /* #93C5FD */
+  --ds-color-icon-ink: var(--ds-ink-950);
+  --ds-color-card-text: #6e727b;
   --ds-color-title: var(--ds-blue-300); /* #93C5FD */
   --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
   --ds-color-hero-text: var(--ds-ink-950);
@@ -320,6 +323,9 @@
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
     /* Dark uses pure black for outlines, not #0F172A. */
     --ds-color-outline: #000;
+    --ds-color-icon-box: #3d8bff;
+    --ds-color-icon-ink: var(--ds-white);
+    --ds-color-card-text: #a9abb2;
     --ds-color-title: #3d8bff; /* dark line 1 is a deeper blue than light */
     --ds-color-title-alt: #facc15;
     --ds-color-hero-text: var(--ds-white);
@@ -369,6 +375,9 @@
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
   --ds-color-outline: #000;
+  --ds-color-icon-box: #3d8bff;
+  --ds-color-icon-ink: var(--ds-white);
+  --ds-color-card-text: #a9abb2;
   --ds-color-title: #3d8bff;
   --ds-color-title-alt: #facc15;
   --ds-color-hero-text: var(--ds-white);
@@ -437,6 +446,13 @@
    * viewport exactly (100vw / 3.07 = 32.5vw); on mobile the mockup zooms
    * it well past the viewport and crops, hence the much larger 92vw. */
   --ds-city-height: 92vw;
+
+  /* ---- Feature card ----------------------------------------------- *
+   * The card's outer surface is the page colour, so it reads as a ring
+   * around the tinted inner panel -- the same wrapper pattern Figma uses
+   * on the hero buttons. The tint is the one value that does not change
+   * between themes. */
+  --ds-color-card-tint: rgba(30, 120, 255, 0.1); /* #1E78FF at 10% */
 
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
   --ds-badge-bg: var(--ds-color-label);
@@ -4371,13 +4387,15 @@ footer a {
  * repeated radial-gradient, which stays crisp at any zoom.
  * ===================================================================== */
 header,
-#features {
+#features,
+.principles {
     position: relative;
     isolation: isolate;
 }
 
 header::before,
-#features::before {
+#features::before,
+.principles::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -4405,7 +4423,8 @@ header::before,
    contrast. */
 @media (prefers-contrast: more) {
     header::before,
-    #features::before {
+    #features::before,
+    .principles::before {
         display: none;
     }
 }
@@ -4585,7 +4604,8 @@ header .header-content > p:not(.row-label) {
  * Mobile stacking order is content -> code panel -> mascot, which is
  * NOT DOM order, so the two visual columns are re-ordered here and
  * placed properly at the desktop breakpoint later. */
-header .container {
+header .container,
+.principles .container {
     padding-left: 28px;
     padding-right: 28px;
 }
@@ -4696,7 +4716,8 @@ header .header-content > p:not(.row-label) {
        2560 the panel reached 881px around eight short lines of code.
        The full-bleed decorative layers (halftone, cityscape) are on the
        header itself, so they keep spanning the viewport. */
-    header .container {
+    header .container,
+    .principles .container {
         max-width: calc(1284px + 2 * 78px);
         padding-inline: 78px;
         margin-inline: auto;
@@ -4929,4 +4950,268 @@ header {
     .header-cta {
         gap: 32px;
     }
+}
+
+/* =====================================================================
+ * FEATURE SECTION — "Keep the code simple" heading + the four cards.
+ * Built from the Figma file 2026-08-20, mobile first.
+ *   heading   52px / 82px, 3px / 4px stroke and offset
+ *   card      1.5px / 2px ring and offset, inner pad 20 / 40, gap 12 / 16
+ *   icon      38 / 50 box, 6 / 8 inset
+ *   title     27px / 36px, 1.5px / 2px stroke and offset
+ *   body      15/21 / 18/28
+ * ===================================================================== */
+
+/* ---- Section heading ----------------------------------------------- *
+ * Same comic treatment as the hero headline with the line colours
+ * swapped: gold first, blue second. */
+.section-title {
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-size: clamp(52px, 5.7vw, 82px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--ds-title-color);
+    -webkit-text-stroke: 3px var(--ds-color-outline);
+    paint-order: stroke fill;
+    text-shadow: 3px 3px 0 var(--ds-color-outline);
+    margin-block: 0 24px;
+}
+
+.section-title .title-line {
+    display: block;
+}
+
+.section-title .title-line--alt {
+    color: var(--ds-title-color-alt);
+}
+
+.section-heading {
+    /* Below 768 the container is a normal block, so this margin sets the gap
+       to the cards. At 768+ the container becomes a flex column with its own
+       row gap, which is used instead -- see below. */
+    margin-bottom: 56px;
+}
+
+.section-heading h3 {
+    font-family: var(--ds-font-body);
+    font-size: 16px;
+    line-height: 21px;
+    /* An earlier rule centres this; the mockup is left-aligned. */
+    text-align: left;
+    color: var(--ds-color-hero-text);
+    margin: 0;
+}
+
+/* ---- Card grid ----------------------------------------------------- */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Equal card heights: Figma has all four at the same height, but the
+       rows are content-sized by default and the copy lengths differ. */
+    grid-auto-rows: 1fr;
+    gap: 24px;
+    margin-top: 0;
+}
+
+.feature-card {
+    /* These are <article> elements, which Pico gives its own margin,
+       padding, radius and shadow -- all of which have to go. */
+    margin: 0;
+    /* Outer surface is the page colour, so the 2px padding reads as a ring
+       between the ink border and the tinted panel. */
+    background: var(--body-background);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    border-radius: 0;
+    padding: 1.5px;
+    box-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+}
+
+.feature-card-inner {
+    position: relative;
+    overflow: hidden;
+    background: var(--ds-color-card-tint);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+/* ---- Card corner halftone ------------------------------------------ *
+ * Figma puts two 290px (218px on mobile) dot fields per card, poking in
+ * from the top-right and bottom-left and clipped by the card. They are
+ * 1019 individual vectors there; here it is one repeating gradient with a
+ * radial mask for the density falloff. The dot colour matches the icon
+ * box in both themes (#93C5FD / #3D8BFF).
+ * background-repeat is explicit because Pico resets every ::before and
+ * ::after to no-repeat. */
+.feature-card-inner::before,
+.feature-card-inner::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: 218px;
+    height: 218px;
+    pointer-events: none;
+    background-image: radial-gradient(
+        var(--ds-color-icon-box) 1.5px,
+        transparent 1.6px
+    );
+    background-size: 6px 6px;
+    background-repeat: repeat;
+    -webkit-mask-image: radial-gradient(closest-side, #000 25%, transparent 78%);
+    mask-image: radial-gradient(closest-side, #000 25%, transparent 78%);
+}
+
+.feature-card-inner::before {
+    top: -134px;
+    right: -134px;
+}
+
+.feature-card-inner::after {
+    bottom: -135px;
+    left: -134px;
+}
+
+/* Keep the copy above the dots. */
+.feature-card-inner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ---- Icon ---------------------------------------------------------- *
+ * The glyph is a mask rather than an <img> so it can take a themed
+ * colour: Figma has it #0F172A on light and #FFFFFF on dark. */
+.feature-icon {
+    position: relative;
+    display: block;
+    flex: none;
+    width: 38px;
+    height: 38px;
+    background: var(--ds-color-icon-box);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    box-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+}
+
+.feature-icon::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    background: var(--ds-color-icon-ink);
+    -webkit-mask: var(--ds-icon) center / contain no-repeat;
+    mask: var(--ds-icon) center / contain no-repeat;
+}
+
+.feature-icon--website-code { --ds-icon: url("./assets/icons/website-code.svg"); }
+.feature-icon--terminal     { --ds-icon: url("./assets/icons/terminal.svg"); }
+.feature-icon--git-fork     { --ds-icon: url("./assets/icons/git-fork.svg"); }
+.feature-icon--github       { --ds-icon: url("./assets/icons/github.svg"); }
+
+/* ---- Card text ----------------------------------------------------- */
+.feature-card h4 {
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-size: 27px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--ds-title-color-alt);
+    -webkit-text-stroke: 1.5px var(--ds-color-outline);
+    paint-order: stroke fill;
+    text-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+    margin: 0;
+}
+
+.feature-card p {
+    font-family: var(--ds-font-body);
+    font-size: 15px;
+    line-height: 21px;
+    color: var(--ds-color-card-text);
+    margin: 0;
+}
+
+@media (min-width: 992px) {
+    .section-title {
+        -webkit-text-stroke-width: 4px;
+        text-shadow: 4px 4px 0 var(--ds-color-outline);
+    }
+
+    .section-heading h3 {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+    }
+
+    .feature-card {
+        padding: 2px;
+        box-shadow: 2px 2px 0 var(--ds-color-outline);
+    }
+
+    .feature-card-inner {
+        padding: 40px;
+        gap: 16px;
+    }
+
+    .feature-card-inner::before,
+    .feature-card-inner::after {
+        width: 290px;
+        height: 290px;
+    }
+
+    .feature-card-inner::before {
+        top: -178px;
+        right: -178px;
+    }
+
+    .feature-card-inner::after {
+        bottom: -179px;
+        left: -178px;
+    }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        box-shadow: 2px 2px 0 var(--ds-color-outline);
+    }
+
+    .feature-icon::before {
+        inset: 8px;
+    }
+
+    .feature-card h4 {
+        font-size: 36px;
+        -webkit-text-stroke-width: 2px;
+        text-shadow: 2px 2px 0 var(--ds-color-outline);
+    }
+
+    .feature-card p {
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+@media (min-width: 768px) {
+    /* `.principles .container` is a flex column with `gap: 2.5rem` (50px at
+       the desktop root size), which a margin here would only add to. Drive
+       the 57px mockup gap from the gap itself. */
+    .principles .container {
+        gap: 57px;
+    }
+
+    .section-heading {
+        margin-bottom: 0;
+    }
+}
+
+/* The page halftone is a single uniform pattern fill on Figma's Home frame.
+   The hero fades it out downward so it frames the headline; in the feature
+   section it stays even, so the mask is effectively removed here. */
+.principles::before {
+    -webkit-mask-image: none;
+    mask-image: none;
 }

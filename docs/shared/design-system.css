@@ -240,6 +240,9 @@
   --ds-color-halftone: rgba(15, 23, 42, 0.1);
   /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
   --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-icon-box: var(--ds-blue-300); /* #93C5FD */
+  --ds-color-icon-ink: var(--ds-ink-950);
+  --ds-color-card-text: #6e727b;
   --ds-color-title: var(--ds-blue-300); /* #93C5FD */
   --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
   --ds-color-hero-text: var(--ds-ink-950);
@@ -296,6 +299,9 @@
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
     /* Dark uses pure black for outlines, not #0F172A. */
     --ds-color-outline: #000;
+    --ds-color-icon-box: #3d8bff;
+    --ds-color-icon-ink: var(--ds-white);
+    --ds-color-card-text: #a9abb2;
     --ds-color-title: #3d8bff; /* dark line 1 is a deeper blue than light */
     --ds-color-title-alt: #facc15;
     --ds-color-hero-text: var(--ds-white);
@@ -345,6 +351,9 @@
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
   --ds-color-outline: #000;
+  --ds-color-icon-box: #3d8bff;
+  --ds-color-icon-ink: var(--ds-white);
+  --ds-color-card-text: #a9abb2;
   --ds-color-title: #3d8bff;
   --ds-color-title-alt: #facc15;
   --ds-color-hero-text: var(--ds-white);
@@ -413,6 +422,13 @@
    * viewport exactly (100vw / 3.07 = 32.5vw); on mobile the mockup zooms
    * it well past the viewport and crops, hence the much larger 92vw. */
   --ds-city-height: 92vw;
+
+  /* ---- Feature card ----------------------------------------------- *
+   * The card's outer surface is the page colour, so it reads as a ring
+   * around the tinted inner panel -- the same wrapper pattern Figma uses
+   * on the hero buttons. The tint is the one value that does not change
+   * between themes. */
+  --ds-color-card-tint: rgba(30, 120, 255, 0.1); /* #1E78FF at 10% */
 
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
   --ds-badge-bg: var(--ds-color-label);
