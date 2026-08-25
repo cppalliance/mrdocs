@@ -153,8 +153,10 @@ struct FunctionSymbol final
 
         Populated by `SpecializationFinalizer` with the IDs of
         function-template specializations referring to this
-        function as their primary. Sorted by referent name
-        then ID.
+        function as their primary. Ordered like every other list
+        of symbols, which for these comes down to the arguments
+        they were specialized with, since they all carry this
+        function's name.
     */
     std::vector<SymbolID> Specializations;
 

@@ -24,6 +24,13 @@ operator<=>(GuideSymbol const& other) const
     {
         return cmp;
     }
+    // What a guide deduces decides before anything it takes, since that is
+    // what a list of guides shows of them.
+    if (auto const cmp = Deduced <=> other.Deduced;
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
     if (auto const cmp = Params.size() <=> other.Params.size();
         !std::is_eq(cmp))
     {
@@ -46,11 +53,6 @@ operator<=>(GuideSymbol const& other) const
         {
             return cmp;
         }
-    }
-    if (auto const cmp = Params.size() <=> other.Params.size();
-        !std::is_eq(cmp))
-    {
-        return cmp;
     }
     for (size_t i = 0; i < Params.size(); ++i)
     {

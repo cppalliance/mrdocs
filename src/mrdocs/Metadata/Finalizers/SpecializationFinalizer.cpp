@@ -9,6 +9,7 @@
 //
 
 #include "SpecializationFinalizer.hpp"
+#include "SymbolIDCompare.hpp"
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <algorithm>
 #include <ranges>
@@ -105,20 +106,7 @@ void
 SpecializationFinalizer::
 sortBackPointers()
 {
-    auto byReferentName = [this](SymbolID const& lhs, SymbolID const& rhs)
-    {
-        Symbol const* lhsInfo = corpus_.find(lhs);
-        Symbol const* rhsInfo = corpus_.find(rhs);
-        if (!lhsInfo || !rhsInfo)
-        {
-            return lhs < rhs;
-        }
-        if (lhsInfo->Name != rhsInfo->Name)
-        {
-            return lhsInfo->Name < rhsInfo->Name;
-        }
-        return lhs < rhs;
-    };
+    SymbolIDCompareFn const pred{corpus_, config_};
     for (Symbol const& I : corpus_)
     {
         if (I.isRecord())
@@ -127,8 +115,8 @@ sortBackPointers()
             if (!R.Specializations.empty() || !R.DeductionGuides.empty())
             {
                 RecordSymbol* mut = corpus_.find(I.id)->asRecordPtr();
-                std::ranges::sort(mut->Specializations, byReferentName);
-                std::ranges::sort(mut->DeductionGuides, byReferentName);
+                std::ranges::sort(mut->Specializations, pred);
+                std::ranges::sort(mut->DeductionGuides, pred);
             }
         }
         else if (I.isFunction())
@@ -137,7 +125,7 @@ sortBackPointers()
             if (!F.Specializations.empty())
             {
                 FunctionSymbol* mut = corpus_.find(I.id)->asFunctionPtr();
-                std::ranges::sort(mut->Specializations, byReferentName);
+                std::ranges::sort(mut->Specializations, pred);
             }
         }
     }
