@@ -1,20 +1,4 @@
--- Print the inheritance subtree rooted at a named class.
---
--- `ctx.corpus.lookup(name)` resolves the entry point once. From there the
--- only way down the tree is by id: each record carries a `derived`
--- list of base16 ids, and `ctx.corpus.get(id)` turns each id back into a
--- live symbol proxy. The recursion walks the graph that single-pass
--- iteration over `ctx.corpus.symbols` cannot reconstruct.
-
-local function listSubclasses(corpus, sym, indent)
-    for _, id in ipairs(sym.derived) do
-        local child = corpus.get(id)
-        if child then
-            print(indent .. child.name)
-            listSubclasses(corpus, child, indent .. "  ")
-        end
-    end
-end
+local listSubclasses
 
 mrdocs.register_transform("subclass-tree", function(ctx)
     local base = ctx.corpus.lookup("Shape")
@@ -23,3 +7,20 @@ mrdocs.register_transform("subclass-tree", function(ctx)
         listSubclasses(ctx.corpus, base, "  ")
     end
 end)
+
+--- Print the inheritance subtree below a record, one class per line, indented
+--- by depth. Each record's `derived` list holds the ids of its direct
+--- subclasses; `corpus.get` turns each id back into a symbol, and the recursion
+--- follows them down the graph.
+--- @param corpus table `ctx.corpus`.
+--- @param sym table The record whose subclasses to print.
+--- @param indent string The leading whitespace for this level.
+function listSubclasses(corpus, sym, indent)
+    for _, id in ipairs(sym.derived) do
+        local child = corpus.get(id)
+        if child then
+            print(indent .. child.name)
+            listSubclasses(corpus, child, indent .. "  ")
+        end
+    end
+end
