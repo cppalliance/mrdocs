@@ -137,6 +137,17 @@ The default HTML output ships with a stylesheet that is fine to publish as-is. T
 
 xref:configuration/reference.adoc#stylesheets_option[`stylesheets`] adds extra stylesheets to every HTML page. xref:configuration/reference.adoc#no-default-styles_option[`no-default-styles`] drops the built-in stylesheet entirely (because you are shipping your own). xref:configuration/reference.adoc#linkcss_option[`linkcss`] and xref:configuration/reference.adoc#copycss_option[`copycss`] decide whether each stylesheet is referenced by `<link>` or copied next to the output, and xref:configuration/reference.adoc#stylesdir_option[`stylesdir`] sets the directory the `href` attributes point at.
 
-When you need to change the markup itself (not just the styles), reach for xref:extensions/handlebars-extensions.adoc[Handlebars templates] and the xref:configuration/reference.adoc#addons_option[`addons`] / xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] options that load them.
+When you need to change the markup itself (not just the styles), reach for xref:extensions/handlebars-extensions.adoc[Handlebars templates], loaded through the <<addons>> mechanism described below.
 
 xref:configuration/reference.adoc#embedded_option[`embedded`] drops the page wrapper (header, sidebar, footer) from the HTML output so the symbol pages can be embedded inside another document. Reach for it when MrDocs is rendering snippets into a larger site rather than producing a standalone manual.
+
+[#addons]
+== Addons
+
+While stylesheets change how the output looks, *addons* change what MrDocs produces. The addon directory is the tree MrDocs reads to shape the output beyond its built-in defaults. Under an addon root, three kinds of behavior can be customized:
+
+* xref:extensions/handlebars-extensions.adoc[Handlebars templates and helpers] in `generator/<format>/`. They define how handlebars-based generators present the information. This is the markup-level counterpart to the stylesheet options above.
+* xref:extensions/data-driven-generators.adoc[Data-driven Generators] in  `generator/<name>/`. A manifest file can be used to declare a new output format (Markdown, RST, anything) described entirely by Handlebars templates.
+* xref:extensions/corpus-transforms.adoc[Corpus transforms] and xref:extensions/script-generators.adoc[Script generators] in `extensions/`. These are `.js` and `.lua` scripts that can extend MrDocs to rewrite metadata before rendering and take over and define new generators.
+
+The xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] can be used to define extra directories and files on top of the base addons directory provided by default by Mr.Docs. Files in a supplemental directory override the corresponding default file at the same relative path, and MrDocs falls back to its defaults for everything else.
