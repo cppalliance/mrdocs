@@ -1,0 +1,62 @@
+= Script Generators
+
+A *script generator* is the second kind of Mr.Docs extension driven by scripts. This covers the cases where customizing xref:extensions/handlebars-extensions.adoc[Handlebars templates] is not enough to express the output format. A generator hands the whole emit to the script instead.
+
+[NOTE]
+====
+A generator is written and loaded exactly like a xref:extensions/corpus-transforms.adoc[corpus transform]: a `.js` or `.lua` script under `extensions/` in an xref:configuration/output.adoc#addons[addon directory], handed the same `ctx`. It declares itself with `mrdocs.register_generator(id, fn)` instead of `mrdocs.register_transform`. The `id` is the name you select on the command line with `--generator=<id>`; a registered generator takes precedence over a built-in of the same name.
+====
+
+== Outputting the corpus
+
+The smallest useful generator hands the corpus straight to `JSON.stringify`. A complete, runnable example lives at `examples/generators/script-driven/json/`. Given this input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$script-driven-generators/json/simple.cpp[]
+----
+
+In very few lines of code, this extension declares a `json` generator that writes every symbol to a single `reference.json`:
+
+.`addons/extensions/json.js`
+[source,js]
+----
+include::example$script-driven-generators/json/addons/extensions/json.js[]
+----
+
+Select it with `--generator=json`. Because `ctx.corpus.symbols` is already plain data, the whole generator is one `JSON.stringify` call, and the shape is yours: `map` or `filter` the array, or read `ctx.params` to add options, before writing it. A script generator takes precedence over a built-in of the same name, so this replaces the built-in xref:generators/json.adoc[JSON generator], which is the same idea implemented in C++.
+
+The output is an array of every symbol, each a full DOM object as seen by the templates, with parent/child relationships expressed as `id` references. Its first entry, the global namespace, begins (the file continues with one object per symbol):
+
+.`reference.json` (excerpt)
+[source,json]
+----
+include::example$script-driven-generators/json/reference.json[lines=1..45]
+----
+
+== Filtering the corpus
+
+Consider that you need a JSON file representing a search index for your reference documentation, in a format supported by your documentation framework. A complete, runnable example lives at `examples/generators/script-driven/search-index/`. Given this input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$script-driven-generators/search-index/simple.cpp[]
+----
+
+the extension declares a `search-index` generator that emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
+
+.`addons/extensions/search_index.lua`
+[source,lua]
+----
+include::example$script-driven-generators/search-index/addons/extensions/search_index.lua[]
+----
+
+Select it with `--generator=search-index`; it writes search-index.json into the output directory: one entry per named symbol.
+
+.`search-index.json`
+[source,json]
+----
+include::example$script-driven-generators/search-index/search-index.json[]
+----
