@@ -5037,6 +5037,14 @@ header {
     border-radius: 0;
     padding: 1.5px;
     box-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+    /* Flex column so the inner panel can fill the stretched row. A
+       `height: 100%` on the inner does not do it: the card's own height
+       comes from the grid's `1fr` track, which WebKit does not count as a
+       definite height for percentage resolution -- Safari fell back to
+       content height and left the card background showing below the
+       panel. Flex growth needs no percentage, so both engines agree. */
+    display: flex;
+    flex-direction: column;
 }
 
 .feature-card-inner {
@@ -5047,7 +5055,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    height: 100%;
+    flex: 1 1 auto;
 }
 
 /* ---- Card corner halftone ------------------------------------------ *
