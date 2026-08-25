@@ -275,6 +275,7 @@
   --ds-color-code-chrome: var(--ds-ink-950);
   --ds-color-code-body: var(--ds-code-800); /* #272E3E */
   --ds-city-opacity: 0.5;
+  --ds-band-opacity: 0.7;
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -335,6 +336,7 @@
     --ds-color-code-chrome: #000;
     --ds-color-code-body: #141720;
     --ds-city-opacity: 0.3;
+    --ds-band-opacity: 0.3;
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -388,6 +390,7 @@
   --ds-color-code-chrome: #000;
   --ds-color-code-body: #141720;
   --ds-city-opacity: 0.3;
+  --ds-band-opacity: 0.3;
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -5449,4 +5452,73 @@ header {
 .side-by-side .hljs-doc-comment,
 .side-by-side .hljs-comment {
     font-style: normal;
+}
+
+/* ---- Section transition band --------------------------------------- *
+ * Figma floats a decorative layer over the boundary into this section:
+ * a cloud bank in the top corners and comic speed lines converging behind
+ * the heading (its `Group 6`, 1440x468 at page y2287, with the heading at
+ * y2620 -- so 333px down from the band's top). Exported flattened, since
+ * the rays are thirteen overlapping vector shapes.
+ *
+ * The band straddles the section boundary, hence the negative offset. It
+ * sits above the halftone (::before) and below the content. */
+/* Desktop only. Mobile arranges these differently -- Figma puts the rays
+   above the heading but the cloud bank BELOW it (Rectangle 43 at y3539
+   against the heading at y3310) -- which a single flattened export cannot
+   reproduce. That needs the rays and clouds exported separately. */
+@media (min-width: 992px) {
+    /* Figma puts 317px between the cards' bottom and this heading; the
+       default section padding gives only 160, which is what pulled the
+       decorative band up over the cards. */
+    #features {
+        padding-top: 237px;
+    }
+
+    #features::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        /* Band sits 156px BELOW the cards' bottom in Figma -- entirely
+           inside this section, never overlapping the previous one. */
+        top: 76px;
+        height: 32.5vw;
+        z-index: -1;
+        pointer-events: none;
+        background-image: url("./assets/mrdocs-section-band.webp");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: 100% auto;
+        /* Figma: 0.70 on light, 0.30 on dark. Dark also sets LINEAR_BURN,
+           which has no CSS equivalent, so the opacity carries it -- the
+           same call made for the hero cityscape. */
+        opacity: var(--ds-band-opacity);
+        /* The art is light-mode (cream clouds, grey shading). Figma sets
+           LINEAR_BURN on dark so the band darkens; CSS has no such blend
+           and mix-blend-mode cannot reach past this section's isolation,
+           so invert the art instead -- cream becomes near-black and the
+           band reads as shadow rather than fog. */
+        filter: var(--ds-band-filter);
+    }
+}
+
+:root {
+    --ds-band-filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --ds-band-filter: invert(1);
+    }
+}
+
+[data-theme="dark"] {
+    --ds-band-filter: invert(1);
+}
+
+@media (prefers-contrast: more) {
+    #features::after {
+        display: none;
+    }
 }

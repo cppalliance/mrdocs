@@ -251,6 +251,7 @@
   --ds-color-code-chrome: var(--ds-ink-950);
   --ds-color-code-body: var(--ds-code-800); /* #272E3E */
   --ds-city-opacity: 0.5;
+  --ds-band-opacity: 0.7;
 
   --ds-color-text: rgba(0, 0, 0, 0.8);
   --ds-color-heading: rgba(0, 0, 0, 0.95);
@@ -311,6 +312,7 @@
     --ds-color-code-chrome: #000;
     --ds-color-code-body: #141720;
     --ds-city-opacity: 0.3;
+    --ds-band-opacity: 0.3;
 
     --ds-color-text: rgba(255, 255, 255, 0.9);
     --ds-color-heading: rgba(255, 255, 255, 0.98);
@@ -364,6 +366,7 @@
   --ds-color-code-chrome: #000;
   --ds-color-code-body: #141720;
   --ds-city-opacity: 0.3;
+  --ds-band-opacity: 0.3;
 
   --ds-color-text: rgba(255, 255, 255, 0.9);
   --ds-color-heading: rgba(255, 255, 255, 0.98);
