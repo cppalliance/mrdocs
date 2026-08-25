@@ -186,18 +186,17 @@
         </section>
     <section id="features">
         <div class="container">
-            <hgroup>
-                <h2>More Code, Fewer Workarounds</h2>
-                <h3>Mr.Docs lets you keep code simple and maintainable.</h3>
+            <hgroup class="section-heading section-heading--center">
+                <h2 class="section-title"><span class="title-line title-line--alt">More Code,</span> <span class="title-line">Fewer Workarounds</span></h2>
+                <h3>Mr.Docs lets you keep code simple and maintainable. No hacks. No compromise.</h3>
             </hgroup>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Attributes &amp; Specifiers</p>
-                    <ul class="check">
-                        <li>Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).</li>
-                    </ul>
-                    <div class="panel-container">
+                    <p class="panel-row-subtitle">Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).</p>
+                    <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-doc-comment">/** Exit the program.
+                            <div class="code-panel-chrome"><span class="code-panel-tab">terminate.cpp</span></div>
+                            <pre class="code-panel-body"><code><span class="hljs-doc-comment">/** Exit the program.
 
     The program will end immediately.
 
@@ -206,11 +205,6 @@
 <span class="hljs-meta">[[noreturn]]</span>
 <span class="hljs-function"><span class="hljs-keyword">void</span>
 <span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
-                            <div class="snippet-image">
-                                <div class="box3 box-shape3 box270">
-                                    <div class="inner-box pointing"></div>
-                                </div>
-                            </div>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -250,12 +244,11 @@
                 </div>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Parameters &amp; Returns</p>
-                    <ul class="check">
-                        <li>Documentation comments become structured reference pages—synopsis, description, parameters, and returns.</li>
-                    </ul>
-                    <div class="panel-container">
+                    <p class="panel-row-subtitle">Documentation comments become structured reference pages—synopsis, description, parameters, and returns.</p>
+                    <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-doc-comment">/** Return the distance between two points
+                            <div class="code-panel-chrome"><span class="code-panel-tab">distance.cpp</span></div>
+                            <pre class="code-panel-body"><code><span class="hljs-doc-comment">/** Return the distance between two points
 
     This function returns the distance between two points
     according to the Euclidean distance formula.
@@ -268,11 +261,6 @@
 */</span>
 <span class="hljs-function"><span class="hljs-keyword">double</span>
 <span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x0, <span class="hljs-keyword">double</span> y0, <span class="hljs-keyword">double</span> x1, <span class="hljs-keyword">double</span> y1)</span></span>;</code></pre>
-                            <div class="snippet-image">
-                                <div class="box3 box-shape1 box0">
-                                    <div class="inner-box shouting"></div>
-                                </div>
-                            </div>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -320,12 +308,11 @@
                 </div>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Directives &amp; Semantics</p>
-                    <ul class="check">
-                        <li>Use directives to capture semantics beyond the signature.</li>
-                    </ul>
-                    <div class="panel-container">
+                    <p class="panel-row-subtitle">Use directives to capture semantics beyond the signature.</p>
+                    <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-doc-comment">/** Return true if a number is prime.
+                            <div class="code-panel-chrome"><span class="code-panel-tab">is_prime.cpp</span></div>
+                            <pre class="code-panel-body"><code><span class="hljs-doc-comment">/** Return true if a number is prime.
 
     <span class="hljs-doctag">@par</span> Complexity
 
@@ -336,11 +323,6 @@
 */</span>
 <span class="hljs-function"><span class="hljs-keyword">bool</span>
 <span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
-                            <div class="snippet-image">
-                                <div class="box3 box-shape2 box180">
-                                    <div class="inner-box glasses"></div>
-                                </div>
-                            </div>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -381,12 +363,11 @@
                 </div>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Templates &amp; SFINAE</p>
-                    <ul class="check">
-                        <li>Understands concepts, constraints, and SFINAE—rendered as you wrote them.</li>
-                    </ul>
-                    <div class="panel-container">
+                    <p class="panel-row-subtitle">Understands concepts, constraints, and SFINAE—rendered as you wrote them.</p>
+                    <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
+                            <div class="code-panel-chrome"><span class="code-panel-tab">sqrt.cpp</span></div>
+                            <pre class="code-panel-body"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
 
 <span class="hljs-doc-comment">/** Computes the integer square root \f$\lfloor\sqrt{value}\rfloor\f$.
 
@@ -402,11 +383,6 @@
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-type">std</span>::<span class="hljs-type">enable_if_t</span>&lt;<span class="hljs-type">std</span>::<span class="hljs-type">is_integral_v</span>&lt;T&gt;, T&gt; sqrt(T value);
 </code></pre>
-                            <div class="snippet-image">
-                                <div class="box3 box-shape3 box270">
-                                    <div class="inner-box writing"></div>
-                                </div>
-                            </div>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -471,12 +447,11 @@ T
                 </div>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Function Objects</p>
-                    <ul class="check">
-                        <li>Function objects are documented as callable entities—operator() parameter list and return type appear directly on the variable.</li>
-                    </ul>
-                    <div class="panel-container">
+                    <p class="panel-row-subtitle">Function objects are documented as callable entities—operator() parameter list and return type appear directly on the variable.</p>
+                    <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <pre><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span>
+                            <div class="code-panel-chrome"><span class="code-panel-tab">function_object.cpp</span></div>
+                            <pre class="code-panel-body"><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span>
 {</span>
     <span class="hljs-doc-comment">/** Compute the absolute value.
 
@@ -490,11 +465,6 @@ T
 <span class="hljs-doc-comment">/** Return the absolute value of a number. */</span>
 <span class="hljs-keyword">constexpr</span> <span class="hljs-type">abs_fn</span> abs = {};
 </code></pre>
-                            <div class="snippet-image">
-                                <div class="box3 box-shape1 box0">
-                                    <div class="inner-box pointing"></div>
-                                </div>
-                            </div>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">

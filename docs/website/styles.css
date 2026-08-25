@@ -264,6 +264,7 @@
   --ds-color-halftone: rgba(15, 23, 42, 0.1);
   /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
   --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-doc-surface: var(--ds-paper-50); /* #FDFAF5 */
   --ds-color-icon-box: var(--ds-blue-300); /* #93C5FD */
   --ds-color-icon-ink: var(--ds-ink-950);
   --ds-color-card-text: #6e727b;
@@ -323,6 +324,7 @@
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
     /* Dark uses pure black for outlines, not #0F172A. */
     --ds-color-outline: #000;
+    --ds-color-doc-surface: #171c26;
     --ds-color-icon-box: #3d8bff;
     --ds-color-icon-ink: var(--ds-white);
     --ds-color-card-text: #a9abb2;
@@ -375,6 +377,7 @@
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
   --ds-color-outline: #000;
+  --ds-color-doc-surface: #171c26;
   --ds-color-icon-box: #3d8bff;
   --ds-color-icon-ink: var(--ds-white);
   --ds-color-card-text: #a9abb2;
@@ -4608,7 +4611,8 @@ header .header-content > p:not(.row-label) {
  * NOT DOM order, so the two visual columns are re-ordered here and
  * placed properly at the desktop breakpoint later. */
 header .container,
-.principles .container {
+.principles .container,
+#features .container {
     padding-left: 28px;
     padding-right: 28px;
 }
@@ -4720,7 +4724,8 @@ header .header-content > p:not(.row-label) {
        The full-bleed decorative layers (halftone, cityscape) are on the
        header itself, so they keep spanning the viewport. */
     header .container,
-    .principles .container {
+    .principles .container,
+    #features .container {
         max-width: calc(1284px + 2 * 78px);
         padding-inline: 78px;
         margin-inline: auto;
@@ -5217,4 +5222,231 @@ header {
 .principles::before {
     -webkit-mask-image: none;
     mask-image: none;
+}
+
+/* =====================================================================
+ * PANELS SECTION — "More Code, Fewer Workarounds".
+ * Figma 2026-08-24. Section heading is the same comic treatment as the
+ * feature section, but centred here. Row headers are a 20/14px label pill
+ * and a 32/24px subtitle.
+ * ===================================================================== */
+.section-heading--center {
+    text-align: center;
+}
+
+.section-heading--center .section-title {
+    text-align: center;
+}
+
+.section-heading--center h3 {
+    text-align: center;
+    margin-inline: auto;
+}
+
+/* Row header: the label pill is larger here than the hero eyebrow, and the
+   subtitle is a paragraph rather than the old checklist. */
+.snippet-documentation-panel .row-label {
+    font-size: 14px;
+    line-height: 12px;
+    padding: 4.5px 9px;
+}
+
+.panel-row-subtitle {
+    font-family: var(--ds-font-body);
+    font-size: 24px;
+    line-height: 1.6;
+    /* Figma has this in full ink; the muted reading was the text node's
+       default, with character overrides for the inline code spans. */
+    color: var(--ds-color-hero-text);
+    margin-block: 12px 0;
+}
+
+@media (min-width: 992px) {
+    .snippet-documentation-panel .row-label {
+        font-size: 20px;
+        line-height: 16px;
+        padding: 8px 16px;
+    }
+
+    .panel-row-subtitle {
+        font-size: 32px;
+        /* Figma measures this at 816px. */
+        max-width: 816px;
+    }
+}
+
+/* This section's subheading runs at line-height 1.6, unlike the feature
+   section's 28px, and Figma measures it at 553px so it breaks after
+   "maintainable." */
+#features .section-heading h3 {
+    line-height: 1.6;
+    max-width: 553px;
+}
+
+/* ---- Side-by-side code + documentation ----------------------------- *
+ * Figma: one bordered box, 1280 wide with a 2px page-coloured ring and a
+ * 2px ink border, halves flush at 638 each (exactly 50/50, no gap). The
+ * old markup had them as two separate panels with a 1rem gap, and the
+ * documentation half carried a translucent fill, blur and radius that the
+ * design does not have. */
+.side-by-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--body-background);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    border-radius: 0;
+    padding: 1.5px;
+    overflow: hidden;
+}
+
+.side-by-side > .snippet-panel,
+.side-by-side > .documentation-panel {
+    flex: 1 1 50%;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+}
+
+.side-by-side > .snippet-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--ds-code-panel-bg);
+}
+
+.side-by-side > .snippet-panel > .code-panel-body {
+    flex: 1;
+    padding: 20px;
+    background: var(--ds-code-panel-bg);
+    border-radius: 0;
+}
+
+.side-by-side > .documentation-panel {
+    background: var(--ds-color-doc-surface);
+    padding: 20px;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .side-by-side {
+        flex-direction: row;
+        padding: 2px;
+    }
+
+    .side-by-side > .snippet-panel > .code-panel-body {
+        padding: 30px;
+    }
+
+    .side-by-side > .documentation-panel {
+        padding: 40px;
+    }
+}
+
+/* ---- Documentation half: heading and code colours ------------------ *
+ * Figma splits the two heading levels, which the earlier B3 rule did not:
+ * the symbol title is gold at 36px, the section titles (Synopsis,
+ * Description) are blue at 24px. Both carry a 2px ink outline. */
+.side-by-side > .documentation-panel h2,
+.side-by-side > .documentation-panel h2 a {
+    color: var(--ds-title-color-alt);
+    font-size: 36px;
+    -webkit-text-stroke: 2px var(--ds-color-outline);
+    paint-order: stroke fill;
+}
+
+.side-by-side > .documentation-panel h3 {
+    color: var(--ds-title-color);
+    font-size: 24px;
+    -webkit-text-stroke: 2px var(--ds-color-outline);
+    paint-order: stroke fill;
+}
+
+/* The code half is highlight.js output, so its colours come from hljs
+   classes rather than the hand-written spans the hero panel uses. Map them
+   onto the same panel palette: grey comments, pink keywords, blue
+   identifiers, cream for everything else. */
+.side-by-side .code-panel-body code {
+    color: var(--ds-code-panel-fg);
+}
+
+.side-by-side .hljs-doc-comment,
+.side-by-side .hljs-comment {
+    color: var(--ds-code-panel-comment);
+}
+
+/* Only keywords take the pink; attributes and identifiers stay cream, and
+   everything inside a doc comment reads as comment grey. */
+.side-by-side .hljs-doctag,
+.side-by-side .hljs-string,
+.side-by-side .hljs-name {
+    color: inherit;
+}
+
+.side-by-side .hljs-keyword {
+    color: var(--ds-code-panel-keyword);
+}
+
+.side-by-side .hljs-meta,
+.side-by-side .hljs-title,
+.side-by-side .hljs-type,
+.side-by-side .hljs-params {
+    color: var(--ds-code-panel-fg);
+}
+
+/* ---- Documentation half: body, inline code, synopsis block ---------- *
+ * The generated markup is .symbol > .header/.synopsis/.description, with
+ * the declaration in `pre > code.source-code`. Figma: body copy #6E727B,
+ * inline code pink, and the declaration block on the dark code surface --
+ * the render had it on a pale tint. */
+.side-by-side > .documentation-panel p,
+.side-by-side > .documentation-panel li,
+.side-by-side > .documentation-panel dd {
+    color: var(--ds-color-card-text);
+}
+
+.side-by-side > .documentation-panel p code,
+.side-by-side > .documentation-panel li code {
+    background: none;
+    padding: 0;
+    color: var(--ds-code-panel-keyword);
+    font-family: var(--ds-font-mono);
+}
+
+.side-by-side > .documentation-panel pre {
+    background: var(--ds-code-panel-bg);
+    border: 0;
+    border-radius: 0;
+    padding: 20px;
+    margin-block: 12px 0;
+}
+
+.side-by-side > .documentation-panel pre code {
+    background: none;
+    padding: 0;
+    color: var(--ds-code-panel-fg);
+}
+
+/* NOTE admonition: Figma has the title in full ink and the body muted. */
+.side-by-side > .documentation-panel .admonition h4 {
+    color: var(--ds-color-hero-text);
+}
+
+/* Figma sets the documentation copy in Special Elite; it was inheriting a
+   sans stack. */
+.side-by-side > .documentation-panel p,
+.side-by-side > .documentation-panel li,
+.side-by-side > .documentation-panel dt,
+.side-by-side > .documentation-panel dd,
+.side-by-side > .documentation-panel .admonition h4 {
+    font-family: var(--ds-font-body);
+}
+
+/* Comments come through italic from the highlight theme; the mockup has
+   them upright. */
+.side-by-side .hljs-doc-comment,
+.side-by-side .hljs-comment {
+    font-style: normal;
 }

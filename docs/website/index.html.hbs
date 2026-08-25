@@ -201,24 +201,18 @@
     </section> --}}
     <section id="features">
         <div class="container">
-            <hgroup>
-                <h2>More Code, Fewer Workarounds</h2>
-                <h3>Mr.Docs lets you keep code simple and maintainable.</h3>
+            <hgroup class="section-heading section-heading--center">
+                <h2 class="section-title"><span class="title-line title-line--alt">More Code,</span> <span class="title-line">Fewer Workarounds</span></h2>
+                <h3>Mr.Docs lets you keep code simple and maintainable. No hacks. No compromise.</h3>
             </hgroup>
             {{#each panels}}
                 <div class="snippet-documentation-panel">
                     {{#if label}}<p class="row-label">{{ label }}</p>{{/if}}
-                    <ul class="check">
-                        <li>{{ description }}</li>
-                    </ul>
-                    <div class="panel-container">
+                    <p class="panel-row-subtitle">{{ description }}</p>
+                    <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <pre><code>{{{ snippet }}}</code></pre>
-                            <div class="snippet-image">
-                                <div class="{{boxClass}}">
-                                    <div class="inner-box {{imageClass}}"></div>
-                                </div>
-                            </div>
+                            <div class="code-panel-chrome"><span class="code-panel-tab">{{ source }}</span></div>
+                            <pre class="code-panel-body"><code>{{{ snippet }}}</code></pre>
                         </div>
                         <div class="documentation-panel">
                             {{{ documentation }}}
