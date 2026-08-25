@@ -402,8 +402,8 @@ function register (hljs) {
   // Only the languages our docs actually use. `grep -rohE
   // '\[source,[a-zA-Z+#-]+\]' docs/modules/ROOT/pages` yields:
   // bash, c++ (alias of cpp), cmake, handlebars, ini, javascript,
-  // json, latex, lua, markdown, powershell, text/txt, xml, yaml.
-  // Anything else falls back to unstyled.
+  // json, latex, lua, markdown, powershell, python, text/txt, xml,
+  // yaml. Anything else falls back to unstyled.
   var richCpp = makeRichCpp(require('highlight.js/lib/languages/cpp'))
   hljs.registerLanguage('bash', commandAwareBash)
   hljs.registerLanguage('cmake', require('highlight.js/lib/languages/cmake'))
@@ -416,6 +416,7 @@ function register (hljs) {
   hljs.registerLanguage('markdown', require('highlight.js/lib/languages/markdown'))
   hljs.registerLanguage('plaintext', require('highlight.js/lib/languages/plaintext'))
   hljs.registerLanguage('powershell', require('highlight.js/lib/languages/powershell'))
+  hljs.registerLanguage('python', require('highlight.js/lib/languages/python'))
   hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
   hljs.registerLanguage('yaml', require('highlight.js/lib/languages/yaml'))
   // AsciiDoc is the host language for adoc-handlebars and is also
