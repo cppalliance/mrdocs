@@ -397,8 +397,11 @@
 :root {
   /* ---- Halftone dot field (comic print texture) ------------------- */
   --ds-halftone-dot: var(--ds-color-halftone);
-  --ds-halftone-dot-size: 1.5px;
-  --ds-halftone-gap: 14px;
+  /* Measured off the mockups 2026-08-20: the dot grid runs on a 6.75px
+     pitch (deltas alternate 6/7 on both axes). The previous 14px was a
+     guess made before the design file was readable. */
+  --ds-halftone-dot-size: 1.4px;
+  --ds-halftone-gap: 6.75px;
   /* How far down the section the field stays visible before fading out. */
   --ds-halftone-extent: 55%;
 
