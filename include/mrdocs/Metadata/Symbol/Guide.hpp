@@ -56,7 +56,8 @@ struct GuideSymbol final
         : SymbolCommonBase(ID)
     {}
 
-    /** Compare guides by params/deduced/template/explicit.
+    /** Compare guides by what they deduce, then by their parameters
+        and template head.
     */
     std::strong_ordering
     operator<=>(GuideSymbol const& other) const;

@@ -100,15 +100,19 @@ struct RecordSymbol final
 
         Populated by `SpecializationFinalizer` with the IDs of
         class-template specializations referring to this record
-        as their primary. Sorted by referent name then ID.
+        as their primary. Ordered like every other list of symbols,
+        which for these comes down to the arguments they were
+        specialized with, since they all carry this record's name.
     */
     std::vector<SymbolID> Specializations;
 
     /** Deduction guides associated with this class template.
 
         Populated by `SpecializationFinalizer` with the IDs of
-        deduction guides that deduce this record. Sorted by
-        referent name then ID.
+        deduction guides that deduce this record. Ordered like every
+        other list of symbols, which for these comes down to what
+        each one deduces and then the types it takes, since they all
+        carry this record's name.
     */
     std::vector<SymbolID> DeductionGuides;
 

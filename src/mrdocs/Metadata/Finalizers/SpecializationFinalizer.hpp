@@ -23,7 +23,8 @@ namespace mrdocs {
     `Specializations` list and sets the specialization's
     `IsListedOnPrimary` flag. For each `Regular` deduction guide,
     appends its ID to the deduced record's `DeductionGuides`
-    list. The populated lists are sorted by referent name then ID.
+    list. The populated lists are ordered with the same comparison
+    as every other list of symbols.
 
     Orphan specializations - those whose primary is not extracted
     in `Regular` mode - keep `IsListedOnPrimary` `false` so they
@@ -60,7 +61,8 @@ public:
         also regular) and each `Regular` deduction guide to its deduced
         record's `DeductionGuides` list. Specializations whose primary
         will be rendered also get their `IsListedOnPrimary` flag set.
-        Finally sorts every populated vector by referent name then ID.
+        Finally orders every populated vector with `SymbolIDCompareFn`,
+        the comparison used for every other list of symbols.
     */
     void build();
 };
