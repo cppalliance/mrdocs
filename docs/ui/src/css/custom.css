@@ -209,3 +209,20 @@ body {
      chrome, white on dark fills the head under the black features. */
   color: var(--logo-fill);
 }
+
+/* Mermaid quadrant charts (e.g. the "Output format trade-off" scatter) draw
+   their title, axis labels and point labels with a fill baked in at init time.
+   That single colour can't suit both themes, so recolour the text and the
+   quadrant borders with theme-aware tokens here instead. The fills come in as
+   SVG presentation attributes, which any CSS rule outranks. */
+.mermaid g.title text,
+.mermaid g.labels text,
+.mermaid g.quadrants text,
+.mermaid g.data-points text {
+  fill: var(--text);
+}
+
+.mermaid g.border line,
+.mermaid g.border path {
+  stroke: var(--border-strong);
+}
