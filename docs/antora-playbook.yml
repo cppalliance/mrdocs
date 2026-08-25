@@ -49,12 +49,6 @@ antora:
           quadrant3_fill: 'transparent'
           quadrant4_fill: 'transparent'
           quadrant_point_fill: '#9eb1ff'
-          quadrant_point_text_fill: '#ffffff'
-          quadrant_title_fill: '#ffffff'
-          quadrant_x_axis_text_fill: '#ffffff'
-          quadrant_y_axis_text_fill: '#ffffff'
-          quadrant_internal_border_stroke_fill: '#ffffff44'
-          quadrant_external_border_stroke_fill: '#ffffff88'
     - require: '@antora/lunr-extension' # https://gitlab.com/antora/antora-lunr-extension
       index_latest_only: true
     - require: '@cppalliance/antora-cpp-reference-extension'
