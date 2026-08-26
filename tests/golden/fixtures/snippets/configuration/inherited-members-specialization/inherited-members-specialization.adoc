@@ -35,9 +35,9 @@ struct version
 | link:#version-compare[`compare`] 
 | Three&hyphen;way comparison against another version&period;
 | link:#version-operator_eq[`operator&equals;&equals;`] 
-| Equality operator
+| True if `compare()` is `0`&period;
 | link:#version-operator_not_eq[`operator!&equals;`] 
-| Inequality operator
+| True otherwise&period;
 |===
 
 
@@ -105,7 +105,7 @@ compare(link:#version[version] const& other) const noexcept;
 [#version-operator_eq]
 == link:#version[version]::operator&equals;&equals;
 
-Equality operator
+True if `compare()` is `0`&period;
 
 === Synopsis
 
@@ -133,7 +133,7 @@ operator&equals;&equals;(link:#version[version] const& other) const noexcept;
 [#version-operator_not_eq]
 == link:#version[version]::operator!&equals;
 
-Inequality operator
+True otherwise&period;
 
 === Synopsis
 

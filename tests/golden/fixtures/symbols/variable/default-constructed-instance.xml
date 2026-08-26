@@ -133,12 +133,24 @@
       <sourcePath>default-constructed-instance.cpp</sourcePath>
       <lineNumber>4</lineNumber>
       <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>variable</kind>
   <id>4842R6Qpx55QxcmNNi6jgMJhxhXi</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A default-constructed instance of a same-named tag type (see issue #1238).</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
   <type>
     <named>
       <kind>named</kind>
