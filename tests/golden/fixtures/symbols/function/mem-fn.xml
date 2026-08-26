@@ -879,6 +879,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>mem-fn.cpp</shortPath>
+          <sourcePath>mem-fn.cpp</sourcePath>
+          <lineNumber>20</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -1085,6 +1093,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>mem-fn.cpp</shortPath>
+          <sourcePath>mem-fn.cpp</sourcePath>
+          <lineNumber>29</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

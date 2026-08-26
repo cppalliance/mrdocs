@@ -52,6 +52,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>31</lineNumber>
+          <columnNumber>5</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <derived>16BtnvydaDUMs96N5PELUc8h1NT</derived>
@@ -752,6 +760,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>51</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -767,6 +783,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>52</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -1370,6 +1394,14 @@
         </named>
       </type>
       <access>private</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>77</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -1385,6 +1417,14 @@
         </named>
       </type>
       <access>private</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>78</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -1558,6 +1598,14 @@
         </named>
       </type>
       <access>protected</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>64</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -1573,6 +1621,14 @@
         </named>
       </type>
       <access>protected</access>
+      <loc>
+        <defLoc>
+          <shortPath>reference.cpp</shortPath>
+          <sourcePath>reference.cpp</sourcePath>
+          <lineNumber>65</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

@@ -15,6 +15,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
+#include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 
@@ -40,6 +41,10 @@ struct BaseInfo
     */
     bool IsVirtual = false;
 
+    /** Location of the base-specifier in the derived class.
+    */
+    SourceInfo Loc;
+
     /** Bases must be explicitly described.
     */
     BaseInfo() = delete;
@@ -48,14 +53,17 @@ struct BaseInfo
         @param type The base type.
         @param access Declared access specifier.
         @param is_virtual Whether the base is virtual.
+        @param loc Location of the base-specifier in the derived class.
     */
     BaseInfo(
         Polymorphic<struct Type>&& type,
         AccessKind const access,
-        bool const is_virtual)
+        bool const is_virtual,
+        SourceInfo loc = {})
         : Type(std::move(type))
         , Access(access)
         , IsVirtual(is_virtual)
+        , Loc(std::move(loc))
     {
     }
 };
@@ -63,7 +71,7 @@ struct BaseInfo
 MRDOCS_DESCRIBE_STRUCT(
     BaseInfo,
     (),
-    (Type, Access, IsVirtual)
+    (Type, Access, IsVirtual, Loc)
 )
 
 

@@ -69,6 +69,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>excluded-base-class.cpp</shortPath>
+          <sourcePath>excluded-base-class.cpp</sourcePath>
+          <lineNumber>15</lineNumber>
+          <columnNumber>15</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -81,14 +89,12 @@
   <name>f</name>
   <anchor>f</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>excluded-base-class.cpp</shortPath>
-        <sourcePath>excluded-base-class.cpp</sourcePath>
-        <lineNumber>6</lineNumber>
-        <columnNumber>17</columnNumber>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>excluded-base-class.cpp</shortPath>
+      <sourcePath>excluded-base-class.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>15</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>5es8H9kDgrA9WHd2muMG4Jwq7jw</id>
@@ -252,6 +258,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>excluded-base-class.cpp</shortPath>
+          <sourcePath>excluded-base-class.cpp</sourcePath>
+          <lineNumber>27</lineNumber>
+          <columnNumber>15</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -264,14 +278,12 @@
   <name>f</name>
   <anchor>f</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>excluded-base-class.cpp</shortPath>
-        <sourcePath>excluded-base-class.cpp</sourcePath>
-        <lineNumber>6</lineNumber>
-        <columnNumber>17</columnNumber>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>excluded-base-class.cpp</shortPath>
+      <sourcePath>excluded-base-class.cpp</sourcePath>
+      <lineNumber>27</lineNumber>
+      <columnNumber>15</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2ixjpSov8aQ3DSwHskKDrLWDR5Tx</id>
@@ -298,14 +310,12 @@
   <name>g</name>
   <anchor>g</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>excluded-base-class.cpp</shortPath>
-        <sourcePath>excluded-base-class.cpp</sourcePath>
-        <lineNumber>7</lineNumber>
-        <columnNumber>17</columnNumber>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>excluded-base-class.cpp</shortPath>
+      <sourcePath>excluded-base-class.cpp</sourcePath>
+      <lineNumber>27</lineNumber>
+      <columnNumber>15</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>XidbpLDeDDQ69j9JCUAxow8mWEc</id>

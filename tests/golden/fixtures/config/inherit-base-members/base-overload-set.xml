@@ -40,6 +40,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>base-overload-set.cpp</shortPath>
+          <sourcePath>base-overload-set.cpp</sourcePath>
+          <lineNumber>7</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <derived>6RWYArUFm6agSXBXbdJrAxtHtTq</derived>
@@ -201,6 +209,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>base-overload-set.cpp</shortPath>
+          <sourcePath>base-overload-set.cpp</sourcePath>
+          <lineNumber>13</lineNumber>
+          <columnNumber>11</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

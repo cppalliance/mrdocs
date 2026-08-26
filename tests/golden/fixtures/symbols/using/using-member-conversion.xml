@@ -198,6 +198,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-member-conversion.cpp</shortPath>
+          <sourcePath>using-member-conversion.cpp</sourcePath>
+          <lineNumber>12</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

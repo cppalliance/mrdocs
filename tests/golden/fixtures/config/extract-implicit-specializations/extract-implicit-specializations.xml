@@ -57,6 +57,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>extract-implicit-specializations.cpp</shortPath>
+          <sourcePath>extract-implicit-specializations.cpp</sourcePath>
+          <lineNumber>6</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

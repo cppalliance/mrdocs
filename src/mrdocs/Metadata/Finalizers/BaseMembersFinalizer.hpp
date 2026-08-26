@@ -32,27 +32,30 @@ class BaseMembersFinalizer
     std::unordered_set<SymbolID> finalized_;
 
     void
-    inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind A);
+    inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind A, SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         RecordInterface& derived,
         RecordInterface const& base,
-        AccessKind A);
+        AccessKind A,
+        SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         RecordTranche& derived,
-        RecordTranche const& base);
+        RecordTranche const& base,
+        SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         std::vector<SymbolID>& derived,
         std::vector<SymbolID> const& base,
-        std::unordered_set<std::string> const& derivedNames);
+        std::unordered_set<std::string> const& derivedNames,
+        SourceInfo const& baseLoc);
 
     // The names the members of a tranche go by.
     std::unordered_set<std::string>

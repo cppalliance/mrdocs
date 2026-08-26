@@ -242,6 +242,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>dependency-propagation.cpp</shortPath>
+          <sourcePath>dependency-propagation.cpp</sourcePath>
+          <lineNumber>15</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>

@@ -263,6 +263,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>ref.cpp</shortPath>
+          <sourcePath>ref.cpp</sourcePath>
+          <lineNumber>32</lineNumber>
+          <columnNumber>16</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
