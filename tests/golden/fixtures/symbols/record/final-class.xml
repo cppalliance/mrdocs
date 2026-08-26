@@ -86,6 +86,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>final-class.cpp</shortPath>
+          <sourcePath>final-class.cpp</sourcePath>
+          <lineNumber>18</lineNumber>
+          <columnNumber>18</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -101,6 +109,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>final-class.cpp</shortPath>
+          <sourcePath>final-class.cpp</sourcePath>
+          <lineNumber>18</lineNumber>
+          <columnNumber>29</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>

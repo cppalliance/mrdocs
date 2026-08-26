@@ -46,6 +46,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>178</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -843,6 +851,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>180</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -916,6 +932,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>198</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -989,6 +1013,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>200</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1082,6 +1114,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>202</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1175,6 +1215,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>204</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1228,6 +1276,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>206</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1281,6 +1337,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>208</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1354,6 +1418,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>210</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1427,6 +1499,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>212</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1487,6 +1567,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>214</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1560,6 +1648,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>216</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -1620,6 +1716,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>182</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -2470,6 +2574,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>218</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -2563,6 +2675,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>220</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -2636,6 +2756,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>222</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -2716,6 +2844,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>224</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -2802,6 +2938,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>226</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -2908,6 +3052,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>228</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -3014,6 +3166,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>230</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -3100,6 +3260,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>232</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -3155,6 +3323,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>234</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -3967,6 +4143,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>236</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -4784,6 +4968,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>184</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -4846,6 +5038,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>238</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -5061,6 +5261,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>241</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5151,6 +5359,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>243</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5241,6 +5457,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>245</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5338,6 +5562,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>247</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -5518,6 +5750,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>250</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5636,6 +5876,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>252</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5754,6 +6002,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>254</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5861,6 +6117,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>257</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5944,6 +6208,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>259</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -5991,6 +6263,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>186</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -6074,6 +6354,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>261</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -6164,6 +6452,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>263</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -6407,6 +6703,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>266</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -6525,6 +6829,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>268</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -6643,6 +6955,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>270</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -6768,6 +7088,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>272</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -6976,6 +7304,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>275</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7122,6 +7458,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>277</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7268,6 +7612,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>279</lineNumber>
+          <columnNumber>14</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7328,6 +7680,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>188</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7388,6 +7748,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>190</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7468,6 +7836,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>192</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7548,6 +7924,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>194</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -7615,6 +7999,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>class-template-specializations-1.cpp</shortPath>
+          <sourcePath>class-template-specializations-1.cpp</sourcePath>
+          <lineNumber>196</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>

@@ -762,10 +762,23 @@ populate(
             {
                 BaseType->IsPackExpansion = true;
             }
+
+            // Record where the derived class names this base (the
+            // `: public Base` clause). Inherited members copied from a base
+            // with no page of its own are relocated here so they point inside
+            // the derived class's file rather than an external header.
+            SourceInfo baseLoc;
+            if (clang::SourceLocation const baseSpecLoc = B.getBeginLoc();
+                baseSpecLoc.isValid())
+            {
+                populate(baseLoc, baseSpecLoc, /*definition=*/true, /*documented=*/false);
+            }
+
             I.Bases.emplace_back(
                 std::move(BaseType),
                 toAccessKind(access),
-                B.isVirtual());
+                B.isVirtual(),
+                std::move(baseLoc));
         }
     }
 

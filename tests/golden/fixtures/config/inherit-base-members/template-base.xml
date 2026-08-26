@@ -241,6 +241,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-base.cpp</shortPath>
+          <sourcePath>template-base.cpp</sourcePath>
+          <lineNumber>28</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -426,6 +434,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-base.cpp</shortPath>
+          <sourcePath>template-base.cpp</sourcePath>
+          <lineNumber>23</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

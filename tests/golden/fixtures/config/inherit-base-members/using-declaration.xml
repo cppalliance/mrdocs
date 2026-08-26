@@ -96,6 +96,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-declaration.cpp</shortPath>
+          <sourcePath>using-declaration.cpp</sourcePath>
+          <lineNumber>22</lineNumber>
+          <columnNumber>17</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -238,6 +246,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-declaration.cpp</shortPath>
+          <sourcePath>using-declaration.cpp</sourcePath>
+          <lineNumber>20</lineNumber>
+          <columnNumber>15</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <derived>3X6tMK9xDPUFDevsgcGQHqP9Nr7n</derived>
@@ -507,6 +523,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-declaration.cpp</shortPath>
+          <sourcePath>using-declaration.cpp</sourcePath>
+          <lineNumber>24</lineNumber>
+          <columnNumber>20</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

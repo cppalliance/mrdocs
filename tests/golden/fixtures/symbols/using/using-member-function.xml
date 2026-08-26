@@ -740,6 +740,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-member-function.cpp</shortPath>
+          <sourcePath>using-member-function.cpp</sourcePath>
+          <lineNumber>68</lineNumber>
+          <columnNumber>5</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -755,6 +763,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-member-function.cpp</shortPath>
+          <sourcePath>using-member-function.cpp</sourcePath>
+          <lineNumber>69</lineNumber>
+          <columnNumber>5</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -770,6 +786,14 @@
         </named>
       </type>
       <access>protected</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-member-function.cpp</shortPath>
+          <sourcePath>using-member-function.cpp</sourcePath>
+          <lineNumber>70</lineNumber>
+          <columnNumber>5</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -785,6 +809,14 @@
         </named>
       </type>
       <access>protected</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-member-function.cpp</shortPath>
+          <sourcePath>using-member-function.cpp</sourcePath>
+          <lineNumber>71</lineNumber>
+          <columnNumber>5</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

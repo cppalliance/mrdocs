@@ -54,6 +54,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>default-constructed-instance.cpp</shortPath>
+          <sourcePath>default-constructed-instance.cpp</sourcePath>
+          <lineNumber>4</lineNumber>
+          <columnNumber>21</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>

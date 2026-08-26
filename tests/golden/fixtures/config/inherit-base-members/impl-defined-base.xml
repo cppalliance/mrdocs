@@ -136,6 +136,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>impl-defined-base.cpp</shortPath>
+          <sourcePath>impl-defined-base.cpp</sourcePath>
+          <lineNumber>11</lineNumber>
+          <columnNumber>18</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -148,15 +156,12 @@
   <name>do_it</name>
   <anchor>do_it</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>impl-defined-base.cpp</shortPath>
-        <sourcePath>impl-defined-base.cpp</sourcePath>
-        <lineNumber>6</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>impl-defined-base.cpp</shortPath>
+      <sourcePath>impl-defined-base.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>18</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3GvLQBo7XeyRQRDxcY1UZSW6PWXm</id>

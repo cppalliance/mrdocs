@@ -2694,6 +2694,10 @@ Metadata for a direct base.
 |`boolean`
 |Whether the base is virtual.
 
+|`loc`
+|`<<sourceinfo,SourceInfo>>`
+|Location of the base-specifier in the derived class.
+
 |`type`
 |`<<types,Type>>`
 |The base type.

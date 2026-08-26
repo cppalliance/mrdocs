@@ -52,6 +52,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>31</lineNumber>
+          <columnNumber>5</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <derived>16BtnvydaDUMs96N5PELUc8h1NT</derived>
@@ -752,6 +760,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>51</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -767,6 +783,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>52</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -1148,15 +1172,12 @@
   <name>excluded_inherited</name>
   <anchor>excluded_inherited</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>copy-dependencies.cpp</shortPath>
-        <sourcePath>copy-dependencies.cpp</sourcePath>
-        <lineNumber>9</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>copy-dependencies.cpp</shortPath>
+      <sourcePath>copy-dependencies.cpp</sourcePath>
+      <lineNumber>52</lineNumber>
+      <columnNumber>7</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>tARrE5BXtF3rwBeWCxXnXGiMYfW</id>
@@ -1382,15 +1403,12 @@
   <name>do_excluded_inherited</name>
   <anchor>do_excluded_inherited</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>copy-dependencies.cpp</shortPath>
-        <sourcePath>copy-dependencies.cpp</sourcePath>
-        <lineNumber>16</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>copy-dependencies.cpp</shortPath>
+      <sourcePath>copy-dependencies.cpp</sourcePath>
+      <lineNumber>52</lineNumber>
+      <columnNumber>7</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3FSaPFcaNXGfadLEZKNtmvwVHEvT</id>
@@ -1433,15 +1451,12 @@
   <name>do_shadowed</name>
   <anchor>do_shadowed</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>copy-dependencies.cpp</shortPath>
-        <sourcePath>copy-dependencies.cpp</sourcePath>
-        <lineNumber>12</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>copy-dependencies.cpp</shortPath>
+      <sourcePath>copy-dependencies.cpp</sourcePath>
+      <lineNumber>52</lineNumber>
+      <columnNumber>7</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>U6qHyr6prndUmvxNMy9QNoKhriv</id>
@@ -1523,6 +1538,14 @@
         </named>
       </type>
       <access>private</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>77</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -1538,6 +1561,14 @@
         </named>
       </type>
       <access>private</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>78</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -1711,6 +1742,14 @@
         </named>
       </type>
       <access>protected</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>64</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
     <baseInfo>
       <type>
@@ -1726,6 +1765,14 @@
         </named>
       </type>
       <access>protected</access>
+      <loc>
+        <defLoc>
+          <shortPath>copy-dependencies.cpp</shortPath>
+          <sourcePath>copy-dependencies.cpp</sourcePath>
+          <lineNumber>65</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -2351,15 +2398,12 @@
   <name>do_excluded_inherited</name>
   <anchor>do_excluded_inherited</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>copy-dependencies.cpp</shortPath>
-        <sourcePath>copy-dependencies.cpp</sourcePath>
-        <lineNumber>16</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>copy-dependencies.cpp</shortPath>
+      <sourcePath>copy-dependencies.cpp</sourcePath>
+      <lineNumber>65</lineNumber>
+      <columnNumber>7</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>apFrnqR6xitDupY1XE9Vvm5cqaJ</id>
@@ -2402,15 +2446,12 @@
   <name>do_shadowed</name>
   <anchor>do_shadowed</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>copy-dependencies.cpp</shortPath>
-        <sourcePath>copy-dependencies.cpp</sourcePath>
-        <lineNumber>12</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>copy-dependencies.cpp</shortPath>
+      <sourcePath>copy-dependencies.cpp</sourcePath>
+      <lineNumber>65</lineNumber>
+      <columnNumber>7</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2ACoJsZX82e8DYMbJCqy7ohRTW8z</id>
@@ -2453,15 +2494,12 @@
   <name>excluded_inherited</name>
   <anchor>excluded_inherited</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>copy-dependencies.cpp</shortPath>
-        <sourcePath>copy-dependencies.cpp</sourcePath>
-        <lineNumber>9</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>copy-dependencies.cpp</shortPath>
+      <sourcePath>copy-dependencies.cpp</sourcePath>
+      <lineNumber>65</lineNumber>
+      <columnNumber>7</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>ShCebs8zEfvSkyF28SxZkTagoS5</id>

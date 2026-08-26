@@ -90,6 +90,14 @@
         </decltype>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>local-class.cpp</shortPath>
+          <sourcePath>local-class.cpp</sourcePath>
+          <lineNumber>11</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
