@@ -9,13 +9,99 @@
 //
 
 #include "OverloadsFinalizer.hpp"
+#include <mrdocs/Metadata/Attributes.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>
+#include <mrdocs/Support/Reflection/Describe.hpp>
+#include <algorithm>
+#include <type_traits>
+#include <vector>
 #include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/SmallVector.h>
 
 namespace mrdocs {
 
 namespace {
+// A copy of an attribute carrying only its kind and normalized name, with the
+// evaluated properties reset to their defaults. Used when the overloads share
+// an attribute kind but disagree on its property values.
+Polymorphic<Attribute>
+bareAttribute(Attribute const& attr)
+{
+    return visit(attr, [](auto const& concrete) -> Polymorphic<Attribute>
+    {
+        using T = std::remove_cvref_t<decltype(concrete)>;
+        T fresh{};
+        fresh.Name = concrete.Name;
+        return Polymorphic<Attribute>(std::move(fresh));
+    });
+}
+
+// The attributes shared by every overload in a set. An attribute kind is placed
+// on the set only when every member carries it; the merged attribute keeps a
+// property value only when all members agree on it, otherwise the kind is kept
+// with default properties. This gives the overload set its own attributes
+// instead of borrowing the first overload's.
+std::vector<Polymorphic<Attribute>>
+mergeSharedAttributes(Corpus& corpus, std::vector<SymbolID> const& memberIds)
+{
+    std::vector<Polymorphic<Attribute>> merged;
+    MRDOCS_CHECK_OR(!memberIds.empty(), merged);
+
+    // Resolve every member. If any is unresolved we cannot prove an attribute
+    // is shared by all of them, so nothing is merged.
+    std::vector<Symbol const*> members;
+    members.reserve(memberIds.size());
+    for (SymbolID const& id: memberIds)
+    {
+        Symbol const* m = corpus.find(id);
+        MRDOCS_CHECK_OR(m, {});
+        members.push_back(m);
+    }
+
+    // A kind shared by all members must appear on the first member, so the
+    // first member's attributes are the only merge candidates.
+    for (Polymorphic<Attribute> const& candidate: members.front()->Attributes)
+    {
+        AttributeKind const kind = candidate->Kind;
+        bool const alreadyMerged = std::ranges::any_of(merged,
+            [kind](Polymorphic<Attribute> const& a){ return a->Kind == kind; });
+        MRDOCS_CHECK_OR_CONTINUE(!alreadyMerged);
+
+        auto attrOfKind = [kind](Symbol const* m) -> Polymorphic<Attribute> const*
+        {
+            for (Polymorphic<Attribute> const& a: m->Attributes)
+            {
+                if (a->Kind == kind)
+                {
+                    return &a;
+                }
+            }
+            return nullptr;
+        };
+
+        // Every member must carry this kind; note whether they are identical.
+        bool sharedByAll = true;
+        bool identical = true;
+        for (Symbol const* m: members)
+        {
+            Polymorphic<Attribute> const* a = attrOfKind(m);
+            if (!a)
+            {
+                sharedByAll = false;
+                break;
+            }
+            if (*a != candidate)
+            {
+                identical = false;
+            }
+        }
+        MRDOCS_CHECK_OR_CONTINUE(sharedByAll);
+
+        merged.push_back(identical ? candidate : bareAttribute(*candidate));
+    }
+    return merged;
+}
+
 SymbolID
 findBaseClassPermutation(
     SymbolID const& contextId,
@@ -231,6 +317,10 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
             }
         }
         functionIdIt = functionIds.begin() + itOffset;
+
+        // Give the overload set the attributes shared by all its overloads.
+        O.Attributes = mergeSharedAttributes(corpus_, O.Members);
+
         MRDOCS_ASSERT(corpus_.info_.emplace(std::make_unique<OverloadsSymbol>(std::move(O))).second);
     }
 }
