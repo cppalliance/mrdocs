@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>M24JSbN7468AETx5E9NkwAwd79o</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>ns</name>
+  <anchor>ns</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>M24JSbN7468AETx5E9NkwAwd79o</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3SGcYLppJA2rdQ8vTWo5rKV22sPK 3c5RuWKWcxGpq8T1Vzzp41kueCYr 3D3Ncqr4SiKkKtsbeUAFYeJcB64v</records>
+  </members>
+</namespace>
+<record>
+  <name>Detail</name>
+  <anchor>Detail</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>using-filtered-base.cpp</shortPath>
+      <sourcePath>using-filtered-base.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3SGcYLppJA2rdQ8vTWo5rKV22sPK</id>
+  <extraction>implementation-defined</extraction>
+  <parent>M24JSbN7468AETx5E9NkwAwd79o</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A base marked as an implementation detail.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2pZPcSxiLCTW81Ep9WcR6CSNvBe7</functions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>hidden</name>
+  <anchor>hidden</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2pZPcSxiLCTW81Ep9WcR6CSNvBe7</id>
+  <access>public</access>
+  <extraction>implementation-defined</extraction>
+  <parent>3SGcYLppJA2rdQ8vTWo5rKV22sPK</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A member of the detail base.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+  <isConst/>
+</function>
+<record>
+  <name>Reexport</name>
+  <anchor>Reexport</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>using-filtered-base.cpp</shortPath>
+      <sourcePath>using-filtered-base.cpp</sourcePath>
+      <lineNumber>23</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3D3Ncqr4SiKkKtsbeUAFYeJcB64v</id>
+  <extraction>regular</extraction>
+  <parent>M24JSbN7468AETx5E9NkwAwd79o</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Re-export a member of each.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <usings>npRa45X8z2orh68KkLG7cQmGXz1 3a9zMXoj73M9zQcYYmsCqtCxtEE4</usings>
+    </public>
+  </interface>
+</record>
+<using>
+  <name>gone</name>
+  <anchor>gone</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>29</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>npRa45X8z2orh68KkLG7cQmGXz1</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3D3Ncqr4SiKkKtsbeUAFYeJcB64v</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Re-exported from the excluded base.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>gone</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3c5RuWKWcxGpq8T1Vzzp41kueCYr</id>
+          <identifier>Excluded</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+</using>
+<using>
+  <name>hidden</name>
+  <anchor>hidden</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>3a9zMXoj73M9zQcYYmsCqtCxtEE4</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3D3Ncqr4SiKkKtsbeUAFYeJcB64v</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Re-exported from the implementation-defined base.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>hidden</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3SGcYLppJA2rdQ8vTWo5rKV22sPK</id>
+          <identifier>Detail</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+</using>
+</mrdocs>
