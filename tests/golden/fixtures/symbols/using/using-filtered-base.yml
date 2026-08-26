@@ -1,0 +1,4 @@
+implementation-defined:
+  - 'ns::Detail'
+exclude-symbols:
+  - 'ns::Excluded'
