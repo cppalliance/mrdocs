@@ -1,0 +1,2 @@
+generator: [xml, adoc]
+multipage: false
