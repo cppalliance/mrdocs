@@ -43,6 +43,16 @@ using extension_type [[deprecated("use extent_type")]] = int;
 /// A deprecated variable.
 [[deprecated("use value2")]] inline int value = 0;
 
+/// An overload set whose every overload is deprecated: the set is tagged.
+[[deprecated("use scale2")]] void scale();
+/// @copydoc scale()
+[[deprecated("use scale2")]] void scale(int);
+
+/// An overload set with only one deprecated overload: the set is not tagged.
+void resize();
+/// @copydoc resize()
+[[deprecated("use resize2")]] void resize(int);
+
 /// A class whose members carry attributes, to exercise member-table tags.
 struct Gadget
 {

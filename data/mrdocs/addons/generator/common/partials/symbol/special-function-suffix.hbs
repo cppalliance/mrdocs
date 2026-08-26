@@ -12,9 +12,7 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if (eq kind "overloads")~}}
-    {{>symbol/special-function-suffix (front (transform members @root.mrdocs.corpus.get))}}
-{{~else if (eq kind "function")~}}
+{{#if (or (eq kind "function") (eq kind "overloads"))~}}
     {{#if (eq funcClass "constructor")}}
         {{#>markup/span class="small"}}[constructor]{{/markup/span}}
     {{~else if (eq funcClass "destructor")~}}
