@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>3smaawAodA5nrKpV2crVPzdhUtYb J2Lgqie1mQYQHgxwq2niEWPqzgV</functions>
+  </members>
+</namespace>
+<function>
+  <name>braces_in_return_type</name>
+  <anchor>braces_in_return_type</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>doc-comment-braces-in-return-type.cpp</shortPath>
+        <sourcePath>doc-comment-braces-in-return-type.cpp</sourcePath>
+        <lineNumber>30</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3smaawAodA5nrKpV2crVPzdhUtYb</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documented. Clang drops this comment (braces in the return type); MrDocs recovers it via the begin-location fallback.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <decltype>
+      <kind>decltype</kind>
+      <operand>int{}</operand>
+    </decltype>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>plain_return_type</name>
+  <anchor>plain_return_type</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>doc-comment-braces-in-return-type.cpp</shortPath>
+        <sourcePath>doc-comment-braces-in-return-type.cpp</sourcePath>
+        <lineNumber>34</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>J2Lgqie1mQYQHgxwq2niEWPqzgV</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documented. Nothing but the return type </literal>
+        </text>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>int</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> sits between the comment and the name, so Clang associates it without help.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

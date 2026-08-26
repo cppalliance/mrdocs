@@ -16,6 +16,8 @@
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <clang/AST/RawCommentList.h>
+#include <clang/Basic/SourceManager.h>
 #include <clang/Driver/Driver.h>
 #include <clang/Sema/EnterExpressionEvaluationContext.h>
 #include <clang/Sema/Template.h>
@@ -522,18 +524,138 @@ isImplicitDefaultInit(clang::Expr const* E)
         && ctor->getParenOrBraceRange().isInvalid();
 }
 
+// Mirror the situations in which Clang's file-local getLocsForCommentSearch
+// (clang/lib/AST/ASTContext.cpp) returns no search location, so
+// getRawCommentNoCache never even looks for an attached comment. These are the
+// cases where our begin-location retry can recover a comment that the standard
+// lookup could not. Ported against the pinned revision 77e43ec1; re-diff
+// against that function on each LLVM bump.
+static bool
+hasNoCommentSearchLoc(clang::Decl const* D)
+{
+    // Implicit declarations and implicit template instantiations carry no
+    // user-attachable comment location of their own.
+    if (D->isImplicit())
+    {
+        return true;
+    }
+    if (auto const* FD = dyn_cast<clang::FunctionDecl>(D))
+    {
+        if (FD->getTemplateSpecializationKind() == clang::TSK_ImplicitInstantiation)
+        {
+            return true;
+        }
+    }
+    if (auto const* VD = dyn_cast<clang::VarDecl>(D))
+    {
+        if (VD->isStaticDataMember() &&
+            VD->getTemplateSpecializationKind() == clang::TSK_ImplicitInstantiation)
+        {
+            return true;
+        }
+    }
+    if (auto const* CRD = dyn_cast<clang::CXXRecordDecl>(D))
+    {
+        if (CRD->getTemplateSpecializationKind() == clang::TSK_ImplicitInstantiation)
+        {
+            return true;
+        }
+    }
+    if (auto const* CTSD = dyn_cast<clang::ClassTemplateSpecializationDecl>(D))
+    {
+        clang::TemplateSpecializationKind const TSK = CTSD->getSpecializationKind();
+        if (TSK == clang::TSK_ImplicitInstantiation || TSK == clang::TSK_Undeclared)
+        {
+            return true;
+        }
+    }
+    if (auto const* ED = dyn_cast<clang::EnumDecl>(D))
+    {
+        if (ED->getTemplateSpecializationKind() == clang::TSK_ImplicitInstantiation)
+        {
+            return true;
+        }
+    }
+    // A tag declaration (not definition) embedded in another declaration's
+    // decl-specifier-seq, e.g. a `friend class Z;`.
+    if (auto const* TD = dyn_cast<clang::TagDecl>(D))
+    {
+        if (TD->isEmbeddedInDeclarator() && !TD->isCompleteDefinition())
+        {
+            return true;
+        }
+    }
+    // Parameters and template parameters do not get their own comment lookup.
+    return isa<clang::ParmVarDecl>(D) ||
+           isa<clang::TemplateTypeParmDecl>(D) ||
+           isa<clang::NonTypeTemplateParmDecl>(D) ||
+           isa<clang::TemplateTemplateParmDecl>(D);
+}
+
 clang::RawComment const*
 getDocumentation(clang::Decl const* D)
 {
     clang::ASTContext const& ctx = D->getASTContext();
     clang::RawComment const* RC = ctx.getRawCommentNoCache(D);
+
     if (!RC)
     {
-        auto const* TD = dyn_cast<clang::TemplateDecl>(D);
-        MRDOCS_CHECK_OR(TD, nullptr);
-        clang::NamedDecl const* ND = TD->getTemplatedDecl();
-        MRDOCS_CHECK_OR(ND, nullptr);
-        RC = ctx.getRawCommentNoCache(ND);
+        // getRawCommentNoCache misses an attached comment in a few situations
+        // that this retry, anchored at the declaration's begin location, can
+        // recover. Gate on them so the retry stays off the hot path for the
+        // common undocumented symbol:
+        //
+        //   1. A braced return type. getRawCommentNoCache anchors at the
+        //      declaration's name and rejects the comment when the text up to
+        //      the name contains any of `;{}#@`; a leading return type that
+        //      spells one of those (e.g. `decltype(int{})` or a dependent
+        //      `reference_t<Q{}, U{}>`) trips it. Anchoring before the return
+        //      type avoids the offending text.
+        //      See tests/golden/fixtures/symbols/function/doc-comment-braces-in-return-type.cpp
+        //
+        //   2. A declaration for which getLocsForCommentSearch returns no
+        //      location, so no comment is looked up at all: a tag embedded in a
+        //      declarator (a `friend class Z;`) or an implicit template
+        //      instantiation borrowing its primary's comment.
+        //      See tests/golden/fixtures/symbols/record/friend-type.cpp
+        clang::SourceLocation const beginLoc = D->getBeginLoc();
+        clang::SourceLocation const nameLoc = D->getLocation();
+        clang::SourceManager const& sm = ctx.getSourceManager();
+
+        bool retry = hasNoCommentSearchLoc(D);
+        if (!retry &&
+            beginLoc.isValid() && beginLoc.isFileID() && nameLoc.isFileID())
+        {
+            auto const [beginFile, beginOffset] = sm.getDecomposedLoc(beginLoc);
+            auto const [nameFile, nameOffset] = sm.getDecomposedLoc(nameLoc);
+            bool invalid = false;
+            llvm::StringRef const buffer = sm.getBufferData(beginFile, &invalid);
+            retry = !invalid &&
+                    beginFile == nameFile &&
+                    beginOffset < nameOffset &&
+                    buffer.substr(beginOffset, nameOffset - beginOffset)
+                        .find_first_of(";{}#@") != llvm::StringRef::npos;
+        }
+
+        if (retry && beginLoc.isValid() && beginLoc.isFileID())
+        {
+            clang::FileID const fid = sm.getDecomposedLoc(beginLoc).first;
+            if (auto const* commentsInFile = ctx.Comments.getCommentsInFile(fid))
+            {
+                RC = ctx.getRawCommentNoCacheImpl(D, beginLoc, *commentsInFile);
+            }
+        }
+    }
+
+    if (!RC)
+    {
+        if (auto const* TD = dyn_cast<clang::TemplateDecl>(D))
+        {
+            if (clang::NamedDecl const* ND = TD->getTemplatedDecl())
+            {
+                RC = ctx.getRawCommentNoCache(ND);
+            }
+        }
     }
     return RC;
 }
