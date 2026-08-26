@@ -428,6 +428,13 @@
         "details": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "non-standard-attributes",
+        "brief": "Include non-standard attributes in the documentation",
+        "details": "When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, or `__nonnull__`. When set to `false`, only the standard C++ attributes (`[[noreturn]]`, `[[carries_dependency]]`, `[[deprecated]]`, `[[fallthrough]]`, `[[maybe_unused]]`, `[[nodiscard]]`, `[[likely]]`, `[[unlikely]]`, `[[no_unique_address]]`, `[[assume]]`, `[[indeterminate]]`) are documented, so implementation-detail attributes do not clutter the output.",
+        "type": "bool",
+        "default": true
       }
     ]
   },
@@ -622,6 +629,13 @@
         "details": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "warn-if-undocumented-namespace",
+        "brief": "Warn if namespaces are not documented",
+        "details": "When set to `true`, MrDocs also outputs a warning message for a named namespace that passes all filters and is not documented. This requires `warn-if-undocumented` to also be enabled. Inline and anonymous namespaces are transparent and do not require documentation.",
+        "type": "bool",
+        "default": false
       },
       {
         "name": "warn-if-doc-error",

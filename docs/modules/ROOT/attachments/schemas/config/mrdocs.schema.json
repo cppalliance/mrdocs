@@ -496,6 +496,16 @@
       "title": "Disable the bundled default stylesheet",
       "type": "boolean"
     },
+    "non-standard-attributes": {
+      "default": true,
+      "description": "When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, or `__nonnull__`. When set to `false`, only the standard C++ attributes (`[[noreturn]]`, `[[carries_dependency]]`, `[[deprecated]]`, `[[fallthrough]]`, `[[maybe_unused]]`, `[[nodiscard]]`, `[[likely]]`, `[[unlikely]]`, `[[no_unique_address]]`, `[[assume]]`, `[[indeterminate]]`) are documented, so implementation-detail attributes do not clutter the output.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Include non-standard attributes in the documentation",
+      "type": "boolean"
+    },
     "output": {
       "default": "<config-dir>/reference-output",
       "description": "The directory MrDocs generators write the documentation to, resolved relative to the configuration file. Each generator ultimately decides how to interpret this path. Multipage generators will typically use it as a directory. Single-page generators will typically also allow this to represent a file.",
@@ -781,6 +791,16 @@
         false
       ],
       "title": "Warn if symbols are not documented",
+      "type": "boolean"
+    },
+    "warn-if-undocumented-namespace": {
+      "default": false,
+      "description": "When set to `true`, MrDocs also outputs a warning message for a named namespace that passes all filters and is not documented. This requires `warn-if-undocumented` to also be enabled. Inline and anonymous namespaces are transparent and do not require documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if namespaces are not documented",
       "type": "boolean"
     },
     "warn-no-paramdoc": {

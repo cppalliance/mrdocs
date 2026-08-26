@@ -1,0 +1,2 @@
+warn-if-undocumented: true
+warn-if-undocumented-namespace: true
