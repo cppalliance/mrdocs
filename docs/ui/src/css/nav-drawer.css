@@ -1,0 +1,158 @@
+/* Consolidated small-screen navigation.
+
+   On phones and tablets the single top hamburger (.navbar-burger) opens the
+   documentation nav drawer, and that drawer carries everything: the page
+   tree, the version switcher, and the site links. The separate toolbar
+   toggle and version pill are dropped below 1024px so there is only one menu
+   to find. Desktop keeps the horizontal navbar, static sidebar, and toolbar
+   version selector unchanged.
+
+   This file is imported last so its small-screen overrides win on source
+   order: media queries add no specificity, so hiding e.g. .toolbar only
+   works if this rule comes after toolbar.css's base .toolbar rule. */
+
+/* Base (desktop): the drawer footer is hidden; the navbar and toolbar carry
+   these controls. The small-screen block below re-enables it. */
+.nav-drawer-footer {
+  display: none;
+  margin: 0 0.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--nav-panel-divider-color);
+}
+
+.nav-drawer-section + .nav-drawer-section {
+  margin-top: 1rem;
+}
+
+.nav-drawer-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--nav-heading-font-color);
+  font-size: calc(12 / var(--rem-base) * 1rem);
+  font-weight: var(--body-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-drawer-versions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-drawer-version {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--nav-panel-divider-color);
+  border-radius: 0.25rem;
+  padding: 0.25em 0.6em;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.nav-drawer-version.is-current {
+  background: var(--nav-heading-font-color);
+  border-color: var(--nav-heading-font-color);
+  color: var(--nav-secondary-background);
+  font-weight: var(--body-font-weight-bold);
+  opacity: 1;
+}
+
+.nav-drawer-version.is-missing {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.nav-drawer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+}
+
+.nav-drawer-link {
+  display: block;
+  padding: 0.375rem 0;
+}
+
+.nav-drawer-theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: -0.5rem;
+  color: var(--color-white-60);
+}
+
+.nav-drawer-download {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1rem;
+  height: 1.75rem;
+  padding: 0 0.75em;
+  background: rgb(229, 190, 51);
+  color: #0e0e0e;
+  font-weight: var(--body-font-weight-bold);
+  white-space: nowrap;
+  box-shadow: 4px 4px 0 #000;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.nav-drawer-download:hover {
+  background: rgb(255, 215, 0);
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 #000;
+}
+
+@media screen and (max-width: 1023.5px) {
+  /* Everything the toolbar carried on desktop (breadcrumbs, version pill,
+     edit link) is either hidden already or moved into the drawer, so the
+     strip has nothing left to show. Removing it also drops the empty band
+     under the navbar. */
+  .toolbar {
+    display: none;
+  }
+
+  /* The burger already animates into a close (X); the in-drawer close button
+     is redundant and, as a stretched flex child, its icon drifts to center
+     and is invisible in light mode. Drop it on small screens. */
+  .nav-close {
+    display: none;
+  }
+
+  /* Single-component site: the explore panel only duplicates the version
+     switcher the drawer footer now provides, so drop its bottom strip and let
+     the page tree use the full remaining drawer height. */
+  .nav-panel-explore {
+    display: none;
+  }
+
+  .nav-panel-menu {
+    height: 100%;
+  }
+
+  /* Split the drawer into a scrolling page tree and a pinned footer that
+     carries the version switcher and site links. */
+  .nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panels {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+  }
+
+  .nav-drawer-footer {
+    display: block;
+    flex: 0 0 auto;
+    overflow-y: auto;
+    max-height: 45%;
+  }
+}

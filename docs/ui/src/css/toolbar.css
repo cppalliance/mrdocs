@@ -16,29 +16,6 @@
   color: var(--navbar-font-color);
 }
 
-.nav-toggle {
-  background: url(../img/menu.svg) no-repeat 50% 47.5%;
-  background-size: 49%;
-  border: none;
-  outline: none;
-  line-height: inherit;
-  padding: 0;
-  height: var(--toolbar-height);
-  width: var(--toolbar-height);
-  margin-right: -0.25rem;
-}
-
-@media screen and (min-width: 1024px) {
-  .nav-toggle {
-    display: none;
-  }
-}
-
-.nav-toggle.is-active {
-  background-image: url(../img/back.svg);
-  background-size: 41.5%;
-}
-
 .home-link {
   display: block;
   background: url(../img/home-o.svg) no-repeat center;
