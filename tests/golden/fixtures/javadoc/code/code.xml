@@ -17,7 +17,7 @@
       <location>
         <shortPath>code.cpp</shortPath>
         <sourcePath>code.cpp</sourcePath>
-        <lineNumber>18</lineNumber>
+        <lineNumber>40</lineNumber>
         <columnNumber>1</columnNumber>
         <documented/>
       </location>
@@ -49,6 +49,43 @@ algorithm( T&amp;&amp; v = {} ) -&gt;
 {
     return v.result();
 }</literal>
+      </code>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A language-tagged block; the language tag becomes the fence info and must not appear in the rendered body:</literal>
+          </text>
+        </children>
+      </paragraph>
+      <code>
+        <kind>code</kind>
+        <literal>int x = compute();</literal>
+        <info>cpp</info>
+      </code>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Other verbatim commands imply their own fence language; a plain verbatim block has none:</literal>
+          </text>
+        </children>
+      </paragraph>
+      <code>
+        <kind>code</kind>
+        <literal>plain text, no language</literal>
+      </code>
+      <code>
+        <kind>code</kind>
+        <literal>&lt;root&gt;&lt;child/&gt;&lt;/root&gt;</literal>
+        <info>xml</info>
+      </code>
+      <code>
+        <kind>code</kind>
+        <literal>digraph { a -&gt; b; }</literal>
+        <info>dot</info>
       </code>
     </document>
     <brief>
