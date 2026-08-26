@@ -311,6 +311,8 @@ traverse(DeclTy const* D)
             X(CXXDeductionGuide);
             X(NamespaceAlias);
             X(Using);
+            X(UnresolvedUsingValue);
+            X(UnresolvedUsingTypename);
             X(Concept);
 #undef X
         default:
@@ -1272,7 +1274,7 @@ populate(
     UsingSymbol& I,
     clang::UsingDecl const* D)
 {
-    I.Class = UsingClass::Normal;
+    I.Class = D->hasTypename() ? UsingClass::Typename : UsingClass::Normal;
     clang::DeclarationName const& Name = D->getNameInfo().getName();
     clang::NestedNameSpecifier const& NNS = D->getQualifier();
     auto INI = toName(Name, {}, NNS);
@@ -1290,6 +1292,40 @@ populate(
             I.ShadowDeclarations.emplace_back(SI->id);
         }
     }
+}
+
+template <std::derived_from<clang::NamedDecl> DeclTy>
+void
+ASTVisitor::
+populateDependentUsing(
+    UsingSymbol& I,
+    UsingClass const cls,
+    DeclTy const* D)
+{
+    I.Class = cls;
+    clang::DeclarationName const& Name = D->getNameInfo().getName();
+    clang::NestedNameSpecifier const& NNS = D->getQualifier();
+    auto INI = toName(Name, {}, NNS);
+    MRDOCS_CHECK_OR(INI);
+    I.IntroducedName = *INI;
+}
+
+void
+ASTVisitor::
+populate(
+    UsingSymbol& I,
+    clang::UnresolvedUsingValueDecl const* D)
+{
+    populateDependentUsing(I, UsingClass::Normal, D);
+}
+
+void
+ASTVisitor::
+populate(
+    UsingSymbol& I,
+    clang::UnresolvedUsingTypenameDecl const* D)
+{
+    populateDependentUsing(I, UsingClass::Typename, D);
 }
 
 void

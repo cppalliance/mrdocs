@@ -644,6 +644,20 @@ private:
     populate(UsingSymbol& I, clang::UsingDecl const* D);
 
     void
+    populate(UsingSymbol& I, clang::UnresolvedUsingValueDecl const* D);
+
+    void
+    populate(UsingSymbol& I, clang::UnresolvedUsingTypenameDecl const* D);
+
+    // Record the name a dependent using-declaration introduces. There is
+    // nothing else to record: the qualifier depends on a template
+    // parameter, so nothing is named until the template is instantiated
+    // and there are no declarations to point at.
+    template <std::derived_from<clang::NamedDecl> DeclTy>
+    void
+    populateDependentUsing(UsingSymbol& I, UsingClass cls, DeclTy const* D);
+
+    void
     populate(ConceptSymbol& I, clang::ConceptDecl const* D);
 
     /*  Default function to populate the template information
