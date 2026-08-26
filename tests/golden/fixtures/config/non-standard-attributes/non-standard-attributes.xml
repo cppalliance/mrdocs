@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>3WB9tVatMdT8usB7kG91HHDMUYwU</functions>
+  </members>
+</namespace>
+<function>
+  <name>f</name>
+  <anchor>f</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>non-standard-attributes.cpp</shortPath>
+        <sourcePath>non-standard-attributes.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>35</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3WB9tVatMdT8usB7kG91HHDMUYwU</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function with a standard and a non-standard attribute.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <attributes>
+    <deprecated>
+      <kind>deprecated</kind>
+      <name>deprecated</name>
+      <balancedTokens>
+        <string>&quot;gone&quot;</string>
+      </balancedTokens>
+      <message>gone</message>
+    </deprecated>
+  </attributes>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

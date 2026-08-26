@@ -1965,6 +1965,17 @@ populateAttributes(Symbol& I, clang::Decl const* D)
             }
 
             AttributeKind const kind = toAttributeKind(attr->getKind());
+
+            // With non-standard-attributes disabled, only the standard C++
+            // [[...]] attributes are documented; drop compiler-specific ones
+            // (e.g. __nonnull__, gnu::*, clang::*), which map to Other, so they
+            // do not clutter documented signatures.
+            if (!config_.nonStandardAttributes &&
+                kind == AttributeKind::Other)
+            {
+                continue;
+            }
+
             Polymorphic<Attribute> attribute = makeAttribute(kind);
 
             // The written name, with scope (e.g. `gnu::custom`). Recognized
