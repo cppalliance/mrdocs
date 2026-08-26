@@ -1,0 +1,67 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#app[`app`] 
+|===
+
+
+[#app]
+== app
+
+=== Namespaces
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-visible[`visible`] 
+| A namespace that is part of the public API&period;
+|===
+
+
+=== Using Namespace Directives
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-visible[`visible`] 
+| A namespace that is part of the public API&period;
+|===
+
+
+[#app-visible]
+== link:#app[app]::visible
+
+A namespace that is part of the public API&period;
+
+=== Functions
+
+[cols="1"]
+|===
+| Name
+| link:#app-visible-f[`f`] 
+|===
+
+
+[#app-visible-f]
+== link:#app[app]::link:#app-visible[visible]::f
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;directives&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
