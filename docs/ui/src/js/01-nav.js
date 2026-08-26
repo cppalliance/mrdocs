@@ -4,15 +4,19 @@
   var SECT_CLASS_RX = /^sect(\d)$/
 
   var navContainer = document.querySelector('.nav-container')
-  var navToggle = document.querySelector('.nav-toggle')
-  if (!navContainer && (!navToggle || (navToggle.hidden = true))) return
+  if (!navContainer) return
+  // The single top hamburger is the only drawer trigger; .nav-toggle is kept
+  // as a selector for backwards compatibility if a theme reintroduces it.
+  var navToggles = [].slice.call(document.querySelectorAll('.nav-toggle, .navbar-burger'))
   var nav = navContainer.querySelector('.nav')
   var navMenuToggle = navContainer.querySelector('.nav-menu-toggle')
   var closeNavBtn = navContainer.querySelector('.nav-close')
 
-  navToggle.addEventListener('click', showNav)
+  navToggles.forEach(function (toggle) {
+    toggle.addEventListener('click', toggleNav)
+  })
   navContainer.addEventListener('click', trapEvent)
-  closeNavBtn.addEventListener('click', hideNav)
+  if (closeNavBtn) closeNavBtn.addEventListener('click', hideNav)
 
   var menuPanel = navContainer.querySelector('[data-panel=menu]')
   if (!menuPanel) return
@@ -132,12 +136,23 @@
     }
   }
 
+  function toggleNav (e) {
+    if (navContainer.classList.contains('is-active')) hideNav(e)
+    else showNav(e)
+  }
+
+  function setTogglesActive (active) {
+    navToggles.forEach(function (toggle) {
+      toggle.classList.toggle('is-active', active)
+      if (toggle.hasAttribute('aria-expanded')) toggle.setAttribute('aria-expanded', active)
+    })
+  }
+
   function showNav (e) {
-    if (navToggle.classList.contains('is-active')) return hideNav(e)
     trapEvent(e)
     var html = document.documentElement
     html.classList.add('is-clipped--nav')
-    navToggle.classList.add('is-active')
+    setTogglesActive(true)
     navContainer.classList.add('is-active')
     var bounds = nav.getBoundingClientRect()
     var expectedHeight = window.innerHeight - Math.round(bounds.top)
@@ -149,7 +164,7 @@
     trapEvent(e)
     var html = document.documentElement
     html.classList.remove('is-clipped--nav')
-    navToggle.classList.remove('is-active')
+    setTogglesActive(false)
     navContainer.classList.remove('is-active')
     html.removeEventListener('click', hideNav)
   }
