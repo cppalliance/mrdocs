@@ -128,10 +128,11 @@ using Base::size;
 
 === Introduced Symbols
 
-[cols="1"]
+[cols="1,4"]
 |===
-| Name
-| 2LyeUq3z6s3sEYmVKB4G7MNwVjX6
+| Name| Description
+| link:#Base-size[`size`] 
+| Return the size&period;
 |===
 
 [#Concrete-size_type]
@@ -150,10 +151,11 @@ using typename Base::size&lowbar;type;
 
 === Introduced Symbols
 
-[cols="1"]
+[cols="1,4"]
 |===
-| Name
-| 3h6n5qQ5hGDVyhfrAVJE8FLe2bgi
+| Name| Description
+| link:#Base-size_type[`size&lowbar;type`] 
+| The size type&period;
 |===
 
 [#Dependent]
