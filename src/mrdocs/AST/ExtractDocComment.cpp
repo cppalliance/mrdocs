@@ -1751,7 +1751,47 @@ class DocCommentVisitor
             return;
         }
 
+        // Every non-formula verbatim command is rendered as a fenced code
+        // block; the command implies the fence's info (language) string.
         doc::CodeBlock code;
+        if (name == "code")
+        {
+            // Doxygen lets `@code` name a language, spelled `@code{.cpp}`. Clang
+            // does not understand the `{.lang}` suffix and keeps it as the first
+            // line of the verbatim block, so lift it into the info string and
+            // drop it from the rendered body.
+            std::size_t const nl = payload.find('\n');
+            std::string_view const first = trim(std::string_view(payload).substr(
+                0, nl == std::string::npos ? payload.size() : nl));
+            if (first.size() > 3 &&
+                first.starts_with("{.") &&
+                first.ends_with("}"))
+            {
+                code.info = std::string(first.substr(2, first.size() - 3));
+                payload.erase(0, nl == std::string::npos ? payload.size() : nl + 1);
+            }
+        }
+        else if (llvm::StringRef lang = name; lang.consume_back("only"))
+        {
+            // The output-format commands name their language directly:
+            // `@htmlonly` -> html, `@xmlonly` -> xml, `@latexonly` -> latex,
+            // `@docbookonly` -> docbook, `@manonly` -> man, `@rtfonly` -> rtf.
+            code.info = lang.str();
+        }
+        else if (name == "dot")
+        {
+            code.info = "dot";
+        }
+        else if (name == "msc")
+        {
+            code.info = "msc";
+        }
+        else if (name == "startuml")
+        {
+            code.info = "plantuml";
+        }
+        // `@verbatim` and the structural blocks (internal, parblock,
+        // secreflist) carry no language.
         code.literal = std::move(payload);
         jd_.Document.emplace_back(std::move(code));
     }
