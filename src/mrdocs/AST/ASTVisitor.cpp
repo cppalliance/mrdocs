@@ -4025,10 +4025,30 @@ checkUndocumented(
     // set of undocumented symbols for warning purposes.
     MRDOCS_CHECK_OR(config_.warnIfUndocumented, {});
 
+    // Namespaces are only required to be documented when the dedicated
+    // `warn-if-undocumented-namespace` option is enabled: most projects do not
+    // document namespaces, so they opt out of the regular check. Inline and
+    // anonymous namespaces are transparent (their members are reparented to the
+    // enclosing namespace and the namespace itself is never surfaced), so they
+    // never require documentation regardless of the option.
+    if constexpr (std::same_as<InfoTy, NamespaceSymbol>)
+    {
+        MRDOCS_CHECK_OR(config_.warnIfUndocumentedNamespace, {});
+        auto const* ND = dyn_cast<clang::NamespaceDecl>(D);
+        MRDOCS_CHECK_OR(
+            ND && !ND->isInline() && !ND->isAnonymousNamespace(), {});
+    }
+
     // If the symbol is not being extracted as a Regular
     // symbol, we don't need to check for undocumented symbols
-    // These are expected to be potentially undocumented
-    MRDOCS_CHECK_OR(mode_ == Regular, {});
+    // These are expected to be potentially undocumented.
+    // A named namespace is part of the documented surface even when first
+    // reached while traversing a documented symbol's parents (in Dependency
+    // traversal mode), so the namespace option bypasses this traversal gate.
+    if constexpr (!std::same_as<InfoTy, NamespaceSymbol>)
+    {
+        MRDOCS_CHECK_OR(mode_ == Regular, {});
+    }
 
     // Only Regular and SeeBelow symbols are part of the documented API surface,
     // so only they are warned about when undocumented. ImplementationDefined and
