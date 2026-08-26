@@ -46,6 +46,18 @@ operator()(NamespaceSymbol& I)
     // No more steps for the global namespace
     MRDOCS_CHECK_OR(I.id != SymbolID::global, FinalizerResult::None);
 
+    // 2) Inline namespaces are transparent: their members are already
+    // reparented to the enclosing namespace, so the inline namespace itself
+    // must not surface as a separate entity. Remove it even when it happens to
+    // carry documentation (e.g. an ABI-versioning namespace like `fmt::v12`).
+    if (I.IsInline)
+    {
+        auto const it = corpus_.info_.find(I.id);
+        MRDOCS_CHECK_OR(it != corpus_.info_.end(), FinalizerResult::None);
+        corpus_.info_.erase(it);
+        return FinalizerResult::Removed;
+    }
+
     // No more steps for documented namespaces
     MRDOCS_CHECK_OR(!I.doc, FinalizerResult::None);
 
