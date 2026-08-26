@@ -194,6 +194,10 @@ public:
         return WB == nullptr;
     }
 
+    /** Swap the contents of two @ref Polymorphic objects.
+        @param lhs The first object to swap.
+        @param rhs The second object to swap.
+    */
     friend constexpr void
     swap(Polymorphic& lhs, Polymorphic& rhs) noexcept
     {
