@@ -1,0 +1,217 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base[`Base`] 
+| A base with members to re&hyphen;export&period;
+| link:#Concrete[`Concrete`] 
+| Re&hyphen;export the same members of a concrete base&period;
+| link:#Dependent[`Dependent`] 
+| Re&hyphen;export members of a base that is a template parameter&period;
+|===
+
+
+[#Base]
+== Base
+
+A base with members to re&hyphen;export&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Base;
+----
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-size_type[`size&lowbar;type`] 
+| The size type&period;
+|===
+
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-size[`size`] 
+| Return the size&period;
+|===
+
+
+[#Base-size_type]
+== link:#Base[Base]::size&lowbar;type
+
+The size type&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using size&lowbar;type = int;
+----
+
+[#Base-size]
+== link:#Base[Base]::size
+
+Return the size&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Base-size_type[size&lowbar;type]
+size() const;
+----
+
+=== Return Value
+
+the size&period;
+
+[#Concrete]
+== Concrete
+
+Re&hyphen;export the same members of a concrete base&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct Concrete;
+----
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Concrete-size[`size`] 
+| A function&period;
+| link:#Concrete-size_type[`size&lowbar;type`] 
+| A type, so the declaration says `typename`&period;
+|===
+
+
+[#Concrete-size]
+== link:#Concrete[Concrete]::size
+
+A function&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using Base::size;
+----
+
+=== Introduced Symbols
+
+[cols="1"]
+|===
+| Name
+| 2LyeUq3z6s3sEYmVKB4G7MNwVjX6
+|===
+
+[#Concrete-size_type]
+== link:#Concrete[Concrete]::size&lowbar;type
+
+A type, so the declaration says `typename`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using typename Base::size&lowbar;type;
+----
+
+=== Introduced Symbols
+
+[cols="1"]
+|===
+| Name
+| 3h6n5qQ5hGDVyhfrAVJE8FLe2bgi
+|===
+
+[#Dependent]
+== Dependent
+
+Re&hyphen;export members of a base that is a template parameter&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    class BaseT = link:#Base[Base]&gt;
+struct Dependent;
+----
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Dependent-size[`size`] 
+| A function&period;
+| link:#Dependent-size_type[`size&lowbar;type`] 
+| A type, so the declaration says `typename`&period;
+|===
+
+
+[#Dependent-size]
+== link:#Dependent[Dependent]::size
+
+A function&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BaseT::size;
+----
+
+[#Dependent-size_type]
+== link:#Dependent[Dependent]::size&lowbar;type
+
+A type, so the declaration says `typename`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;signature&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using typename BaseT::size&lowbar;type;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -195,6 +195,17 @@ template <>
 struct InfoTypeFor<clang::UsingDecl>
     : std::type_identity<UsingSymbol> {};
 
+// A using-declaration whose qualifier depends on a template parameter
+// names nothing yet, so Clang keeps it in one of these instead of a
+// `UsingDecl` with shadows.
+template <>
+struct InfoTypeFor<clang::UnresolvedUsingValueDecl>
+    : std::type_identity<UsingSymbol> {};
+
+template <>
+struct InfoTypeFor<clang::UnresolvedUsingTypenameDecl>
+    : std::type_identity<UsingSymbol> {};
+
 // Extract ConceptSymbol from ConceptDecl
 template <>
 struct InfoTypeFor<clang::ConceptDecl>

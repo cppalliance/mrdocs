@@ -43,6 +43,7 @@ namespace mrdocs {
 */
 template<class... Ts>
 struct Overload : Ts... {
+    /// Bring in the call operator of every base.
     using Ts::operator()...;
 
     /** Constructs an Overload from the given callables.
