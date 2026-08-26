@@ -1,0 +1,84 @@
+# BDE (Bloomberg Development Environment) documentation demo for Mr.Docs.
+# BDE components use flat includes (<bslstl_vector.h>), so every package
+# directory must be on the include path; the list below is generated from
+# groups/*/*. Test drivers (*.t.cpp) never match the *.h file pattern.
+source-root: ..
+input:
+  - ../groups
+includes:
+  - ../groups/bal/balb
+  - ../groups/bal/balber
+  - ../groups/bal/balcl
+  - ../groups/bal/baljsn
+  - ../groups/bal/ball
+  - ../groups/bal/balm
+  - ../groups/bal/balscm
+  - ../groups/bal/balst
+  - ../groups/bal/baltzo
+  - ../groups/bal/balxml
+  - ../groups/bal/group
+  - ../groups/bbl/bblb
+  - ../groups/bbl/bbldc
+  - ../groups/bbl/bblscm
+  - ../groups/bbl/group
+  - ../groups/bdl/bdlar
+  - ../groups/bdl/bdlat
+  - ../groups/bdl/bdlb
+  - ../groups/bdl/bdlbb
+  - ../groups/bdl/bdlc
+  - ../groups/bdl/bdlcc
+  - ../groups/bdl/bdld
+  - ../groups/bdl/bdlde
+  - ../groups/bdl/bdldfp
+  - ../groups/bdl/bdlf
+  - ../groups/bdl/bdljsn
+  - ../groups/bdl/bdlm
+  - ../groups/bdl/bdlma
+  - ../groups/bdl/bdlmt
+  - ../groups/bdl/bdlpcre
+  - ../groups/bdl/bdls
+  - ../groups/bdl/bdlsb
+  - ../groups/bdl/bdlscm
+  - ../groups/bdl/bdlsta
+  - ../groups/bdl/bdlt
+  - ../groups/bdl/group
+  - ../groups/bsl/bsl+bslhdrs
+  - ../groups/bsl/bsla
+  - ../groups/bsl/bslalg
+  - ../groups/bsl/bsldoc
+  - ../groups/bsl/bslfmt
+  - ../groups/bsl/bslfwd
+  - ../groups/bsl/bslh
+  - ../groups/bsl/bslim
+  - ../groups/bsl/bslma
+  - ../groups/bsl/bslmf
+  - ../groups/bsl/bslmt
+  - ../groups/bsl/bsls
+  - ../groups/bsl/bslscm
+  - ../groups/bsl/bslstl
+  - ../groups/bsl/bslstp
+  - ../groups/bsl/bsltf
+  - ../groups/bsl/bslx
+  - ../groups/bsl/group
+  # Vendored third-party headers a few components include flatly.
+  - ../thirdparty/inteldfp/LIBRARY/src
+  - ../thirdparty/pcre2/src
+file-patterns:
+  - '*.h'
+exclude-patterns:
+  # C++03 companion headers: guard-only subordinates that refuse to compile
+  # outside the component header that includes them.
+  - '../groups/**/*_cpp03.h'
+recursive: true
+include-symbols:
+  - 'BloombergLP::**'
+  - 'bsl::**'
+implementation-defined:
+  - '**::*_Imp*'
+# The BloombergLP namespace holds tens of thousands of symbols; an index of
+# all of them on the global-namespace page is unusably large.
+global-namespace-index: false
+multipage: true
+generator: adoc
+auto-function-metadata: false
+non-standard-attributes: false

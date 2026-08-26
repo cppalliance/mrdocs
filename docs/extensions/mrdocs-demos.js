@@ -122,25 +122,22 @@ function humanizeFormat(format) {
 }
 
 function humanizeLibrary(library) {
-    if (library === 'boost-url') {
-        return 'Boost.URL';
-    }
-    if (library === 'mrdocs') {
-        return 'Mr.Docs';
-    }
-    if (library === 'beman-optional')
-    {
-        return 'Beman.Optional';
-    }
-    if (library === 'nlohmann-json')
-    {
-        return 'Nlohmann.JSON';
-    }
-    if (library === 'boost-scope') {
-        return 'Boost.Scope';
-    }
-    if (library === 'fmt') {
-        return 'Fmt';
+    const libraryDisplayNames = {
+        'boost-url': 'Boost.URL',
+        'boost-scope': 'Boost.Scope',
+        'mrdocs': 'Mr.Docs',
+        'beman-optional': 'Beman.Optional',
+        'nlohmann-json': 'Nlohmann.JSON',
+        'fmt': 'Fmt',
+        'abseil': 'Abseil',
+        'bitcoin': 'Bitcoin Core',
+        'folly': 'Folly',
+        'llvm': 'LLVM',
+        'openssl': 'OpenSSL',
+        'bde': 'BDE',
+    };
+    if (libraryDisplayNames[library]) {
+        return libraryDisplayNames[library];
     }
     // Match boost-<library> and convert to Boost.<Library> (capitalized)
     const boostLibrary = library.match(/boost-([\w]+)/);
@@ -166,6 +163,18 @@ function libraryLink(library) {
         return 'https://github.com/mpusz/mp-units[mp-units,window=_blank]';
     } else if (library === 'mrdocs') {
         return 'https://github.com/cppalliance/mrdocs[Mr.Docs,window=_blank]';
+    } else if (library === 'abseil') {
+        return 'https://github.com/abseil/abseil-cpp[Abseil,window=_blank]';
+    } else if (library === 'bitcoin') {
+        return 'https://github.com/bitcoin/bitcoin[Bitcoin Core,window=_blank]';
+    } else if (library === 'folly') {
+        return 'https://github.com/facebook/folly[Folly,window=_blank]';
+    } else if (library === 'llvm') {
+        return 'https://github.com/llvm/llvm-project[LLVM,window=_blank]';
+    } else if (library === 'openssl') {
+        return 'https://github.com/openssl/openssl[OpenSSL,window=_blank]';
+    } else if (library === 'bde') {
+        return 'https://github.com/bloomberg/bde[BDE,window=_blank]';
     }
     return humanizeLibrary(library);
 }
