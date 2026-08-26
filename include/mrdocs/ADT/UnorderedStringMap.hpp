@@ -98,6 +98,8 @@ struct CIStringEqual
     */
     using is_transparent = void;
     /** Compare two string views for case-insensitive equality.
+        @param a The first string view to compare.
+        @param b The second string view to compare.
         @return `true` if the arguments are equal ignoring ASCII case.
     */
     bool operator()(std::string_view const a, std::string_view const b) const noexcept

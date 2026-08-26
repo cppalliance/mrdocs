@@ -4047,7 +4047,18 @@ checkUndocumented(
     // need to check for anything else because the
     // logic below is only used to populate the
     // set of undocumented symbols for warning purposes.
-    MRDOCS_CHECK_OR(config_.warnIfUndocumented, {});
+    // Collect enum constants under the dedicated `warn-if-undoc-enum-val`
+    // option and every other symbol under `warn-if-undocumented`. Both share
+    // this set but yield different warnings (a missing enum value vs. an
+    // undocumented symbol), emitted together in DocCommentFinalizer.
+    if constexpr (std::same_as<InfoTy, EnumConstantSymbol>)
+    {
+        MRDOCS_CHECK_OR(config_.warnIfUndocEnumVal, {});
+    }
+    else
+    {
+        MRDOCS_CHECK_OR(config_.warnIfUndocumented, {});
+    }
 
     // Namespaces are only required to be documented when the dedicated
     // `warn-if-undocumented-namespace` option is enabled: most projects do not
@@ -4061,17 +4072,6 @@ checkUndocumented(
         auto const* ND = dyn_cast<clang::NamespaceDecl>(D);
         MRDOCS_CHECK_OR(
             ND && !ND->isInline() && !ND->isAnonymousNamespace(), {});
-    }
-
-    // If the symbol is not being extracted as a Regular
-    // symbol, we don't need to check for undocumented symbols
-    // These are expected to be potentially undocumented.
-    // A named namespace is part of the documented surface even when first
-    // reached while traversing a documented symbol's parents (in Dependency
-    // traversal mode), so the namespace option bypasses this traversal gate.
-    if constexpr (!std::same_as<InfoTy, NamespaceSymbol>)
-    {
-        MRDOCS_CHECK_OR(mode_ == Regular, {});
     }
 
     // Only Regular and SeeBelow symbols are part of the documented API surface,

@@ -327,9 +327,6 @@ private:
     warnNoParamDocs(MacroSymbol const& I);
 
     void
-    warnUndocEnumValues();
-
-    void
     warnUnnamedParams();
 
     void

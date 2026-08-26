@@ -275,6 +275,10 @@ public:
         return x.unex_ == y.error();
     }
 
+    /** Swap the stored errors of two @ref unexpected objects.
+        @param x The first object to swap.
+        @param y The second object to swap.
+    */
     friend
     constexpr
     void
@@ -3094,6 +3098,10 @@ public:
         }
     }
 
+    /** Swap the contents of two @ref expected objects.
+        @param a The first object to swap.
+        @param b The second object to swap.
+    */
     friend constexpr
     void
     swap(expected& a, expected& b)

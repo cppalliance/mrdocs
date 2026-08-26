@@ -1560,7 +1560,6 @@ DocCommentFinalizer::emitWarnings()
     warnUndocumented();
     warnDocErrors();
     warnNoParamDocs();
-    warnUndocEnumValues();
     warnUnnamedParams();
 
     auto const level = !config_.warnAsError ?
@@ -1662,14 +1661,56 @@ DocCommentFinalizer::emitWarnings()
 void
 DocCommentFinalizer::warnUndocumented()
 {
-    MRDOCS_CHECK_OR(config_.warnIfUndocumented);
-    for (auto& undocI: corpus_.undocumented_)
+    MRDOCS_CHECK_OR(config_.warnIfUndocumented || config_.warnIfUndocEnumVal);
+    // A template specialization that is folded onto its primary (and every
+    // member it carries) borrows the primary's documentation, so it never needs
+    // its own. This holds for the symbol itself or any enclosing scope.
+    auto isListedOnPrimary = [](Symbol const& S)
     {
-        if (Symbol const* I = corpus_.find(undocI.id))
+        if (auto const* r = S.asRecordPtr())
         {
-            MRDOCS_CHECK_OR(
-                !I->doc || I->Extraction == ExtractionMode::Regular
-                || I->IsCopyFromInherited == false);
+            return r->IsListedOnPrimary;
+        }
+        if (auto const* f = S.asFunctionPtr())
+        {
+            return f->IsListedOnPrimary;
+        }
+        return false;
+    };
+    auto inFoldedSpecialization = [&](Symbol const& S)
+    {
+        for (Symbol const* cur = &S; cur;)
+        {
+            if (isListedOnPrimary(*cur))
+            {
+                return true;
+            }
+            cur = cur->Parent ? corpus_.find(cur->Parent) : nullptr;
+        }
+        return false;
+    };
+    for (auto const& undocI: corpus_.undocumented_)
+    {
+        Symbol const* const I = corpus_.find(undocI.id);
+        if (I)
+        {
+            // a symbol that gained documentation from a redeclaration
+            MRDOCS_CHECK_OR_CONTINUE(!I->doc);
+            // a symbol that was turned into an inherited copy
+            MRDOCS_CHECK_OR_CONTINUE(!I->IsCopyFromInherited);
+            // a symbol that was folded onto a template specialization's
+            // primary and so borrows the primary's documentation
+            MRDOCS_CHECK_OR_CONTINUE(!inFoldedSpecialization(*I));
+        }
+        // Enum constants carry the dedicated enum-value wording. The set only
+        // holds them when warn-if-undoc-enum-val is enabled (checkUndocumented).
+        if (undocI.kind == SymbolKind::EnumConstant)
+        {
+            this->warn(
+                *getPrimaryLocation(undocI.Loc, false),
+                "{}: Missing documentation for enum value",
+                I ? corpus_.Corpus::qualifiedName(*I) : undocI.name);
+            continue;
         }
         bool const prefer_definition = is_one_of(
             undocI.kind, {SymbolKind::Record, SymbolKind::Enum});
@@ -1880,24 +1921,6 @@ warnNoParamDocs(MacroSymbol const& I)
                 corpus_.Corpus::qualifiedName(I),
                 paramName);
         }
-    }
-}
-
-void
-DocCommentFinalizer::
-warnUndocEnumValues()
-{
-    MRDOCS_CHECK_OR(config_.warnIfUndocEnumVal);
-    for (auto const& I : corpus_.info_)
-    {
-        MRDOCS_CHECK_OR_CONTINUE(I->isEnumConstant());
-        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
-        MRDOCS_CHECK_OR_CONTINUE(!I->doc);
-        this->warn(
-            *getPrimaryLocation(*I),
-            "{}: Missing documentation for enum value",
-            corpus_.Corpus::qualifiedName(*I));
     }
 }
 

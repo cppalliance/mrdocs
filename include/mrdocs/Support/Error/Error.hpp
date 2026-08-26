@@ -226,6 +226,10 @@ public:
         swap(loc_, rhs.loc_);
     }
 
+    /** Swap the contents of two @ref Error objects.
+        @param lhs The first error to swap.
+        @param rhs The second error to swap.
+    */
     friend
     constexpr
     void
