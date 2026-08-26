@@ -220,7 +220,7 @@ jobs:
           website_dir="ubuntu@dev-websites.cpp.al:/var/www/mrdox.com"
           demo_dir="$website_dir/demos/${{ github.ref_name }}"
 
-          time rsync "${rsyncopts[@]}" --exclude=demos/ --exclude=roadmap/ $(pwd)/build/website/ "$website_dir"/
+          time rsync "${rsyncopts[@]}" --exclude=demos/ $(pwd)/build/website/ "$website_dir"/
           time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
 
       - name: Create changelog

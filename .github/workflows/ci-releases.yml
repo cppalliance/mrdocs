@@ -49,7 +49,7 @@ jobs:
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.9.5
         with:
-          apt-get: build-essential asciidoctor cmake ninja-build bzip2 git rsync
+          apt-get: build-essential asciidoctor cmake ninja-build bzip2 git rsync jq
 
       - name: Clone MrDocs
         uses: actions/checkout@v6
@@ -119,7 +119,13 @@ jobs:
           run-tests: true
           install: false
 
+      # The demos exist to be published, not to test anything: the copies that
+      # reach the website come from Linux. macOS stays because it is fast (it
+      # finishes before Linux, so it never blocks the job). Windows generation
+      # takes hours on the large demos and validates nothing extra, so every
+      # demo step is skipped there.
       - name: Clone Boost.URL
+        if: runner.os != 'Windows'
         uses: alandefreitas/cpp-actions/boost-clone@v1.9.5
         with:
           branch: develop
@@ -129,50 +135,19 @@ jobs:
           modules-exclude-paths: ''
           trace-commands: true
 
-      - name: Clone Beman.Optional
-        uses: actions/checkout@v6
-        with:
-          repository: steve-downey/optional
-          ref: main
-          path: beman-optional
-
-      - name: Clone Fmt
-        uses: actions/checkout@v6
-        with:
-          repository: fmtlib/fmt
-          ref: main
-          path: fmt
-
-      - name: Clone Nlohmann.Json
-        uses: actions/checkout@v6
-        with:
-          repository: nlohmann/json
-          ref: develop
-          path: nlohmann-json
-
-      - name: Clone MpUnits
-        uses: actions/checkout@v6
-        with:
-          repository: mpusz/mp-units
-          ref: master
-          path: mp-units
-
-      - name: Patch Demo Projects
-        run: |
-          set -euo pipefail
-          set -x
-          for project in beman-optional fmt nlohmann-json mp-units; do
-            src="./examples/third-party/$project"
-            dst="./$project"
-            [ -d "$src" ] || { echo "Source not found: $src" >&2; exit 1; }
-            mkdir -p "$dst"
-            tar -C "$src" -cf - . | tar -C "$dst" -xpf -
-          done
+      # Boost.URL (above) needs the Boost superproject, and Mr.Docs is this very
+      # checkout, so both are handled on their own. Every other demo project is
+      # driven from examples/third-party/projects.json (see the script).
+      - name: Clone Demo Projects
+        if: runner.os != 'Windows'
+        run: .github/scripts/clone-demo-projects.sh
 
       - name: Generate Demos
+        if: runner.os != 'Windows'
         run: .github/scripts/generate-demos.sh
 
       - name: Upload Demos as Artifacts
+        if: runner.os != 'Windows'
         uses: actions/upload-artifact@v7
         with:
           name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name) && format('-{0}', github.ref_name)) || '' }}-${{ runner.os }}
