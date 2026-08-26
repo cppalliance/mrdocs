@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2buXaq5YEtJhY4cNxSRtzAbdAXba</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>app</name>
+  <anchor>app</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>literal-operator.cpp</shortPath>
+        <sourcePath>literal-operator.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2buXaq5YEtJhY4cNxSRtzAbdAXba</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>cLdnBoVoTirAyYk48EhwR5oFTHJ 2H1s3dbz1r17qnzZudcW6Co4YX97</functions>
+  </members>
+</namespace>
+<function>
+  <name>operator&quot;&quot;_km</name>
+  <anchor>operator_km</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>literal-operator.cpp</shortPath>
+        <sourcePath>literal-operator.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>cLdnBoVoTirAyYk48EhwR5oFTHJ</id>
+  <extraction>regular</extraction>
+  <parent>2buXaq5YEtJhY4cNxSRtzAbdAXba</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A user-defined literal for kilometers.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>long double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>long double</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>long double</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>long double</fundamentalType>
+        </named>
+      </type>
+      <name>v</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>operator&quot;&quot;_times</name>
+  <anchor>operator_times</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>literal-operator.cpp</shortPath>
+        <sourcePath>literal-operator.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2H1s3dbz1r17qnzZudcW6Co4YX97</id>
+  <extraction>regular</extraction>
+  <parent>2buXaq5YEtJhY4cNxSRtzAbdAXba</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A user-defined literal for a repeat count.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>unsigned long long</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>unsigned long long</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>unsigned long long</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>unsigned long long</fundamentalType>
+        </named>
+      </type>
+      <name>n</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

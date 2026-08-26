@@ -2356,7 +2356,15 @@ extractName(clang::DeclarationName const N)
         break;
     }
     case clang::DeclarationName::CXXLiteralOperatorName:
-        case clang::DeclarationName::CXXUsingDirective:
+        // A user-defined literal operator: name it by its literal suffix,
+        // e.g. `operator""_json` for `operator"" _json`.
+        result.append("operator\"\"");
+        if (clang::IdentifierInfo const* I = N.getCXXLiteralIdentifier())
+        {
+            result.append(I->getName());
+        }
+        break;
+    case clang::DeclarationName::CXXUsingDirective:
         break;
     default:
         MRDOCS_UNREACHABLE();

@@ -233,6 +233,15 @@ public:
                     {
                         return getUnnamedInfoName(t);
                     }
+                    // User-defined literal operators (operator""_x) carry a
+                    // double quote in their name, which is not URL-safe; strip
+                    // it so the anchor stays a plain identifier (operator_x).
+                    if (t.Name.find('"') != std::string::npos)
+                    {
+                        std::string safe(t.Name);
+                        std::erase(safe, '"');
+                        return safe;
+                    }
                 }
                 else if constexpr(T::isUsing())
                 {
