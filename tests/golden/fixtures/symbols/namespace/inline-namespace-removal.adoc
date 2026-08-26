@@ -1,0 +1,69 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#lib[`lib`] 
+|===
+
+
+[#lib]
+== lib
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-Widget[`Widget`] 
+| A type that belongs to lib, not lib&colon;&colon;v2&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-f[`f`] 
+| A function that belongs to lib, not lib&colon;&colon;v2&period;
+|===
+
+
+[#lib-Widget]
+== link:#lib[lib]::Widget
+
+A type that belongs to lib, not lib&colon;&colon;v2&period;
+
+=== Synopsis
+
+Declared in `&lt;inline&hyphen;namespace&hyphen;removal&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Widget;
+----
+
+[#lib-f]
+== link:#lib[lib]::f
+
+A function that belongs to lib, not lib&colon;&colon;v2&period;
+
+=== Synopsis
+
+Declared in `&lt;inline&hyphen;namespace&hyphen;removal&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

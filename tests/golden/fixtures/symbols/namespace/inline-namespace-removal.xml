@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>3qdKhKhuYsvERYG8cY8KoqdRtpz6</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>lib</name>
+  <anchor>lib</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-namespace-removal.cpp</shortPath>
+        <sourcePath>inline-namespace-removal.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>3qdKhKhuYsvERYG8cY8KoqdRtpz6</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>3oDw1imbD8URzxJSZ3vKgkdf9Bn2</records>
+    <functions>3tqsApGqyKfsTyTaxJFnC2HZdFgL</functions>
+  </members>
+</namespace>
+<record>
+  <name>Widget</name>
+  <anchor>Widget</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>inline-namespace-removal.cpp</shortPath>
+      <sourcePath>inline-namespace-removal.cpp</sourcePath>
+      <lineNumber>16</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3oDw1imbD8URzxJSZ3vKgkdf9Bn2</id>
+  <extraction>regular</extraction>
+  <parent>3qdKhKhuYsvERYG8cY8KoqdRtpz6</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A type that belongs to lib, not lib::v2.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+</record>
+<function>
+  <name>f</name>
+  <anchor>f</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-namespace-removal.cpp</shortPath>
+        <sourcePath>inline-namespace-removal.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3tqsApGqyKfsTyTaxJFnC2HZdFgL</id>
+  <extraction>regular</extraction>
+  <parent>3qdKhKhuYsvERYG8cY8KoqdRtpz6</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A function that belongs to lib, not lib::v2.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>
