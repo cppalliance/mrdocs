@@ -1036,26 +1036,6 @@
         <name>x9</name>
         <direction>in</direction>
       </param>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>An integer </literal>
-          </text>
-          <code>
-            <kind>code</kind>
-            <children>
-              <text>
-                <kind>text</kind>
-                <literal>x9</literal>
-              </text>
-            </children>
-          </code>
-        </children>
-        <name>x9</name>
-        <direction>out</direction>
-      </param>
     </params>
   </doc>
   <returnType>
