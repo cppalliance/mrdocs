@@ -652,6 +652,13 @@
         "default": true
       },
       {
+        "name": "warn-no-brief",
+        "brief": "Warn if a documented symbol has no brief",
+        "details": "When set to `true`, MrDocs outputs a warning message if a symbol has documentation but no brief once brief finalization (auto-brief and brief-copying commands) has run. A symbol with a description but no brief renders poorly because the brief is what parent contexts (such as member tables) display, so an empty brief is treated as missing documentation.",
+        "type": "bool",
+        "default": true
+      },
+      {
         "name": "warn-unnamed-param",
         "brief": "Warn if documented functions have unnamed parameters",
         "details": "When set to `true`, MrDocs outputs a warning message if a documented function has a parameter that is not named.",

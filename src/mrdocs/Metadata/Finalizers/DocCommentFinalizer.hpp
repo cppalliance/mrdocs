@@ -309,6 +309,9 @@ private:
     warnUndocumented();
 
     void
+    warnNoBrief();
+
+    void
     warnDocErrors();
 
     void
