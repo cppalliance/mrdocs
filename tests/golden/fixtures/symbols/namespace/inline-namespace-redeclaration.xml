@@ -84,17 +84,6 @@
   <extraction>regular</extraction>
   <parent>41YjLuBqXt6jbnVbANexffyZ2rch</parent>
   <doc>
-    <document>
-      <paragraph>
-        <kind>paragraph</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>The same helper named past the inline namespace: app::inner::helper.</literal>
-          </text>
-        </children>
-      </paragraph>
-    </document>
     <brief>
       <kind>brief</kind>
       <children>
@@ -152,15 +141,6 @@
           <text>
             <kind>text</kind>
             <literal>Defined directly inside the inline ABI namespace.</literal>
-          </text>
-        </children>
-      </paragraph>
-      <paragraph>
-        <kind>paragraph</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>A redeclaration naming the function directly in the enclosing namespace, past the transparent inline namespace.</literal>
           </text>
         </children>
       </paragraph>

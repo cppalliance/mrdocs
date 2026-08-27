@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/DocComment/Inline/Parts.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/String/String.hpp>
@@ -1618,24 +1619,23 @@ class DocCommentVisitor
             visitChildrenWithCursor(P);
         }
 
-        // warn on duplicates
-        auto it = std::ranges::
-            find_if(jd_.Document, [&](Polymorphic<doc::Block> const& b) {
-            if (!b->isParam())
+        // Skip a parameter that is already documented. `@param` blocks are
+        // stored in `jd_.params` (not `jd_.Document`), and the same parameter
+        // can be documented more than once: either twice in a single comment
+        // (a genuine authoring mistake) or once on each of several
+        // redeclarations of the same symbol whose comments are parsed into the
+        // same DocComment (e.g. two overloads MrDocs treats as redeclarations).
+        // In both cases the first documentation wins; keeping the duplicate
+        // would surface a spurious "Duplicate parameter documentation" later.
+        auto const dupIt = std::ranges::find_if(
+            jd_.params,
+            [&](doc::ParamBlock const& existing)
             {
-                return false;
-            }
-            auto const* p = dynamic_cast<doc::ParamBlock const*>(
-                b.operator->());
-            MRDOCS_ASSERT(p != nullptr);
-            return p->name == param.name;
-        });
-        if (it != jd_.Document.end())
+                return existing.name == param.name;
+            });
+        if (dupIt != jd_.params.end())
         {
-            report::warn(
-                "{}: Duplicate @param for argument {}",
-                C->getBeginLoc().printToString(sm_),
-                param.name);
+            return;
         }
 
         jd_.params.push_back(std::move(param));
@@ -1859,9 +1859,12 @@ populateDocComment(
         {
             jd = std::move(result);
         }
-        else if (*jd != result)
+        else
         {
-            jd->append(std::move(result));
+            // Fill in only the fields this comment is missing rather than
+            // appending, so multiple declarations (or namespace reopenings)
+            // don't duplicate briefs and descriptions.
+            merge(*jd, std::move(result));
         }
     }
 }
