@@ -1558,6 +1558,7 @@ DocCommentFinalizer::emitWarnings()
 {
     MRDOCS_CHECK_OR(config_.warnings);
     warnUndocumented();
+    warnNoBrief();
     warnDocErrors();
     warnNoParamDocs();
     warnUnnamedParams();
@@ -1721,6 +1722,56 @@ DocCommentFinalizer::warnUndocumented()
             toString(undocI.kind));
     }
     corpus_.undocumented_.clear();
+}
+
+void
+DocCommentFinalizer::
+warnNoBrief()
+{
+    MRDOCS_CHECK_OR(config_.warnNoBrief);
+    for (auto const& I : corpus_.info_)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
+        // Overload sets synthesize their page from members and never carry a
+        // brief of their own, so they are exempt.
+        MRDOCS_CHECK_OR_CONTINUE(!I->isOverloads());
+        // A symbol with no documentation at all is reported by
+        // warnUndocumented; here we only flag symbols that carry some
+        // documentation but, after brief finalization (auto-brief and
+        // @copybrief), still have no brief. Their summary cell in the parent's
+        // member table renders empty, so treat the missing brief as missing
+        // documentation.
+        MRDOCS_CHECK_OR_CONTINUE(I->doc);
+        MRDOCS_CHECK_OR_CONTINUE(!I->doc->brief);
+        // The `related` list is populated from *other* symbols that `@relates`
+        // to this one; it is not documentation the author wrote for this
+        // symbol. A doc whose only content is such a back-populated `related`
+        // entry (no prose, brief, params, returns, ...) is effectively
+        // undocumented, so reporting a missing brief for it is a false
+        // positive (this happens when a free function relates to a class or
+        // template specialization that itself carries no authored comment).
+        {
+            auto const& d = *I->doc;
+            bool const hasAuthoredContent =
+                !d.Document.empty() ||
+                !d.params.empty() ||
+                !d.tparams.empty() ||
+                !d.returns.empty() ||
+                !d.exceptions.empty() ||
+                !d.sees.empty() ||
+                !d.preconditions.empty() ||
+                !d.postconditions.empty() ||
+                !d.footnotes.empty();
+            MRDOCS_CHECK_OR_CONTINUE(hasAuthoredContent);
+        }
+        auto const loc = getPrimaryLocation(*I);
+        MRDOCS_CHECK_OR_CONTINUE(loc);
+        this->warn(
+            *loc,
+            "{}: symbol is documented but has no brief",
+            corpus_.Corpus::qualifiedName(*I));
+    }
 }
 
 void

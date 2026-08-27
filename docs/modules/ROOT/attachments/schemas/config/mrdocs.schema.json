@@ -803,6 +803,16 @@
       "title": "Warn if namespaces are not documented",
       "type": "boolean"
     },
+    "warn-no-brief": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a symbol has documentation but no brief once brief finalization (auto-brief and brief-copying commands) has run. A symbol with a description but no brief renders poorly because the brief is what parent contexts (such as member tables) display, so an empty brief is treated as missing documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if a documented symbol has no brief",
+      "type": "boolean"
+    },
     "warn-no-paramdoc": {
       "default": true,
       "description": "When set to `true`, MrDocs outputs a warning message if a named function parameter is not documented.",
