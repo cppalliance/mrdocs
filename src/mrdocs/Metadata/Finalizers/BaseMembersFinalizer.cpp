@@ -303,6 +303,9 @@ operator()(RecordSymbol& I)
             }
         }
         MRDOCS_CHECK_OR_CONTINUE(baseID);
+        // A record can name a dependent specialization of its own template.
+        // Explicit and partial specializations keep their own IDs.
+        MRDOCS_CHECK_OR_CONTINUE(baseID != I.id);
         auto basePtr = corpus_.find(baseID);
         MRDOCS_CHECK_OR_CONTINUE(basePtr);
         auto* baseRecord = basePtr->asRecordPtr();
