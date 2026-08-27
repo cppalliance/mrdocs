@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -67,16 +68,31 @@ inheritBaseMembers(
     RecordTranche& derived,
     RecordTranche const& base)
 {
-    inheritBaseMembers(derivedId, derived.NamespaceAliases, base.NamespaceAliases);
-    inheritBaseMembers(derivedId, derived.Typedefs, base.Typedefs);
-    inheritBaseMembers(derivedId, derived.Records, base.Records);
-    inheritBaseMembers(derivedId, derived.Enums, base.Enums);
-    inheritBaseMembers(derivedId, derived.Functions, base.Functions);
-    inheritBaseMembers(derivedId, derived.StaticFunctions, base.StaticFunctions);
-    inheritBaseMembers(derivedId, derived.Variables, base.Variables);
-    inheritBaseMembers(derivedId, derived.StaticVariables, base.StaticVariables);
-    inheritBaseMembers(derivedId, derived.Concepts, base.Concepts);
-    inheritBaseMembers(derivedId, derived.Guides, base.Guides);
+    // Taken before anything is inherited, so that a member coming from a
+    // base is never mistaken for one the derived class declares.
+    std::unordered_set<std::string> const derivedNames = memberNames(derived);
+
+    describe::for_each_member<RecordTranche>([&](auto const d) {
+        inheritBaseMembers(
+            derivedId, derived.*d.pointer, base.*d.pointer, derivedNames);
+    });
+}
+
+std::unordered_set<std::string>
+BaseMembersFinalizer::
+memberNames(RecordTranche const& T) const
+{
+    std::unordered_set<std::string> result;
+    describe::for_each_member<RecordTranche>([&](auto const d) {
+        for (SymbolID const& id: T.*d.pointer)
+        {
+            if (Symbol const* infoPtr = corpus_.find(id))
+            {
+                result.insert(infoPtr->Name);
+            }
+        }
+    });
+    return result;
 }
 
 namespace {
@@ -96,7 +112,8 @@ BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
     std::vector<SymbolID>& derived,
-    std::vector<SymbolID> const& base)
+    std::vector<SymbolID> const& base,
+    std::unordered_set<std::string> const& derivedNames)
 {
     Symbol const* derivedInfo = nullptr;
     auto const getDerivedInfo = [&]() -> Symbol const*
@@ -122,6 +139,13 @@ inheritBaseMembers(
               !is_one_of(funcPtr->FuncClass, {FunctionClass::Constructor,
                                               FunctionClass::Destructor}));
         }
+
+        // A using-declaration re-exports a name rather than a signature,
+        // so whatever the derived class declares under that name hides it,
+        // whichever kind of member that is. The search below cannot see
+        // it, since it covers the members of one kind.
+        MRDOCS_CHECK_OR_CONTINUE(
+            !otherInfo.isUsing() || !derivedNames.contains(otherInfo.Name));
 
         // Check if derived class has a member that shadows the base member
         auto shadowIt = std::ranges::find_if(
