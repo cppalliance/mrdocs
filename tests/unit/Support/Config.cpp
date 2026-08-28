@@ -39,10 +39,53 @@ struct ConfigTest
     }
 
     void
+    testDeprecatedTagfileFromFile()
+    {
+        Config c;
+        Expected<void> const result =
+            Config::load(c, "tagfile: custom.tag.xml");
+        BOOST_TEST(result.has_value());
+        BOOST_TEST(c.outputTagfile == "custom.tag.xml");
+    }
+
+    void
+    testDeprecatedTagfileFromCommandLine()
+    {
+        char const* argv[] = {
+            "mrdocs", "--tagfile=custom.tag.xml", nullptr};
+        Config c;
+        Expected<void> const result = Config::load(c, "", argv);
+        BOOST_TEST(result.has_value());
+        BOOST_TEST(c.outputTagfile == "custom.tag.xml");
+    }
+
+    // Each entry is split at its first `=`, so a URL may hold more.
+    void
+    testInputTagfilesFromCommandLine()
+    {
+        char const* argv[] = {
+            "mrdocs",
+            "--input-tagfiles=a.tag.xml=https://a.example/docs/",
+            "--input-tagfiles=C:/b.tag=https://b.example/?v=1",
+            nullptr};
+        Config c;
+        Expected<void> const result = Config::load(c, "", argv);
+        BOOST_TEST(result.has_value());
+        BOOST_TEST(c.inputTagfiles.size() == 2);
+        BOOST_TEST(c.inputTagfiles.at("a.tag.xml") ==
+            "https://a.example/docs/");
+        BOOST_TEST(c.inputTagfiles.at("C:/b.tag") ==
+            "https://b.example/?v=1");
+    }
+
+    void
     run()
     {
         testDeprecatedOptionFromFile();
         testDeprecatedOptionFromCommandLine();
+        testDeprecatedTagfileFromFile();
+        testDeprecatedTagfileFromCommandLine();
+        testInputTagfilesFromCommandLine();
     }
 };
 

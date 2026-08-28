@@ -2558,6 +2558,10 @@ A reference to a symbol.
 |`string`
 |Discriminator identifying which inline variant is active.
 
+|`href`
+|`string`
+|URL documenting the symbol, when that's in another documentation set.
+
 |`id`
 |`string`
 |Symbol being referenced.
