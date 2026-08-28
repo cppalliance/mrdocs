@@ -45,3 +45,26 @@ These options are usually the first to reach for when MrDocs reports that a head
 == Standard library headers
 
 For the C and C++ standard libraries, MrDocs can use the headers installed on your system or the ones it bundles for reproducible results. xref:configuration/reference.adoc#use-system-stdlib_option[`use-system-stdlib`] and xref:configuration/reference.adoc#use-system-libc_option[`use-system-libc`] pick between the two; xref:configuration/reference.adoc#stdlib-includes_option[`stdlib-includes`] and xref:configuration/reference.adoc#libc-includes_option[`libc-includes`] say where the bundled headers live.
+
+== Other documentation sets
+
+A doc comment can refer to a symbol MrDocs never extracted, e.g. a type from a dependency, or `std::vector`. xref:configuration/reference.adoc#input-tagfiles_option[`input-tagfiles`] specifies tagfiles for that purpose, so the reference becomes a link to the page that documents the symbol. Each entry maps a tagfile to the base URL its documentation set is published under. Here the corpus documents `area`, while `geom::circle` belongs to a library documented elsewhere:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/input-tagfiles/input-tagfiles.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/input-tagfiles/input-tagfiles.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/input-tagfiles/input-tagfiles.adoc[tags=!footer]
+========
+
+A name resolves the way any other reference does, from the scope it is written in outward, so a doc comment inside `namespace geom` could refer to `circle` unqualified. Doxygen writes a tag file for its own output with `GENERATE_TAGFILE`, and MrDocs with xref:configuration/reference.adoc#output-tagfile_option[`output-tagfile`]; https://en.cppreference.com[cppreference.com^] publishes one for the standard library, which can be used to have e.g. `@ref std::vector` link there.

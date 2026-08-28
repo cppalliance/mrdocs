@@ -1,6 +1,6 @@
 = Antora extensions
 
-Two Antora extensions connect the xref:page$generators/adoc.adoc[Asciidoc Generator] into an Antora build. One runs Mr.Docs as a stage inside the Antora build. The other registers the resulting Mr.Docs xref:configuration/reference.adoc#tagfile_option[tagfile], so prose on the site can link to C++ symbols.
+Two Antora extensions connect the xref:page$generators/adoc.adoc[Asciidoc Generator] into an Antora build. One runs Mr.Docs as a stage inside the Antora build. The other registers the resulting Mr.Docs xref:configuration/reference.adoc#output-tagfile_option[tagfile], so prose on the site can link to C++ symbols.
 
 [#antora-cpp-reference-extension]
 == C++ reference extension

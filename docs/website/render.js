@@ -139,7 +139,7 @@ for (let panel of data.panels) {
         '--generator=html',
         '--embedded=true',
         '--show-namespaces=false',
-        '--tagfile=',
+        '--output-tagfile=',
     ];
     const command = args.join(' ');
     console.log(`Running command: ${command}`)

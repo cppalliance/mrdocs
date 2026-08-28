@@ -20,9 +20,11 @@ include-symbols:
 # The corpus finalizers live in src/ and reach the reference only through the
 # friend-class grants in Corpus.hpp, so they surface as empty internal records
 # with nowhere to attach documentation. They are maintainer-facing, not public
-# API, so keep them out of MrDocs's own reference.
+# API, so keep them out of MrDocs's own reference. The schema visitor, which
+# Config.hpp grants the same way, is here for the same reason.
 exclude-symbols:
   - 'mrdocs::*Finalizer'
+  - 'mrdocs::ConfigSchemaVisitor'
 # MrDocs's own macros are maintainer-facing implementation helpers, not
 # public API: the MRDOCS_* support macros and the internal X-macros
 # (INFO/LOG/F) and compat shims used across the headers. Keep them out of

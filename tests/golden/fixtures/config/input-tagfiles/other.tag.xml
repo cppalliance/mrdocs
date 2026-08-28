@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tagfile>
+  <compound kind="namespace">
+    <name>other</name>
+    <filename>other.html</filename>
+    <member kind="function">
+      <type>void</type>
+      <name>connect</name>
+      <anchorfile>other.html</anchorfile>
+      <anchor>a1b2c3</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="namespace">
+    <name>elsewhere</name>
+    <filename>elsewhere.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>other::socket</name>
+    <filename>other/socket.html</filename>
+    <member kind="function">
+      <type>void</type>
+      <name>close</name>
+      <anchorfile>other/socket/close.html</anchorfile>
+      <anchor></anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+</tagfile>

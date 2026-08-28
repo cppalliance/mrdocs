@@ -33,6 +33,8 @@
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Filesystem/Path.hpp>
+#include <mrdocs/Support/TagfileReader.hpp>
 #include <algorithm>
 #include <chrono>
 #include <compare>
@@ -41,6 +43,24 @@
 namespace mrdocs {
 
 namespace {
+// The symbols every configured tagfile documents, in one index.
+Expected<TagfileIndex>
+loadInputTagfiles(Config const& config)
+{
+    Expected<TagfileIndex> result;
+    TagfileIndex index;
+    for (auto const& [path, baseUrl]: config.inputTagfiles)
+    {
+        std::string const file = files::makeAbsolute(path, config.configDir());
+        std::size_t const known = index.size();
+        MRDOCS_TRY(loadTagfile(index, file, baseUrl));
+        report::debug("  - \"{}\": {} symbols documented elsewhere",
+            path, index.size() - known);
+    }
+    result = std::move(index);
+    return result;
+}
+
 bool
 isTransparent(Symbol const& info)
 {
@@ -354,6 +374,13 @@ Corpus::build(
     // Create empty corpus
     // ------------------------------------------
     Corpus corpus;
+
+    // ------------------------------------------
+    // Read the tagfiles of other documentation sets
+    // ------------------------------------------
+    // Before extracting anything: a tagfile that cannot be read should
+    // not cost the time a large library takes to extract.
+    MRDOCS_TRY(corpus.externalSymbols_, loadInputTagfiles(config));
 
     // ------------------------------------------
     // Execution context
@@ -795,6 +822,52 @@ Corpus::
 lookup(SymbolID const& context, std::string_view name)
 {
     return lookupImpl(*this, context, name);
+}
+
+Expected<std::string>
+Corpus::
+externalUrl(SymbolID const& context, std::string_view name) const
+{
+    std::optional<std::string> found;
+    std::string_view const scopeResolution = "::";
+    if (name.starts_with(scopeResolution))
+    {
+        found = externalSymbols_.find(name.substr(scopeResolution.size()));
+    }
+    else
+    {
+        // Each scope the name may be relative to, innermost first.
+        Symbol const* scope = find(context);
+        while (scope && !found)
+        {
+            std::string candidate = Corpus::qualifiedName(*scope);
+            if (!candidate.empty())
+            {
+                candidate += scopeResolution;
+                candidate += name;
+                found = externalSymbols_.find(candidate);
+            }
+            scope = scope->id == SymbolID::global
+                ? nullptr
+                : find(scope->Parent);
+        }
+        if (!found)
+        {
+            // The name as written, naming the scope it is in itself.
+            found = externalSymbols_.find(name);
+        }
+    }
+    Expected<std::string> result;
+    if (found)
+    {
+        result = *std::move(found);
+    }
+    else
+    {
+        result = Unexpected(formatError(
+            "No tagfile documents '{}'", name));
+    }
+    return result;
 }
 
 template <class Self>

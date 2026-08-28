@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tagfile>
+  <compound kind="class">
+    <name>geom::circle</name>
+    <filename>geom/circle.html</filename>
+    <member kind="function">
+      <type>double</type>
+      <name>area</name>
+      <anchorfile>geom/circle/area.html</anchorfile>
+      <anchor></anchor>
+      <arglist>() const</arglist>
+    </member>
+  </compound>
+</tagfile>
