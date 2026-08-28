@@ -1,0 +1,18 @@
+generator: [xml, adoc, html]
+input-tagfiles:
+  # Written by hand, with one member name carrying its parameter list,
+  # as cppreference's tagfile writes some.
+  other.tag.xml: https://example.org/docs/
+  # Written by MrDocs: a copy of the tagfile the config/output-tagfile
+  # fixture generates.
+  ns.tag.xml: https://ns.example/docs/
+  # Written by Doxygen 1.14.0 from a small header, with everything a
+  # real one carries: a file compound, cross-references, template
+  # arguments, bases, variables, virtualness.
+  geomlib.tag: https://geom.example/docs/
+  # Written by Doxygen 1.14.0 from a C header, whose functions, variables
+  # and typedefs Doxygen lists only in the file compound.
+  clib.tag: https://clib.example/docs/
+# The input names two symbols on purpose that no tagfile documents, to
+# show they stay plain text.
+warn-broken-ref: false

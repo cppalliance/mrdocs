@@ -1,4 +1,6 @@
-{{#if (eq href (@root.mrdocs.corpus.getUrl @root.symbol))~}}
+{{#if external~}}
+    <a href="{{external_href href}}">{{> @partial-block }}</a>
+{{~else if (eq href (@root.mrdocs.corpus.getUrl @root.symbol))~}}
     {{{> @partial-block }}}
 {{~else~}}
     <a href="{{{relativize href}}}"{{#if blank}} target="_blank" rel="noopener"{{/if}}>{{> @partial-block }}</a>

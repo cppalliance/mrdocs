@@ -1,0 +1,15 @@
+[#outer]
+= outer
+:mrdocs:
+
+== Namespaces
+
+[cols="1"]
+|===
+| Name
+| xref:outer/inner.adoc[`inner`] 
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

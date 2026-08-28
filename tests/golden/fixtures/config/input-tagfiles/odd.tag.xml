@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tagfile>
+  <compound kind="class">
+    <name>odd::thing</name>
+    <filename>odd/thing.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>get</name>
+      <anchorfile>odd/thing.html</anchorfile>
+      <anchor>odd::thing::get</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>quote</name>
+      <anchorfile>odd/q&quot;uote&lt;b&gt;.html</anchorfile>
+      <anchor></anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+</tagfile>

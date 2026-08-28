@@ -154,7 +154,7 @@ build(
     std::string const outputPath = getGeneratorOutputPath(*this, config);
     dom::Object const params = getGeneratorParams(*this, config);
     bool const multipage = rendersMultiPage(config, params);
-    std::string_view const configuredTagfile = config.tagfile;
+    std::string_view const configuredTagfile = config.outputTagfile;
 
     // The tagfile and the copied stylesheets land in the same directory as
     // the generator's output, so they never collide between generators.
