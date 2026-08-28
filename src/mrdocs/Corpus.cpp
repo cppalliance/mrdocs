@@ -33,6 +33,8 @@
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Filesystem/Path.hpp>
+#include <mrdocs/Support/TagfileReader.hpp>
 #include <algorithm>
 #include <chrono>
 #include <compare>
@@ -41,6 +43,24 @@
 namespace mrdocs {
 
 namespace {
+// The symbols every configured tagfile documents, in one index.
+Expected<TagfileIndex>
+loadInputTagfiles(Config const& config)
+{
+    Expected<TagfileIndex> result;
+    TagfileIndex index;
+    for (auto const& [path, baseUrl]: config.inputTagfiles)
+    {
+        std::string const file = files::makeAbsolute(path, config.configDir());
+        std::size_t const known = index.size();
+        MRDOCS_TRY(loadTagfile(index, file, baseUrl));
+        report::debug("  - \"{}\": {} symbols documented elsewhere",
+            path, index.size() - known);
+    }
+    result = std::move(index);
+    return result;
+}
+
 bool
 isTransparent(Symbol const& info)
 {
@@ -523,6 +543,11 @@ Corpus::build(
     corpus.undocumented_ = std::move(undocumented);
 
     // ------------------------------------------
+    // Read the tagfiles of other documentation sets
+    // ------------------------------------------
+    MRDOCS_TRY(corpus.externalSymbols_, loadInputTagfiles(config));
+
+    // ------------------------------------------
     // Finalize corpus
     // ------------------------------------------
     corpus.finalize(config);
@@ -786,6 +811,42 @@ Corpus::
 lookup(SymbolID const& context, std::string_view name)
 {
     return lookupImpl(*this, context, name);
+}
+
+std::optional<std::string>
+Corpus::
+externalUrl(SymbolID const& context, std::string_view name) const
+{
+    std::optional<std::string> result;
+    std::string_view const scopeQualifier = "::";
+    if (name.starts_with("scopeQualifier"))
+    {
+        result = externalSymbols_.find(name.substr(scopeQualifier.size()));
+    }
+    else
+    {
+        // Each scope the name may be relative to, innermost first.
+        Symbol const* scope = find(context);
+        while (scope && !result)
+        {
+            std::string candidate = Corpus::qualifiedName(*scope);
+            if (!candidate.empty())
+            {
+                candidate += scopeQualifier;
+                candidate += name;
+                result = externalSymbols_.find(candidate);
+            }
+            scope = scope->id == SymbolID::global
+                ? nullptr
+                : find(scope->Parent);
+        }
+        if (!result)
+        {
+            // The name as written, naming the scope it is in itself.
+            result = externalSymbols_.find(name);
+        }
+    }
+    return result;
 }
 
 template <class Self>

@@ -414,6 +414,15 @@
       "title": "Input directories to extract symbols from",
       "type": "array"
     },
+    "input-tagfiles": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "description": "A map of tagfile path to the base URL under which the documentation set it describes is published. A reference in a doc comment that names no symbol in this corpus, such as `@ref std::vector`, becomes a link into that set when one of these tagfiles lists the name. The name is resolved from the scope it is written in outward, as any other reference is, and is never shortened to reach an entry. Relative paths are resolved against the directory of the configuration file. On the command line, each entry is passed as `--input-tagfiles=<path>=<base-url>`, which may be repeated. Doxygen writes a tagfile for its own output with `GENERATE_TAGFILE`, MrDocs with the `output-tagfile` option.",
+      "title": "Tagfiles of other documentation sets to link against",
+      "type": "object"
+    },
     "legible-names": {
       "default": true,
       "description": "Use legible names for IDs in the documentation. When set to true, MrDocs uses legible names for symbol anchors in the corpus. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID to avoid conflicts.",
@@ -500,6 +509,12 @@
       "default": "<config-dir>/reference-output",
       "description": "The directory MrDocs generators write the documentation to, resolved relative to the configuration file. Each generator ultimately decides how to interpret this path. Multipage generators will typically use it as a directory. Single-page generators will typically also allow this to represent a file.",
       "title": "Output directory for the generated documentation",
+      "type": "string"
+    },
+    "output-tagfile": {
+      "default": "<output-dir>/reference.tag.xml",
+      "description": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated. The tagfiles of other documentation sets are read with the `input-tagfiles` option.",
+      "title": "Path for the tagfile",
       "type": "string"
     },
     "overloads": {
@@ -689,9 +704,9 @@
       "type": "array"
     },
     "tagfile": {
-      "default": "<output-dir>/reference.tag.xml",
-      "description": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
-      "title": "Path for the tagfile",
+      "default": "",
+      "description": "Deprecated: this is the old name for `output-tagfile`. Setting it still sets that option, with a warning. An empty value leaves `output-tagfile` alone.",
+      "title": "Path for the tagfile (deprecated)",
       "type": "string"
     },
     "transform-options": {

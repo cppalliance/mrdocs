@@ -42,7 +42,7 @@ include::example$snippets/commands/link.adoc[tags=!footer]
 
 == Cross-references
 
-xref:commands/reference.adoc#cmd-cross-reference[`@ref`] links to another symbol by its qualified name; MrDocs resolves it against the corpus and emits a working link. This is the command to reach for whenever one symbol's documentation should point at another.
+xref:commands/reference.adoc#cmd-cross-reference[`@ref`] links to another symbol by its qualified name; MrDocs resolves it and emits a working link. This is the command to reach for whenever one symbol's documentation should point at another. A name the corpus does not hold can still resolve into another project's documentation, through xref:configuration/output.adoc#_external_docs[`input-tagfiles`].
 
 .Cross-references
 [source,cpp]

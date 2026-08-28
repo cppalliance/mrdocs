@@ -12,5 +12,5 @@ warn-if-undocumented: false
 warn-no-paramdoc: false
 warn-unnamed-param: false
 warn-if-undoc-enum-val: false
-tagfile: ""
+output-tagfile: ""
 no-default-styles: true

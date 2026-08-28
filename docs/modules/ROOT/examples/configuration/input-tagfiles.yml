@@ -1,0 +1,3 @@
+input-tagfiles:
+  tagfiles/cppreference-doxygen-web.tag.xml: https://en.cppreference.com/w/
+  tagfiles/boost-url.tag.xml: https://www.boost.org/doc/libs/release/libs/url/doc/html/

@@ -139,12 +139,43 @@ public:
     void
     reportUnknownConfigKeys() const;
 
+    /** Warn about the deprecated options this configuration sets.
+
+        Reports each one as a warning, or as an error under
+        `warn-as-error`. Deferred and explicitly called for the same
+        reason as @ref reportUnknownConfigKeys.
+    */
+    void
+    reportDeprecatedOptions() const;
+
 private:
     /** Keys found in the configuration file that match no known option.
 
         Populated during load and surfaced by @ref reportUnknownConfigKeys.
     */
     std::vector<std::string> unknownConfigKeys;
+
+    /** A deprecated option this configuration sets, and its advice.
+
+        Populated during @ref normalize, which is the pass that sees each
+        option's properties, and surfaced by
+        @ref reportDeprecatedOptions.
+    */
+    struct DeprecatedOption
+    {
+        /** Name of the option, as the configuration spells it.
+        */
+        std::string name;
+        /** What to use instead, as the option itself declares.
+        */
+        std::string advice;
+    };
+
+    /** The deprecated options this configuration sets.
+    */
+    std::vector<DeprecatedOption> deprecatedOptions;
+
+    friend struct ConfigSchemaVisitor;
 };
 
 // Config adds no reflected options of its own; it only inherits the

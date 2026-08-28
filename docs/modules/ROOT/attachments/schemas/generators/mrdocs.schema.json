@@ -84,7 +84,7 @@
     "S_2bdz8onDMx7PBYnExqtLgMxUqrPY": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"}}},
     "S_pbDQ6katbvPedvuztLHCiRNi4G8": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"},"children":{"type":"array","items":{"$ref":"#/$defs/AnyInline"}},"href":{"type":"string"}}},
     "S_3PrdQDrzihPKEMMq8ZtDjd69UoMf": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"},"literal":{"type":"string"}}},
-    "S_2yM1iLKZLVpSpfu7Dq5sFaDfnwLa": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"},"id":{"type":"string"},"literal":{"type":"string"}}},
+    "S_2yM1iLKZLVpSpfu7Dq5sFaDfnwLa": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"},"href":{"type":"string"},"id":{"type":"string"},"literal":{"type":"string"}}},
     "S_22nFJc2hmNmmR5h1kq6NkgViKdEM": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"}}},
     "S_CJPbC4NwrPJeuv6wSnDmgGcZcQc": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"},"children":{"type":"array","items":{"$ref":"#/$defs/AnyInline"}}}},
     "S_28xEnXQadr6mJnmktXwag2oH9muy": {"type":"object","additionalProperties":true,"properties":{"kind":{"type":"string"},"children":{"type":"array","items":{"$ref":"#/$defs/AnyInline"}}}},

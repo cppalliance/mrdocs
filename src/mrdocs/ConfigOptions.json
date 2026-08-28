@@ -491,14 +491,32 @@
         "must-exist": true
       },
       {
-        "name": "tagfile",
+        "name": "input-tagfiles",
+        "brief": "Tagfiles of other documentation sets to link against",
+        "details": "A map of tagfile path to the base URL under which the documentation set it describes is published. A reference in a doc comment that names no symbol in this corpus, such as `@ref std::vector`, becomes a link into that set when one of these tagfiles lists the name. The name is resolved from the scope it is written in outward, as any other reference is, and is never shortened to reach an entry. Relative paths are resolved against the directory of the configuration file. On the command line, each entry is passed as `--input-tagfiles=<path>=<base-url>`, which may be repeated. Doxygen writes a tagfile for its own output with `GENERATE_TAGFILE`, MrDocs with the `output-tagfile` option.",
+        "type": "map<string,string>",
+        "default": {}
+      },
+      {
+        "name": "output-tagfile",
         "brief": "Path for the tagfile",
-        "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
+        "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated. The tagfiles of other documentation sets are read with the `input-tagfiles` option.",
         "type": "file-path",
         "default": "<output-dir>/reference.tag.xml",
         "relative-to": "<output-dir>",
         "must-exist": false,
         "should-exist": false
+      },
+      {
+        "name": "tagfile",
+        "brief": "Path for the tagfile (deprecated)",
+        "details": "Deprecated: this is the old name for `output-tagfile`. Setting it still sets that option, with a warning. An empty value leaves `output-tagfile` alone.",
+        "type": "file-path",
+        "default": "",
+        "relative-to": "<output-dir>",
+        "must-exist": false,
+        "should-exist": false,
+        "deprecated": "Use `output-tagfile` instead"
       },
       {
         "name": "legible-names",

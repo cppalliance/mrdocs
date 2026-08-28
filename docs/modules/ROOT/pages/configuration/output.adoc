@@ -125,11 +125,23 @@ include::example$snippets/options/base-url/base-url.adoc[tags=!footer]
 
 == External docs
 
-xref:configuration/reference.adoc#tagfile_option[`tagfile`] writes a Doxygen-compatible tag file alongside the documentation. The expected use is cross-linking: other MrDocs runs can read it to resolve `@ref` targets that live in your library, and Doxygen-generated docs can consume it for the same purpose. Reach for it when you publish a library that other people's docs need to link to.
+xref:configuration/reference.adoc#output-tagfile_option[`output-tagfile`] writes a Doxygen-compatible tag file alongside the documentation. The expected use is cross-linking: other MrDocs runs can read it to resolve `@ref` targets that live in your library, and Doxygen-generated docs can consume it for the same purpose. Reach for it when you publish a library that other people's docs need to link to.
 
 TIP: A few projects use the tag file in a less obvious way: they read it from their own site-generation scripts to build a navigation tree or a search index from the symbol list, rather than maintaining one by hand.
 
-NOTE: The inverse direction (consuming tag files emitted by other projects so that your pages link to *their* symbols) is handled by the xref:extensions/antora.adoc#antora-cpp-tagfiles-extension[`antora-cpp-tagfiles-extension`]. Point it at one or more tag files in your Antora playbook, and references like `boost::asio::io_context` resolve to the Boost.Asio site automatically.
+xref:configuration/reference.adoc#input-tagfiles_option[`input-tagfiles`] is the other direction: it reads the tag files of documentation sets you do not build, so a reference to a symbol MrDocs never extracted still becomes a link. Each key is a tag file, each value the base URL that set is published under:
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$configuration/input-tagfiles.yml[]
+----
+
+With that in place, `@ref std::vector` in a doc comment links to Cppreference instead of rendering as plain code. A name one of these sets documents resolves the way every other reference does, from the scope it is written in outward, so a name relative to its enclosing scope reaches an external symbol just as it would reach one of yours. What never happens is shortening: `vector` reaches `std::vector` only from inside `std`, because the shorter the name the likelier it is to collide with something unrelated in a foreign set, and a reference that silently points at the wrong page is worse than one that points nowhere. A name no scope accounts for is left as code.
+
+NOTE: A tag file only says where the pages of that set are, so MrDocs can resolve no more than the set publishes. Cppreference, for one, gives `namespace std` itself no page, so `@ref std::chrono` stays plain text while `@ref std::chrono::duration` links. Either way, it is a reference that resolved to nothing, and xref:configuration/reference.adoc#warn-broken-ref_option[`warn-broken-ref`] reports it as one.
+
+NOTE: For an Antora site there is also the xref:extensions/antora.adoc#antora-cpp-tagfiles-extension[`antora-cpp-tagfiles-extension`], which adds a `cpp:` macro and bundles the Cppreference tag file. The two are complementary, and reach different text: the extension resolves the names you write in your own pages, `input-tagfiles` resolves the ones inside doc comments, for every generator rather than for Asciidoctor alone.
 
 == Styling
 

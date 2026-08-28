@@ -1,0 +1,6 @@
+generator: [xml, adoc, html]
+input-tagfiles:
+  other.tag.xml: https://example.org/docs/
+# The input names two symbols on purpose that no tagfile documents, to
+# show they stay plain text.
+warn-broken-ref: false

@@ -333,7 +333,7 @@ def get_dynamic_run_configs(
                             "--generator=adoc",
                             f"--addons={os.path.join(options.source_dir, 'share', 'mrdocs', 'addons')}",
                             f"--libc-includes={os.path.join(options.source_dir, 'share', 'mrdocs', 'headers', 'libc-stubs')}",
-                            "--tagfile=reference.tag.xml",
+                            "--output-tagfile=reference.tag.xml",
                             "--multipage=true",
                             f"--concurrency={num_cores}",
                             "--log-level=debug",
