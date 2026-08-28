@@ -1,0 +1,17 @@
+[#outer-inner]
+= xref:outer.adoc[outer]::inner
+:relfileprefix: ../
+:mrdocs:
+
+== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:outer/inner/nested.adoc[`nested`] 
+| A page two directories down&period;
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

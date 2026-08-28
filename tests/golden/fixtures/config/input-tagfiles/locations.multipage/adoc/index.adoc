@@ -1,0 +1,48 @@
+[#index]
+= Global namespace
+:mrdocs:
+
+== Namespaces
+
+[cols="1"]
+|===
+| Name
+| xref:outer.adoc[`outer`] 
+|===
+
+
+== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:top.adoc[`top`] 
+| A page at the top of the output&period;
+|===
+
+
+== xref:outer.adoc[outer] namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| xref:outer/inner.adoc[`inner`] 
+|===
+
+
+== xref:outer/inner.adoc[outer::inner] namespace
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| xref:outer/inner/nested.adoc[`nested`] 
+| A page two directories down&period;
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

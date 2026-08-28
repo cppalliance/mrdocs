@@ -193,6 +193,71 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
     return relativePath;
 }
 
+// Whether a link target starts with a URL scheme, such as `https:`: a
+// colon that comes before any `/`, `?` or `#`.
+bool
+hasScheme(std::string_view href)
+{
+    std::size_t const colon = href.find(':');
+    return colon != std::string_view::npos &&
+        colon < href.find_first_of("/?#");
+}
+
+/*  A link target with the characters that would end it, in an HTML
+    attribute or in an AsciiDoc `link:` macro, percent-encoded, braces
+    included, which AsciiDoc reads as an attribute reference.
+*/
+std::string
+withDelimitersEncoded(std::string_view href)
+{
+    static constexpr std::string_view delimiters = " \"<>[]{}";
+    std::string result;
+    for (char const c: href)
+    {
+        if (delimiters.find(c) != std::string_view::npos)
+        {
+            result += std::format("%{:02X}", static_cast<unsigned char>(c));
+        }
+        else
+        {
+            result += c;
+        }
+    }
+    return result;
+}
+
+/** Makes a location read from a tagfile usable from the current page.
+
+    The location is taken as Doxygen takes it: a URL, or a path starting
+    with `/`, is used as written, while any other path is relative to the
+    output directory, and gets the prefix that climbs there from the
+    current page (`data.root.page.relfileprefix`). Characters that would
+    end the link in either output format are percent-encoded, since the
+    location comes from a tagfile MrDocs did not write.
+
+    @param href0 The location.
+    @param options Handlebars options containing context data.
+    @return The link target.
+*/
+dom::Value
+external_href_fn(dom::Value href0, dom::Value options)
+{
+    std::string_view const href =
+        href0.isString() ? href0.getString().get() : std::string_view();
+    std::string target;
+    if (!hasScheme(href) && !href.starts_with('/'))
+    {
+        dom::Value const prefix =
+            options.lookup("data.root.page.relfileprefix");
+        if (prefix.isString())
+        {
+            target = prefix.getString().get();
+        }
+    }
+    target += href;
+    return withDelimitersEncoded(target);
+}
+
 /** Registers partial templates from multiple directories.
 
     Iterates through each directory and loads all `.hbs` files as
@@ -215,6 +280,7 @@ registerPartials(handlebars::Handlebars& hbs, std::vector<std::string> const& di
     Registers the default set of helpers available in all templates:
     - `primary_location`: Returns the primary source location for a symbol
     - `relativize`: Creates relative URLs between paths
+    - `external_href`: Makes a location from a tagfile usable from the page
     - Constructor, string, Antora, logical, math, container, and type helpers
 
     These helpers are registered before user-defined helpers, allowing
@@ -262,6 +328,7 @@ registerDefaultHelpers(handlebars::Handlebars& hbs)
     handlebars::helpers::registerContainerHelpers(hbs);
     handlebars::helpers::registerTypeHelpers(hbs);
     hbs.registerHelper("relativize", dom::makeInvocable(relativize_fn));
+    hbs.registerHelper("external_href", dom::makeInvocable(external_href_fn));
 }
 
 /** Categorizes files in the helper directories by extension.
