@@ -433,9 +433,36 @@ private:
     Symbol*
     traverse(clang::IndirectFieldDecl const* D);
 
+    /*  Traverse a linkage specification (`extern "C" { ... }`).
+
+        A linkage spec is a transparent DeclContext with no Symbol of its own,
+        so we visit its children and let each attach to the enclosing scope.
+        This is the usual shape of a C library header (OpenSSL, zlib, ...);
+        without visiting them every wrapped declaration would be dropped.
+     */
+    Symbol*
+    traverse(clang::LinkageSpecDecl const* D);
+
+    /*  Traverse a C++20 export block (`export { ... }`).
+
+        Like a linkage spec, an export declaration is a transparent
+        DeclContext with no Symbol of its own, so we visit its children.
+     */
+    Symbol*
+    traverse(clang::ExportDecl const* D);
+
     // =================================================
     // AST Traversal Helpers
     // =================================================
+
+    /*  Traverse the children of a transparent DeclContext.
+
+        A linkage spec (`extern "C" { ... }`) or export block carries no
+        Symbol of its own, so its explicit children are visited directly and
+        attach to the enclosing scope.
+    */
+    void
+    traverseTransparentContext(clang::DeclContext const* DC);
 
     /*  Traverse the members of a declaration
 

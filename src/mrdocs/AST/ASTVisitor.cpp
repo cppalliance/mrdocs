@@ -337,6 +337,8 @@ traverse(DeclTy const* D)
             X(UnresolvedUsingValue);
             X(UnresolvedUsingTypename);
             X(Concept);
+            X(LinkageSpec);
+            X(Export);
 #undef X
         default:
             break;
@@ -431,6 +433,41 @@ ASTVisitor::
 traverse(clang::IndirectFieldDecl const* D)
 {
     return traverse(D->getAnonField());
+}
+
+Symbol*
+ASTVisitor::
+traverse(clang::LinkageSpecDecl const* D)
+{
+    // A linkage spec is transparent: it has no Symbol of its own, so the
+    // declarations it wraps (the usual shape of a C library header, e.g.
+    // `extern "C" { ... }` in OpenSSL) are visited directly. Without this they
+    // would be dropped and the corpus would collapse to the global namespace.
+    traverseTransparentContext(D);
+    return nullptr;
+}
+
+Symbol*
+ASTVisitor::
+traverse(clang::ExportDecl const* D)
+{
+    // A C++20 `export { ... }` block is likewise transparent.
+    traverseTransparentContext(D);
+    return nullptr;
+}
+
+void
+ASTVisitor::
+traverseTransparentContext(clang::DeclContext const* DC)
+{
+    for (clang::Decl* Child : DC->decls())
+    {
+        if (!Child->isImplicit() || isa<clang::IndirectFieldDecl>(Child))
+        {
+            ScopeExitRestore s(mode_);
+            traverse(Child);
+        }
+    }
 }
 
 template <
