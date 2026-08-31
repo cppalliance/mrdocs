@@ -1,0 +1,109 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#point[`point`] 
+| A point&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#reset[`reset`] 
+| Reset a point to the origin&period;
+|===
+
+
+[#point]
+== point
+
+A point&period;
+
+=== Synopsis
+
+Declared in `&lt;global&hyphen;index&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct point;
+----
+
+=== Data Members
+
+[cols="1"]
+|===
+| Name
+| link:#point-x[`x`] 
+| link:#point-y[`y`] 
+|===
+
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#reset[`reset`]
+| Reset a point to the origin&period;
+|===
+
+[#point-x]
+== link:#point[point]::x
+
+=== Synopsis
+
+Declared in `&lt;global&hyphen;index&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int x;
+----
+
+[#point-y]
+== link:#point[point]::y
+
+=== Synopsis
+
+Declared in `&lt;global&hyphen;index&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int y;
+----
+
+[#reset]
+== reset
+
+Reset a point to the origin&period;
+
+=== Synopsis
+
+Declared in `&lt;global&hyphen;index&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+reset(link:#point[point]* p);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *p*
+| A point&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
