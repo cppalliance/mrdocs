@@ -372,6 +372,13 @@ Corpus::build(
     // "Process file" task
     // ------------------------------------------
     auto const processFile = [&](std::string path) {
+        // max-errors: skip translation units that have not started once the
+        // error budget is full. In-flight TUs still finish; we cannot cancel
+        // Clang mid-parse safely.
+        if (context.shouldStopExtraction())
+        {
+            return;
+        }
         // Create an `ASTActionFactory` to create multiple
         // `ASTAction`s that extract the AST for each translation unit.
         // Each CompilerInstance is used only once.
@@ -472,7 +479,9 @@ Corpus::build(
     MRDOCS_CHECK(files, "Compilations database is empty");
     std::vector<Error> errors;
 
-    // Run the action on all files in the database
+    // Run the action on all files in the database. With max-errors set,
+    // processFile skips translation units that have not started once the
+    // warning budget is full; units already dispatched still finish.
     if (files.size() == 1)
     {
         try

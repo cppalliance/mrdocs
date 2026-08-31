@@ -458,6 +458,13 @@
       ],
       "title": "The minimum reporting level"
     },
+    "max-errors": {
+      "default": 0,
+      "description": "Caps how many documentation errors MrDocs reports, like a compiler's `-fmax-errors`. This only takes effect together with `warn-as-error`: without it, documentation problems are plain warnings and the whole report is always shown. `0` means unlimited (the default). Once the cap is reached MrDocs stops looking for more problems: it suppresses further diagnostics, prints a short note so you know the report is truncated, and stops dispatching translation units that have not started yet (translation units already in flight finish, so the final count may run a little past the cap). Use this with `warn-as-error` and the `warn-*` family to bring up docs iteratively: keep `warn-if-undocumented` (and later `warn-no-paramdoc`, \u2026) on, set `max-errors` to your fix-loop batch size (for example `40`), fix that batch, and repeat. Full CI validation should leave this at `0`.",
+      "minimum": 0,
+      "title": "Stop after this many documentation errors",
+      "type": "integer"
+    },
     "missing-include-prefixes": {
       "default": [],
       "description": "Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use \"llvm/\" to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the \"missing-include-shims\" option.",

@@ -3,3 +3,5 @@ warn-if-undocumented: true
 warn-if-doc-error: true
 warn-broken-ref: true
 warn-as-error: false
+# Optional bring-up cap (needs warn-as-error); leave at 0 (or omit) for full CI reports.
+# max-errors: 40

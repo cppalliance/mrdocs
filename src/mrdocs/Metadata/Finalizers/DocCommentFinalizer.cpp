@@ -1657,6 +1657,16 @@ DocCommentFinalizer::emitWarnings()
 
         report::log(level, out);
     }
+
+    if (warningLimitReached_ && config_.warnAsError && config_.maxErrors > 0)
+    {
+        report::log(
+            level,
+            std::format(
+                "error limit reached (max-errors={}); further diagnostics "
+                "suppressed. Rerun with --max-errors=0 for the full report.\n",
+                config_.maxErrors));
+    }
 }
 
 void
@@ -1692,6 +1702,11 @@ DocCommentFinalizer::warnUndocumented()
     };
     for (auto const& undocI: corpus_.undocumented_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         Symbol const* const I = corpus_.find(undocI.id);
         if (I)
         {
@@ -1731,6 +1746,11 @@ warnNoBrief()
     MRDOCS_CHECK_OR(config_.warnNoBrief);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         // Overload sets synthesize their page from members and never carry a
@@ -1781,6 +1801,11 @@ warnDocErrors()
     MRDOCS_CHECK_OR(config_.warnIfDocError);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         if (I->isFunction())
@@ -1891,6 +1916,11 @@ warnNoParamDocs()
     MRDOCS_CHECK_OR(config_.warnNoParamdoc);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
@@ -1982,6 +2012,11 @@ warnUnnamedParams()
     MRDOCS_CHECK_OR(config_.warnUnnamedParam);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);

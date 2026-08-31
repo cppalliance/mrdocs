@@ -123,14 +123,22 @@ struct UndocumentedSymbol final {
     SymbolKind kind;
     SourceInfo Loc;
 
+    /*  Whether the undocumented warning for this symbol is certain.
+
+        Finalization can still suppress the warning for some symbols.
+    */
+    bool certainToWarn;
+
     constexpr
     UndocumentedSymbol(
         SymbolID id_,
         std::string name_,
-        SymbolKind kind_) noexcept
+        SymbolKind kind_,
+        bool certainToWarn_) noexcept
         : id(id_)
         , name(std::move(name_))
         , kind(kind_)
+        , certainToWarn(certainToWarn_)
     {
     }
 };
