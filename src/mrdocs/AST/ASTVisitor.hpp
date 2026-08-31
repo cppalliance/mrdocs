@@ -451,6 +451,16 @@ private:
     Symbol*
     traverse(clang::ExportDecl const* D);
 
+    /*  Traverse a typedef declaration.
+
+        A `typedef struct { ... } Foo;` names an otherwise anonymous record.
+        The record is extracted under that name (see `extractName`), so the
+        alias is redundant and is skipped, leaving a single Record `Foo`.
+        A typedef of a named type is extracted as a regular alias.
+     */
+    Symbol*
+    traverse(clang::TypedefDecl const* D);
+
     // =================================================
     // AST Traversal Helpers
     // =================================================
