@@ -24,7 +24,10 @@
     {{~else if parent ~}}
         Unnamed {{or keyKind kind~}}
     {{~else ~}}
-        Global namespace
+        {{~! No name and no parent: the global namespace. With no nested
+             namespaces (a C library, or a C++ library that uses none) it reads
+             better as an index of everything than as a namespace. ~}}
+        {{~#if members.namespaces~}}Global namespace{{~else~}}Global index{{~/if~}}
     {{~/if~}}
     {{~#if template.primary~}}
         {{! Explicit or partial template (has a primary): render the template arguments ~}}
