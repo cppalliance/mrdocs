@@ -473,6 +473,22 @@ traverseTransparentContext(clang::DeclContext const* DC)
     }
 }
 
+Symbol*
+ASTVisitor::
+traverse(clang::TypedefDecl const* D)
+{
+    // `typedef struct { ... } Foo;` names an otherwise anonymous record. The
+    // record is extracted under that name (see extractName), so this alias is
+    // redundant: skip it to avoid a nameless record plus a duplicate alias.
+    // A typedef of a named type is extracted as a regular alias.
+    if (auto const* TT = D->getUnderlyingType()->getAs<clang::TagType>();
+        TT && TT->getDecl()->getTypedefNameForAnonDecl() == D)
+    {
+        return nullptr;
+    }
+    return traverse<TypedefSymbol>(D);
+}
+
 template <
     std::derived_from<Symbol> InfoTy,
     std::derived_from<clang::Decl> DeclTy>
@@ -2335,6 +2351,18 @@ extractName(DeclTy const* D)
     else if constexpr (std::derived_from<DeclTy, clang::UsingDirectiveDecl>)
     {
         return extractName(D->getNominatedNamespace());
+    }
+    else if constexpr (std::derived_from<DeclTy, clang::TagDecl>)
+    {
+        // A struct/union/enum made anonymous but named by a typedef
+        // (`typedef struct { ... } Foo;`) has no name of its own; the typedef
+        // gives it its name for linkage, so use that instead of leaving it
+        // unnamed (a public API symbol the user could not otherwise refer to).
+        if (auto const* TND = D->getTypedefNameForAnonDecl())
+        {
+            return extractName(TND);
+        }
+        return extractName(cast<clang::NamedDecl>(D));
     }
     else if constexpr (std::derived_from<DeclTy, clang::NamedDecl>)
     {
