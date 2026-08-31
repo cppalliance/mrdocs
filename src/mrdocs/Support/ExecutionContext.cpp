@@ -17,6 +17,7 @@
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <ranges>
 
 
@@ -86,6 +87,7 @@ report(
     // from undocumented that we can find in info_ with
     // documentation from other translation units.
     undocumented_.merge(undocumented);
+    std::size_t certainCount = 0;
     for (auto it = undocumented_.begin(); it != undocumented_.end();)
     {
         if (auto infoIt = info_.find(it->id);
@@ -96,8 +98,34 @@ report(
         }
         else
         {
+            if (it->certainToWarn)
+            {
+                ++certainCount;
+            }
             ++it;
         }
+    }
+
+    // max-errors > 0 (only with warn-as-error): once we have found that many
+    // undocumented symbols, stop looking. Signal the build loop to stop
+    // dispatching new translation units (in-flight ones still finish, so the
+    // merged set may run a little past the cap; that overshoot is fine).
+    // Only symbols certain to produce a warning count toward the budget;
+    // symbols that finalization may still fold or document are recorded but
+    // must not stop extraction, or the run could halt with nothing to report.
+    if (config_.warnAsError
+        && config_.maxErrors > 0
+        && certainCount >= config_.maxErrors
+        && !stopExtraction_.exchange(true, std::memory_order_relaxed))
+    {
+        // This only fires under warn-as-error, and reaching the budget means
+        // the run has at least max-errors documentation errors, so the
+        // message is itself an error: it marks the run as failed even if the
+        // individual diagnostics are pruned before they are emitted.
+        report::error(
+            "max-errors={}: found enough documentation problems; "
+            "translation units not yet started will be skipped",
+            config_.maxErrors);
     }
 }
 

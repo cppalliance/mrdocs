@@ -694,6 +694,14 @@
         "default": false
       },
       {
+        "name": "max-errors",
+        "brief": "Stop after this many documentation errors",
+        "details": "Caps how many documentation errors MrDocs reports, like a compiler's `-fmax-errors`. This only takes effect together with `warn-as-error`: without it, documentation problems are plain warnings and the whole report is always shown. `0` means unlimited (the default). Once the cap is reached MrDocs stops looking for more problems: it suppresses further diagnostics, prints a short note so you know the report is truncated, and stops dispatching translation units that have not started yet (translation units already in flight finish, so the final count may run a little past the cap). Use this with `warn-as-error` and the `warn-*` family to bring up docs iteratively: keep `warn-if-undocumented` (and later `warn-no-paramdoc`, …) on, set `max-errors` to your fix-loop batch size (for example `40`), fix that batch, and repeat. Full CI validation should leave this at `0`.",
+        "type": "unsigned",
+        "default": 0,
+        "min-value": 0
+      },
+      {
         "name": "error-on-empty-corpus",
         "brief": "Treat an empty corpus as an error",
         "details": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. A corpus counts as empty when no symbols are extracted; because the global namespace is always present in the model, a corpus that contains only the global namespace and no other declaration is also treated as empty. This usually means nothing was extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",

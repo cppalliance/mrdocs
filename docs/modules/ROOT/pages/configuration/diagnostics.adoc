@@ -14,12 +14,14 @@ The `warn-*` family treats common documentation problems as warnings, so a CI ru
 
 xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] turns every warning into a failure, the usual CI setup once a project is past the bring-up phase.
 
+For large third-party trees (LLVM-scale), turn categories on gradually and cap each fix-loop round with xref:configuration/reference.adoc#max-errors_option[`max-errors`], which works like a compiler's `-fmax-errors`. It only takes effect with `warn-as-error`.
+
 [source,yaml]
 ----
 include::example$configuration/diagnostics-lint.yml[]
 ----
 
-TIP: `warn-as-error` is also a useful local-development tool: turn it on with the `warn-if-undocumented` family and run MrDocs in a loop while you fill in the missing comments. Each run terminates at the first undocumented symbol, so you can knock them out one by one until the build goes green.
+TIP: Pair `warn-as-error` with `max-errors` (for example `40`) and the `warn-if-undocumented` family while you fill in comments. Each run fails fast with a small batch; knock that batch out, rerun, and repeat until the build goes green with `max-errors: 0`.
 
 xref:configuration/reference.adoc#warnings_option[`warnings`] is the master switch: set it to `false` to silence the entire family at once.
 

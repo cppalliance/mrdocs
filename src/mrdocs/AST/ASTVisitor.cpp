@@ -211,7 +211,10 @@ populateMacros()
         // macros are already dropped above when `extract-all` is off.)
         if (config_.warnIfUndocumented && !sym->doc)
         {
-            detail::UndocumentedSymbol undoc(id, name, SymbolKind::Macro);
+            // A macro is never part of a template specialization, so its
+            // warning cannot be folded away by finalization: certain to warn.
+            detail::UndocumentedSymbol undoc(
+                id, name, SymbolKind::Macro, /*certainToWarn=*/true);
             undoc.Loc = sym->Loc;
             undocumented_.insert(std::move(undoc));
         }
@@ -4148,7 +4151,15 @@ checkUndocumented(
     if (undocIt == undocumented_.end())
     {
         SymbolKind const kind = InfoTy::kind_id;
-        auto [newIt, inserted] = undocumented_.insert(detail::UndocumentedSymbol{id, extractName(D), kind});
+        // Finalization may fold a template specialization (and its members)
+        // onto the primary and suppress the warning, so only symbols outside
+        // specializations are certain to warn. Uncertain symbols are still
+        // recorded and reported when the warning survives finalization, but
+        // they do not count toward the max-errors early-stop budget.
+        bool const certainToWarn = !isAnySpecialization(D);
+        auto [newIt, inserted] = undocumented_.insert(
+            detail::UndocumentedSymbol{
+                id, extractName(D), kind, certainToWarn});
         MRDOCS_ASSERT(inserted);
         undocIt = newIt;
     }

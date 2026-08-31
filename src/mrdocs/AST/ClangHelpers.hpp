@@ -751,6 +751,12 @@ isAllExplicitSpecialization(clang::Decl const* D)
     return !isAnyImplicitSpecialization(D);
 }
 
+// Check if any component of D is a template specialization of any kind
+// (implicit or explicit, class, variable, or function).
+MRDOCS_DECL
+bool
+isAnySpecialization(clang::Decl const* D);
+
 MRDOCS_DECL
 bool
 isVirtualMember(clang::Decl const* D);

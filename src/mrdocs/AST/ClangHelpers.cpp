@@ -483,6 +483,30 @@ isAnyImplicitSpecialization(clang::Decl const* D)
 }
 
 bool
+isAnySpecialization(clang::Decl const* D)
+{
+    if (!D)
+    {
+        return false;
+    }
+    if (isa<clang::ClassTemplateSpecializationDecl>(D))
+    {
+        return true;
+    }
+    if (isa<clang::VarTemplateSpecializationDecl>(D))
+    {
+        return true;
+    }
+    if (auto const* FD = dyn_cast<clang::FunctionDecl>(D);
+        FD && FD->isFunctionTemplateSpecialization())
+    {
+        return true;
+    }
+    auto const* P = getParent(D);
+    return isAnySpecialization(P);
+}
+
+bool
 isVirtualMember(clang::Decl const* D)
 {
     if (auto const* MD = dyn_cast<clang::CXXMethodDecl>(D))

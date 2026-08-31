@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>2B5ih9A7ZSVfS9yS5nXR1HvQGJwG tiHbnYV7NwngPHJof19snn8mHBp cXQ8dUVkKdFLhXuA2if4B1E7DUY 3Y9HEH25nUswGu6Cq4zYrqL7hehw</functions>
+  </members>
+</namespace>
+<function>
+  <name>documented</name>
+  <anchor>documented</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>max-errors.cpp</shortPath>
+        <sourcePath>max-errors.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2B5ih9A7ZSVfS9yS5nXR1HvQGJwG</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documented function.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>undocumented_a</name>
+  <anchor>undocumented_a</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>max-errors.cpp</shortPath>
+        <sourcePath>max-errors.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>tiHbnYV7NwngPHJof19snn8mHBp</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>undocumented_b</name>
+  <anchor>undocumented_b</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>max-errors.cpp</shortPath>
+        <sourcePath>max-errors.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>cXQ8dUVkKdFLhXuA2if4B1E7DUY</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>undocumented_c</name>
+  <anchor>undocumented_c</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>max-errors.cpp</shortPath>
+        <sourcePath>max-errors.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3Y9HEH25nUswGu6Cq4zYrqL7hehw</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

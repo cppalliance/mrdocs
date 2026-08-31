@@ -89,6 +89,20 @@ class DocCommentFinalizer {
      */
     std::map<Location, std::vector<std::string>, WarningLocationCompare> warnings_;
 
+    // Total warning messages recorded (respects max-errors under warn-as-error).
+    std::size_t warningCount_ = 0;
+    bool warningLimitReached_ = false;
+
+    // The max-errors cap only applies when warnings are errors; otherwise the
+    // full report is always shown.
+    bool
+    warningBudgetRemaining() const noexcept
+    {
+        return !config_.warnAsError
+            || config_.maxErrors == 0
+            || warningCount_ < config_.maxErrors;
+    }
+
 public:
     DocCommentFinalizer(Corpus& corpus, Config const& config)
         : corpus_(corpus)
@@ -288,9 +302,21 @@ private:
         Args&&... args)
     {
         MRDOCS_CHECK_OR(config_.warnings);
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            return;
+        }
         std::string const str =
             std::vformat(format.value, std::make_format_args(args...));
         warnings_[loc].push_back(str);
+        ++warningCount_;
+        if (config_.warnAsError
+            && config_.maxErrors > 0
+            && warningCount_ >= config_.maxErrors)
+        {
+            warningLimitReached_ = true;
+        }
     }
 
     template<class... Args>

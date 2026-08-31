@@ -1,0 +1,3 @@
+warn-if-undocumented: true
+warn-as-error: false
+max-errors: 2
