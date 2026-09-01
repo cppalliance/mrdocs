@@ -115,8 +115,8 @@ struct ScriptGeneratorTest
         writeFile(scriptPath, src);
 
         Expected<LoadedExtensions> loaded = isLua
-            ? loadLuaExtensions(scriptPath)
-            : loadJsExtensions(scriptPath);
+            ? loadLuaExtensions(scriptPath, *config_)
+            : loadJsExtensions(scriptPath, *config_);
         if (!loaded)
         {
             return Unexpected(loaded.error());
@@ -378,7 +378,8 @@ end)
         // findable by its id.
         std::string const script = files::appendPath(td.path(), "gen.lua");
         writeFile(script, "mrdocs.register_generator(\"my-gen\", function(ctx) end)\n");
-        Expected<LoadedExtensions> loaded = loadLuaExtensions(script);
+        Config const config;
+        Expected<LoadedExtensions> loaded = loadLuaExtensions(script, config);
         BOOST_TEST(loaded.has_value());
         if (loaded)
         {
@@ -398,7 +399,8 @@ end)
         // The JavaScript counterpart.
         std::string const script = files::appendPath(td.path(), "gen.js");
         writeFile(script, "mrdocs.register_generator(\"my-gen\", function(ctx) {});\n");
-        Expected<LoadedExtensions> loaded = loadJsExtensions(script);
+        Config const config;
+        Expected<LoadedExtensions> loaded = loadJsExtensions(script, config);
         BOOST_TEST(loaded.has_value());
         if (loaded)
         {
@@ -419,7 +421,8 @@ end)
         // generators or transforms.
         std::string const script = files::appendPath(td.path(), "gen.lua");
         writeFile(script, "local unused = 1\n");
-        Expected<LoadedExtensions> loaded = loadLuaExtensions(script);
+        Config const config;
+        Expected<LoadedExtensions> loaded = loadLuaExtensions(script, config);
         BOOST_TEST(loaded.has_value());
         if (loaded)
         {
