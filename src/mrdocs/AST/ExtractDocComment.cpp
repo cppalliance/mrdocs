@@ -1079,7 +1079,7 @@ class DocCommentVisitor
             }
             return Unexpected(Error(
                 std::format(
-                    "warning: HTML <{}> tag has no {} attribute",
+                    "HTML <{}> tag has no {} attribute",
                     C->getTagName().str(),
                     name.str())));
         };
@@ -1109,7 +1109,15 @@ class DocCommentVisitor
             auto r = getAttr("href");
             if (!r)
             {
-                report::error(r.error().message());
+                // An <a> without href (an anchor, or malformed markup) is a
+                // problem in the user's doc comment, not in Mr.Docs: warn
+                // with the location and skip the tag instead of failing the
+                // whole run with an internal-error banner.
+                report::warn(
+                    "{} at {} ({})",
+                    r.error().message(),
+                    filename,
+                    loc.getLine());
                 return;
             }
             emplaceInline<doc::LinkInline>(
