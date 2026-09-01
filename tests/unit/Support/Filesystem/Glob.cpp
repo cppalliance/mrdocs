@@ -158,6 +158,29 @@ struct Glob_test
                 BOOST_TEST(glob.match("a/b/c"));
             }
 
+            // "**" followed by another glob: matching may need to hand a
+            // component back to the "**" after a later single "*" hits a
+            // delimiter, which requires backtracking through both stars.
+            {
+                auto globExp = PathGlobPattern::create("a/**/*_x.h");
+                BOOST_TEST(globExp);
+                PathGlobPattern const& glob = *globExp;
+                BOOST_TEST(glob.match("a/b/c_x.h"));
+                BOOST_TEST(glob.match("a/b/c/d_x.h"));
+                BOOST_TEST_NOT(glob.match("a/b_x.h/c"));
+                BOOST_TEST_NOT(glob.match("b/c_x.h"));
+            }
+            {
+                auto globExp = PathGlobPattern::create("**/*.h");
+                BOOST_TEST(globExp);
+                PathGlobPattern const& glob = *globExp;
+                BOOST_TEST(glob.match("a/b.h"));
+                BOOST_TEST(glob.match("a/b/c.h"));
+                BOOST_TEST_NOT(glob.match("a/b.hpp"));
+                // The "/" after "**" is literal, so at least one directory
+                // level is required (unlike gitignore's zero-or-more "**/").
+                BOOST_TEST_NOT(glob.match("a.h"));
+            }
         }
 
         // single "?"
