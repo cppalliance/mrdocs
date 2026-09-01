@@ -12,6 +12,7 @@
 #ifndef MRDOCS_API_SUPPORT_ERROR_ASSERT_HPP
 #define MRDOCS_API_SUPPORT_ERROR_ASSERT_HPP
 
+#include <mrdocs/Support/Export.hpp>
 #include <cstdint>
 
 /** Core MrDocs support utilities.
@@ -42,6 +43,7 @@ namespace mrdocs {
         @param file Source file where the assertion triggered.
         @param line Line within the source file.
     */
+    MRDOCS_DECL
     void
     assert_failed(
         char const* msg,

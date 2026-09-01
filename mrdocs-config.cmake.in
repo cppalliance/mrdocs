@@ -17,6 +17,9 @@ set(MRDOCS_BUILT_BUNDLED "@MRDOCS_DO_BUNDLE_DEPENDENCIES@")
 set(MRDOCS_BUILT_REEXPORT_DEPENDENCIES "@MRDOCS_DO_REEXPORT_DEPENDENCIES@")
 set(MRDOCS_BUILT_CXX_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@")
 set(MRDOCS_BUILT_CXX_COMPILER_VERSION "@CMAKE_CXX_COMPILER_VERSION@")
+# Whether this installation can have plugins at all: a statically linked
+# MrDocs can neither produce a shared module nor load one.
+set(MRDOCS_BUILT_PLUGIN_MODULES "@MRDOCS_BUILD_PLUGIN_MODULES@")
 
 # Installation paths, relocated relative to this file by @PACKAGE_INIT@.
 set_and_check(MRDOCS_INCLUDE_DIR  "@PACKAGE_INCLUDE_INSTALL_DIR@")   # e.g. "include"

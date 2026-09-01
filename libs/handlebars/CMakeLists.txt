@@ -30,6 +30,7 @@ target_link_libraries(mrdocs-handlebars PUBLIC mrdocs::dom mrdocs::polyfill)
 # MRDOCS_HANDLEBARS_DECL); it just needs the link mode so that macro expands the
 # same way (static vs shared) as mrdocs-core, which links this library.
 target_compile_definitions(mrdocs-handlebars PUBLIC ${MRDOCS_LINK_MODE_DEFINITION})
+target_compile_definitions(mrdocs-handlebars PRIVATE -DMRDOCS_TOOL)
 
 # mrdocs-core links this PUBLIC, so it must be part of the same export set.
 if (MRDOCS_INSTALL)

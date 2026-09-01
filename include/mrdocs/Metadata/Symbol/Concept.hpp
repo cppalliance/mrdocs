@@ -47,6 +47,7 @@ struct ConceptSymbol final
 
     /** Compare concept symbols by base info, template, and constraint.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(ConceptSymbol const& other) const;
 };

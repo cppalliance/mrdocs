@@ -39,3 +39,30 @@ foreach (script_driven IN ITEMS search-index json)
     set_property(TEST mrdocs-generator-script-driven-${script_driven} PROPERTY
         ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
 endforeach ()
+
+if (MRDOCS_BUILD_PLUGIN_MODULES)
+    add_library(mrdocs-stats-plugin-example MODULE native/stats/plugin.cpp)
+    target_link_libraries(mrdocs-stats-plugin-example PRIVATE mrdocs)
+    target_compile_features(mrdocs-stats-plugin-example PRIVATE cxx_std_23)
+
+    # MrDocs looks for plugins in the `plugins` subdirectory of an addon root,
+    # so the library is built into one. The generator expression keeps CMake
+    # from appending a per-configuration subdirectory, which would put the
+    # library somewhere the test cannot name.
+    set(MRDOCS_STATS_ADDONS "${CMAKE_CURRENT_BINARY_DIR}/native/stats/addons")
+    set_target_properties(mrdocs-stats-plugin-example PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "$<1:${MRDOCS_STATS_ADDONS}/plugins>")
+
+    # Running the example is the test: the configuration asks for the `stats`
+    # generator, which exists only if the plugin was found, loaded, and
+    # installed it.
+    add_test(NAME mrdocs-generator-example-native-stats
+        COMMAND
+            mrdocs
+            "--config=${CMAKE_CURRENT_SOURCE_DIR}/native/stats/mrdocs.yml"
+            "--output=${CMAKE_CURRENT_BINARY_DIR}/native/stats/reference-output"
+            ${MRDOCS_BUILTIN_DIR_ARGS}
+            "--addons-supplemental=${MRDOCS_STATS_ADDONS}"
+            --log-level=warn
+    )
+endif ()
