@@ -14,6 +14,7 @@
 #include "Support/ExecuteAndWaitWithLogging.hpp"
 #include <mrdocs/Support/Error/Error.hpp>
 #include <llvm/Support/Program.h>
+#include <format>
 
 
 namespace mrdocs {
@@ -83,6 +84,93 @@ parseIncludePaths(std::string const& compilerOutput)
 
 namespace {
 
+// Run the compiler with `-print-file-name=<name>` and return its answer, or
+// nothing when the compiler cannot be run. The compiler prints the argument
+// back verbatim when it has no such file.
+Optional<std::string>
+printFileName(llvm::StringRef compilerPath, llvm::StringRef name)
+{
+    llvm::SmallString<128> outputPath;
+    if (llvm::sys::fs::createTemporaryFile("compiler-file-name", "txt", outputPath))
+    {
+        return std::nullopt;
+    }
+    std::string const arg = std::format("-print-file-name={}", std::string_view(name));
+    std::optional<llvm::StringRef> const redirects[] =
+        {llvm::StringRef(), outputPath.str(), llvm::StringRef()};
+    std::vector<llvm::StringRef> const args = {compilerPath, arg};
+    llvm::ArrayRef<llvm::StringRef> emptyEnv;
+    int const result = ExecuteAndWaitWithLogging(compilerPath, args, emptyEnv, redirects);
+    if (result != 0)
+    {
+        llvm::sys::fs::remove(outputPath);
+        return std::nullopt;
+    }
+    auto bufferOrError = llvm::MemoryBuffer::getFile(outputPath);
+    llvm::sys::fs::remove(outputPath);
+    if (!bufferOrError)
+    {
+        return std::nullopt;
+    }
+    std::string answer = bufferOrError.get()->getBuffer().trim().str();
+    return answer;
+}
+
+// Remove GCC's private builtin include directories from a probed search list.
+//
+// GCC's lib/gcc/<triple>/<version>/include (and include-fixed) hold GCC's own
+// intrinsics headers (xmmintrin.h and friends), which redefine functions
+// MrDocs' Clang treats as builtins, so extraction fails with "definition of
+// builtin function" on any code that touches SIMD. Clang supplies those
+// headers from its resource directory, and a real clang driver never puts
+// GCC's private directory on the search path.
+//
+// The directories are identified by asking the same compiler for them with
+// `-print-file-name=include`, so only the exact directories GCC names are
+// removed; user paths that merely look similar are never touched. The whole
+// step only applies when the probed compiler is GCC (its verbose output
+// carries a "gcc version" line); a Clang's resource directory is kept, since
+// on macOS the SDK's include_next chains depend on it.
+void
+removeGccBuiltinIncludeDirs(
+    llvm::StringRef compilerPath,
+    std::string const& verboseOutput,
+    std::vector<std::string>& includePaths)
+{
+    if (verboseOutput.find("gcc version") == std::string::npos)
+    {
+        return;
+    }
+    // Compare resolved paths: the two GCC outputs can spell the same
+    // directory differently (one with bin/../lib segments, one canonical).
+    auto resolved = [](llvm::StringRef p) -> std::string {
+        llvm::SmallString<256> out;
+        if (llvm::sys::fs::real_path(p, out))
+        {
+            return p.str();
+        }
+        return std::string(out);
+    };
+    for (llvm::StringRef const name: {"include", "include-fixed"})
+    {
+        auto answer = printFileName(compilerPath, name);
+        // The compiler echoes the bare name back when it has no such
+        // directory; only an absolute answer identifies a real one.
+        if (!answer || *answer == name)
+        {
+            continue;
+        }
+        std::string const target = resolved(*answer);
+        std::erase_if(includePaths, [&](std::string const& p) {
+            return resolved(p) == target;
+        });
+    }
+}
+
+} // (anon)
+
+namespace {
+
 // Try to get include paths from a compiler found by name in PATH.
 // Returns the include paths if successful, empty vector otherwise.
 std::vector<std::string>
@@ -98,7 +186,9 @@ tryCompilerByName(llvm::StringRef name)
     {
         return {};
     }
-    return parseIncludePaths(*output);
+    auto includePaths = parseIncludePaths(*output);
+    removeGccBuiltinIncludeDirs(*found, *output, includePaths);
+    return includePaths;
 }
 
 } // anonymous namespace
@@ -128,6 +218,8 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
             if (compilerOutput)
             {
                 auto includePaths = parseIncludePaths(*compilerOutput);
+                removeGccBuiltinIncludeDirs(
+                    compilerPath, *compilerOutput, includePaths);
                 res.emplace(compilerPath, std::move(includePaths));
                 continue;
             }
