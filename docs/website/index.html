@@ -28,7 +28,7 @@
          crossorigin is required -- fonts are always fetched in CORS mode. -->
     <link rel="preload" href="assets/fonts/bangers-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/special-elite-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1787703717446">
     <!-- MathJax typesets the \(...\) and \[...\] delimiters that the embedded
          MrDocs panels emit for stem/latexmath math. -->
     <script>
@@ -126,7 +126,7 @@
                 <div class="header-content">
                     <p class="row-label hero-eyebrow">C++ Documentation Generator</p>
                     <h1><span class="title-line">Full-fidelity</span> <span class="title-line title-line--alt">C++ docs</span> <span class="title-line title-line--alt">from code.</span></h1>
-                    <p>Reads your code and comments to produce precise, publish-ready reference docs. Native C++ understanding &mdash; zero workarounds.</p>
+                    <p>Reads your code and comments to produce precise, publish-ready reference docs. Native C++ understanding — zero workarounds.</p>
                     <div class="header-cta">
                         <a href="docs/mrdocs/install.html" class="primary">Download</a>
                         <a href="docs/" class="contrast outline">Get started</a>
@@ -178,7 +178,8 @@
                         <div class="feature-card-inner">
                             <span class="feature-icon feature-icon--github" aria-hidden="true"></span>
                             <h4>Customizable</h4>
-                            <p>Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.</p>
+                            <p>Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.
+</p>
                         </div>
                     </article>
                 </div>
@@ -192,11 +193,19 @@
             </hgroup>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Attributes &amp; Specifiers</p>
-                    <p class="panel-row-subtitle">Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).</p>
+                    <p class="panel-row-subtitle">Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, noexcept).</p>
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">terminate.cpp</span></div>
-                            <pre class="code-panel-body"><code><span class="hljs-doc-comment">/** Exit the program.
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9</span><code><span class="hljs-doc-comment">/** Exit the program.
 
     The program will end immediately.
 
@@ -248,7 +257,19 @@
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">distance.cpp</span></div>
-                            <pre class="code-panel-body"><code><span class="hljs-doc-comment">/** Return the distance between two points
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</span><code><span class="hljs-doc-comment">/** Return the distance between two points
 
     This function returns the distance between two points
     according to the Euclidean distance formula.
@@ -312,7 +333,17 @@
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">is_prime.cpp</span></div>
-                            <pre class="code-panel-body"><code><span class="hljs-doc-comment">/** Return true if a number is prime.
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11</span><code><span class="hljs-doc-comment">/** Return true if a number is prime.
 
     <span class="hljs-doctag">@par</span> Complexity
 
@@ -367,7 +398,21 @@
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">sqrt.cpp</span></div>
-                            <pre class="code-panel-body"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</span><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
 
 <span class="hljs-doc-comment">/** Computes the integer square root \f$\lfloor\sqrt{value}\rfloor\f$.
 
@@ -389,7 +434,7 @@
 <div class="header">
 <h2 id="sqrt">sqrt</h2>
 <div class="brief">
-<p>Computes the integer square root \(\lfloor\sqrt{value}\rfloor\).</p></div><!-- /brief -->
+<p>Computes the integer square root</p></div><!-- /brief -->
 </div><!-- /header -->
 <div class="synopsis">
 <h3>Synopsis</h3>
@@ -401,7 +446,10 @@ T
 </div><!-- /synopsis -->
 <div class="description">
 <h3>Description</h3>
-<p>This function calculates the square root of a given integral value using bit manipulation, in \(O(\log value)\) time.</p>
+<pre><code class="language-cpp">
+\lfloor\sqrt{value}\rfloor
+</code></pre><p>.</p>
+<p>This function calculates the square root of a given integral value using bit manipulation, in  time.</p>
 </div><!-- /description -->
 <div class="exceptions">
 <h3>Exceptions</h3>
@@ -451,7 +499,19 @@ T
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">function_object.cpp</span></div>
-                            <pre class="code-panel-body"><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span>
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</span><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span>
 {</span>
     <span class="hljs-doc-comment">/** Compute the absolute value.
 

@@ -208,11 +208,11 @@
             {{#each panels}}
                 <div class="snippet-documentation-panel">
                     {{#if label}}<p class="row-label">{{ label }}</p>{{/if}}
-                    <p class="panel-row-subtitle">{{ description }}</p>
+                    <p class="panel-row-subtitle">{{{ description }}}</p>
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">{{ source }}</span></div>
-                            <pre class="code-panel-body"><code>{{{ snippet }}}</code></pre>
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">{{ lineNumbers }}</span><code>{{{ snippet }}}</code></pre>
                         </div>
                         <div class="documentation-panel">
                             {{{ documentation }}}

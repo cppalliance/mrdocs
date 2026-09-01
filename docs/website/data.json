@@ -1,6 +1,6 @@
 {
   "title": "Mr.Docs",
-  "description": "Reads your code and comments to produce precise, publish-ready reference docs. Native C++ understanding \u2014 zero workarounds.",
+  "description": "Reads your code and comments to produce precise, publish-ready reference docs. Native C++ understanding — zero workarounds.",
   "page": {
     "title": "Mr.Docs",
     "description": "Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs."
@@ -93,7 +93,7 @@
   "panels": [
     {
       "label": "Attributes & Specifiers",
-      "description": "Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).",
+      "description": "Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, noexcept).",
       "source": "terminate.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270"

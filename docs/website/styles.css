@@ -5530,3 +5530,184 @@ header {
         display: none;
     }
 }
+
+/* =====================================================================
+ * PANELS SECTION — row detail to Figma spec (2026-08-25).
+ * Measured off the "Attributes & Specifiers" / terminate.cpp row. The
+ * first pass got the frame right (638+638 halves, 2px ring, split
+ * heading colours); this pass is the interior: the line-number gutter,
+ * the 46/12px rhythm, the body type scale, and the NOTE admonition,
+ * which was still on the old cyan treatment.
+ * ===================================================================== */
+
+/* ---- Row rhythm ---------------------------------------------------- *
+ * Figma: Container gap 54px between the header and the box, Header gap
+ * 12px between the pill and the subtitle. */
+.snippet-documentation-panel .row-label {
+    margin-bottom: 0;
+}
+
+.snippet-documentation-panel > .panel-container {
+    margin-top: 0;
+}
+
+/* ---- Code half: line-number gutter ---------------------------------- *
+ * Figma models this as two flex children -- a 9px right-aligned number
+ * column and the code -- with a 30px gap, NOT as a number per line. That
+ * matters: the snippet is highlight.js output whose spans cross
+ * newlines, so a per-line wrapper (what the hero uses via counters)
+ * would need the span stack re-opened on every line. A separate column
+ * needs none of that, and matches the design's own structure. The two
+ * columns must share a line-height or the numbers drift. */
+.side-by-side > .snippet-panel > .code-panel-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    /* The code column scrolls, not the pre: scrolling the pre would carry
+       the number column off with it. */
+    overflow: hidden;
+}
+
+.code-linenums {
+    flex: none;
+    width: 9px;
+    text-align: right;
+    white-space: pre;
+    font-family: var(--ds-font-mono);
+    /* Must track .code-panel-body code exactly. */
+    font-size: 13px;
+    line-height: 2.2;
+    color: var(--ds-code-panel-linenum);
+}
+
+.side-by-side > .snippet-panel > .code-panel-body > code {
+    flex: 1 1 auto;
+    min-width: 0;
+    /* Long lines scroll rather than wrap. Wrapping would desynchronise the
+       gutter, which counts source lines, not visual rows. The golden
+       fixtures run wider than the design's idealised snippet. */
+    white-space: pre;
+    overflow-x: auto;
+}
+
+@media (min-width: 992px) {
+    .code-linenums {
+        font-size: 14px;
+    }
+}
+
+/* The hero panel's border and drop shadow are inherited here, where they
+   sit *inside* the bordered box and have nothing to cast onto. */
+.side-by-side > .snippet-panel > .code-panel-body,
+.side-by-side > .documentation-panel {
+    border: 0;
+    box-shadow: none;
+}
+
+/* ---- Documentation half: vertical rhythm --------------------------- *
+ * Figma: Documentation Details gap 46px between the header, Synopsis and
+ * Description blocks; 12px inside each block. The header itself has no
+ * gap -- its 69px is exactly the 43px title plus the 26px subtitle. */
+.side-by-side > .documentation-panel > .symbol {
+    display: flex;
+    flex-direction: column;
+    gap: 46px;
+}
+
+.side-by-side > .documentation-panel .synopsis,
+.side-by-side > .documentation-panel .description,
+.side-by-side > .documentation-panel .return-value {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.side-by-side > .documentation-panel .header {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.side-by-side > .documentation-panel .header h2,
+.side-by-side > .documentation-panel .brief p,
+.side-by-side > .documentation-panel .synopsis > p,
+.side-by-side > .documentation-panel .description > p,
+.side-by-side > .documentation-panel .synopsis > pre {
+    margin: 0;
+}
+
+/* ---- Documentation half: type scale -------------------------------- *
+ * Figma runs three sizes here, where the render had one: the brief at
+ * 16px, the synopsis/description body at 14px, and the note at 16px. */
+.side-by-side > .documentation-panel .brief p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.side-by-side > .documentation-panel .synopsis > p,
+.side-by-side > .documentation-panel .description > p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.side-by-side > .documentation-panel pre code {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ds-color-doc-surface);
+}
+
+/* ---- NOTE admonition ------------------------------------------------ *
+ * Was still on the old cyan fill with a 2px box on all four sides.
+ * Figma: a #1E78FF 10% tint with a single 2px blue rule down the left,
+ * 10/20px padding, and the title nudged -0.85deg -- the same hand-lettered
+ * tilt the section labels carry. */
+.side-by-side > .documentation-panel .admonition {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(30, 120, 255, 0.1);
+    border: 0;
+    border-left: var(--ds-border-width-bold) solid var(--ds-color-icon-box);
+    border-radius: 0;
+    padding: 10px 20px;
+    backdrop-filter: none;
+}
+
+.side-by-side > .documentation-panel .admonition h4 {
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    color: var(--ds-color-hero-text);
+    margin: 0;
+    transform: rotate(-0.85deg);
+    transform-origin: left center;
+}
+
+.side-by-side > .documentation-panel .admonition p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.side-by-side > .documentation-panel .admonition > div {
+    display: contents;
+}
+
+/* ---- Row subtitle: inline code -------------------------------------- *
+ * Figma sets the attribute names in pink monospace inside the sentence;
+ * they were rendering as plain body text. */
+.panel-row-subtitle code {
+    font-family: var(--ds-font-mono);
+    font-size: 0.85em;
+    color: var(--ds-code-panel-keyword);
+    background: none;
+    padding: 0;
+}
+
+@media (min-width: 992px) {
+    .panel-row-subtitle {
+        margin-block: 12px 54px;
+    }
+}

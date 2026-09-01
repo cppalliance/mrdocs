@@ -163,6 +163,14 @@ for (let panel of data.panels) {
     const snippetContents = fs.readFileSync(headerPath, 'utf8');
     panel.snippet = hljs.highlight('cpp', snippetContents).value;
 
+    // Figma renders the gutter as its own 9px column beside the code, not
+    // as a number per line. Emit it as plain text: the highlighted snippet
+    // has spans that cross newlines, so wrapping each line would mean
+    // re-opening the span stack, and a sibling column needs none of that.
+    // Both columns share a line-height in CSS so the numbers stay aligned.
+    const snippetLineCount = snippetContents.replace(/\n+$/, '').split('\n').length;
+    panel.lineNumbers = Array.from({length: snippetLineCount}, (_, i) => i + 1).join('\n');
+
     // Delete the temporary output file
     fs.unlinkSync(mrdocsOutput);
 
