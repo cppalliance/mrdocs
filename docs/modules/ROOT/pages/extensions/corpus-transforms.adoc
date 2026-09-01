@@ -145,6 +145,44 @@ Shape
     Triangle
 ----
 
+=== Emitting warnings
+
+A read-only transform can do more than compute totals: it can report problems it finds back to Mr.Docs. `mrdocs.report.warn(...)` and `mrdocs.report.error(...)` route through the same diagnostic system as the rest of the tool, so their messages are formatted, counted in the run's totals, and escalated by xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] just like a built-in warning. They take the same free-form arguments as `console.log`.
+
+A natural use is checking documentation against your project's conventions. The example below checks for a "low-quality brief" that reads like a stray comment or is too short. A complete, runnable example lives at `examples/extensions/project-conventions/`.
+
+.`project-conventions.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/project-conventions/project-conventions.cpp[]
+----
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/project_conventions.js`
+[source,javascript]
+----
+include::example$examples/extensions/project-conventions/addons/extensions/project_conventions.js[]
+----
+
+Lua::
++
+.`addons/extensions/project_conventions.lua`
+[source,lua]
+----
+include::example$examples/extensions/project-conventions/addons/extensions/project_conventions.lua[]
+----
+======
+
+Running either script against the fixture above warns:
+
+[source,text]
+----
+include::example$examples/extensions/project-conventions/warnings.txt[]
+----
+
 [[modifying-the-corpus]]
 == Modifying the corpus
 
