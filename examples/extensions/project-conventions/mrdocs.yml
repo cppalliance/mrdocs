@@ -1,0 +1,10 @@
+addons-supplemental:
+  - addons
+generator: adoc
+multipage: false
+warn-if-undocumented: false
+source-root: .
+input:
+  - .
+file-patterns:
+  - '*.cpp'

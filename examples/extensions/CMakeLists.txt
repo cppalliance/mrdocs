@@ -14,7 +14,7 @@
 # are illustrative and are not compared here. The working directory is the
 # example directory so a transform can resolve the external files it reads
 # (for example ghostwriter's external-docs/) relative to the run.
-foreach (transform_example IN ITEMS ghostwriter)
+foreach (transform_example IN ITEMS ghostwriter project-conventions)
     add_test(
         NAME mrdocs-extension-example-${transform_example}
         COMMAND bash run.sh
@@ -25,3 +25,29 @@ foreach (transform_example IN ITEMS ghostwriter)
     set_property(TEST mrdocs-extension-example-${transform_example} PROPERTY
         ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
 endforeach ()
+
+# Internal to MrDocs: keep warnings.txt (included by the Corpus Transforms page)
+# in step with the tool. project-conventions-report re-captures the extension's
+# warnings and fails if they drifted; mrdocs-project-conventions-report rewrites
+# the file.
+find_package(Python3 COMPONENTS Interpreter)
+if (Python3_FOUND)
+    add_test(
+        NAME project-conventions-report
+        COMMAND ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions/report.py
+                --check ${MRDOCS_BUILTIN_DIR_ARGS}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions)
+    set_tests_properties(project-conventions-report PROPERTIES
+        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+
+    add_custom_target(mrdocs-project-conventions-report
+        COMMAND ${CMAKE_COMMAND} -E env "MRDOCS=$<TARGET_FILE:mrdocs>"
+                ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions/report.py
+                ${MRDOCS_BUILTIN_DIR_ARGS}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions
+        COMMENT "Regenerating project-conventions/warnings.txt"
+        VERBATIM)
+    add_dependencies(mrdocs-project-conventions-report mrdocs)
+endif ()
