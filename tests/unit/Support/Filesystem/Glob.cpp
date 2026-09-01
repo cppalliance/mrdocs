@@ -157,6 +157,7 @@ struct Glob_test
                 BOOST_TEST(glob.match("abc"));
                 BOOST_TEST(glob.match("a/b/c"));
             }
+
         }
 
         // single "?"
