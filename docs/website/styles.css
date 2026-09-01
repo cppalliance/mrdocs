@@ -57,6 +57,7 @@
   --ds-blue-700: #0078c8; /* primary active            */
   --ds-blue-100: #bcebfb; /* demo / tint               */
   --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
+  --ds-blue-450: #1e78ff; /* Figma exact: CTA "Read the Docs" button fill */
   --ds-code-800: #272e3e; /* Figma exact: code panel body               */
 
   /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
@@ -265,6 +266,8 @@
   /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
   --ds-color-outline: var(--ds-ink-950); /* #0F172A */
   --ds-color-doc-surface: var(--ds-paper-50); /* #FDFAF5 */
+  --ds-color-cta-panel: var(--ds-blue-300);
+  --ds-color-footer-bg: var(--ds-white);
   --ds-color-icon-box: var(--ds-blue-300); /* #93C5FD */
   --ds-color-icon-ink: var(--ds-ink-950);
   --ds-color-card-text: #6e727b;
@@ -326,6 +329,8 @@
     /* Dark uses pure black for outlines, not #0F172A. */
     --ds-color-outline: #000;
     --ds-color-doc-surface: #171c26;
+    --ds-color-cta-panel: #3d8bff;
+    --ds-color-footer-bg: #171c26;
     --ds-color-icon-box: #3d8bff;
     --ds-color-icon-ink: var(--ds-white);
     --ds-color-card-text: #a9abb2;
@@ -380,6 +385,8 @@
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
   --ds-color-outline: #000;
   --ds-color-doc-surface: #171c26;
+  --ds-color-cta-panel: #3d8bff;
+  --ds-color-footer-bg: #171c26;
   --ds-color-icon-box: #3d8bff;
   --ds-color-icon-ink: var(--ds-white);
   --ds-color-card-text: #a9abb2;
@@ -4615,7 +4622,9 @@ header .header-content > p:not(.row-label) {
  * placed properly at the desktop breakpoint later. */
 header .container,
 .principles .container,
-#features .container {
+#features .container,
+.cta-panel-inner,
+.footer-bar {
     padding-left: 28px;
     padding-right: 28px;
 }
@@ -4728,7 +4737,9 @@ header .header-content > p:not(.row-label) {
        header itself, so they keep spanning the viewport. */
     header .container,
     .principles .container,
-    #features .container {
+    #features .container,
+    .cta-panel-inner,
+    .footer-bar {
         max-width: calc(1284px + 2 * 78px);
         padding-inline: 78px;
         margin-inline: auto;
@@ -5481,6 +5492,9 @@ header {
        decorative band up over the cards. */
     #features {
         padding-top: 237px;
+        /* Figma leaves 184px between the last panel row and the CTA panel;
+           the row itself contributes an 80px bottom margin. */
+        padding-bottom: 104px;
     }
 
     #features::after {
@@ -5709,5 +5723,329 @@ header {
 @media (min-width: 992px) {
     .panel-row-subtitle {
         margin-block: 12px 54px;
+    }
+}
+
+/* =====================================================================
+ * Final CTA + footer  (Figma "Frame 134" / "Frame 133")
+ * ---------------------------------------------------------------------
+ * Figma coordinates below are measured from the frame's OUTER edge, and
+ * the panel carries a 2px border, so every inset here is the Figma value
+ * minus 2 -- the same convention the hero and feature sections use for
+ * their 80px gutter (78px of container padding).
+ * ===================================================================== */
+
+.cta-section {
+    /* The panel is the section's own full-bleed surface, so the generic
+       `main > section` block padding would show as page colour above and
+       below the border. */
+    padding: 0;
+}
+
+.cta-panel {
+    position: relative;
+    /* Figma: #93C5FD light / #3D8BFF dark, 2px outline all round. */
+    background: var(--ds-color-cta-panel);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    /* The mascot bleeds past the top and right edges by design. */
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.cta-panel-inner {
+    position: relative;
+    /* Figma mobile frame: 867 tall. */
+    min-height: 867px;
+}
+
+/* ---- Mascot --------------------------------------------------------- *
+ * Mobile stacks it above the copy (Figma x=-35 y=9, 564x440); desktop
+ * moves it to the right of the copy and lets it bleed off both the top
+ * and the right edge. */
+.cta-mascot {
+    display: block;
+    position: absolute;
+    /* Figma x=-35 y=9 from the frame's outer edge. `top`/`left` resolve
+       against the container's padding box, which the panel's 2px border
+       has already pushed in by 2. */
+    top: 7px;
+    left: -37px;
+    width: 564px;
+    height: 440px;
+    /* Fixed width past the viewport edge: the art is a cutout on
+       transparency, so the overflow is empty pixels, not a visible crop. */
+    max-width: none;
+    pointer-events: none;
+}
+
+.cta-content {
+    /* Figma puts the mobile copy block's pill at y=470; its 2px stroke is
+       outside that box, so the painted pill starts at 468. */
+    padding-top: 466px;
+}
+
+.cta-label {
+    /* Figma's 24px gap, less the 2px of stroke it paints below the box.
+       NOTE: the shared .row-label renders 32px tall at every width, where
+       Figma scales it to 25px on mobile -- so everything below this sits
+       ~7px low at 402. That drift is in the shared component, not here. */
+    margin: 0 0 22px;
+}
+
+.cta-title {
+    margin: 0 0 24px;
+    font-family: var(--ds-font-display);
+    /* Figma mobile 62px, desktop 96px, both at 0.9 leading. Bangers sets
+       "Document Your" at 5.58x the font size, so 62px needs 346px where
+       the 402 frame leaves 342 -- it wraps to a third line. Track the
+       column width instead, which also keeps it to two lines below 402. */
+    font-size: min(62px, calc((100vw - 60px) / 5.6));
+    line-height: 0.9;
+    font-weight: var(--ds-weight-regular);
+    text-transform: uppercase;
+    /* Every character is overridden in Figma -- line 1 white, line 2 gold
+       -- so the element colour only ever shows on the line separator. */
+    color: var(--ds-white);
+    -webkit-text-stroke: 4px var(--ds-color-outline);
+    paint-order: stroke fill;
+    text-shadow: 4px 4px 0 var(--ds-color-outline);
+}
+
+.cta-title .title-line {
+    display: block;
+}
+
+.cta-title .title-line--alt {
+    color: var(--ds-color-title-alt);
+}
+
+.cta-description {
+    margin: 0 0 24px;
+    max-width: 317px;
+    font-family: var(--ds-font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ds-color-hero-text);
+}
+
+/* ---- Buttons -------------------------------------------------------- *
+ * Both are the same Figma symbol with only the fill, label colour and
+ * width overridden, so they share everything but their two colours. */
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-bottom: 76px;
+}
+
+.cta-btn {
+    display: inline-flex;
+    /* Figma overrides the shared button symbol's width on each instance
+       (205/160 desktop, 171/132 mobile). min-width rather than width so a
+       fallback font that sets wider text can still grow the button. */
+    min-width: 171px;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 var(--ds-btn-padding-x);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--ds-color-outline);
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-weight: var(--ds-weight-medium);
+    font-size: 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-btn:hover {
+    transform: var(--ds-lift);
+    box-shadow: 4px 4px 0 var(--ds-color-outline);
+}
+
+.cta-btn:active {
+    transform: var(--ds-press);
+    box-shadow: 1px 1px 0 var(--ds-color-outline);
+}
+
+.cta-btn:focus-visible {
+    outline: 2px solid var(--ds-color-outline);
+    outline-offset: 3px;
+}
+
+/* Pico colours links through its own --color property, which beats a
+   plain `color` declaration -- the same trap the hero buttons hit. */
+.cta-btn--download,
+.cta-btn--download:visited,
+.cta-btn--download:hover,
+.cta-btn--download:focus {
+    background: var(--ds-blue-300);
+    --color: var(--ds-black);
+    color: var(--ds-black);
+}
+
+.cta-btn--read {
+    min-width: 132px;
+}
+
+.cta-btn--read,
+.cta-btn--read:visited,
+.cta-btn--read:hover,
+.cta-btn--read:focus {
+    background: var(--ds-blue-450);
+    --color: var(--ds-paper-50);
+    color: var(--ds-paper-50);
+}
+
+/* ---- Footer bar ----------------------------------------------------- *
+ * Figma "Frame 133": a plain bar under the panel, white on light and
+ * #171C26 on dark -- not the page colour in either theme. */
+footer {
+    padding: 0;
+    background: var(--ds-color-footer-bg);
+}
+
+.footer-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Figma mobile: 24px above, 44px of content, 24px below = 92. */
+    gap: 17.5px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.footer-slogan {
+    margin: 0;
+    font-family: var(--ds-font-body);
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 1.4px;
+    color: var(--ds-color-hero-text);
+}
+
+.footer-bar .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* Set here so the li boxes are 13px tall too: sized on the anchor
+       alone, each li keeps the 16px body font and the bar comes out 3px
+       over Figma's 92. */
+    font-size: 13px;
+    line-height: 1;
+}
+
+.footer-bar .footer-link {
+    margin: 0;
+    padding: 0;
+}
+
+.footer-bar .footer-link::before {
+    /* Pico decorates the last footer list with bullets. */
+    content: none;
+}
+
+.footer-bar .footer-link > a,
+.footer-bar .footer-link > a:visited {
+    font-family: var(--ds-font-body);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    --color: var(--ds-color-hero-text);
+    color: var(--ds-color-hero-text);
+}
+
+.footer-bar .footer-link > a:hover,
+.footer-bar .footer-link > a:focus {
+    text-decoration: underline;
+}
+
+/* 992px is where the page as a whole switches to the 78px desktop
+   gutter, so the CTA has to change arrangement at the same width or the
+   mascot's offset would be measured against the wrong padding. */
+@media (min-width: 992px) {
+    .cta-panel-inner {
+        /* Figma desktop frame: 768 tall. */
+        min-height: 768px;
+    }
+
+    .cta-mascot {
+        /* Figma x=656 y=-31, 964x753, measured from the frame's outer
+           edge; the container's padding box starts 2px inside it. */
+        top: -33px;
+        left: 654px;
+        width: 964px;
+        height: 753px;
+    }
+
+    .cta-content {
+        /* Figma puts the pill's box at y=180, but its 2px stroke is
+           OUTSIDE that box, so the painted pill starts at 178 -- and our
+           border-box pill has to start there to line up. */
+        padding-top: 176px;
+        /* The copy column is 560 wide and must not run under the mascot. */
+        max-width: 560px;
+    }
+
+    .cta-title,
+    .cta-description {
+        margin-bottom: 32px;
+    }
+
+    /* Same 32px gap, less the 2px of stroke Figma paints below the box. */
+    .cta-label {
+        margin-bottom: 30px;
+    }
+
+    .cta-title {
+        font-size: 96px;
+    }
+
+    .cta-description {
+        max-width: 423px;
+        font-size: 20px;
+    }
+
+    .cta-buttons {
+        gap: 32px;
+        padding-bottom: 180px;
+    }
+
+    .cta-btn {
+        height: 48px;
+        min-width: 205px;
+    }
+
+    .cta-btn--read {
+        min-width: 160px;
+    }
+
+    /* Figma desktop footer: 78 tall, one row, slogan left / links right.
+       Frame 133 has no stroke, so its gutter is the full 80px -- unlike
+       every bordered section, where 80 minus the border gives 78. */
+    .footer-bar {
+        padding-inline: 80px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+
+    .footer-bar .footer-links {
+        gap: 32px;
+    }
+
+    .footer-slogan,
+    .footer-bar .footer-links {
+        font-size: 14px;
     }
 }

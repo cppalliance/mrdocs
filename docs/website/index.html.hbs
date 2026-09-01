@@ -222,22 +222,31 @@
             {{/each}}
         </div>
     </section>
-    <section id="star" data-theme="light">
-        <div class="container">
-            <p>Like what you see? Star us on GitHub:
-                <iframe src="https://ghbtns.com/github-btn.html?user=cppalliance&amp;repo=mrdocs&amp;type=star&amp;count=true&amp;size=large"
-                        frameborder="0" scrolling="0" width="160" height="30" title="GitHub"></iframe>
-                </p>
+    <section id="get-started" class="cta-section">
+        <div class="cta-panel">
+            <div class="container cta-panel-inner">
+                <img class="cta-mascot" src="assets/mrdocs-cta.webp" alt=""
+                     width="1928" height="1506" loading="lazy" decoding="async">
+                <div class="cta-content">
+                    <p class="row-label cta-label">Action Time</p>
+                    <h2 class="cta-title"><span class="title-line">Document Your</span> <span class="title-line title-line--alt">C++&nbsp;Properly!</span></h2>
+                    <p class="cta-description">Install Mr.Docs and generate your first reference site in minutes. No excuses.</p>
+                    <div class="cta-buttons">
+                        <a href="docs/mrdocs/install.html" class="cta-btn cta-btn--download">Download Mr.Docs</a>
+                        <a href="docs/" class="cta-btn cta-btn--read">Read the Docs</a>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
     </main>
     <footer>
-        <div class="container">
+        <div class="container footer-bar">
+            <p class="footer-slogan">Mr.Docs &mdash; C++ Documentation Generator</p>
             <ul class="footer-links">
                 {{#each navbar}}
                 <li class="footer-link"><a href="{{ href }}">{{ title }}</a></li>
                 {{/each}}
-                <li class="footer-link"><a href="https://github.com/cppalliance/mrdocs">GitHub</a></li>
             </ul>
         </div>
     </footer>
