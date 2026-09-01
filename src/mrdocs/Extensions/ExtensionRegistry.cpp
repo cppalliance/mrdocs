@@ -31,15 +31,15 @@ ExtensionRegistry& ExtensionRegistry::operator=(ExtensionRegistry&&) noexcept = 
 namespace {
 
 Expected<LoadedExtensions>
-loadExtensionsFromScript(std::string const& scriptPath)
+loadExtensionsFromScript(std::string const& scriptPath, Config const& config)
 {
     if (scriptPath.ends_with(".lua"))
     {
-        return loadLuaExtensions(scriptPath);
+        return loadLuaExtensions(scriptPath, config);
     }
     if (scriptPath.ends_with(".js"))
     {
-        return loadJsExtensions(scriptPath);
+        return loadJsExtensions(scriptPath, config);
     }
     // collectExtensionScripts only emits .lua / .js paths, so reaching
     // here would mean an internal mismatch.
@@ -58,7 +58,8 @@ ExtensionRegistry::load(Config const& config)
     ExtensionRegistry registry;
     for (std::string const& path : scripts)
     {
-        MRDOCS_TRY(LoadedExtensions loaded, loadExtensionsFromScript(path));
+        MRDOCS_TRY(LoadedExtensions loaded,
+            loadExtensionsFromScript(path, config));
         registry.scripts_.push_back(
             Script{std::move(loaded.vm), std::move(loaded.transforms)});
         for (std::unique_ptr<Generator>& g : loaded.generators)

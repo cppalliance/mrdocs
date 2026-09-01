@@ -10,6 +10,7 @@
 //
 
 #include "LuaBinding.hpp"
+#include <mrdocs/Config.hpp>
 #include <mrdocs/Generators/script/ScriptGenerator.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Engines/Lua.hpp>
@@ -100,11 +101,57 @@ luaRegisterGenerator(lua_State* L)
     return result;
 }
 
+// Join every call argument into one message (each converted with the same
+// rules as `tostring`), so `mrdocs.warn`/`mrdocs.error` accept free-form
+// argument lists.
+std::string
+luaJoinArgs(lua_State* L)
+{
+    std::string msg;
+    int const n = lua_gettop(L);
+    for (int i = 1; i <= n; ++i)
+    {
+        if (i > 1)
+        {
+            msg += ' ';
+        }
+        std::size_t len = 0;
+        char const* data = luaL_tolstring(L, i, &len);
+        msg.append(data, len);
+        lua_pop(L, 1);
+    }
+    return msg;
+}
+
+// `mrdocs.report.warn(...)` / `mrdocs.report.error(...)`: report a diagnostic
+// through the host's report system so it is formatted, counted, and subject to
+// warn-as-error, rather than merely printed to the console. `warn` carries the
+// run's `warn-as-error` flag as its single upvalue, so it emits at error level
+// when the setting is on, matching how the rest of Mr.Docs escalates its own
+// warnings.
+int
+luaWarn(lua_State* L)
+{
+    bool const warnAsError = lua_toboolean(L, lua_upvalueindex(1)) != 0;
+    report::log(
+        warnAsError ? report::Level::error : report::Level::warn,
+        "{}", luaJoinArgs(L));
+    return 0;
+}
+
+int
+luaError(lua_State* L)
+{
+    report::error("{}", luaJoinArgs(L));
+    return 0;
+}
+
 // Install the `mrdocs` global carrying the `register_transform` and
 // `register_generator` entry points before the chunk runs. The shared
 // registrations pointer is carried as each closure's single upvalue.
 void
-registerLuaExtensionApi(lua::Context& ctx, LuaRegistrations& regs)
+registerLuaExtensionApi(
+    lua::Context& ctx, LuaRegistrations& regs, bool warnAsError)
 {
     regs.ctx = &ctx;
     lua_State* L = static_cast<lua_State*>(ctx.nativeState());
@@ -115,13 +162,22 @@ registerLuaExtensionApi(lua::Context& ctx, LuaRegistrations& regs)
     lua_pushlightuserdata(L, &regs);
     lua_pushcclosure(L, &luaRegisterGenerator, 1);
     lua_setfield(L, -2, "register_generator");
+    // Reporting lives under `mrdocs.report` so the surface can grow without
+    // crowding the top-level `mrdocs` API.
+    lua_newtable(L);
+    lua_pushboolean(L, warnAsError ? 1 : 0);
+    lua_pushcclosure(L, &luaWarn, 1);
+    lua_setfield(L, -2, "warn");
+    lua_pushcclosure(L, &luaError, 0);
+    lua_setfield(L, -2, "error");
+    lua_setfield(L, -2, "report");
     lua_setglobal(L, "mrdocs");
 }
 
 } // (anon)
 
 Expected<LoadedExtensions>
-loadLuaExtensions(std::string const& scriptPath)
+loadLuaExtensions(std::string const& scriptPath, Config const& config)
 {
     // The engine is a shared handle from the start, so both the transforms
     // and the generators can keep it alive without a separate owner.
@@ -129,7 +185,7 @@ loadLuaExtensions(std::string const& scriptPath)
 
     LuaRegistrations regs;
     regs.vm = vm;
-    registerLuaExtensionApi(*vm, regs);
+    registerLuaExtensionApi(*vm, regs, config.warnAsError);
 
     lua::Scope scope(*vm);
 
