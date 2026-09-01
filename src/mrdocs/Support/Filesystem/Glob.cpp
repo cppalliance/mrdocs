@@ -361,17 +361,22 @@ match(std::string_view str, char const delimiter) const
     // The index of the current parsed brackets we're using.
     std::size_t bracketsIdx = 0;
 
-    // The string we're matching "*".
-    std::string_view starStr = str;
-
-    // The pattern suffix after the "*" run.
-    Optional<std::string_view> patternStarSuffix;
-
-    // The saved brackets index for backtracking.
-    std::size_t bracketsStarMatchIdx = 0;
-
-    // Whether the current "*" run is a double star.
-    bool isDoubleStar = false;
+    // One backtracking state per "*" run seen so far, innermost last. A
+    // single saved state is not enough: when a later single "*" cannot
+    // absorb a delimiter, the match may still succeed by handing more of
+    // the string to an earlier "**" (as in "a/**/*.h" against
+    // "a/b/c/x.h"), which requires backtracking through every open star.
+    struct StarState {
+        // The pattern suffix after the "*" run.
+        std::string_view patternSuffix;
+        // The string this "*" run is currently assumed to match into.
+        std::string_view starStr;
+        // The saved brackets index.
+        std::size_t bracketsIdx;
+        // Whether the run is a double star (may match delimiters).
+        bool isDoubleStar;
+    };
+    llvm::SmallVector<StarState, 4> stars;
 
     // Attempt to match a single character in the string.
     auto matchOne = [&]() {
@@ -379,7 +384,7 @@ match(std::string_view str, char const delimiter) const
         {
             // Move the pattern iterator past the '*'s.
             pattern.remove_prefix(1);
-            isDoubleStar = false;
+            bool isDoubleStar = false;
             while (!pattern.empty() && pattern.front() == '*')
             {
                 pattern.remove_prefix(1);
@@ -387,9 +392,7 @@ match(std::string_view str, char const delimiter) const
             }
             // Save the positions where we started the "*" segment
             // to be used by backtracking if we see a mismatch later.
-            patternStarSuffix = pattern;
-            starStr = str;
-            bracketsStarMatchIdx = bracketsIdx;
+            stars.push_back({pattern, str, bracketsIdx, isDoubleStar});
             return true;
         }
 
@@ -441,23 +444,32 @@ match(std::string_view str, char const delimiter) const
             continue;
         }
 
-        // There is no previous "*" to account for this mismatch.
-        if (!patternStarSuffix)
+        // Backtrack: give the innermost "*" one more character. When that
+        // star cannot grow (a single "*" never absorbs a delimiter, and no
+        // star absorbs past the end of the string), pop it and try the next
+        // enclosing star; the popped star is re-created when the pattern
+        // reaches it again.
+        while (!stars.empty())
+        {
+            StarState& star = stars.back();
+            if (star.starStr.empty() ||
+                (!star.isDoubleStar && star.starStr.front() == delimiter))
+            {
+                stars.pop_back();
+                continue;
+            }
+            star.starStr.remove_prefix(1);
+            pattern = star.patternSuffix;
+            str = star.starStr;
+            bracketsIdx = star.bracketsIdx;
+            break;
+        }
+
+        // There is no "*" left to account for this mismatch.
+        if (stars.empty())
         {
             return MatchType::MISMATCH;
         }
-
-        // The new suffix would assume a delimiter matched by the "*"
-        if (!isDoubleStar && starStr.front() == delimiter)
-        {
-            return MatchType::MISMATCH;
-        }
-
-        // Backtrack
-        pattern = *patternStarSuffix;
-        starStr.remove_prefix(1);
-        str = starStr;
-        bracketsIdx = bracketsStarMatchIdx;
     }
 
     // All bytes in str have been matched.
