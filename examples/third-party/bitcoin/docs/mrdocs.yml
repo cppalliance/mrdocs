@@ -32,22 +32,17 @@ file-patterns: [ '*.h' ]
 
 # Toolchain isolation.
 #
-# MrDocs bundles a matching libc++ 23 and clang 23 resource dir; the demo
-# runner (local/demo-forks/mr.sh, render-all.sh) already passes them via
-# --stdlib-includes and --clang-resource-dir. Turning off use-system-stdlib /
-# use-system-libc makes MrDocs actually use them and, crucially, add
-# -nostdinc++/-nostdlibinc so the host's Homebrew libc++ 21 cannot leak onto
-# the include path. That skew (clang 23 frontend + Homebrew libc++ 21 headers)
-# is what made 23 prevector-dependent headers fail here.
-#
-# libc-includes points at the macOS SDK's C headers: bundled libc++ 23 needs a
-# complete C library behind it, and the small bundled libc-stubs set is missing
-# POSIX headers Bitcoin pulls in (sys/time.h, arpa/inet.h + the network stack,
-# sys/wait.h, ...). This is the one host-specific path (see the note in
-# mr.sh/render-all.sh); on Linux the equivalent is /usr/include (glibc).
+# MrDocs bundles a matching libc++ 23 and clang 23 resource dir; turning off
+# use-system-stdlib makes MrDocs use them and add -nostdinc++ so the host's
+# C++ stdlib cannot leak onto the include path (a version skew between the
+# clang 23 frontend and the host's libc++ headers is what made 23
+# prevector-dependent headers fail here). The system C library stays on:
+# Bitcoin needs the full POSIX surface (sys/time.h, arpa/inet.h + the network
+# stack, sys/wait.h, ...), which the bundled libc-stubs set does not provide,
+# and MrDocs discovers the host's libc dirs from the system compiler on any
+# platform.
 use-system-stdlib: false
-use-system-libc: false
-libc-includes: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include ]
+use-system-libc: true
 missing-include-prefixes: [ 'event2/', 'zmq', 'sqlite3', 'db_cxx', 'gmp', 'mp/', 'kj/', 'capnp/' ]
 implementation-defined: [ '**::detail', '**::internal' ]
 exclude-patterns:
