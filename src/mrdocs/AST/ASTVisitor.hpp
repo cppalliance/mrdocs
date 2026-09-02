@@ -26,6 +26,7 @@
 #include <clang/AST/ODRHash.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/SmallBitVector.h>
+#include <llvm/ADT/SmallPtrSet.h>
 #include <vector>
 
 namespace mrdocs {
@@ -1040,12 +1041,45 @@ private:
        If the template is an alias (such as `std::enable_if_t`), the
        template information of the underlying type
        (such as `typename enable_if<B,T>::type`) will be extract instead.
+
+       If `Member` is `nullptr` and the template is not an alias, there
+       is no member that could carry the SFINAE result, so the function
+       returns `std::nullopt`.
+
+       The function walks the base classes of every specialization
+       of the template looking for the member that carries the SFINAE
+       result. Templates can derive from each other through their
+       specializations, so `InProgress` holds the templates on the
+       current path and the function returns `std::nullopt` when it
+       reaches one of them again.
      */
     Optional<SFINAEControlParams>
-    getSFINAEControlParams(clang::TemplateDecl* TD, clang::IdentifierInfo const* Member);
+    getSFINAEControlParams(
+        clang::TemplateDecl* TD,
+        clang::IdentifierInfo const* Member,
+        llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress);
 
+    // @copydoc getSFINAEControlParams(clang::TemplateDecl*, clang::IdentifierInfo const*, llvm::SmallPtrSetImpl<clang::TemplateDecl const*>&)
     Optional<SFINAEControlParams>
-    getSFINAEControlParams(SFINAETemplateInfo const& SFINAE) {
+    getSFINAEControlParams(clang::TemplateDecl* TD, clang::IdentifierInfo const* Member)
+    {
+        llvm::SmallPtrSet<clang::TemplateDecl const*, 8> InProgress;
+        return getSFINAEControlParams(TD, Member, InProgress);
+    }
+
+    // @copydoc getSFINAEControlParams(clang::TemplateDecl*, clang::IdentifierInfo const*, llvm::SmallPtrSetImpl<clang::TemplateDecl const*>&)
+    Optional<SFINAEControlParams>
+    getSFINAEControlParams(
+        SFINAETemplateInfo const& SFINAE,
+        llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress)
+    {
+        return getSFINAEControlParams(SFINAE.Template, SFINAE.Member, InProgress);
+    }
+
+    // @copydoc getSFINAEControlParams(clang::TemplateDecl*, clang::IdentifierInfo const*, llvm::SmallPtrSetImpl<clang::TemplateDecl const*>&)
+    Optional<SFINAEControlParams>
+    getSFINAEControlParams(SFINAETemplateInfo const& SFINAE)
+    {
         return getSFINAEControlParams(SFINAE.Template, SFINAE.Member);
     }
 
