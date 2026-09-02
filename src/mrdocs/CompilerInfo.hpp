@@ -43,13 +43,22 @@ parseIncludePaths(std::string const& compilerOutput);
 
 /**
  * @brief Get the compiler default include dir.
- * 
+ *
+ * The probed search list mixes the C++ standard library, the compiler's
+ * resource headers, and the C library; each flag keeps its own slice, so
+ * the system C library can be used together with the bundled C++ stdlib
+ * and vice versa.
+ *
  * @param compDb The compilation database.
- * @param useSystemStdlib True if the compiler has to use just the system standard library.
+ * @param useSystemStdlib True to keep the system C++ standard library dirs.
+ * @param useSystemLibc True to keep the system C library dirs.
  * @return std::unordered_map<std::string, std::vector<std::string>> The compiler default include dir.
 */
-std::unordered_map<std::string, std::vector<std::string>> 
-getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb, bool useSystemStdlib);
+std::unordered_map<std::string, std::vector<std::string>>
+getCompilersDefaultIncludeDir(
+    clang::tooling::CompilationDatabase const& compDb,
+    bool useSystemStdlib,
+    bool useSystemLibc);
 
 } // mrdocs
 

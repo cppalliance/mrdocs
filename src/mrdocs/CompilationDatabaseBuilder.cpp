@@ -141,7 +141,7 @@ synthesizeCompilationDatabase(
 {
     MrDocsSettingsDB settingsDB{config};
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-        settingsDB, config.useSystemStdlib);
+        settingsDB, config.useSystemStdlib, config.useSystemLibc);
     return MrDocsCompilationDatabase(
         config.sourceRoot,
         settingsDB,
@@ -252,7 +252,7 @@ readCompilationDatabase(
     }
 
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-        *jsonDatabase, config.useSystemStdlib);
+        *jsonDatabase, config.useSystemStdlib, config.useSystemLibc);
     return MrDocsCompilationDatabase(
         files::getParentDir(compileCommandsPath),
         *jsonDatabase,

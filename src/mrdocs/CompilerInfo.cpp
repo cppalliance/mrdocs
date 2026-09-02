@@ -167,6 +167,57 @@ removeGccBuiltinIncludeDirs(
     }
 }
 
+// True for a C++ standard library include directory in a probed search
+// list: libstdc++ installs under .../c++/<version> and libc++ under
+// .../c++/v1, so a "/c++/" path segment identifies both.
+bool
+isCppStdlibIncludeDir(std::string path)
+{
+    std::replace(path.begin(), path.end(), '\\', '/');
+    return path.find("/c++/") != std::string::npos
+        || path.ends_with("/c++");
+}
+
+// True for a Clang resource include directory (lib/clang/<version>/include)
+// in a probed search list.
+bool
+isClangResourceIncludeDir(std::string path)
+{
+    std::replace(path.begin(), path.end(), '\\', '/');
+    while (path.ends_with('/'))
+    {
+        path.pop_back();
+    }
+    return path.ends_with("/include")
+        && path.find("/lib/clang/") != std::string::npos;
+}
+
+// Keep only the probed directories the configuration asks for. The probe
+// returns the compiler's whole search list with the C++ standard library,
+// the compiler's resource headers, and the C library mixed together, so
+// each flag filters its own slice: with the bundled C++ stdlib, the host's
+// C++ dirs (and the host compiler's resource dir, whose builtin headers
+// belong to a different Clang) must not leak onto the path; with the
+// bundled libc stubs, the host's C library dirs must not.
+void
+filterProbedIncludeDirs(
+    bool const useSystemStdlib,
+    bool const useSystemLibc,
+    std::vector<std::string>& includePaths)
+{
+    if (useSystemStdlib && useSystemLibc)
+    {
+        return;
+    }
+    std::erase_if(includePaths, [&](std::string const& p) {
+        if (isCppStdlibIncludeDir(p) || isClangResourceIncludeDir(p))
+        {
+            return !useSystemStdlib;
+        }
+        return !useSystemLibc;
+    });
+}
+
 } // (anon)
 
 namespace {
@@ -194,9 +245,12 @@ tryCompilerByName(llvm::StringRef name)
 } // anonymous namespace
 
 std::unordered_map<std::string, std::vector<std::string>>
-getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb, bool useSystemStdlib)
+getCompilersDefaultIncludeDir(
+    clang::tooling::CompilationDatabase const& compDb,
+    bool const useSystemStdlib,
+    bool const useSystemLibc)
 {
-    if (!useSystemStdlib)
+    if (!useSystemStdlib && !useSystemLibc)
     {
         return {};
     }
@@ -220,6 +274,8 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
                 auto includePaths = parseIncludePaths(*compilerOutput);
                 removeGccBuiltinIncludeDirs(
                     compilerPath, *compilerOutput, includePaths);
+                filterProbedIncludeDirs(
+                    useSystemStdlib, useSystemLibc, includePaths);
                 res.emplace(compilerPath, std::move(includePaths));
                 continue;
             }
@@ -239,6 +295,8 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
                     break;
                 }
             }
+            filterProbedIncludeDirs(
+                useSystemStdlib, useSystemLibc, includePaths);
             res.emplace(compilerPath, std::move(includePaths));
         }
     }
