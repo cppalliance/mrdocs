@@ -50,6 +50,9 @@ for project_args in \
     "fmt|$(pwd)/fmt/doc/mrdocs.yml|" \
     "abseil|$(pwd)/abseil/docs/mrdocs.yml|" \
     "llvm|$(pwd)/llvm/docs/mrdocs.yml|" \
+    "bitcoin|$(pwd)/bitcoin/docs/mrdocs.yml|" \
+    "folly|$(pwd)/folly/docs/mrdocs.yml|" \
+    "openssl|$(pwd)/openssl/docs/mrdocs.yml|" \
     "bde|$(pwd)/bde/docs/mrdocs.yml|" \
     "mrdocs|$(pwd)/docs/mrdocs.yml|$(pwd)/CMakeLists.txt" \
 ; do

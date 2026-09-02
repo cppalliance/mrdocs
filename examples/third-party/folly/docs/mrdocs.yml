@@ -33,18 +33,15 @@ file-patterns:
 
 # Toolchain isolation.
 #
-# The demo runner (local/demo-forks/mr.sh, render-all.sh) passes the bundled
-# libc++ 23 and clang 23 resource dir via --stdlib-includes and
-# --clang-resource-dir. Turning off use-system-stdlib / use-system-libc makes
-# MrDocs actually use them and add -nostdinc++/-nostdlibinc so the host's
-# Homebrew libc++ cannot leak onto the include path. libc-includes points at
-# the macOS SDK C headers (the bundled libc-stubs set is missing POSIX headers
-# Folly pulls in). This is the one host-specific path; on Linux it is
-# /usr/include (glibc).
+# MrDocs bundles a matching libc++ 23 and clang 23 resource dir; turning off
+# use-system-stdlib makes MrDocs use them and add -nostdinc++ so the host's
+# C++ stdlib cannot leak onto the include path (a version skew between the
+# clang 23 frontend and the host's libc++ headers produces hard errors). The
+# system C library stays on: Folly needs the full POSIX surface, which the
+# bundled libc-stubs set does not provide, and MrDocs discovers the host's
+# libc dirs from the system compiler on any platform.
 use-system-stdlib: false
-use-system-libc: false
-libc-includes:
-  - /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+use-system-libc: true
 
 missing-include-prefixes:
   - 'gflags/'
@@ -138,6 +135,17 @@ exclude-patterns:
   # Not Folly's public API; documenting them only surfaces third-party symbols.
   - ../folly/memory/detail/MallocImpl.h
   - ../folly/coro/detail/Malloc.h
+
+  # Unguarded liburing usage: IoUring.h and IoUringBackend.h hold io_uring
+  # structs by value outside the FOLLY_HAS_LIBURING guard, so on Linux (where
+  # the forgiven <liburing.h> leaves the types incomplete) they cannot parse;
+  # IoUringEvent.h and IoUringEventBaseLocal.h include IoUringBackend.h and
+  # fail the same way. On macOS the io_uring code is compiled out, so no
+  # documentation is lost by skipping them.
+  - ../folly/io/async/IoUring.h
+  - ../folly/io/async/IoUringBackend.h
+  - ../folly/io/async/IoUringEvent.h
+  - ../folly/io/async/IoUringEventBaseLocal.h
 
 multipage: true
 generator: adoc
