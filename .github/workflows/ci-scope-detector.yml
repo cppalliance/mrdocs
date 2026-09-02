@@ -98,6 +98,7 @@ jobs:
         id: classify
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REF_TYPE: ${{ github.ref_type }}
           BASE_REF: ${{ github.base_ref }}
           MERGE_GROUP_BASE_SHA: ${{ github.event.merge_group.base_sha }}
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -106,9 +107,13 @@ jobs:
           set -euo pipefail
 
           # is-push is exposed as its own signal so consumers can react to
-          # push events without having to re-detect github.event_name.
+          # push events without having to re-detect github.event_name. A
+          # workflow_dispatch on a tag is how ci-publish starts the build of a
+          # calendar release tag it just cut, so it counts as a push too.
           is_push='false'
           if [[ "$GITHUB_EVENT_NAME" == 'push' ]]; then
+            is_push='true'
+          elif [[ "$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$GITHUB_REF_TYPE" == 'tag' ]]; then
             is_push='true'
           fi
 

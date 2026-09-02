@@ -109,7 +109,7 @@ STRICT = [
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 LOCATION = re.compile(r"^\S.*:\d+:\d+:\s*$")
 FOOTER = re.compile(
-    r"^(An issue occurred|If you believe|\s*MrDocs Version|\s*Error Location|"
+    r"^(An issue occurred|If you believe|\s*MrDocs Release|\s*MrDocs Version|\s*Error Location|"
     r"\s*Reported From|with the following details|error limit reached)")
 
 

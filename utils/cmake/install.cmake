@@ -45,6 +45,25 @@ function(mrdocs_install)
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs)
 
     # mrdocs-config.cmake
+    #
+    # The calendar release label comes from git (the release tag on HEAD, or
+    # the UTC commit date), read at configure time by the same script that
+    # stamps Version.hpp so both agree. PYTHON_EXECUTABLE and GIT_EXECUTABLE
+    # are cache entries set by utils/codegen.
+    execute_process(
+            COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/utils/codegen/generate-version-header.py
+                    --print-release
+                    --source-dir ${PROJECT_SOURCE_DIR}
+                    --git "${GIT_EXECUTABLE}"
+            OUTPUT_VARIABLE MRDOCS_RELEASE_FIELDS
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            COMMAND_ERROR_IS_FATAL ANY)
+    list(GET MRDOCS_RELEASE_FIELDS 0 MRDOCS_RELEASE)
+    list(GET MRDOCS_RELEASE_FIELDS 1 MRDOCS_RELEASE_WITH_BUILD)
+    list(GET MRDOCS_RELEASE_FIELDS 2 MRDOCS_RELEASE_YEAR)
+    list(GET MRDOCS_RELEASE_FIELDS 3 MRDOCS_RELEASE_MONTH)
+    list(GET MRDOCS_RELEASE_FIELDS 4 MRDOCS_RELEASE_DAY)
+
     set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR})
     set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR})
     set(BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})

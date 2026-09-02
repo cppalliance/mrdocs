@@ -17,7 +17,15 @@ on:
       - master
       - '**'
     tags:
+      # SemVer releases (v0.8.0) and calendar releases (2026.9.2, 2026.9.2+1).
       - "v*.*.*"
+      - "20[0-9][0-9].*.*"
+
+  # Publish dispatches ci.yml on a freshly cut calendar release tag: a tag
+  # pushed with GITHUB_TOKEN does not start a run on its own, but
+  # workflow_dispatch is exempt from that rule. The dispatched run behaves
+  # exactly like a tag push (scope-detector reports is-push for it).
+  workflow_dispatch:
 
   # pull_request runs the matrix/build on the PR head with the fork-scoped token
   # (no comment perms on base repo).
@@ -132,6 +140,8 @@ jobs:
     if: always()
     permissions:
       contents: write
+      # ci-publish dispatches the release build of a freshly cut master tag.
+      actions: write
     uses: ./.github/workflows/ci-publish.yml
     with:
       submatrix: ${{ toJSON(fromJSON(needs.cpp-matrix.outputs.submatrices).releases) }}

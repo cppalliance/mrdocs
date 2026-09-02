@@ -35,7 +35,10 @@ antora:
     - require: '@alandefreitas/antora-playbook-macros-extension'
       macros:
         branchesarray: [ develop, master ]
-        tagsarray: [ v* ]
+        # Every v* release tag except the v0.0.x patches (stepping stones
+        # to v0.8.0), plus every calendar release tag (2026.9.2). Antora's
+        # ref globs support *, braces and ! exclusions, but not [] classes.
+        tagsarray: [ v*, '!v0.0.*', '2*.*.*' ]
     - require: '@sntke/antora-mermaid-extension' # <1>
       mermaid_library_url: https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs # <2>
       script_stem: header-scripts

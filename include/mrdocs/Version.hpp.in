@@ -46,6 +46,35 @@ inline constexpr std::size_t      project_version_patch       = @PROJECT_VERSION
 */
 inline constexpr std::string_view project_version_build       = "@PROJECT_VERSION_BUILD@";
 
+/** Calendar release label in YYYY.M.D format.
+
+    On a commit carrying a calendar release tag this is that tag
+    (for example "2026.9.2", or "2026.9.2+1" for a second release
+    on the same day). Otherwise it is the UTC commit date of the
+    build. Empty if the git information was unavailable.
+*/
+inline constexpr std::string_view project_release             = "@PROJECT_RELEASE@";
+
+/** Calendar release label with build metadata.
+
+    Equal to project_release on a tagged release. Otherwise appends
+    the git short SHA, and ".modified" if the working tree was
+    modified.
+*/
+inline constexpr std::string_view project_release_with_build  = "@PROJECT_RELEASE_WITH_BUILD@";
+
+/** Year of the calendar release (0 if unavailable).
+*/
+inline constexpr std::size_t      project_release_year        = @PROJECT_RELEASE_YEAR@;
+
+/** Month of the calendar release, 1 to 12 (0 if unavailable).
+*/
+inline constexpr std::size_t      project_release_month       = @PROJECT_RELEASE_MONTH@;
+
+/** Day of the calendar release, 1 to 31 (0 if unavailable).
+*/
+inline constexpr std::size_t      project_release_day         = @PROJECT_RELEASE_DAY@;
+
 /** Canonical project name.
 */
 inline constexpr std::string_view project_name                = "@PROJECT_NAME@";

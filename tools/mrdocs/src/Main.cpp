@@ -115,7 +115,13 @@ printHelp(llvm::raw_ostream& os)
 static void
 printVersion(llvm::raw_ostream& os, std::string const& execPath)
 {
-    os << project_name << " version " << project_version_with_build << "\n";
+    os << project_name << "\n";
+    os << "Release: "
+       << (project_release_with_build.empty()
+               ? std::string_view("unknown")
+               : project_release_with_build)
+       << "\n";
+    os << "Version: " << project_version_with_build << "\n";
     os << "Built with LLVM " << LLVM_VERSION_STRING << "\n";
     os << "Build SHA: " << project_version_build << "\n";
     os << "Target: " << llvm::sys::getDefaultTargetTriple() << "\n";

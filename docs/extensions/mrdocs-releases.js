@@ -155,7 +155,7 @@ module.exports = function (registry) {
             const releasesResponse =
                 readFromCacheFile ?
                     fs.readFileSync(cachePath, 'utf-8') :
-                    fetchWithRetry('https://api.github.com/repos/cppalliance/mrdocs/releases', apiHeaders)
+                    fetchWithRetry('https://api.github.com/repos/cppalliance/mrdocs/releases?per_page=100', apiHeaders)
             if (!readFromCacheFile) {
                 fs.writeFileSync(cachePath, releasesResponse);
             }
