@@ -383,11 +383,19 @@ adjustCommandLine(
         // added by the compiler. These will not be defined in the
         // compile command, so we add them here so that clang
         // can also find these headers.
+        // With the bundled C++ stdlib, the probed directories are only
+        // the system C library, which must come after the bundled libc++
+        // on the search path (libc++'s <stddef.h> and friends wrap the
+        // libc headers via include_next), so they go on the after-include
+        // flag instead.
+        char const* probedIncludeFlag = config.useSystemStdlib
+            ? systemIncludeFlag
+            : afterIncludeFlag;
         if (auto const it = implicitIncludeDirectories.find(progName);
             it != implicitIncludeDirectories.end()) {
             for (auto const& inc : it->second)
             {
-                new_cmdline.emplace_back(systemIncludeFlag);
+                new_cmdline.emplace_back(probedIncludeFlag);
                 new_cmdline.emplace_back(inc);
             }
         }
