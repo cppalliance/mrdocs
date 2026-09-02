@@ -67,3 +67,8 @@ include::example$examples/generators/noop/fix-loop/fix-docs.py[]
 ----
 
 This pattern can be used to give a project a baseline of documentation.
+
+[TIP]
+====
+The example above is intentionally small. A larger "pro" version ships in `tools/fix-docs` with a number of optimizations.
+====
