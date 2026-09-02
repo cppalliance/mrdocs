@@ -563,6 +563,10 @@
   --ds-title-ink: var(--ds-color-outline);
   --ds-title-outline-width: 4px;
   --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
+  /* Panel headings run the same treatment at half the weight, 120% leading. */
+  --ds-title-outline-width-sm: 2px;
+  --ds-title-shadow-sm: 2px 2px 0 var(--ds-title-ink);
+  --ds-title-leading-sm: 1.2;
 }
 
 :root {
@@ -5370,20 +5374,26 @@ header {
 /* ---- Documentation half: heading and code colours ------------------ *
  * Figma splits the two heading levels, which the earlier B3 rule did not:
  * the symbol title is gold at 36px, the section titles (Synopsis,
- * Description) are blue at 24px. Both carry a 2px ink outline. */
+ * Description) are blue at 24px. Both carry a 2px ink outline, both carry
+ * the hard comic shadow, and both run at 120% -- 43px on the symbol name,
+ * 29px on the section headings, where Pico's leading left them 2px tall. */
 .side-by-side > .documentation-panel h2,
 .side-by-side > .documentation-panel h2 a {
     color: var(--ds-title-color-alt);
     font-size: 36px;
-    -webkit-text-stroke: 2px var(--ds-color-outline);
+    line-height: var(--ds-title-leading-sm);
+    -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
     paint-order: stroke fill;
+    text-shadow: var(--ds-title-shadow-sm);
 }
 
 .side-by-side > .documentation-panel h3 {
     color: var(--ds-title-color);
     font-size: 24px;
-    -webkit-text-stroke: 2px var(--ds-color-outline);
+    line-height: var(--ds-title-leading-sm);
+    -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
     paint-order: stroke fill;
+    text-shadow: var(--ds-title-shadow-sm);
 }
 
 /* The code half is highlight.js output, so its colours come from hljs
