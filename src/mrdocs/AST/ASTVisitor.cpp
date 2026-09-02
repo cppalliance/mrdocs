@@ -2820,11 +2820,25 @@ Optional<ASTVisitor::SFINAEControlParams>
 ASTVisitor::
 getSFINAEControlParams(
     clang::TemplateDecl* TD,
-    clang::IdentifierInfo const* Member)
+    clang::IdentifierInfo const* Member,
+    llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress)
 {
     MRDOCS_SYMBOL_TRACE(TD, context_);
     MRDOCS_SYMBOL_TRACE(Member, context_);
     MRDOCS_CHECK_OR(TD, std::nullopt);
+
+    // Templates can derive from each other through their specializations,
+    // such as `A<T> : B<T, false>` and `B<T, false> : A<T*>`. The base
+    // class walk below would then alternate between them forever, so
+    // stop as soon as we reach a template that is already being processed.
+    bool const Inserted = InProgress.insert(TD).second;
+    MRDOCS_CHECK_OR(Inserted, std::nullopt);
+    struct InProgressGuard
+    {
+        llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& Set;
+        clang::TemplateDecl const* TD;
+        ~InProgressGuard() { Set.erase(TD); }
+    } const Guard{InProgress, TD};
 
     // The `FindParam` lambda function is used to find the index of a
     // template argument in a list of template arguments. It is used
@@ -2859,7 +2873,7 @@ getSFINAEControlParams(
             // the `Member` field.
             underlyingTemplateInfo->Member = Member;
         }
-        auto sfinaeControl = getSFINAEControlParams(*underlyingTemplateInfo);
+        auto sfinaeControl = getSFINAEControlParams(*underlyingTemplateInfo, InProgress);
         MRDOCS_CHECK_OR(sfinaeControl, std::nullopt);
 
         // Find the index of the parameter that represents the SFINAE result
@@ -2920,6 +2934,11 @@ getSFINAEControlParams(
     auto* CTD = dyn_cast<clang::ClassTemplateDecl>(TD);
     MRDOCS_SYMBOL_TRACE(CTD, context_);
     MRDOCS_CHECK_OR(CTD, std::nullopt);
+
+    // A class template is only a SFINAE template through a member such
+    // as `std::enable_if<B,T>::type`. Without a member to look for,
+    // the specialization checks below can never find the SFINAE result.
+    MRDOCS_CHECK_OR(Member, std::nullopt);
 
     // Get the template arguments of the primary template
     auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
@@ -2985,7 +3004,7 @@ getSFINAEControlParams(
                 }
 
                 auto sfinae_result = getSFINAEControlParams(
-                    sfinae_info->Template, Member);
+                    sfinae_info->Template, Member, InProgress);
                 if (!sfinae_result)
                 {
                     return true;
