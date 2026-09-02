@@ -34,3 +34,5 @@ There is no CTest target here: the loop needs a real agent to make progress, so
 it cannot run unattended in CI.
 
 See `generators/noop.adoc` in the documentation for the full write-up.
+
+This example is deliberately small. A larger "pro" version of the same idea lives in `tools/fix-docs` with a number of optimizations.
