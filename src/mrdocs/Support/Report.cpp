@@ -166,6 +166,10 @@ call_impl(
             os << "An issue occurred during execution.\n";
             os << "If you believe this is a bug, please report it at https://github.com/cppalliance/mrdocs/issues\n"
                   "with the following details:\n";
+            os << std::format("    MrDocs Release: {}\n",
+                              project_release_with_build.empty()
+                                  ? std::string_view("unknown")
+                                  : project_release_with_build);
             os << std::format("    MrDocs Version: {} (Build: {})\n",
                               project_version, project_version_build);
             if (e)

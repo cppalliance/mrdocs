@@ -52,6 +52,8 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+      # `gh workflow run` in "Cut calendar release" below.
+      actions: write
     steps:
       # Aggregator: succeed only if every upstream job ended in success or
       # skipped. Failure or cancellation fails this job so the branch
@@ -245,6 +247,9 @@ jobs:
           # (see "Publish demos to dev-websites" above).
           time rsync "${rsyncopts[@]}" --exclude=demos/ $(pwd)/build/website/ "$website_dir"/
 
+      # Both SemVer tags (v0.8.0) and calendar release tags (2026.9.2,
+      # 2026.9.2+1) delimit the changelog, so each calendar release lists the
+      # commits since the previous one rather than since the last SemVer tag.
       - name: Create changelog
         if: inputs.should-publish
         uses: alandefreitas/cpp-actions/create-changelog@v1.9.5
@@ -252,16 +257,18 @@ jobs:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          tag-pattern: '^(v\d+\.\d+\.\d+|20\d\d\.\d{1,2}\.\d{1,2}(\+\d+)?)$'
           limit: 150
           update-summary: true
 
-      # For non-tag publishes (develop-release and master-release rolling
-      # releases), strip the project version out of the package filenames
-      # and insert the branch name instead. Subsequent pushes overwrite the
-      # existing GitHub-release assets cleanly. Tag releases keep their
-      # versioned filenames.
-      - name: Rebrand branch packages
-        if: inputs.should-publish && !startsWith(github.ref, 'refs/tags/')
+      # CPack names packages after the project version (MrDocs-0.8.0-*).
+      # Only SemVer tag releases keep that name. Rolling branch releases
+      # (develop-release, master-release) get the branch name instead, so
+      # subsequent pushes overwrite the existing GitHub-release assets
+      # cleanly, and calendar releases get their release label
+      # (MrDocs-2026.9.2-*) so downloads say which release they are.
+      - name: Rebrand branch and calendar-release packages
+        if: inputs.should-publish && !startsWith(github.ref, 'refs/tags/v')
         run: |
           set -euxo pipefail
           cd packages
@@ -282,4 +289,54 @@ jobs:
           body_path: CHANGELOG.md
           prerelease: false
           draft: false
+          # Tag releases (SemVer or calendar) become the "Latest" release
+          # users land on; the rolling branch releases never do.
+          make_latest: ${{ startsWith(github.ref, 'refs/tags/') && 'true' || 'false' }}
           token: ${{ github.token }}
+
+      # Every push to master is a calendar release. The label is the UTC
+      # commit date of the master commit (YYYY.M.D, no zero padding so it is
+      # valid semver for the tools that parse it); a second release on the
+      # same day appends semver build metadata (+1, +2, ...). The project
+      # version in CMake is untouched: the release label lives in the tag,
+      # the release name, the package filenames, and `mrdocs --version`.
+      #
+      # A tag pushed with GITHUB_TOKEN does not start a workflow run on its
+      # own, so the tag build is started explicitly through workflow_dispatch
+      # (which that token may trigger). The dispatched run then takes the
+      # normal tag path in this job and creates the GitHub Release.
+      - name: Cut calendar release (master only)
+        if: inputs.should-publish && github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          release_re='^20[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}(\+[0-9]+)?$'
+          if git tag --points-at HEAD | grep -Eq "$release_re"; then
+            echo "HEAD already carries a calendar release tag; nothing to cut."
+            exit 0
+          fi
+          label=$(date -u -d "@$(git log -1 --format=%ct HEAD)" '+%Y.%-m.%-d')
+          candidate="$label"
+          n=1
+          while git ls-remote --exit-code --tags origin "refs/tags/$candidate" >/dev/null 2>&1; do
+            candidate="$label+$n"
+            n=$((n + 1))
+          done
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag -a "$candidate" -m "MrDocs release $candidate"
+          git push origin "refs/tags/$candidate"
+          echo "Pushed calendar release tag $candidate"
+          # The tag can take a moment to become visible to the API.
+          for attempt in 1 2 3 4 5; do
+            if gh workflow run ci.yml --ref "$candidate"; then
+              echo "Started the release build for $candidate"
+              exit 0
+            fi
+            echo "gh workflow run failed (attempt $attempt); retrying..."
+            sleep 10
+          done
+          echo "::error::could not start the release build for $candidate"
+          exit 1

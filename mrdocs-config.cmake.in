@@ -18,6 +18,14 @@ set(MRDOCS_BUILT_REEXPORT_DEPENDENCIES "@MRDOCS_DO_REEXPORT_DEPENDENCIES@")
 set(MRDOCS_BUILT_CXX_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@")
 set(MRDOCS_BUILT_CXX_COMPILER_VERSION "@CMAKE_CXX_COMPILER_VERSION@")
 
+# Calendar release this installation was built from (YYYY.M.D), decomposed
+# like mrdocs_VERSION_MAJOR/MINOR/PATCH. Empty/0 when git was unavailable.
+set(MRDOCS_RELEASE            "@MRDOCS_RELEASE@")
+set(MRDOCS_RELEASE_WITH_BUILD "@MRDOCS_RELEASE_WITH_BUILD@")
+set(MRDOCS_RELEASE_YEAR       "@MRDOCS_RELEASE_YEAR@")
+set(MRDOCS_RELEASE_MONTH      "@MRDOCS_RELEASE_MONTH@")
+set(MRDOCS_RELEASE_DAY        "@MRDOCS_RELEASE_DAY@")
+
 # Installation paths, relocated relative to this file by @PACKAGE_INIT@.
 set_and_check(MRDOCS_INCLUDE_DIR  "@PACKAGE_INCLUDE_INSTALL_DIR@")   # e.g. "include"
 set_and_check(MRDOCS_LIB_DIR      "@PACKAGE_LIB_INSTALL_DIR@")       # e.g. "lib" or "lib64"
