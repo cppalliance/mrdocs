@@ -57,6 +57,7 @@
   --ds-blue-700: #0078c8; /* primary active            */
   --ds-blue-100: #bcebfb; /* demo / tint               */
   --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
+  --ds-blue-350: #3d8bff; /* Figma exact: dark headline, icon box, CTA panel */
   --ds-blue-450: #1e78ff; /* Figma exact: CTA "Read the Docs" button fill */
   --ds-code-800: #272e3e; /* Figma exact: code panel body               */
 
@@ -64,6 +65,7 @@
   --ds-gold-400: #ffd700; /* peak / hover              */
   --ds-gold-500: #e5be33; /* rest / function-name / check accent */
   --ds-gold-300: #f1d874; /* Figma exact: hero title alt, GitHub button */
+  --ds-gold-450: #facc15; /* Figma exact: dark title alt */
   --ds-gold-700: #c8aa28; /* active / pressed          */
 
   /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
@@ -89,6 +91,7 @@
   --ds-navy-800: #11191f; /* dark page background     */
   --ds-navy-700: #141e26; /* dark card                */
   --ds-navy-600: #18232c; /* dark code / sectioning   */
+  --ds-navy-650: #171c26; /* dark doc surface / footer bar */
   --ds-navy-500: #24333e; /* dark divider / range     */
   --ds-navy-400: #374956; /* dark form border         */
 
@@ -328,14 +331,14 @@
     --ds-color-halftone: rgba(255, 255, 255, 0.07);
     /* Dark uses pure black for outlines, not #0F172A. */
     --ds-color-outline: #000;
-    --ds-color-doc-surface: #171c26;
-    --ds-color-cta-panel: #3d8bff;
-    --ds-color-footer-bg: #171c26;
-    --ds-color-icon-box: #3d8bff;
+    --ds-color-doc-surface: var(--ds-navy-650);
+    --ds-color-cta-panel: var(--ds-blue-350);
+    --ds-color-footer-bg: var(--ds-navy-650);
+    --ds-color-icon-box: var(--ds-blue-350);
     --ds-color-icon-ink: var(--ds-white);
     --ds-color-card-text: #a9abb2;
-    --ds-color-title: #3d8bff; /* dark line 1 is a deeper blue than light */
-    --ds-color-title-alt: #facc15;
+    --ds-color-title: var(--ds-blue-350); /* dark line 1 is a deeper blue than light */
+    --ds-color-title-alt: var(--ds-gold-450);
     --ds-color-hero-text: var(--ds-white);
     --ds-color-code-shell: #272e3f;
     --ds-color-code-chrome: #000;
@@ -384,14 +387,14 @@
   --ds-color-label: var(--ds-red-500);
   --ds-color-halftone: rgba(255, 255, 255, 0.07);
   --ds-color-outline: #000;
-  --ds-color-doc-surface: #171c26;
-  --ds-color-cta-panel: #3d8bff;
-  --ds-color-footer-bg: #171c26;
-  --ds-color-icon-box: #3d8bff;
+  --ds-color-doc-surface: var(--ds-navy-650);
+  --ds-color-cta-panel: var(--ds-blue-350);
+  --ds-color-footer-bg: var(--ds-navy-650);
+  --ds-color-icon-box: var(--ds-blue-350);
   --ds-color-icon-ink: var(--ds-white);
   --ds-color-card-text: #a9abb2;
-  --ds-color-title: #3d8bff;
-  --ds-color-title-alt: #facc15;
+  --ds-color-title: var(--ds-blue-350);
+  --ds-color-title-alt: var(--ds-gold-450);
   --ds-color-hero-text: var(--ds-white);
   --ds-color-code-shell: #272e3f;
   --ds-color-code-chrome: #000;
@@ -567,6 +570,15 @@
   --ds-title-outline-width-sm: 2px;
   --ds-title-shadow-sm: 2px 2px 0 var(--ds-title-ink);
   --ds-title-leading-sm: 1.2;
+
+  /* ---- CTA button — Figma exact ----------------------------------- *
+   * Square, and the hard shadow takes the themed outline colour rather
+   * than --ds-black, so it goes #0F172A on light and #000 on dark. */
+  --ds-cta-btn-radius: 0;
+  --ds-cta-btn-shadow: 2px 2px 0 var(--ds-color-outline);
+  --ds-cta-btn-shadow-hover: 4px 4px 0 var(--ds-color-outline);
+  --ds-cta-btn-shadow-active: 1px 1px 0 var(--ds-color-outline);
+  --ds-footer-tracking: 1.4px;
 }
 
 :root {
@@ -5810,15 +5822,15 @@ header {
        the 402 frame leaves 342 -- it wraps to a third line. Track the
        column width instead, which also keeps it to two lines below 402. */
     font-size: min(62px, calc((100vw - 60px) / 5.6));
-    line-height: 0.9;
+    line-height: var(--ds-title-leading);
     font-weight: var(--ds-weight-regular);
     text-transform: uppercase;
     /* Every character is overridden in Figma -- line 1 white, line 2 gold
        -- so the element colour only ever shows on the line separator. */
     color: var(--ds-white);
-    -webkit-text-stroke: 4px var(--ds-color-outline);
+    -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: 4px 4px 0 var(--ds-color-outline);
+    text-shadow: var(--ds-title-shadow);
 }
 
 .cta-title .title-line {
@@ -5859,8 +5871,8 @@ header {
     height: 38px;
     padding: 0 var(--ds-btn-padding-x);
     border: var(--ds-border-width-bold) solid var(--ds-color-outline);
-    border-radius: 0;
-    box-shadow: 2px 2px 0 var(--ds-color-outline);
+    border-radius: var(--ds-cta-btn-radius);
+    box-shadow: var(--ds-cta-btn-shadow);
     font-family: var(--ds-font-display);
     font-style: italic;
     font-weight: var(--ds-weight-medium);
@@ -5868,21 +5880,21 @@ header {
     text-transform: uppercase;
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform var(--ds-transition), box-shadow var(--ds-transition);
 }
 
 .cta-btn:hover {
     transform: var(--ds-lift);
-    box-shadow: 4px 4px 0 var(--ds-color-outline);
+    box-shadow: var(--ds-cta-btn-shadow-hover);
 }
 
 .cta-btn:active {
     transform: var(--ds-press);
-    box-shadow: 1px 1px 0 var(--ds-color-outline);
+    box-shadow: var(--ds-cta-btn-shadow-active);
 }
 
 .cta-btn:focus-visible {
-    outline: 2px solid var(--ds-color-outline);
+    outline: var(--ds-border-width-bold) solid var(--ds-color-outline);
     outline-offset: 3px;
 }
 
@@ -5926,6 +5938,8 @@ footer {
     gap: 17.5px;
     padding-top: 24px;
     padding-bottom: 24px;
+    /* Inherited by the slogan and the links, which Figma tracks alike. */
+    letter-spacing: var(--ds-footer-tracking);
 }
 
 .footer-slogan {
@@ -5933,7 +5947,6 @@ footer {
     font-family: var(--ds-font-body);
     font-size: 13px;
     line-height: 1;
-    letter-spacing: 1.4px;
     color: var(--ds-color-hero-text);
 }
 
@@ -5965,7 +5978,6 @@ footer {
 .footer-bar .footer-link > a,
 .footer-bar .footer-link > a:visited {
     font-family: var(--ds-font-body);
-    letter-spacing: 1.4px;
     text-transform: uppercase;
     text-decoration: none;
     --color: var(--ds-color-hero-text);
