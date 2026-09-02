@@ -136,6 +136,28 @@ jobs:
           # script keeping the same algorithm.
           tar -xaf demos.tar.gz -C demos
 
+      # First upload: the demos go to the server before the documentation
+      # build. The mrdocs-demos macro bakes the gallery table from the live
+      # https://mrdocs.com/demos/ listing at docs-build time, so uploading
+      # demos afterwards leaves the page one publish behind.
+      - name: Publish demos to dev-websites
+        if: inputs.should-publish
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          set -euvx
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          chmod 600 /home/runner/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+
+          rsyncopts=(--recursive --delete --links --times --chmod=D0755,F0755 --compress --compress-choice=zstd --rsh="ssh -o StrictHostKeyChecking=no" --human-readable)
+          demo_dir="ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/demos/${{ github.ref_name }}"
+          time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
+
       - name: Ensure all refs for Antora
         if: inputs.should-publish
         run: |
@@ -218,10 +240,10 @@ jobs:
 
           rsyncopts=(--recursive --delete --links --times --chmod=D0755,F0755 --compress --compress-choice=zstd --rsh="ssh -o StrictHostKeyChecking=no" --human-readable)
           website_dir="ubuntu@dev-websites.cpp.al:/var/www/mrdox.com"
-          demo_dir="$website_dir/demos/${{ github.ref_name }}"
 
+          # Second upload: the demos went up before the documentation build
+          # (see "Publish demos to dev-websites" above).
           time rsync "${rsyncopts[@]}" --exclude=demos/ $(pwd)/build/website/ "$website_dir"/
-          time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
 
       - name: Create changelog
         if: inputs.should-publish
