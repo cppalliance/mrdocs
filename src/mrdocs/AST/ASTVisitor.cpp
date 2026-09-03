@@ -459,13 +459,36 @@ traverse(clang::ExportDecl const* D)
     return nullptr;
 }
 
+// Whether a declaration found in a context declares or defines something.
+// Only those are documented. Two kinds found among a context's members do
+// neither:
+//
+// - implicit declarations, which the compiler synthesized and no one wrote
+//   (an IndirectFieldDecl is the exception: it is how the members of an
+//   anonymous struct or union become members of the enclosing class);
+// - instantiations, `extern template class A<int>;` or
+//   `template class A<int>;`. These are uses of the template, not
+//   declarations of anything new. What they name is documented where the
+//   template or its specialization is declared.
+//   See tests/golden/fixtures/templates/ct_extern_instantiation.cpp
+static
+bool
+isDeclarationOrDefinition(clang::Decl const* D)
+{
+    if (isInstantiation(D))
+    {
+        return false;
+    }
+    return !D->isImplicit() || isa<clang::IndirectFieldDecl>(D);
+}
+
 void
 ASTVisitor::
 traverseTransparentContext(clang::DeclContext const* DC)
 {
     for (clang::Decl* Child : DC->decls())
     {
-        if (!Child->isImplicit() || isa<clang::IndirectFieldDecl>(Child))
+        if (isDeclarationOrDefinition(Child))
         {
             ScopeExitRestore s(mode_);
             traverse(Child);
@@ -515,12 +538,11 @@ traverseMembers(InfoTy& I, DeclTy const* DC)
         }
 
         // There are many implicit declarations, especially in the
-        // translation unit declaration, so we preemtively skip them here.
-        auto explicitMembers = std::ranges::views::filter(DC->decls(), [](clang::Decl* D)
-            {
-                return !D->isImplicit() || isa<clang::IndirectFieldDecl>(D);
-            });
-        for (auto* D : explicitMembers)
+        // translation unit declaration, so we preemptively skip them here,
+        // along with instantiations, which declare nothing.
+        auto declared = std::ranges::views::filter(
+            DC->decls(), [](clang::Decl* D) { return isDeclarationOrDefinition(D); });
+        for (auto* D : declared)
         {
             // No matter what happens in the process, we restore the
             // traversal mode to the original mode for the next member
