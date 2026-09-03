@@ -85,22 +85,28 @@ jobs:
       # Save the LLVM cache when bootstrap rebuilt it (cache miss or
       # stale stamp). BOOTSTRAP_REBUILT lists rebuilt recipes.
       #
-      # `actions:write` (needed for the DELETE call below) is only granted
-      # to workflows on the base repo, so fork PRs get a read-only token
-      # and can't delete or overwrite the base-branch cache anyway.  Skip
-      # the whole save path on fork PRs.
+      # Only runs on develop do this. GitHub scopes a cache entry to the ref
+      # that saved it, and a run can only read entries from its own ref, a
+      # PR's base ref, and the default branch. develop is the default branch,
+      # so an entry saved here is the one every PR, merge-queue run, master
+      # run, and tag run can read. An entry saved from master, a tag, or a
+      # PR is visible to that ref alone and only eats cache quota, while a
+      # key-wide delete from such a run would remove the shared entry and
+      # give nothing back in its place (master is always a fast-forward of
+      # develop, so it never has anything develop lacks). `actions/cache/save`
+      # cannot overwrite an existing key, hence the explicit delete first;
+      # the `ref` filter limits even that to develop's own entry.
       - name: Delete Stale LLVM Cache
         if: |
           contains(env.BOOTSTRAP_REBUILT, 'llvm')
           && steps.llvm-cache.outputs.cache-hit == 'true'
-          && (github.event_name != 'pull_request'
-              || github.event.pull_request.head.repo.full_name == github.repository)
+          && github.ref == 'refs/heads/develop'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
             -H "Authorization: Bearer $GH_TOKEN" \
-            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches?key=${{ matrix.llvm-cache-key }}")
+            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/caches?key=${{ matrix.llvm-cache-key }}&ref=refs/heads/develop")
           case "$code" in
             200) echo "Deleted old cache for key ${{ matrix.llvm-cache-key }}" ;;
             404) echo "No existing cache for key ${{ matrix.llvm-cache-key }}" ;;
@@ -111,8 +117,7 @@ jobs:
       - name: Save Updated LLVM Cache
         if: |
           contains(env.BOOTSTRAP_REBUILT, 'llvm')
-          && (github.event_name != 'pull_request'
-              || github.event.pull_request.head.repo.full_name == github.repository)
+          && github.ref == 'refs/heads/develop'
         uses: actions/cache/save@v5
         with:
           path: build/third-party/install/llvm
