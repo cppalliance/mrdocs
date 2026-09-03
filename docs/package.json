@@ -8,7 +8,7 @@
     "@alandefreitas/antora-playbook-macros-extension": "^0.0.1",
     "@antora/lunr-extension": "^1.0.0-alpha.12",
     "@asciidoctor/tabs": "^1.0.0-beta.6",
-    "@cppalliance/antora-cpp-reference-extension": "^0.1.1",
+    "@cppalliance/antora-cpp-reference-extension": "^0.1.2",
     "@cppalliance/antora-cpp-tagfiles-extension": "^0.1.1",
     "asciidoctor": "^3.0.4",
     "sync-request": "^6.1.0"
