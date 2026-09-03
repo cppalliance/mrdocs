@@ -12,6 +12,8 @@
 #ifndef MRDOCS_LIB_METADATA_FINALIZERS_DOCCOMMENTFINALIZER_HPP
 #define MRDOCS_LIB_METADATA_FINALIZERS_DOCCOMMENTFINALIZER_HPP
 
+#include <optional>
+#include <unordered_map>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/detail/Corpus.hpp>
 #include <mrdocs/Support/Report.hpp>
@@ -342,6 +344,19 @@ private:
 
     void
     warnParamErrors(FunctionSymbol const& I);
+
+    /** The named parameters of every other function declared at the same
+        file, line, and column as I. Several functions at one location come
+        from a macro expansion and share the one comment written above it,
+        so a documented parameter that any of them has is valid. The
+        grouping is built on the first call and kept.
+    */
+    std::vector<std::string_view>
+    siblingParamNames(FunctionSymbol const& I) const;
+
+    mutable std::optional<
+        std::unordered_map<std::string, std::vector<FunctionSymbol const*>>>
+        functionsByLocation_;
 
     void
     warnParamErrors(MacroSymbol const& I);

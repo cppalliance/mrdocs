@@ -24,6 +24,7 @@
 #include <llvm/ADT/SmallVector.h>
 #include <algorithm>
 #include <format>
+#include <unordered_map>
 
 namespace mrdocs {
 
@@ -1830,6 +1831,50 @@ warnDocErrors()
     }
 }
 
+std::vector<std::string_view>
+DocCommentFinalizer::
+siblingParamNames(FunctionSymbol const& I) const
+{
+    std::vector<std::string_view> names;
+    auto const loc = getPrimaryLocation(I);
+    MRDOCS_CHECK_OR(loc, names);
+    auto const key = [](Location const& L)
+    {
+        return std::format("{}:{}:{}", L.FullPath, L.LineNumber, L.ColumnNumber);
+    };
+    // Built on the first request only. A documented parameter that no
+    // parameter matches is rare, so most runs never pay for the grouping.
+    // Functions from one macro expansion share the file, line, and column
+    // of the invocation; the column keeps two functions written by hand on
+    // one line apart.
+    if (!functionsByLocation_)
+    {
+        functionsByLocation_.emplace();
+        for (auto const& other : corpus_.info_)
+        {
+            MRDOCS_CHECK_OR_CONTINUE(other->isFunction());
+            auto const otherLoc = getPrimaryLocation(*other);
+            MRDOCS_CHECK_OR_CONTINUE(otherLoc);
+            (*functionsByLocation_)[key(*otherLoc)].push_back(
+                &dynamic_cast<FunctionSymbol const&>(*other));
+        }
+    }
+    auto const it = functionsByLocation_->find(key(*loc));
+    MRDOCS_CHECK_OR(it != functionsByLocation_->end(), names);
+    for (FunctionSymbol const* other : it->second)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(other != &I);
+        for (Param const& P : other->Params)
+        {
+            if (P.Name && !P.Name->empty())
+            {
+                names.push_back(*P.Name);
+            }
+        }
+    }
+    return names;
+}
+
 void
 DocCommentFinalizer::
 warnParamErrors(FunctionSymbol const& I)
@@ -1853,14 +1898,26 @@ warnParamErrors(FunctionSymbol const& I)
     }
     docParamNames.erase(lastUnique, docParamNames.end());
 
-    // Check for documented parameters that don't exist in the function
+    // Check for documented parameters that don't exist in the function.
+    // Functions declared on the same line come from one macro expansion and
+    // share the comment above it, so a parameter any of them has is valid.
+    // See tests/golden/fixtures/symbols/function/macro-shared-comment.cpp
     auto paramNames =
         std::views::transform(I.Params, &Param::Name) |
         std::views::filter([](Optional<std::string> const& name) { return static_cast<bool>(name); }) |
         std::views::transform([](Optional<std::string> const& name) -> std::string_view { return *name; });
+    std::vector<std::string_view> siblingNames;
+    bool siblingsKnown = false;
     for (std::string_view docParamName: docParamNames)
     {
-        if (std::ranges::find(paramNames, docParamName) == paramNames.end())
+        MRDOCS_CHECK_OR_CONTINUE(
+            std::ranges::find(paramNames, docParamName) == paramNames.end());
+        if (!siblingsKnown)
+        {
+            siblingNames = siblingParamNames(I);
+            siblingsKnown = true;
+        }
+        if (std::ranges::find(siblingNames, docParamName) == siblingNames.end())
         {
             this->warn(
                 *getPrimaryLocation(I),
