@@ -61,9 +61,9 @@ Select it with `--generator=search-index`; it writes search-index.json into the 
 include::example$examples/generators/script-driven/search-index/search-index.json[]
 ----
 
-== Navigation lists
+== Table of Contents
 
-A navigation list over the whole API is the same idea as the search index, an artifact aggregated across every symbol, but it emits a nested list instead of JSON objects. Deriving it from the corpus prevents a project from manually maintaining a separate nav partial and re-syncing it whenever the API changes. A complete, runnable example lives at `examples/generators/script-driven/toc/`:
+A table of contents or a navigation list over the whole API is the same idea as the search index: an artifact aggregated across every symbol, but it emits a nested list instead of JSON objects. Deriving it from the corpus prevents a project from manually maintaining a separate nav partial and re-syncing it whenever the API changes. A complete, runnable example lives at `examples/generators/script-driven/toc/`:
 
 [tabs]
 ======
