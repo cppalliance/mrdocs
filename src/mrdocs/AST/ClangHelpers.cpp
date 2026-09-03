@@ -714,6 +714,30 @@ getDocumentation(clang::Decl const* D)
             }
         }
     }
+
+    // A nested-namespace-definition, `namespace a::b {`, opens one
+    // NamespaceDecl per component at the same place, so Clang hands the
+    // comment above it to every one of them. The comment describes what
+    // is being opened for the code that follows, the innermost namespace,
+    // not the enclosing ones that merely lead to it. Give it to the outer
+    // components' redeclarations elsewhere if they have their own.
+    // See tests/golden/fixtures/symbols/namespace/nested-namespace-definition-doc.cpp
+    if (RC)
+    {
+        if (auto const* NS = dyn_cast<clang::NamespaceDecl>(D))
+        {
+            for (clang::Decl const* Child : NS->decls())
+            {
+                auto const* Inner = dyn_cast<clang::NamespaceDecl>(Child);
+                if (Inner && Inner->isNested() &&
+                    ctx.getRawCommentNoCache(Inner) == RC)
+                {
+                    return nullptr;
+                }
+                break;
+            }
+        }
+    }
     return RC;
 }
 
