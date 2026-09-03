@@ -3296,6 +3296,28 @@ checkFilters(
         return ExtractionMode::Dependency;
     }
 
+    // A member belongs to the documented surface only if its enclosing
+    // record does. Its own access can be public while the record is a
+    // private nested class, or the member can be defined out of line at
+    // namespace scope where nothing about the record is in sight; either
+    // way it will never reach the output, so it is not held to the
+    // documentation checks either. The record was usually traversed
+    // already; when it was not (an out-of-line member definition), its
+    // filters are evaluated here.
+    // See tests/golden/fixtures/config/warn-if-undocumented/private-nested-members.cpp
+    if (clang::Decl const* P = getParent(D);
+        P && isa<clang::CXXRecordDecl>(P))
+    {
+        ExtractionMode const parentMode = find(P)
+            ? find(P)->Extraction
+            : checkFilters(P, getAccess(P));
+        if (parentMode == ExtractionMode::Dependency ||
+            parentMode == ExtractionMode::ImplementationDefined)
+        {
+            return parentMode;
+        }
+    }
+
     // The translation unit is always extracted as the
     // global namespace. It can't fail any of the filters
     // because its qualified name is represented by the
