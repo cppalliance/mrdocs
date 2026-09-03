@@ -642,9 +642,11 @@ getDocumentation(clang::Decl const* D)
         //      declarator (a `friend class Z;`) or an implicit template
         //      instantiation borrowing its primary's comment.
         //      See tests/golden/fixtures/symbols/record/friend-type.cpp
-        clang::SourceLocation const beginLoc = D->getBeginLoc();
-        clang::SourceLocation const nameLoc = D->getLocation();
         clang::SourceManager const& sm = ctx.getSourceManager();
+        clang::SourceLocation const beginLoc =
+            sm.getExpansionLoc(D->getBeginLoc());
+        clang::SourceLocation const nameLoc =
+            sm.getExpansionLoc(D->getLocation());
 
         bool retry = hasNoCommentSearchLoc(D);
         if (!retry &&
