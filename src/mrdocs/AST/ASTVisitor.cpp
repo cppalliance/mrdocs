@@ -582,7 +582,9 @@ traverseParent(InfoTy& I, DeclTy const* DC)
         // hasn't been extracted yet
         Symbol* PI = nullptr;
         {
+            bool const written = mode_ == Regular;
             ScopeExitRestore s(mode_, Dependency);
+            ScopeExitRestore w(parentOfWritten_, written);
             if (PI = findOrTraverse(PD); !PI)
             {
                 return;
@@ -3278,7 +3280,17 @@ checkFilters(
     clang::Decl const* D,
     clang::AccessSpecifier const access)
 {
-    if (mode_ == BaseClass &&
+    // An implicit specialization is documented by its primary template:
+    // nobody wrote it, so reaching it as a base class or as the type of a
+    // parameter (`AnalysisManager<Module>::Invalidator &`) makes it a
+    // dependency, whatever the symbol filters say. Regular traversal only
+    // ever meets written declarations, so the rule is for the other modes,
+    // with one exception: the parent walk from a written declaration inside
+    // the specialization, an explicit specialization of one of its members,
+    // gives it a place of its own in the output to hold that member.
+    // See tests/golden/fixtures/templates/implicit-specialization-dependency.cpp
+    if (mode_ != Regular &&
+        !parentOfWritten_ &&
         isAnyImplicitSpecialization(D))
     {
         return ExtractionMode::Dependency;

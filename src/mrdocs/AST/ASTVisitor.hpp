@@ -271,6 +271,18 @@ class ASTVisitor
      */
     TraversalMode mode_ = Regular;
 
+    /** Whether the declaration being traversed is the parent of a written
+        declaration that is extracted in regular mode.
+
+        Parents are traversed as dependencies. An implicit specialization
+        reached that way is a dependency like any other, except when what is
+        being attached to it was written by the user, an explicit
+        specialization of one of its members: then the specialization gets a
+        place in the output to hold it. Set by traverseParent for the
+        duration of the parent's traversal.
+    */
+    bool parentOfWritten_ = false;
+
     /* A map which stores the Info types created by each decl.
      */
     std::unordered_map<clang::FriendDecl const*, Symbol const*> friendDecls_;
