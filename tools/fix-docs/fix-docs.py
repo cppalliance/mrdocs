@@ -17,15 +17,18 @@ re-run Mr.Docs when the collected list is exhausted.
 
 The first argument is the config file; anything else is forwarded to every
 mrdocs run. Options (--mrdocs, --agent, --parallel, --batch, --max-rounds,
---cycles, --state) each fall back to an environment variable (MRDOCS, AGENT,
-PARALLEL, BATCH, MAX_ROUNDS, CYCLES, STATE) then a default. Run with --help
-for the full list. The caps bound mrdocs re-runs, never the per-file or
-per-batch fan-out between runs.
+--stuck-after, --retries, --retry-pause, --state) each fall back to an
+environment variable (MRDOCS, AGENT, PARALLEL, BATCH, MAX_ROUNDS, STUCK_AFTER,
+RETRIES, RETRY_PAUSE, STATE) then a default. Run with --help for the full list.
+The cap bounds mrdocs re-runs in every phase, never the per-file or per-batch
+fan-out between runs, and each phase also stops early when a full round
+changes nothing.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -65,9 +68,9 @@ def parse_args():
                    help="the mrdocs config file (default: mrdocs.yml)")
     p.add_argument("--mrdocs", default=env("MRDOCS", "mrdocs"),
                    help="mrdocs binary (env MRDOCS; default: mrdocs on PATH)")
-    p.add_argument("--agent", default=env("AGENT", "agent -p -f"),
+    p.add_argument("--agent", default=env("AGENT", "agent -p --trust"),
                    help="agent command; the prompt is appended as its last "
-                        "argument (env AGENT; default: 'agent -p -f')")
+                        "argument (env AGENT; default: 'agent -p --trust')")
     p.add_argument("--parallel", type=int, default=int(env("PARALLEL", "1")),
                    help="concurrent agents in the document phase "
                         "(env PARALLEL; default: 1)")
@@ -76,11 +79,23 @@ def parse_args():
                         "(env BATCH; default: 30)")
     p.add_argument("--max-rounds", type=int,
                    default=int(env("MAX_ROUNDS", "40")),
-                   help="mrdocs re-run cap in the compile and warnings phases "
+                   help="mrdocs re-run cap in every phase; a phase also stops "
+                        "early when a round changes nothing "
                         "(env MAX_ROUNDS; default: 40)")
-    p.add_argument("--cycles", type=int, default=int(env("CYCLES", "3")),
-                   help="dump/fan-out passes in the document phase "
-                        "(env CYCLES; default: 3)")
+    p.add_argument("--stuck-after", type=int,
+                   default=int(env("STUCK_AFTER", "3")),
+                   help="backstop: visits in which the agent edited the file "
+                        "yet the task came back, before it is parked; a visit "
+                        "that leaves the file unchanged parks it at once "
+                        "(env STUCK_AFTER; default: 3)")
+    p.add_argument("--retries", type=int, default=int(env("RETRIES", "3")),
+                   help="how many times a failed agent call is retried, with "
+                        "a pause doubling from --retry-pause "
+                        "(env RETRIES; default: 3)")
+    p.add_argument("--retry-pause", type=int,
+                   default=int(env("RETRY_PAUSE", "60")),
+                   help="seconds before the first retry of a failed agent "
+                        "call (env RETRY_PAUSE; default: 60)")
     p.add_argument("--state", default=env("STATE"),
                    help="checkpoint path (env STATE; default: under the "
                         "system temp dir, keyed by the config path)")
@@ -93,7 +108,9 @@ AGENT = shlex.split(ARGS.agent)
 PARALLEL = ARGS.parallel
 BATCH = ARGS.batch
 MAX_ROUNDS = ARGS.max_rounds
-CYCLES = ARGS.cycles
+RETRIES = ARGS.retries
+STUCK_AFTER = ARGS.stuck_after
+RETRY_PAUSE = ARGS.retry_pause
 CONFIG = ARGS.config
 EXTRA = [a for a in EXTRA if not a.startswith("--max-errors")]
 STATE_PATH = Path(ARGS.state) if ARGS.state else default_state_path(CONFIG)
@@ -114,19 +131,64 @@ FOOTER = re.compile(
 
 
 def main():
-    print(f"config={CONFIG} agent={shlex.join(AGENT)} parallel={PARALLEL}")
+    log(f"config={CONFIG} agent={shlex.join(AGENT)} parallel={PARALLEL}")
+    log(f"driver log: {LOG_PATH}")
     corpus = phase_compile()
     if corpus is None:
-        return 1
-    if not phase_document(corpus):
-        return 1
-    if not phase_warnings():
-        return 1
-    print("All three phases are clean.")
-    return 0
+        return summary(compile=False)
+    documented = phase_document(corpus)
+    if documented is None:
+        return summary(document="broken")
+    # A stalled document phase is not a reason to skip the warnings phase: it
+    # is the backstop that sees what the corpus dump cannot (parse errors,
+    # broken references), and its own stop rule (same locations twice) keeps
+    # it from spinning.
+    clean = phase_warnings()
+    return summary(document=documented, warnings=clean)
+
+
+def summary(compile=True, document=None, warnings=None):
+    """Print the outcome in one place, last, so it is the first thing seen
+    when scrolling back through the agents' output. Non-zero when any phase
+    did not finish clean."""
+    ok = compile and document is True and warnings is True
+    log("")
+    log("==================== fix-docs summary ====================")
+    log(f"compile:  {'clean' if compile else 'FAILED (see above)'}")
+    if document is None:
+        log("document: not run")
+    elif document == "broken":
+        log("document: every agent invocation FAILED; nothing documented")
+    else:
+        log("document: clean" if document else
+            f"document: NOT converged; residual work-list in {RESIDUAL_PATH}")
+    if warnings is None:
+        log("warnings: not run")
+    else:
+        log("warnings: clean" if warnings else "warnings: NOT clean (see above)")
+    log(f"driver log: {LOG_PATH}")
+    log("==========================================================")
+    return 0 if ok else 1
 
 
 # -------- shared helpers
+
+LOG_PATH = STATE_PATH.with_suffix(".log")
+RESIDUAL_PATH = STATE_PATH.with_suffix(".residual.md")
+LOG_LOCK = Lock()
+
+
+def log(message, err=False):
+    """Print one driver line and append it to the log file. The agents write
+    straight to the terminal and drown the driver's lines, so the log file
+    is the place to read what the driver decided."""
+    print(message, file=sys.stderr if err else sys.stdout, flush=True)
+    stamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    with LOG_LOCK:
+        LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with LOG_PATH.open("a", encoding="utf-8") as f:
+            f.write(f"{stamp} {message}\n")
+
 
 def run_mrdocs(args):
     """Run mrdocs; return (returncode, ansi-stripped combined output)."""
@@ -136,22 +198,57 @@ def run_mrdocs(args):
 
 
 def run_agent(prompt):
-    """Hand one rendered prompt to the agent; return (seconds, exit code).
+    """Hand one rendered prompt to the agent; return (seconds, exit code,
+    output). The output is streamed to the terminal as it arrives and also
+    kept, because the prompts ask the agent to end with a one-line summary
+    and that line is the best explanation of a task it declined to change.
     A non-zero exit means the agent invocation itself failed (crash, bad
-    command, rate-limit abort), not that it ran but left work undone."""
+    command, rate-limit abort), not that it ran but left work undone. Such
+    failures are usually transient (a rate limit, a dropped connection), so
+    the call is retried with a growing pause before it counts as failed."""
     start = time.monotonic()
-    result = subprocess.run(AGENT + [prompt])
-    return time.monotonic() - start, result.returncode
+    for attempt in range(1, RETRIES + 2):
+        proc = subprocess.Popen(
+            AGENT + [prompt], stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, text=True, errors="replace")
+        lines = []
+        for line in proc.stdout:
+            sys.stdout.write(line)
+            sys.stdout.flush()
+            lines.append(line)
+        code = proc.wait()
+        if code == 0 or attempt > RETRIES:
+            break
+        pause = RETRY_PAUSE * 2 ** (attempt - 1)
+        log(f"[agent] exit {code}; retry {attempt}/{RETRIES} in {pause}s.",
+            err=True)
+        time.sleep(pause)
+    return time.monotonic() - start, code, "".join(lines)
+
+
+def last_line(output):
+    """The agent's closing summary: its last non-empty output line."""
+    for line in reversed(output.splitlines()):
+        if line.strip():
+            return line.strip()[:300]
+    return "(no output)"
+
+
+def file_digest(path):
+    try:
+        return hashlib.sha1(Path(path).read_bytes()).hexdigest()
+    except OSError:
+        return None
 
 
 # Printed when every agent in a phase failed to run. The work is real, so the
 # problem is the agent command, not the project: stop before the next phase so
 # the user can point --agent (or AGENT) at another tool.
 def agent_broken(phase):
-    print(f"[{phase}] every agent invocation failed (non-zero exit). The "
-          f"agent command looks broken or unavailable; stopping so you can "
-          f"switch agents (--agent / AGENT). Later phases will not run.",
-          file=sys.stderr)
+    log(f"[{phase}] every agent invocation failed (non-zero exit). The "
+        f"agent command looks broken or unavailable; stopping so you can "
+        f"switch agents (--agent / AGENT). Later phases will not run.",
+        err=True)
 
 
 def render(name, **values):
@@ -162,9 +259,10 @@ def render(name, **values):
 
 
 def load_state():
+    state = {"documented": [], "seen": {}, "parked": {}}
     if STATE_PATH.exists():
-        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
-    return {"documented": []}
+        state.update(json.loads(STATE_PATH.read_text(encoding="utf-8")))
+    return state
 
 
 def save_state(state):
@@ -182,13 +280,13 @@ def phase_compile():
         code, corpus, out, cmd = extract_json()
         errors = compile_errors(out)
         if corpus is not None and corpus.get("symbols") and not errors:
-            print(f"[compile] clean after {round - 1} repair round(s).")
+            log(f"[compile] clean after {round - 1} repair round(s).")
             return corpus
         if not errors:
             errors = [out.strip()[-4000:] or "(no output)"]
-        print(f"[compile] round {round}: {len(errors)} error line(s); "
+        log(f"[compile] round {round}: {len(errors)} error line(s); "
               f"handing them to the agent.")
-        seconds, agent_code = run_agent(render(
+        seconds, agent_code, _ = run_agent(render(
             "compile",
             command=shlex.join(cmd),
             config=CONFIG,
@@ -196,8 +294,8 @@ def phase_compile():
         if agent_code != 0:
             agent_broken("compile")
             return None
-        print(f"[compile] agent took {seconds:.0f}s.")
-    print("[compile] out of rounds.", file=sys.stderr)
+        log(f"[compile] agent took {seconds:.0f}s.")
+    log("[compile] out of rounds.", err=True)
     return None
 
 
@@ -213,22 +311,75 @@ def compile_errors(out):
 
 def phase_document(initial_corpus=None):
     state = load_state()
-    for cycle in range(1, CYCLES + 1):
+    previous = None
+    for cycle in range(1, MAX_ROUNDS + 1):
         # The compile phase already extracted; reuse its corpus for cycle 1
         # instead of extracting again just to say the same thing.
         if cycle == 1 and initial_corpus is not None:
             tasks = work_list_from(initial_corpus)
         else:
+            log("[document] re-extracting with mrdocs to build the next "
+                "work-list; on a large tree this takes as long as the "
+                "initial extraction.")
+            started_dump = time.monotonic()
             tasks = dump_work_list()
+            log(f"[document] extraction took "
+                f"{(time.monotonic() - started_dump) / 60:.0f}min.")
+
+        # Two kinds of task are not worth another visit. One the agent has
+        # already looked at and left the file untouched: it judged the
+        # symbol documented, so the cause is on the mrdocs side, and its
+        # closing line says what it saw. And, as a backstop, one the agent
+        # has edited STUCK_AFTER times that still comes back. Both are
+        # parked, so the remaining cycles (and their long extractions) go
+        # to tasks that can move.
+        seen = state["seen"]
+        declined = state["parked"]
+        for t in tasks:
+            t["cycles"] = seen.get(stall_id(t), 0)
+            t["agent"] = declined.get(stall_id(t))
+        parked = [t for t in tasks
+                  if t["agent"] or t["cycles"] >= STUCK_AFTER]
+        active = [t for t in tasks
+                  if not t["agent"] and t["cycles"] < STUCK_AFTER]
+        for t in active:
+            seen[stall_id(t)] = t["cycles"] + 1
+        save_state(state)
+
         done = set(map(tuple, state["documented"]))
         by_file = {}
-        for t in tasks:
+        for t in active:
             key = (t["file"], t["name"], t["reason"])
             if key not in done:
                 by_file.setdefault(t["file"], []).append(t)
         if not by_file:
-            print(f"[document] work-list clean after cycle {cycle - 1}.")
+            if parked:
+                write_residual(parked)
+                log(f"[document] every remaining task ({len(parked)}) is "
+                    f"parked: the agent looked and left the file unchanged, "
+                    f"or edited it {STUCK_AFTER} times without clearing the "
+                    f"task. Listed by reason, with what the agent said, in "
+                    f"{RESIDUAL_PATH}. Moving on to the warnings phase.",
+                    err=True)
+                return False
+            log(f"[document] work-list clean after cycle {cycle - 1}.")
             return True
+        if parked:
+            log(f"[document] {len(parked)} task(s) parked (agent declined or "
+                f"{STUCK_AFTER} visits without effect); {len(active)} active.")
+        # Progress is measured on the set of tasks, not its size: documenting
+        # a symbol can legitimately surface new detail tasks (its parameters,
+        # its return value), so a longer list can still be progress. Only an
+        # identical list means the agent is not converging.
+        current = frozenset(stall_key(t) for ts in by_file.values() for t in ts)
+        if current == previous:
+            write_residual(parked + active)
+            log(f"[document] cycle {cycle - 1} changed nothing: the same "
+                f"{len(current)} task(s) came back. Listed by reason in "
+                f"{RESIDUAL_PATH}. Moving on to the warnings phase.",
+                err=True)
+            return False
+        previous = current
 
         # Do the files nearest the top of the index first, so an interrupted
         # run still leaves everything a reader sees first fully documented. A
@@ -238,12 +389,13 @@ def phase_document(initial_corpus=None):
             by_file.items(), key=lambda kv: index_rank(kv[1][0]))
         total_files = len(by_file)
         total_tasks = sum(len(v) for v in by_file.values())
-        print(f"[document] cycle {cycle}: {total_tasks} task(s) across "
+        log(f"[document] cycle {cycle}: {total_tasks} task(s) across "
               f"{total_files} file(s).")
 
         lock = Lock()
         finished = [0]
         failed = [0]
+        declined_files = [0]
         started = time.monotonic()
 
         def fix_file(file, file_tasks):
@@ -252,10 +404,22 @@ def phase_document(initial_corpus=None):
                 f"- line ~{t['line']}: {t['kind']} `{t['name']}`: {t['reason']}"
                 + (f"\n  current brief: \"{t['brief']}\"" if t.get("brief") else "")
                 for t in file_tasks)
-            seconds, code = run_agent(render("document", file=file, tasks=listing))
+            before = file_digest(file)
+            seconds, code, output = run_agent(
+                render("document", file=file, tasks=listing))
+            unchanged = code == 0 and file_digest(file) == before
             with lock:
                 finished[0] += 1
-                if code == 0:
+                if unchanged:
+                    # The agent read the tasks and decided there was nothing
+                    # to change. Another visit will say the same, so park
+                    # them now with its explanation instead of paying for a
+                    # re-extraction to find out.
+                    for t in file_tasks:
+                        state["parked"][stall_id(t)] = last_line(output)
+                    declined_files[0] += 1
+                    save_state(state)
+                elif code == 0:
                     # Only a clean agent run counts as done; a failed one is
                     # left off the checkpoint so it is retried.
                     for t in file_tasks:
@@ -270,8 +434,10 @@ def phase_document(initial_corpus=None):
                 elapsed = time.monotonic() - started
                 rate = elapsed / finished[0]
                 eta = rate * (total_files - finished[0])
-                note = " FAILED" if code != 0 else ""
-                print(f"[document] {finished[0]}/{total_files} files{note} "
+                note = " FAILED" if code != 0 else \
+                    " UNCHANGED (agent declined; tasks parked)" if unchanged \
+                    else ""
+                log(f"[document] {finished[0]}/{total_files} files{note} "
                       f"({len(file_tasks)} task(s) in {seconds:.0f}s, "
                       f"{rate:.0f}s/file wall, ~{eta / 60:.0f}min left)")
 
@@ -286,20 +452,64 @@ def phase_document(initial_corpus=None):
                 fix_file(f, ts)
 
         if failed[0] == total_files:
+            write_residual(tasks)
             agent_broken("document")
-            return False
+            log(f"[document] the {len(tasks)} task(s) of this cycle are listed "
+                f"in {RESIDUAL_PATH}; the checkpoint keeps every earlier "
+                f"cycle's progress, so re-running resumes here.", err=True)
+            return None
         if failed[0]:
-            print(f"[document] {failed[0]}/{total_files} file(s) had a "
+            log(f"[document] {failed[0]}/{total_files} file(s) had a "
                   f"failing agent; they will be retried next cycle.")
+        if declined_files[0]:
+            log(f"[document] {declined_files[0]}/{total_files} file(s) came "
+                f"back unchanged; their tasks are parked with the agent's "
+                f"explanation.")
 
         # The checkpoint only protects a cycle against interruption. Once a
         # cycle completes, the next dump is the ground truth: a task that
         # still shows up was not really fixed and must be queued again.
         state["documented"] = []
         save_state(state)
-    print(f"[document] work-list still not empty after {CYCLES} cycles.",
-          file=sys.stderr)
+    write_residual(tasks)
+    log(f"[document] out of rounds after {MAX_ROUNDS} cycles: {len(tasks)} "
+        f"task(s) left, listed by reason in {RESIDUAL_PATH}. Moving on to "
+        f"the warnings phase.", err=True)
     return False
+
+
+def stall_id(task):
+    """stall_key as one string, usable as a JSON object key."""
+    return "\x1f".join(stall_key(task))
+
+
+def stall_key(task):
+    """What identifies a task across cycles: its file, symbol, and reason
+    with every line number removed. Edits shift lines, and the reason can
+    quote other locations, so a task that survives unchanged must still
+    compare equal to itself."""
+    return (task["file"], task["name"], re.sub(r":\d+", "", task["reason"]))
+
+
+def write_residual(tasks):
+    """Dump the tasks that survived every cycle, grouped by reason, so a
+    human can see what the agent kept failing at without re-running."""
+    by_reason = {}
+    for t in tasks:
+        by_reason.setdefault(t["reason"].split(":")[0], []).append(t)
+    lines = [f"# Residual work-list ({len(tasks)} task(s))", ""]
+    for reason, group in sorted(by_reason.items(), key=lambda kv: -len(kv[1])):
+        lines += [f"## {reason} ({len(group)})", ""]
+        lines += [f"- {t['file']}:{t['line']} {t['kind']} `{t['name']}`: "
+                  f"{t['reason']}" + (f" (brief: \"{t['brief']}\")"
+                                     if t.get("brief") else "")
+                  + (f"\n  agent said: {t['agent']}" if t.get("agent") else
+                     f" [edited {t['cycles']} time(s) without effect]"
+                     if t.get("cycles") else "")
+                  for t in group]
+        lines.append("")
+    RESIDUAL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    RESIDUAL_PATH.write_text("\n".join(lines), encoding="utf-8")
 
 
 def extract_json():
@@ -325,10 +535,21 @@ def dump_work_list():
 
 
 def work_list_from(corpus):
-    """Derive the work-list from a corpus, in index order."""
+    """Derive the work-list from a corpus, in index order, one task per
+    (file, line, symbol, reason). Overloads that share a line, or the same
+    symbol reached through several ids, would otherwise hand the agent the
+    same task many times over and bury the rest of the file's list."""
     symbols = corpus.get("symbols", [])
     by_id = {s["id"]: s for s in symbols if "id" in s}
-    tasks = [t for s in symbols for t in tasks_for(s, by_id)]
+    shared = shared_comment_lines(symbols)
+    seen = set()
+    tasks = []
+    for s in symbols:
+        for t in tasks_for(s, by_id, shared):
+            key = (t["file"], t["line"], t["name"], t["reason"])
+            if key not in seen:
+                seen.add(key)
+                tasks.append(t)
     tasks.sort(key=index_rank)
     return tasks
 
@@ -340,10 +561,11 @@ def index_rank(task):
     return (task["depth"], task["name"].lower())
 
 
-def tasks_for(sym, by_id):
+def tasks_for(sym, by_id, shared=frozenset()):
     """Every work-list entry a symbol needs (zero or more).
 
-    These mirror the offline-computable subset of the strict warnings, so
+    These mirror the subset of the strict warnings that the corpus dump
+    already carries, so
     the warnings phase has almost nothing left to catch: undocumented
     symbols (namespaces included), missing or anomalous briefs, function
     parameters with no doc, and undocumented enum values. Only regular
@@ -352,9 +574,13 @@ def tasks_for(sym, by_id):
     """
     if sym.get("extraction", "regular") != "regular":
         return []
+    # A member copied from a base class carries the base's documentation;
+    # the strict check skips these too. The task belongs to the original.
+    if sym.get("isCopyFromInherited"):
+        return []
     kind = sym.get("kind", "?")
     name = qualified_name(sym, by_id)
-    tasks = classify(sym, by_id, kind, name)
+    tasks = classify(sym, by_id, kind, name, shared)
     # Every task from one symbol shares its index depth (the enum-constant's
     # namespaces are the same as its enum's). Stamp it once for sorting.
     depth = namespace_depth(sym, by_id)
@@ -363,7 +589,7 @@ def tasks_for(sym, by_id):
     return tasks
 
 
-def classify(sym, by_id, kind, name):
+def classify(sym, by_id, kind, name, shared=frozenset()):
     """The reasons a symbol needs work, as unranked tasks."""
     # Enum values are separate symbols with no location of their own, so
     # report them at the parent enum. Only when the enum itself is
@@ -373,42 +599,238 @@ def classify(sym, by_id, kind, name):
         parent = by_id.get(sym.get("parent"))
         if sym.get("doc") or not (parent and parent.get("doc")):
             return []
-        loc = symbol_loc(parent)
-        return [make_task(loc, name, kind, "undocumented enum value")] \
-            if loc else []
+        locs = documented_locs(parent) or as_list(symbol_loc(parent))
+        return [make_task(locs[0], name, kind, "undocumented enum value")] \
+            if locs else []
 
-    loc = symbol_loc(sym)
-    if not loc:
-        return []
+    if kind == "namespace":
+        return namespace_tasks(sym, name)
+
+    # A specialization Mr.Docs instantiated on its own (template arguments,
+    # no template parameters of its own) is documented by its primary
+    # template; there is no declaration of it to put a comment on. When the
+    # primary is documented, whatever the specialization symbol lacks is
+    # Mr.Docs failing to carry the doc over, not missing documentation.
+    template = sym.get("template") or {}
+    if template.get("args") and not template.get("params"):
+        primary = by_id.get(template.get("primary"))
+        if primary and primary.get("doc"):
+            return []
 
     if not sym.get("doc"):
         # The whole symbol is undocumented; the agent writes its brief,
         # params, and enum values in one comment, so no detail tasks here.
-        return [make_task(loc, name, kind, "undocumented")]
+        loc = symbol_loc(sym)
+        return [make_task(loc, name, kind, "undocumented")] if loc else []
 
-    tasks = []
+    reasons = []
     brief = brief_text(sym)
     if not brief:
-        tasks.append(make_task(loc, name, kind, "no-brief"))
+        reasons.append(("no-brief", None))
     else:
         anomaly = brief_anomaly(brief)
         if anomaly:
-            tasks.append(make_task(loc, name, kind,
-                                   f"anomalous-brief: {anomaly}", brief))
+            reasons.append((f"anomalous-brief: {anomaly}", brief))
 
-    # A documented function whose parameters are not fully documented: named
-    # ones with no @param, and unnamed ones (which must first be given a name
-    # in the signature before they can be documented at all).
     if kind == "function":
-        missing = missing_param_docs(sym)
-        if missing:
-            tasks.append(make_task(loc, name, kind,
-                                   "missing param doc: " + ", ".join(missing)))
-        unnamed = sum(1 for p in sym.get("params", []) if not p.get("name"))
-        if unnamed:
-            tasks.append(make_task(loc, name, kind,
-                                   f"unnamed parameter(s): {unnamed}"))
+        reasons += function_reasons(sym, shared)
+    elif kind == "macro":
+        reasons += macro_reasons(sym)
+    if not reasons:
+        return []
+
+    # The comment lives on a documented declaration, not necessarily on the
+    # definition, so that is where the agent must go. When several
+    # declarations carry a comment, Mr.Docs merges them field by field and
+    # the first one wins, so each of them gets the task and a pointer to
+    # the others: fixing only one leaves the stale text free to win again.
+    locs = documented_locs(sym) or as_list(symbol_loc(sym))
+    tasks = []
+    for loc in locs:
+        others = [f"{l['sourcePath']}:{l['lineNumber']}" for l in locs
+                  if l is not loc]
+        note = ""
+        if others:
+            note = ("; also documented at " + ", ".join(others) +
+                    " (Mr.Docs merges every declaration's comment, first "
+                    "one wins: fix the copy here too)")
+        for reason, text in reasons:
+            tasks.append(make_task(loc, name, kind, reason + note, text))
     return tasks
+
+
+def function_reasons(sym, shared=frozenset()):
+    """What the strict check would say about a documented function's
+    parameters and return value, read off the corpus: named parameters with no
+    @param, @param entries naming no parameter, unnamed parameters (which
+    must first be given a name before they can be documented at all), and a
+    non-void return with no @return. Deleted functions are exempt from the
+    parameter and return checks, as in Mr.Docs.
+
+    Parameter checks are skipped for a function that shares its line, and
+    so its one comment, with a function of a different signature: a macro
+    that expands to a static and a member overload, say. No single comment
+    can name the parameters of both, so the agent would only flip an @param
+    on and off between cycles."""
+    reasons = []
+    params = sym.get("params") or []
+    named = [p["name"] for p in params if p.get("name")]
+    documented = doc_param_names(sym)
+    loc = symbol_loc(sym)
+    shares_comment = loc and (loc["sourcePath"], int(loc["lineNumber"])) in shared
+    if not sym.get("isDeleted"):
+        missing = [n for n in named if n not in documented]
+        if missing and not shares_comment:
+            reasons.append(("missing param doc: " + ", ".join(missing), None))
+        if missing_return_doc(sym):
+            reasons.append(("missing return doc: the function returns a "
+                            "value and the comment has no @return", None))
+    bogus = [n for n in documented if n not in named]
+    if bogus and shares_comment:
+        bogus = []
+    if bogus:
+        reasons.append(("documented parameter(s) that do not exist: "
+                        + ", ".join(bogus) +
+                        " (rename to the real parameter or remove)", None))
+    unnamed = sum(1 for p in params if not p.get("name"))
+    if unnamed:
+        reasons.append((f"unnamed parameter(s): {unnamed}", None))
+    return reasons
+
+
+def macro_reasons(sym):
+    """The parameter checks for a documented function-like macro. Only the
+    named parameters must be documented; the variadic list is optional and
+    may be documented as `...` or `__VA_ARGS__`."""
+    params = sym.get("parameters") or []
+    documented = doc_param_names(sym)
+    variadic = {"...", "__VA_ARGS__"} if sym.get("isVariadic") else set()
+    reasons = []
+    missing = [n for n in params if n not in documented]
+    if missing:
+        reasons.append(("missing param doc: " + ", ".join(missing), None))
+    bogus = [n for n in documented if n not in params and n not in variadic]
+    if bogus:
+        reasons.append(("documented parameter(s) that do not exist: "
+                        + ", ".join(bogus) +
+                        " (rename to the real parameter or remove)", None))
+    return reasons
+
+
+def shared_comment_lines(symbols):
+    """The (file, line) pairs where more than one function with a different
+    parameter list is declared: the product of a macro expanding to several
+    declarations, which all receive the comment written above the macro."""
+    signatures = {}
+    for s in symbols:
+        if s.get("kind") != "function" or s.get("isCopyFromInherited"):
+            continue
+        loc = symbol_loc(s)
+        if not loc:
+            continue
+        key = (loc["sourcePath"], int(loc["lineNumber"]))
+        sig = tuple(p.get("name") or "" for p in s.get("params") or [])
+        signatures.setdefault(key, set()).add(sig)
+    return frozenset(k for k, sigs in signatures.items() if len(sigs) > 1)
+
+
+def doc_param_names(sym):
+    """The names given to @param entries in a symbol's comment."""
+    return [p.get("name") for p in (sym.get("doc") or {}).get("params", [])
+            if p.get("name")]
+
+
+def missing_return_doc(sym):
+    """A function whose return type is not void and whose comment has no
+    @return. Constructors and destructors have a void return type in the
+    corpus, so they drop out here like they do in the strict check."""
+    if (sym.get("doc") or {}).get("returns"):
+        return False
+    rt = sym.get("returnType")
+    if not rt:
+        return False
+    if rt.get("kind") == "named" and \
+            (rt.get("name") or {}).get("identifier") == "void":
+        return False
+    return True
+
+
+def documented_locs(sym):
+    """The declarations of a symbol that carry a comment, in a stable order,
+    without duplicates."""
+    seen = set()
+    out = []
+    for l in sorted(all_locs(sym),
+                    key=lambda l: (l["sourcePath"], int(l["lineNumber"]))):
+        key = (l["sourcePath"], int(l["lineNumber"]))
+        if l.get("documented") and key not in seen:
+            seen.add(key)
+            out.append(l)
+    return out
+
+
+def as_list(loc):
+    return [loc] if loc else []
+
+
+def namespace_tasks(sym, name):
+    """Tasks for a namespace, which is reopened in many files.
+
+    Mr.Docs merges the comment attached to every reopening, field by field,
+    first one wins. So the brief can come from any file that happens to have
+    a comment right above `namespace X {`, often a banner or a description of
+    the declaration that follows. A task at the definition location alone
+    cannot fix that: the agent documents that reopening and the stray comment
+    elsewhere keeps winning. So every documented reopening gets a task. The
+    lowest (path, line) documented reopening is the canonical one and keeps
+    the brief; the others must move their comment onto the declaration it
+    describes or delete it. Once the namespace is documented at exactly one
+    place with a sane brief, no task remains.
+    """
+    kind = "namespace"
+    documented = documented_locs(sym)
+    if not sym.get("doc") or not documented:
+        loc = symbol_loc(sym)
+        return [make_task(loc, name, kind, "undocumented namespace")] \
+            if loc else []
+
+    brief = brief_text(sym)
+    anomaly = brief_anomaly(brief) if brief else None
+    if brief and not anomaly and len(documented) == 1:
+        return []
+
+    if not brief:
+        what = "namespace has no brief"
+    elif anomaly:
+        what = f"anomalous namespace brief: {anomaly}"
+    else:
+        what = "namespace brief is fine, but the doc is split"
+    others = [f"{l['sourcePath']}:{l['lineNumber']}" for l in documented]
+    tasks = []
+    for i, loc in enumerate(documented):
+        if i == 0:
+            role = "canonical reopening: the one-sentence brief for the " \
+                   "namespace as a whole lives here"
+        else:
+            role = f"non-canonical reopening: move the comment attached " \
+                   f"here onto the declaration it describes, or delete it; " \
+                   f"the brief lives at {others[0]}"
+        reason = f"{what}; comments are attached at {len(documented)} " \
+                 f"reopening(s) ({', '.join(others)}); {role}"
+        tasks.append(make_task(loc, name, kind, reason,
+                               brief if i == 0 else None))
+    return tasks
+
+
+def all_locs(sym):
+    """Every usable location a symbol has: the definition and every
+    declaration."""
+    info = sym.get("loc") or {}
+    locs = list(info.get("loc") or [])
+    if info.get("defLoc"):
+        locs.append(info["defLoc"])
+    return [l for l in locs
+            if l.get("sourcePath") and l.get("lineNumber")]
 
 
 def namespace_depth(sym, by_id):
@@ -443,14 +865,6 @@ def make_task(loc, name, kind, reason, brief=None):
     if brief:
         task["brief"] = brief[:200] + ("..." if len(brief) > 200 else "")
     return task
-
-
-def missing_param_docs(sym):
-    """Named parameters of a function that have no @param entry."""
-    documented = {p.get("name")
-                  for p in (sym.get("doc") or {}).get("params", [])}
-    return [p["name"] for p in sym.get("params", [])
-            if p.get("name") and p["name"] not in documented]
 
 
 def qualified_name(sym, by_id):
@@ -497,28 +911,38 @@ def brief_anomaly(brief):
 # -------- phase 3: fix until mrdocs reports no warnings
 
 def phase_warnings():
-    previous = None
+    seen = []
     for round in range(1, MAX_ROUNDS + 1):
         code, out, cmd = run_mrdocs(
             ["--generator=noop", *STRICT, "--log-level=warn"])
         blocks = diagnostics(out)
         if code == 0 and not blocks and "Extracted 0 declarations" not in out:
-            print(f"[warnings] clean after {round - 1} round(s).")
+            log(f"[warnings] clean after {round - 1} round(s).")
             return True
-        headers = tuple(b.splitlines()[0] for b in blocks)
-        if headers and headers == previous:
-            print("[warnings] the same locations came back unchanged; "
-                  "stopping so a human can look.", file=sys.stderr)
+        # Compare rounds on what was said and where, minus line numbers:
+        # edits shift lines, so the same complaint at a moved line is still
+        # the same complaint. Every past round is kept, not just the last,
+        # because an agent can oscillate between two fixes (add the @param,
+        # remove the @param) and each round then differs from its
+        # predecessor while nothing converges.
+        signature = frozenset(re.sub(r":\d+", "", b) for b in blocks)
+        if signature in seen:
+            log(f"[warnings] round {round} came back identical to round "
+                f"{seen.index(signature) + 1} (ignoring line numbers); the "
+                f"agent is not converging on these {len(blocks)} location(s). "
+                f"Stopping so a human can look:", err=True)
+            for b in blocks:
+                log("    " + b.splitlines()[0].rstrip(":"), err=True)
             return False
-        previous = headers
+        seen.append(signature)
 
         batches = [blocks[i:i + BATCH] for i in range(0, len(blocks), BATCH)] \
             or [[out.strip() or "(no output)"]]
-        print(f"[warnings] round {round}: {len(blocks)} location(s) in "
+        log(f"[warnings] round {round}: {len(blocks)} location(s) in "
               f"{len(batches)} batch(es).")
         failures = 0
         for i, batch in enumerate(batches, 1):
-            seconds, agent_code = run_agent(render(
+            seconds, agent_code, _ = run_agent(render(
                 "warnings",
                 command=shlex.join(cmd),
                 batch_index=i,
@@ -526,18 +950,33 @@ def phase_warnings():
                 report="\n\n".join(batch)))
             note = " FAILED" if agent_code != 0 else ""
             failures += agent_code != 0
-            print(f"[warnings] batch {i}/{len(batches)}{note} done in "
+            log(f"[warnings] batch {i}/{len(batches)}{note} done in "
                   f"{seconds:.0f}s.")
         if failures == len(batches):
             agent_broken("warnings")
             return False
-    print("[warnings] out of rounds.", file=sys.stderr)
+    log("[warnings] out of rounds.", err=True)
     return False
 
 
+FREEFORM = re.compile(
+    r"^(?:warning: )?(?P<message>.*?)(?: \(src/[^)]*\))? at (?P<path>\S+) "
+    r"\((?P<line>\d+)\)\s*$")
+
+
 def diagnostics(report):
-    """Split the report into its location-grouped blocks."""
-    blocks, current = [], []
+    """Split the report into its location-grouped blocks.
+
+    Two shapes are recognized. The strict check groups its findings under a
+    `path:line:col:` header with numbered items and a source snippet. The
+    doc-comment parser instead prints one free-form line per finding, such
+    as `warning: HTML <u> tag not followed by end tag at path (line)`, and
+    prints it again for every translation unit that includes the header.
+    Those are rewritten into the grouped shape and deduplicated so the agent
+    sees each of them once. A free-form warning with no location is dropped:
+    nobody can act on it.
+    """
+    blocks, current, freeform = [], [], {}
     for line in report.splitlines():
         if FOOTER.match(line):
             continue
@@ -545,10 +984,23 @@ def diagnostics(report):
             if current:
                 blocks.append("\n".join(current))
             current = [line]
-        elif current:
+            continue
+        if current and (line.startswith(" ") or not line.strip()):
             current.append(line)
+            continue
+        if current:
+            blocks.append("\n".join(current))
+            current = []
+        m = FREEFORM.match(line)
+        if m:
+            key = (m["path"], int(m["line"]))
+            freeform.setdefault(key, []).append(m["message"])
     if current:
         blocks.append("\n".join(current))
+    for (path, line), messages in sorted(freeform.items()):
+        items = "\n".join(f"    {i}) {msg}"
+                          for i, msg in enumerate(dict.fromkeys(messages), 1))
+        blocks.append(f"{path}:{line}:1:\n{items}")
     return [b for b in blocks if b.strip()]
 
 
