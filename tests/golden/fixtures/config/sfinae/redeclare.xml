@@ -50,25 +50,6 @@
       <fundamentalType>void</fundamentalType>
     </named>
   </returnType>
-  <params>
-    <param>
-      <type>
-        <named>
-          <kind>named</kind>
-          <constraints>
-            <string>std::is_class_v&lt;T&gt;</string>
-          </constraints>
-          <name>
-            <identifier>
-              <kind>identifier</kind>
-              <identifier>void</identifier>
-            </identifier>
-          </name>
-          <fundamentalType>void</fundamentalType>
-        </named>
-      </type>
-    </param>
-  </params>
   <template>
     <params>
       <type>

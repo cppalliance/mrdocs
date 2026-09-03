@@ -1023,13 +1023,22 @@ populate(
     {
         populate(I.Requires, TRC);
     }
-    else if (I.Requires.Written.empty())
+    else
     {
-        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
-        // Return type SFINAE constraints
-        if (!I.ReturnType->Constraints.empty())
+        // SFINAE constraints found in the return type and the parameters
+        // become the requires clause. This runs for every redeclaration:
+        // the parameters above are populated again each time (the
+        // out-of-line definition after the in-class declaration), so a
+        // SFINAE parameter that the first pass removed comes back and must
+        // be removed again. The clause text itself is written once, on the
+        // first pass that finds constraints.
+        //
+        // See tests/golden/fixtures/symbols/function/sfinae-out-of-line-definition.cpp
+        bool const writeClause = I.Requires.Written.empty();
+        auto appendConstraints = [&](std::vector<ExprInfo> const& constraints)
         {
-            for (ExprInfo const& constraint: I.ReturnType->Constraints)
+            MRDOCS_CHECK_OR(writeClause);
+            for (ExprInfo const& constraint: constraints)
             {
                 if (!I.Requires.Written.empty())
                 {
@@ -1037,22 +1046,17 @@ populate(
                 }
                 I.Requires.Written += constraint.Written;
             }
-        }
+        };
 
-        // Iterate I.Params to find trailing requires clauses
+        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
+        appendConstraints(I.ReturnType->Constraints);
+
         for (auto it = I.Params.begin(); it != I.Params.end(); )
         {
             MRDOCS_ASSERT(!it->Type.valueless_after_move());
             if (!it->Type->Constraints.empty())
             {
-                for (ExprInfo const& constraint: it->Type->Constraints)
-                {
-                    if (!I.Requires.Written.empty())
-                    {
-                        I.Requires.Written += " && ";
-                    }
-                    I.Requires.Written += constraint.Written;
-                }
+                appendConstraints(it->Type->Constraints);
                 it = I.Params.erase(it);
             }
             else
