@@ -366,7 +366,7 @@
       <records>41eimfG9ZxfyKecXgT1Pu8aYc7Fv</records>
     </public>
   </interface>
-  <specializations>3BWnweXEGCZThEU86yPvT6zBYgcJ 2cVSEcoiC3S52ZWJahZas135jQxo 4FR11bfr43aruqgBV4G2pESSS68N 2m73ELeQ8FvdfiQ1Bjum6GYoqtww</specializations>
+  <specializations>2cVSEcoiC3S52ZWJahZas135jQxo 2m73ELeQ8FvdfiQ1Bjum6GYoqtww</specializations>
 </record>
 <record>
   <name>S1</name>
@@ -385,57 +385,6 @@
   <extraction>regular</extraction>
   <parent>3u2yGrotpdRHMFkFwnJQjwdhCK91</parent>
   <keyKind>struct</keyKind>
-</record>
-<record>
-  <name>S0</name>
-  <anchor>S0-09</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>template-specialization-inheritance.cpp</shortPath>
-      <sourcePath>template-specialization-inheritance.cpp</sourcePath>
-      <lineNumber>2</lineNumber>
-      <columnNumber>1</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>3BWnweXEGCZThEU86yPvT6zBYgcJ</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <constant>
-        <kind>constant</kind>
-        <value>2</value>
-      </constant>
-    </args>
-    <primary>3u2yGrotpdRHMFkFwnJQjwdhCK91</primary>
-  </template>
-  <interface>
-    <public>
-      <records>3osPYkxU2jBPh6w55rTADZsT7Vxb</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>S1</name>
-  <anchor>S1</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>template-specialization-inheritance.cpp</shortPath>
-      <sourcePath>template-specialization-inheritance.cpp</sourcePath>
-      <lineNumber>4</lineNumber>
-      <columnNumber>5</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>3osPYkxU2jBPh6w55rTADZsT7Vxb</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>3BWnweXEGCZThEU86yPvT6zBYgcJ</parent>
-  <keyKind>struct</keyKind>
-  <derived>2MpBWJMR93RDRGR5U1UV5pg3gU63</derived>
 </record>
 <record>
   <name>S0</name>
@@ -464,58 +413,6 @@
   </template>
   <derived>s5TcxbqGt8LoWM3AyS2cKFevtPg</derived>
   <isListedOnPrimary/>
-</record>
-<record>
-  <name>S0</name>
-  <anchor>S0-0e</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>template-specialization-inheritance.cpp</shortPath>
-      <sourcePath>template-specialization-inheritance.cpp</sourcePath>
-      <lineNumber>2</lineNumber>
-      <columnNumber>1</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>4FR11bfr43aruqgBV4G2pESSS68N</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <constant>
-        <kind>constant</kind>
-        <value>5</value>
-      </constant>
-    </args>
-    <primary>3u2yGrotpdRHMFkFwnJQjwdhCK91</primary>
-  </template>
-  <interface>
-    <public>
-      <records>2mnXp3HwpJne4cXuFvAQrkvHCuYy</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>S1</name>
-  <anchor>S1</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>template-specialization-inheritance.cpp</shortPath>
-        <sourcePath>template-specialization-inheritance.cpp</sourcePath>
-        <lineNumber>4</lineNumber>
-        <columnNumber>5</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>2mnXp3HwpJne4cXuFvAQrkvHCuYy</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>4FR11bfr43aruqgBV4G2pESSS68N</parent>
-  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>S0</name>

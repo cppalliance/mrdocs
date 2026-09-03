@@ -6,7 +6,7 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t LfSCdYEqubuTVzw8qrDfpmQY7Zv 3qqXmqMRwZDgqmj4UNGSCBe4h9Re ARF3LuXnz2naUZPeNsVbYJsWAoc 2hWNBnvdRML25tDFQ6A2jmhLQv6K Zo28JLEeTpjgaLqxZAGsf4eqV3E</records>
+    <records>4DXECWsw8UfKpZwrQBmtBTThqd1t 3qqXmqMRwZDgqmj4UNGSCBe4h9Re ARF3LuXnz2naUZPeNsVbYJsWAoc 2hWNBnvdRML25tDFQ6A2jmhLQv6K Zo28JLEeTpjgaLqxZAGsf4eqV3E</records>
   </members>
 </namespace>
 <record>
@@ -39,7 +39,7 @@
       <records>2dEvF5AtxD2tmCfHnQo2Q4zRVYij 3XBBL39AxNcm4rkZynuiuyyFjWH</records>
     </public>
   </interface>
-  <specializations>LfSCdYEqubuTVzw8qrDfpmQY7Zv 3qqXmqMRwZDgqmj4UNGSCBe4h9Re ARF3LuXnz2naUZPeNsVbYJsWAoc 2hWNBnvdRML25tDFQ6A2jmhLQv6K</specializations>
+  <specializations>3qqXmqMRwZDgqmj4UNGSCBe4h9Re ARF3LuXnz2naUZPeNsVbYJsWAoc</specializations>
 </record>
 <record>
   <name>B</name>
@@ -72,7 +72,7 @@
       <records>2YDKvd48C3QScNe6TEcg2DJKzvGU 39AyAekzAMFUtzGKtJ2ZiSm5VQYx 4NahHsYGaefEDqtfVyjeUTzFZvDE</records>
     </public>
   </interface>
-  <specializations>3XBBL39AxNcm4rkZynuiuyyFjWH sUSbDg9t8EBktmnpTsGUf6Mjy2B 2k7G7bCdrTFeAx4Fo9LPyjQRpe83 2o6NLAjXd7GxdsjTe1vreE5vQ811 2LSBQtnc9YVtk6GvWuGyRRkY9UBr 2xHHUcPMhZck4AozMtVgSnADL5e</specializations>
+  <specializations>3XBBL39AxNcm4rkZynuiuyyFjWH 2k7G7bCdrTFeAx4Fo9LPyjQRpe83 2xHHUcPMhZck4AozMtVgSnADL5e</specializations>
 </record>
 <record>
   <name>C</name>
@@ -118,7 +118,7 @@
       </type>
     </params>
   </template>
-  <specializations>GjvwcLptoYyadaqbUcHvhGrRqXk 4NahHsYGaefEDqtfVyjeUTzFZvDE</specializations>
+  <specializations>4NahHsYGaefEDqtfVyjeUTzFZvDE</specializations>
 </record>
 <record>
   <name>D</name>
@@ -247,7 +247,7 @@
       </type>
     </params>
   </template>
-  <specializations>HyJ2fT28bkdU6kiMvQ2EyQhi1uq teaeKfbzRsJst7v6zAhc9fgyjBG 3Sb9L8P2KDaa1PnhFFh96Nhwi7Dw 43YoeYij6v3BQobj8g4BQmPWYLqt 4RXsyzYzVV3wGNbDe6pjpXVvVVB4</specializations>
+  <specializations>HyJ2fT28bkdU6kiMvQ2EyQhi1uq teaeKfbzRsJst7v6zAhc9fgyjBG 43YoeYij6v3BQobj8g4BQmPWYLqt</specializations>
 </record>
 <record>
   <name>D</name>
@@ -265,208 +265,6 @@
   <access>public</access>
   <extraction>regular</extraction>
   <parent>3XBBL39AxNcm4rkZynuiuyyFjWH</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>bool</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>bool</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>39hSihmYmcT8LQepHAcU5TUSbcSD</primary>
-  </template>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>A</name>
-  <anchor>A-01</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>2</lineNumber>
-      <columnNumber>1</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>LfSCdYEqubuTVzw8qrDfpmQY7Zv</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>float</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>float</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>4DXECWsw8UfKpZwrQBmtBTThqd1t</primary>
-  </template>
-  <interface>
-    <public>
-      <records>2g1Hz2ACoSwFVHBMZEwzSJ7c3F85 2o6NLAjXd7GxdsjTe1vreE5vQ811</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>B</name>
-  <anchor>B-07</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>4</lineNumber>
-        <columnNumber>5</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>2g1Hz2ACoSwFVHBMZEwzSJ7c3F85</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>LfSCdYEqubuTVzw8qrDfpmQY7Zv</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <params>
-      <type>
-        <kind>type</kind>
-        <name>U</name>
-        <keyKind>typename</keyKind>
-      </type>
-    </params>
-  </template>
-</record>
-<record>
-  <name>B</name>
-  <anchor>B-08</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>17</lineNumber>
-      <columnNumber>5</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>2o6NLAjXd7GxdsjTe1vreE5vQ811</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>LfSCdYEqubuTVzw8qrDfpmQY7Zv</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>double</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>double</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>2dEvF5AtxD2tmCfHnQo2Q4zRVYij</primary>
-  </template>
-  <interface>
-    <public>
-      <records>7T5rYjtK9sJoGyEebrLwHgB9ULG 3S2bm7GYXT8ETvqUBsRZYSH1dWaC 3Sb9L8P2KDaa1PnhFFh96Nhwi7Dw</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>C</name>
-  <anchor>C</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>19</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>7T5rYjtK9sJoGyEebrLwHgB9ULG</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2o6NLAjXd7GxdsjTe1vreE5vQ811</parent>
-  <keyKind>struct</keyKind>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-0ae</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>21</lineNumber>
-        <columnNumber>9</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>3S2bm7GYXT8ETvqUBsRZYSH1dWaC</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2o6NLAjXd7GxdsjTe1vreE5vQ811</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <params>
-      <type>
-        <kind>type</kind>
-        <name>V</name>
-        <keyKind>typename</keyKind>
-      </type>
-    </params>
-  </template>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-0af</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>25</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>3Sb9L8P2KDaa1PnhFFh96Nhwi7Dw</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2o6NLAjXd7GxdsjTe1vreE5vQ811</parent>
   <keyKind>struct</keyKind>
   <template>
     <args>
@@ -572,7 +370,7 @@
       <records>CoggmorQNBUZutUzrTWG39eZ2Gi 3cJvwJcpr99i7ANoLDiRPDCpZYh 3fHTDLNMmrCEZQpLkPJD8ZNbZ1W4</records>
     </public>
   </interface>
-  <specializations>46M27E53RAM4YWyS9dxfN5twW9LQ 2zXjjixuaNK8m6HKyua7kmdES4m1</specializations>
+  <specializations>46M27E53RAM4YWyS9dxfN5twW9LQ</specializations>
 </record>
 <record>
   <name>C</name>
@@ -618,7 +416,7 @@
       </type>
     </params>
   </template>
-  <specializations>jiPefxBFMwvYr5P1LS7CXe7Bd5r 3fHTDLNMmrCEZQpLkPJD8ZNbZ1W4</specializations>
+  <specializations>3fHTDLNMmrCEZQpLkPJD8ZNbZ1W4</specializations>
 </record>
 <record>
   <name>D</name>
@@ -786,136 +584,6 @@
       </type>
     </args>
     <primary>39hSihmYmcT8LQepHAcU5TUSbcSD</primary>
-  </template>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>B</name>
-  <anchor>B-08</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>31</lineNumber>
-      <columnNumber>1</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>2zXjjixuaNK8m6HKyua7kmdES4m1</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>3qqXmqMRwZDgqmj4UNGSCBe4h9Re</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>float</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>float</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>3TgHAYP2SoPdaAPSpPWM8eVEUvvK</primary>
-  </template>
-  <interface>
-    <public>
-      <records>2bo2fGpxSifGmRoEaoNxRmaZ97KH 2r9vtKvGhToV2C1xUafNGz8e5zad jiPefxBFMwvYr5P1LS7CXe7Bd5r</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>C</name>
-  <anchor>C</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>33</lineNumber>
-      <columnNumber>5</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>2bo2fGpxSifGmRoEaoNxRmaZ97KH</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2zXjjixuaNK8m6HKyua7kmdES4m1</parent>
-  <keyKind>struct</keyKind>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-08</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>35</lineNumber>
-        <columnNumber>5</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>2r9vtKvGhToV2C1xUafNGz8e5zad</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2zXjjixuaNK8m6HKyua7kmdES4m1</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <params>
-      <type>
-        <kind>type</kind>
-        <name>V</name>
-        <keyKind>typename</keyKind>
-      </type>
-    </params>
-  </template>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-03</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>39</lineNumber>
-      <columnNumber>5</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>jiPefxBFMwvYr5P1LS7CXe7Bd5r</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2zXjjixuaNK8m6HKyua7kmdES4m1</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>bool</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>bool</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>3cJvwJcpr99i7ANoLDiRPDCpZYh</primary>
   </template>
   <isListedOnPrimary/>
 </record>
@@ -1253,340 +921,6 @@
   <isListedOnPrimary/>
 </record>
 <record>
-  <name>A</name>
-  <anchor>A-07</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>2</lineNumber>
-      <columnNumber>1</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>2hWNBnvdRML25tDFQ6A2jmhLQv6K</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>unsigned int</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>unsigned int</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>4DXECWsw8UfKpZwrQBmtBTThqd1t</primary>
-  </template>
-  <interface>
-    <public>
-      <records>pNtZDrEYnKStPQUvDURUCnnh6aK sUSbDg9t8EBktmnpTsGUf6Mjy2B 2LSBQtnc9YVtk6GvWuGyRRkY9UBr</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>B</name>
-  <anchor>B-03a</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>4</lineNumber>
-        <columnNumber>5</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>pNtZDrEYnKStPQUvDURUCnnh6aK</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2hWNBnvdRML25tDFQ6A2jmhLQv6K</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <params>
-      <type>
-        <kind>type</kind>
-        <name>U</name>
-        <keyKind>typename</keyKind>
-      </type>
-    </params>
-  </template>
-</record>
-<record>
-  <name>B</name>
-  <anchor>B-03e</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>17</lineNumber>
-      <columnNumber>5</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>sUSbDg9t8EBktmnpTsGUf6Mjy2B</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2hWNBnvdRML25tDFQ6A2jmhLQv6K</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>double</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>double</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>2dEvF5AtxD2tmCfHnQo2Q4zRVYij</primary>
-  </template>
-  <interface>
-    <public>
-      <records>NpEW22GMTvLrnaN3DqFQaACrNAu S9dEK87Z7oxBJfFZPJjtUrbbx55 4RXsyzYzVV3wGNbDe6pjpXVvVVB4</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>C</name>
-  <anchor>C</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>19</lineNumber>
-        <columnNumber>9</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>NpEW22GMTvLrnaN3DqFQaACrNAu</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>sUSbDg9t8EBktmnpTsGUf6Mjy2B</parent>
-  <keyKind>struct</keyKind>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-01</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>21</lineNumber>
-        <columnNumber>9</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>S9dEK87Z7oxBJfFZPJjtUrbbx55</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>sUSbDg9t8EBktmnpTsGUf6Mjy2B</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <params>
-      <type>
-        <kind>type</kind>
-        <name>V</name>
-        <keyKind>typename</keyKind>
-      </type>
-    </params>
-  </template>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-0f</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>25</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>4RXsyzYzVV3wGNbDe6pjpXVvVVB4</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>sUSbDg9t8EBktmnpTsGUf6Mjy2B</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>bool</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>bool</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>39hSihmYmcT8LQepHAcU5TUSbcSD</primary>
-  </template>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>B</name>
-  <anchor>B-05</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>5</lineNumber>
-      <columnNumber>5</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>2LSBQtnc9YVtk6GvWuGyRRkY9UBr</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2hWNBnvdRML25tDFQ6A2jmhLQv6K</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>float</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>float</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>2dEvF5AtxD2tmCfHnQo2Q4zRVYij</primary>
-  </template>
-  <interface>
-    <public>
-      <records>2h92A71TebPHqSYcKnjt2VwDxw6R 4Hm5SwJJnb23VHvPuzNN9yXv8qr6 GjvwcLptoYyadaqbUcHvhGrRqXk</records>
-    </public>
-  </interface>
-  <isListedOnPrimary/>
-</record>
-<record>
-  <name>C</name>
-  <anchor>C</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>7</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>2h92A71TebPHqSYcKnjt2VwDxw6R</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2LSBQtnc9YVtk6GvWuGyRRkY9UBr</parent>
-  <keyKind>struct</keyKind>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-0e</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>class-template-specializations-3.cpp</shortPath>
-        <sourcePath>class-template-specializations-3.cpp</sourcePath>
-        <lineNumber>9</lineNumber>
-        <columnNumber>9</columnNumber>
-      </location>
-    </loc>
-  </loc>
-  <kind>record</kind>
-  <id>4Hm5SwJJnb23VHvPuzNN9yXv8qr6</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2LSBQtnc9YVtk6GvWuGyRRkY9UBr</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <params>
-      <type>
-        <kind>type</kind>
-        <name>V</name>
-        <keyKind>typename</keyKind>
-      </type>
-    </params>
-  </template>
-</record>
-<record>
-  <name>D</name>
-  <anchor>D-01</anchor>
-  <loc>
-    <defLoc>
-      <shortPath>class-template-specializations-3.cpp</shortPath>
-      <sourcePath>class-template-specializations-3.cpp</sourcePath>
-      <lineNumber>13</lineNumber>
-      <columnNumber>9</columnNumber>
-    </defLoc>
-  </loc>
-  <kind>record</kind>
-  <id>GjvwcLptoYyadaqbUcHvhGrRqXk</id>
-  <access>public</access>
-  <extraction>regular</extraction>
-  <parent>2LSBQtnc9YVtk6GvWuGyRRkY9UBr</parent>
-  <keyKind>struct</keyKind>
-  <template>
-    <args>
-      <type>
-        <kind>type</kind>
-        <type>
-          <named>
-            <kind>named</kind>
-            <name>
-              <identifier>
-                <kind>identifier</kind>
-                <identifier>bool</identifier>
-              </identifier>
-            </name>
-            <fundamentalType>bool</fundamentalType>
-          </named>
-        </type>
-      </type>
-    </args>
-    <primary>39AyAekzAMFUtzGKtJ2ZiSm5VQYx</primary>
-  </template>
-  <isListedOnPrimary/>
-</record>
-<record>
   <name>E</name>
   <anchor>E</anchor>
   <loc>
@@ -1632,7 +966,6 @@
       <name>
         <specialization>
           <kind>specialization</kind>
-          <id>2o6NLAjXd7GxdsjTe1vreE5vQ811</id>
           <identifier>B</identifier>
           <prefix>
             <specialization>
@@ -1778,12 +1111,10 @@
       <name>
         <specialization>
           <kind>specialization</kind>
-          <id>3Sb9L8P2KDaa1PnhFFh96Nhwi7Dw</id>
           <identifier>D</identifier>
           <prefix>
             <specialization>
               <kind>specialization</kind>
-              <id>2o6NLAjXd7GxdsjTe1vreE5vQ811</id>
               <identifier>B</identifier>
               <prefix>
                 <specialization>
@@ -1972,7 +1303,6 @@
       <name>
         <specialization>
           <kind>specialization</kind>
-          <id>jiPefxBFMwvYr5P1LS7CXe7Bd5r</id>
           <identifier>D</identifier>
           <prefix>
             <specialization>
@@ -2069,7 +1399,6 @@
       <name>
         <specialization>
           <kind>specialization</kind>
-          <id>GjvwcLptoYyadaqbUcHvhGrRqXk</id>
           <identifier>D</identifier>
           <prefix>
             <specialization>
@@ -2482,12 +1811,10 @@
       <name>
         <identifier>
           <kind>identifier</kind>
-          <id>7T5rYjtK9sJoGyEebrLwHgB9ULG</id>
           <identifier>C</identifier>
           <prefix>
             <specialization>
               <kind>specialization</kind>
-              <id>2o6NLAjXd7GxdsjTe1vreE5vQ811</id>
               <identifier>B</identifier>
               <prefix>
                 <specialization>

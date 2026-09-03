@@ -1,0 +1,318 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Function[`Function`] 
+| A function&period;
+| link:#Kernel[`Kernel`] 
+| A kernel&period;
+| link:#Manager-06[`Manager`] 
+| A manager&period;
+| link:#Module[`Module`] 
+| A module&period;
+|===
+
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#FunctionManager[`FunctionManager`] 
+| Names an implicit specialization through a typedef&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#use[`use`] 
+| Uses a nested type of an implicit specialization as a parameter type&period;
+|===
+
+
+[#FunctionManager]
+== FunctionManager
+
+Names an implicit specialization through a typedef&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using FunctionManager = link:#Manager-06[Manager&lt;Function&gt;];
+----
+
+[#Function]
+== Function
+
+A function&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Function;
+----
+
+[#Kernel]
+== Kernel
+
+A kernel&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Kernel;
+----
+
+[#Manager-06]
+== Manager
+
+A manager&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename IRUnitT&gt;
+struct Manager;
+----
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Manager-06-Invalidator[`Invalidator`] 
+| Invalidates analyses&period;
+|===
+
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Manager-06-clear[`clear`] 
+| Clear the cache&period;
+|===
+
+
+=== Specializations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Manager-0a[`Manager&lt;Kernel&gt;`] 
+| A manager&period;
+|===
+
+
+=== Template Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *IRUnitT*
+| IR unit type&period;
+|===
+
+[#Manager-06-Invalidator]
+== link:#Manager-06[Manager]::Invalidator
+
+Invalidates analyses&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Invalidator;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Manager-06-Invalidator-invalidate[`invalidate`] 
+| Invalidate&period;
+|===
+
+
+[#Manager-06-Invalidator-invalidate]
+== link:#Manager-06[Manager]::link:#Manager-06-Invalidator[Invalidator]::invalidate
+
+Invalidate&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+invalidate(IRUnitT& IR);
+----
+
+=== Return Value
+
+Whether anything was invalidated&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *IR*
+| The IR unit&period;
+|===
+
+[#Manager-06-clear]
+== link:#Manager-06[Manager]::clear
+
+Clear the cache&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+clear();
+----
+
+[#Manager-0a]
+== link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;
+
+A manager&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
+----
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Manager-0a-Invalidator[`Invalidator`] 
+| Invalidates analyses&period;
+|===
+
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Manager-0a-clear[`clear`] 
+| The kernel manager clears differently&period;
+|===
+
+
+=== Template Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *IRUnitT*
+| IR unit type&period;
+|===
+
+[#Manager-0a-Invalidator]
+== link:#Manager-0a[Manager&lt;Kernel&gt;]::Invalidator
+
+Invalidates analyses&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Invalidator;
+----
+
+[#Manager-0a-clear]
+== link:#Manager-0a[Manager&lt;Kernel&gt;]::clear
+
+The kernel manager clears differently&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+clear();
+----
+
+[#Module]
+== Module
+
+A module&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Module;
+----
+
+[#use]
+== use
+
+Uses a nested type of an implicit specialization as a parameter type&period;
+
+=== Synopsis
+
+Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+use(link:#Manager-06[Manager&lt;Module&gt;::Invalidator]& Inv);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *Inv*
+| The invalidator&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
