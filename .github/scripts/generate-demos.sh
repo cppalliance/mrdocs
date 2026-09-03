@@ -15,15 +15,16 @@
 # Each demo format as "<id>:<multipage>". XML is single-page; HTML and
 # AsciiDoc are multipage. XML alone runs the whole extraction phase, which is
 # where anything that can crash Mr.Docs lives; the template generators are
-# predictable and add no coverage on top of it. Pull requests and pushes to
-# forks therefore build only XML. Only pushes to the canonical repository
-# build every format, not for testing but because that output is published to
-# the demo server for people to browse; on the large demos (LLVM) the extra
-# formats add hours.
-quick=false
-if [[ "$GITHUB_EVENT_NAME" == 'pull_request' \
-   || "${GITHUB_REPOSITORY:-}" != 'cppalliance/mrdocs' ]]; then
-    quick=true
+# predictable and add no coverage on top of it. Every format is built only
+# by push events in the canonical repository (develop, master, release tags),
+# and not for testing: that output is what gets published to the demo server
+# for people to browse. Pull requests, merge-queue runs, manual dispatches,
+# and forks build only XML; on the large demos (LLVM) the extra formats add
+# hours, and a merge-queue run has nothing to publish.
+quick=true
+if [[ "$GITHUB_EVENT_NAME" == 'push' \
+   && "${GITHUB_REPOSITORY:-}" == 'cppalliance/mrdocs' ]]; then
+    quick=false
 fi
 if [[ "$quick" == true ]]; then
     formats=("xml:false")
