@@ -36,6 +36,9 @@
 #include <cctype>
 #include <cstddef>
 #include <format>
+#include <mutex>
+#include <set>
+#include <tuple>
 #include <ranges>
 #include <string_view>
 #include <utility>
@@ -593,6 +596,30 @@ class DocCommentVisitor
         return res;
     }
 
+    /** Report a doc-comment warning once per file, line, and message.
+
+        Every translation unit that includes a header parses its comments
+        again, so without this the same finding at the same place would be
+        printed once per including translation unit.
+    */
+    static void
+    warnOnce(
+        std::string const& filename,
+        unsigned const line,
+        std::string const& message)
+    {
+        static std::mutex mutex;
+        static std::set<std::tuple<std::string, unsigned, std::string>> seen;
+        {
+            std::lock_guard<std::mutex> const lock(mutex);
+            if (!seen.emplace(filename, line, message).second)
+            {
+                return;
+            }
+        }
+        report::warn("{} at {} ({})", message, filename, line);
+    }
+
     // Small predicates on Clang comment children.
     static bool
     isStartTagNamed(
@@ -1095,11 +1122,7 @@ class DocCommentVisitor
         auto compsExp = parseHTMLStartSpan(C, cur);
         if (!compsExp)
         {
-            report::warn(
-                "{} at {} ({})",
-                compsExp.error().message(),
-                filename,
-                loc.getLine());
+            warnOnce(filename, loc.getLine(), compsExp.error().message());
             return;
         }
         auto comps = *compsExp;
@@ -1113,11 +1136,7 @@ class DocCommentVisitor
                 // problem in the user's doc comment, not in Mr.Docs: warn
                 // with the location and skip the tag instead of failing the
                 // whole run with an internal-error banner.
-                report::warn(
-                    "{} at {} ({})",
-                    r.error().message(),
-                    filename,
-                    loc.getLine());
+                warnOnce(filename, loc.getLine(), r.error().message());
                 return;
             }
             emplaceInline<doc::LinkInline>(
@@ -1179,11 +1198,7 @@ class DocCommentVisitor
             auto srcAttr = getAttr("src");
             if (!srcAttr)
             {
-                report::warn(
-                    "{} at {} ({})",
-                    srcAttr.error().message(),
-                    filename,
-                    loc.getLine());
+                warnOnce(filename, loc.getLine(), srcAttr.error().message());
                 return;
             }
             std::string alt = getAttr("alt").value_or(std::string());
@@ -1194,10 +1209,9 @@ class DocCommentVisitor
         }
         else
         {
-            report::warn(
-                std::format("warning: unsupported HTML tag <{}>", comps.tag),
-                filename,
-                loc.getLine());
+            warnOnce(
+                filename, loc.getLine(),
+                std::format("warning: unsupported HTML tag <{}>", comps.tag));
         }
 
         // Skip the intermediate siblings consumed for text gathering
