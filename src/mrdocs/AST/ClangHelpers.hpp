@@ -735,6 +735,26 @@ MRDOCS_DECL
 bool
 isAnyImplicitSpecialization(clang::Decl const* D);
 
+/** Whether D is an instantiation written in a context, not a declaration.
+
+    `extern template class A<int>;` and `template class A<int>;` (and the
+    function and variable template forms) instantiate `A` for `int`. That is
+    a use of the template, not a declaration or a definition: nothing new is
+    introduced, so there is nothing to document. The entity they name is
+    documented where the template, or a specialization of it, is declared.
+
+    Only instantiations the user wrote out can appear among a context's
+    members, which is why this looks at the explicit instantiation kinds.
+    An instantiation the compiler performed on its own is never a written
+    member: it is reached through the types that use it, and whether it is
+    extracted is the `extract-implicit-specializations` option's decision.
+    The members of an instantiated class are not instantiations either,
+    they are that class's members, so they are left alone.
+*/
+MRDOCS_DECL
+bool
+isInstantiation(clang::Decl const* D);
+
 // Check if at least one component of D is explicit
 inline
 bool

@@ -483,6 +483,37 @@ isAnyImplicitSpecialization(clang::Decl const* D)
 }
 
 bool
+isInstantiation(clang::Decl const* D)
+{
+    // The kinds an instantiation written in a context can have: `template`
+    // gives a definition, `extern template` a declaration. An explicit
+    // specialization is a declaration of the user's own and is not one.
+    auto const written = [](clang::TemplateSpecializationKind const TSK)
+    {
+        return TSK == clang::TSK_ExplicitInstantiationDeclaration ||
+               TSK == clang::TSK_ExplicitInstantiationDefinition;
+    };
+    if (auto const* CTSD = dyn_cast_or_null<clang::ClassTemplateSpecializationDecl>(D))
+    {
+        return written(CTSD->getSpecializationKind());
+    }
+    if (auto const* VTSD = dyn_cast_or_null<clang::VarTemplateSpecializationDecl>(D))
+    {
+        return written(VTSD->getSpecializationKind());
+    }
+    if (auto const* FD = dyn_cast_or_null<clang::FunctionDecl>(D))
+    {
+        // A function template's instantiation has TemplateSpecializationInfo.
+        // A member function of an instantiated class has the same
+        // specialization kind but MemberSpecializationInfo instead: it is a
+        // member, not an instantiation written in the context.
+        return FD->getTemplateSpecializationInfo() != nullptr &&
+               written(FD->getTemplateSpecializationKind());
+    }
+    return false;
+}
+
+bool
 isAnySpecialization(clang::Decl const* D)
 {
     if (!D)
