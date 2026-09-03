@@ -596,6 +596,48 @@ class DocCommentVisitor
         return res;
     }
 
+    /** Whether Mr.Docs renders this HTML tag.
+
+        Everything `visitHTMLStart` has a branch for, plus `table`, which
+        `visitHTMLTable` handles.
+    */
+    static bool
+    isSupportedHTMLTag(llvm::StringRef const tag)
+    {
+        static constexpr std::array supported = {
+            "a", "br", "em", "strong", "mark", "sub", "sup",
+            "del", "s", "code", "img", "table",
+        };
+        return std::ranges::find(supported, tag) != supported.end();
+    }
+
+    /** The start tag as the author wrote it, rebuilt from its parts.
+    */
+    static std::string
+    rawStartTag(clang::comments::HTMLStartTagComment const* C)
+    {
+        std::string text = "<" + C->getTagName().str();
+        for (unsigned i = 0, n = C->getNumAttrs(); i < n; ++i)
+        {
+            auto const& a = C->getAttr(i);
+            text += ' ';
+            text += a.Name.str();
+            if (!a.Value.empty())
+            {
+                text += "=\"" + a.Value.str() + '"';
+            }
+        }
+        if (C->isSelfClosing())
+        {
+            text += "/>";
+        }
+        else if (!C->isMalformed())
+        {
+            text += '>';
+        }
+        return text;
+    }
+
     /** Report a doc-comment warning once per file, line, and message.
 
         Every translation unit that includes a header parses its comments
@@ -1122,7 +1164,20 @@ class DocCommentVisitor
         auto compsExp = parseHTMLStartSpan(C, cur);
         if (!compsExp)
         {
-            warnOnce(filename, loc.getLine(), compsExp.error().message());
+            // A start tag with no matching end tag. For a tag Mr.Docs
+            // renders, the author meant markup and the end tag is missing:
+            // warn. For any other tag name it is prose that only looks like
+            // HTML, because Clang's lexer turns every `<` followed by
+            // letters into a start tag: `Hash<unsigned char>`,
+            // `"<unnamed>"`, `x <u VF`. Either way the text is put back as
+            // written; the rest of the phrase follows as ordinary text.
+            if (isSupportedHTMLTag(C->getTagName()))
+            {
+                warnOnce(filename, loc.getLine(), compsExp.error().message());
+            }
+            emplaceInline<doc::TextInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(rawStartTag(C)));
             return;
         }
         auto comps = *compsExp;
@@ -1134,9 +1189,13 @@ class DocCommentVisitor
             {
                 // An <a> without href (an anchor, or malformed markup) is a
                 // problem in the user's doc comment, not in Mr.Docs: warn
-                // with the location and skip the tag instead of failing the
-                // whole run with an internal-error banner.
+                // with the location and keep the text instead of failing
+                // the whole run with an internal-error banner.
                 warnOnce(filename, loc.getLine(), r.error().message());
+                emplaceInline<doc::TextInline>(
+                    C->hasTrailingNewline(),
+                    ensureUTF8(std::move(comps.text)));
+                cur.consume_intermediate(comps.n_intermediate);
                 return;
             }
             emplaceInline<doc::LinkInline>(
@@ -1209,9 +1268,12 @@ class DocCommentVisitor
         }
         else
         {
-            warnOnce(
-                filename, loc.getLine(),
-                std::format("warning: unsupported HTML tag <{}>", comps.tag));
+            // A closed tag Mr.Docs does not render (`<u>word</u>`): keep the
+            // text it wraps and drop the tag, silently. Not rendering a tag
+            // is a rendering limitation, not an error in the comment.
+            emplaceInline<doc::TextInline>(
+                C->hasTrailingNewline(),
+                ensureUTF8(std::move(comps.text)));
         }
 
         // Skip the intermediate siblings consumed for text gathering

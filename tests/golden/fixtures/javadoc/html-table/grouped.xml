@@ -36,14 +36,41 @@
             <kind>text</kind>
             <literal>The categories are grouped using </literal>
           </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>&lt;thead&gt;</literal>
+              </text>
+            </children>
+          </code>
           <text>
             <kind>text</kind>
             <literal>, </literal>
           </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>&lt;tbody&gt;</literal>
+              </text>
+            </children>
+          </code>
           <text>
             <kind>text</kind>
             <literal>, and </literal>
           </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>&lt;tfoot&gt;</literal>
+              </text>
+            </children>
+          </code>
           <text>
             <kind>text</kind>
             <literal>; MrDocs treats those as transparent grouping elements and renders the rows directly in the table.</literal>
