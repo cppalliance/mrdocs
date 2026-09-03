@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <enums>2NLnTpnMNAGMbq85pc2BPfWuchTP</enums>
+  </members>
+</namespace>
+<enum>
+  <name>CharKind</name>
+  <anchor>CharKind</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>inline-command-brief.cpp</shortPath>
+      <sourcePath>inline-command-brief.cpp</sourcePath>
+      <lineNumber>5</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>enum</kind>
+  <id>2NLnTpnMNAGMbq85pc2BPfWuchTP</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Kinds of character.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <scoped/>
+  <underlyingType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </underlyingType>
+  <constants>44nFMey63UzZ23e9fmtnEZt9bcdA 3hKEJTdoRxQmTTufa6XaDkwS3gfE 2oAz3dEg9kZqzAc6RJGMrQcwohJq 4SoSmeakwg4834fkY8q2WYX3p56E</constants>
+</enum>
+<enumConstant>
+  <name>Char8</name>
+  <anchor>Char8</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-command-brief.cpp</shortPath>
+        <sourcePath>inline-command-brief.cpp</sourcePath>
+        <lineNumber>7</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>44nFMey63UzZ23e9fmtnEZt9bcdA</id>
+  <extraction>regular</extraction>
+  <parent>2NLnTpnMNAGMbq85pc2BPfWuchTP</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>char8_t.</literal>
+            </text>
+          </children>
+        </code>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+<enumConstant>
+  <name>Plain</name>
+  <anchor>Plain</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-command-brief.cpp</shortPath>
+        <sourcePath>inline-command-brief.cpp</sourcePath>
+        <lineNumber>9</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>3hKEJTdoRxQmTTufa6XaDkwS3gfE</id>
+  <extraction>regular</extraction>
+  <parent>2NLnTpnMNAGMbq85pc2BPfWuchTP</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Plain text.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+<enumConstant>
+  <name>Char16</name>
+  <anchor>Char16</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-command-brief.cpp</shortPath>
+        <sourcePath>inline-command-brief.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>2oAz3dEg9kZqzAc6RJGMrQcwohJq</id>
+  <extraction>regular</extraction>
+  <parent>2NLnTpnMNAGMbq85pc2BPfWuchTP</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>char16_t</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> and more text.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+<enumConstant>
+  <name>CodeOnly</name>
+  <anchor>CodeOnly</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-command-brief.cpp</shortPath>
+        <sourcePath>inline-command-brief.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>enum-constant</kind>
+  <id>4SoSmeakwg4834fkY8q2WYX3p56E</id>
+  <extraction>regular</extraction>
+  <parent>2NLnTpnMNAGMbq85pc2BPfWuchTP</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <code>
+          <kind>code</kind>
+          <children>
+            <text>
+              <kind>text</kind>
+              <literal>code span</literal>
+            </text>
+          </children>
+        </code>
+        <text>
+          <kind>text</kind>
+          <literal> only.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</enumConstant>
+</mrdocs>

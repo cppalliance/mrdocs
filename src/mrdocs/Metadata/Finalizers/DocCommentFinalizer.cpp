@@ -583,14 +583,25 @@ setAutoBrief(DocComment& doc) const
     MRDOCS_CHECK_OR(!doc.brief);
     MRDOCS_CHECK_OR(!doc.Document.empty());
 
+    // A paragraph can serve as the brief when it has visible content of its
+    // own. Plain text counts unless it is empty or whitespace; so does any
+    // styled span, code, link, reference, or formula: `\c char8_t.` is a
+    // fine brief even though none of it is plain text. Breaks carry nothing,
+    // and a @copydetails placeholder is resolved later into someone else's
+    // description, so neither may be promoted.
+    // See tests/golden/fixtures/config/auto-brief/inline-command-brief.cpp
     auto isInvalidBriefText = [](
         Polymorphic<doc::Inline> const& el)
         {
             MRDOCS_ASSERT(!el.valueless_after_move());
-            return !el->isText() ||
-                   el->asText().literal.empty() ||
-                   el->asText().Kind == doc::InlineKind::CopyDetails ||
-                   isWhitespace(el->asText().literal);
+            if (el->isText())
+            {
+                return el->asText().literal.empty() ||
+                       isWhitespace(el->asText().literal);
+            }
+            return el->Kind == doc::InlineKind::SoftBreak ||
+                   el->Kind == doc::InlineKind::LineBreak ||
+                   el->Kind == doc::InlineKind::CopyDetails;
         };
 
     for (auto it = doc.Document.begin(); it != doc.Document.end();)
