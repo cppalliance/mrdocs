@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>2YX2ecG3LhFWpnGby18cCriRj9dz</records>
+  </members>
+</namespace>
+<record>
+  <name>Outer</name>
+  <anchor>Outer</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>private-nested-members.cpp</shortPath>
+      <sourcePath>private-nested-members.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>2YX2ecG3LhFWpnGby18cCriRj9dz</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documented class.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>class</keyKind>
+  <interface>
+    <public>
+      <functions>4PJTZprMdMMXnmhfsmmH9RnqWLzv 4Ver2x5tmCVHWpjp4sxtoY74J2jG</functions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>documented_public</name>
+  <anchor>documented_public</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>private-nested-members.cpp</shortPath>
+        <sourcePath>private-nested-members.cpp</sourcePath>
+        <lineNumber>24</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>4PJTZprMdMMXnmhfsmmH9RnqWLzv</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>2YX2ecG3LhFWpnGby18cCriRj9dz</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Documented.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>undocumented_public</name>
+  <anchor>undocumented_public</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>private-nested-members.cpp</shortPath>
+        <sourcePath>private-nested-members.cpp</sourcePath>
+        <lineNumber>21</lineNumber>
+        <columnNumber>5</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>4Ver2x5tmCVHWpjp4sxtoY74J2jG</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>2YX2ecG3LhFWpnGby18cCriRj9dz</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+</mrdocs>
