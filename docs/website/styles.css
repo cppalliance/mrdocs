@@ -5801,6 +5801,13 @@ header {
    bare text. Pico styles that <code> with its own 16.25px and a muted
    colour, which overrode the cell -- so the one table that needed the
    mono/label treatment was the one not getting it. */
+/* mrdocs marks the parameter name up as <strong> and the exception name
+   as <code>. Figma sets both in Menlo REGULAR, so the <strong> has to give
+   up its weight -- it was rendering at 700. */
+.side-by-side > .documentation-panel table td strong {
+    font-weight: var(--ds-weight-regular);
+}
+
 .side-by-side > .documentation-panel table th code,
 .side-by-side > .documentation-panel table td code {
     font-family: var(--ds-font-mono);
