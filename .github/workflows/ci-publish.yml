@@ -153,6 +153,9 @@ jobs:
           chmod 600 /home/runner/.ssh/known_hosts
           echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
+          # ssh-agent outlives the step that starts it, so a leftover socket
+          # from an earlier step makes this bind fail with EADDRINUSE.
+          rm -f "$SSH_AUTH_SOCK"
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add /home/runner/.ssh/github_actions
 
@@ -237,6 +240,9 @@ jobs:
           chmod 600 /home/runner/.ssh/known_hosts
           echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
+          # The "Publish demos to dev-websites" agent is still bound to this
+          # socket, so drop the stale path before starting a new agent.
+          rm -f "$SSH_AUTH_SOCK"
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add /home/runner/.ssh/github_actions
 
