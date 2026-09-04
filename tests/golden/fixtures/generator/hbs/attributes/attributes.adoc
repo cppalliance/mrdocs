@@ -2,7 +2,7 @@
 :mrdocs:
 
 [#index]
-== Global namespace
+== Global index
 
 === Types
 
@@ -53,6 +53,10 @@
 | A deprecated function with a message&period;
 | link:#log_message[`log&lowbar;message`] 
 | A printf&hyphen;like function (an attribute with multiple arguments)&period;
+| link:#resize-06[`resize`] 
+| An overload set with only one deprecated overload&colon; the set is not tagged&period;
+| link:#scale-02[`scale`]  [.small]#[deprecated]#
+| An overload set whose every overload is deprecated&colon; the set is tagged&period;
 |===
 
 
@@ -334,6 +338,150 @@ void
 log&lowbar;message(char const* fmt, &period;&period;&period;);
 ----
 
+[#resize-06]
+== resize
+
+An overload set with only one deprecated overload&colon; the set is not tagged&period;
+
+=== Synopses
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+An overload set with only one deprecated overload&colon; the set is not tagged&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#resize-0b[resize]();
+----
+
+[.small]#link:#resize-0b[_» more&period;&period;&period;_]#
+
+An overload set with only one deprecated overload&colon; the set is not tagged&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use resize2&quot;)&rsqb;&rsqb;
+void
+link:#resize-0c[resize](int);
+----
+
+[.small]#link:#resize-0c[_» more&period;&period;&period;_]#
+
+[#resize-0b]
+== resize
+
+An overload set with only one deprecated overload&colon; the set is not tagged&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize();
+----
+
+[#resize-0c]
+== resize
+
+An overload set with only one deprecated overload&colon; the set is not tagged&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use resize2&quot;)&rsqb;&rsqb;
+void
+resize(int);
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use resize2. Use of this entity is allowed but discouraged.
+====
+[#scale-02]
+== scale
+
+An overload set whose every overload is deprecated&colon; the set is tagged&period;
+
+=== Synopses
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+An overload set whose every overload is deprecated&colon; the set is tagged&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use scale2&quot;)&rsqb;&rsqb;
+void
+link:#scale-07[scale]();
+----
+
+[.small]#link:#scale-07[_» more&period;&period;&period;_]#
+
+An overload set whose every overload is deprecated&colon; the set is tagged&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use scale2&quot;)&rsqb;&rsqb;
+void
+link:#scale-05[scale](int);
+----
+
+[.small]#link:#scale-05[_» more&period;&period;&period;_]#
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use scale2. Use of this entity is allowed but discouraged.
+====
+[#scale-07]
+== scale
+
+An overload set whose every overload is deprecated&colon; the set is tagged&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use scale2&quot;)&rsqb;&rsqb;
+void
+scale();
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use scale2. Use of this entity is allowed but discouraged.
+====
+[#scale-05]
+== scale
+
+An overload set whose every overload is deprecated&colon; the set is tagged&period;
+
+=== Synopsis
+
+Declared in `&lt;attributes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;deprecated(&quot;use scale2&quot;)&rsqb;&rsqb;
+void
+scale(int);
+----
+
+[WARNING]
+====
+https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use scale2. Use of this entity is allowed but discouraged.
+====
 [#value]
 == value
 

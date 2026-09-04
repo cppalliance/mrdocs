@@ -1,0 +1,29 @@
+{{! Small-screen only: the single top hamburger opens this drawer, so it also
+    carries the version switcher and site links that the desktop navbar and
+    toolbar show separately. }}
+<div class="nav-drawer-footer">
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-label">Version</span>
+    <ul class="nav-drawer-versions">
+    {{#with @root.page.versions}}
+      {{#each this}}
+      <li><a class="nav-drawer-version
+        {{~#if (eq ./version @root.page.version)}} is-current{{/if~}}
+        {{~#if ./missing}} is-missing{{/if}}" href="{{{relativize ./url}}}">{{./displayVersion}}</a></li>
+      {{/each}}
+    {{else}}
+      <li><span class="nav-drawer-version is-current">{{@root.page.componentVersion.displayVersion}}</span></li>
+    {{/with}}
+    </ul>
+  </div>
+  <div class="nav-drawer-section nav-drawer-links">
+    <a class="nav-drawer-link" href="https://www.mrdocs.com">Mr.Docs</a>
+    <a class="nav-drawer-link" href="https://cppalliance.org/">The C++ Alliance</a>
+    <a class="nav-drawer-link" href="https://github.com/cppalliance/mrdocs">GitHub</a>
+    <span class="nav-drawer-theme">
+      {{> theme-toggle}}
+      <span>Toggle theme</span>
+    </span>
+  </div>
+  <a class="button is-primary nav-drawer-download" href="https://github.com/cppalliance/mrdocs/releases">Download</a>
+</div>

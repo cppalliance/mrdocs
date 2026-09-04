@@ -164,17 +164,6 @@
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
-    <document>
-      <paragraph>
-        <kind>paragraph</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>brief</literal>
-          </text>
-        </children>
-      </paragraph>
-    </document>
     <brief>
       <kind>brief</kind>
       <children>

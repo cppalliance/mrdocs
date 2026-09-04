@@ -12,10 +12,17 @@ input:
   - ../include
   - ../libs/dom/include
   - ../libs/handlebars/include
+  - ../libs/polyfill/include
 file-patterns:
   - '*.hpp'
 include-symbols:
   - 'mrdocs::**'
+# The corpus finalizers live in src/ and reach the reference only through the
+# friend-class grants in Corpus.hpp, so they surface as empty internal records
+# with nowhere to attach documentation. They are maintainer-facing, not public
+# API, so keep them out of MrDocs's own reference.
+exclude-symbols:
+  - 'mrdocs::*Finalizer'
 # MrDocs's own macros are maintainer-facing implementation helpers, not
 # public API: the MRDOCS_* support macros and the internal X-macros
 # (INFO/LOG/F) and compat shims used across the headers. Keep them out of
@@ -32,5 +39,5 @@ implementation-defined:
   - '**mrdocs_*_descriptor_fn'
 multipage: true
 generator: adoc
-cmake: '-D MRDOCS_BUILD_HEADERS_ONLY=ON'
+cmake: '-D MRDOCS_MRDOCS_BUILD=ON'
 

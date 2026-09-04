@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2buXaq5YEtJhY4cNxSRtzAbdAXba</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>app</name>
+  <anchor>app</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>6</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2buXaq5YEtJhY4cNxSRtzAbdAXba</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <namespaces>41YjLuBqXt6jbnVbANexffyZ2rch</namespaces>
+    <functions>244EPsKbGKMHQkcAhQAq6bnmBnYN</functions>
+  </members>
+</namespace>
+<namespace>
+  <name>inner</name>
+  <anchor>inner</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>26</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>41YjLuBqXt6jbnVbANexffyZ2rch</id>
+  <extraction>regular</extraction>
+  <parent>2buXaq5YEtJhY4cNxSRtzAbdAXba</parent>
+  <members>
+    <functions>4FJMcDMzSCZmrRvbFsY7x1Zp8833</functions>
+  </members>
+</namespace>
+<function>
+  <name>helper</name>
+  <anchor>helper</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>28</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>4FJMcDMzSCZmrRvbFsY7x1Zp8833</id>
+  <extraction>regular</extraction>
+  <parent>41YjLuBqXt6jbnVbANexffyZ2rch</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A helper reached through the inline namespace: app::abi::inner::helper.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>widget</name>
+  <anchor>widget</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+      <location>
+        <shortPath>inline-namespace-redeclaration.cpp</shortPath>
+        <sourcePath>inline-namespace-redeclaration.cpp</sourcePath>
+        <lineNumber>24</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>244EPsKbGKMHQkcAhQAq6bnmBnYN</id>
+  <extraction>regular</extraction>
+  <parent>2buXaq5YEtJhY4cNxSRtzAbdAXba</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Defined directly inside the inline ABI namespace.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Perform the action.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

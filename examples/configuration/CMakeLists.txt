@@ -25,8 +25,8 @@ foreach (example IN LISTS _config_examples)
     add_test(
         NAME mrdocs-configuration-${_name}
         COMMAND bash run.sh
-                --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
                 --output=${CMAKE_CURRENT_BINARY_DIR}/${_name}/reference-output
+                ${MRDOCS_BUILTIN_DIR_ARGS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${example}
     )
     set_property(TEST mrdocs-configuration-${_name} PROPERTY

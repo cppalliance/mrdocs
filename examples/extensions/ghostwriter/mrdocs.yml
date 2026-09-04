@@ -1,0 +1,12 @@
+addons-supplemental:
+  - addons
+generator: adoc
+multipage: false
+show-namespaces: false
+warn-if-undocumented: false
+source-root: .
+input:
+  - .
+transform-options:
+  ghostwriter:
+    source: external-docs

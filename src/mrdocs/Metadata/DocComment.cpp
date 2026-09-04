@@ -126,4 +126,89 @@ append(DocComment&& other)
         });
 }
 
+void
+merge(DocComment& I, DocComment&& other)
+{
+    // Sticky flags: set once either declaration sets them. These are not part
+    // of the reflected member set visited below.
+    I.IsFunctionObject |= other.IsFunctionObject;
+    I.IsSeeBelow |= other.IsSeeBelow;
+    I.IsImplementationDefined |= other.IsImplementationDefined;
+
+    // Two references name the same thing when they resolve to the same symbol,
+    // or, while unresolved, name the same text.
+    auto const sameRef =
+        [](doc::ReferenceInline const& a, doc::ReferenceInline const& b)
+        {
+            if (a.id || b.id)
+            {
+                return a.id == b.id;
+            }
+            return a.literal == b.literal;
+        };
+
+    // Only keyed sections are unioned, so different declarations can each
+    // contribute distinct entries and the key makes deduplication reliable:
+    // params/tparams by name, throws/relates/related by the symbol they
+    // reference. Everything else is free-form prose (the description, returns,
+    // see-also, pre/postconditions, footnotes). There a value comparison is
+    // meaningless (a small wording difference defeats it) and appending would
+    // just accumulate near-duplicate sections, so the first declaration's is
+    // kept. Unrecognized (e.g. newly added) list fields default to keep-first.
+    describe::for_each(
+        describe::describe_members<DocComment>{},
+        [&](auto const& descriptor)
+        {
+            using Descriptor = std::decay_t<decltype(descriptor)>;
+            auto& dst = I.*Descriptor::pointer;
+            auto& src = other.*Descriptor::pointer;
+            using Member = std::decay_t<decltype(dst)>;
+            if constexpr (is_specialization_of_v<Member, Optional>)
+            {
+                // Singular field (the brief): keep the first one written.
+                if (!dst)
+                {
+                    dst = std::move(src);
+                }
+            }
+            else if constexpr (is_specialization_of_v<Member, std::vector>)
+            {
+                using Elem = typename Member::value_type;
+                auto keyedUnion = [&](auto same)
+                {
+                    for (auto&& e : src)
+                    {
+                        if (std::ranges::none_of(dst,
+                                [&](auto const& q) { return same(q, e); }))
+                        {
+                            dst.push_back(std::move(e));
+                        }
+                    }
+                };
+                if constexpr (
+                    std::is_same_v<Elem, doc::ParamBlock> ||
+                    std::is_same_v<Elem, doc::TParamBlock>)
+                {
+                    keyedUnion([](auto const& q, auto const& e)
+                        { return q.name == e.name; });
+                }
+                else if constexpr (std::is_same_v<Elem, doc::ThrowsBlock>)
+                {
+                    keyedUnion([&](auto const& q, auto const& e)
+                        { return sameRef(q.exception, e.exception); });
+                }
+                else if constexpr (std::is_same_v<Elem, doc::ReferenceInline>)
+                {
+                    keyedUnion([&](auto const& q, auto const& e)
+                        { return sameRef(q, e); });
+                }
+                else if (dst.empty())
+                {
+                    // Prose section: keep the first declaration's.
+                    dst = std::move(src);
+                }
+            }
+        });
+}
+
 } // mrdocs

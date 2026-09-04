@@ -168,16 +168,6 @@
         </children>
         <name>a</name>
       </param>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>one</literal>
-          </text>
-        </children>
-        <name>a</name>
-      </param>
     </params>
   </doc>
   <returnType>

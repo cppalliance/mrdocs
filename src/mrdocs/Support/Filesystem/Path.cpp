@@ -50,18 +50,22 @@ forEachFile(
     MRDOCS_CHECK(!ec, formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec));
     while (it != end)
     {
+        // The iterator appends entries with the platform's native separator,
+        // which on Windows breaks the invariant that every path Mr.Docs
+        // passes around (and matches globs against) is posix style. Normalize
+        // at the source, once per path, so consumers never see a backslash.
         if(it->type() == fs::file_type::directory_file)
         {
-            auto s = it->path();
+            auto s = files::makePosixStyle(it->path());
             MRDOCS_TRY(visitor.visitFile(s));
             if (recursive)
             {
-                MRDOCS_TRY(forEachFile(it->path(), recursive, visitor));
+                MRDOCS_TRY(forEachFile(s, recursive, visitor));
             }
         }
         else if (it->type() == fs::file_type::regular_file)
         {
-            MRDOCS_TRY(visitor.visitFile(it->path()));
+            MRDOCS_TRY(visitor.visitFile(files::makePosixStyle(it->path())));
         }
         // else, we don't handle this type
         it.increment(ec);

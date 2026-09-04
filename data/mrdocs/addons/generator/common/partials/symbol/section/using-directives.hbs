@@ -1,6 +1,6 @@
 {{! Namespace using-directives table. }}
 {{#if symbol.usingDirectives}}
 {{#> markup/section name="using-directives"}}
-{{>symbol/members-table members=(transform symbol.usingDirectives @root.mrdocs.corpus.get) title="Using Namespace Directives"}}
+{{>symbol/members-table members=(transform (pluck symbol.usingDirectives "id") @root.mrdocs.corpus.get) title="Using Namespace Directives"}}
 {{/markup/section}}
 {{/if}}

@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -31,26 +32,34 @@ class BaseMembersFinalizer
     std::unordered_set<SymbolID> finalized_;
 
     void
-    inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind A);
+    inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind A, SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         RecordInterface& derived,
         RecordInterface const& base,
-        AccessKind A);
+        AccessKind A,
+        SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         RecordTranche& derived,
-        RecordTranche const& base);
+        RecordTranche const& base,
+        SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
         std::vector<SymbolID>& derived,
-        std::vector<SymbolID> const& base);
+        std::vector<SymbolID> const& base,
+        std::unordered_set<std::string> const& derivedNames,
+        SourceInfo const& baseLoc);
+
+    // The names the members of a tranche go by.
+    std::unordered_set<std::string>
+    memberNames(RecordTranche const& T) const;
 
     void
     finalizeRecords(std::vector<SymbolID> const& ids);

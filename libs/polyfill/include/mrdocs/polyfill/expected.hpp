@@ -275,6 +275,10 @@ public:
         return x.unex_ == y.error();
     }
 
+    /** Swap the stored errors of two @ref unexpected objects.
+        @param x The first object to swap.
+        @param y The second object to swap.
+    */
     friend
     constexpr
     void
@@ -301,6 +305,9 @@ unexpected(E) -> unexpected<E>;
     this single overload and there is no ADL ambiguity across namespaces. It
     yields exactly `unexpected<E>`, which `expected` recognizes (a derived type
     would not be, breaking `expected<T&>`).
+
+    @param e The error value to wrap.
+    @return An `unexpected` holding the decayed error value.
 */
 template <class E>
 constexpr unexpected<std::remove_cvref_t<E>>
@@ -3091,6 +3098,10 @@ public:
         }
     }
 
+    /** Swap the contents of two @ref expected objects.
+        @param a The first object to swap.
+        @param b The second object to swap.
+    */
     friend constexpr
     void
     swap(expected& a, expected& b)

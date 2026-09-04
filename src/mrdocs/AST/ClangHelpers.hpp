@@ -195,6 +195,17 @@ template <>
 struct InfoTypeFor<clang::UsingDecl>
     : std::type_identity<UsingSymbol> {};
 
+// A using-declaration whose qualifier depends on a template parameter
+// names nothing yet, so Clang keeps it in one of these instead of a
+// `UsingDecl` with shadows.
+template <>
+struct InfoTypeFor<clang::UnresolvedUsingValueDecl>
+    : std::type_identity<UsingSymbol> {};
+
+template <>
+struct InfoTypeFor<clang::UnresolvedUsingTypenameDecl>
+    : std::type_identity<UsingSymbol> {};
+
 // Extract ConceptSymbol from ConceptDecl
 template <>
 struct InfoTypeFor<clang::ConceptDecl>
@@ -739,6 +750,12 @@ isAllExplicitSpecialization(clang::Decl const* D)
 {
     return !isAnyImplicitSpecialization(D);
 }
+
+// Check if any component of D is a template specialization of any kind
+// (implicit or explicit, class, variable, or function).
+MRDOCS_DECL
+bool
+isAnySpecialization(clang::Decl const* D);
 
 MRDOCS_DECL
 bool

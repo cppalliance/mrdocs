@@ -1,0 +1,96 @@
+# OpenSSL demo config for MrDocs.
+#
+# Scope: the public C API under include/openssl. Headers generated from the
+# *.h.in templates (via Configure + `make build_generated`) are required; this
+# fork keeps those generated files so the demo runs without a full OpenSSL
+# build. Platform / optional deps that the headers mention are stubbed under
+# docs/shims or forgiven via missing-include-prefixes.
+#
+# OpenSSL is a C library: every public header wraps its declarations in
+# `extern "C"`. MrDocs treats linkage specs as transparent DeclContexts so
+# those symbols are extracted into the global namespace.
+source-root: ..
+input:
+  - ../include/openssl
+includes:
+  - ../include
+  - shims
+file-patterns:
+  - '*.h'
+recursive: true
+exclude-patterns:
+  - '../include/openssl/__DECC_*'
+  - '../include/openssl/asn1_mac.h'
+  # ASN.1 template internals (macros/types for defining custom items).
+  - '../include/openssl/asn1t.h'
+use-system-stdlib: true
+use-system-libc: true
+# Do NOT forgive `sys/` — macOS stdint.h pulls in sys/_types/_int8_t.h and
+# friends; accepting those as missing leaves int8_t undefined and every
+# header fails to parse.
+missing-include-prefixes:
+  - 'linux/'
+  - 'windows.h'
+  - 'winsock'
+  - 'ws2tcpip'
+  - 'wincrypt'
+  - 'intrin.h'
+
+# OpenSSL headers interleave public API with macro-generated stack/lhash
+# helpers and type-check stubs. Keep the real functions and typedefs; hide
+# the machinery from the reference index and from lint.
+exclude-symbols:
+  - '<unnamed record>'
+  - '<unnamed record>::**'
+  - '**::<unnamed record>'
+  - '**::<unnamed record>::**'
+  - '<unnamed enum>'
+  - '<unnamed enum>::**'
+  - '**::<unnamed enum>'
+  - '**::<unnamed enum>::**'
+  - 'OSSL_FUNC_*'
+  - 'ossl_check_*'
+  - '*_thunk'
+  - 'lh_*_dummy'
+  - '*_dummy'
+  - '*_dummy::**'
+  - 'lh_CONF_VALUE_dummy'
+  - 'lh_ERR_STRING_DATA_dummy'
+  - 'lh_OPENSSL_CSTRING_dummy'
+  - 'lh_OPENSSL_STRING_dummy'
+  - 'lh_*_hash_thunk'
+  - 'lh_*_comp_thunk'
+  - 'lh_*_doall_thunk'
+  - 'lh_*_doall_arg_thunk'
+  - 'sk_*_compfunc'
+  - 'sk_*_copyfunc'
+  - 'sk_*_freefunc'
+  - 'lh_*_dummy::**'
+  - '**::dummy'
+  - '**::d1'
+  - '**::d2'
+  - '**::d3'
+  - 'stack_st_OSSL_CMP_POLLREP'
+
+implementation-defined:
+  - 'ossl_check_*'
+  - '*_thunk'
+  - '<unnamed record>'
+  - '<unnamed record>::**'
+
+exclude-macros:
+  - 'sk_*'
+  - 'lh_*'
+  - 'DECLARE_*'
+  - 'DEFINE_*'
+  - 'IMPLEMENT_*'
+  - 'SKM_*'
+  - 'OSSL_FUNC_*'
+  - 'OPENSSL_sk_*'
+  - 'OPENSSL_LH_*'
+  - 'OPENSSL_DECLARE_*'
+
+extract-all: true
+multipage: true
+generator: adoc
+non-standard-attributes: false

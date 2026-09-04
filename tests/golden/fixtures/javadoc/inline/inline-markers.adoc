@@ -2,7 +2,7 @@
 :mrdocs:
 
 [#index]
-== Global namespace
+== Global index
 
 === Functions
 
@@ -12,6 +12,7 @@
 | link:#f[`f`] 
 | Exercise the inline markup kinds (HTML and Markdown forms)&colon; subscript, superscript, highlight, strikethrough&period;
 |===
+
 
 [#f]
 == f

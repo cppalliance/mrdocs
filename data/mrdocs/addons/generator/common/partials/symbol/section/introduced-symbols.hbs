@@ -2,17 +2,19 @@
 {{#if symbol.shadowDeclarations}}
 {{#> markup/section name="introduced-symbols"}}
 {{#> markup/dynamic-level-h }}Introduced Symbols{{/markup/dynamic-level-h~}}
-{{#if (any_of_by symbol.shadowDeclarations "doc")}}
+{{#with (transform symbol.shadowDeclarations @root.mrdocs.corpus.get)}}
+{{#if (any_of_by this "doc")}}
 {{> markup/table
     weights=(arr 1 4)
     headers=(arr "Name" "Description")
-    items=symbol.shadowDeclarations
+    items=this
     columns=(arr "." "doc.brief") }}
 {{else}}
 {{> markup/table
     headers=(arr "Name")
-    items=symbol.shadowDeclarations
+    items=this
     columns=(arr ".") }}
 {{/if}}
+{{/with}}
 {{/markup/section}}
 {{/if}}

@@ -12,7 +12,7 @@
 </namespace>
 <namespace>
   <name>A</name>
-  <anchor>A</anchor>
+  <anchor>A-08</anchor>
   <loc>
     <loc>
       <location>
@@ -34,7 +34,7 @@
 </namespace>
 <namespace>
   <name>B</name>
-  <anchor>B</anchor>
+  <anchor>B-0e</anchor>
   <loc>
     <loc>
       <location>
@@ -86,7 +86,7 @@
 </function>
 <function>
   <name>b</name>
-  <anchor>b</anchor>
+  <anchor>b-09</anchor>
   <loc>
     <loc>
       <location>
@@ -117,7 +117,7 @@
 </function>
 <function>
   <name>a</name>
-  <anchor>a</anchor>
+  <anchor>a-04</anchor>
   <loc>
     <loc>
       <location>

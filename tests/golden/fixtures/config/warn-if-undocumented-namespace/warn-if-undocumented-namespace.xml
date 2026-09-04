@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>4JCgfGEC2jWr72QsTfV4d5vTyBZs</namespaces>
+    <functions>CDVdLzUDaQkDx4RFgyfbkxQGqyS 2B5ih9A7ZSVfS9yS5nXR1HvQGJwG</functions>
+  </members>
+</namespace>
+<namespace>
+  <name>named_namespace</name>
+  <anchor>named_namespace</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>warn-if-undocumented-namespace.cpp</shortPath>
+        <sourcePath>warn-if-undocumented-namespace.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>4JCgfGEC2jWr72QsTfV4d5vTyBZs</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>CLfZa79AMiX2ZxEnVbi5cRzVnSH</functions>
+  </members>
+</namespace>
+<function>
+  <name>inside</name>
+  <anchor>inside</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>warn-if-undocumented-namespace.cpp</shortPath>
+        <sourcePath>warn-if-undocumented-namespace.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>CLfZa79AMiX2ZxEnVbi5cRzVnSH</id>
+  <extraction>regular</extraction>
+  <parent>4JCgfGEC2jWr72QsTfV4d5vTyBZs</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>With warn-if-undocumented-namespace enabled, </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>named_namespace</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> itself is reported as undocumented (the warning goes to stderr, which the golden harness does not capture yet).</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documented symbol inside an otherwise undocumented named namespace.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>deep</name>
+  <anchor>deep</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>warn-if-undocumented-namespace.cpp</shortPath>
+        <sourcePath>warn-if-undocumented-namespace.cpp</sourcePath>
+        <lineNumber>17</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>CDVdLzUDaQkDx4RFgyfbkxQGqyS</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documented symbol reached through the transparent inline namespace.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>documented</name>
+  <anchor>documented</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>warn-if-undocumented-namespace.cpp</shortPath>
+        <sourcePath>warn-if-undocumented-namespace.cpp</sourcePath>
+        <lineNumber>2</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2B5ih9A7ZSVfS9yS5nXR1HvQGJwG</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A documented function so the regular undocumented check stays quiet.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

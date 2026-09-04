@@ -49,12 +49,6 @@ antora:
           quadrant3_fill: 'transparent'
           quadrant4_fill: 'transparent'
           quadrant_point_fill: '#9eb1ff'
-          quadrant_point_text_fill: '#ffffff'
-          quadrant_title_fill: '#ffffff'
-          quadrant_x_axis_text_fill: '#ffffff'
-          quadrant_y_axis_text_fill: '#ffffff'
-          quadrant_internal_border_stroke_fill: '#ffffff44'
-          quadrant_external_border_stroke_fill: '#ffffff88'
     - require: '@antora/lunr-extension' # https://gitlab.com/antora/antora-lunr-extension
       index_latest_only: true
     - require: '@cppalliance/antora-cpp-reference-extension'
@@ -66,15 +60,15 @@ antora:
           - mrdocs
     - require: ./extensions/repo-snippets-extension.js
       mounts:
+        # Two roots cover every include. Both carry generated .adoc pages that
+        # need the MrDocs page frame stripped before embedding; strip_page_wrapper
+        # is a no-op on the source and data files they also serve.
         - source: tests/golden/fixtures/snippets
           target: snippets
           strip_page_wrapper: true
-        - source: examples/generators/data-driven
-          target: data-driven-generators
-        - source: examples/generators/script-driven
-          target: script-driven-generators
         - source: examples
           target: examples
+          strip_page_wrapper: true
     - require: ./extensions/commands-registry-extension.js
     - require: ./extensions/adoc-preview-extension.js
 

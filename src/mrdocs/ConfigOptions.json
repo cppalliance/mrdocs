@@ -81,35 +81,11 @@
         "default": true
       },
       {
-        "name": "stdlib-includes",
-        "brief": "C++ Standard Library include paths",
-        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libcxx"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
         "name": "use-system-libc",
         "brief": "Use the system C standard library",
         "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
         "type": "bool",
         "default": true
-      },
-      {
-        "name": "libc-includes",
-        "brief": "Standard Library include paths",
-        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
       },
       {
         "name": "system-includes",
@@ -452,6 +428,13 @@
         "details": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "non-standard-attributes",
+        "brief": "Include non-standard attributes in the documentation",
+        "details": "When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, or `__nonnull__`. When set to `false`, only the standard C++ attributes (`[[noreturn]]`, `[[carries_dependency]]`, `[[deprecated]]`, `[[fallthrough]]`, `[[maybe_unused]]`, `[[nodiscard]]`, `[[likely]]`, `[[unlikely]]`, `[[no_unique_address]]`, `[[assume]]`, `[[indeterminate]]`) are documented, so implementation-detail attributes do not clutter the output.",
+        "type": "bool",
+        "default": true
       }
     ]
   },
@@ -504,15 +487,6 @@
         "details": "The prefix for links to the source code. MrDocs joins it with the path of each source file to build the link.",
         "type": "string",
         "default": ""
-      },
-      {
-        "name": "addons",
-        "brief": "Path to the Addons directory",
-        "details": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
-        "type": "path",
-        "default": "<mrdocs-root>/share/mrdocs/addons",
-        "relative-to": "<config-dir>",
-        "must-exist": true
       },
       {
         "name": "addons-supplemental",
@@ -657,6 +631,13 @@
         "default": true
       },
       {
+        "name": "warn-if-undocumented-namespace",
+        "brief": "Warn if namespaces are not documented",
+        "details": "When set to `true`, MrDocs also outputs a warning message for a named namespace that passes all filters and is not documented. This requires `warn-if-undocumented` to also be enabled. Inline and anonymous namespaces are transparent and do not require documentation.",
+        "type": "bool",
+        "default": false
+      },
+      {
         "name": "warn-if-doc-error",
         "brief": "Warn if documentation has errors",
         "details": "When set to `true`, MrDocs outputs a warning message if the documentation of a symbol has errors such as duplicate parameters and parameters that don't exist.",
@@ -667,6 +648,13 @@
         "name": "warn-no-paramdoc",
         "brief": "Warn if parameters are not documented",
         "details": "When set to `true`, MrDocs outputs a warning message if a named function parameter is not documented.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "warn-no-brief",
+        "brief": "Warn if a documented symbol has no brief",
+        "details": "When set to `true`, MrDocs outputs a warning message if a symbol has documentation but no brief once brief finalization (auto-brief and brief-copying commands) has run. A symbol with a description but no brief renders poorly because the brief is what parent contexts (such as member tables) display, so an empty brief is treated as missing documentation.",
         "type": "bool",
         "default": true
       },
@@ -706,6 +694,14 @@
         "default": false
       },
       {
+        "name": "max-errors",
+        "brief": "Stop after this many documentation errors",
+        "details": "Caps how many documentation errors MrDocs reports, like a compiler's `-fmax-errors`. This only takes effect together with `warn-as-error`: without it, documentation problems are plain warnings and the whole report is always shown. `0` means unlimited (the default). Once the cap is reached MrDocs stops looking for more problems: it suppresses further diagnostics, prints a short note so you know the report is truncated, and stops dispatching translation units that have not started yet (translation units already in flight finish, so the final count may run a little past the cap). Use this with `warn-as-error` and the `warn-*` family to bring up docs iteratively: keep `warn-if-undocumented` (and later `warn-no-paramdoc`, …) on, set `max-errors` to your fix-loop batch size (for example `40`), fix that batch, and repeat. Full CI validation should leave this at `0`.",
+        "type": "unsigned",
+        "default": 0,
+        "min-value": 0
+      },
+      {
         "name": "error-on-empty-corpus",
         "brief": "Treat an empty corpus as an error",
         "details": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. A corpus counts as empty when no symbols are extracted; because the global namespace is always present in the model, a corpus that contains only the global namespace and no other declaration is also treated as empty. This usually means nothing was extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",
@@ -733,6 +729,56 @@
         "details": "When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.",
         "type": "bool",
         "default": false
+      }
+    ]
+  },
+  {
+    "category": "Built-in directories",
+    "brief": "Where MrDocs finds its own bundled resources",
+    "details": "These point at the addons and the parse-time header sets that MrDocs ships with. They default to `<mrdocs-root>/share/mrdocs/...`, derived from the MrDocs root, and are not meant for everyday configuration. They are exposed so tests and unusual installs can redirect MrDocs's built-in directories.",
+    "options": [
+      {
+        "name": "addons",
+        "brief": "Path to the Addons directory",
+        "details": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
+        "type": "path",
+        "default": "<mrdocs-root>/share/mrdocs/addons",
+        "relative-to": "<config-dir>",
+        "must-exist": true
+      },
+      {
+        "name": "stdlib-includes",
+        "brief": "C++ Standard Library include paths",
+        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libcxx"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "libc-includes",
+        "brief": "Standard Library include paths",
+        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
+      },
+      {
+        "name": "clang-resource-dir",
+        "brief": "Clang resource directory",
+        "details": "Directory holding Clang's builtin headers (`stddef.h`, `stdarg.h`, and the other compiler intrinsics) in its `include/` subdirectory. MrDocs bundles the resource directory that matches its embedded Clang and passes it as `-resource-dir`, so parsing does not depend on a Clang installation on the host. Leave empty to let Clang locate its own resource directory.",
+        "type": "path",
+        "default": "<mrdocs-root>/share/mrdocs/headers/clang",
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
       }
     ]
   }

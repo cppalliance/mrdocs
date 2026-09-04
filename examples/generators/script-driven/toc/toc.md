@@ -1,0 +1,6 @@
+- [geo](geo.html)
+  - [coord](geo/coord.html)
+    - [from_polar](geo/coord/from_polar.html)
+  - [Point](geo/Point.html)
+  - [Relation](geo/Relation.html)
+  - [midpoint](geo/midpoint.html)

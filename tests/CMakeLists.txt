@@ -8,10 +8,6 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-if (MRDOCS_BUILD_HEADERS_ONLY OR NOT MRDOCS_BUILD_TESTS)
-    return()
-endif()
-
 # Each test suite is a separate executable and owns its own CMakeLists:
 #   unit/   - public-API unit tests (mrdocs-unit-tests)
 #   golden/ - reference-output harness (mrdocs-golden-tests)
@@ -27,12 +23,8 @@ add_test(NAME mrdocs-self-doc
         "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
             "--config=${CMAKE_SOURCE_DIR}/docs/mrdocs.yml"
             "--output=${MRDOCS_SELF_DOC_OUTPUT}"
+            ${MRDOCS_BUILTIN_DIR_ARGS}
             --generator=noop
-            "--addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons"
-            "--stdlib-includes=${LIBCXX_DIR}"
-            "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-            "--libc-includes=${CMAKE_SOURCE_DIR}/data/mrdocs/headers/libc-stubs"
-            --concurrency=16
             --log-level=debug
             $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
     )

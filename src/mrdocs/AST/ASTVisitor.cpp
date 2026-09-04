@@ -115,6 +115,29 @@ gatherMacroParameters(clang::MacroInfo const* MI)
     return result;
 }
 
+// The conversion function a declaration names, if it names one.
+clang::CXXConversionDecl const*
+underlyingConversion(clang::NamedDecl const* D)
+{
+    clang::NamedDecl const* target = D;
+    if (clang::UsingShadowDecl const* USD =
+            dyn_cast<clang::UsingShadowDecl>(target))
+    {
+        target = USD->getTargetDecl();
+    }
+    else if (clang::UsingDecl const* UD = dyn_cast<clang::UsingDecl>(target);
+             UD && UD->shadow_size() != 0)
+    {
+        target = (*UD->shadow_begin())->getTargetDecl();
+    }
+    if (clang::FunctionTemplateDecl const* FTD =
+            dyn_cast<clang::FunctionTemplateDecl>(target))
+    {
+        target = FTD->getTemplatedDecl();
+    }
+    return dyn_cast<clang::CXXConversionDecl>(target);
+}
+
 } // unnamed namespace
 
 void
@@ -188,7 +211,10 @@ populateMacros()
         // macros are already dropped above when `extract-all` is off.)
         if (config_.warnIfUndocumented && !sym->doc)
         {
-            detail::UndocumentedSymbol undoc(id, name, SymbolKind::Macro);
+            // A macro is never part of a template specialization, so its
+            // warning cannot be folded away by finalization: certain to warn.
+            detail::UndocumentedSymbol undoc(
+                id, name, SymbolKind::Macro, /*certainToWarn=*/true);
             undoc.Loc = sym->Loc;
             undocumented_.insert(std::move(undoc));
         }
@@ -311,7 +337,11 @@ traverse(DeclTy const* D)
             X(CXXDeductionGuide);
             X(NamespaceAlias);
             X(Using);
+            X(UnresolvedUsingValue);
+            X(UnresolvedUsingTypename);
             X(Concept);
+            X(LinkageSpec);
+            X(Export);
 #undef X
         default:
             break;
@@ -406,6 +436,57 @@ ASTVisitor::
 traverse(clang::IndirectFieldDecl const* D)
 {
     return traverse(D->getAnonField());
+}
+
+Symbol*
+ASTVisitor::
+traverse(clang::LinkageSpecDecl const* D)
+{
+    // A linkage spec is transparent: it has no Symbol of its own, so the
+    // declarations it wraps (the usual shape of a C library header, e.g.
+    // `extern "C" { ... }` in OpenSSL) are visited directly. Without this they
+    // would be dropped and the corpus would collapse to the global namespace.
+    traverseTransparentContext(D);
+    return nullptr;
+}
+
+Symbol*
+ASTVisitor::
+traverse(clang::ExportDecl const* D)
+{
+    // A C++20 `export { ... }` block is likewise transparent.
+    traverseTransparentContext(D);
+    return nullptr;
+}
+
+void
+ASTVisitor::
+traverseTransparentContext(clang::DeclContext const* DC)
+{
+    for (clang::Decl* Child : DC->decls())
+    {
+        if (!Child->isImplicit() || isa<clang::IndirectFieldDecl>(Child))
+        {
+            ScopeExitRestore s(mode_);
+            traverse(Child);
+        }
+    }
+}
+
+Symbol*
+ASTVisitor::
+traverse(clang::TypedefDecl const* D)
+{
+    // `typedef struct { ... } Foo;` names an otherwise anonymous record. The
+    // record is extracted under that name (see extractName), so this alias is
+    // redundant: skip it to avoid a nameless record plus a duplicate alias.
+    // A typedef of a named type is extracted as a regular alias.
+    if (auto const* TT = D->getUnderlyingType()->getAs<clang::TagType>();
+        TT && TT->getDecl()->getTypedefNameForAnonDecl() == D)
+    {
+        return nullptr;
+    }
+    return traverse<TypedefSymbol>(D);
 }
 
 template <
@@ -737,10 +818,23 @@ populate(
             {
                 BaseType->IsPackExpansion = true;
             }
+
+            // Record where the derived class names this base (the
+            // `: public Base` clause). Inherited members copied from a base
+            // with no page of its own are relocated here so they point inside
+            // the derived class's file rather than an external header.
+            SourceInfo baseLoc;
+            if (clang::SourceLocation const baseSpecLoc = B.getBeginLoc();
+                baseSpecLoc.isValid())
+            {
+                populate(baseLoc, baseSpecLoc, /*definition=*/true, /*documented=*/false);
+            }
+
             I.Bases.emplace_back(
                 std::move(BaseType),
                 toAccessKind(access),
-                B.isVirtual());
+                B.isVirtual(),
+                std::move(baseLoc));
         }
     }
 
@@ -1272,12 +1366,16 @@ populate(
     UsingSymbol& I,
     clang::UsingDecl const* D)
 {
-    I.Class = UsingClass::Normal;
+    I.Class = D->hasTypename() ? UsingClass::Typename : UsingClass::Normal;
     clang::DeclarationName const& Name = D->getNameInfo().getName();
     clang::NestedNameSpecifier const& NNS = D->getQualifier();
     auto INI = toName(Name, {}, NNS);
     MRDOCS_CHECK_OR(INI);
     I.IntroducedName = *INI;
+    if (clang::CXXConversionDecl const* CD = underlyingConversion(D))
+    {
+        I.IntroducedName->Identifier = conversionNameAsWritten(CD);
+    }
     for (clang::UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
@@ -1290,6 +1388,40 @@ populate(
             I.ShadowDeclarations.emplace_back(SI->id);
         }
     }
+}
+
+template <std::derived_from<clang::NamedDecl> DeclTy>
+void
+ASTVisitor::
+populateDependentUsing(
+    UsingSymbol& I,
+    UsingClass const cls,
+    DeclTy const* D)
+{
+    I.Class = cls;
+    clang::DeclarationName const& Name = D->getNameInfo().getName();
+    clang::NestedNameSpecifier const& NNS = D->getQualifier();
+    auto INI = toName(Name, {}, NNS);
+    MRDOCS_CHECK_OR(INI);
+    I.IntroducedName = *INI;
+}
+
+void
+ASTVisitor::
+populate(
+    UsingSymbol& I,
+    clang::UnresolvedUsingValueDecl const* D)
+{
+    populateDependentUsing(I, UsingClass::Normal, D);
+}
+
+void
+ASTVisitor::
+populate(
+    UsingSymbol& I,
+    clang::UnresolvedUsingTypenameDecl const* D)
+{
+    populateDependentUsing(I, UsingClass::Typename, D);
 }
 
 void
@@ -1567,7 +1699,7 @@ populate(
         for (std::size_t i = 0; i < TPL->size(); ++i)
         {
             auto& Param = Result->Params.emplace_back(std::in_place_type<TypeTParam>);
-            populate(Param, TPL->getParam(i));
+            populate(Param, TPL->getParam(static_cast<unsigned>(i)));
         }
         if (TTPD->hasDefaultArgument() && !Result->Default)
         {
@@ -1617,7 +1749,7 @@ populate(
     std::size_t i = 0;
     while (explicitIt != ExplicitTemplateParameters.end())
     {
-        clang::NamedDecl const* P = TPL->getParam(i);
+        clang::NamedDecl const* P = TPL->getParam(static_cast<unsigned>(i));
         Polymorphic<TParam>& Param =
             i < TI.Params.size() ?
                 TI.Params[i] :
@@ -1889,6 +2021,17 @@ populateAttributes(Symbol& I, clang::Decl const* D)
             }
 
             AttributeKind const kind = toAttributeKind(attr->getKind());
+
+            // With non-standard-attributes disabled, only the standard C++
+            // [[...]] attributes are documented; drop compiler-specific ones
+            // (e.g. __nonnull__, gnu::*, clang::*), which map to Other, so they
+            // do not clutter documented signatures.
+            if (!config_.nonStandardAttributes &&
+                kind == AttributeKind::Other)
+            {
+                continue;
+            }
+
             Polymorphic<Attribute> attribute = makeAttribute(kind);
 
             // The written name, with scope (e.g. `gnu::custom`). Recognized
@@ -2209,6 +2352,18 @@ extractName(DeclTy const* D)
     {
         return extractName(D->getNominatedNamespace());
     }
+    else if constexpr (std::derived_from<DeclTy, clang::TagDecl>)
+    {
+        // A struct/union/enum made anonymous but named by a typedef
+        // (`typedef struct { ... } Foo;`) has no name of its own; the typedef
+        // gives it its name for linkage, so use that instead of leaving it
+        // unnamed (a public API symbol the user could not otherwise refer to).
+        if (auto const* TND = D->getTypedefNameForAnonDecl())
+        {
+            return extractName(TND);
+        }
+        return extractName(cast<clang::NamedDecl>(D));
+    }
     else if constexpr (std::derived_from<DeclTy, clang::NamedDecl>)
     {
         return extractName(cast<clang::NamedDecl>(D));
@@ -2218,9 +2373,25 @@ extractName(DeclTy const* D)
 
 std::string
 ASTVisitor::
+conversionNameAsWritten(clang::CXXConversionDecl const* D)
+{
+    return "operator " + mrdocs::toString(*toType(D->getConversionType()));
+}
+
+std::string
+ASTVisitor::
 extractName(clang::NamedDecl const* D)
 {
-    return extractName(D->getDeclName());
+    std::string result;
+    if (clang::CXXConversionDecl const* CD = underlyingConversion(D))
+    {
+        result = conversionNameAsWritten(CD);
+    }
+    else
+    {
+        result = extractName(D->getDeclName());
+    }
+    return result;
 }
 
 std::string
@@ -2277,7 +2448,15 @@ extractName(clang::DeclarationName const N)
         break;
     }
     case clang::DeclarationName::CXXLiteralOperatorName:
-        case clang::DeclarationName::CXXUsingDirective:
+        // A user-defined literal operator: name it by its literal suffix,
+        // e.g. `operator""_json` for `operator"" _json`.
+        result.append("operator\"\"");
+        if (clang::IdentifierInfo const* I = N.getCXXLiteralIdentifier())
+        {
+            result.append(I->getName());
+        }
+        break;
+    case clang::DeclarationName::CXXUsingDirective:
         break;
     default:
         MRDOCS_UNREACHABLE();
@@ -2621,7 +2800,7 @@ extractSFINAEInfo(clang::QualType const T)
     for (std::size_t I = 0; I < Args.size(); ++I)
     {
         if (I < SFINAEControl->ControllingParams.size()
-            && SFINAEControl->ControllingParams[I])
+            && SFINAEControl->ControllingParams[static_cast<unsigned>(I)])
         {
             MRDOCS_SYMBOL_TRACE(Args[I], context_);
             clang::TemplateArgument ArgsI = Args[I];
@@ -2641,11 +2820,25 @@ Optional<ASTVisitor::SFINAEControlParams>
 ASTVisitor::
 getSFINAEControlParams(
     clang::TemplateDecl* TD,
-    clang::IdentifierInfo const* Member)
+    clang::IdentifierInfo const* Member,
+    llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress)
 {
     MRDOCS_SYMBOL_TRACE(TD, context_);
     MRDOCS_SYMBOL_TRACE(Member, context_);
     MRDOCS_CHECK_OR(TD, std::nullopt);
+
+    // Templates can derive from each other through their specializations,
+    // such as `A<T> : B<T, false>` and `B<T, false> : A<T*>`. The base
+    // class walk below would then alternate between them forever, so
+    // stop as soon as we reach a template that is already being processed.
+    bool const Inserted = InProgress.insert(TD).second;
+    MRDOCS_CHECK_OR(Inserted, std::nullopt);
+    struct InProgressGuard
+    {
+        llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& Set;
+        clang::TemplateDecl const* TD;
+        ~InProgressGuard() { Set.erase(TD); }
+    } const Guard{InProgress, TD};
 
     // The `FindParam` lambda function is used to find the index of a
     // template argument in a list of template arguments. It is used
@@ -2680,7 +2873,7 @@ getSFINAEControlParams(
             // the `Member` field.
             underlyingTemplateInfo->Member = Member;
         }
-        auto sfinaeControl = getSFINAEControlParams(*underlyingTemplateInfo);
+        auto sfinaeControl = getSFINAEControlParams(*underlyingTemplateInfo, InProgress);
         MRDOCS_CHECK_OR(sfinaeControl, std::nullopt);
 
         // Find the index of the parameter that represents the SFINAE result
@@ -2694,7 +2887,7 @@ getSFINAEControlParams(
 
         // Find the index of the parameter that represents the SFINAE result
         // in the primary template arguments
-        unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *resultType);
+        unsigned ParamIdx = static_cast<unsigned>(FindParam(ATD->getInjectedTemplateArgs(context_), *resultType));
 
         // Return the controlling parameters with values corresponding to
         // the primary template arguments
@@ -2706,28 +2899,28 @@ getSFINAEControlParams(
         for (std::size_t i = 0; i < sfinaeControl->ControllingParams.size();
              ++i)
         {
-            if (sfinaeControl->ControllingParams[i])
+            if (sfinaeControl->ControllingParams[static_cast<unsigned>(i)])
             {
                 // Find the index of the parameter that represents the SFINAE
                 // result in the underlying template arguments
-                auto resultType = tryGetTemplateArgument(
+                auto argResultType = tryGetTemplateArgument(
                     sfinaeControl->Parameters,
                     underlyingTemplateInfo->Arguments,
                     i);
-                MRDOCS_CHECK_OR_CONTINUE(resultType);
-                MRDOCS_SYMBOL_TRACE(*resultType, context_);
+                MRDOCS_CHECK_OR_CONTINUE(argResultType);
+                MRDOCS_SYMBOL_TRACE(*argResultType, context_);
 
                 // Find the index of the parameter that represents the param
                 // in the primary template arguments
-                auto ParamIdx = FindParam(
+                auto argParamIdx = FindParam(
                     ATD->getInjectedTemplateArgs(context_),
-                    *resultType);
-                if (ParamIdx == static_cast<std::size_t>(-1))
+                    *argResultType);
+                if (argParamIdx == static_cast<std::size_t>(-1))
                 {
                     continue;
                 }
 
-                primaryControllingParams.set(ParamIdx);
+                primaryControllingParams.set(static_cast<unsigned>(argParamIdx));
             }
         }
 
@@ -2742,6 +2935,11 @@ getSFINAEControlParams(
     MRDOCS_SYMBOL_TRACE(CTD, context_);
     MRDOCS_CHECK_OR(CTD, std::nullopt);
 
+    // A class template is only a SFINAE template through a member such
+    // as `std::enable_if<B,T>::type`. Without a member to look for,
+    // the specialization checks below can never find the SFINAE result.
+    MRDOCS_CHECK_OR(Member, std::nullopt);
+
     // Get the template arguments of the primary template
     auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
     MRDOCS_SYMBOL_TRACE(PrimaryArgs, context_);
@@ -2753,7 +2951,7 @@ getSFINAEControlParams(
     // For instance, in the specialization `std::enable_if<true,T>::type`,
     // `type` is `T`, which corresponds to the second template parameter
     // `T`, so `ParamIdx` is `1` to represent the second parameter.
-    unsigned ParamIdx = -1;
+    unsigned ParamIdx = static_cast<unsigned>(-1);
 
     // The `IsMismatch` function checks if there's a mismatch between the
     // clang::CXXRecordDecl of the clang::ClassTemplateDecl and the specified template
@@ -2806,7 +3004,7 @@ getSFINAEControlParams(
                 }
 
                 auto sfinae_result = getSFINAEControlParams(
-                    sfinae_info->Template, Member);
+                    sfinae_info->Template, Member, InProgress);
                 if (!sfinae_result)
                 {
                     return true;
@@ -2883,7 +3081,7 @@ getSFINAEControlParams(
             // `type` is `T`, which corresponds to the second template
             // parameter `T`, so `ParamIdx` is `1` to represent the
             // second parameter.
-            ParamIdx = FoundIdx;
+            ParamIdx = static_cast<unsigned>(FoundIdx);
             // Get this primary template argument as a template
             // argument of the current type.
             clang::TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
@@ -2940,7 +3138,7 @@ getSFINAEControlParams(
     // template parameters that control the SFINAE result. The controlling
     // parameters are expressions that cannot be converted to
     // non-type template parameters.
-    llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
+    llvm::SmallBitVector ControllingParams(static_cast<unsigned>(PrimaryArgs.size()));
     for(auto* CTPSD : PartialSpecs) {
         MRDOCS_SYMBOL_TRACE(CTPSD, context_);
         auto PartialArgs = CTPSD->getTemplateArgs().asArray();
@@ -2965,7 +3163,7 @@ getSFINAEControlParams(
             default:
                 continue;
             }
-            ControllingParams.set(i);
+            ControllingParams.set(static_cast<unsigned>(i));
         }
     }
 
@@ -3031,7 +3229,7 @@ tryGetTemplateArgument(
     MRDOCS_CHECK_OR(Index < Parameters->size(), std::nullopt);
 
     // Attempt to get the default argument of the template parameter
-    clang::NamedDecl* ND = Parameters->getParam(Index);
+    clang::NamedDecl* ND = Parameters->getParam(static_cast<unsigned>(Index));
     MRDOCS_SYMBOL_TRACE(ND, context_);
     if(auto* TTPD = dyn_cast<clang::TemplateTypeParmDecl>(ND);
         TTPD && TTPD->hasDefaultArgument())
@@ -3936,12 +4134,32 @@ checkUndocumented(
     // need to check for anything else because the
     // logic below is only used to populate the
     // set of undocumented symbols for warning purposes.
-    MRDOCS_CHECK_OR(config_.warnIfUndocumented, {});
+    // Collect enum constants under the dedicated `warn-if-undoc-enum-val`
+    // option and every other symbol under `warn-if-undocumented`. Both share
+    // this set but yield different warnings (a missing enum value vs. an
+    // undocumented symbol), emitted together in DocCommentFinalizer.
+    if constexpr (std::same_as<InfoTy, EnumConstantSymbol>)
+    {
+        MRDOCS_CHECK_OR(config_.warnIfUndocEnumVal, {});
+    }
+    else
+    {
+        MRDOCS_CHECK_OR(config_.warnIfUndocumented, {});
+    }
 
-    // If the symbol is not being extracted as a Regular
-    // symbol, we don't need to check for undocumented symbols
-    // These are expected to be potentially undocumented
-    MRDOCS_CHECK_OR(mode_ == Regular, {});
+    // Namespaces are only required to be documented when the dedicated
+    // `warn-if-undocumented-namespace` option is enabled: most projects do not
+    // document namespaces, so they opt out of the regular check. Inline and
+    // anonymous namespaces are transparent (their members are reparented to the
+    // enclosing namespace and the namespace itself is never surfaced), so they
+    // never require documentation regardless of the option.
+    if constexpr (std::same_as<InfoTy, NamespaceSymbol>)
+    {
+        MRDOCS_CHECK_OR(config_.warnIfUndocumentedNamespace, {});
+        auto const* ND = dyn_cast<clang::NamespaceDecl>(D);
+        MRDOCS_CHECK_OR(
+            ND && !ND->isInline() && !ND->isAnonymousNamespace(), {});
+    }
 
     // Only Regular and SeeBelow symbols are part of the documented API surface,
     // so only they are warned about when undocumented. ImplementationDefined and
@@ -3980,7 +4198,15 @@ checkUndocumented(
     if (undocIt == undocumented_.end())
     {
         SymbolKind const kind = InfoTy::kind_id;
-        auto [newIt, inserted] = undocumented_.insert(detail::UndocumentedSymbol{id, extractName(D), kind});
+        // Finalization may fold a template specialization (and its members)
+        // onto the primary and suppress the warning, so only symbols outside
+        // specializations are certain to warn. Uncertain symbols are still
+        // recorded and reported when the warning survives finalization, but
+        // they do not count toward the max-errors early-stop budget.
+        bool const certainToWarn = !isAnySpecialization(D);
+        auto [newIt, inserted] = undocumented_.insert(
+            detail::UndocumentedSymbol{
+                id, extractName(D), kind, certainToWarn});
         MRDOCS_ASSERT(inserted);
         undocIt = newIt;
     }

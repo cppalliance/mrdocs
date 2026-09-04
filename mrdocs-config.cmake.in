@@ -1,41 +1,56 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
 @PACKAGE_INIT@
 
-# How mrdocs installation was built
-set(MRDOCS_BUILT_SHARED "@BUILD_SHARED_LIBS@")
+# How this mrdocs installation was built.
+# Inspect these to decide if the toolchain matches the binaries.
+set(MRDOCS_BUILT_SHARED "@MRDOCS_BUILD_SHARED@")
+set(MRDOCS_BUILT_BUNDLED "@MRDOCS_DO_BUNDLE_DEPENDENCIES@")
+set(MRDOCS_BUILT_REEXPORT_DEPENDENCIES "@MRDOCS_DO_REEXPORT_DEPENDENCIES@")
 set(MRDOCS_BUILT_CXX_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@")
 set(MRDOCS_BUILT_CXX_COMPILER_VERSION "@CMAKE_CXX_COMPILER_VERSION@")
 
-# Paths
-set_and_check(MRDOCS_INSTALL_DIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
-set_and_check(MRDOCS_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
-set_and_check(MRDOCS_LIB_DIR     "@PACKAGE_LIB_INSTALL_DIR@")
+# Installation paths, relocated relative to this file by @PACKAGE_INIT@.
+set_and_check(MRDOCS_INCLUDE_DIR  "@PACKAGE_INCLUDE_INSTALL_DIR@")   # e.g. "include"
+set_and_check(MRDOCS_LIB_DIR      "@PACKAGE_LIB_INSTALL_DIR@")       # e.g. "lib" or "lib64"
+set_and_check(MRDOCS_DATAROOT_DIR "@PACKAGE_DATAROOT_INSTALL_DIR@")  # e.g. "share"
+set(MRDOCS_STDLIB_INCLUDE_DIR     "@PACKAGE_DATAROOT_INSTALL_DIR@/mrdocs/headers/libcxx")
+set(MRDOCS_LIBC_INCLUDE_DIR       "@PACKAGE_DATAROOT_INSTALL_DIR@/mrdocs/headers/libc-stubs")
 
-# Set module paths
-include(CMakeFindDependencyMacro)
-list(APPEND CMAKE_MODULE_PATH ${MRDOCS_CONFIG_INSTALL_DIR})
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
-list(APPEND CMAKE_MODULE_PATH "${MRDOCS_INCLUDE_DIR}")
-list(APPEND CMAKE_MODULE_PATH "${MRDOCS_INSTALL_DIR}")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/cmake")
+# Dependencies
+if (MRDOCS_BUILT_REEXPORT_DEPENDENCIES)
+    include(CMakeFindDependencyMacro)
+    find_dependency(LLVM CONFIG)
+    find_dependency(Clang CONFIG)
+    find_dependency(jerryscript CONFIG)
+    find_dependency(Lua CONFIG)
+endif ()
 
-# Find dependencies
-find_dependency(LLVM)
-find_dependency(Clang)
-find_dependency(@DUKTAPE_PACKAGE_NAME@)
-find_dependency(fmt)
-
-# Create imported targets
+# Imported targets.
 include("${CMAKE_CURRENT_LIST_DIR}/mrdocs-targets.cmake")
-check_required_components(mrdocs)
 
-# Set executable path. Only define it when the install actually captured one:
-# a defined-but-empty value would suppress the find_program fallback in
-# MrDocs.cmake (which guards on `if(NOT DEFINED MRDOCS_EXECUTABLE)`) and leave
-# add_mrdocs() consumers with an empty command. When it is empty, leave the
-# variable undefined so that fallback locates the installed mrdocs on the
-# consumer's CMAKE_PREFIX_PATH.
-set(_mrdocs_executable "@MRDOCS_EXECUTABLE@")
-if (_mrdocs_executable)
+# Bake the relocated MrDocs root into consumers, so a default-constructed
+# ReferenceDirectories in a program that links mrdocs-core finds the bundled
+# resources under <root>/share/mrdocs with no runtime configuration.
+if (TARGET mrdocs::mrdocs-core)
+    target_compile_definitions(mrdocs::mrdocs-core INTERFACE
+        "MRDOCS_DEFAULT_ROOT=\"${PACKAGE_PREFIX_DIR}\"")
+endif ()
+
+# Locate the installed mrdocs executable so a consumer can invoke it (e.g. from
+# its own add_custom_target that generates documentation).
+set(_mrdocs_executable "@PACKAGE_BIN_INSTALL_DIR@/mrdocs@CMAKE_EXECUTABLE_SUFFIX@")
+if (EXISTS "${_mrdocs_executable}")
     set(MRDOCS_EXECUTABLE "${_mrdocs_executable}")
 endif ()
 unset(_mrdocs_executable)
+
+check_required_components(mrdocs)

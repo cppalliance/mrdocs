@@ -19,6 +19,7 @@
 #include <mrdocs/detail/Corpus.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <llvm/ADT/SmallString.h>
+#include <atomic>
 #include <mutex>
 #include <shared_mutex>
 #include <unordered_map>
@@ -51,6 +52,10 @@ class ExecutionContext
     Diagnostics diags_;
     detail::SymbolSet info_;
     detail::UndocumentedSymbolSet undocumented_;
+    // Set when max-errors (with warn-as-error) is reached and undocumented_
+    // has grown large enough that remaining TUs would only feed a truncated
+    // report.
+    std::atomic<bool> stopExtraction_{false};
 
 public:
     /** Initializes a context
@@ -80,12 +85,26 @@ public:
 
         @param info The results to report.
         @param diags The diagnostics to report.
+        @param undocumented Undocumented symbols found in this TU.
     */
     void
     report(
         detail::SymbolSet&& info,
         Diagnostics&& diags,
         detail::UndocumentedSymbolSet&& undocumented);
+
+    /** Whether remaining translation units should be skipped.
+
+        Becomes true once `max-errors` (with `warn-as-error`) is set and
+        the merged undocumented-symbol set has reached that size. Callers
+        check this before starting work on a TU so large corpora can
+        return a useful first batch of warnings quickly.
+    */
+    bool
+    shouldStopExtraction() const noexcept
+    {
+        return stopExtraction_.load(std::memory_order_relaxed);
+    }
 
     /** Called when the execution is complete.
 

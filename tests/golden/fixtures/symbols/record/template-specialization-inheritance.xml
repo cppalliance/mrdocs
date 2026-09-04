@@ -165,6 +165,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-specialization-inheritance.cpp</shortPath>
+          <sourcePath>template-specialization-inheritance.cpp</sourcePath>
+          <lineNumber>18</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -235,6 +243,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-specialization-inheritance.cpp</shortPath>
+          <sourcePath>template-specialization-inheritance.cpp</sourcePath>
+          <lineNumber>21</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -275,6 +291,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-specialization-inheritance.cpp</shortPath>
+          <sourcePath>template-specialization-inheritance.cpp</sourcePath>
+          <lineNumber>24</lineNumber>
+          <columnNumber>13</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -342,7 +366,7 @@
       <records>41eimfG9ZxfyKecXgT1Pu8aYc7Fv</records>
     </public>
   </interface>
-  <specializations>2cVSEcoiC3S52ZWJahZas135jQxo 2m73ELeQ8FvdfiQ1Bjum6GYoqtww 3BWnweXEGCZThEU86yPvT6zBYgcJ 4FR11bfr43aruqgBV4G2pESSS68N</specializations>
+  <specializations>3BWnweXEGCZThEU86yPvT6zBYgcJ 2cVSEcoiC3S52ZWJahZas135jQxo 4FR11bfr43aruqgBV4G2pESSS68N 2m73ELeQ8FvdfiQ1Bjum6GYoqtww</specializations>
 </record>
 <record>
   <name>S1</name>

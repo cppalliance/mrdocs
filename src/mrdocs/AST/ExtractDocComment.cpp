@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/DocComment/Inline/Parts.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/String/String.hpp>
@@ -1078,7 +1079,7 @@ class DocCommentVisitor
             }
             return Unexpected(Error(
                 std::format(
-                    "warning: HTML <{}> tag has no {} attribute",
+                    "HTML <{}> tag has no {} attribute",
                     C->getTagName().str(),
                     name.str())));
         };
@@ -1108,7 +1109,15 @@ class DocCommentVisitor
             auto r = getAttr("href");
             if (!r)
             {
-                report::error(r.error().message());
+                // An <a> without href (an anchor, or malformed markup) is a
+                // problem in the user's doc comment, not in Mr.Docs: warn
+                // with the location and skip the tag instead of failing the
+                // whole run with an internal-error banner.
+                report::warn(
+                    "{} at {} ({})",
+                    r.error().message(),
+                    filename,
+                    loc.getLine());
                 return;
             }
             emplaceInline<doc::LinkInline>(
@@ -1618,24 +1627,23 @@ class DocCommentVisitor
             visitChildrenWithCursor(P);
         }
 
-        // warn on duplicates
-        auto it = std::ranges::
-            find_if(jd_.Document, [&](Polymorphic<doc::Block> const& b) {
-            if (!b->isParam())
+        // Skip a parameter that is already documented. `@param` blocks are
+        // stored in `jd_.params` (not `jd_.Document`), and the same parameter
+        // can be documented more than once: either twice in a single comment
+        // (a genuine authoring mistake) or once on each of several
+        // redeclarations of the same symbol whose comments are parsed into the
+        // same DocComment (e.g. two overloads MrDocs treats as redeclarations).
+        // In both cases the first documentation wins; keeping the duplicate
+        // would surface a spurious "Duplicate parameter documentation" later.
+        auto const dupIt = std::ranges::find_if(
+            jd_.params,
+            [&](doc::ParamBlock const& existing)
             {
-                return false;
-            }
-            auto const* p = dynamic_cast<doc::ParamBlock const*>(
-                b.operator->());
-            MRDOCS_ASSERT(p != nullptr);
-            return p->name == param.name;
-        });
-        if (it != jd_.Document.end())
+                return existing.name == param.name;
+            });
+        if (dupIt != jd_.params.end())
         {
-            report::warn(
-                "{}: Duplicate @param for argument {}",
-                C->getBeginLoc().printToString(sm_),
-                param.name);
+            return;
         }
 
         jd_.params.push_back(std::move(param));
@@ -1751,7 +1759,47 @@ class DocCommentVisitor
             return;
         }
 
+        // Every non-formula verbatim command is rendered as a fenced code
+        // block; the command implies the fence's info (language) string.
         doc::CodeBlock code;
+        if (name == "code")
+        {
+            // Doxygen lets `@code` name a language, spelled `@code{.cpp}`. Clang
+            // does not understand the `{.lang}` suffix and keeps it as the first
+            // line of the verbatim block, so lift it into the info string and
+            // drop it from the rendered body.
+            std::size_t const nl = payload.find('\n');
+            std::string_view const first = trim(std::string_view(payload).substr(
+                0, nl == std::string::npos ? payload.size() : nl));
+            if (first.size() > 3 &&
+                first.starts_with("{.") &&
+                first.ends_with("}"))
+            {
+                code.info = std::string(first.substr(2, first.size() - 3));
+                payload.erase(0, nl == std::string::npos ? payload.size() : nl + 1);
+            }
+        }
+        else if (llvm::StringRef lang = name; lang.consume_back("only"))
+        {
+            // The output-format commands name their language directly:
+            // `@htmlonly` -> html, `@xmlonly` -> xml, `@latexonly` -> latex,
+            // `@docbookonly` -> docbook, `@manonly` -> man, `@rtfonly` -> rtf.
+            code.info = lang.str();
+        }
+        else if (name == "dot")
+        {
+            code.info = "dot";
+        }
+        else if (name == "msc")
+        {
+            code.info = "msc";
+        }
+        else if (name == "startuml")
+        {
+            code.info = "plantuml";
+        }
+        // `@verbatim` and the structural blocks (internal, parblock,
+        // secreflist) carry no language.
         code.literal = std::move(payload);
         jd_.Document.emplace_back(std::move(code));
     }
@@ -1819,9 +1867,12 @@ populateDocComment(
         {
             jd = std::move(result);
         }
-        else if (*jd != result)
+        else
         {
-            jd->append(std::move(result));
+            // Fill in only the fields this comment is missing rather than
+            // appending, so multiple declarations (or namespace reopenings)
+            // don't duplicate briefs and descriptions.
+            merge(*jd, std::move(result));
         }
     }
 }

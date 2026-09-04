@@ -80,6 +80,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>derived.cpp</shortPath>
+          <sourcePath>derived.cpp</sourcePath>
+          <lineNumber>7</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>
@@ -215,6 +223,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>derived.cpp</shortPath>
+          <sourcePath>derived.cpp</sourcePath>
+          <lineNumber>11</lineNumber>
+          <columnNumber>16</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <derived>3cGvKmd6enjXYp9f1YaQDavZ7G5x</derived>
@@ -300,6 +316,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>derived.cpp</shortPath>
+          <sourcePath>derived.cpp</sourcePath>
+          <lineNumber>17</lineNumber>
+          <columnNumber>17</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>

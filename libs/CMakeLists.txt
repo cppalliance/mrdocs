@@ -8,12 +8,6 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-# The header-only "MrDocs build" links nothing, so these libraries are not
-# needed there.
-if (MRDOCS_BUILD_HEADERS_ONLY)
-    return()
-endif()
-
 # Self-contained libraries, each with its own include/ + src/ (+ tests/) and its
 # own CMakeLists. These depend ONLY on the standard library, on the `polyfills`
 # library (standard-library features not yet available on every supported
@@ -38,6 +32,13 @@ elseif (MSVC)
     # puts the compiler in conformance mode so /W4 diagnostics match those under
     # which mrdocs-core builds this same code. These match mrdocs-core's options.
     add_compile_options(/permissive- /EHs /MP)
+    # /W4 diagnostics these libraries' own std-based code raises. Unlike the LLVM
+    # header suppressions (which ride on mrdocs-llvm in src/), these are about our
+    # code, so they belong with the libraries. Kept narrow on purpose: C4100
+    # unreferenced parameter, C4244/C4245/C4267 conversions, C4127 constant
+    # condition, C4456/C4457/C4458/C4459 shadowing, C4701/C4702/C4703 flow.
+    add_compile_options(/wd4100 /wd4127 /wd4244 /wd4245 /wd4267
+        /wd4456 /wd4457 /wd4458 /wd4459 /wd4701 /wd4702 /wd4703)
     # On develop this code lived in mrdocs-core and inherited these Windows
     # defines from the global add_definitions(${LLVM_DEFINITIONS}); as decoupled
     # libraries that never link LLVM, they must set them directly.

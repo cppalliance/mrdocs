@@ -125,9 +125,12 @@ class LegibleNameTable
      */
     std::unordered_map<SymbolID, LegibleName> map_;
 
-    /* Maps unqualified names to all symbols with that name within the current scope
+    /* Maps unqualified names to all symbols with that name within the current
+       scope. Keys match case-insensitively so that names differing only in
+       case (which collide as a page or anchor on a case-insensitive
+       filesystem) are disambiguated against each other.
      */
-    UnorderedStringMultiMap<LegibleName*> disambiguation_map_;
+    UnorderedCIStringMultiMap<LegibleName*> disambiguation_map_;
 
 public:
     /*  Build the map of legible names for all symbols in the corpus
@@ -230,6 +233,15 @@ public:
                     {
                         return getUnnamedInfoName(t);
                     }
+                    // User-defined literal operators (operator""_x) carry a
+                    // double quote in their name, which is not URL-safe; strip
+                    // it so the anchor stays a plain identifier (operator_x).
+                    if (t.Name.find('"') != std::string::npos)
+                    {
+                        std::string safe(t.Name);
+                        std::erase(safe, '"');
+                        return safe;
+                    }
                 }
                 else if constexpr(T::isUsing())
                 {
@@ -254,7 +266,10 @@ public:
         LegibleName LI(std::string(rawName), 0, idAsString);
         LegibleName& info = map_.emplace(I.id, std::move(LI)).first->second;
 
-        // Look for symbols with the same unqualified name
+        // Look for symbols with the same unqualified name. The map matches
+        // case-insensitively, so a name that differs from a sibling only in
+        // case is treated as a collision and disambiguated the same way an
+        // exact duplicate is.
         auto [first, last] = disambiguation_map_.equal_range(rawName);
         auto sameNames = std::ranges::subrange(first, last) | std::views::values;
         if (std::ranges::empty(sameNames))

@@ -1,25 +1,26 @@
-// Print the inheritance subtree rooted at a named class.
-//
-// `ctx.corpus.lookup(name)` resolves the entry point once. From there the
-// only way down the tree is by id: each record carries a `derived`
-// list of base16 ids, and `ctx.corpus.get(id)` turns each id back into a
-// live symbol proxy. The recursion walks the graph that single-pass
-// iteration over `ctx.corpus.symbols` cannot reconstruct.
+mrdocs.register_transform("subclass-tree", function(ctx) {
+    const base = ctx.corpus.lookup("Shape");
+    if (base) {
+        console.log(base.name);
+        listSubclasses(ctx.corpus, base, "  ");
+    }
+});
 
+/**
+ * Print the inheritance subtree below a record, one class per line, indented by
+ * depth. Each record's `derived` list holds the ids of its direct subclasses;
+ * `corpus.get` turns each id back into a symbol, and the recursion follows them
+ * down the graph.
+ * @param {object} corpus - `ctx.corpus`.
+ * @param {object} sym - The record whose subclasses to print.
+ * @param {string} indent - The leading whitespace for this level.
+ */
 function listSubclasses(corpus, sym, indent) {
-    for (var i = 0; i < sym.derived.length; ++i) {
-        var child = corpus.get(sym.derived[i]);
+    for (let i = 0; i < sym.derived.length; ++i) {
+        const child = corpus.get(sym.derived[i]);
         if (child) {
             console.log(indent + child.name);
             listSubclasses(corpus, child, indent + "  ");
         }
     }
 }
-
-mrdocs.register_transform("subclass-tree", function(ctx) {
-    var base = ctx.corpus.lookup("Shape");
-    if (base) {
-        console.log(base.name);
-        listSubclasses(ctx.corpus, base, "  ");
-    }
-});

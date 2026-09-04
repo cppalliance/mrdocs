@@ -1,0 +1,52 @@
+# LLVM documentation demo for Mr.Docs.
+# The documented input is LLVM's public headers under llvm/include/llvm; the
+# whole LLVM + Clang header trees are on the include path so cross-references
+# resolve. The clang tree is not documented here for time: rendering llvm
+# alone already dwarfs the other demos, and llvm + clang together takes about
+# 45 minutes (2717s measured locally, versus 134s for OpenSSL), which is too
+# slow for CI today. The documented fork keeps the clang annotations, so once
+# render times improve, uncommenting the clang input and symbol filter below
+# restores the full llvm + clang demo. The libcxx tree and the projects' test
+# fixtures are NOT scanned. Modules that #include TableGen-generated .inc
+# files that only exist after a full build fail to parse and are skipped;
+# headers that abort extraction outright are listed under exclude-patterns.
+source-root: ..
+input:
+  - ../llvm/include/llvm
+  #- ../clang/include/clang
+includes:
+  - ../llvm/include
+  - ../clang/include
+  - ../build/include
+  - ../build/tools/clang/include
+  - shims
+file-patterns:
+  - '*.h'
+recursive: true
+exclude-patterns:
+  # Platform-specific and buildless-unparseable headers (they abort extraction).
+  - '../llvm/include/llvm/Support/Windows/**'
+  - '../llvm/include/llvm/Support/Solaris/**'
+  - '../llvm/include/llvm/Support/TargetSelect.h'
+  - '../llvm/include/llvm/DebugInfo/PDB/DIA/**'      # needs Windows COM/DIA SDK
+  - '../llvm/include/llvm/Testing/**'                # needs gtest headers
+  - '../llvm/include/llvm/WindowsDriver/**'          # needs Windows COM
+  - '../llvm/include/llvm/WindowsResource/ResourceScriptTokenList.h'
+  - '../llvm/include/llvm/ExecutionEngine/OProfileWrapper.h'  # needs opagent.h
+  - '../llvm/include/llvm/PassSupport.h'             # legacy pass-manager glue
+  - '../llvm/include/llvm/PassAnalysisSupport.h'
+include-symbols:
+  - 'llvm::**'
+  #- 'clang::**'
+implementation-defined:
+  - '**::detail'
+  - '**::internal'
+exclude-symbols:
+  - 'llvm::is_bitmask_enum'
+  - 'llvm::largest_bitmask_enum_bit'
+multipage: true
+generator: adoc
+non-standard-attributes: false
+# A corpus this large makes the global-namespace index page enormous; the
+# per-namespace pages already cover navigation.
+global-namespace-index: false

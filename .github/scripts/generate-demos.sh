@@ -10,15 +10,23 @@
 #
 
 # Generate demos for each library and format.
-# Expected env vars: GITHUB_EVENT_NAME, RUNNER_OS, GITHUB_ENV
-
-# Echo each command as it runs.
-set -x
+# Expected env vars: GITHUB_EVENT_NAME, GITHUB_REPOSITORY, RUNNER_OS, GITHUB_ENV
 
 # Each demo format as "<id>:<multipage>". XML is single-page; HTML and
-# AsciiDoc are multipage. Pull requests only build AsciiDoc to keep CI fast.
-if [[ "$GITHUB_EVENT_NAME" == 'pull_request' ]]; then
-    formats=("adoc:true")
+# AsciiDoc are multipage. XML alone runs the whole extraction phase, which is
+# where anything that can crash Mr.Docs lives; the template generators are
+# predictable and add no coverage on top of it. Pull requests and pushes to
+# forks therefore build only XML. Only pushes to the canonical repository
+# build every format, not for testing but because that output is published to
+# the demo server for people to browse; on the large demos (LLVM) the extra
+# formats add hours.
+quick=false
+if [[ "$GITHUB_EVENT_NAME" == 'pull_request' \
+   || "${GITHUB_REPOSITORY:-}" != 'cppalliance/mrdocs' ]]; then
+    quick=true
+fi
+if [[ "$quick" == true ]]; then
+    formats=("xml:false")
 else
     formats=("xml:false" "html:true" "adoc:true")
 fi
@@ -40,11 +48,24 @@ for project_args in \
     "nlohmann-json|$(pwd)/nlohmann-json/docs/mrdocs.yml|" \
     "mp-units|$(pwd)/mp-units/docs/mrdocs.yml|" \
     "fmt|$(pwd)/fmt/doc/mrdocs.yml|" \
+    "abseil|$(pwd)/abseil/docs/mrdocs.yml|" \
+    "llvm|$(pwd)/llvm/docs/mrdocs.yml|" \
+    "bitcoin|$(pwd)/bitcoin/docs/mrdocs.yml|" \
+    "folly|$(pwd)/folly/docs/mrdocs.yml|" \
+    "openssl|$(pwd)/openssl/docs/mrdocs.yml|" \
+    "bde|$(pwd)/bde/docs/mrdocs.yml|" \
     "mrdocs|$(pwd)/docs/mrdocs.yml|$(pwd)/CMakeLists.txt" \
 ; do
     # Split the packed fields and pick this project's output root.
     IFS='|' read -r project config extra <<< "$project_args"
     base="$(pwd)/demos/$project"
+
+    # LLVM and BDE take tens of minutes just to extract; on pull requests and
+    # forks that is all cost and no coverage the smaller demos don't provide.
+    if [[ "$quick" == true && ( "$project" == llvm || "$project" == bde ) ]]; then
+        echo "Skipping $project (quick mode)"
+        continue
+    fi
 
     # Set each generator's output directory and pagination explicitly.
     options=()
@@ -56,8 +77,21 @@ for project_args in \
     done
 
     # Run mrdocs once for this project, emitting every format in one pass.
-    cmd=(mrdocs --config="$config" $extra --generator="$generators" "${options[@]}" --log-level=debug)
-    if ! "${cmd[@]}"; then
+    # Each project gets one log group covering generation and, on Linux, the
+    # asciidoctor rendering of the generated AsciiDoc; failures are echoed
+    # outside the group so they stay visible without expanding it. Warnings
+    # are off: the demos exist to prove the libraries render, and nobody acts
+    # on documentation warnings from here. Command echoing is enabled only
+    # around the mrdocs invocation; tracing everything (the per-file
+    # asciidoctor loop especially) makes the log so large GitHub truncates it.
+    echo "::group::Generate $project ($generators)"
+    generated=true
+    cmd=(mrdocs --config="$config" $extra --generator="$generators" "${options[@]}" --warnings=false --log-level=info)
+    set -x
+    "${cmd[@]}" || generated=false
+    { set +x; } 2>/dev/null
+    if ! $generated; then
+        echo "::endgroup::"
         echo "FAILED: $project ($generators)"
         demo_failures="$demo_failures  $project ($generators)\n    ${cmd[*]}\n"
         rm -rf "$base"
@@ -65,24 +99,20 @@ for project_args in \
     fi
 
     # On Linux, render the generated AsciiDoc to HTML with asciidoctor.
-    if [[ "$RUNNER_OS" == 'Linux' ]]; then
+    if [[ "$RUNNER_OS" == 'Linux' && -d "$base/adoc" ]]; then
         src="$base/adoc"
         dst="$base/adoc-asciidoc"
         stylesheet="$(pwd)/data/mrdocs/addons/generator/common/layouts/style.css"
 
-        [[ -d "$src" ]] || continue
-
         mkdir -p "$dst"
 
         # Mirror the AsciiDoc tree, rendering each file in place.
+        echo "Rendering $src with asciidoctor"
         find "$src" -type f -name '*.adoc' -print0 |
-        while IFS= read -r -d '' f; do
-            rel="${f#"$src/"}"
-            outdir="$dst/$(dirname "$rel")"
-            mkdir -p "$outdir"
-            asciidoctor -a stylesheet="${stylesheet}" -D "$outdir" "$f"
-        done
+        xargs -0 -n 500 -P "$(nproc)" \
+            asciidoctor -a stylesheet="${stylesheet}" -R "$src" -D "$dst"
     fi
+    echo "::endgroup::"
 done
 
 # Archive all demos and hand the path back to the workflow.

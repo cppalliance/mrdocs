@@ -73,6 +73,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>out-of-tree-base.cpp</shortPath>
+          <sourcePath>out-of-tree-base.cpp</sourcePath>
+          <lineNumber>12</lineNumber>
+          <columnNumber>17</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -85,14 +93,12 @@
   <name>externalMethod</name>
   <anchor>externalMethod</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>external_base.hpp</shortPath>
-        <lineNumber>10</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>out-of-tree-base.cpp</shortPath>
+      <sourcePath>out-of-tree-base.cpp</sourcePath>
+      <lineNumber>12</lineNumber>
+      <columnNumber>17</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3SiQ7CT9FRG6CgYv7hdrecFVaeQW</id>

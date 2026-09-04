@@ -1,0 +1,308 @@
+= Script Generators
+
+A *script generator* is the second kind of Mr.Docs extension driven by scripts. This covers the cases where customizing xref:extensions/handlebars-extensions.adoc[Handlebars templates] is not enough to express the output format. A generator hands the whole emit to the script instead.
+
+[NOTE]
+====
+A generator is written and loaded exactly like a xref:extensions/corpus-transforms.adoc[corpus transform]: a `.js` or `.lua` script under `extensions/` in an xref:configuration/output.adoc#addons[addon directory], handed the same `ctx`. It declares itself with `mrdocs.register_generator(id, fn)` instead of `mrdocs.register_transform`. The `id` is the name you select on the command line with `--generator=<id>`; a registered generator takes precedence over a built-in of the same name.
+====
+
+== Outputting the corpus
+
+The smallest useful generator hands the corpus straight to `JSON.stringify`. A complete, runnable example lives at `examples/generators/script-driven/json/`. Given this input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$examples/generators/script-driven/json/simple.cpp[]
+----
+
+In very few lines of code, this extension declares a `json` generator that writes every symbol to a single `reference.json`:
+
+.`addons/extensions/json.js`
+[source,js]
+----
+include::example$examples/generators/script-driven/json/addons/extensions/json.js[]
+----
+
+Select it with `--generator=json`. Because `ctx.corpus.symbols` is already plain data, the whole generator is one `JSON.stringify` call, and the shape is yours: `map` or `filter` the array, or read `ctx.params` to add options, before writing it. A script generator takes precedence over a built-in of the same name, so this replaces the built-in xref:generators/json.adoc[JSON generator], which is the same idea implemented in C++.
+
+The output is an array of every symbol, each a full DOM object as seen by the templates, with parent/child relationships expressed as `id` references. Its first entry, the global namespace, begins (the file continues with one object per symbol):
+
+.`reference.json` (excerpt)
+[source,json]
+----
+include::example$examples/generators/script-driven/json/reference.json[lines=1..45]
+----
+
+== Filtering the corpus
+
+Consider that you need a JSON file representing a search index for your reference documentation, in a format supported by your documentation framework. A complete, runnable example lives at `examples/generators/script-driven/search-index/`. Given this input:
+
+.`simple.cpp`
+[source,cpp]
+----
+include::example$examples/generators/script-driven/search-index/simple.cpp[]
+----
+
+the extension declares a `search-index` generator that emits a single search-index.json aggregating every symbol, an artifact no per-page generator can produce:
+
+.`addons/extensions/search_index.lua`
+[source,lua]
+----
+include::example$examples/generators/script-driven/search-index/addons/extensions/search_index.lua[]
+----
+
+Select it with `--generator=search-index`; it writes search-index.json into the output directory: one entry per named symbol.
+
+.`search-index.json`
+[source,json]
+----
+include::example$examples/generators/script-driven/search-index/search-index.json[]
+----
+
+== Navigation lists
+
+A navigation list over the whole API is the same idea as the search index, an artifact aggregated across every symbol, but it emits a nested list instead of JSON objects. Deriving it from the corpus prevents a project from manually maintaining a separate nav partial and re-syncing it whenever the API changes. A complete, runnable example lives at `examples/generators/script-driven/toc/`:
+
+[tabs]
+======
+Generator::
++
+.`addons/extensions/toc.js`
+[source,js]
+----
+include::example$examples/generators/script-driven/toc/addons/extensions/toc.js[]
+----
+
+Input::
++
+.`simple.cpp`
+[source,cpp]
+----
+include::example$examples/generators/script-driven/toc/simple.cpp[]
+----
+
+Config::
++
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/generators/script-driven/toc/mrdocs.yml[]
+----
+======
+
+The generator walks the namespace tree once, then serializes it to three formats from that single walk, so the nav for each output stays in step. The corpus is a tree: the global namespace is the one symbol with no `parent`, and a namespace lists its children in `members`, grouped by category (`namespaces`, `records`, `enums`, `functions`, ...). The walk descends through namespaces and treats every record, enum, and function as a leaf linking to its own page. Select it with `--generator=toc`; it writes one file per format:
+
+[tabs]
+======
+Markdown::
++
+.`toc.md`
+[source,markdown]
+----
+include::example$examples/generators/script-driven/toc/toc.md[]
+----
+
+AsciiDoc::
++
+.`toc.adoc`
+[source,asciidoc]
+----
+include::example$examples/generators/script-driven/toc/toc.adoc[]
+----
+
+HTML::
++
+.`toc.html`
+[source,html]
+----
+include::example$examples/generators/script-driven/toc/toc.html[]
+----
+======
+
+== Reflection Generators
+
+A custom generator does not have to emit documentation. It could be used for any task related to the project's public API and even write back to the files used to generate the Corpus. For instance, https://www.boost.org/doc/libs/release/libs/describe/[Boost.Describe^] adds compile-time reflection to C++ types, but its `BOOST_DESCRIBE_STRUCT` and `BOOST_DESCRIBE_ENUM` annotations are written by hand. The corpus already knows every type and its members, so the same walk that produces docs can emit those annotations to keep them in sync with the code. A complete, runnable example lives at `examples/generators/script-driven/describe/`:
+
+[tabs]
+======
+Generator::
++
+.`addons/extensions/describe.js`
+[source,js]
+----
+include::example$examples/generators/script-driven/describe/addons/extensions/describe.js[]
+----
+
+Input::
++
+[tabs]
+=====
+circle.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/include/circle.hpp[]
+----
+
+shape.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/include/shape.hpp[]
+----
+
+vec2.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/include/vec2.hpp[]
+----
+
+level.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/include/level.hpp[]
+----
+=====
+
+Config::
++
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/generators/script-driven/describe/mrdocs.yml[]
+----
+======
+
+A non-intrusive `BOOST_DESCRIBE_STRUCT` has to sit at the type's namespace scope with the type and its bases complete, so the extension emits one sidecar header per input header. In the example, for `circle.hpp` it writes `circle.described.hpp`, which includes `circle.hpp` and then the annotations for the types that header declares, including the annotations for the base class. A project can include the sidecar wherever it wants reflection over that header's types. Select it with `--generator=describe`:
+
+.Generated sidecars
+[tabs]
+======
+circle.described.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/circle.described.hpp[]
+----
+
+shape.described.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/shape.described.hpp[]
+----
+
+vec2.described.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/vec2.described.hpp[]
+----
+
+level.described.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/describe/level.described.hpp[]
+----
+======
+
+Notice the level of customization provided by extensions here. There are so many ways to achieve this that no tool could ever ship it as a built-in feature. A script generator provides you with the corpus, and the project can specify the final customization step.
+
+== Round-trip extensions
+
+An extension can register a transform and a generator together, so one addon covers both directions of the same job. For instance, a common task in C++ projects is keeping documentation examples and standalone snippet files in sync:
+
+* *Import example snippets* from test or example files into the documentation comments when they are complex enough to be kept in a separate file, typically because they need special setup or teardown code to compile and run.
+* *Exporting snippets* from documentation comments to testable source files when the snippets are short enough to be written inline.
+
+In the extension:
+
+* A corpus *transform* script can read example files and inject their snippets into the matching symbol's docs.
+* A *generator* script can write every `@code` example out to a file the build can compile, so an example in a comment is broken.
+
+An extension that implements both can keep the two in sync: the generator exports snippets from the docs to files if they weren't t included by the transform function.
+
+[tabs]
+======
+Extension::
++
+.`addons/extensions/snippets.lua`
+[source,lua]
+----
+include::example$examples/generators/script-driven/snippets/addons/extensions/snippets.lua[]
+----
+
+Headers::
++
+[tabs]
+=====
+arithmetic.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/snippets/include/arithmetic.hpp[]
+----
+
+text.hpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/snippets/include/text.hpp[]
+----
+=====
+
+Example file::
++
+.`example-code/arithmetic.cpp`
+[source,cpp]
+----
+include::example$examples/generators/script-driven/snippets/example-code/arithmetic.cpp[]
+----
+
+Config::
++
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$examples/generators/script-driven/snippets/mrdocs.yml[]
+----
+======
+
+In the input, `add` keeps its example inline in the header comment, while `multiply` and `subtract` import theirs from a separate example file. The transform reads its inputs from `transform-options.snippets.source`, and the generator writes the inline snippets to `generator-options.snippets.output`. The rendered page then shows every example regardless of where it came from:
+
+[.adoc-preview]
+========
+include::example$examples/generators/script-driven/snippets/reference.adoc[]
+========
+
+Export runs comments into files, and writes complete translation units, one per header. Each file includes its header and a small prelude, gives every symbol a function that runs its snippets (each in its own scope when there is more than one), and ends with a `main` that calls them all, so the file both compiles and runs as a test. It exports only the examples written inline in the headers; ones the transform imported are left out, since they already live in a file the build compiles. `exported/arithmetic.cpp` therefore holds only `add`, not the imported `multiply` and `subtract`:
+
+.Exported test files
+[tabs]
+======
+exported/arithmetic.cpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/snippets/exported/arithmetic.cpp[]
+----
+
+exported/text.cpp::
++
+[source,cpp]
+----
+include::example$examples/generators/script-driven/snippets/exported/text.cpp[]
+----
+======
+
+Knowing which examples to skip is where the two halves of the extension meet. The transform function records a fingerprint of each snippet, and the generator reads that same table to skip them.
+
+[TIP]
+====
+This extension can also compose with the xref:extensions/corpus-transforms.adoc#reading-files[ghostwriter extension]. A typical problem with technical writers is that their examples are only tested locally, so they can drift and break as the API moves. This extension would ensure these import snippets are alo tested as inline scripts.
+====

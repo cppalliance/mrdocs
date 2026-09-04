@@ -1,0 +1,62 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#app[`app`] 
+|===
+
+
+[#app]
+== app
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-operator_km[`operator&quot;&quot;&lowbar;km`] 
+| A user&hyphen;defined literal for kilometers&period;
+| link:#app-operator_times[`operator&quot;&quot;&lowbar;times`] 
+| A user&hyphen;defined literal for a repeat count&period;
+|===
+
+
+[#app-operator_km]
+== link:#app[app]::operator&quot;&quot;&lowbar;km
+
+A user&hyphen;defined literal for kilometers&period;
+
+=== Synopsis
+
+Declared in `&lt;literal&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+long double
+operator&quot;&quot;&lowbar;km(long double v);
+----
+
+[#app-operator_times]
+== link:#app[app]::operator&quot;&quot;&lowbar;times
+
+A user&hyphen;defined literal for a repeat count&period;
+
+=== Synopsis
+
+Declared in `&lt;literal&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned long long
+operator&quot;&quot;&lowbar;times(unsigned long long n);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

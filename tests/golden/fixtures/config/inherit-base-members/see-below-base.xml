@@ -91,6 +91,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>see-below-base.cpp</shortPath>
+          <sourcePath>see-below-base.cpp</sourcePath>
+          <lineNumber>11</lineNumber>
+          <columnNumber>22</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -103,15 +111,12 @@
   <name>do_other</name>
   <anchor>do_other</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>see-below-base.cpp</shortPath>
-        <sourcePath>see-below-base.cpp</sourcePath>
-        <lineNumber>6</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>see-below-base.cpp</shortPath>
+      <sourcePath>see-below-base.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>22</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3Bn6d6j5FrNLAxTNNKbbZhyS9G9V</id>

@@ -68,6 +68,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>forward-declared-member.cpp</shortPath>
+          <sourcePath>forward-declared-member.cpp</sourcePath>
+          <lineNumber>8</lineNumber>
+          <columnNumber>17</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
 </record>

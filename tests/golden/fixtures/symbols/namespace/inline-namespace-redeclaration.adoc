@@ -1,0 +1,86 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#app[`app`] 
+|===
+
+
+[#app]
+== app
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#app-inner[`inner`] 
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-widget[`widget`] 
+| Perform the action&period;
+|===
+
+
+[#app-inner]
+== link:#app[app]::inner
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#app-inner-helper[`helper`] 
+| A helper reached through the inline namespace&colon; app&colon;&colon;abi&colon;&colon;inner&colon;&colon;helper&period;
+|===
+
+
+[#app-inner-helper]
+== link:#app[app]::link:#app-inner[inner]::helper
+
+A helper reached through the inline namespace&colon; app&colon;&colon;abi&colon;&colon;inner&colon;&colon;helper&period;
+
+=== Synopsis
+
+Declared in `&lt;inline&hyphen;namespace&hyphen;redeclaration&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+helper();
+----
+
+[#app-widget]
+== link:#app[app]::widget
+
+Perform the action&period;
+
+=== Synopsis
+
+Declared in `&lt;inline&hyphen;namespace&hyphen;redeclaration&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+widget();
+----
+
+=== Description
+
+Defined directly inside the inline ABI namespace&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -26,6 +26,7 @@
 #include <clang/AST/ODRHash.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/SmallBitVector.h>
+#include <llvm/ADT/SmallPtrSet.h>
 #include <vector>
 
 namespace mrdocs {
@@ -433,9 +434,46 @@ private:
     Symbol*
     traverse(clang::IndirectFieldDecl const* D);
 
+    /*  Traverse a linkage specification (`extern "C" { ... }`).
+
+        A linkage spec is a transparent DeclContext with no Symbol of its own,
+        so we visit its children and let each attach to the enclosing scope.
+        This is the usual shape of a C library header (OpenSSL, zlib, ...);
+        without visiting them every wrapped declaration would be dropped.
+     */
+    Symbol*
+    traverse(clang::LinkageSpecDecl const* D);
+
+    /*  Traverse a C++20 export block (`export { ... }`).
+
+        Like a linkage spec, an export declaration is a transparent
+        DeclContext with no Symbol of its own, so we visit its children.
+     */
+    Symbol*
+    traverse(clang::ExportDecl const* D);
+
+    /*  Traverse a typedef declaration.
+
+        A `typedef struct { ... } Foo;` names an otherwise anonymous record.
+        The record is extracted under that name (see `extractName`), so the
+        alias is redundant and is skipped, leaving a single Record `Foo`.
+        A typedef of a named type is extracted as a regular alias.
+     */
+    Symbol*
+    traverse(clang::TypedefDecl const* D);
+
     // =================================================
     // AST Traversal Helpers
     // =================================================
+
+    /*  Traverse the children of a transparent DeclContext.
+
+        A linkage spec (`extern "C" { ... }`) or export block carries no
+        Symbol of its own, so its explicit children are visited directly and
+        attach to the enclosing scope.
+    */
+    void
+    traverseTransparentContext(clang::DeclContext const* DC);
 
     /*  Traverse the members of a declaration
 
@@ -644,6 +682,20 @@ private:
     populate(UsingSymbol& I, clang::UsingDecl const* D);
 
     void
+    populate(UsingSymbol& I, clang::UnresolvedUsingValueDecl const* D);
+
+    void
+    populate(UsingSymbol& I, clang::UnresolvedUsingTypenameDecl const* D);
+
+    // Record the name a dependent using-declaration introduces. There is
+    // nothing else to record: the qualifier depends on a template
+    // parameter, so nothing is named until the template is instantiated
+    // and there are no declarations to point at.
+    template <std::derived_from<clang::NamedDecl> DeclTy>
+    void
+    populateDependentUsing(UsingSymbol& I, UsingClass cls, DeclTy const* D);
+
+    void
     populate(ConceptSymbol& I, clang::ConceptDecl const* D);
 
     /*  Default function to populate the template information
@@ -784,6 +836,10 @@ private:
     // Extract the name of a declaration
     std::string
     extractName(clang::DeclarationName N);
+
+    // Name a conversion function after the type it converts to
+    std::string
+    conversionNameAsWritten(clang::CXXConversionDecl const* D);
 
     llvm::SmallString<256>
     qualifiedName(clang::Decl const* D) const;
@@ -985,12 +1041,45 @@ private:
        If the template is an alias (such as `std::enable_if_t`), the
        template information of the underlying type
        (such as `typename enable_if<B,T>::type`) will be extract instead.
+
+       If `Member` is `nullptr` and the template is not an alias, there
+       is no member that could carry the SFINAE result, so the function
+       returns `std::nullopt`.
+
+       The function walks the base classes of every specialization
+       of the template looking for the member that carries the SFINAE
+       result. Templates can derive from each other through their
+       specializations, so `InProgress` holds the templates on the
+       current path and the function returns `std::nullopt` when it
+       reaches one of them again.
      */
     Optional<SFINAEControlParams>
-    getSFINAEControlParams(clang::TemplateDecl* TD, clang::IdentifierInfo const* Member);
+    getSFINAEControlParams(
+        clang::TemplateDecl* TD,
+        clang::IdentifierInfo const* Member,
+        llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress);
 
+    // @copydoc getSFINAEControlParams(clang::TemplateDecl*, clang::IdentifierInfo const*, llvm::SmallPtrSetImpl<clang::TemplateDecl const*>&)
     Optional<SFINAEControlParams>
-    getSFINAEControlParams(SFINAETemplateInfo const& SFINAE) {
+    getSFINAEControlParams(clang::TemplateDecl* TD, clang::IdentifierInfo const* Member)
+    {
+        llvm::SmallPtrSet<clang::TemplateDecl const*, 8> InProgress;
+        return getSFINAEControlParams(TD, Member, InProgress);
+    }
+
+    // @copydoc getSFINAEControlParams(clang::TemplateDecl*, clang::IdentifierInfo const*, llvm::SmallPtrSetImpl<clang::TemplateDecl const*>&)
+    Optional<SFINAEControlParams>
+    getSFINAEControlParams(
+        SFINAETemplateInfo const& SFINAE,
+        llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress)
+    {
+        return getSFINAEControlParams(SFINAE.Template, SFINAE.Member, InProgress);
+    }
+
+    // @copydoc getSFINAEControlParams(clang::TemplateDecl*, clang::IdentifierInfo const*, llvm::SmallPtrSetImpl<clang::TemplateDecl const*>&)
+    Optional<SFINAEControlParams>
+    getSFINAEControlParams(SFINAETemplateInfo const& SFINAE)
+    {
         return getSFINAEControlParams(SFINAE.Template, SFINAE.Member);
     }
 

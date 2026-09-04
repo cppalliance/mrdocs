@@ -117,16 +117,6 @@
         </children>
         <name>x</name>
       </param>
-      <param>
-        <kind>param</kind>
-        <children>
-          <text>
-            <kind>text</kind>
-            <literal>Same thing again.</literal>
-          </text>
-        </children>
-        <name>x</name>
-      </param>
     </params>
   </doc>
   <isFunctionLike/>

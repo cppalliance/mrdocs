@@ -8,7 +8,7 @@
 <h1>Reference</h1>
 <div class="symbol">
 <div class="header">
-<h2 id="index">Global namespace</h2>
+<h2 id="index">Global index</h2>
 </div><!-- /header -->
 <h3>Types</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -53,6 +53,8 @@
 <tr><td><a href="#checked"><code>checked</code></a> </td><td>A nodiscard function (an attribute with no arguments).</td></tr>
 <tr><td><a href="#compute"><code>compute</code></a>  <span class="small">[deprecated]</span></td><td>A deprecated function with a message.</td></tr>
 <tr><td><a href="#log_message"><code>log_message</code></a> </td><td>A printf-like function (an attribute with multiple arguments).</td></tr>
+<tr><td><a href="#resize-06"><code>resize</code></a> </td><td>An overload set with only one deprecated overload: the set is not tagged.</td></tr>
+<tr><td><a href="#scale-02"><code>scale</code></a>  <span class="small">[deprecated]</span></td><td>An overload set whose every overload is deprecated: the set is tagged.</td></tr>
 </tbody>
 </table>
 
@@ -320,6 +322,126 @@ void
 log_message(char const* fmt, ...);</code></pre>
 </div><!-- /synopsis -->
 </div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="resize-06">resize</h2>
+<div class="brief">
+<p>An overload set with only one deprecated overload: the set is not tagged.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopses</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<p>An overload set with only one deprecated overload: the set is not tagged.</p>
+<pre><code class="source-code cpp">void
+<a href="#resize-0b">resize</a>();</code></pre>
+<span class="small"><a href="#resize-0b"><em>» more...</em></a></span>
+
+<p>An overload set with only one deprecated overload: the set is not tagged.</p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use resize2&quot;)]]
+void
+<a href="#resize-0c">resize</a>(int);</code></pre>
+<span class="small"><a href="#resize-0c"><em>» more...</em></a></span>
+
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="resize-0b">resize</h2>
+<div class="brief">
+<p>An overload set with only one deprecated overload: the set is not tagged.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">void
+resize();</code></pre>
+</div><!-- /synopsis -->
+</div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="resize-0c">resize</h2>
+<div class="brief">
+<p>An overload set with only one deprecated overload: the set is not tagged.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use resize2&quot;)]]
+void
+resize(int);</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use resize2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="scale-02">scale</h2>
+<div class="brief">
+<p>An overload set whose every overload is deprecated: the set is tagged.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopses</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<p>An overload set whose every overload is deprecated: the set is tagged.</p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use scale2&quot;)]]
+void
+<a href="#scale-07">scale</a>();</code></pre>
+<span class="small"><a href="#scale-07"><em>» more...</em></a></span>
+
+<p>An overload set whose every overload is deprecated: the set is tagged.</p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use scale2&quot;)]]
+void
+<a href="#scale-05">scale</a>(int);</code></pre>
+<span class="small"><a href="#scale-05"><em>» more...</em></a></span>
+
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use scale2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="scale-07">scale</h2>
+<div class="brief">
+<p>An overload set whose every overload is deprecated: the set is tagged.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use scale2&quot;)]]
+void
+scale();</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use scale2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
+<div class="symbol">
+<div class="header">
+<h2 id="scale-05">scale</h2>
+<div class="brief">
+<p>An overload set whose every overload is deprecated: the set is tagged.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;attributes.cpp&gt;</code></p>
+<pre><code class="source-code cpp">[[deprecated(&quot;use scale2&quot;)]]
+void
+scale(int);</code></pre>
+</div><!-- /synopsis -->
+<div class="admonition">
+<h4>WARNING</h4>
+<div>
+<p><a href="https://en.cppreference.com/cpp/language/attributes/deprecated" target="_blank" rel="noopener">Deprecated</a>: use scale2. Use of this entity is allowed but discouraged.</p>
+</div>
+</div></div><!-- /symbol -->
 <div class="symbol">
 <div class="header">
 <h2 id="value">value</h2>

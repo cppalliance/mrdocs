@@ -241,6 +241,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-base.cpp</shortPath>
+          <sourcePath>template-base.cpp</sourcePath>
+          <lineNumber>28</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -259,6 +267,7 @@
         <sourcePath>template-base.cpp</sourcePath>
         <lineNumber>17</lineNumber>
         <columnNumber>5</columnNumber>
+        <documented/>
       </location>
     </loc>
   </loc>
@@ -268,6 +277,17 @@
   <extraction>regular</extraction>
   <isCopyFromInherited/>
   <parent>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A regular member function that should also be inherited.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
   <returnType>
     <lValueReference>
       <kind>lvalue-reference</kind>
@@ -298,6 +318,7 @@
         <sourcePath>template-base.cpp</sourcePath>
         <lineNumber>14</lineNumber>
         <columnNumber>5</columnNumber>
+        <documented/>
       </location>
     </loc>
   </loc>
@@ -307,6 +328,29 @@
   <extraction>regular</extraction>
   <isCopyFromInherited/>
   <parent>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Indexing operator that should be inherited.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The right operand</literal>
+          </text>
+        </children>
+        <name>n</name>
+      </param>
+    </params>
+  </doc>
   <returnType>
     <lValueReference>
       <kind>lvalue-reference</kind>
@@ -426,6 +470,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>template-base.cpp</shortPath>
+          <sourcePath>template-base.cpp</sourcePath>
+          <lineNumber>23</lineNumber>
+          <columnNumber>7</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

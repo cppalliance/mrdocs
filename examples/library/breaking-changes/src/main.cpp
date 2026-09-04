@@ -47,18 +47,20 @@ int main(int argc, char const** argv)
 
     report::setMinimumLevel(report::Level::error);
 
+    // A default-constructed ReferenceDirectories points at MrDocs's installed
+    // root (linking mrdocs-core bakes it in), so the built-in resources resolve
+    // with no configuration. Any arguments after the two configs are option
+    // overrides passed straight through: an installed run supplies none, while
+    // the in-tree test forwards the built-in directory flags.
     ReferenceDirectories dirs;
-    if (char const* root = std::getenv("MRDOCS_ROOT"))
-    {
-        dirs.mrdocsRoot = root;
-    }
-    auto v1Corpus = example::loadCorpusFromConfig(argv[1], dirs);
+    char const** overrides = argv + 3;
+    auto v1Corpus = example::loadCorpusFromConfig(argv[1], dirs, overrides);
     if (!v1Corpus)
     {
         std::println(stderr, "v1: {}", v1Corpus.error().reason());
         return 1;
     }
-    auto v2Corpus = example::loadCorpusFromConfig(argv[2], dirs);
+    auto v2Corpus = example::loadCorpusFromConfig(argv[2], dirs, overrides);
     if (!v2Corpus)
     {
         std::println(stderr, "v2: {}", v2Corpus.error().reason());

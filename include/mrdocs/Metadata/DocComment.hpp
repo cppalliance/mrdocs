@@ -197,27 +197,24 @@ MRDOCS_DESCRIBE_STRUCT(
      footnotes, relates, related)
 )
 
-/** Append blocks from `other` into `I`, preserving order.
-*/
-inline
-void merge(DocComment& I, DocComment&& other)
-{
-    // Merge the marker flags before comparing so the flags
-    // alone don't cause spurious inequality.
-    I.IsFunctionObject |= other.IsFunctionObject;
-    I.IsSeeBelow |= other.IsSeeBelow;
-    I.IsImplementationDefined |= other.IsImplementationDefined;
+/** Merge documentation from another declaration of the same symbol.
 
-    // FIXME: this doesn't merge parameter information;
-    // parameters with the same name but different directions
-    // or descriptions end up being duplicated
-    if(other != I)
-    {
-        // Unconditionally extend the blocks
-        // since each decl may have a comment.
-        I.append(std::move(other));
-    }
-}
+    When the same symbol is described by more than one declaration (a
+    declaration and its definition, or a namespace reopened in many files),
+    their comments are merged. Only keyed sections are unioned, where a
+    validated key makes deduplication reliable: params and tparams by name,
+    and throws, relates and related by the symbol they reference. Every other
+    field is free-form prose (the brief, the description, returns, see-also,
+    pre/postconditions, footnotes); there a value comparison is meaningless and
+    appending would accumulate near-duplicate sections, so the first
+    declaration's is kept.
+
+    The members are visited through the struct's reflection so new list fields
+    stay covered automatically (defaulting to keep-first).
+*/
+MRDOCS_DECL
+void
+merge(DocComment& I, DocComment&& other);
 
 /** Concept to check if a type represents a DocComment node.
 */

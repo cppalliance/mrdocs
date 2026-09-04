@@ -2,7 +2,7 @@
 :mrdocs:
 
 [#index]
-== Global namespace
+== Global index
 
 === Functions
 

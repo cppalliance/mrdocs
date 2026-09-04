@@ -18,12 +18,30 @@
 #include <type_traits>
 #include <version>
 
+/** Standard-library polyfills.
+
+    Stand-ins for standard-library features not yet available on every supported
+    compiler. Each becomes an alias to the standard version once that feature is
+    universally available.
+*/
 namespace mrdocs::polyfill {
 
+// The doc comments are repeated in both branches because a doc comment must
+// immediately precede its declaration to attach: clang will not associate one
+// across the intervening #ifdef/#else text.
 #ifdef __cpp_lib_reference_from_temporary
-using std::reference_constructs_from_temporary_v;
+/** `true` if a reference of type `To` would bind to a temporary materialized
+    from an expression of type `From`. Mirrors `std::reference_converts_from_temporary_v`.
+*/
 using std::reference_converts_from_temporary_v;
+/** `true` if binding a reference of type `To` to an expression of type `From`
+    would bind to a temporary. Mirrors `std::reference_constructs_from_temporary_v`.
+*/
+using std::reference_constructs_from_temporary_v;
 #else
+/** `true` if a reference of type `To` would bind to a temporary materialized
+    from an expression of type `From`. Mirrors `std::reference_converts_from_temporary_v`.
+*/
 template <class To, class From>
 concept reference_converts_from_temporary_v
     = std::is_reference_v<To>
@@ -36,6 +54,9 @@ concept reference_converts_from_temporary_v
               && std::is_convertible_v<From, const std::remove_cvref_t<To>&&>
               && !std::is_convertible_v<From, std::remove_cvref_t<To>&>) );
 
+/** `true` if binding a reference of type `To` to an expression of type `From`
+    would bind to a temporary. Mirrors `std::reference_constructs_from_temporary_v`.
+*/
 template <class To, class From>
 concept reference_constructs_from_temporary_v
     = reference_converts_from_temporary_v<To, From>;

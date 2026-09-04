@@ -22,22 +22,24 @@ foreach (data_driven IN ITEMS md tex jsonl)
             "${CMAKE_CURRENT_SOURCE_DIR}/data-driven/${data_driven}/simple.cpp"
             "--config=${CMAKE_CURRENT_SOURCE_DIR}/data-driven/${data_driven}/mrdocs.yml"
             "--output=${CMAKE_CURRENT_BINARY_DIR}/data-driven/${data_driven}"
-            "--addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons"
-            "--stdlib-includes=${LIBCXX_DIR}"
-            "--libc-includes=${CMAKE_SOURCE_DIR}/data/mrdocs/headers/libc-stubs"
+            ${MRDOCS_BUILTIN_DIR_ARGS}
             --log-level=warn
     )
 endforeach ()
 
 # Script-driven generator examples (a shell driver that invokes mrdocs).
-foreach (script_driven IN ITEMS search-index json)
+foreach (script_driven IN ITEMS search-index json toc describe snippets)
     add_test(
         NAME mrdocs-generator-script-driven-${script_driven}
         COMMAND bash run.sh
-                --addons=${CMAKE_SOURCE_DIR}/data/mrdocs/addons
                 --output=${CMAKE_CURRENT_BINARY_DIR}/script-driven/${script_driven}/reference-output
+                ${MRDOCS_BUILTIN_DIR_ARGS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/script-driven/${script_driven}
     )
     set_property(TEST mrdocs-generator-script-driven-${script_driven} PROPERTY
         ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
 endforeach ()
+
+# No-op generator examples (the documentation check and the AI repair loop).
+# Each owns its own CMakeLists, so add the directory rather than a test here.
+add_subdirectory(noop)

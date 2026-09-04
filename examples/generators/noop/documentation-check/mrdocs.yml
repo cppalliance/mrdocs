@@ -1,0 +1,10 @@
+# A validation-only MrDocs run: extract everything, write nothing, and fail on
+# any documentation problem. Point CI at this config to gate the docs.
+generator: noop
+warnings: true
+warn-as-error: true
+warn-if-undocumented: true
+warn-no-paramdoc: true
+source-root: include
+input:
+  - include

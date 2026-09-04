@@ -40,6 +40,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>base.cpp</shortPath>
+          <sourcePath>base.cpp</sourcePath>
+          <lineNumber>5</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>

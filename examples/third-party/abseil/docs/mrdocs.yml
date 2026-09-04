@@ -1,0 +1,31 @@
+source-root: ..
+input:
+  - ../absl
+includes:
+  - ..
+  - shims
+file-patterns:
+  - '*.h'
+exclude-patterns:
+  - '../absl/**/internal/**'
+  - '../absl/**/*_test*'
+  - '../absl/**/*_benchmark*'
+  - '../absl/**/mock_*'
+  - '../absl/**/test_*'
+  - '../absl/**/*_testutil*'
+  - '../absl/**/*mock*'
+  - '../absl/**/*matchers*'
+include-symbols:
+  - 'absl::**'
+implementation-defined:
+  - 'absl::*_internal'
+  - '**::internal'
+  - '**::detail'
+# Internal classes reachable only through a friend-class grant in a public
+# header (e.g. Cord befriends crc_internal's CrcCord): they surface as empty
+# records with nowhere to attach documentation, so keep them out.
+exclude-symbols:
+  - 'absl::CrcCord'
+multipage: true
+generator: adoc
+non-standard-attributes: false

@@ -32,34 +32,49 @@ include(utils/cmake/helpers.cmake)
 # Project options
 #
 #-------------------------------------------------
+# What to build
+option(MRDOCS_MRDOCS_BUILD "Build only public-headers for documentation self-reference" ${MRDOCS_BUILD})
+if (MRDOCS_MRDOCS_BUILD)
+    include(docs/mrdocs-build.cmake)
+    return()
+endif()
+option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
+option(MRDOCS_BUILD_STRICT_TESTS "Enable costly strict tests" ON)
+option(MRDOCS_BUILD_EXAMPLES "Build the examples" ${MRDOCS_BUILD_TESTS})
+option(MRDOCS_BUILD_DOCS "Build documentation" OFF)
+option(MRDOCS_GENERATE_REFERENCE "Generate MrDocs reference" ${MRDOCS_BUILD_DOCS})
 option(MRDOCS_INSTALL "Configure install target" ON)
 option(MRDOCS_PACKAGE "Build install package" ON)
-option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
-option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
-option(MRDOCS_BUILD_EXAMPLES "Build the examples" ${MRDOCS_BUILD_TESTS})
 if (MRDOCS_BUILD_TESTS OR MRDOCS_BUILD_EXAMPLES)
     enable_testing()
     include(CTest)
 endif()
-option(MRDOCS_BUILD_STRICT_TESTS "Enable strict tests" ON)
+
+# How to build
 option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
-option(MRDOCS_BUILD_DOCS "Build documentation" OFF)
-option(MRDOCS_BUILD_HEADERS_ONLY "Build only public-headers for self-reference" OFF)
-option(MRDOCS_GENERATE_REFERENCE "Generate MrDocs reference" ${MRDOCS_BUILD_DOCS})
+option(MRDOCS_BUNDLE_DEPENDENCIES "Bundle the private dependencies into the library" ON)
+option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_GENERATE_ANTORA_REFERENCE "Generate MrDocs reference in Antora module pages" OFF)
 
+# Helper variables based on options
 set_ternary(MRDOCS_LINK_MODE MRDOCS_BUILD_SHARED SHARED "")
 set_ternary(MRDOCS_LINK_MODE_DEFINITION MRDOCS_BUILD_SHARED MRDOCS_SHARED_LINK MRDOCS_STATIC_LINK)
+set_ternary(MRDOCS_DO_BUNDLE_DEPENDENCIES "MRDOCS_BUNDLE_DEPENDENCIES AND NOT MRDOCS_BUILD_SHARED" ON OFF)
+set_ternary(MRDOCS_DO_REEXPORT_DEPENDENCIES "NOT MRDOCS_DO_BUNDLE_DEPENDENCIES AND NOT MRDOCS_BUILD_SHARED" ON OFF)
 set_ternary(MRDOCS_GCC   "CMAKE_CXX_COMPILER_ID STREQUAL \"GNU\"" ON OFF)
 set_ternary(MRDOCS_CLANG "CMAKE_CXX_COMPILER_ID MATCHES \"Clang$\"" ON OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-
+# MSVC flags shared by every mrdocs target below (not installed consumers):
+#  - /EHs enables C++ exception handling. The mrdocs tool, the unit tests, and the
+#    examples are separate targets whose TUs include exception-using STL headers, so
+#    without it MSVC raises C4530 and /WX makes it fatal; the EH model must also be
+#    uniform across all TUs, so it belongs here rather than on mrdocs-core alone.
+#  - /wd4100 accepts unused parameters, an accepted style across mrdocs (visitor /
+#    tag_invoke / finalizer signatures) that the clang build already allows via
+#    -Wno-unused-parameter; mirror it so /W4 /WX does not fail on C4100.
 if (MSVC)
-    # Suppressions we use to get from LLVM's HandleLLVMOptions.cmake
-    add_compile_options(/wd4100 /wd4127 /wd4141 /wd4146 /wd4204 /wd4244 /wd4245 /wd4267 /wd4291 /wd4310 /wd4319 /wd4324 /wd4351 /wd4389 /wd4456 /wd4457 /wd4458 /wd4459 /wd4503 /wd4505 /wd4510 /wd4512 /wd4577 /wd4592 /wd4610 /wd4611 /wd4624 /wd4701 /wd4702 /wd4703 /wd4706 /wd4722 /wd4805 /wd5105)
-    # Conformance flags we used to get from LLVM's HandleLLVMOptions.cmake
-    add_compile_options(/Zc:__cplusplus /Zc:preprocessor)
+    add_compile_options(/EHs /wd4100)
 endif()
 
 #-------------------------------------------------
@@ -70,14 +85,17 @@ endif()
 add_subdirectory(utils)
 add_subdirectory(libs)
 add_subdirectory(src)
-if (MRDOCS_BUILD_HEADERS_ONLY)
-    return()
-else()
 add_subdirectory(tools)
-add_subdirectory(tests)
-add_subdirectory(examples)
-add_subdirectory(docs)
-add_subdirectory(data)
-include(utils/cmake/install.cmake)
-mrdocs_install()
+if (MRDOCS_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+if (MRDOCS_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+if (MRDOCS_BUILD_DOCS)
+    add_subdirectory(docs)
+endif()
+if (MRDOCS_INSTALL)
+    add_subdirectory(data)
+    mrdocs_install()
 endif()

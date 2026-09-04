@@ -1558,9 +1558,9 @@ DocCommentFinalizer::emitWarnings()
 {
     MRDOCS_CHECK_OR(config_.warnings);
     warnUndocumented();
+    warnNoBrief();
     warnDocErrors();
     warnNoParamDocs();
-    warnUndocEnumValues();
     warnUnnamedParams();
 
     auto const level = !config_.warnAsError ?
@@ -1657,19 +1657,76 @@ DocCommentFinalizer::emitWarnings()
 
         report::log(level, out);
     }
+
+    if (warningLimitReached_ && config_.warnAsError && config_.maxErrors > 0)
+    {
+        report::log(
+            level,
+            std::format(
+                "error limit reached (max-errors={}); further diagnostics "
+                "suppressed. Rerun with --max-errors=0 for the full report.\n",
+                config_.maxErrors));
+    }
 }
 
 void
 DocCommentFinalizer::warnUndocumented()
 {
-    MRDOCS_CHECK_OR(config_.warnIfUndocumented);
-    for (auto& undocI: corpus_.undocumented_)
+    MRDOCS_CHECK_OR(config_.warnIfUndocumented || config_.warnIfUndocEnumVal);
+    // A template specialization that is folded onto its primary (and every
+    // member it carries) borrows the primary's documentation, so it never needs
+    // its own. This holds for the symbol itself or any enclosing scope.
+    auto isListedOnPrimary = [](Symbol const& S)
     {
-        if (Symbol const* I = corpus_.find(undocI.id))
+        if (auto const* r = S.asRecordPtr())
         {
-            MRDOCS_CHECK_OR(
-                !I->doc || I->Extraction == ExtractionMode::Regular
-                || I->IsCopyFromInherited == false);
+            return r->IsListedOnPrimary;
+        }
+        if (auto const* f = S.asFunctionPtr())
+        {
+            return f->IsListedOnPrimary;
+        }
+        return false;
+    };
+    auto inFoldedSpecialization = [&](Symbol const& S)
+    {
+        for (Symbol const* cur = &S; cur;)
+        {
+            if (isListedOnPrimary(*cur))
+            {
+                return true;
+            }
+            cur = cur->Parent ? corpus_.find(cur->Parent) : nullptr;
+        }
+        return false;
+    };
+    for (auto const& undocI: corpus_.undocumented_)
+    {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
+        Symbol const* const I = corpus_.find(undocI.id);
+        if (I)
+        {
+            // a symbol that gained documentation from a redeclaration
+            MRDOCS_CHECK_OR_CONTINUE(!I->doc);
+            // a symbol that was turned into an inherited copy
+            MRDOCS_CHECK_OR_CONTINUE(!I->IsCopyFromInherited);
+            // a symbol that was folded onto a template specialization's
+            // primary and so borrows the primary's documentation
+            MRDOCS_CHECK_OR_CONTINUE(!inFoldedSpecialization(*I));
+        }
+        // Enum constants carry the dedicated enum-value wording. The set only
+        // holds them when warn-if-undoc-enum-val is enabled (checkUndocumented).
+        if (undocI.kind == SymbolKind::EnumConstant)
+        {
+            this->warn(
+                *getPrimaryLocation(undocI.Loc, false),
+                "{}: Missing documentation for enum value",
+                I ? corpus_.Corpus::qualifiedName(*I) : undocI.name);
+            continue;
         }
         bool const prefer_definition = is_one_of(
             undocI.kind, {SymbolKind::Record, SymbolKind::Enum});
@@ -1684,11 +1741,71 @@ DocCommentFinalizer::warnUndocumented()
 
 void
 DocCommentFinalizer::
+warnNoBrief()
+{
+    MRDOCS_CHECK_OR(config_.warnNoBrief);
+    for (auto const& I : corpus_.info_)
+    {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
+        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
+        // Overload sets synthesize their page from members and never carry a
+        // brief of their own, so they are exempt.
+        MRDOCS_CHECK_OR_CONTINUE(!I->isOverloads());
+        // A symbol with no documentation at all is reported by
+        // warnUndocumented; here we only flag symbols that carry some
+        // documentation but, after brief finalization (auto-brief and
+        // @copybrief), still have no brief. Their summary cell in the parent's
+        // member table renders empty, so treat the missing brief as missing
+        // documentation.
+        MRDOCS_CHECK_OR_CONTINUE(I->doc);
+        MRDOCS_CHECK_OR_CONTINUE(!I->doc->brief);
+        // The `related` list is populated from *other* symbols that `@relates`
+        // to this one; it is not documentation the author wrote for this
+        // symbol. A doc whose only content is such a back-populated `related`
+        // entry (no prose, brief, params, returns, ...) is effectively
+        // undocumented, so reporting a missing brief for it is a false
+        // positive (this happens when a free function relates to a class or
+        // template specialization that itself carries no authored comment).
+        {
+            auto const& d = *I->doc;
+            bool const hasAuthoredContent =
+                !d.Document.empty() ||
+                !d.params.empty() ||
+                !d.tparams.empty() ||
+                !d.returns.empty() ||
+                !d.exceptions.empty() ||
+                !d.sees.empty() ||
+                !d.preconditions.empty() ||
+                !d.postconditions.empty() ||
+                !d.footnotes.empty();
+            MRDOCS_CHECK_OR_CONTINUE(hasAuthoredContent);
+        }
+        auto const loc = getPrimaryLocation(*I);
+        MRDOCS_CHECK_OR_CONTINUE(loc);
+        this->warn(
+            *loc,
+            "{}: symbol is documented but has no brief",
+            corpus_.Corpus::qualifiedName(*I));
+    }
+}
+
+void
+DocCommentFinalizer::
 warnDocErrors()
 {
     MRDOCS_CHECK_OR(config_.warnIfDocError);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         if (I->isFunction())
@@ -1799,6 +1916,11 @@ warnNoParamDocs()
     MRDOCS_CHECK_OR(config_.warnNoParamdoc);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
@@ -1885,29 +2007,16 @@ warnNoParamDocs(MacroSymbol const& I)
 
 void
 DocCommentFinalizer::
-warnUndocEnumValues()
-{
-    MRDOCS_CHECK_OR(config_.warnIfUndocEnumVal);
-    for (auto const& I : corpus_.info_)
-    {
-        MRDOCS_CHECK_OR_CONTINUE(I->isEnumConstant());
-        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
-        MRDOCS_CHECK_OR_CONTINUE(!I->doc);
-        this->warn(
-            *getPrimaryLocation(*I),
-            "{}: Missing documentation for enum value",
-            corpus_.Corpus::qualifiedName(*I));
-    }
-}
-
-void
-DocCommentFinalizer::
 warnUnnamedParams()
 {
     MRDOCS_CHECK_OR(config_.warnUnnamedParam);
     for (auto const& I : corpus_.info_)
     {
+        if (!warningBudgetRemaining())
+        {
+            warningLimitReached_ = true;
+            break;
+        }
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);

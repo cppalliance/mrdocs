@@ -387,7 +387,7 @@ public:
     Array const&
     getArray() const;
 
-    /** @copydoc getArray()
+    /** @copydoc getArray() const
     */
     Array&
     getArray();

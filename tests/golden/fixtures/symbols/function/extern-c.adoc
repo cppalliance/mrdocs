@@ -1,0 +1,133 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#c_state[`c&lowbar;state`] 
+| A C&hyphen;linkage state record&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#c_add[`c&lowbar;add`] 
+| Add two integers&period;
+| link:#c_reset[`c&lowbar;reset`] 
+| Reset a state&period;
+|===
+
+
+[#c_state]
+== c&lowbar;state
+
+A C&hyphen;linkage state record&period;
+
+=== Synopsis
+
+Declared in `&lt;extern&hyphen;c&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct c&lowbar;state;
+----
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#c_state-value[`value`] 
+| Stored value&period;
+|===
+
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#c_reset[`c&lowbar;reset`]
+| Reset a state&period;
+|===
+
+[#c_state-value]
+== link:#c_state[c&lowbar;state]::value
+
+Stored value&period;
+
+=== Synopsis
+
+Declared in `&lt;extern&hyphen;c&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int value;
+----
+
+[#c_add]
+== c&lowbar;add
+
+Add two integers&period;
+
+=== Synopsis
+
+Declared in `&lt;extern&hyphen;c&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+c&lowbar;add(
+    int a,
+    int b);
+----
+
+=== Return Value
+
+The sum&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| First operand&period;
+| *b*
+| Second operand&period;
+|===
+
+[#c_reset]
+== c&lowbar;reset
+
+Reset a state&period;
+
+=== Synopsis
+
+Declared in `&lt;extern&hyphen;c&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+c&lowbar;reset(link:#c_state[c&lowbar;state]* s);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *s*
+| The state to reset&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

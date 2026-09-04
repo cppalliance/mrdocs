@@ -131,7 +131,7 @@
     blinkmacsystemfont,
     "Segoe UI",
     sans-serif;
-  --body-font-weight-bold: var(--ds-weight-regular);
+  --body-font-weight-bold: var(--ds-weight-medium);
   --monospace-font-family: "Menlo", "Roboto Mono", ui-monospace, monospace;
   --monospace-font-weight-bold: var(--ds-weight-medium);
 

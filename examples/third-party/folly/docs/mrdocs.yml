@@ -1,0 +1,152 @@
+# Folly demo config for MrDocs.
+#
+# Scope: the whole of Folly's own C++ API under folly/ (~869 headers).
+#
+# Folly leans on several heavy external libraries. Rather than forgive them all
+# (which deletes the types Folly's own headers name and cascades into parse
+# failures), this config supplies just enough of each dependency to parse:
+#   - fmt and glog get minimal hand-written shims under docs/shims/ (fmt is a
+#     header-only API Folly derives from; glog's LOG/CHECK/... macros appear in
+#     inline bodies, so the macros must exist).
+#   - libsodium and libaio get tiny shims under docs/shims/ (a couple of crypto
+#     and async-IO headers hold their types by value, so the types must be
+#     complete).
+#   - Boost, libevent and OpenSSL are real, header-only-at-parse-time deps that
+#     are impractical to hand-shim (Boost.Preprocessor drives Folly's very
+#     widely included Invoke.h). They resolve to the Homebrew copies via the
+#     symlink dir docs/thirdparty-include/ (boost, event*.h, event2/, openssl).
+#   - The remaining optional deps (gflags, double-conversion, zlib/zstd/lz4/
+#     snappy, liburing, jemalloc, numa, libunwind/dwarf/elf, zmq, systemd) are
+#     forgiven: Folly only names them from bodies, so a missing include is fine.
+source-root: ..
+input:
+  - ../folly
+includes:
+  - ..
+  - shims                # fmt/, glog/, sodium.h, libaio.h stand-ins (win over real Homebrew copies)
+  - thirdparty-include   # symlinks to real Homebrew boost/, event*.h, event2/, openssl/
+  # Placed before the bundled libc++ (which arrives on `-isystem`) so the
+  # stdlib override under stdlib-shims/__algorithm/ shadows the stock header.
+  - stdlib-shims
+file-patterns:
+  - '*.h'
+
+# Toolchain isolation.
+#
+# MrDocs bundles a matching libc++ 23 and clang 23 resource dir; turning off
+# use-system-stdlib makes MrDocs use them and add -nostdinc++ so the host's
+# C++ stdlib cannot leak onto the include path (a version skew between the
+# clang 23 frontend and the host's libc++ headers produces hard errors). The
+# system C library stays on: Folly needs the full POSIX surface, which the
+# bundled libc-stubs set does not provide, and MrDocs discovers the host's
+# libc dirs from the system compiler on any platform.
+use-system-stdlib: false
+use-system-libc: true
+
+missing-include-prefixes:
+  - 'gflags/'
+  - 'double-conversion/'
+  - 'zlib'
+  - 'zstd'
+  - 'lz4'
+  - 'snappy'
+  - 'liburing'
+  - 'jemalloc'
+  - 'numa'
+  - 'unwind'
+  - 'dwarf'
+  - 'elf'
+  - 'zmq'
+  - 'systemd/'
+
+implementation-defined:
+  - '**::detail'
+  - '**::internal'
+
+exclude-patterns:
+  # Non-API trees: unit tests, micro-benchmarks, generated build output, and the
+  # Python/Cython bindings.
+  - ../folly/test/**
+  - ../folly/**/test/**
+  - ../folly/**/benchmarks/**
+  - ../folly/build/**
+  - ../folly/python/**
+
+  # Folly's *-inl.h files are implementation includes pulled in at the end of
+  # their public header; they are not self-contained (several start with
+  # `#error This file may only be included from X.h`). Their API is documented
+  # through the public header that includes them. MrDocs' `**` does not span
+  # multiple directory segments before a filename glob, so exclude each depth.
+  - ../folly/*-inl.h
+  - ../folly/*/*-inl.h
+  - ../folly/*/*/*-inl.h
+
+  # Rust cxx-bridge headers: need the cxx-crate-generated <rust/cxx.h>, which
+  # is not a real dependency here.
+  - ../folly/rust/**
+
+  # ARM optimized-routines assembly-definitions header: assembler directives,
+  # not parseable as C++.
+  - ../folly/external/aor/asmdefs.h
+
+  # Test-support headers that pull in <gtest/*>/<gmock/*> (not documented API).
+  - ../folly/portability/GTest.h
+  - ../folly/portability/GMock.h
+  - ../folly/coro/GtestHelpers.h
+  - ../folly/coro/GmockHelpers.h
+  - ../folly/result/gtest_helpers.h
+  - ../folly/json/JsonMockUtil.h
+
+  # Headers that sit on an #include cycle back to themselves. MrDocs parses the
+  # requested header as the translation unit's main file, and its `#pragma once`
+  # does not suppress a re-inclusion of that same main file reached through a
+  # transitive cycle, so every symbol is defined twice ("redefinition of ...").
+  # This is a MrDocs main-file/pragma-once limitation, not a Folly or dependency
+  # problem; it cannot be worked around from config without editing Folly's
+  # sources. The public API of these is still reachable through the many other
+  # headers that include them.
+  - ../folly/futures/Future.h
+  - ../folly/futures/Promise.h
+  - ../folly/fibers/Baton.h
+  - ../folly/fibers/Promise.h
+  - ../folly/fibers/FiberManagerInternal.h
+  - ../folly/channels/ChannelProcessor.h
+  - ../folly/channels/Producer.h
+  - ../folly/channels/ProxyChannel.h
+  - ../folly/coro/Transform.h
+  - ../folly/compression/QuotientMultiSet.h
+  - ../folly/algorithm/simd/detail/SimdPlatform.h
+
+  # Non-self-contained headers: each uses a std or third-party type without
+  # including the header that completes it, relying on a specific include order
+  # that only exists when pulled in transitively. MrDocs parses each header on
+  # its own, so they fail in isolation (fixing them cleanly needs edits to
+  # Folly's sources or a compile_commands.json from Folly's own build).
+  - ../folly/futures/Future-pre.h                             # `-pre.h` partial; uses std:: before <type_traits>
+  - ../folly/channels/MultiplexChannel.h                      # needs range-v3 (<range/v3/view/map.hpp>)
+  - ../folly/debugging/exception_tracer/ExceptionAbi.h        # incomplete _Unwind_Exception field
+  - ../folly/lang/SafeClosure.h                               # ambiguous `as_const`
+  - ../folly/ssl/OpenSSLVersionFinder.h                       # returns std::string without <string>
+  - ../folly/result/detail/ptr_immortal_exception_storage.h   # std::mutex member without <mutex>
+  - ../folly/result/immortal_rich_error.h                     # pulls ptr_immortal_exception_storage.h
+  - ../folly/result/rich_error_code.h                         # std::same_as constraint miscount in isolation
+
+  # Weak extern "C" decls for optional jemalloc / tcmalloc / coro alloc hooks.
+  # Not Folly's public API; documenting them only surfaces third-party symbols.
+  - ../folly/memory/detail/MallocImpl.h
+  - ../folly/coro/detail/Malloc.h
+
+  # Unguarded liburing usage: IoUring.h and IoUringBackend.h hold io_uring
+  # structs by value outside the FOLLY_HAS_LIBURING guard, so on Linux (where
+  # the forgiven <liburing.h> leaves the types incomplete) they cannot parse;
+  # IoUringEvent.h and IoUringEventBaseLocal.h include IoUringBackend.h and
+  # fail the same way. On macOS the io_uring code is compiled out, so no
+  # documentation is lost by skipping them.
+  - ../folly/io/async/IoUring.h
+  - ../folly/io/async/IoUringBackend.h
+  - ../folly/io/async/IoUringEvent.h
+  - ../folly/io/async/IoUringEventBaseLocal.h
+
+multipage: true
+generator: adoc
+non-standard-attributes: false

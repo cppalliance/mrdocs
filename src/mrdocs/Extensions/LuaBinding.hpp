@@ -19,6 +19,8 @@
 
 namespace mrdocs {
 
+class Config;
+
 /** Load the extensions declared by one Lua script file.
 
     Build a fresh Lua engine and run the script's top level, which may
@@ -28,10 +30,12 @@ namespace mrdocs {
     transforms are returned for the host to invoke later, and the
     generators are returned as self-contained @ref Generator objects. The
     returned engine handle keeps the VM alive for both. A script that
-    registers nothing warns and returns an empty result.
+    registers nothing warns and returns an empty result. The run's
+    `warn-as-error` setting is read from @p config so `mrdocs.report.warn`
+    escalates like any other Mr.Docs warning.
 */
 Expected<LoadedExtensions>
-loadLuaExtensions(std::string const& scriptPath);
+loadLuaExtensions(std::string const& scriptPath, Config const& config);
 
 } // mrdocs
 

@@ -63,6 +63,12 @@
       "title": "Base URL for links to source code",
       "type": "string"
     },
+    "clang-resource-dir": {
+      "default": "<mrdocs-root>/share/mrdocs/headers/clang",
+      "description": "Directory holding Clang's builtin headers (`stddef.h`, `stdarg.h`, and the other compiler intrinsics) in its `include/` subdirectory. MrDocs bundles the resource directory that matches its embedded Clang and passes it as `-resource-dir`, so parsing does not depend on a Clang installation on the host. Leave empty to let Clang locate its own resource directory.",
+      "title": "Clang resource directory",
+      "type": "string"
+    },
     "cmake": {
       "default": "",
       "description": "When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.",
@@ -452,6 +458,13 @@
       ],
       "title": "The minimum reporting level"
     },
+    "max-errors": {
+      "default": 0,
+      "description": "Caps how many documentation errors MrDocs reports, like a compiler's `-fmax-errors`. This only takes effect together with `warn-as-error`: without it, documentation problems are plain warnings and the whole report is always shown. `0` means unlimited (the default). Once the cap is reached MrDocs stops looking for more problems: it suppresses further diagnostics, prints a short note so you know the report is truncated, and stops dispatching translation units that have not started yet (translation units already in flight finish, so the final count may run a little past the cap). Use this with `warn-as-error` and the `warn-*` family to bring up docs iteratively: keep `warn-if-undocumented` (and later `warn-no-paramdoc`, \u2026) on, set `max-errors` to your fix-loop batch size (for example `40`), fix that batch, and repeat. Full CI validation should leave this at `0`.",
+      "minimum": 0,
+      "title": "Stop after this many documentation errors",
+      "type": "integer"
+    },
     "missing-include-prefixes": {
       "default": [],
       "description": "Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use \"llvm/\" to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the \"missing-include-shims\" option.",
@@ -488,6 +501,16 @@
         false
       ],
       "title": "Disable the bundled default stylesheet",
+      "type": "boolean"
+    },
+    "non-standard-attributes": {
+      "default": true,
+      "description": "When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, or `__nonnull__`. When set to `false`, only the standard C++ attributes (`[[noreturn]]`, `[[carries_dependency]]`, `[[deprecated]]`, `[[fallthrough]]`, `[[maybe_unused]]`, `[[nodiscard]]`, `[[likely]]`, `[[unlikely]]`, `[[no_unique_address]]`, `[[assume]]`, `[[indeterminate]]`) are documented, so implementation-detail attributes do not clutter the output.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Include non-standard attributes in the documentation",
       "type": "boolean"
     },
     "output": {
@@ -775,6 +798,26 @@
         false
       ],
       "title": "Warn if symbols are not documented",
+      "type": "boolean"
+    },
+    "warn-if-undocumented-namespace": {
+      "default": false,
+      "description": "When set to `true`, MrDocs also outputs a warning message for a named namespace that passes all filters and is not documented. This requires `warn-if-undocumented` to also be enabled. Inline and anonymous namespaces are transparent and do not require documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if namespaces are not documented",
+      "type": "boolean"
+    },
+    "warn-no-brief": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a symbol has documentation but no brief once brief finalization (auto-brief and brief-copying commands) has run. A symbol with a description but no brief renders poorly because the brief is what parent contexts (such as member tables) display, so an empty brief is treated as missing documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if a documented symbol has no brief",
       "type": "boolean"
     },
     "warn-no-paramdoc": {

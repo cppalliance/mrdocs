@@ -99,7 +99,7 @@
   </interface>
 </record>
 <function>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>
@@ -198,6 +198,14 @@
         </named>
       </type>
       <access>public</access>
+      <loc>
+        <defLoc>
+          <shortPath>using-member-conversion.cpp</shortPath>
+          <sourcePath>using-member-conversion.cpp</sourcePath>
+          <lineNumber>12</lineNumber>
+          <columnNumber>12</columnNumber>
+        </defLoc>
+      </loc>
     </baseInfo>
   </bases>
   <interface>
@@ -208,7 +216,7 @@
   </interface>
 </record>
 <function>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>
@@ -265,7 +273,7 @@
   <isConst/>
 </function>
 <using>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>
@@ -298,7 +306,7 @@
   <introducedName>
     <identifier>
       <kind>identifier</kind>
-      <identifier>operator void(*)()</identifier>
+      <identifier>operator fun_ptr</identifier>
       <prefix>
         <identifier>
           <kind>identifier</kind>
@@ -311,7 +319,7 @@
   <shadowDeclarations>2P8vEavoPWWGcmU7e6hJUuaJQJcj</shadowDeclarations>
 </using>
 <function>
-  <name>operator void(*)()</name>
+  <name>operator fun_ptr</name>
   <anchor>2conversion</anchor>
   <loc>
     <loc>

@@ -1,0 +1,221 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#A-09[`A`] 
+| Primary class template&period;
+| link:#B-00[`B`] 
+| Class template with deduction guides&period;
+|===
+
+
+[#A-09]
+== A
+
+Primary class template&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    typename U&gt;
+struct A;
+----
+
+=== Specializations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#A-060[`A&lt;int, int&gt;`] 
+| Specialization for two ints&period;
+| link:#A-00[`A&lt;T&, U&gt;`] 
+| Specialization for a reference&period;
+| link:#A-06c[`A&lt;T*, U&gt;`] 
+| Specialization for a pointer&period;
+|===
+
+
+[#A-060]
+== link:#A-09[A]&lt;int, int&gt;
+
+Specialization for two ints&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct link:#A-09[A]&lt;int, int&gt;;
+----
+
+[#A-00]
+== link:#A-09[A]&lt;T&, U&gt;
+
+Specialization for a reference&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    typename U&gt;
+struct link:#A-09[A]&lt;T&, U&gt;;
+----
+
+[#A-06c]
+== link:#A-09[A]&lt;T*, U&gt;
+
+Specialization for a pointer&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    typename U&gt;
+struct link:#A-09[A]&lt;T*, U&gt;;
+----
+
+[#B-00]
+== B
+
+Class template with deduction guides&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct B;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#B-00-2constructor[`B`]         [.small]#[constructor]#
+| Constructor&period;
+|===
+
+
+=== Deduction Guides
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#B-05[`B&lt;T&gt;`] 
+| Guide taking a pointer&period;
+| link:#B-0a7[`B&lt;char&gt;`] 
+| Guide deducing a different specialization, so what it deduces decides its place rather than what it takes&period;
+| link:#B-0c[`B&lt;int&gt;`] 
+| Guide taking a bool&period;
+| link:#B-0ad[`B&lt;int&gt;`] 
+| Guide taking a char&period;
+|===
+
+
+[#B-00-2constructor]
+== link:#B-00[B]::B
+
+Constructor&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+B(T value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *value*
+| The object to construct from
+|===
+
+[#B-05]
+== link:#B-00[B&lt;T&gt;]
+
+Guide taking a pointer&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+link:#B-00[B&lt;T&gt;](T*) -> link:#B-00[B&lt;T&gt;];
+----
+
+[#B-0a7]
+== link:#B-00[B&lt;char&gt;]
+
+Guide deducing a different specialization, so what it deduces decides its place rather than what it takes&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#B-00[B&lt;char&gt;](int) -> link:#B-00[B&lt;char&gt;];
+----
+
+[#B-0c]
+== link:#B-00[B&lt;int&gt;]
+
+Guide taking a bool&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#B-00[B&lt;int&gt;](bool) -> link:#B-00[B&lt;int&gt;];
+----
+
+[#B-0ad]
+== link:#B-00[B&lt;int&gt;]
+
+Guide taking a char&period;
+
+=== Synopsis
+
+Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#B-00[B&lt;int&gt;](char) -> link:#B-00[B&lt;int&gt;];
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
