@@ -121,7 +121,7 @@
   --body-font-size--print: 0.9375em;
   --body-line-height: 1.5;
   --body-font-color: var(--text);
-  --body-font-family: "Special Elite", "Roboto", ui-monospace, monospace;
+  --body-font-family: var(--ds-font-body);
   /* Sans face used ONLY for the documentation reading body (prose / doc
      comments), where the typewriter face hurts legibility. Titles, navbar,
      nav tree and TOC stay on the brand body face above. */
@@ -131,9 +131,9 @@
     blinkmacsystemfont,
     "Segoe UI",
     sans-serif;
-  --body-font-weight-bold: 600;
+  --body-font-weight-bold: var(--ds-weight-medium);
   --monospace-font-family: "Menlo", "Roboto Mono", ui-monospace, monospace;
-  --monospace-font-weight-bold: 600;
+  --monospace-font-weight-bold: var(--ds-weight-medium);
 
   /* ---- 3. Antora UI tokens mapped onto the semantic tokens ---- */
   --body-background: var(--bg);
@@ -282,10 +282,10 @@
   --doc-max-width--desktop: calc(828 / var(--rem-base) * 1rem);
 
   /* stacking */
-  --z-index-nav: 1;
-  --z-index-toolbar: 2;
-  --z-index-page-version-menu: 3;
-  --z-index-navbar: 4;
+  --z-index-nav: var(--ds-z-nav);
+  --z-index-toolbar: var(--ds-z-toolbar);
+  --z-index-page-version-menu: var(--ds-z-menu);
+  --z-index-navbar: var(--ds-z-navbar);
 
   /* background gradient position variables */
   --x1: 20%;

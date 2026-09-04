@@ -5,7 +5,8 @@
     font-family: "Bangers";
     font-style: normal;
     font-weight: 400;
-    font-display: swap;
+    font-display: block; /* preloaded + local: no visible block period,
+                        and never a wrong-face flash on the headline */
     src: url("assets/fonts/bangers-latin-400-normal.woff2") format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -14,7 +15,8 @@
     font-family: "Bangers";
     font-style: normal;
     font-weight: 400;
-    font-display: swap;
+    font-display: block; /* preloaded + local: no visible block period,
+                        and never a wrong-face flash on the headline */
     src: url("assets/fonts/bangers-latin-ext-400-normal.woff2") format("woff2");
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
@@ -37,31 +39,597 @@
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* =====================================================================
+ * Design-system tokens — implemented inline (L0 primitives, L1 semantic,
+ * L2 component). Canonical spec: docs/shared/design-system.css, kept in sync
+ * by hand. Not imported at runtime so the landing page ships as one file.
+ * ===================================================================== */
+
+/* =====================================================================
+ * LAYER 0 — PRIMITIVES  (theme-agnostic)
+ * ===================================================================== */
 :root {
-    --font-family: "Special Elite", "Roboto", sans-serif;
-    --display-font: "Bangers", "Special Elite", cursive;
-    --line-height: 1.5;
-    --font-weight: 400;
-    --font-weight-bold: 700;
-    --font-size: 16px;
+  /* --- Palette: brand blue ------------------------------------------ */
+  --ds-blue-200: #78c8ff; /* dark-theme primary base */
+  --ds-blue-400: #0091ea; /* secondary hover border    */
+  --ds-blue-500: #1095c1; /* light-theme primary       */
+  --ds-blue-600: #067da6; /* primary hover             */
+  --ds-blue-700: #0078c8; /* primary active            */
+  --ds-blue-100: #bcebfb; /* demo / tint               */
+  --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
+  --ds-blue-350: #3d8bff; /* Figma exact: dark headline, icon box, CTA panel */
+  --ds-blue-450: #1e78ff; /* Figma exact: CTA "Read the Docs" button fill */
+  --ds-code-800: #272e3e; /* Figma exact: code panel body               */
+
+  /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
+  --ds-gold-400: #ffd700; /* peak / hover              */
+  --ds-gold-500: #e5be33; /* rest / function-name / check accent */
+  --ds-gold-300: #f1d874; /* Figma exact: hero title alt, GitHub button */
+  --ds-gold-450: #facc15; /* Figma exact: dark title alt */
+  --ds-gold-700: #c8aa28; /* active / pressed          */
+
+  /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
+  /* Theme-swapped rather than a ramp: the mockups use magenta on the
+     cream/light surfaces and the warmer red on the dark ones. */
+  --ds-pink-500: #ec4899; /* light-theme label (Figma exact) */
+  --ds-red-500: #ff4c4c; /* dark-theme label (Figma exact) */
+
+  /* --- Palette: ink & paper (light surfaces) ----------------------- */
+  --ds-black: #000; /* comic borders & hard shadows */
+  --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
+  --ds-ink-950: #0f172a; /* Figma exact: outlines, dark fills, panel chrome */
+  --ds-white: #fff;
+  --ds-paper: #fef7e1; /* warm cream page background  */
+  /* The mockups' page cream. Currently used only as the code panel's plain
+     text colour; re-pointing the page background to it is a follow-up. */
+  --ds-paper-50: #fdfaf5;
+  --ds-paper-raised: #fbfbfc; /* cards / dropdowns      */
+  --ds-paper-code: #f9fafb; /* inline / block code bg   */
+
+  /* --- Palette: navy (dark surfaces) ------------------------------- */
+  --ds-navy-900: #0e1419; /* logo knockout            */
+  --ds-navy-800: #11191f; /* dark page background     */
+  --ds-navy-700: #141e26; /* dark card                */
+  --ds-navy-600: #18232c; /* dark code / sectioning   */
+  --ds-navy-650: #171c26; /* dark doc surface / footer bar */
+  --ds-navy-750: #141720; /* dark code body / table header band */
+  --ds-navy-500: #24333e; /* dark divider / range     */
+  --ds-navy-400: #374956; /* dark form border         */
+
+  /* --- Typography: families ---------------------------------------- */
+  --ds-font-body: "Special Elite", "Roboto", sans-serif;
+  --ds-font-mono:
+    "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace", "Noto Mono",
+    "Oxygen Mono", "Liberation Mono", monospace, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* Display face: Bangers, vendored as woff2 in assets/fonts (see @font-face above). */
+  /* Fallbacks are heavy/condensed faces, not Special Elite: falling a comic
+     display headline through a typewriter face looks broken, and it is what
+     showed during the load flash. */
+  --ds-font-display: "Bangers", Impact, Haettenschweiler, "Arial Narrow Bold",
+    "Franklin Gothic Bold", sans-serif;
+
+  /* --- Typography: weights ----------------------------------------- */
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 600; /* CTA labels               */
+  --ds-weight-bold: 700; /* headings                 */
+  --ds-weight-display: 800; /* hero headings            */
+
+  /* --- Typography: responsive base size ---------------------------- */
+  --ds-font-size: 16px; /* → 20px, see breakpoints below */
+
+  /* --- Typography: type scale (desktop peak; see fluid overrides) --- */
+  --ds-text-h1: 3rem;
+  --ds-text-h2: 2.25rem;
+  --ds-text-h3: 1.5rem;
+  --ds-text-h4: 1.25rem;
+  --ds-text-h5: 1.125rem;
+  --ds-text-h6: 1rem;
+  --ds-text-body: 1rem;
+  --ds-text-small: 0.875em;
+
+  /* --- Typography: line-heights ------------------------------------ */
+  --ds-leading-tight: 1.125; /* h1                     */
+  --ds-leading-snug: 1.25; /* h2                     */
+  --ds-leading-normal: 1.5; /* body                   */
+
+  /* --- Spacing scale (base unit = 1rem) ---------------------------- */
+  --ds-space: 1rem;
+  --ds-space-2xs: 0.25rem;
+  --ds-space-xs: 0.5rem;
+  --ds-space-sm: 0.75rem;
+  --ds-space-md: 1rem;
+  --ds-space-lg: 1.5rem;
+  --ds-space-xl: 2rem;
+  --ds-space-2xl: 3rem;
+  --ds-space-3xl: 4rem;
+  --ds-section-gap: 3rem; /* → 4rem on ≥576px         */
+
+  /* --- Radii & borders --------------------------------------------- */
+  --ds-radius: 0.5rem;
+  --ds-radius-pill: 2rem;
+  --ds-border-width: 1px;
+  --ds-border-width-bold: 2px; /* comic outlines         */
+  --ds-outline-width: 3px;
+
+  /* --- Shadows: comic signature (hard, no blur) -------------------- */
+  --ds-shadow-comic: 6px 6px 0 var(--ds-black);
+  --ds-shadow-comic-soft: 6px 6px 0 rgba(0, 0, 0, 0.8);
+  --ds-shadow-comic-pressed: 2px 2px 0 var(--ds-black);
+  --ds-shadow-comic-pressed-soft: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  --ds-drop-comic: drop-shadow(7px 10px 0 rgba(0, 0, 0, 0.7));
+  /* Soft ambient card elevation (light). */
+  --ds-shadow-card-light:
+    0.0145rem 0.029rem 0.174rem rgba(27, 40, 50, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(27, 40, 50, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(27, 40, 50, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(27, 40, 50, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(27, 40, 50, 0.04302),
+    0.5rem 1rem 6rem rgba(27, 40, 50, 0.06),
+    0 0 0 0.0625rem rgba(27, 40, 50, 0.015);
+  --ds-shadow-card-dark:
+    0.0145rem 0.029rem 0.174rem rgba(0, 0, 0, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(0, 0, 0, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(0, 0, 0, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(0, 0, 0, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(0, 0, 0, 0.04302),
+    0.5rem 1rem 6rem rgba(0, 0, 0, 0.06),
+    0 0 0 0.0625rem rgba(0, 0, 0, 0.015);
+
+  /* --- Motion ------------------------------------------------------- */
+  --ds-transition: 0.2s ease-in-out;
+  --ds-lift: translateY(-2px); /* hover                 */
+  --ds-press: translateY(1px); /* active                */
+
+  /* --- Container max-widths ---------------------------------------- */
+  --ds-container-sm: 510px;
+  --ds-container-md: 700px;
+  --ds-container-lg: 920px;
+  --ds-container-xl: 1130px;
+
+  /* --- Z-index scale ----------------------------------------------- */
+  --ds-z-nav: 1;
+  --ds-z-toolbar: 2;
+  --ds-z-menu: 3;
+  --ds-z-navbar: 4;
+  --ds-z-switcher: 5;
+}
+
+/* Responsive base font size (drives all rem-based tokens). */
+@media (min-width: 576px) {
+  :root {
+    --ds-font-size: 17px;
+    --ds-section-gap: 4rem;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --ds-font-size: 18px;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --ds-font-size: 19px;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --ds-font-size: 20px;
+  }
+}
+
+/* Fluid heading ramp: h1 2rem → 3rem, h2 1.75rem → 2.25rem. */
+:root {
+  --ds-text-h1: 2rem;
+  --ds-text-h2: 1.75rem;
+}
+@media (min-width: 576px) {
+  :root {
+    --ds-text-h1: 2.25rem;
+    --ds-text-h2: 1.875rem;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --ds-text-h1: 2.5rem;
+    --ds-text-h2: 2rem;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --ds-text-h1: 2.75rem;
+    --ds-text-h2: 2.125rem;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --ds-text-h1: 3rem;
+    --ds-text-h2: 2.25rem;
+  }
+}
+
+/* =====================================================================
+ * LAYER 1 — SEMANTIC  (role-based, themed)
+ * ---------------------------------------------------------------------
+ * Light is the default. Dark applies via OS preference AND via an
+ * explicit [data-theme=dark] override. The gold accent is shared across
+ * both themes; only surfaces, text, borders, and the primary blue shift.
+ * ===================================================================== */
+
+/* ---- Light (default + forced) -------------------------------------- */
+:root:not([data-theme="dark"]),
+[data-theme="light"] {
+  color-scheme: light;
+
+  --ds-color-bg: var(--ds-paper);
+  --ds-color-surface: var(--ds-paper-raised);
+  --ds-color-surface-sunken: var(--ds-paper-code);
+  --ds-color-surface-accent: var(--ds-blue-100);
+  --ds-color-label: var(--ds-pink-500);
+  --ds-color-halftone: rgba(15, 23, 42, 0.1);
+  /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
+  --ds-color-outline: var(--ds-ink-950); /* #0F172A */
+  --ds-color-doc-surface: var(--ds-paper-50); /* #FDFAF5 */
+  --ds-color-cta-panel: var(--ds-blue-300);
+  --ds-color-footer-bg: var(--ds-white);
+  --ds-color-icon-box: var(--ds-blue-300); /* #93C5FD */
+  --ds-color-icon-ink: var(--ds-ink-950);
+  --ds-color-card-text: #6e727b;
+  --ds-color-title: var(--ds-blue-300); /* #93C5FD */
+  --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
+  --ds-color-hero-text: var(--ds-ink-950);
+  --ds-color-code-shell: var(--ds-paper-50);
+  --ds-color-code-chrome: var(--ds-ink-950);
+  --ds-color-code-body: var(--ds-code-800); /* #272E3E */
+  --ds-city-opacity: 0.5;
+  --ds-band-opacity: 0.7;
+
+  --ds-color-text: rgba(0, 0, 0, 0.8);
+  --ds-color-heading: rgba(0, 0, 0, 0.95);
+  --ds-color-muted: rgba(0, 0, 0, 0.5);
+  --ds-color-border: rgba(0, 0, 0, 0.1);
+
+  --ds-color-primary: var(--ds-blue-500);
+  --ds-color-primary-hover: var(--ds-blue-600);
+  --ds-color-primary-active: var(--ds-blue-700);
+  --ds-color-primary-focus: rgba(16, 149, 193, 0.125);
+  --ds-color-on-primary: var(--ds-white);
+
+  --ds-color-accent: var(--ds-gold-500);
+  --ds-color-accent-hover: var(--ds-gold-400);
+  --ds-color-accent-active: var(--ds-gold-700);
+  --ds-color-on-accent: var(--ds-ink-900);
+
+  --ds-color-nav-bg: rgba(255, 255, 255, 0.7);
+  --ds-color-nav-border: rgba(115, 130, 140, 0.2);
+
+  --ds-color-valid: #388e3c;
+  --ds-color-invalid: #c62828;
+  --ds-color-mark-bg: #fff2ca;
+  --ds-color-mark-text: #543a26;
+
+  --ds-shadow-card: var(--ds-shadow-card-light);
+
+  /* Code / syntax (light) */
+  --ds-code-bg: hsl(205deg, 20%, 94%);
+  --ds-code-text: var(--ds-color-muted);
+  --ds-code-tag: hsl(330deg, 40%, 50%);
+  --ds-code-property: hsl(185deg, 40%, 40%);
+  --ds-code-value: hsl(40deg, 20%, 50%);
+  --ds-code-comment: hsl(205deg, 14%, 68%);
+}
+
+/* ---- Dark (OS preference, unless explicitly light) ----------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --ds-color-bg: var(--ds-navy-800);
+    --ds-color-surface: var(--ds-navy-700);
+    --ds-color-surface-sunken: var(--ds-navy-600);
+    --ds-color-surface-accent: var(--ds-navy-700);
+    --ds-color-label: var(--ds-red-500);
+    --ds-color-halftone: rgba(255, 255, 255, 0.07);
+    /* Dark uses pure black for outlines, not #0F172A. */
+    --ds-color-outline: #000;
+    --ds-color-doc-surface: var(--ds-navy-650);
+    --ds-color-cta-panel: var(--ds-blue-350);
+    --ds-color-footer-bg: var(--ds-navy-650);
+    --ds-color-icon-box: var(--ds-blue-350);
+    --ds-color-icon-ink: var(--ds-white);
+    --ds-color-card-text: #a9abb2;
+    --ds-color-title: var(--ds-blue-350); /* dark line 1 is a deeper blue than light */
+    --ds-color-title-alt: var(--ds-gold-450);
+    --ds-color-hero-text: var(--ds-white);
+    --ds-color-code-shell: #272e3f;
+    --ds-color-code-chrome: #000;
+    --ds-color-code-body: var(--ds-navy-750);
+    --ds-city-opacity: 0.3;
+    --ds-band-opacity: 0.3;
+
+    --ds-color-text: rgba(255, 255, 255, 0.9);
+    --ds-color-heading: rgba(255, 255, 255, 0.98);
+    --ds-color-muted: rgba(255, 255, 255, 0.6);
+    --ds-color-border: rgba(255, 255, 255, 0.1);
+
+    --ds-color-primary: rgba(120, 200, 255, 0.9);
+    --ds-color-primary-hover: rgba(140, 210, 255, 0.95);
+    --ds-color-primary-active: var(--ds-blue-200);
+    --ds-color-primary-focus: rgba(120, 200, 255, 0.2);
+    --ds-color-on-primary: rgba(0, 0, 0, 0.9);
+
+    --ds-color-nav-bg: rgba(16, 24, 30, 0.8);
+    --ds-color-nav-border: rgba(115, 130, 140, 0.2);
+
+    --ds-color-valid: rgba(46, 125, 50, 0.5);
+    --ds-color-invalid: rgba(183, 28, 28, 0.5);
+    --ds-color-mark-bg: #d1c284;
+    --ds-color-mark-text: #11191f;
+
+    --ds-shadow-card: var(--ds-shadow-card-dark);
+
+    --ds-code-bg: var(--ds-navy-600);
+    --ds-code-text: var(--ds-color-muted);
+    --ds-code-tag: hsl(330deg, 30%, 50%);
+    --ds-code-property: hsl(185deg, 30%, 50%);
+    --ds-code-value: hsl(40deg, 10%, 50%);
+    --ds-code-comment: #4d606d;
+  }
+}
+
+/* ---- Dark (forced) ------------------------------------------------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ds-color-bg: var(--ds-navy-800);
+  --ds-color-surface: var(--ds-navy-700);
+  --ds-color-surface-sunken: var(--ds-navy-600);
+  --ds-color-surface-accent: var(--ds-navy-700);
+  --ds-color-label: var(--ds-red-500);
+  --ds-color-halftone: rgba(255, 255, 255, 0.07);
+  --ds-color-outline: #000;
+  --ds-color-doc-surface: var(--ds-navy-650);
+  --ds-color-cta-panel: var(--ds-blue-350);
+  --ds-color-footer-bg: var(--ds-navy-650);
+  --ds-color-icon-box: var(--ds-blue-350);
+  --ds-color-icon-ink: var(--ds-white);
+  --ds-color-card-text: #a9abb2;
+  --ds-color-title: var(--ds-blue-350);
+  --ds-color-title-alt: var(--ds-gold-450);
+  --ds-color-hero-text: var(--ds-white);
+  --ds-color-code-shell: #272e3f;
+  --ds-color-code-chrome: #000;
+  --ds-color-code-body: var(--ds-navy-750);
+  --ds-city-opacity: 0.3;
+  --ds-band-opacity: 0.3;
+
+  --ds-color-text: rgba(255, 255, 255, 0.9);
+  --ds-color-heading: rgba(255, 255, 255, 0.98);
+  --ds-color-muted: rgba(255, 255, 255, 0.6);
+  --ds-color-border: rgba(255, 255, 255, 0.1);
+
+  --ds-color-primary: rgba(120, 200, 255, 0.9);
+  --ds-color-primary-hover: rgba(140, 210, 255, 0.95);
+  --ds-color-primary-active: var(--ds-blue-200);
+  --ds-color-primary-focus: rgba(120, 200, 255, 0.2);
+  --ds-color-on-primary: rgba(0, 0, 0, 0.9);
+
+  --ds-color-nav-bg: rgba(16, 24, 30, 0.8);
+  --ds-color-nav-border: rgba(115, 130, 140, 0.2);
+
+  --ds-color-valid: rgba(46, 125, 50, 0.5);
+  --ds-color-invalid: rgba(183, 28, 28, 0.5);
+  --ds-color-mark-bg: #d1c284;
+  --ds-color-mark-text: #11191f;
+
+  --ds-shadow-card: var(--ds-shadow-card-dark);
+
+  --ds-code-bg: var(--ds-navy-600);
+  --ds-code-text: var(--ds-color-muted);
+  --ds-code-tag: hsl(330deg, 30%, 50%);
+  --ds-code-property: hsl(185deg, 30%, 50%);
+  --ds-code-value: hsl(40deg, 10%, 50%);
+  --ds-code-comment: #4d606d;
+}
+
+/* =====================================================================
+ * LAYER 2 — COMPONENT  (reference the semantic layer only)
+ * ===================================================================== */
+:root {
+  /* ---- Halftone dot field (comic print texture) ------------------- */
+  --ds-halftone-dot: var(--ds-color-halftone);
+  /* Measured off the mockups 2026-08-20: the dot grid runs on a 6.75px
+     pitch (deltas alternate 6/7 on both axes). The previous 14px was a
+     guess made before the design file was readable. */
+  --ds-halftone-dot-size: 1.4px;
+  --ds-halftone-gap: 6.75px;
+  /* How far down the section the field stays visible before fading out. */
+  --ds-halftone-extent: 55%;
+
+  /* ---- Code panel (hero + example rows) --------------------------- *
+   * Dark in BOTH themes per the mockups, so these are deliberately
+   * theme-invariant: the themed --hl-* vars would go invisible here in
+   * light mode. Syntax colours reuse the brand palette. */
+  --ds-code-panel-bg: var(--ds-color-code-body);
+  --ds-code-panel-chrome: var(--ds-color-code-chrome);
+  --ds-code-panel-border: var(--ds-color-outline);
+  --ds-code-panel-fg: var(--ds-paper-50); /* plain code text; comments use --ds-code-panel-comment */
+  --ds-code-panel-comment: #6e727b;
+  --ds-code-panel-linenum: rgba(255, 255, 255, 0.4);
+  --ds-code-panel-keyword: var(--ds-color-label);
+  --ds-code-panel-fn: var(--ds-blue-300);
+  --ds-code-panel-tab: var(--ds-white);
+
+  /* ---- Hero cityscape ---------------------------------------------- *
+   * Skyline band anchored to the bottom of the hero. Height is width-
+   * relative so the art keeps its 3.07 aspect: on desktop it spans the
+   * viewport exactly (100vw / 3.07 = 32.5vw); on mobile the mockup zooms
+   * it well past the viewport and crops, hence the much larger 92vw. */
+  --ds-city-height: 92vw;
+
+  /* ---- Feature card ----------------------------------------------- *
+   * The card's outer surface is the page colour, so it reads as a ring
+   * around the tinted inner panel -- the same wrapper pattern Figma uses
+   * on the hero buttons. The tint is the one value that does not change
+   * between themes. */
+  --ds-color-card-tint: rgba(30, 120, 255, 0.1); /* #1E78FF at 10% */
+
+  /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
+  --ds-badge-bg: var(--ds-color-label);
+  --ds-badge-text: var(--ds-white);
+  --ds-badge-border-width: var(--ds-border-width-bold);
+  /* Figma specifies #0F172A for the edge, not pure black. */
+  --ds-badge-border-color: var(--ds-color-outline);
+  --ds-badge-shadow: 2px 2px 0 var(--ds-badge-border-color);
+  --ds-badge-radius: 0;
+  --ds-badge-padding: 6px 12px;
+  --ds-badge-font: var(--ds-font-display);
+  --ds-badge-size: 16px;
+  --ds-badge-leading: 16px;
+  --ds-badge-tracking: 0.1em;
+
+  /* ---- Comic card (feature grid) ---------------------------------- */
+  --ds-feature-bg: var(--ds-color-surface-accent);
+  --ds-feature-border-width: var(--ds-border-width-bold);
+  --ds-feature-border-color: var(--ds-black);
+  --ds-feature-radius: var(--ds-radius);
+  --ds-feature-shadow: var(--ds-shadow-comic);
+  --ds-feature-padding: var(--ds-space-lg);
+  --ds-feature-title-color: var(--ds-color-label);
+  /* Icon sits in its own bordered tile in the mockups. */
+  --ds-feature-icon-size: 2.25rem;
+  --ds-feature-icon-bg: var(--ds-color-surface);
+
+  /* ---- Code / reference row panels (comic) ------------------------ */
+  --ds-panel-border-width: var(--ds-border-width-bold);
+  --ds-panel-border-color: var(--ds-black);
+  --ds-panel-radius: var(--ds-radius);
+  --ds-panel-shadow: var(--ds-shadow-comic);
+  --ds-panel-heading: var(--ds-color-accent);
+  --ds-panel-gap: var(--ds-space-lg);
+
+  /* ---- Button / CTA (comic) --------------------------------------- */
+  --ds-btn-height: 2.5rem;
+  --ds-btn-padding-x: 1.5em;
+  --ds-btn-weight: var(--ds-weight-medium);
+  --ds-btn-border-width: var(--ds-border-width-bold);
+  --ds-btn-radius: var(--ds-radius);
+  --ds-btn-shadow: var(--ds-shadow-comic);
+  --ds-btn-shadow-pressed: var(--ds-shadow-comic-pressed);
+  --ds-btn-lift: var(--ds-lift);
+  --ds-btn-press: var(--ds-press);
+
+  /* Primary CTA = gold */
+  --ds-btn-primary-bg: var(--ds-color-accent);
+  --ds-btn-primary-bg-hover: var(--ds-color-accent-hover);
+  --ds-btn-primary-bg-active: var(--ds-color-accent-active);
+  --ds-btn-primary-fg: var(--ds-color-on-accent);
+
+  /* Secondary CTA = blue */
+  --ds-btn-secondary-bg: var(--ds-blue-500);
+  --ds-btn-secondary-bg-hover: var(--ds-blue-600);
+  --ds-btn-secondary-bg-active: var(--ds-blue-700);
+  --ds-btn-secondary-fg: var(--ds-ink-900);
+  --ds-btn-secondary-shadow: var(--ds-shadow-comic-soft);
+
+  /* ---- Card -------------------------------------------------------- */
+  --ds-card-bg: var(--ds-color-surface);
+  --ds-card-border: var(--ds-color-border);
+  --ds-card-radius: var(--ds-radius);
+  --ds-card-shadow: var(--ds-shadow-card);
+
+  /* ---- Comic decorative box --------------------------------------- */
+  --ds-box-drop: var(--ds-drop-comic);
+  --ds-box-border: var(--ds-border-width-bold) solid var(--ds-black);
+
+  /* ---- Navigation bar --------------------------------------------- */
+  --ds-nav-bg: var(--ds-color-nav-bg);
+  --ds-nav-border: var(--ds-color-nav-border);
+  --ds-nav-blur: blur(10px);
+
+  /* ---- Code block ------------------------------------------------- */
+  --ds-code-radius: var(--ds-radius);
+  --ds-code-font: var(--ds-font-mono);
+
+  /* ---- Hero title (comic "Main Title" — Figma spec) --------------- */
+  /* Mobile floor read off the mobile mockup: 60px gives the measured 45px
+     cap height. Desktop peak still to be confirmed against Home-desktop. */
+  /* px, not rem: Pico scales the root font-size up at wide breakpoints,
+     which made the rem ceiling resolve to 120px instead of the intended
+     96px. Desktop mockup cap height is 70px -> ~93px font. */
+  --ds-title-size: clamp(62px, 8vw, 96px);
+  --ds-title-leading: 0.9; /* Figma line-height 90% */
+  /* Read off the Home mockups 2026-08-19: the two "nearest" approximations
+     below were placeholders and are now the exact design values. The hero
+     headline alternates line colours -- line 1 blue, the rest gold. */
+  --ds-title-color: var(--ds-color-title);
+  --ds-title-color-alt: var(--ds-color-title-alt);
+  --ds-title-ink: var(--ds-color-outline);
+  /* Figma's strokes are strokeAlign: OUTSIDE, so the full width paints
+     BEYOND the glyph. -webkit-text-stroke centres its stroke instead, and
+     with paint-order: stroke fill the inner half is covered by the fill --
+     measured, a 2px CSS stroke shows only 1.25px outside. So every width
+     below is DOUBLE the Figma number, quoted in the comment.
+
+     The shadow is a filter, not a text-shadow, for the same reason: Figma
+     offsets the whole composited node, stroke included, whereas
+     text-shadow offsets only the glyph fill -- which a stroke this thick
+     hides completely. filter: drop-shadow rasterises the stroke too.
+     These are the mobile values; the 992px block carries the desktop set. */
+  --ds-title-outline-width: 6px; /* Figma 3px OUTSIDE */
+  --ds-title-drop: drop-shadow(3px 3px 0 var(--ds-title-ink));
+  /* Card titles, symbol names and section headings run at half the weight. */
+  --ds-title-outline-width-sm: 3px; /* Figma 1.5px OUTSIDE */
+  --ds-title-drop-sm: drop-shadow(1.5px 1.5px 0 var(--ds-title-ink));
+  --ds-title-leading-sm: 1.2;
+
+  /* ---- CTA button — Figma exact ----------------------------------- *
+   * Square, and the hard shadow takes the themed outline colour rather
+   * than --ds-black, so it goes #0F172A on light and #000 on dark. */
+  --ds-cta-btn-radius: 0;
+  --ds-cta-btn-shadow: 2px 2px 0 var(--ds-color-outline);
+  --ds-cta-btn-shadow-hover: 4px 4px 0 var(--ds-color-outline);
+  --ds-cta-btn-shadow-active: 1px 1px 0 var(--ds-color-outline);
+  --ds-footer-tracking: 1.4px;
+}
+
+/* Desktop stroke weights. This has to sit AFTER the :root above: a media
+   query adds no specificity, so a later base declaration would win. */
+@media (min-width: 992px) {
+  :root {
+    /* Figma 4px / 2px OUTSIDE, doubled -- see the note above. */
+    --ds-title-outline-width: 8px;
+    --ds-title-drop: drop-shadow(4px 4px 0 var(--ds-title-ink));
+    --ds-title-outline-width-sm: 4px;
+    --ds-title-drop-sm: drop-shadow(2px 2px 0 var(--ds-title-ink));
+  }
+}
+
+:root {
+    --font-family: var(--ds-font-body);
+    --display-font: var(--ds-font-display);
+    --line-height: var(--ds-leading-normal);
+    --font-weight: var(--ds-weight-regular);
+    --font-weight-bold: var(--ds-weight-bold);
+    --font-size: var(--ds-font-size);
     --rem-base: 18;
-    --border-radius: 0.5rem;
-    --border-width: 1px;
-    --outline-width: 3px;
-    --spacing: 1rem;
-    --typography-spacing-vertical: 1.5rem;
+    --border-radius: var(--ds-radius);
+    --border-width: var(--ds-border-width);
+    --outline-width: var(--ds-outline-width);
+    --spacing: var(--ds-space);
+    --typography-spacing-vertical: var(--ds-space-lg);
     --block-spacing-vertical: calc(var(--spacing) * 2);
     --block-spacing-horizontal: var(--spacing);
     --grid-spacing-vertical: 0;
     --grid-spacing-horizontal: var(--spacing);
-    --form-element-spacing-vertical: 0.75rem;
-    --form-element-spacing-horizontal: 1rem;
-    --nav-element-spacing-vertical: 1rem;
-    --nav-element-spacing-horizontal: 0.5rem;
-    --nav-link-spacing-vertical: 0.5rem;
-    --nav-link-spacing-horizontal: 0.5rem;
+    --form-element-spacing-vertical: var(--ds-space-sm);
+    --form-element-spacing-horizontal: var(--ds-space-md);
+    --nav-element-spacing-vertical: var(--ds-space-md);
+    --nav-element-spacing-horizontal: var(--ds-space-xs);
+    --nav-link-spacing-vertical: var(--ds-space-xs);
+    --nav-link-spacing-horizontal: var(--ds-space-xs);
     --form-label-font-weight: var(--font-weight);
-    --transition: 0.2s ease-in-out;
+    --transition: var(--ds-transition);
     /* brand yellow accent (function names, hero highlight) */
     --function-name-color: #facc15;
     --function-name-color-hover: #3d8bff;
@@ -69,32 +637,11 @@
     --primary-color: #3d8bff;
     --primary-color-hover: #2563eb;
     /* Midnight canvas (dark, the default theme) */
-    --body-background: #0f172a;
+    --body-background: #272e3f; /* Figma: dark page surface */
 }
 
-@media (min-width: 576px) {
-    :root {
-        --font-size: 17px
-    }
-}
-
-@media (min-width: 768px) {
-    :root {
-        --font-size: 18px
-    }
-}
-
-@media (min-width: 992px) {
-    :root {
-        --font-size: 19px
-    }
-}
-
-@media (min-width: 1200px) {
-    :root {
-        --font-size: 20px
-    }
-}
+/* Responsive base font size is provided by --ds-font-size (see
+ * design-system.css), which --font-size consumes above. */
 
 a {
     --text-decoration: none;
@@ -197,19 +744,19 @@ kbd {
     --logo-text-color: rgba(0, 0, 0, 0.8);
     --box-outline: drop-shadow(0 0 2px rgba(15, 23, 42, 0.3));
     --panel-title: #2563eb;
-    --color: rgba(0, 0, 0, 0.8);
-    --h1-color: rgba(0, 0, 0, 0.95);
+    --color: var(--ds-color-text);
+    --h1-color: var(--ds-color-heading);
     --h2-color: rgba(0, 0, 0, 0.9);
     --h3-color: rgba(0, 0, 0, 0.85);
     --h4-color: rgba(0, 0, 0, 0.8);
     --h5-color: rgba(0, 0, 0, 0.75);
     --h6-color: rgba(0, 0, 0, 0.7);
-    --muted-color: rgba(0, 0, 0, 0.5);
-    --muted-border-color: rgba(0, 0, 0, 0.1);
+    --muted-color: var(--ds-color-muted);
+    --muted-border-color: var(--ds-color-border);
     --primary: #2563eb;
     --primary-hover: #3d8bff;
     --primary-focus: rgba(37, 99, 235, 0.125);
-    --primary-inverse: #fff;
+    --primary-inverse: var(--ds-color-on-primary);
     --secondary: rgba(0, 0, 0, 0.4);
     --secondary-hover: rgba(0, 0, 0, 0.6);
     --secondary-focus: rgba(0, 0, 0, 0.125);
@@ -218,8 +765,8 @@ kbd {
     --contrast-hover: rgba(0, 0, 0, 1);
     --contrast-focus: rgba(0, 0, 0, 0.125);
     --contrast-inverse: #fff;
-    --mark-background-color: #fff2ca;
-    --mark-color: #543a26;
+    --mark-background-color: var(--ds-color-mark-bg);
+    --mark-color: var(--ds-color-mark-text);
     --ins-color: #388e3c;
     --del-color: #c62828;
     --blockquote-border-color: var(--muted-border-color);
@@ -253,22 +800,22 @@ kbd {
     --range-thumb-active-color: var(--primary);
     --table-border-color: var(--muted-border-color);
     --table-row-stripped-background-color: #f6f8f9;
-    --code-background-color: hsl(205deg, 20%, 94%);
+    --code-background-color: var(--ds-code-bg);
     --code-color: var(--muted-color);
     --code-kbd-background-color: var(--contrast);
     --code-kbd-color: var(--contrast-inverse);
-    --code-tag-color: hsl(330deg, 40%, 50%);
-    --code-property-color: hsl(185deg, 40%, 40%);
-    --code-value-color: hsl(40deg, 20%, 50%);
-    --code-comment-color: hsl(205deg, 14%, 68%);
+    --code-tag-color: var(--ds-code-tag);
+    --code-property-color: var(--ds-code-property);
+    --code-value-color: var(--ds-code-value);
+    --code-comment-color: var(--ds-code-comment);
     --accordion-border-color: var(--muted-border-color);
     --accordion-close-summary-color: var(--color);
     --accordion-open-summary-color: var(--muted-color);
     --card-background-color: var(--background-color);
     --card-border-color: var(--muted-border-color);
-    --card-box-shadow: 0.0145rem 0.029rem 0.174rem rgba(27, 40, 50, 0.01698), 0.0335rem 0.067rem 0.402rem rgba(27, 40, 50, 0.024), 0.0625rem 0.125rem 0.75rem rgba(27, 40, 50, 0.03), 0.1125rem 0.225rem 1.35rem rgba(27, 40, 50, 0.036), 0.2085rem 0.417rem 2.502rem rgba(27, 40, 50, 0.04302), 0.5rem 1rem 6rem rgba(27, 40, 50, 0.06), 0 0 0 0.0625rem rgba(27, 40, 50, 0.015);
-    --card-sectionning-background-color: #fbfbfc;
-    --dropdown-background-color: #fbfbfc;
+    --card-box-shadow: var(--ds-shadow-card);
+    --card-sectionning-background-color: var(--ds-paper-raised);
+    --dropdown-background-color: var(--ds-paper-raised);
     --dropdown-border-color: #e1e6eb;
     --dropdown-box-shadow: var(--card-box-shadow);
     --dropdown-color: var(--color);
@@ -296,7 +843,7 @@ kbd {
 [data-theme=dark] {
     color-scheme: dark;
     --background-color: rgba(0, 0, 0, 0.3);
-    --body-background: #0f172a;
+    --body-background: #272e3f; /* Figma: dark page surface */
     /* code + panel surfaces (dark) */
     --hl-bg: #0f172a;
     --hl-fg: #adbac7;
@@ -317,19 +864,19 @@ kbd {
     --logo-text-color: rgba(255, 255, 255, 0.9);
     --box-outline: drop-shadow(0 0 0 transparent);
     --panel-title: #facc15;
-    --color: rgba(255, 255, 255, 0.9);
-    --h1-color: rgba(255, 255, 255, 0.98);
+    --color: var(--ds-color-text);
+    --h1-color: var(--ds-color-heading);
     --h2-color: rgba(255, 255, 255, 0.95);
     --h3-color: rgba(255, 255, 255, 0.92);
     --h4-color: rgba(255, 255, 255, 0.88);
     --h5-color: rgba(255, 255, 255, 0.85);
     --h6-color: rgba(255, 255, 255, 0.82);
-    --muted-color: rgba(255, 255, 255, 0.6);
-    --muted-border-color: rgba(255, 255, 255, 0.1);
+    --muted-color: var(--ds-color-muted);
+    --muted-border-color: var(--ds-color-border);
     --primary: #3d8bff;
     --primary-hover: #93c5fd;
     --primary-focus: rgba(61, 139, 255, 0.2);
-    --primary-inverse: rgba(0, 0, 0, 0.9);
+    --primary-inverse: var(--ds-color-on-primary);
     --secondary: rgba(255, 255, 255, 0.4);
     --secondary-hover: rgba(255, 255, 255, 0.6);
     --secondary-focus: rgba(255, 255, 255, 0.2);
@@ -347,7 +894,7 @@ kbd {
     --button-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     --button-hover-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     --form-element-background-color: #0f172a;
-    --form-element-border-color: #374956;
+    --form-element-border-color: var(--ds-navy-400);
     --form-element-color: var(--color);
     --form-element-placeholder-color: var(--muted-color);
     --form-element-active-background-color: var(--form-element-background-color);
@@ -362,10 +909,10 @@ kbd {
     --form-element-valid-border-color: #2e7d32;
     --form-element-valid-active-border-color: #388e3c;
     --form-element-valid-focus-color: rgba(56, 142, 60, 0.25);
-    --switch-background-color: #374956;
+    --switch-background-color: var(--ds-navy-400);
     --switch-color: var(--primary-inverse);
     --switch-checked-background-color: var(--primary);
-    --range-border-color: #24333e;
+    --range-border-color: var(--ds-navy-500);
     --range-active-border-color: hsl(205deg, 25%, 23%);
     --range-thumb-border-color: var(--background-color);
     --range-thumb-color: var(--secondary);
@@ -373,29 +920,29 @@ kbd {
     --range-thumb-active-color: var(--primary);
     --table-border-color: var(--muted-border-color);
     --table-row-stripped-background-color: rgba(115, 130, 140, 0.05);
-    --code-background-color: #18232c;
+    --code-background-color: var(--ds-code-bg);
     --code-color: var(--muted-color);
     --code-kbd-background-color: var(--contrast);
     --code-kbd-color: var(--contrast-inverse);
-    --code-tag-color: hsl(330deg, 30%, 50%);
-    --code-property-color: hsl(185deg, 30%, 50%);
-    --code-value-color: hsl(40deg, 10%, 50%);
-    --code-comment-color: #4d606d;
+    --code-tag-color: var(--ds-code-tag);
+    --code-property-color: var(--ds-code-property);
+    --code-value-color: var(--ds-code-value);
+    --code-comment-color: var(--ds-code-comment);
     --accordion-border-color: var(--muted-border-color);
     --accordion-active-summary-color: var(--primary);
     --accordion-close-summary-color: var(--color);
     --accordion-open-summary-color: var(--muted-color);
-    --card-background-color: #141e26;
+    --card-background-color: var(--ds-navy-700);
     --card-border-color: var(--card-background-color);
-    --card-box-shadow: 0.0145rem 0.029rem 0.174rem rgba(0, 0, 0, 0.01698), 0.0335rem 0.067rem 0.402rem rgba(0, 0, 0, 0.024), 0.0625rem 0.125rem 0.75rem rgba(0, 0, 0, 0.03), 0.1125rem 0.225rem 1.35rem rgba(0, 0, 0, 0.036), 0.2085rem 0.417rem 2.502rem rgba(0, 0, 0, 0.04302), 0.5rem 1rem 6rem rgba(0, 0, 0, 0.06), 0 0 0 0.0625rem rgba(0, 0, 0, 0.015);
-    --card-sectionning-background-color: #18232c;
+    --card-box-shadow: var(--ds-shadow-card);
+    --card-sectionning-background-color: var(--ds-navy-600);
     --dropdown-background-color: hsl(205deg, 30%, 15%);
-    --dropdown-border-color: #24333e;
+    --dropdown-border-color: var(--ds-navy-500);
     --dropdown-box-shadow: var(--card-box-shadow);
     --dropdown-color: var(--color);
     --dropdown-hover-background-color: rgba(36, 51, 62, 0.75);
     --modal-overlay-background-color: rgba(36, 51, 62, 0.9);
-    --progress-background-color: #24333e;
+    --progress-background-color: var(--ds-navy-500);
     --progress-color: var(--primary);
     --loading-spinner-opacity: 0.5;
     --tooltip-background-color: var(--contrast);
@@ -1882,32 +2429,29 @@ a[aria-busy=true], button[aria-busy=true], input[type=button][aria-busy=true], i
     --y3: 50%;
 }
 
+:root {
+    /* These roles are tri-state in the design system, so reference the
+     * semantic token once instead of redeclaring per theme. */
+    --invalid-color: var(--ds-color-invalid);
+    --valid-color: var(--ds-color-valid);
+    --nav-background-color: var(--ds-color-nav-bg);
+    --nav-border-color: var(--ds-color-nav-border);
+}
+
 :root:not([data-theme=dark]), [data-theme=light] {
-    --invalid-color: #c62828;
-    --valid-color: #388e3c;
-    --nav-background-color: rgba(255, 255, 255, 0.7);
-    --nav-border-color: rgba(115, 130, 140, 0.2);
-    --nav-logo-color: #fff;
-    --article-code-background-color: #f9fafb
+    --nav-logo-color: var(--ds-white);
+    --article-code-background-color: var(--ds-paper-code)
 }
 
 @media only screen and (prefers-color-scheme: dark) {
     :root:not([data-theme=light]) {
-        --invalid-color: rgba(183, 28, 28, 0.5);
-        --valid-color: rgba(46, 125, 50, 0.5);
-        --nav-background-color: rgba(16, 24, 30, 0.8);
-        --nav-border-color: rgba(115, 130, 140, 0.2);
-        --nav-logo-color: #0e1419;
+        --nav-logo-color: var(--ds-navy-900);
         --article-code-background-color: var(--code-background-color)
     }
 }
 
 [data-theme=dark] {
-    --invalid-color: rgba(183, 28, 28, 0.5);
-    --valid-color: rgba(46, 125, 50, 0.5);
-    --nav-background-color: rgba(16, 24, 30, 0.8);
-    --nav-border-color: rgba(115, 130, 140, 0.2);
-    --nav-logo-color: #0e1419;
+    --nav-logo-color: var(--ds-navy-900);
     --article-code-background-color: var(--code-background-color)
 }
 
@@ -2005,6 +2549,7 @@ header h1, header h2, main h1, main h2,
 .principles-features h4 {
     --font-weight: 400;
     font-family: var(--display-font);
+    font-style: italic;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     line-height: 1.05
@@ -2018,64 +2563,20 @@ header h1, header h2, main h1, main h2,
 .snippet-documentation-panel h3, .snippet-documentation-panel h4,
 .snippet-documentation-panel h5, .snippet-documentation-panel h6 {
     font-family: var(--font-family);
+    font-style: normal;
     text-transform: none;
     letter-spacing: normal
 }
 
+/* h1/h2 sizes consume the design system's fluid type ramp. */
 h1 {
-    line-height: 1.125
-}
-
-@media (min-width: 576px) {
-    h1 {
-        --font-size: 2.25rem
-    }
-}
-
-@media (min-width: 768px) {
-    h1 {
-        --font-size: 2.5rem
-    }
-}
-
-@media (min-width: 992px) {
-    h1 {
-        --font-size: 2.75rem
-    }
-}
-
-@media (min-width: 1200px) {
-    h1 {
-        --font-size: 3rem
-    }
+    --font-size: var(--ds-text-h1);
+    line-height: var(--ds-leading-tight)
 }
 
 h2 {
-    line-height: 1.25
-}
-
-@media (min-width: 576px) {
-    h2 {
-        --font-size: 1.875rem
-    }
-}
-
-@media (min-width: 768px) {
-    h2 {
-        --font-size: 2rem
-    }
-}
-
-@media (min-width: 992px) {
-    h2 {
-        --font-size: 2.125rem
-    }
-}
-
-@media (min-width: 1200px) {
-    h2 {
-        --font-size: 2.25rem
-    }
+    --font-size: var(--ds-text-h2);
+    line-height: var(--ds-leading-snug)
 }
 
 ul.check {
@@ -2192,6 +2693,18 @@ header h1, header p {
 
 header h1 {
     margin-bottom: var(--spacing)
+}
+
+/* Comic "Main Title" treatment (Figma): oversized Bangers with a navy
+   letter outline and hard offset shadow. Hero only. */
+header .header-content h1 {
+    font-size: var(--ds-title-size);
+    line-height: var(--ds-title-leading);
+    text-transform: uppercase;
+    color: var(--ds-title-color);
+    -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
+    paint-order: stroke fill;
+    filter: var(--ds-title-drop);
 }
 
 header h1 ~ p {
@@ -2980,50 +3493,6 @@ nav {
   background-color:rgba(255, 255, 255, 0.10);
 }
 
-.dotted {
-  background-image: url("./assets/halftone.png");
-  background-size: 158%;
-  background-repeat: repeat-y;
-  background-position: center center;
-  width: 190px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  opacity: .1;
-  top: 0;
-	z-index: -5;
-  pointer-events: none;
-}
-
-.dotted-right {
-  background-image: url("./assets/halftone.png");
-  background-size: 158%;
-  transform: rotate(180deg);
-  background-repeat: repeat-y;
-  background-position: center center;
-  width: 190px;
-  height: 100vh;
-  position: fixed;
-  right: 0;
-  opacity: .1;
-  top: 0;
-	z-index: -5;
-  pointer-events: none;
-}
-
-@media (max-width: 576px) {
-	.dotted, .dotted-right {
-		opacity: 0.05;
-	}
-
-  .dotted {
-    left: -80px;
-  }
-  .dotted-right {
-    right: -80px;
-  }
-}
-
 ul a:hover,
 ol a:hover,
 ul a:focus,
@@ -3124,6 +3593,165 @@ footer a:focus {
 }
 
 /* ===========================
+   Comic navbar (B1 — Figma spec)
+   Light frame given; dark derived (page loads data-theme="dark").
+=========================== */
+:root {
+    /* default = dark */
+    --navc-bg: #141e26;
+    --navc-ink: #e9edf2;
+    --navc-border: #33454f;
+    --navc-gold: #facc15;
+    --navc-shadow: #05080a;
+
+    /* Theme toggle, Figma "Secondary/Default". Edge/icon are their own
+       tokens rather than --navc-border/--navc-shadow: Figma specifies pure
+       black edges here on dark, and those tokens are shared with the navbar
+       rule, GitHub button and hamburger, which have no such spec.
+       Figma uses the same surface tint in both themes. */
+    --navc-toggle-bg: rgba(30, 120, 255, 0.1);
+    --navc-toggle-edge: #000000;
+    --navc-toggle-icon: #ffffff;
+}
+:root[data-theme="light"] {
+    --navc-bg: #ffffff;
+    --navc-ink: #0f172a;
+    --navc-border: #0f172a;
+    --navc-gold: #facc15;
+    --navc-shadow: #0f172a;
+
+    --navc-toggle-bg: rgba(30, 120, 255, 0.1);
+    --navc-toggle-edge: #0f172a;
+    --navc-toggle-icon: #0f172a;
+}
+
+.nav {
+    background: var(--navc-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom: 2px solid var(--navc-border);
+    height: auto;
+    min-height: 64px;
+    max-height: none;
+    overflow: visible;
+    padding: 0 30px;
+}
+.nav .logo-link { padding-left: 0; }
+/* Real two-tone vector lockup (skull + MR.DOCS wordmark, from Figma). Theme by
+   recoloring the black parts (skull outline/features + wordmark) and the white
+   detail overlay. Light: ink skull/word + white details. Dark: invert — white
+   skull/word + nav-colored details (so the details read as cut-outs). */
+.nav .logo-link .brand-lockup { height: 40px; width: auto; display: none; }
+:root[data-theme="light"] .nav .logo-link .mark-light { display: block; }
+:root[data-theme="dark"]  .nav .logo-link .mark-dark  { display: block; }
+.nav .logo-link .mark-light path[fill="black"] { fill: #0f172a; }
+.nav .logo-link .mark-light path[fill="white"] { fill: #ffffff; }
+.nav .logo-link .mark-dark  path[fill="black"] { fill: #141e26; }
+.nav .logo-link .mark-dark  path[fill="white"] { fill: #e9edf2; }
+
+.nav .nav-section:last-child {
+    gap: 22px;
+    padding-right: 0;
+    color: var(--navc-ink);
+}
+.nav ul.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+}
+.nav ul.nav-menu > li { list-style: none; margin: 0; }
+.nav ul.nav-menu > li.nav-link > a {
+    font-family: "Special Elite", ui-monospace, monospace;
+    font-size: 14px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--navc-ink);
+}
+.nav ul.nav-menu > li.nav-link > a:hover,
+.nav ul.nav-menu > li.nav-link > a:focus { color: var(--navc-ink); transform: translateY(-1px); }
+
+/* comic buttons (GitHub + theme toggle) */
+.nav .nav-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2px solid var(--navc-border);
+    box-shadow: 2px 2px 0 var(--navc-shadow);
+    background: var(--navc-bg);
+    color: var(--navc-ink);
+    font-family: "Special Elite", ui-monospace, monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .06s ease, box-shadow .06s ease;
+}
+.nav .nav-btn:hover { transform: translateY(-2px); box-shadow: 4px 4px 0 var(--navc-shadow); color: var(--navc-ink); }
+.nav .nav-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--navc-shadow); }
+.nav .nav-btn--gh { background: var(--navc-gold); color: #0f172a; }
+.nav .nav-btn--gh svg { width: 18px; height: 18px; color: #0f172a; }
+/* gold button label stays ink in both themes (beats the nav-link color) */
+.nav ul.nav-menu > li.nav-link > a.nav-btn--gh,
+.nav ul.nav-menu > li.nav-link > a.nav-btn--gh:hover,
+.nav ul.nav-menu > li.nav-link > a.nav-btn--gh:focus { color: #0f172a; }
+/* The .nav-btn--toggle rules that used to sit here carried this same Figma
+   spec but targeted markup that no longer exists (the shipped toggle is
+   .theme-toggle-btn). Their spec now lives on that rule instead. */
+.nav .nav-cta-li { display: flex; align-items: center; }
+
+/* Hamburger — shown only on mobile */
+.nav { position: relative; }
+.nav .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 42px; height: 38px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border: 2px solid var(--navc-border);
+    box-shadow: 2px 2px 0 var(--navc-shadow);
+    background: var(--navc-bg);
+    cursor: pointer;
+}
+.nav .nav-hamburger span { display: block; height: 2.5px; border-radius: 2px; background: var(--navc-ink); }
+
+@media (max-width: 767px) {
+    .nav { padding: 0 16px; }
+    .nav .nav-hamburger { display: inline-flex; }
+    .nav ul.nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin: 0;
+        padding: 6px 16px 16px;
+        background: var(--navc-bg);
+        border-bottom: 2px solid var(--navc-border);
+        z-index: 60;
+    }
+    .nav.nav-open ul.nav-menu { display: flex; }
+    .nav ul.nav-menu > li { width: 100%; margin: 0; }
+    .nav ul.nav-menu > li.nav-link > a {
+        display: block;
+        padding: 13px 2px;
+        font-size: 15px;
+        border-bottom: 1px solid color-mix(in srgb, var(--navc-border) 45%, transparent);
+    }
+    .nav .nav-btn--gh { width: 100%; justify-content: center; margin-top: 12px; padding: 10px 14px; }
+    .nav .nav-btn--gh span { display: inline; }
+    .nav .nav-toggle-li { margin-top: 12px; justify-content: flex-start; }
+}
+
+/* ===========================
    Cutout Styles
 =========================== */
 
@@ -3183,7 +3811,7 @@ footer a:focus {
 /***** cutout box rotations *****/
 .box0 {
     position: relative;
-    filter: drop-shadow(7px 10px 0px rgba(0, 0, 0, .7)) var(--box-outline);
+    filter: var(--ds-drop-comic) var(--box-outline);
 }
 
 .box90 {
@@ -3308,83 +3936,44 @@ footer a:focus {
 .header-cta a {
     display: inline-flex;
     align-items: center;
-    height: 2.5rem;
-    font-weight: 600;
-    padding: 0 1.5em;
+    height: var(--ds-btn-height);
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-weight: var(--ds-weight-medium);
+    text-transform: uppercase;
+    padding: 0 var(--ds-btn-padding-x);
     white-space: nowrap;
     text-decoration: none;
     transition: all 0.2s ease;
     position: relative;
-    border: 2px solid transparent;
+    border: var(--ds-border-width-bold) solid transparent;
 }
 
 .header-cta a:active {
-    transform: translateY(1px);
+    transform: var(--ds-press);
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
-}
-
-.header-cta a.primary {
-    background: rgb(229, 190, 51);
-    color: #0e0e0e;
-    box-shadow: 6px 6px 0 #000;
-    border-color: rgb(229, 190, 51);
-}
-
-.header-cta a.primary:hover {
-    background: rgb(255, 215, 0);
-    transform: translateY(-2px);
-    box-shadow: 6px 6px 0 #000;
-    border-color: rgb(255, 215, 0);
-}
-
-.header-cta a.primary:active {
-    background: rgb(200, 170, 40);
-    border-color: rgb(200, 170, 40);
-    box-shadow: 2px 2px 0 #000;
 }
 
 .header-cta a.secondary {
     background: var(--primary-color);
-    color: #0e0e0e;
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.8);
+    color: var(--ds-ink-900);
+    box-shadow: var(--ds-shadow-comic-soft);
     border-color: var(--primary-color);
 }
 
 .header-cta a.secondary:hover {
     background: var(--primary-color-hover);
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.8);
-    border-color: rgb(0, 145, 234);
+    color: var(--ds-white);
+    transform: var(--ds-lift);
+    box-shadow: var(--ds-shadow-comic-soft);
+    border-color: var(--ds-blue-400);
 }
 
 .header-cta a.secondary:active {
-    background: rgb(0, 120, 200);
-    color: #fff;
-    border-color: rgb(0, 120, 200);
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-}
-
-.header-cta a.contrast.outline {
-    background: transparent;
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-}
-
-.header-cta a.contrast.outline:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border-color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.6);
-}
-
-.header-cta a.contrast.outline:active {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #fff;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+    background: var(--ds-blue-700);
+    color: var(--ds-white);
+    border-color: var(--ds-blue-700);
+    box-shadow: var(--ds-shadow-comic-pressed-soft);
 }
 
 .header-cta a:focus {
@@ -3433,13 +4022,48 @@ footer a:focus {
 	.principles-features {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 5rem;
-		row-gap: 1rem;
+		gap: var(--ds-space-lg);
+		row-gap: var(--ds-space-lg);
 	}
 }
 
+/* Comic feature cards: filled panel, hard outline, hard offset shadow.
+   Styled off the bare divs the template emits, so no markup change is
+   needed (index.html is generated and cannot be re-rendered here). */
+.principles-features > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-space-xs);
+    padding: var(--ds-feature-padding);
+    background: var(--ds-feature-bg);
+    border: var(--ds-feature-border-width) solid var(--ds-feature-border-color);
+    border-radius: var(--ds-feature-radius);
+    box-shadow: var(--ds-feature-shadow);
+}
+
 .principles-features svg {
+    box-sizing: content-box;
+    width: var(--ds-feature-icon-size);
+    height: var(--ds-feature-icon-size);
+    padding: var(--ds-space-2xs);
     color: var(--function-name-color);
+    background: var(--ds-feature-icon-bg);
+    border: var(--ds-feature-border-width) solid var(--ds-feature-border-color);
+    border-radius: var(--ds-feature-radius);
+}
+
+/* Card titles take the accent label colour and the underline from the
+   mockups; the display face and italic come from the shared heading rule. */
+.principles-features h4 {
+    margin-bottom: 0;
+    color: var(--ds-feature-title-color);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.principles-features p {
+    margin-bottom: 0;
 }
 
 .features hgroup {
@@ -3559,13 +4183,6 @@ footer a {
     border: 1px solid var(--muted-border-color);
 }
 
-/* Hero secondary ("Get started") outline button: readable on cream. */
-:root:not([data-theme=dark]) a.contrast.outline,
-[data-theme=light] a.contrast.outline {
-    color: #24303f;
-    border-color: #24303f;
-}
-
 /* All highlighted code sits on the theme code surface. */
 .hljs {
     background-color: var(--hl-bg);
@@ -3640,33 +4257,48 @@ footer a {
 }
 
 /* Landing light/dark toggle button in the nav. */
+/* Figma "Secondary/Default": 38x38, 5px padding, 2px edge, 2px 2px 0 shadow,
+   22px icon. No border-radius in the spec, so the corners stay square. */
 .theme-toggle-btn {
+    box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    gap: 8px;
+    width: 38px;
+    height: 38px;
+    padding: 5px;
     margin: 0;
-    border: 0;
-    width: auto;
-    background: transparent;
-    /* Match the github icon / nav links: muted grey at rest, brightening on
-       hover, rather than the high-contrast near-black/near-white of --contrast. */
-    color: var(--muted-color);
+    background: var(--navc-toggle-bg);
+    border: var(--ds-border-width-bold) solid var(--navc-toggle-edge);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--navc-toggle-edge);
+    color: var(--navc-toggle-icon);
     cursor: pointer;
     line-height: 1;
-    transition: color var(--transition), transform var(--transition);
+    transition: transform var(--transition), box-shadow var(--transition);
 }
 
+/* No hover/active in the spec; follow the comic pattern the other nav
+   buttons already use so the control still reads as pressable. */
 .theme-toggle-btn:hover {
-    color: var(--contrast);
-    transform: translateY(-1px);
-    background: transparent;
+    background: var(--navc-toggle-bg);
+    color: var(--navc-toggle-icon);
+    transform: var(--ds-lift);
+    box-shadow: 4px 4px 0 var(--navc-toggle-edge);
 }
 
+.theme-toggle-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--navc-toggle-edge);
+}
+
+/* Icons are stroked outlines (Figma "Iconly Pro"), not filled glyphs. A
+   CSS `fill` here would beat the markup's fill="none" and turn them into
+   solid blobs, so it is deliberately not set. */
 .theme-toggle-btn svg {
-    width: 1.15rem;
-    height: 1.15rem;
-    fill: currentColor;
+    width: 22px;
+    height: 22px;
 }
 
 .theme-toggle-btn .icon-sun {
@@ -3717,4 +4349,1879 @@ footer a {
 .documentation-panel h2,
 .documentation-panel h2 a {
     color: var(--panel-title);
+}
+
+/* =====================================================================
+ * B3 — comic treatment for the code / reference rows.
+ * Appended last on purpose: the theme-aware surface block above sets the
+ * 1px borders and forces panel headings to --panel-fg, so these rules
+ * have to come after it to win the cascade at equal specificity.
+ * ===================================================================== */
+
+/* Both halves of the row become comic surfaces. The fills stay on the
+   existing theme tokens (--hl-bg / --panel-surface); only the outline
+   and the shadow change. */
+.snippet-panel > pre,
+.documentation-panel {
+    border: var(--ds-panel-border-width) solid var(--ds-panel-border-color);
+    border-radius: var(--ds-panel-radius);
+    box-shadow: var(--ds-panel-shadow);
+    backdrop-filter: none;
+}
+
+.panel-container {
+    gap: var(--ds-panel-gap);
+}
+
+/* Reference-panel labels take the gold accent, uppercase and italic, as
+   the mockups show them. This deliberately overrides the earlier
+   exemption that kept them in the body face: on the landing page the
+   symbols are short curated names (terminate, distance, is_prime, sort),
+   not the arbitrary template signatures that rule exists to protect on
+   the docs site. The exemption still stands there. */
+.documentation-panel h2,
+.documentation-panel h2 a,
+.documentation-panel h3 {
+    color: var(--ds-panel-heading);
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* Body copy, tables and code inside the panel stay in the reading face —
+   only the labels take the display treatment. */
+.documentation-panel h4,
+.documentation-panel h5,
+.documentation-panel h6 {
+    font-family: var(--font-family);
+    font-style: normal;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* =====================================================================
+ * Label pills — the magenta badges above each code/reference row and
+ * over the hero title. Figma "Background" + "Header Text": Bangers at
+ * 16px/16px, 0.1em tracking, white on #EC4899, 2px #0F172A edge with a
+ * 2px 2px 0 shadow, square corners.
+ * ===================================================================== */
+.row-label {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 var(--ds-space-sm);
+    padding: var(--ds-badge-padding);
+    background: var(--ds-badge-bg);
+    color: var(--ds-badge-text);
+    border: var(--ds-badge-border-width) solid var(--ds-badge-border-color);
+    border-radius: var(--ds-badge-radius);
+    box-shadow: var(--ds-badge-shadow);
+    font-family: var(--ds-badge-font);
+    font-size: var(--ds-badge-size);
+    /* Bangers has no italic cut, so this stays upright rather than being
+       synthesised into an oblique. */
+    font-style: normal;
+    font-weight: var(--ds-weight-regular);
+    line-height: var(--ds-badge-leading);
+    text-transform: uppercase;
+    letter-spacing: var(--ds-badge-tracking);
+    /* Hugs its text; the shared paragraph width/margin would stretch it. */
+    width: auto;
+}
+
+/* The hero pill sits above the oversized title, which carries its own
+   tight leading; give it a little more breathing room underneath. */
+.hero-eyebrow {
+    margin-bottom: var(--ds-space-md);
+}
+
+/* =====================================================================
+ * Halftone dot field — the comic print texture behind the hero and the
+ * examples band. Drawn as a pseudo-element rather than a background on
+ * the section itself, so it layers over whatever surface colour the
+ * current theme supplies without replacing it. No image asset: a single
+ * repeated radial-gradient, which stays crisp at any zoom.
+ * ===================================================================== */
+header,
+#features,
+.principles {
+    position: relative;
+    isolation: isolate;
+}
+
+header::before,
+#features::before,
+.principles::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(
+        var(--ds-halftone-dot) var(--ds-halftone-dot-size),
+        transparent var(--ds-halftone-dot-size)
+    );
+    background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
+    /* Pico resets `background-repeat: no-repeat` on every ::before (styles.css:822),
+       which would render this tile exactly once. Restore the tiling. */
+    background-repeat: repeat;
+    /* Fade out down the band so the dots frame the heading rather than
+       sitting behind the body copy and code panels. */
+    -webkit-mask-image: linear-gradient(
+        to bottom, #000 0%, transparent var(--ds-halftone-extent)
+    );
+    mask-image: linear-gradient(
+        to bottom, #000 0%, transparent var(--ds-halftone-extent)
+    );
+}
+
+/* The dots are decorative; drop them when the reader has asked for more
+   contrast. */
+@media (prefers-contrast: more) {
+    header::before,
+    #features::before,
+    .principles::before {
+        display: none;
+    }
+}
+
+/* =====================================================================
+ * HERO — built to the Home mockups (mobile 402, desktop 1440), 2026-08-19.
+ * Mobile first; the desktop three-column arrangement is a later slice.
+ * Geometry below was measured off the mobile mockup, so the values are
+ * literal px rather than spacing tokens where the design is specific.
+ * ===================================================================== */
+
+/* The mockup hero is left-aligned; the previous treatment centred it. */
+.header-content {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+/* Headline: three lines, line 1 blue and the rest gold. */
+header .header-content h1 .title-line {
+    display: block;
+}
+
+header .header-content h1 .title-line--alt {
+    color: var(--ds-title-color-alt);
+}
+
+header .header-content h1 {
+    /* An earlier rule centres the hero h1 directly, so inheriting
+       text-align from .header-content is not enough. */
+    text-align: left;
+    /* Bangers carries a lot of internal leading above its caps, so the
+       optical gap the mockup shows (28px from the pill) needs a negative
+       margin here -- 30px of real space minus 43px of leading. */
+    margin-block: -13px 0;
+}
+
+header .header-content > p:not(.row-label) {
+    /* Figma: 14px / line-height 1.6 on mobile, 16px / 1.6 on desktop. */
+    font-size: 14px;
+    line-height: 1.6;
+    margin-block: 24px 29px;
+    max-width: none;
+}
+
+.header-cta {
+    display: flex;
+    /* Figma Button Container: stackSpacing 24 mobile, 32 desktop. */
+    gap: 24px;
+    /* Zeroed: a generic rule contributes 24px here, which would push the
+       row past the measured position. */
+    margin-top: 0;
+    margin-bottom: 91px;
+}
+
+/* Mockup: DOWNLOAD is the light-blue fill, GET STARTED the navy one.
+   Both carry the ink border and hard offset shadow. */
+.header-cta a.primary {
+    background: var(--ds-blue-300);
+    color: var(--ds-ink-950);
+}
+
+.header-cta a.primary:hover {
+    background: var(--ds-blue-300);
+    border-color: var(--ds-color-outline);
+}
+
+.header-cta a.contrast.outline {
+    background: var(--ds-ink-950);
+    color: var(--ds-paper-50);
+    backdrop-filter: none;
+}
+
+.header-cta a.contrast.outline:hover {
+    background: var(--ds-ink-950);
+    color: var(--ds-paper-50);
+    border-color: var(--ds-color-outline);
+}
+
+/* ---- Code panel ---------------------------------------------------- */
+.code-panel {
+    background: var(--ds-color-code-shell);
+    border: var(--ds-border-width-bold) solid var(--ds-code-panel-border);
+    /* Figma: the shell carries 2px of padding, so it reads as a thin ring
+       between the ink border and the code surface, plus a hard offset. */
+    padding: 2px;
+    box-shadow: 2px 2px 0 var(--ds-code-panel-border);
+    border-radius: 0;
+    width: 100%;
+    overflow: hidden;
+    /* Figma fixes the panel height and lets the code surface flex-grow into
+       it, rather than padding the body out to size. */
+    display: flex;
+    flex-direction: column;
+    height: 386px;
+}
+
+.code-panel-chrome {
+    background: var(--ds-code-panel-chrome);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    padding: 5px;
+    gap: 10px;
+}
+
+/* Figma fills the space either side of the language tag with five 0.5px
+   rules at a 5px pitch. Drawn as a repeating gradient rather than five
+   elements, since they are purely decorative. */
+.code-panel-chrome::before,
+.code-panel-chrome::after {
+    content: "";
+    flex: 1;
+    align-self: stretch;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.2) 0 0.5px,
+        transparent 0.5px 5.5px
+    );
+    background-repeat: repeat;
+}
+
+.code-panel-tab {
+    font-family: var(--ds-font-mono);
+    font-size: 10.5px;
+    line-height: 1;
+    color: var(--ds-code-panel-tab);
+}
+
+.code-panel-body {
+    margin: 0;
+    /* Pico gives `pre` a border-radius; the panel must stay square. */
+    border-radius: 0;
+    padding: 20px;
+    background: var(--ds-code-panel-bg);
+    border: 0;
+    counter-reset: codeline;
+    overflow-x: auto;
+    flex: 1;
+}
+
+.code-panel-body code {
+    background: none;
+    padding: 0;
+    /* Figma: 13px mobile, 14px desktop, line-height 2.2 in both. */
+    font-size: 13px;
+    line-height: 2.2;
+    color: var(--ds-code-panel-fg);
+}
+
+.code-panel-body .cl {
+    display: block;
+    position: relative;
+    counter-increment: codeline;
+    /* Figma: 9px number column + 30px gap. */
+    padding-left: 39px;
+    white-space: pre-wrap;
+}
+
+.code-panel-body .cl::before {
+    content: counter(codeline);
+    position: absolute;
+    left: 0;
+    width: 9px;
+    text-align: right;
+    color: var(--ds-code-panel-linenum);
+}
+
+.code-panel-body .c { color: var(--ds-code-panel-comment); }
+.code-panel-body .k { color: var(--ds-code-panel-keyword); }
+.code-panel-body .f { color: var(--ds-code-panel-fn); }
+
+/* ---- Hero structure (mobile) --------------------------------------- *
+ * The mockup gutter is 28px, not Pico's 16px. Scoped to the hero for
+ * now; the rest of the page still uses Pico's container padding.
+ * Mobile stacking order is content -> code panel -> mascot, which is
+ * NOT DOM order, so the two visual columns are re-ordered here and
+ * placed properly at the desktop breakpoint later. */
+header .container,
+.principles .container,
+#features .container,
+.cta-panel-inner,
+.footer-bar {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.header-banner {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+}
+
+.header-content { order: 1; }
+.hero-code { order: 2; }
+.header-image { order: 3; }
+
+/* A grid item will not shrink below its min-content width, and this
+   one's min-content is the longest line of code. Kept as a guard so the
+   panel can never widen the hero row; the code scrolls inside instead. */
+.hero-code,
+.code-panel,
+.code-panel-body {
+    min-width: 0;
+}
+
+.header-image {
+    max-width: 100%;
+}
+
+/* Mockup puts 93px between the nav rule and the eyebrow pill. */
+header .container {
+    padding-top: 39px;
+}
+
+/* ---- Hero body copy + button corrections --------------------------- *
+ * The paragraph is centred and muted by an earlier `header p` rule; the
+ * mockup has it left-aligned in full ink. */
+header .header-content > p:not(.row-label) {
+    text-align: left;
+    color: var(--ds-color-hero-text);
+}
+
+/* Pico drives link colour through its own --color custom property, which
+   wins over a plain `color` declaration here, so set both. */
+.header-cta a.contrast.outline,
+.header-cta a.contrast.outline:hover {
+    --color: var(--ds-paper-50);
+    color: var(--ds-paper-50);
+}
+
+/* Figma has these as a DROP_SHADOW effect: offset 2,2, radius 0, pure
+   black -- not the 6px used elsewhere, and black rather than the outline
+   colour, so it does not follow the theme. */
+.header-cta a.primary,
+.header-cta a.contrast.outline {
+    /* Figma nests the button in a 2px-padded wrapper whose fill is the page
+       colour, with the stroke set to OUTSIDE. That reads as a light ring
+       between the black edge and the fill, so: border = the ring, first
+       shadow = the black edge outside it, second = the offset drop. */
+    border-color: var(--body-background);
+    box-shadow:
+        0 0 0 var(--ds-cta-shadow) var(--ds-black),
+        calc(var(--ds-cta-shadow) * 2) calc(var(--ds-cta-shadow) * 2) 0 var(--ds-black);
+}
+
+/* ---- Hero vertical rhythm ------------------------------------------ *
+ * Set explicitly rather than inherited, so each step is one number that
+ * maps to a measured gap in the mockup. Offsets are glyph-to-glyph, so
+ * the constants absorb each face's internal leading. */
+.header-content > .row-label.hero-eyebrow {
+    margin-block: 0;
+}
+
+header .header-content h1 {
+    margin-block: 14px 0;
+}
+
+header .header-content > p:not(.row-label) {
+    margin-block: 30px 22px;
+}
+
+/* ---- Hero mascot --------------------------------------------------- *
+ * On mobile the figure is left-aligned and bleeds off the left edge only
+ * (its cape tip touches x=0), at 81vw -- measured by matching the cape's
+ * span to the mockup. It also rides up over the panel's lower edge. */
+.header-image {
+    margin-inline: -28px 0;
+    margin-top: -24px;
+    width: 81vw;
+    max-width: none;
+}
+
+.hero-mascot {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* =====================================================================
+ * HERO — desktop. Three columns: copy | mascot | code panel, measured
+ * off the Figma layout export (2000px wide, ~0.655 to page px at 1440):
+ * 78px gutters, columns ~430 / ~381 / ~473.
+ * ===================================================================== */
+@media (min-width: 992px) {
+    /* Pico caps .container at 1130px, narrower than the mockup's 1284px
+       content box, so the hero sets its own. The cap is deliberately the
+       design's content box: 1440 minus the two 78px gutters, which makes
+       this a no-op at the design width and symmetric whitespace beyond it.
+       Without a cap the columns and the code panel grew without limit
+       while the headline, body measure and mascot stayed fixed -- at
+       2560 the panel reached 881px around eight short lines of code.
+       The full-bleed decorative layers (halftone, cityscape) are on the
+       header itself, so they keep spanning the viewport. */
+    header .container,
+    .principles .container,
+    #features .container,
+    .cta-panel-inner,
+    .footer-bar {
+        max-width: calc(1284px + 2 * 78px);
+        padding-inline: 78px;
+        margin-inline: auto;
+    }
+
+    .header-banner {
+        /* minmax(0,...) so the oversized mascot overflows its track
+           instead of widening it and squeezing the panel column. */
+        grid-template-columns: minmax(0, 34fr) minmax(0, 30fr) minmax(0, 37fr);
+        column-gap: 0;
+        align-items: center;
+    }
+
+    /* Explicit placement, so the mobile source order (copy, panel,
+       mascot) can put the mascot in the middle here. */
+    .header-content {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .header-image {
+        grid-column: 2;
+        grid-row: 1;
+        margin-inline: 0;
+        width: 100%;
+    }
+
+    .hero-code {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    header .header-content > p:not(.row-label) {
+        font-size: 16px;
+        line-height: 1.6;
+        /* Mockup wraps this to 4 lines across a 339px measure. */
+        max-width: 339px;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Mockup tops the panel and mascot 65px below the eyebrow, rather
+       than centring them against the copy column. */
+    .header-banner {
+        align-items: start;
+    }
+
+    .hero-code {
+        margin-top: 73px;
+    }
+
+    /* Desktop panel: 15px/31px pitch, no wrapping at this width, and a
+       deep bottom well as in the mockup. */
+    .code-panel-body code {
+        font-size: 14px;
+    }
+
+    .code-panel {
+        height: 400px;
+    }
+}
+
+@media (min-width: 992px) {
+    header .container {
+        padding-top: 47px;
+    }
+
+    /* The mascot is wider than its own column in the mockup -- it reads as
+       an overlay that the copy and panel columns sit either side of, so it
+       is sized absolutely and allowed to spill over the column edges. */
+    .header-image {
+        justify-self: center;
+        /* Scaled so the cape matches the mockup's 388px span -- measured
+           on the cape because it is the only saturated red in the art;
+           the tan armour pollutes any gold/hex-badge measurement. */
+        width: 486px;
+        max-width: none;
+        margin-top: 92px;
+        /* Biased left of its own column: in the mockup the figure sits
+           closer to the copy than to the panel, overlapping the copy
+           column rather than centring in the gap. */
+        transform: translateX(-66px);
+    }
+}
+
+/* ---- Hero cityscape ------------------------------------------------ *
+ * Second decorative layer, painted above the halftone (::after follows
+ * ::before in paint order at the same z-index) and below the content.
+ * The art is pre-faded in the asset itself -- its alpha peaks at 77/255
+ * -- so no opacity is applied here. */
+header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--ds-city-height);
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("./assets/mrdocs-hero-city.webp");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: auto 100%;
+    opacity: var(--ds-city-opacity);
+}
+
+@media (min-width: 992px) {
+    :root {
+        --ds-city-height: 32.5vw;
+    }
+}
+
+@media (prefers-contrast: more) {
+    header::after {
+        display: none;
+    }
+}
+
+/* ---- Hero bottom edge ---------------------------------------------- *
+ * Figma gives the cityscape layer a 2px #0F172A bottom rule; it is the
+ * hero's own bottom edge, so it lives on the header. */
+header {
+    border-bottom: var(--ds-border-width-bold) solid var(--ds-color-outline);
+}
+
+/* Hero eyebrow: Figma sizes it 14px/12px on mobile and 16px/16px on desktop,
+   unlike the shared row-label pill used in the panel rows. */
+.hero-eyebrow {
+    font-size: 14px;
+    line-height: 12px;
+}
+
+@media (min-width: 992px) {
+    .hero-eyebrow {
+        font-size: var(--ds-badge-size);
+        line-height: var(--ds-badge-leading);
+    }
+
+    .code-panel-tab {
+        font-size: 14px;
+    }
+}
+
+/* ---- Hero button interaction --------------------------------------- *
+ * The Figma file has no hover/pressed variants for these -- only
+ * "Secondary/Default" exists -- so this follows the comic behaviour used
+ * elsewhere on the page: the button lifts and its hard shadow grows by
+ * the same amount, then sinks and the shadow shrinks on press, so the
+ * offset always tracks how far the button sits off the page. Colours do
+ * not change, since the design does not specify hover colours.
+ *
+ * Rest offset is --ds-cta-shadow (1.5px mobile, 2px desktop), doubled
+ * on hover and halved on press.
+ * The colour-pinning in the :hover rules above is deliberate: without it
+ * Pico repaints these on hover. */
+.header-cta a.primary:hover,
+.header-cta a.contrast.outline:hover {
+    transform: var(--ds-lift);
+    box-shadow:
+        0 0 0 var(--ds-cta-shadow) var(--ds-black),
+        calc(var(--ds-cta-shadow) * 3) calc(var(--ds-cta-shadow) * 3) 0 var(--ds-black);
+}
+
+.header-cta a.primary:active,
+.header-cta a.contrast.outline:active {
+    transform: var(--ds-press);
+    box-shadow:
+        0 0 0 var(--ds-cta-shadow) var(--ds-black),
+        var(--ds-cta-shadow) var(--ds-cta-shadow) 0 var(--ds-black);
+}
+
+/* Transition only what actually moves, rather than `all`. */
+.header-cta a {
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header-cta a {
+        transition: none;
+    }
+
+    .header-cta a.primary:hover,
+    .header-cta a.contrast.outline:hover,
+    .header-cta a.primary:active,
+    .header-cta a.contrast.outline:active {
+        transform: none;
+    }
+}
+
+/* Hero button box, from Figma's Button Container. Mobile and desktop
+   differ: 101/116 x 38 with a 24px gap and a 1.5px shadow, against
+   123/140 x 48 with a 32px gap and 2px. Heights are px, not the shared
+   2.5rem token -- Pico scales the root font-size at wide breakpoints, so
+   rem resolved to 50px here.
+   The margin reset needs :not(:last-of-type) to outrank the generic
+   `header a:not(:last-of-type)` rule, which was adding 10px on top of
+   the flex gap. */
+:root {
+    --ds-cta-shadow: 1.5px;
+}
+
+.header-cta a {
+    height: 38px;
+    /* Figma's inner Frame 2 has 16px of horizontal padding; the 2px border
+       here stands in for the symbol's 2px ring. Label is Bangers with 10%
+       tracking, which is most of why the untracked version measured narrow. */
+    padding-inline: 12px;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+}
+
+.header-cta a:not(:last-of-type) {
+    margin-right: 0;
+}
+
+@media (min-width: 992px) {
+    :root {
+        --ds-cta-shadow: 2px;
+    }
+
+    .header-cta a {
+        height: 48px;
+        padding-inline: 16px;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .header-cta {
+        gap: 32px;
+    }
+}
+
+/* =====================================================================
+ * FEATURE SECTION — "Keep the code simple" heading + the four cards.
+ * Built from the Figma file 2026-08-20, mobile first.
+ *   heading   52px / 82px, 3px / 4px stroke and offset
+ *   card      1.5px / 2px ring and offset, inner pad 20 / 40, gap 12 / 16
+ *   icon      38 / 50 box, 6 / 8 inset
+ *   title     27px / 36px, 1.5px / 2px stroke and offset
+ *   body      15/21 / 18/28
+ * ===================================================================== */
+
+/* ---- Section heading ----------------------------------------------- *
+ * Same comic treatment as the hero headline with the line colours
+ * swapped: gold first, blue second. */
+.section-title {
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-size: clamp(52px, 5.7vw, 82px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--ds-title-color);
+    -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
+    paint-order: stroke fill;
+    filter: var(--ds-title-drop);
+    margin-block: 0 24px;
+}
+
+.section-title .title-line {
+    display: block;
+}
+
+.section-title .title-line--alt {
+    color: var(--ds-title-color-alt);
+}
+
+.section-heading {
+    /* Below 768 the container is a normal block, so this margin sets the gap
+       to the cards. At 768+ the container becomes a flex column with its own
+       row gap, which is used instead -- see below. */
+    margin-bottom: 56px;
+}
+
+.section-heading h3 {
+    font-family: var(--ds-font-body);
+    font-size: 16px;
+    line-height: 21px;
+    /* An earlier rule centres this; the mockup is left-aligned. */
+    text-align: left;
+    color: var(--ds-color-hero-text);
+    margin: 0;
+}
+
+/* ---- Card grid ----------------------------------------------------- */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Equal card heights: Figma has all four at the same height, but the
+       rows are content-sized by default and the copy lengths differ. */
+    grid-auto-rows: 1fr;
+    gap: 24px;
+    margin-top: 0;
+}
+
+.feature-card {
+    /* These are <article> elements, which Pico gives its own margin,
+       padding, radius and shadow -- all of which have to go. */
+    margin: 0;
+    /* Outer surface is the page colour, so the 2px padding reads as a ring
+       between the ink border and the tinted panel. */
+    background: var(--body-background);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    border-radius: 0;
+    padding: 1.5px;
+    box-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+    /* Flex column so the inner panel can fill the stretched row. A
+       `height: 100%` on the inner does not do it: the card's own height
+       comes from the grid's `1fr` track, which WebKit does not count as a
+       definite height for percentage resolution -- Safari fell back to
+       content height and left the card background showing below the
+       panel. Flex growth needs no percentage, so both engines agree. */
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-card-inner {
+    position: relative;
+    overflow: hidden;
+    background: var(--ds-color-card-tint);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1 1 auto;
+}
+
+/* ---- Card corner halftone ------------------------------------------ *
+ * Figma puts two 290px (218px on mobile) dot fields per card, poking in
+ * from the top-right and bottom-left and clipped by the card. They are
+ * 1019 individual vectors there; here it is one repeating gradient with a
+ * radial mask for the density falloff. The dot colour matches the icon
+ * box in both themes (#93C5FD / #3D8BFF).
+ * background-repeat is explicit because Pico resets every ::before and
+ * ::after to no-repeat. */
+.feature-card-inner::before,
+.feature-card-inner::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: 218px;
+    height: 218px;
+    pointer-events: none;
+    background-image: radial-gradient(
+        var(--ds-color-icon-box) 1.5px,
+        transparent 1.6px
+    );
+    background-size: 6px 6px;
+    background-repeat: repeat;
+    -webkit-mask-image: radial-gradient(closest-side, #000 25%, transparent 78%);
+    mask-image: radial-gradient(closest-side, #000 25%, transparent 78%);
+}
+
+.feature-card-inner::before {
+    top: -134px;
+    right: -134px;
+}
+
+.feature-card-inner::after {
+    bottom: -135px;
+    left: -134px;
+}
+
+/* Keep the copy above the dots. */
+.feature-card-inner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ---- Icon ---------------------------------------------------------- *
+ * The glyph is a mask rather than an <img> so it can take a themed
+ * colour: Figma has it #0F172A on light and #FFFFFF on dark. */
+.feature-icon {
+    position: relative;
+    display: block;
+    flex: none;
+    width: 38px;
+    height: 38px;
+    background: var(--ds-color-icon-box);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    box-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+}
+
+.feature-icon::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    background: var(--ds-color-icon-ink);
+    -webkit-mask: var(--ds-icon) center / contain no-repeat;
+    mask: var(--ds-icon) center / contain no-repeat;
+}
+
+.feature-icon--website-code { --ds-icon: url("./assets/icons/website-code.svg"); }
+.feature-icon--terminal     { --ds-icon: url("./assets/icons/terminal.svg"); }
+.feature-icon--git-fork     { --ds-icon: url("./assets/icons/git-fork.svg"); }
+.feature-icon--github       { --ds-icon: url("./assets/icons/github.svg"); }
+
+/* ---- Card text ----------------------------------------------------- */
+.feature-card h4 {
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-size: 27px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--ds-title-color-alt);
+    -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
+    paint-order: stroke fill;
+    filter: var(--ds-title-drop-sm);
+    margin: 0;
+}
+
+.feature-card p {
+    font-family: var(--ds-font-body);
+    font-size: 15px;
+    line-height: 21px;
+    color: var(--ds-color-card-text);
+    margin: 0;
+}
+
+@media (min-width: 992px) {
+    .section-heading h3 {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+    }
+
+    .feature-card {
+        padding: 2px;
+        box-shadow: 2px 2px 0 var(--ds-color-outline);
+    }
+
+    .feature-card-inner {
+        padding: 40px;
+        gap: 16px;
+    }
+
+    .feature-card-inner::before,
+    .feature-card-inner::after {
+        width: 290px;
+        height: 290px;
+    }
+
+    .feature-card-inner::before {
+        top: -178px;
+        right: -178px;
+    }
+
+    .feature-card-inner::after {
+        bottom: -179px;
+        left: -178px;
+    }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        box-shadow: 2px 2px 0 var(--ds-color-outline);
+    }
+
+    .feature-icon::before {
+        inset: 8px;
+    }
+
+    .feature-card h4 {
+        font-size: 36px;
+    }
+
+    .feature-card p {
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+@media (min-width: 768px) {
+    /* `.principles .container` is a flex column with `gap: 2.5rem` (50px at
+       the desktop root size), which a margin here would only add to. Drive
+       the 57px mockup gap from the gap itself. */
+    .principles .container {
+        gap: 57px;
+    }
+
+    .section-heading {
+        margin-bottom: 0;
+    }
+}
+
+/* The page halftone is a single uniform pattern fill on Figma's Home frame.
+   The hero fades it out downward so it frames the headline; in the feature
+   section it stays even, so the mask is effectively removed here. */
+.principles::before {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+/* =====================================================================
+ * PANELS SECTION — "More Code, Fewer Workarounds".
+ * Figma 2026-08-24. Section heading is the same comic treatment as the
+ * feature section, but centred here. Row headers are a 20/14px label pill
+ * and a 32/24px subtitle.
+ * ===================================================================== */
+.section-heading--center {
+    text-align: center;
+}
+
+.section-heading--center .section-title {
+    text-align: center;
+}
+
+.section-heading--center h3 {
+    text-align: center;
+    margin-inline: auto;
+}
+
+/* Row header: the label pill is larger here than the hero eyebrow, and the
+   subtitle is a paragraph rather than the old checklist. */
+.snippet-documentation-panel .row-label {
+    font-size: 14px;
+    line-height: 12px;
+    padding: 4.5px 9px;
+}
+
+.panel-row-subtitle {
+    font-family: var(--ds-font-body);
+    font-size: 24px;
+    line-height: 1.6;
+    /* Figma has this in full ink; the muted reading was the text node's
+       default, with character overrides for the inline code spans. */
+    color: var(--ds-color-hero-text);
+    /* Mobile row rhythm: Figma's "Container" stacks the Header and the
+       Content Container 40.5px apart at 402, and the side-by-side box
+       strokes 1.5px OUTSIDE its measured box -- so the painted gap is
+       39px, which is what the CSS border-box has to reproduce. It was 0
+       here, leaving the subtitle sitting flush on the panel below it;
+       only the >=992px override had any bottom margin at all. */
+    margin-block: 12px 39px;
+}
+
+@media (min-width: 992px) {
+    .snippet-documentation-panel .row-label {
+        font-size: 20px;
+        line-height: 16px;
+        padding: 8px 16px;
+    }
+
+    .panel-row-subtitle {
+        font-size: 32px;
+        /* Figma measures this at 816px. */
+        max-width: 816px;
+    }
+}
+
+/* This section's subheading runs at line-height 1.6, unlike the feature
+   section's 28px, and Figma measures it at 553px so it breaks after
+   "maintainable." */
+#features .section-heading h3 {
+    line-height: 1.6;
+    max-width: 553px;
+}
+
+/* ---- Side-by-side code + documentation ----------------------------- *
+ * Figma: one bordered box, 1280 wide with a 2px page-coloured ring and a
+ * 2px ink border, halves flush at 638 each (exactly 50/50, no gap). The
+ * old markup had them as two separate panels with a 1rem gap, and the
+ * documentation half carried a translucent fill, blur and radius that the
+ * design does not have. */
+.side-by-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--body-background);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    border-radius: 0;
+    padding: 1.5px;
+    overflow: hidden;
+}
+
+.side-by-side > .snippet-panel,
+.side-by-side > .documentation-panel {
+    flex: 1 1 50%;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+}
+
+.side-by-side > .snippet-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--ds-code-panel-bg);
+}
+
+.side-by-side > .snippet-panel > .code-panel-body {
+    flex: 1;
+    padding: 20px;
+    background: var(--ds-code-panel-bg);
+    border-radius: 0;
+}
+
+.side-by-side > .documentation-panel {
+    background: var(--ds-color-doc-surface);
+    padding: 20px;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .side-by-side {
+        flex-direction: row;
+        padding: 2px;
+    }
+
+    .side-by-side > .snippet-panel > .code-panel-body {
+        padding: 30px;
+    }
+
+    .side-by-side > .documentation-panel {
+        padding: 40px;
+    }
+}
+
+/* ---- Documentation half: heading and code colours ------------------ *
+ * Figma splits the two heading levels, which the earlier B3 rule did not:
+ * the symbol title is gold at 36px, the section titles (Synopsis,
+ * Description) are blue at 24px. Both carry a 2px ink outline, both carry
+ * the hard comic shadow, and both run at 120% -- 43px on the symbol name,
+ * 29px on the section headings, where Pico's leading left them 2px tall. */
+.side-by-side > .documentation-panel h2,
+.side-by-side > .documentation-panel h2 a {
+    color: var(--ds-title-color-alt);
+    font-size: 36px;
+    line-height: var(--ds-title-leading-sm);
+    -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
+    paint-order: stroke fill;
+    filter: var(--ds-title-drop-sm);
+}
+
+.side-by-side > .documentation-panel h3 {
+    color: var(--ds-title-color);
+    font-size: 24px;
+    line-height: var(--ds-title-leading-sm);
+    -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
+    paint-order: stroke fill;
+    filter: var(--ds-title-drop-sm);
+}
+
+/* The code half is highlight.js output, so its colours come from hljs
+   classes rather than the hand-written spans the hero panel uses. Map them
+   onto the same panel palette: grey comments, pink keywords, blue
+   identifiers, cream for everything else. */
+.side-by-side .code-panel-body code {
+    color: var(--ds-code-panel-fg);
+}
+
+.side-by-side .hljs-doc-comment,
+.side-by-side .hljs-comment {
+    color: var(--ds-code-panel-comment);
+}
+
+/* Only keywords take the pink; attributes and identifiers stay cream, and
+   everything inside a doc comment reads as comment grey. */
+.side-by-side .hljs-doctag,
+.side-by-side .hljs-string,
+.side-by-side .hljs-name {
+    color: inherit;
+}
+
+.side-by-side .hljs-keyword {
+    color: var(--ds-code-panel-keyword);
+}
+
+.side-by-side .hljs-meta,
+.side-by-side .hljs-title,
+.side-by-side .hljs-type,
+.side-by-side .hljs-params {
+    color: var(--ds-code-panel-fg);
+}
+
+/* ---- Documentation half: body, inline code, synopsis block ---------- *
+ * The generated markup is .symbol > .header/.synopsis/.description, with
+ * the declaration in `pre > code.source-code`. Figma: body copy #6E727B,
+ * inline code pink, and the declaration block on the dark code surface --
+ * the render had it on a pale tint. */
+.side-by-side > .documentation-panel p,
+.side-by-side > .documentation-panel li,
+.side-by-side > .documentation-panel dd {
+    color: var(--ds-color-card-text);
+}
+
+.side-by-side > .documentation-panel p code,
+.side-by-side > .documentation-panel li code {
+    background: none;
+    padding: 0;
+    color: var(--ds-code-panel-keyword);
+    font-family: var(--ds-font-mono);
+}
+
+.side-by-side > .documentation-panel pre {
+    background: var(--ds-code-panel-bg);
+    border: 0;
+    border-radius: 0;
+    padding: 20px;
+    margin-block: 12px 0;
+}
+
+.side-by-side > .documentation-panel pre code {
+    background: none;
+    padding: 0;
+    color: var(--ds-code-panel-fg);
+}
+
+/* NOTE admonition: Figma has the title in full ink and the body muted. */
+.side-by-side > .documentation-panel .admonition h4 {
+    color: var(--ds-color-hero-text);
+}
+
+/* Figma sets the documentation copy in Special Elite; it was inheriting a
+   sans stack. */
+.side-by-side > .documentation-panel p,
+.side-by-side > .documentation-panel li,
+.side-by-side > .documentation-panel dt,
+.side-by-side > .documentation-panel dd,
+.side-by-side > .documentation-panel .admonition h4 {
+    font-family: var(--ds-font-body);
+}
+
+/* Comments come through italic from the highlight theme; the mockup has
+   them upright. */
+.side-by-side .hljs-doc-comment,
+.side-by-side .hljs-comment {
+    font-style: normal;
+}
+
+/* ---- Section transition band --------------------------------------- *
+ * Figma floats a decorative layer over the boundary into this section:
+ * a cloud bank in the top corners and comic speed lines converging behind
+ * the heading (its `Group 6`, 1440x468 at page y2287, with the heading at
+ * y2620 -- so 333px down from the band's top). Exported flattened, since
+ * the rays are thirteen overlapping vector shapes.
+ *
+ * The band straddles the section boundary, hence the negative offset. It
+ * sits above the halftone (::before) and below the content. */
+/* Desktop only. Mobile arranges these differently -- Figma puts the rays
+   above the heading but the cloud bank BELOW it (Rectangle 43 at y3539
+   against the heading at y3310) -- which a single flattened export cannot
+   reproduce. That needs the rays and clouds exported separately. */
+@media (min-width: 992px) {
+    /* Figma puts 317px between the cards' bottom and this heading; the
+       default section padding gives only 160, which is what pulled the
+       decorative band up over the cards. */
+    #features {
+        padding-top: 237px;
+        /* Figma leaves 184px between the last panel row and the CTA panel;
+           the row itself contributes an 80px bottom margin. */
+        padding-bottom: 104px;
+    }
+
+    #features::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        /* Band sits 156px BELOW the cards' bottom in Figma -- entirely
+           inside this section, never overlapping the previous one. */
+        top: 76px;
+        height: 32.5vw;
+        z-index: -1;
+        pointer-events: none;
+        background-image: url("./assets/mrdocs-section-band.webp");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: 100% auto;
+        /* Figma: 0.70 on light, 0.30 on dark. Dark also sets LINEAR_BURN,
+           which has no CSS equivalent, so the opacity carries it -- the
+           same call made for the hero cityscape. */
+        opacity: var(--ds-band-opacity);
+        /* The art is light-mode (cream clouds, grey shading). Figma sets
+           LINEAR_BURN on dark so the band darkens; CSS has no such blend
+           and mix-blend-mode cannot reach past this section's isolation,
+           so invert the art instead -- cream becomes near-black and the
+           band reads as shadow rather than fog. */
+        filter: var(--ds-band-filter);
+    }
+}
+
+:root {
+    --ds-band-filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --ds-band-filter: invert(1);
+    }
+}
+
+[data-theme="dark"] {
+    --ds-band-filter: invert(1);
+}
+
+@media (prefers-contrast: more) {
+    #features::after {
+        display: none;
+    }
+}
+
+/* =====================================================================
+ * PANELS SECTION — row detail to Figma spec (2026-08-25).
+ * Measured off the "Attributes & Specifiers" / terminate.cpp row. The
+ * first pass got the frame right (638+638 halves, 2px ring, split
+ * heading colours); this pass is the interior: the line-number gutter,
+ * the 46/12px rhythm, the body type scale, and the NOTE admonition,
+ * which was still on the old cyan treatment.
+ * ===================================================================== */
+
+/* ---- Row rhythm ---------------------------------------------------- *
+ * Figma: Container gap 54px between the header and the box, Header gap
+ * 12px between the pill and the subtitle. */
+.snippet-documentation-panel .row-label {
+    margin-bottom: 0;
+}
+
+.snippet-documentation-panel > .panel-container {
+    margin-top: 0;
+}
+
+/* ---- Code half: line-number gutter ---------------------------------- *
+ * Figma models this as two flex children -- a 9px right-aligned number
+ * column and the code -- with a 30px gap, NOT as a number per line. That
+ * matters: the snippet is highlight.js output whose spans cross
+ * newlines, so a per-line wrapper (what the hero uses via counters)
+ * would need the span stack re-opened on every line. A separate column
+ * needs none of that, and matches the design's own structure. The two
+ * columns must share a line-height or the numbers drift. */
+.side-by-side > .snippet-panel > .code-panel-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    /* The code column scrolls, not the pre: scrolling the pre would carry
+       the number column off with it. */
+    overflow: hidden;
+}
+
+.code-linenums {
+    flex: none;
+    width: 9px;
+    text-align: right;
+    white-space: pre;
+    font-family: var(--ds-font-mono);
+    /* Must track .code-panel-body code exactly. */
+    font-size: 13px;
+    line-height: 2.2;
+    color: var(--ds-code-panel-linenum);
+}
+
+.side-by-side > .snippet-panel > .code-panel-body > code {
+    flex: 1 1 auto;
+    min-width: 0;
+    /* Long lines scroll rather than wrap. Wrapping would desynchronise the
+       gutter, which counts source lines, not visual rows. The golden
+       fixtures run wider than the design's idealised snippet. */
+    white-space: pre;
+    overflow-x: auto;
+}
+
+@media (min-width: 992px) {
+    .code-linenums {
+        font-size: 14px;
+    }
+}
+
+/* The hero panel's border and drop shadow are inherited here, where they
+   sit *inside* the bordered box and have nothing to cast onto. */
+.side-by-side > .snippet-panel > .code-panel-body,
+.side-by-side > .documentation-panel {
+    border: 0;
+    box-shadow: none;
+}
+
+/* ---- Documentation half: vertical rhythm --------------------------- *
+ * Figma: Documentation Details gap 46px between the header, Synopsis and
+ * Description blocks; 12px inside each block. The header itself has no
+ * gap -- its 69px is exactly the 43px title plus the 26px subtitle. */
+.side-by-side > .documentation-panel > .symbol {
+    display: flex;
+    flex-direction: column;
+    gap: 46px;
+}
+
+.side-by-side > .documentation-panel .synopsis,
+.side-by-side > .documentation-panel .description,
+.side-by-side > .documentation-panel .return-value,
+.side-by-side > .documentation-panel .parameters,
+.side-by-side > .documentation-panel .template-parameters,
+.side-by-side > .documentation-panel .exceptions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.side-by-side > .documentation-panel .header {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.side-by-side > .documentation-panel .header h2,
+.side-by-side > .documentation-panel .brief p,
+.side-by-side > .documentation-panel .synopsis > p,
+.side-by-side > .documentation-panel .description > p,
+.side-by-side > .documentation-panel .synopsis > pre {
+    margin: 0;
+}
+
+/* ---- Documentation half: type scale -------------------------------- *
+ * Figma runs three sizes here, where the render had one: the brief at
+ * 16px, the body copy and table cells at 14px, and the note at 16px. */
+.side-by-side > .documentation-panel .brief p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Figma sets every body paragraph and every table cell at 14px/1.6 --
+   only the brief and the note run at 16px. The return value and the three
+   tables had never been sized, so they were inheriting the page's 17.5px
+   (headers 16px) and read a size and a half too big beside their siblings. */
+.side-by-side > .documentation-panel .synopsis > p,
+.side-by-side > .documentation-panel .description > p,
+.side-by-side > .documentation-panel .return-value > p,
+.side-by-side > .documentation-panel table th,
+.side-by-side > .documentation-panel table td {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.side-by-side > .documentation-panel pre code {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ds-color-doc-surface);
+}
+
+/* ---- Parameter / exception tables ---------------------------------- *
+ * These were never restyled, so they still carried Pico's defaults:
+ * 50/50 columns, a pale grey header, 10px cells and the system sans.
+ * Figma builds them from a dark header band in the code surface's own
+ * colour, a fixed 140px name column, 8px cells, and a rule under every
+ * row -- `borderStrokeWeightsIndependent` with only borderBottomWeight
+ * set, so it is the bottom edge alone at 2px, not a box. */
+.side-by-side > .documentation-panel table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.side-by-side > .documentation-panel table thead tr {
+    background: var(--ds-color-code-body);
+}
+
+.side-by-side > .documentation-panel table th {
+    font-family: var(--ds-font-body);
+    font-weight: var(--ds-weight-regular);
+    text-align: left;
+    color: var(--ds-white);
+    background: none;
+    border: 0;
+    padding: 8px;
+}
+
+.side-by-side > .documentation-panel table td {
+    font-family: var(--ds-font-body);
+    color: var(--ds-color-card-text);
+    background: none;
+    border: 0;
+    /* Figma's row is 38 tall with 8px under the text and the 2px rule
+       drawn INSIDE that edge, so the padding carries 6 and the border 2. */
+    border-bottom: var(--ds-border-width-bold) solid var(--ds-color-code-body);
+    padding: 8px 8px 6px;
+}
+
+/* Figma sizes the name column PER TABLE, and mrdocs sets
+   `table-layout: fixed` inline, so a single width here is not safe: the
+   parameters and template-parameters tables hold short names (132px of
+   content + 8px padding = 140), but the exceptions table holds fully
+   qualified type names and gets 265 + 8 = 273. Applying 140 to all three
+   clipped `std::invalid_argument` straight across the second column. */
+.side-by-side > .documentation-panel .parameters table th:first-child,
+.side-by-side > .documentation-panel .parameters table td:first-child,
+.side-by-side > .documentation-panel .template-parameters table th:first-child,
+.side-by-side > .documentation-panel .template-parameters table td:first-child {
+    width: 140px;
+}
+
+.side-by-side > .documentation-panel .exceptions table th:first-child,
+.side-by-side > .documentation-panel .exceptions table td:first-child {
+    width: 273px;
+}
+
+/* The cell contents are generated, so a symbol can always be longer than
+   the design allowed for. Under fixed layout that would spill over the
+   next column rather than being clipped, so let it break instead. */
+.side-by-side > .documentation-panel table td:first-child {
+    overflow-wrap: anywhere;
+}
+
+/* The name cell is the parameter itself, set in the same pink/red mono
+   the snippets use for keywords. mrdocs emits it as bare text in the
+   cell, so there is no <code> element to hook -- hence the positional
+   selector. */
+.side-by-side > .documentation-panel table td:first-child {
+    font-family: var(--ds-font-mono);
+    color: var(--ds-color-label);
+}
+
+/* The exceptions table wraps its name in <code>, where parameters emits
+   bare text. Pico styles that <code> with its own 16.25px and a muted
+   colour, which overrode the cell -- so the one table that needed the
+   mono/label treatment was the one not getting it. */
+/* mrdocs marks the parameter name up as <strong> and the exception name
+   as <code>. Figma sets both in Menlo REGULAR, so the <strong> has to give
+   up its weight -- it was rendering at 700. */
+.side-by-side > .documentation-panel table td strong {
+    font-weight: var(--ds-weight-regular);
+}
+
+.side-by-side > .documentation-panel table th code,
+.side-by-side > .documentation-panel table td code {
+    font-family: var(--ds-font-mono);
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+/* Both header and body inset the second column 12px, not 8. */
+.side-by-side > .documentation-panel table th:nth-child(2),
+.side-by-side > .documentation-panel table td:nth-child(2) {
+    padding-left: 12px;
+}
+
+/* ---- NOTE admonition ------------------------------------------------ *
+ * Was still on the old cyan fill with a 2px box on all four sides.
+ * Figma: a #1E78FF 10% tint with a single 2px blue rule down the left,
+ * 10/20px padding, and the title nudged -0.85deg -- the same hand-lettered
+ * tilt the section labels carry. */
+.side-by-side > .documentation-panel .admonition {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(30, 120, 255, 0.1);
+    border: 0;
+    border-left: var(--ds-border-width-bold) solid var(--ds-color-icon-box);
+    border-radius: 0;
+    padding: 10px 20px;
+    backdrop-filter: none;
+}
+
+.side-by-side > .documentation-panel .admonition h4 {
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    color: var(--ds-color-hero-text);
+    margin: 0;
+    transform: rotate(-0.85deg);
+    transform-origin: left center;
+}
+
+.side-by-side > .documentation-panel .admonition p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.side-by-side > .documentation-panel .admonition > div {
+    display: contents;
+}
+
+/* ---- Row subtitle: inline code -------------------------------------- *
+ * Figma sets the attribute names in pink monospace inside the sentence;
+ * they were rendering as plain body text. */
+.panel-row-subtitle code {
+    font-family: var(--ds-font-mono);
+    font-size: 0.85em;
+    color: var(--ds-code-panel-keyword);
+    background: none;
+    padding: 0;
+}
+
+@media (min-width: 992px) {
+    .panel-row-subtitle {
+        /* Figma's Container gap is 54px, but it is measured to the
+           side-by-side box's own edge and that box strokes 2px OUTSIDE
+           it, so the painted gap -- the one the CSS border-box spans --
+           is 52px. */
+        margin-block: 12px 52px;
+    }
+}
+
+/* =====================================================================
+ * Final CTA + footer  (Figma "Frame 134" / "Frame 133")
+ * ---------------------------------------------------------------------
+ * Figma coordinates below are measured from the frame's OUTER edge, and
+ * the panel carries a 2px border, so every inset here is the Figma value
+ * minus 2 -- the same convention the hero and feature sections use for
+ * their 80px gutter (78px of container padding).
+ * ===================================================================== */
+
+.cta-section {
+    /* The panel is the section's own full-bleed surface, so the generic
+       `main > section` block padding would show as page colour above and
+       below the border. */
+    padding: 0;
+}
+
+.cta-panel {
+    position: relative;
+    /* Figma: #93C5FD light / #3D8BFF dark, 2px outline all round. */
+    background: var(--ds-color-cta-panel);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    /* The mascot bleeds past the top and right edges by design. */
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.cta-panel-inner {
+    position: relative;
+    /* Figma mobile frame: 867 tall. */
+    min-height: 867px;
+}
+
+/* ---- Mascot --------------------------------------------------------- *
+ * Mobile stacks it above the copy (Figma x=-35 y=9, 564x440); desktop
+ * moves it to the right of the copy and lets it bleed off both the top
+ * and the right edge. */
+.cta-mascot {
+    display: block;
+    position: absolute;
+    /* Figma x=-35 y=9 from the frame's outer edge. `top`/`left` resolve
+       against the container's padding box, which the panel's 2px border
+       has already pushed in by 2. */
+    top: 7px;
+    left: -37px;
+    width: 564px;
+    height: 440px;
+    /* Fixed width past the viewport edge: the art is a cutout on
+       transparency, so the overflow is empty pixels, not a visible crop. */
+    max-width: none;
+    pointer-events: none;
+}
+
+.cta-content {
+    /* Figma puts the mobile copy block's pill at y=470; its 2px stroke is
+       outside that box, so the painted pill starts at 468. */
+    padding-top: 466px;
+}
+
+.cta-label {
+    /* Figma's 24px gap, less the 2px of stroke it paints below the box.
+       NOTE: the shared .row-label renders 32px tall at every width, where
+       Figma scales it to 25px on mobile -- so everything below this sits
+       ~7px low at 402. That drift is in the shared component, not here. */
+    margin: 0 0 22px;
+}
+
+.cta-title {
+    margin: 0 0 24px;
+    font-family: var(--ds-font-display);
+    /* Figma mobile 62px, desktop 96px, both at 0.9 leading. Bangers sets
+       "Document Your" at 5.58x the font size, so 62px needs 346px where
+       the 402 frame leaves 342 -- it wraps to a third line. Track the
+       column width instead, which also keeps it to two lines below 402. */
+    font-size: min(62px, calc((100vw - 60px) / 5.6));
+    line-height: var(--ds-title-leading);
+    font-weight: var(--ds-weight-regular);
+    text-transform: uppercase;
+    /* Every character is overridden in Figma -- line 1 white, line 2 gold
+       -- so the element colour only ever shows on the line separator. */
+    color: var(--ds-white);
+    -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
+    paint-order: stroke fill;
+    filter: var(--ds-title-drop);
+}
+
+.cta-title .title-line {
+    display: block;
+}
+
+.cta-title .title-line--alt {
+    color: var(--ds-color-title-alt);
+}
+
+.cta-description {
+    margin: 0 0 24px;
+    max-width: 317px;
+    font-family: var(--ds-font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ds-color-hero-text);
+}
+
+/* ---- Buttons -------------------------------------------------------- *
+ * Both are the same Figma symbol with only the fill, label colour and
+ * width overridden, so they share everything but their two colours. */
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-bottom: 76px;
+}
+
+.cta-btn {
+    display: inline-flex;
+    /* Figma overrides the shared button symbol's width on each instance
+       (205/160 desktop, 171/132 mobile). min-width rather than width so a
+       fallback font that sets wider text can still grow the button. */
+    min-width: 171px;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 var(--ds-btn-padding-x);
+    border: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    border-radius: var(--ds-cta-btn-radius);
+    box-shadow: var(--ds-cta-btn-shadow);
+    font-family: var(--ds-font-display);
+    font-style: italic;
+    font-weight: var(--ds-weight-medium);
+    font-size: 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform var(--ds-transition), box-shadow var(--ds-transition);
+}
+
+.cta-btn:hover {
+    transform: var(--ds-lift);
+    box-shadow: var(--ds-cta-btn-shadow-hover);
+}
+
+.cta-btn:active {
+    transform: var(--ds-press);
+    box-shadow: var(--ds-cta-btn-shadow-active);
+}
+
+.cta-btn:focus-visible {
+    outline: var(--ds-border-width-bold) solid var(--ds-color-outline);
+    outline-offset: 3px;
+}
+
+/* Pico colours links through its own --color property, which beats a
+   plain `color` declaration -- the same trap the hero buttons hit. */
+.cta-btn--download,
+.cta-btn--download:visited,
+.cta-btn--download:hover,
+.cta-btn--download:focus {
+    background: var(--ds-blue-300);
+    --color: var(--ds-black);
+    color: var(--ds-black);
+}
+
+.cta-btn--read {
+    min-width: 132px;
+}
+
+.cta-btn--read,
+.cta-btn--read:visited,
+.cta-btn--read:hover,
+.cta-btn--read:focus {
+    background: var(--ds-blue-450);
+    --color: var(--ds-paper-50);
+    color: var(--ds-paper-50);
+}
+
+/* ---- Footer bar ----------------------------------------------------- *
+ * Figma "Frame 133": a plain bar under the panel, white on light and
+ * #171C26 on dark -- not the page colour in either theme. */
+footer {
+    padding: 0;
+    background: var(--ds-color-footer-bg);
+}
+
+.footer-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Figma mobile: 24px above, 44px of content, 24px below = 92. */
+    gap: 17.5px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    /* Inherited by the slogan and the links, which Figma tracks alike. */
+    letter-spacing: var(--ds-footer-tracking);
+}
+
+.footer-slogan {
+    margin: 0;
+    /* Only bites below ~350, where the slogan wraps: the block is centred
+       by the bar but its lines would still set left. A no-op at every width
+       that fits on one line, since the element is then its own width. */
+    text-align: center;
+    font-family: var(--ds-font-body);
+    font-size: 13px;
+    line-height: 1;
+    color: var(--ds-color-hero-text);
+}
+
+.footer-bar .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* Set here so the li boxes are 13px tall too: sized on the anchor
+       alone, each li keeps the 16px body font and the bar comes out 3px
+       over Figma's 92. */
+    font-size: 13px;
+    line-height: 1;
+}
+
+.footer-bar .footer-link {
+    margin: 0;
+    padding: 0;
+}
+
+.footer-bar .footer-link::before {
+    /* Pico decorates the last footer list with bullets. */
+    content: none;
+}
+
+.footer-bar .footer-link > a,
+.footer-bar .footer-link > a:visited {
+    font-family: var(--ds-font-body);
+    text-transform: uppercase;
+    text-decoration: none;
+    --color: var(--ds-color-hero-text);
+    color: var(--ds-color-hero-text);
+}
+
+.footer-bar .footer-link > a:hover,
+.footer-bar .footer-link > a:focus {
+    text-decoration: underline;
+}
+
+/* 402 is the narrowest frame Figma defines. Below it the shared 28px
+   gutter squeezes the slogan -- 318px at the design's 1.4px tracking --
+   onto a second line, taking the bar from 92 to 105 at 360 and to 142 at
+   320 once the link row wrapped too. A 16px gutter holds both to one line
+   down to ~350, and leaves 25px of slack at 375 where 28px left one pixel.
+   Narrower still, the slogan wraps -- fine for a sentence, and the links
+   keep their own single line. */
+@media (max-width: 401px) {
+    .footer-bar {
+        padding-inline: 16px;
+    }
+}
+
+/* 992px is where the page as a whole switches to the 78px desktop
+   gutter, so the CTA has to change arrangement at the same width or the
+   mascot's offset would be measured against the wrong padding. */
+@media (min-width: 992px) {
+    .cta-panel-inner {
+        /* Figma desktop frame: 768 tall. */
+        min-height: 768px;
+    }
+
+    .cta-mascot {
+        /* Figma x=656 y=-31, 964x753, measured from the frame's outer
+           edge; the container's padding box starts 2px inside it. */
+        top: -33px;
+        left: 654px;
+        width: 964px;
+        height: 753px;
+    }
+
+    .cta-content {
+        /* Figma puts the pill's box at y=180, but its 2px stroke is
+           OUTSIDE that box, so the painted pill starts at 178 -- and our
+           border-box pill has to start there to line up. */
+        padding-top: 176px;
+        /* The copy column is 560 wide and must not run under the mascot. */
+        max-width: 560px;
+    }
+
+    .cta-title,
+    .cta-description {
+        margin-bottom: 32px;
+    }
+
+    /* Same 32px gap, less the 2px of stroke Figma paints below the box. */
+    .cta-label {
+        margin-bottom: 30px;
+    }
+
+    .cta-title {
+        font-size: 96px;
+    }
+
+    .cta-description {
+        max-width: 423px;
+        font-size: 20px;
+    }
+
+    .cta-buttons {
+        gap: 32px;
+        padding-bottom: 180px;
+    }
+
+    .cta-btn {
+        height: 48px;
+        min-width: 205px;
+    }
+
+    .cta-btn--read {
+        min-width: 160px;
+    }
+
+    /* Figma desktop footer: 78 tall, one row, slogan left / links right.
+       Frame 133 has no stroke, so its gutter is the full 80px -- unlike
+       every bordered section, where 80 minus the border gives 78. */
+    .footer-bar {
+        padding-inline: 80px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+
+    .footer-bar .footer-links {
+        gap: 32px;
+    }
+
+    .footer-slogan,
+    .footer-bar .footer-links {
+        font-size: 14px;
+    }
 }

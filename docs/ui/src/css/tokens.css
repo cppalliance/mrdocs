@@ -1,0 +1,198 @@
+/*
+ * Design-system tokens — L0 primitives, implemented for the Antora UI theme.
+ * Canonical spec: docs/shared/design-system.css (kept in sync by hand; NOT
+ * imported at build time). Only the primitive layer lives here; the semantic
+ * and component layers (and the cream/navy theming) arrive with Track A.
+ */
+
+/* =====================================================================
+ * LAYER 0 — PRIMITIVES  (theme-agnostic)
+ * ===================================================================== */
+:root {
+  /* --- Palette: brand blue ------------------------------------------ */
+  --ds-blue-200: #78c8ff; /* dark-theme primary base */
+  --ds-blue-400: #0091ea; /* secondary hover border    */
+  --ds-blue-500: #1095c1; /* light-theme primary       */
+  --ds-blue-600: #067da6; /* primary hover             */
+  --ds-blue-700: #0078c8; /* primary active            */
+  --ds-blue-100: #bcebfb; /* demo / tint               */
+
+  /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
+  --ds-gold-400: #ffd700; /* peak / hover              */
+  --ds-gold-500: #e5be33; /* rest / function-name / check accent */
+  --ds-gold-700: #c8aa28; /* active / pressed          */
+
+  /* --- Palette: ink & paper (light surfaces) ----------------------- */
+  --ds-black: #000; /* comic borders & hard shadows */
+  --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
+  --ds-white: #fff;
+  --ds-paper: #fef7e1; /* warm cream page background  */
+  --ds-paper-raised: #fbfbfc; /* cards / dropdowns      */
+  --ds-paper-code: #f9fafb; /* inline / block code bg   */
+
+  /* --- Palette: navy (dark surfaces) ------------------------------- */
+  --ds-navy-900: #0e1419; /* logo knockout            */
+  --ds-navy-800: #11191f; /* dark page background     */
+  --ds-navy-700: #141e26; /* dark card                */
+  --ds-navy-600: #18232c; /* dark code / sectioning   */
+  --ds-navy-500: #24333e; /* dark divider / range     */
+  --ds-navy-400: #374956; /* dark form border         */
+
+  /* --- Typography: families ---------------------------------------- */
+  --ds-font-body: "Special Elite", "Roboto", ui-monospace, monospace;
+  --ds-font-mono:
+    "Menlo",
+    "Consolas",
+    "Roboto Mono",
+    "Ubuntu Monospace",
+    "Noto Mono",
+    "Oxygen Mono",
+    "Liberation Mono",
+    monospace,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+  /* Display face: Bangers, vendored via @fontsource (see typeface-bangers.css). */
+  --ds-font-display: "Bangers", "Special Elite", cursive;
+
+  /* --- Typography: weights ----------------------------------------- */
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 600; /* CTA labels               */
+  --ds-weight-bold: 700; /* headings                 */
+  --ds-weight-display: 800; /* hero headings            */
+
+  /* --- Typography: responsive base size ---------------------------- */
+  --ds-font-size: 16px; /* → 20px, see breakpoints below */
+
+  /* --- Typography: type scale (mobile base; ramps up, see fluid overrides) --- */
+  --ds-text-h1: 2rem;
+  --ds-text-h2: 1.75rem;
+  --ds-text-h3: 1.5rem;
+  --ds-text-h4: 1.25rem;
+  --ds-text-h5: 1.125rem;
+  --ds-text-h6: 1rem;
+  --ds-text-body: 1rem;
+  --ds-text-small: 0.875em;
+
+  /* --- Typography: line-heights ------------------------------------ */
+  --ds-leading-tight: 1.125; /* h1                     */
+  --ds-leading-snug: 1.25; /* h2                     */
+  --ds-leading-normal: 1.5; /* body                   */
+
+  /* --- Spacing scale (base unit = 1rem) ---------------------------- */
+  --ds-space: 1rem;
+  --ds-space-2xs: 0.25rem;
+  --ds-space-xs: 0.5rem;
+  --ds-space-sm: 0.75rem;
+  --ds-space-md: 1rem;
+  --ds-space-lg: 1.5rem;
+  --ds-space-xl: 2rem;
+  --ds-space-2xl: 3rem;
+  --ds-space-3xl: 4rem;
+  --ds-section-gap: 3rem; /* → 4rem on ≥576px         */
+
+  /* --- Radii & borders --------------------------------------------- */
+  --ds-radius: 0.25rem;
+  --ds-radius-pill: 2rem;
+  --ds-border-width: 1px;
+  --ds-border-width-bold: 2px; /* comic outlines         */
+  --ds-outline-width: 3px;
+
+  /* --- Shadows: comic signature (hard, no blur) -------------------- */
+  --ds-shadow-comic: 6px 6px 0 var(--ds-black);
+  --ds-shadow-comic-soft: 6px 6px 0 rgba(0, 0, 0, 0.8);
+  --ds-shadow-comic-pressed: 2px 2px 0 var(--ds-black);
+  --ds-shadow-comic-pressed-soft: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  --ds-drop-comic: drop-shadow(7px 10px 0 rgba(0, 0, 0, 0.7));
+  /* Soft ambient card elevation (light). */
+  --ds-shadow-card-light:
+    0.0145rem 0.029rem 0.174rem rgba(27, 40, 50, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(27, 40, 50, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(27, 40, 50, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(27, 40, 50, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(27, 40, 50, 0.04302),
+    0.5rem 1rem 6rem rgba(27, 40, 50, 0.06),
+    0 0 0 0.0625rem rgba(27, 40, 50, 0.015);
+  --ds-shadow-card-dark:
+    0.0145rem 0.029rem 0.174rem rgba(0, 0, 0, 0.01698),
+    0.0335rem 0.067rem 0.402rem rgba(0, 0, 0, 0.024),
+    0.0625rem 0.125rem 0.75rem rgba(0, 0, 0, 0.03),
+    0.1125rem 0.225rem 1.35rem rgba(0, 0, 0, 0.036),
+    0.2085rem 0.417rem 2.502rem rgba(0, 0, 0, 0.04302),
+    0.5rem 1rem 6rem rgba(0, 0, 0, 0.06),
+    0 0 0 0.0625rem rgba(0, 0, 0, 0.015);
+
+  /* --- Motion ------------------------------------------------------- */
+  --ds-transition: 0.2s ease-in-out;
+  --ds-lift: translateY(-2px); /* hover                 */
+  --ds-press: translateY(1px); /* active                */
+
+  /* --- Container max-widths ---------------------------------------- */
+  --ds-container-sm: 510px;
+  --ds-container-md: 700px;
+  --ds-container-lg: 920px;
+  --ds-container-xl: 1130px;
+
+  /* --- Z-index scale ----------------------------------------------- */
+  --ds-z-nav: 1;
+  --ds-z-toolbar: 2;
+  --ds-z-menu: 3;
+  --ds-z-navbar: 4;
+  --ds-z-switcher: 5;
+}
+
+/* Responsive base font size (drives all rem-based tokens). */
+@media (min-width: 576px) {
+  :root {
+    --ds-font-size: 17px;
+    --ds-section-gap: 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --ds-font-size: 18px;
+  }
+}
+
+@media (min-width: 992px) {
+  :root {
+    --ds-font-size: 19px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --ds-font-size: 20px;
+  }
+}
+
+/* Fluid heading ramp: h1 2rem → 3rem, h2 1.75rem → 2.25rem (base in :root above). */
+@media (min-width: 576px) {
+  :root {
+    --ds-text-h1: 2.25rem;
+    --ds-text-h2: 1.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --ds-text-h1: 2.5rem;
+    --ds-text-h2: 2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  :root {
+    --ds-text-h1: 2.75rem;
+    --ds-text-h2: 2.125rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --ds-text-h1: 3rem;
+    --ds-text-h2: 2.25rem;
+  }
+}

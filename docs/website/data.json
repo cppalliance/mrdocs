@@ -1,6 +1,6 @@
 {
   "title": "Mr.Docs",
-  "description": "Full-fidelity C++ documentation, straight from your code.",
+  "description": "Reads your code and comments to produce precise, publish-ready reference docs. Native C++ understanding — zero workarounds.",
   "page": {
     "title": "Mr.Docs",
     "description": "Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs."
@@ -20,6 +20,10 @@
     {
       "title": "Docs",
       "href": "./docs/"
+    },
+    {
+      "title": "Case Studies",
+      "href": "#"
     }
   ],
   "banner": {
@@ -30,19 +34,23 @@
   "features": [
     {
       "title": "Single Source of Truth",
-      "description": "Mr.Docs turns the documentation comments that live next to your C++ declarations into authoritative reference pages. One source of truth—your code."
+      "description": "Mr.Docs turns the documentation comments that live next to your C++ declarations into authoritative reference pages. One source of truth—your code.",
+      "icon": "website-code"
     },
     {
       "title": "Built for C++",
-      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, algorithm function objects, and more."
+      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, algorithm function objects, and more.",
+      "icon": "terminal"
     },
     {
       "title": "Multiple output formats",
-      "description": "Export to AsciiDoc, HTML, or XML - or extend it with your own generator plugins."
+      "description": "Export to any output format and extend it with your own generator plugins.",
+      "icon": "git-fork"
     },
     {
       "title": "Customizable",
-      "description": "Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.\n"
+      "description": "Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.\n",
+      "icon": "github"
     }
   ],
   "examples": [
@@ -84,34 +92,40 @@
   ],
   "panels": [
     {
-      "description": "Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).",
+      "label": "Attributes & Specifiers",
+      "description": "Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, noexcept).",
       "source": "terminate.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270"
     },
     {
+      "label": "Parameters & Returns",
       "description": "Documentation comments become structured reference pages—synopsis, description, parameters, and returns.",
       "source": "distance.cpp",
       "imageClass": "shouting",
       "boxClass": "box3 box-shape1 box0"
     },
     {
+      "label": "Directives & Semantics",
       "description": "Use directives to capture semantics beyond the signature.",
       "source": "is_prime.cpp",
       "imageClass": "glasses",
       "boxClass": "box3 box-shape2 box180"
     },
     {
+      "label": "Templates & SFINAE",
       "description": "Understands concepts, constraints, and SFINAE—rendered as you wrote them.",
       "source": "sqrt.cpp",
       "imageClass": "writing",
       "boxClass": "box3 box-shape3 box270"
     },
     {
+      "label": "Function Objects",
       "description": "Function objects are documented as callable entities—operator() parameter list and return type appear directly on the variable.",
       "source": "function_object.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape1 box0"
     }
-  ]
+  ],
+  "eyebrow": "C++ Documentation Generator"
 }

@@ -34,6 +34,12 @@ html {
   }
 }
 
+/* Doc headings carry the Bangers display face as part of the comic refresh.
+   custom.css imports after this file and previously reset font-family back to
+   the body face; that reset was removed so this declaration wins. Case is left
+   alone there on purpose — reference headings are C++ symbol names.
+   NOTE: Bangers ships upright only (no italic cut), so font-style below is a
+   browser-synthesized oblique, not a true italic. */
 .doc h1,
 .doc h2,
 .doc h3,
@@ -41,6 +47,8 @@ html {
 .doc h5,
 .doc h6 {
   color: var(--heading-font-color);
+  font-family: var(--ds-font-display);
+  font-style: italic;
   font-weight: var(--heading-font-weight);
   hyphens: none;
   line-height: 1.3;
