@@ -5690,14 +5690,21 @@ header {
 
 /* ---- Documentation half: type scale -------------------------------- *
  * Figma runs three sizes here, where the render had one: the brief at
- * 16px, the synopsis/description body at 14px, and the note at 16px. */
+ * 16px, the body copy and table cells at 14px, and the note at 16px. */
 .side-by-side > .documentation-panel .brief p {
     font-size: 16px;
     line-height: 1.6;
 }
 
+/* Figma sets every body paragraph and every table cell at 14px/1.6 --
+   only the brief and the note run at 16px. The return value and the three
+   tables had never been sized, so they were inheriting the page's 17.5px
+   (headers 16px) and read a size and a half too big beside their siblings. */
 .side-by-side > .documentation-panel .synopsis > p,
-.side-by-side > .documentation-panel .description > p {
+.side-by-side > .documentation-panel .description > p,
+.side-by-side > .documentation-panel .return-value > p,
+.side-by-side > .documentation-panel table th,
+.side-by-side > .documentation-panel table td {
     font-size: 14px;
     line-height: 1.6;
 }
