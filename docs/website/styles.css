@@ -6081,6 +6081,10 @@ footer {
 
 .footer-slogan {
     margin: 0;
+    /* Only bites below ~350, where the slogan wraps: the block is centred
+       by the bar but its lines would still set left. A no-op at every width
+       that fits on one line, since the element is then its own width. */
+    text-align: center;
     font-family: var(--ds-font-body);
     font-size: 13px;
     line-height: 1;
@@ -6124,6 +6128,19 @@ footer {
 .footer-bar .footer-link > a:hover,
 .footer-bar .footer-link > a:focus {
     text-decoration: underline;
+}
+
+/* 402 is the narrowest frame Figma defines. Below it the shared 28px
+   gutter squeezes the slogan -- 318px at the design's 1.4px tracking --
+   onto a second line, taking the bar from 92 to 105 at 360 and to 142 at
+   320 once the link row wrapped too. A 16px gutter holds both to one line
+   down to ~350, and leaves 25px of slack at 375 where 28px left one pixel.
+   Narrower still, the slogan wraps -- fine for a sentence, and the links
+   keep their own single line. */
+@media (max-width: 401px) {
+    .footer-bar {
+        padding-inline: 16px;
+    }
 }
 
 /* 992px is where the page as a whole switches to the 78px desktop
