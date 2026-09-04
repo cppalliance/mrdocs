@@ -5757,11 +5757,29 @@ header {
     padding: 8px 8px 6px;
 }
 
-/* Figma fixes the name column at 140px (8px of padding + 132 of content)
-   and lets the description take the rest. */
-.side-by-side > .documentation-panel table th:first-child,
-.side-by-side > .documentation-panel table td:first-child {
+/* Figma sizes the name column PER TABLE, and mrdocs sets
+   `table-layout: fixed` inline, so a single width here is not safe: the
+   parameters and template-parameters tables hold short names (132px of
+   content + 8px padding = 140), but the exceptions table holds fully
+   qualified type names and gets 265 + 8 = 273. Applying 140 to all three
+   clipped `std::invalid_argument` straight across the second column. */
+.side-by-side > .documentation-panel .parameters table th:first-child,
+.side-by-side > .documentation-panel .parameters table td:first-child,
+.side-by-side > .documentation-panel .template-parameters table th:first-child,
+.side-by-side > .documentation-panel .template-parameters table td:first-child {
     width: 140px;
+}
+
+.side-by-side > .documentation-panel .exceptions table th:first-child,
+.side-by-side > .documentation-panel .exceptions table td:first-child {
+    width: 273px;
+}
+
+/* The cell contents are generated, so a symbol can always be longer than
+   the design allowed for. Under fixed layout that would spill over the
+   next column rather than being clipped, so let it break instead. */
+.side-by-side > .documentation-panel table td:first-child {
+    overflow-wrap: anywhere;
 }
 
 /* The name cell is the parameter itself, set in the same pink/red mono
@@ -5771,6 +5789,21 @@ header {
 .side-by-side > .documentation-panel table td:first-child {
     font-family: var(--ds-font-mono);
     color: var(--ds-color-label);
+}
+
+/* The exceptions table wraps its name in <code>, where parameters emits
+   bare text. Pico styles that <code> with its own 16.25px and a muted
+   colour, which overrode the cell -- so the one table that needed the
+   mono/label treatment was the one not getting it. */
+.side-by-side > .documentation-panel table th code,
+.side-by-side > .documentation-panel table td code {
+    font-family: var(--ds-font-mono);
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    background: none;
+    padding: 0;
+    border-radius: 0;
 }
 
 /* Both header and body inset the second column 12px, not 8. */
