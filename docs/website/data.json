@@ -44,7 +44,7 @@
     },
     {
       "title": "Multiple output formats",
-      "description": "Export to AsciiDoc, HTML, or XML - or extend it with your own generator plugins.",
+      "description": "Export to any output format and extend it with your own generator plugins.",
       "icon": "git-fork"
     },
     {
