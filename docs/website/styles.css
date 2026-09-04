@@ -5313,7 +5313,13 @@ header {
     /* Figma has this in full ink; the muted reading was the text node's
        default, with character overrides for the inline code spans. */
     color: var(--ds-color-hero-text);
-    margin-block: 12px 0;
+    /* Mobile row rhythm: Figma's "Container" stacks the Header and the
+       Content Container 40.5px apart at 402, and the side-by-side box
+       strokes 1.5px OUTSIDE its measured box -- so the painted gap is
+       39px, which is what the CSS border-box has to reproduce. It was 0
+       here, leaving the subtitle sitting flush on the panel below it;
+       only the >=992px override had any bottom margin at all. */
+    margin-block: 12px 39px;
 }
 
 @media (min-width: 992px) {
@@ -5864,7 +5870,11 @@ header {
 
 @media (min-width: 992px) {
     .panel-row-subtitle {
-        margin-block: 12px 54px;
+        /* Figma's Container gap is 54px, but it is measured to the
+           side-by-side box's own edge and that box strokes 2px OUTSIDE
+           it, so the painted gap -- the one the CSS border-box spans --
+           is 52px. */
+        margin-block: 12px 52px;
     }
 }
 
