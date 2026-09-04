@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>3hmXv2oPCTiQCcSjs7AH9iaKf579</namespaces>
+    <records>45JLuH5RCZNhJNwGBMvrCmq5C8dE</records>
+  </members>
+</namespace>
+<namespace>
+  <name>other</name>
+  <anchor>other</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>input-tagfiles.cpp</shortPath>
+        <sourcePath>input-tagfiles.cpp</sourcePath>
+        <lineNumber>15</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>3hmXv2oPCTiQCcSjs7AH9iaKf579</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <records>f5HZLD5Fqo5AnPDGf6S3Az6ZaFR</records>
+  </members>
+</namespace>
+<record>
+  <name>local</name>
+  <anchor>local</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>input-tagfiles.cpp</shortPath>
+      <sourcePath>input-tagfiles.cpp</sourcePath>
+      <lineNumber>22</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>f5HZLD5Fqo5AnPDGf6S3Az6ZaFR</id>
+  <extraction>regular</extraction>
+  <parent>3hmXv2oPCTiQCcSjs7AH9iaKf579</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>From in here the names need no qualifying, exactly as they would not for a symbol of this corpus: </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>socket</literal>
+            <href>https://example.org/docs/other/socket.html</href>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal>, and its </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>socket::close</literal>
+            <href>https://example.org/docs/other/socket/close.html</href>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A class of ours, in a namespace another set also documents.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>wrapper</name>
+  <anchor>wrapper</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>input-tagfiles.cpp</shortPath>
+      <sourcePath>input-tagfiles.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>45JLuH5RCZNhJNwGBMvrCmq5C8dE</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>Wraps an </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>other::socket</literal>
+            <href>https://example.org/docs/other/socket.html</href>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal>, which another documentation set covers, and is closed with </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>other::socket::close</literal>
+            <href>https://example.org/docs/other/socket/close.html</href>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal>. One is opened by </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>other::connect</literal>
+            <href>https://example.org/docs/other.html#a1b2c3</href>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal>, which that set documents on the page of the namespace holding it, while </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>elsewhere</literal>
+            <href>https://example.org/docs/elsewhere.html</href>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal> is a namespace of it with a page of its own.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <reference>
+            <kind>reference</kind>
+            <literal>socket</literal>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal> stays plain text, and so does </literal>
+          </text>
+          <reference>
+            <kind>reference</kind>
+            <literal>other::missing</literal>
+          </reference>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A socket wrapper this corpus documents.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+</record>
+</mrdocs>

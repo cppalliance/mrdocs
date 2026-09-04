@@ -146,7 +146,7 @@ build(Corpus const& corpus, Config const& config) const
     // Resolve where this generator writes (a directory for a multi-page
     // render, a file or directory for a single document) from the config.
     std::string const outputPath = getGeneratorOutputPath(*this, config);
-    std::string_view const configuredTagfile = config.tagfile;
+    std::string_view const configuredTagfile = config.outputTagfile;
 
     // The tagfile and the copied stylesheets land in the same directory as
     // the generator's output, so they never collide between generators.

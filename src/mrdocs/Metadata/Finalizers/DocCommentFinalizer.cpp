@@ -718,6 +718,11 @@ DocCommentFinalizer::resolveReference(
         auto& res = const_cast<Symbol&>(*resRef);
         ref.id = res.id;
     }
+    else if (std::optional<std::string> url =
+                 corpus_.externalUrl(ctx.id, ref.literal))
+    {
+        ref.href = *std::move(url);
+    }
     else if (
         emitWarning &&
         config_.warnings &&

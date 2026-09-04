@@ -1,5 +1,7 @@
 {{#if (@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id))~}}
 {{#>markup/a href=(@root.mrdocs.corpus.getUrl (@root.mrdocs.corpus.get id))}}{{#>markup/code}}{{ literal }}{{/markup/code}}{{/markup/a}}
+{{~else if href~}}
+{{#>markup/a href=href}}{{#>markup/code}}{{ literal }}{{/markup/code}}{{/markup/a}}
 {{~else~}}
 {{#>markup/code}}{{ literal }}{{/markup/code}}
 {{~/if}}

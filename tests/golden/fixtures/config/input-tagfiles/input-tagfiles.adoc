@@ -1,0 +1,78 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#other[`other`] 
+|===
+
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#wrapper[`wrapper`] 
+| A socket wrapper this corpus documents&period;
+|===
+
+
+[#other]
+== other
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#other-local[`local`] 
+| A class of ours, in a namespace another set also documents&period;
+|===
+
+
+[#other-local]
+== link:#other[other]::local
+
+A class of ours, in a namespace another set also documents&period;
+
+=== Synopsis
+
+Declared in `&lt;input&hyphen;tagfiles&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct local;
+----
+
+=== Description
+
+From in here the names need no qualifying, exactly as they would not for a symbol of this corpus&colon; https://example.org/docs/other/socket.html[`socket`], and its https://example.org/docs/other/socket/close.html[`socket&colon;&colon;close`]&period;
+
+[#wrapper]
+== wrapper
+
+A socket wrapper this corpus documents&period;
+
+=== Synopsis
+
+Declared in `&lt;input&hyphen;tagfiles&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct wrapper;
+----
+
+=== Description
+
+Wraps an https://example.org/docs/other/socket.html[`other&colon;&colon;socket`], which another documentation set covers, and is closed with https://example.org/docs/other/socket/close.html[`other&colon;&colon;socket&colon;&colon;close`]&period; One is opened by https://example.org/docs/other.html#a1b2c3[`other&colon;&colon;connect`], which that set documents on the page of the namespace holding it, while https://example.org/docs/elsewhere.html[`elsewhere`] is a namespace of it with a page of its own&period;
+
+`socket` stays plain text, and so does `other&colon;&colon;missing`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

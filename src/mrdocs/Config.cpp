@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -634,9 +635,10 @@ load_file(
     MRDOCS_TRY(c.normalize(dirs));
     // Startup forces the log level low (errors only) so option parsing stays
     // quiet; now that the configured level is known, restore it and surface
-    // the unknown-key warnings that were deferred until this point.
+    // the warnings that were deferred until this point.
     report::setMinimumLevel(static_cast<report::Level>(c.logLevel));
     c.reportUnknownConfigKeys();
+    c.reportDeprecatedOptions();
     return {};
 }
 
@@ -652,6 +654,10 @@ load_file(
 }
 
 struct ConfigSchemaVisitor {
+    // Where to leave the deprecated options this pass runs into. Owned by
+    // the Config being normalized.
+    std::vector<Config::DeprecatedOption>* deprecated = nullptr;
+
     template <class T>
     Expected<void>
     operator()(
@@ -714,6 +720,24 @@ struct ConfigSchemaVisitor {
         return {};
     }
 
+    /*  Note an option marked as deprecated, for
+        `reportDeprecatedOptions` to announce.
+
+        Saying it here would say it to nobody, as normalization runs while
+        the reporting level is still forced down to errors only.
+    */
+    void
+    recordIfDeprecated(
+        std::string_view const name,
+        bool const isDefault,
+        ConfigSchema::OptionProperties const& opts) const
+    {
+        if (deprecated && opts.deprecated && !isDefault)
+        {
+            deprecated->push_back({std::string(name), *opts.deprecated});
+        }
+    }
+
     Expected<void>
     normalizeString(
         ConfigSchema& self,
@@ -722,6 +746,7 @@ struct ConfigSchemaVisitor {
         ReferenceDirectories const& dirs,
         ConfigSchema::OptionProperties const& opts,
         bool const usingDefault) const {
+        recordIfDeprecated(name, usingDefault || value.empty(), opts);
         if (!value.empty()
             && (opts.type == ConfigSchema::OptionType::Path
                 || opts.type == ConfigSchema::OptionType::DirPath
@@ -740,6 +765,16 @@ struct ConfigSchemaVisitor {
                     value.push_back('/');
                 }
             }
+        }
+        if (name == "tagfile" && !value.empty())
+        {
+            // The option this one was renamed to is declared before it,
+            // and so is normalized first: the path handed over here is
+            // the one that survives. Saying so is left to
+            // reportDeprecatedOptions, because this runs while the
+            // reporting level is still forced down to errors only.
+            MRDOCS_ASSERT(opts.deprecated);
+            self.outputTagfile = value;
         }
         return {};
     }
@@ -939,6 +974,11 @@ struct ConfigSchemaVisitor {
         T& value,
         ConfigSchema::OptionProperties const& opts) const
     {
+        recordIfDeprecated(
+            name,
+            std::holds_alternative<unsigned>(opts.defaultValue)
+                && std::cmp_equal(value, std::get<unsigned>(opts.defaultValue)),
+            opts);
         MRDOCS_CHECK(
             !opts.minValue || std::cmp_greater_equal(value, *opts.minValue),
             formatError(
@@ -969,11 +1009,7 @@ struct ConfigSchemaVisitor {
                 static_cast<unsigned>(ConfigSchema::LogLevel::Fatal) ==
                 static_cast<unsigned>(report::Level::fatal));
             MRDOCS_ASSERT(opts.deprecated);
-            report::warn(
-                "`report` option is deprecated, use `log-level` instead");
             auto const logLevel = static_cast<ConfigSchema::LogLevel>(value);
-            auto logLevelStr = ConfigSchema::toString(logLevel);
-            report::warn("`report` option: setting `log-level` to \"{}\"", logLevelStr);
             self.logLevel = logLevel;
             return {};
         }
@@ -1130,7 +1166,9 @@ Expected<void>
 Config::
 normalize(ReferenceDirectories const& dirs)
 {
-    MRDOCS_TRY(ConfigSchema::normalize(dirs, ConfigSchemaVisitor{}));
+    deprecatedOptions.clear();
+    MRDOCS_TRY(ConfigSchema::normalize(
+        dirs, ConfigSchemaVisitor{&deprecatedOptions}));
     return {};
 }
 
@@ -1152,6 +1190,20 @@ reportUnknownConfigKeys() const
     for (std::string const& key : unknownConfigKeys)
     {
         report::log(level, "unknown configuration key: \"{}\"", key);
+    }
+}
+
+void
+Config::
+reportDeprecatedOptions() const
+{
+    auto const level = warnAsError
+        ? report::Level::error
+        : report::Level::warn;
+    for (DeprecatedOption const& option : deprecatedOptions)
+    {
+        report::log(level, "`{}` option is deprecated: {}",
+            option.name, option.advice);
     }
 }
 

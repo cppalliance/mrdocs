@@ -39,6 +39,13 @@ struct ReferenceInline
     /** Symbol being referenced.
     */
     SymbolID id = SymbolID::invalid;
+    /** URL documenting the symbol, when that's in another documentation set.
+
+        Set when the reference names no symbol in this corpus and a
+        tagfile says where it is documented, which leaves @ref id
+        invalid. Empty for a symbol of this corpus.
+    */
+    std::string href;
 
     /** Construct a reference with optional display text.
     */
@@ -51,7 +58,7 @@ struct ReferenceInline
 MRDOCS_DESCRIBE_STRUCT(
     ReferenceInline,
     (InlineCommonBase<InlineKind::Reference>),
-    (literal, id)
+    (literal, id, href)
 )
 
 } // mrdocs::doc
