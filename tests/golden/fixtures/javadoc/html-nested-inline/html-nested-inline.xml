@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <functions>23h9rH9YNPQparWfG7D5iNrHXSZo</functions>
+  </members>
+</namespace>
+<function>
+  <name>nested_inline</name>
+  <anchor>nested_inline</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>html-nested-inline.cpp</shortPath>
+        <sourcePath>html-nested-inline.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>23h9rH9YNPQparWfG7D5iNrHXSZo</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <emph>
+            <kind>emph</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>If it returns a positive value, calls to </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>underflow()</literal>
+                  </text>
+                </children>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal> will not return </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>traits::eof()</literal>
+                  </text>
+                </children>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal> until then.</literal>
+              </text>
+            </children>
+          </emph>
+          <text>
+            <kind>text</kind>
+            <literal> Plain text follows.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <strong>
+            <kind>strong</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>Bold with </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>code</literal>
+                  </text>
+                </children>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal> inside</literal>
+              </text>
+            </children>
+          </strong>
+          <text>
+            <kind>text</kind>
+            <literal>, then a </literal>
+          </text>
+          <link>
+            <kind>link</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>link to </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>f()</literal>
+                  </text>
+                </children>
+              </code>
+              <text>
+                <kind>text</kind>
+                <literal> with code</literal>
+              </text>
+            </children>
+            <href>https://example.com</href>
+          </link>
+          <text>
+            <kind>text</kind>
+            <literal>, then </literal>
+          </text>
+          <subscript>
+            <kind>subscript</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>sub </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>x</literal>
+                  </text>
+                </children>
+              </code>
+            </children>
+          </subscript>
+          <text>
+            <kind>text</kind>
+            <literal>, </literal>
+          </text>
+          <superscript>
+            <kind>superscript</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>sup </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>y</literal>
+                  </text>
+                </children>
+              </code>
+            </children>
+          </superscript>
+          <text>
+            <kind>text</kind>
+            <literal>, </literal>
+          </text>
+          <highlight>
+            <kind>highlight</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>mark </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>z</literal>
+                  </text>
+                </children>
+              </code>
+            </children>
+          </highlight>
+          <text>
+            <kind>text</kind>
+            <literal> and </literal>
+          </text>
+          <strikethrough>
+            <kind>strikethrough</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>struck </literal>
+              </text>
+              <code>
+                <kind>code</kind>
+                <children>
+                  <text>
+                    <kind>text</kind>
+                    <literal>w</literal>
+                  </text>
+                </children>
+              </code>
+            </children>
+          </strikethrough>
+          <text>
+            <kind>text</kind>
+            <literal>.</literal>
+          </text>
+        </children>
+      </paragraph>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>A tag Mr.Docs does not render keeps its content in place: under </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>u()</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal> lined.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Styled spans keep the inline markup they contain.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

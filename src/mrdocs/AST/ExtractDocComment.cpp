@@ -523,11 +523,16 @@ class DocCommentVisitor
         }
     }
 
-    // “HTML <span>…</span> text gatherer” equivalent with cursor
+    // What sits between an inline HTML start tag and its matching end tag.
+    // When every node in between is text, `text` holds it all and the span
+    // becomes one inline node. Otherwise (inline commands such as `@c`,
+    // nested tags) `pureText` is false and the caller parses the nodes into
+    // the tag's inline container instead.
     struct TagComponents {
         std::string tag;
         std::string text;
         std::size_t n_intermediate{ 0 };
+        bool pureText{ true };
     };
 
     Expected<TagComponents>
@@ -573,20 +578,17 @@ class DocCommentVisitor
                 res.tag));
         }
 
-        // ensure all in-between are TextComment
+        res.n_intermediate = j - 1;
         for (std::size_t k = 1; k < j; ++k)
         {
             if (cur.children[cur.i + k]->getCommentKind()
                 != clang::comments::CommentKind::TextComment)
             {
-                return Unexpected(Error(
-                    std::format(
-                        "warning: HTML <{}> tag not followed by pure text",
-                        res.tag)));
+                res.pureText = false;
+                res.text.clear();
+                return res;
             }
         }
-
-        res.n_intermediate = j - 1;
         for (std::size_t k = 1; k < j; ++k)
         {
             auto* t = static_cast<clang::comments::TextComment const*>(
@@ -1182,6 +1184,13 @@ class DocCommentVisitor
         }
         auto comps = *compsExp;
 
+        if (!comps.pureText)
+        {
+            visitMixedSpan(C, cur, comps, getAttr);
+            cur.consume_intermediate(comps.n_intermediate);
+            return;
+        }
+
         if (comps.tag == "a")
         {
             auto r = getAttr("href");
@@ -1278,6 +1287,117 @@ class DocCommentVisitor
 
         // Skip the intermediate siblings consumed for text gathering
         cur.consume_intermediate(comps.n_intermediate);
+    }
+
+    // Parse the nodes between `cur.cur()` (an HTML start tag) and its end
+    // tag into `dst`, so inline commands and nested tags inside a styled
+    // span keep their own inline nodes: `<em>calls @c f()</em>` becomes an
+    // emphasis containing text and a code inline.
+    void
+    visitSpanChildrenInto(
+        doc::InlineContainer& dst, Cursor const& cur, std::size_t n)
+    {
+        auto scope = enterScope(dst);
+        Cursor inner(cur, cur.i + 1, cur.i + 1 + n);
+        while (!inner.done())
+        {
+            auto* c = inner.cur();
+            MRDOCS_COMMENT_TRACE(c, ctx_);
+            visitNode(c, inner);
+            inner.advance();
+        }
+    }
+
+    template <std::derived_from<doc::InlineContainer> InlineTy>
+    void
+    emplaceSpan(
+        Cursor const& cur, std::size_t n, bool end_with_nl, InlineTy elem)
+    {
+        visitSpanChildrenInto(elem, cur, n);
+        if (elem.children.empty())
+        {
+            return;
+        }
+        MRDOCS_ASSERT(curInlines_ != nullptr);
+        curInlines_->children.emplace_back(
+            std::in_place_type<InlineTy>, std::move(elem));
+        newline_blocks_merge_ = end_with_nl;
+    }
+
+    // An inline HTML span whose content is not plain text. The span is
+    // parsed into the container of the tag Mr.Docs renders for it; a tag
+    // it does not render contributes its content without a wrapper.
+    void
+    visitMixedSpan(
+        clang::comments::HTMLStartTagComment const* C,
+        Cursor const& cur,
+        TagComponents const& comps,
+        auto const& getAttr)
+    {
+        bool const nl = C->hasTrailingNewline();
+        std::size_t const n = comps.n_intermediate;
+        if (comps.tag == "a")
+        {
+            auto r = getAttr("href");
+            if (r)
+            {
+                doc::LinkInline link;
+                link.href = ensureUTF8(std::move(*r));
+                emplaceSpan(cur, n, nl, std::move(link));
+                return;
+            }
+            auto loc = sm_.getPresumedLoc(C->getBeginLoc());
+            warnOnce(
+                files::makePosixStyle(loc.getFilename()),
+                loc.getLine(),
+                r.error().message());
+        }
+        else if (comps.tag == "em")
+        {
+            emplaceSpan(cur, n, nl, doc::EmphInline());
+            return;
+        }
+        else if (comps.tag == "strong")
+        {
+            emplaceSpan(cur, n, nl, doc::StrongInline());
+            return;
+        }
+        else if (comps.tag == "mark")
+        {
+            emplaceSpan(cur, n, nl, doc::HighlightInline());
+            return;
+        }
+        else if (comps.tag == "sub")
+        {
+            emplaceSpan(cur, n, nl, doc::SubscriptInline());
+            return;
+        }
+        else if (comps.tag == "sup")
+        {
+            emplaceSpan(cur, n, nl, doc::SuperscriptInline());
+            return;
+        }
+        else if (comps.tag == "del" || comps.tag == "s")
+        {
+            emplaceSpan(cur, n, nl, doc::StrikethroughInline());
+            return;
+        }
+        else if (comps.tag == "code")
+        {
+            emplaceSpan(cur, n, nl, doc::CodeInline());
+            return;
+        }
+        // No wrapper: parse the content in place.
+        MRDOCS_ASSERT(curInlines_ != nullptr);
+        Cursor inner(cur, cur.i + 1, cur.i + 1 + n);
+        while (!inner.done())
+        {
+            auto* c = inner.cur();
+            MRDOCS_COMMENT_TRACE(c, ctx_);
+            visitNode(c, inner);
+            inner.advance();
+        }
+        newline_blocks_merge_ = nl;
     }
 
     void
