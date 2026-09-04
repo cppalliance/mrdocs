@@ -564,11 +564,22 @@
   --ds-title-color: var(--ds-color-title);
   --ds-title-color-alt: var(--ds-color-title-alt);
   --ds-title-ink: var(--ds-color-outline);
-  --ds-title-outline-width: 4px;
-  --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
-  /* Panel headings run the same treatment at half the weight, 120% leading. */
-  --ds-title-outline-width-sm: 2px;
-  --ds-title-shadow-sm: 2px 2px 0 var(--ds-title-ink);
+  /* Figma's strokes are strokeAlign: OUTSIDE, so the full width paints
+     BEYOND the glyph. -webkit-text-stroke centres its stroke instead, and
+     with paint-order: stroke fill the inner half is covered by the fill --
+     measured, a 2px CSS stroke shows only 1.25px outside. So every width
+     below is DOUBLE the Figma number, quoted in the comment.
+
+     The shadow is a filter, not a text-shadow, for the same reason: Figma
+     offsets the whole composited node, stroke included, whereas
+     text-shadow offsets only the glyph fill -- which a stroke this thick
+     hides completely. filter: drop-shadow rasterises the stroke too.
+     These are the mobile values; the 992px block carries the desktop set. */
+  --ds-title-outline-width: 6px; /* Figma 3px OUTSIDE */
+  --ds-title-drop: drop-shadow(3px 3px 0 var(--ds-title-ink));
+  /* Card titles, symbol names and section headings run at half the weight. */
+  --ds-title-outline-width-sm: 3px; /* Figma 1.5px OUTSIDE */
+  --ds-title-drop-sm: drop-shadow(1.5px 1.5px 0 var(--ds-title-ink));
   --ds-title-leading-sm: 1.2;
 
   /* ---- CTA button — Figma exact ----------------------------------- *
@@ -579,6 +590,18 @@
   --ds-cta-btn-shadow-hover: 4px 4px 0 var(--ds-color-outline);
   --ds-cta-btn-shadow-active: 1px 1px 0 var(--ds-color-outline);
   --ds-footer-tracking: 1.4px;
+}
+
+/* Desktop stroke weights. This has to sit AFTER the :root above: a media
+   query adds no specificity, so a later base declaration would win. */
+@media (min-width: 992px) {
+  :root {
+    /* Figma 4px / 2px OUTSIDE, doubled -- see the note above. */
+    --ds-title-outline-width: 8px;
+    --ds-title-drop: drop-shadow(4px 4px 0 var(--ds-title-ink));
+    --ds-title-outline-width-sm: 4px;
+    --ds-title-drop-sm: drop-shadow(2px 2px 0 var(--ds-title-ink));
+  }
 }
 
 :root {
@@ -2680,7 +2703,7 @@ header .header-content h1 {
     color: var(--ds-title-color);
     -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: var(--ds-title-shadow);
+    filter: var(--ds-title-drop);
 }
 
 header h1 ~ p {
@@ -5011,9 +5034,9 @@ header {
     text-transform: uppercase;
     text-align: left;
     color: var(--ds-title-color);
-    -webkit-text-stroke: 3px var(--ds-color-outline);
+    -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: 3px 3px 0 var(--ds-color-outline);
+    filter: var(--ds-title-drop);
     margin-block: 0 24px;
 }
 
@@ -5163,9 +5186,9 @@ header {
     line-height: 1.2;
     text-transform: uppercase;
     color: var(--ds-title-color-alt);
-    -webkit-text-stroke: 1.5px var(--ds-color-outline);
+    -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: 1.5px 1.5px 0 var(--ds-color-outline);
+    filter: var(--ds-title-drop-sm);
     margin: 0;
 }
 
@@ -5178,11 +5201,6 @@ header {
 }
 
 @media (min-width: 992px) {
-    .section-title {
-        -webkit-text-stroke-width: 4px;
-        text-shadow: 4px 4px 0 var(--ds-color-outline);
-    }
-
     .section-heading h3 {
         font-size: 20px;
         line-height: 28px;
@@ -5231,8 +5249,6 @@ header {
 
     .feature-card h4 {
         font-size: 36px;
-        -webkit-text-stroke-width: 2px;
-        text-shadow: 2px 2px 0 var(--ds-color-outline);
     }
 
     .feature-card p {
@@ -5396,7 +5412,7 @@ header {
     line-height: var(--ds-title-leading-sm);
     -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: var(--ds-title-shadow-sm);
+    filter: var(--ds-title-drop-sm);
 }
 
 .side-by-side > .documentation-panel h3 {
@@ -5405,7 +5421,7 @@ header {
     line-height: var(--ds-title-leading-sm);
     -webkit-text-stroke: var(--ds-title-outline-width-sm) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: var(--ds-title-shadow-sm);
+    filter: var(--ds-title-drop-sm);
 }
 
 /* The code half is highlight.js output, so its colours come from hljs
@@ -5830,7 +5846,7 @@ header {
     color: var(--ds-white);
     -webkit-text-stroke: var(--ds-title-outline-width) var(--ds-title-ink);
     paint-order: stroke fill;
-    text-shadow: var(--ds-title-shadow);
+    filter: var(--ds-title-drop);
 }
 
 .cta-title .title-line {
