@@ -92,6 +92,7 @@
   --ds-navy-700: #141e26; /* dark card                */
   --ds-navy-600: #18232c; /* dark code / sectioning   */
   --ds-navy-650: #171c26; /* dark doc surface / footer bar */
+  --ds-navy-750: #141720; /* dark code body / table header band */
   --ds-navy-500: #24333e; /* dark divider / range     */
   --ds-navy-400: #374956; /* dark form border         */
 
@@ -342,7 +343,7 @@
     --ds-color-hero-text: var(--ds-white);
     --ds-color-code-shell: #272e3f;
     --ds-color-code-chrome: #000;
-    --ds-color-code-body: #141720;
+    --ds-color-code-body: var(--ds-navy-750);
     --ds-city-opacity: 0.3;
     --ds-band-opacity: 0.3;
 
@@ -398,7 +399,7 @@
   --ds-color-hero-text: var(--ds-white);
   --ds-color-code-shell: #272e3f;
   --ds-color-code-chrome: #000;
-  --ds-color-code-body: #141720;
+  --ds-color-code-body: var(--ds-navy-750);
   --ds-city-opacity: 0.3;
   --ds-band-opacity: 0.3;
 
@@ -5668,7 +5669,10 @@ header {
 
 .side-by-side > .documentation-panel .synopsis,
 .side-by-side > .documentation-panel .description,
-.side-by-side > .documentation-panel .return-value {
+.side-by-side > .documentation-panel .return-value,
+.side-by-side > .documentation-panel .parameters,
+.side-by-side > .documentation-panel .template-parameters,
+.side-by-side > .documentation-panel .exceptions {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -5713,6 +5717,66 @@ header {
     font-size: 14px;
     line-height: 1.6;
     color: var(--ds-color-doc-surface);
+}
+
+/* ---- Parameter / exception tables ---------------------------------- *
+ * These were never restyled, so they still carried Pico's defaults:
+ * 50/50 columns, a pale grey header, 10px cells and the system sans.
+ * Figma builds them from a dark header band in the code surface's own
+ * colour, a fixed 140px name column, 8px cells, and a rule under every
+ * row -- `borderStrokeWeightsIndependent` with only borderBottomWeight
+ * set, so it is the bottom edge alone at 2px, not a box. */
+.side-by-side > .documentation-panel table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.side-by-side > .documentation-panel table thead tr {
+    background: var(--ds-color-code-body);
+}
+
+.side-by-side > .documentation-panel table th {
+    font-family: var(--ds-font-body);
+    font-weight: var(--ds-weight-regular);
+    text-align: left;
+    color: var(--ds-white);
+    background: none;
+    border: 0;
+    padding: 8px;
+}
+
+.side-by-side > .documentation-panel table td {
+    font-family: var(--ds-font-body);
+    color: var(--ds-color-card-text);
+    background: none;
+    border: 0;
+    /* Figma's row is 38 tall with 8px under the text and the 2px rule
+       drawn INSIDE that edge, so the padding carries 6 and the border 2. */
+    border-bottom: var(--ds-border-width-bold) solid var(--ds-color-code-body);
+    padding: 8px 8px 6px;
+}
+
+/* Figma fixes the name column at 140px (8px of padding + 132 of content)
+   and lets the description take the rest. */
+.side-by-side > .documentation-panel table th:first-child,
+.side-by-side > .documentation-panel table td:first-child {
+    width: 140px;
+}
+
+/* The name cell is the parameter itself, set in the same pink/red mono
+   the snippets use for keywords. mrdocs emits it as bare text in the
+   cell, so there is no <code> element to hook -- hence the positional
+   selector. */
+.side-by-side > .documentation-panel table td:first-child {
+    font-family: var(--ds-font-mono);
+    color: var(--ds-color-label);
+}
+
+/* Both header and body inset the second column 12px, not 8. */
+.side-by-side > .documentation-panel table th:nth-child(2),
+.side-by-side > .documentation-panel table td:nth-child(2) {
+    padding-left: 12px;
 }
 
 /* ---- NOTE admonition ------------------------------------------------ *
