@@ -70,7 +70,21 @@ exclude-symbols:
   - '**::d1'
   - '**::d2'
   - '**::d3'
-  - 'stack_st_OSSL_CMP_POLLREP'
+  # STACK_OF(T) and LHASH_OF(T) families: DEFINE_STACK_OF / DEFINE_LHASH_OF_EX
+  # stamp out an opaque struct, callback typedefs, and ~25 functions per type
+  # (95 stack and 13 lhash families). OpenSSL documents them once, generically,
+  # in DEFINE_STACK_OF(3) and DEFINE_LHASH_OF_EX(3); the instances are excluded.
+  - 'lh_*_compfunc'
+  - 'lh_*_hashfunc'
+  - 'lh_*_doallfunc'
+  - 'stack_st_*'
+  - 'stack_st_*::**'
+  - 'sk_*'
+  - 'lhash_st_*'
+  - 'lhash_st_*::**'
+  # POSIX gethostbyname(3) result type; not part of the OpenSSL API surface.
+  - 'hostent'
+  - 'hostent::**'
 
 implementation-defined:
   - 'ossl_check_*'
