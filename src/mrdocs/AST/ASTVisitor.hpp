@@ -597,13 +597,20 @@ private:
         as DocComment, and store the results in the `doc` input
         parameter.
 
+        @param doc The documentation to populate
+        @param D The declaration whose comment is parsed
+        @param mode The extraction mode already decided for the symbol.
+        Findings in the comment are reported as warnings only when the
+        symbol is extracted as part of the project, not as a dependency.
+
         @return true if the comments were successfully parsed as
         DocComment, and false otherwise.
      */
     bool
     populate(
         Optional<DocComment>& doc,
-        clang::Decl const* D);
+        clang::Decl const* D,
+        ExtractionMode mode);
 
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);

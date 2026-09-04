@@ -622,7 +622,7 @@ void
 ASTVisitor::
 populate(Symbol& I, bool const isNew, DeclTy const* D)
 {
-    populate(I.doc, D);
+    populate(I.doc, D, I.Extraction);
     populate(I.Loc, D);
 
     // Attributes are extracted for every symbol kind and may be spread
@@ -664,14 +664,24 @@ bool
 ASTVisitor::
 populate(
     Optional<DocComment>& doc,
-    clang::Decl const* D)
+    clang::Decl const* D,
+    ExtractionMode const mode)
 {
     clang::RawComment const* RC = getDocumentation(D);
     MRDOCS_CHECK_OR(RC, false);
     clang::comments::FullComment* FC =
         RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
     MRDOCS_CHECK_OR(FC, false);
-    populateDocComment(doc, FC, D->getASTContext(), config_, diags_);
+    // A dependency (a base, a parameter type, a symbol from a system
+    // header) has its comment extracted for its content, but the comment
+    // is not this project's to fix, so its findings are not warnings.
+    populateDocComment(
+        doc,
+        FC,
+        D->getASTContext(),
+        config_,
+        diags_,
+        mode != ExtractionMode::Dependency);
     return true;
 }
 
@@ -1343,7 +1353,7 @@ populate(
     Symbol* TI = find(I.id);
     MRDOCS_CHECK_OR(TI);
     MRDOCS_CHECK_OR(!TI->doc);
-    populate(TI->doc, D);
+    populate(TI->doc, D, TI->Extraction);
 }
 
 void

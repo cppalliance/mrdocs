@@ -297,6 +297,12 @@ class DocCommentVisitor
     doc::InlineContainer* curInlines_{ nullptr };
     bool newline_blocks_merge_{ false };
 
+    // Whether findings in this comment are reported as warnings. Comments of
+    // symbols outside the configured inputs (dependencies pulled in from
+    // system headers, say) are parsed for their content but are not the
+    // user's to fix, so their findings go to the debug log instead.
+    bool warnings_{ true };
+
     // A `\f$...\f$` inline formula is a verbatim block command to Clang, so it
     // splits the surrounding paragraph in two. When that happens we record the
     // source line just past the formula; a paragraph that starts on the next
@@ -646,12 +652,17 @@ class DocCommentVisitor
         again, so without this the same finding at the same place would be
         printed once per including translation unit.
     */
-    static void
+    void
     warnOnce(
         std::string const& filename,
         unsigned const line,
-        std::string const& message)
+        std::string const& message) const
     {
+        if (!warnings_)
+        {
+            report::debug("{} at {} ({})", message, filename, line);
+            return;
+        }
         static std::mutex mutex;
         static std::set<std::tuple<std::string, unsigned, std::string>> seen;
         {
@@ -701,11 +712,10 @@ class DocCommentVisitor
     {
         clang::PresumedLoc const loc
             = sm_.getPresumedLoc(anchor->getBeginLoc());
-        report::warn(
-            "{} at {} ({})",
-            msg,
+        warnOnce(
             files::makePosixStyle(loc.getFilename()),
-            loc.getLine());
+            loc.getLine(),
+            std::string(msg));
     }
 
     // Find the index of the end tag that matches the start tag at `cur.i`,
@@ -1879,10 +1889,13 @@ class DocCommentVisitor
         });
         if (it != jd_.Document.end())
         {
-            report::warn(
-                "{}: Duplicate @tparam for argument {}",
-                C->getBeginLoc().printToString(sm_),
-                tparam.name);
+            if (warnings_)
+            {
+                report::warn(
+                    "{}: Duplicate @tparam for argument {}",
+                    C->getBeginLoc().printToString(sm_),
+                    tparam.name);
+            }
         }
 
         jd_.tparams.push_back(std::move(tparam));
@@ -2012,12 +2025,14 @@ public:
         clang::comments::FullComment const* FC,
         clang::ASTContext const& ctx,
         Config const& config,
-        Diagnostics& diags)
+        Diagnostics& diags,
+        bool warnings)
         : config_(config)
         , ctx_(ctx)
         , sm_(ctx_.getSourceManager())
         , FC_(FC)
         , diags_(diags)
+        , warnings_(warnings)
     {}
 
     DocComment
@@ -2052,10 +2067,11 @@ populateDocComment(
     clang::comments::FullComment const* FC,
     clang::ASTContext const& ctx,
     Config const& config,
-    Diagnostics& diags)
+    Diagnostics& diags,
+    bool warnings)
 {
     MRDOCS_COMMENT_TRACE(FC, ctx);
-    DocCommentVisitor visitor(FC, ctx, config, diags);
+    DocCommentVisitor visitor(FC, ctx, config, diags, warnings);
     auto result = visitor.build();
     if (!result.empty())
     {
