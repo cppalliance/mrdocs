@@ -13,9 +13,11 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - develop
-      - master
       - '**'
+      # The merge queue's temporary branches are covered by merge_group below;
+      # a push run on them would be a second full run per queue entry, and one
+      # that generate-demos.sh would take for a real push.
+      - '!gh-readonly-queue/**'
     tags:
       # SemVer releases (v0.8.0) and calendar releases (2026.9.2, 2026.9.2+1).
       - "v*.*.*"

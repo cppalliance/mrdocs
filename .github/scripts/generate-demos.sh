@@ -16,15 +16,18 @@
 # AsciiDoc are multipage. XML alone runs the whole extraction phase, which is
 # where anything that can crash Mr.Docs lives; the template generators are
 # predictable and add no coverage on top of it. Every format is built only
-# by push events in the canonical repository (develop, master, release tags),
+# by pushes to develop, master, or a release tag in the canonical repository,
 # and not for testing: that output is what gets published to the demo server
-# for people to browse. Pull requests, merge-queue runs, manual dispatches,
-# and forks build only XML; on the large demos (LLVM) the extra formats add
-# hours, and a merge-queue run has nothing to publish.
+# for people to browse. Everything else (pull requests, merge-queue runs,
+# pushes to any other branch, manual dispatches, forks) builds only XML; on
+# the large demos (LLVM) the extra formats add hours, and none of those runs
+# has anything to publish.
 quick=true
-if [[ "$GITHUB_EVENT_NAME" == 'push' \
+if [[ "${GITHUB_EVENT_NAME:-}" == 'push' \
    && "${GITHUB_REPOSITORY:-}" == 'cppalliance/mrdocs' ]]; then
-    quick=false
+    case "${GITHUB_REF:-}" in
+        refs/heads/develop|refs/heads/master|refs/tags/*) quick=false ;;
+    esac
 fi
 if [[ "$quick" == true ]]; then
     formats=("xml:false")

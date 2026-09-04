@@ -24,12 +24,15 @@ set -euo pipefail
 
 projects=examples/third-party/projects.json
 
-# Pull requests and forks run the demos in quick mode (see generate-demos.sh),
+# Everything but a push to develop, master, or a release tag in the canonical
+# repository runs the demos in quick mode (same rule as generate-demos.sh),
 # which skips the huge projects entirely, so there is no point cloning them.
-quick=false
-if [[ "${GITHUB_EVENT_NAME:-}" == 'pull_request' \
-   || "${GITHUB_REPOSITORY:-}" != 'cppalliance/mrdocs' ]]; then
-    quick=true
+quick=true
+if [[ "${GITHUB_EVENT_NAME:-}" == 'push' \
+   && "${GITHUB_REPOSITORY:-}" == 'cppalliance/mrdocs' ]]; then
+    case "${GITHUB_REF:-}" in
+        refs/heads/develop|refs/heads/master|refs/tags/*) quick=false ;;
+    esac
 fi
 
 for i in $(seq 0 $(($(jq length "$projects") - 1))); do
