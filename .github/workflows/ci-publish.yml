@@ -264,7 +264,7 @@ jobs:
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           tag-pattern: '^(v\d+\.\d+\.\d+|20\d\d\.\d{1,2}\.\d{1,2}(\+\d+)?)$'
-          limit: 150
+          limit: 0
           update-summary: true
 
       # CPack names packages after the project version (MrDocs-0.8.0-*).
