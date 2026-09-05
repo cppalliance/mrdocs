@@ -16,18 +16,27 @@
 # AsciiDoc are multipage. XML alone runs the whole extraction phase, which is
 # where anything that can crash Mr.Docs lives; the template generators are
 # predictable and add no coverage on top of it. Every format is built only
-# by pushes to develop, master, or a release tag in the canonical repository,
-# and not for testing: that output is what gets published to the demo server
-# for people to browse. Everything else (pull requests, merge-queue runs,
-# pushes to any other branch, manual dispatches, forks) builds only XML; on
-# the large demos (LLVM) the extra formats add hours, and none of those runs
-# has anything to publish.
+# for the runs that publish it to the demo server: pushes to develop and
+# master, and the build of a release tag, in the canonical repository.
+# Everything else (pull requests, merge-queue runs on their
+# gh-readonly-queue/* refs, other branches, manual dispatches of a branch,
+# forks) builds only XML; on the large demos (LLVM) the extra formats add
+# hours, and none of those runs has anything to publish.
 quick=true
-if [[ "${GITHUB_EVENT_NAME:-}" == 'push' \
-   && "${GITHUB_REPOSITORY:-}" == 'cppalliance/mrdocs' ]]; then
-    case "${GITHUB_REF:-}" in
-        refs/heads/develop|refs/heads/master|refs/tags/*) quick=false ;;
-    esac
+if [[ "${GITHUB_REPOSITORY:-}" == 'cppalliance/mrdocs' ]]; then
+    event="${GITHUB_EVENT_NAME:-}"
+    ref="${GITHUB_REF:-}"
+    if [[ "$event" == 'workflow_dispatch' && "$ref" == refs/tags/* ]]; then
+        # The build of a release tag cut by the master run, which
+        # dispatches it because a tag it pushes triggers nothing on its own.
+        quick=false
+    elif [[ "$event" == 'push' && ( "$ref" == 'refs/heads/develop'
+                                    || "$ref" == 'refs/heads/master'
+                                    || "$ref" == refs/tags/* ) ]]; then
+        # A push to develop or master, or a tag pushed by hand or created
+        # together with a GitHub release.
+        quick=false
+    fi
 fi
 if [[ "$quick" == true ]]; then
     formats=("xml:false")
