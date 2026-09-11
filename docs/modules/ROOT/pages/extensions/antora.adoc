@@ -34,7 +34,7 @@ The https://github.com/cppalliance/antora-cpp-reference-extension#readme[README^
 
 The https://github.com/cppalliance/antora-cpp-tagfiles-extension[C++ tagfiles extension^] adds an Asciidoctor `cpp:` macro that resolves C++ names against a https://www.doxygen.nl/manual/external.html[Doxygen-style tagfile^] (an XML index mapping each symbol to a URL). When the reference extension is also in the playbook, it registers the tagfile from the current build automatically, so something like `+cpp:my_lib::Widget[]+` in prose links to the page Mr.Docs just generated.
 
-The extension also bundles the cppreference tagfile, so `std::*` names resolve to https://en.cppreference.com[cppreference.com^] without extra configuration. Adding more tagfiles (Boost libraries, in-house projects) extends the macro to those targets.
+The extension also bundles the https://en.cppreference.com[cppreference.com^] tagfile, so `std::*` names resolve there without extra configuration. Adding more tagfiles (Boost libraries, in-house projects) extends the macro to those targets.
 
 Loading extra tagfiles for other projects:
 
