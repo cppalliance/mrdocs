@@ -20,12 +20,19 @@
   --mr-midnight: #0f172a;
   --mr-ink: #0b1120;
   --mr-slate-800: #1e293b;
+  /* The landing page's dark navbar ground (its --navc-bg). Kept as a
+     primitive so the two bars can share one value. */
+  /* Figma 316:335521, the dark Documentation frame. */
+  --mr-navy-750: #171c26; /* dark navbar ground (both sites)              */
+  --mr-slate-750: #272e3f; /* dark page ground: the three columns          */
+  --mr-slate-300: #a9abb2; /* dark muted row ink (316:335538)              */
   --mr-code-bg: #0f172a;
   --mr-code-bg-2: #131c2e;
   --mr-cream: #fdfaf5;
   --mr-white: #fff;
   --mr-blue: #3d8bff;
   --mr-blue-300: #93c5fd;
+  --mr-blue-450: #1e78ff; /* Figma exact: theme-toggle fill, note blocks */
   --mr-blue-600: #2563eb;
   --mr-yellow: #facc15;
   --mr-yellow-300: #f1d874;
@@ -52,8 +59,37 @@
   --text: #24303f;
   --text-strong: #0f172a;
   --text-muted: #5b6675;
+  /* Figma tints both the subnav strip and the nav panel with
+     linear-gradient(rgba(30, 120, 255, 0.1) ...), #FDFAF5 -- the brand blue at
+     10% over the page ground. A mix rather than the composited hex, so it
+     re-resolves per theme and needs no dark override. */
+  --surface-tint: color-mix(in sRGB, var(--mr-blue-450) 10%, var(--bg));
   --border: #e6e2d8;
   --border-strong: #cdd5df;
+  /* Chrome edges are a hard 1px #0F172A rule (316:334286); --border stays the
+     soft content divider. */
+  --outline: var(--mr-midnight);
+  /* Ink for text and icons sitting on a fixed brand ground (the gold GitHub
+     button and current-page chip, the blue/gold admonitions). Theme-agnostic
+     on purpose: those grounds are the same colour in both themes, while
+     --text-strong flips to #fff and put white on gold at 1.42:1.
+
+     shared/design-system.css does declare this, but under
+     `:root:not([data-theme=dark]),[data-theme=light]` -- light only. In dark
+     nothing declared it, so all four consumers fell back to inheriting
+     --text: the near-white on gold the references exist to prevent. This
+     covers dark; the block below re-covers light, because that shared
+     selector is (0,2,0) and would otherwise keep its own #0e0e0e. */
+  --ds-color-on-accent: var(--mr-midnight);
+  /* Every outlined control in frame 316:334286 carries the same hard 2px 2px
+     drop shadow in the outline colour -- no blur, no spread. */
+  --outline-shadow: 2px 2px 0 var(--outline);
+  /* Brand fills that are a pale tint on the cream page and the saturated
+     colour on the dark one: h1 and the gold chrome (316:334346 #F1D874 ->
+     316:335581 #FACC15), h2-h4 and the version chip (316:334352 #93C5FD ->
+     316:335587 #3D8BFF). */
+  --gold-surface: var(--mr-yellow-300);
+  --blue-surface: var(--mr-blue-300);
   --accent: var(--mr-blue-600); /* readable blue on cream */
   --accent-solid: var(--mr-blue);
   --accent-warm: var(--mr-amber-700); /* readable "yellow" on light = amber */
@@ -67,18 +103,25 @@
   /* Code block surface + syntax highlighting. Theme-aware: a light GitHub-
      style surface in light mode, Midnight in dark mode, with the same hues in
      both so the doc-comment feature reads the same way either way. */
-  --hl-bg: #f6f8fa;
-  --hl-fg: #1f2328;
-  --hl-comment: #6e7781;
-  --hl-keyword: #cf222e;
-  --hl-string: #0a3069;
-  --hl-const: #0550ae;
-  --hl-entity: #953800;
-  --hl-title: #8250df;
-  --hl-tag: #116329;
-  --hl-doc: #43711f;
-  --hl-doc-strong: #4d7c0f;
-  --hl-border: #d0d7de;
+  /* The code panel is dark in BOTH themes, per frame 316:334286 and the landing
+     page, so these are deliberately theme-invariant -- there is no light set to
+     flip to. Ground, plain text and comments come from the shared system so the
+     two surfaces match; the remaining syntax roles keep the GitHub-dark values,
+     which the frame does not specify. */
+  --hl-bg: var(--ds-color-code-body);
+  --hl-fg: var(--ds-code-panel-fg);
+  --hl-comment: var(--ds-code-panel-comment);
+  --hl-keyword: #f47067;
+  --hl-string: #96d0ff;
+  --hl-const: #6cb6ff;
+  --hl-entity: #f69d50;
+  --hl-title: #dcbdfb;
+  --hl-tag: #8ddb8c;
+  --hl-doc: rgb(94, 135, 79);
+  --hl-doc-strong: rgb(164, 181, 67);
+  --hl-border: var(--ds-color-outline);
+  /* Figma: a 30px header strip in the chrome ink above the body. */
+  --pre-title-background: var(--ds-color-code-chrome);
   --code-panel-bg: var(--hl-bg);
   --code-panel-fg: var(--hl-fg);
   --code-panel-border: var(--hl-border);
@@ -115,36 +158,36 @@
 
   /* ---- fonts ---- */
   --rem-base: 18;
-  --brand-display-font: "Bangers", "Special Elite", cursive;
+  --brand-display-font: var(--ds-font-display);
   --body-font-size: 1.0625em;
   --body-font-size--desktop: 1.125em;
   --body-font-size--print: 0.9375em;
   --body-line-height: 1.5;
   --body-font-color: var(--text);
-  --body-font-family: "Special Elite", "Roboto", ui-monospace, monospace;
-  /* Sans face used ONLY for the documentation reading body (prose / doc
-     comments), where the typewriter face hurts legibility. Titles, navbar,
-     nav tree and TOC stay on the brand body face above. */
-  --doc-body-font:
-    "Roboto",
-    -apple-system,
-    blinkmacsystemfont,
-    "Segoe UI",
-    sans-serif;
-  --body-font-weight-bold: 600;
+  --body-font-family: var(--ds-font-body);
+  /* Special Elite per the frame; the old Roboto-for-legibility exception is gone. */
+  --doc-body-font: var(--ds-font-body);
+  --body-font-weight-bold: var(--ds-weight-medium);
   --monospace-font-family: "Menlo", "Roboto Mono", ui-monospace, monospace;
-  --monospace-font-weight-bold: 600;
+  --monospace-font-weight-bold: var(--ds-weight-medium);
 
   /* ---- 3. Antora UI tokens mapped onto the semantic tokens ---- */
   --body-background: var(--bg);
   --panel-background: var(--surface);
   --panel-border-color: var(--border);
-  --scrollbar-track-color: var(--surface-2);
-  --scrollbar-thumb-color: var(--border-strong);
-  --scrollbar_hover-thumb-color: var(--slate-400);
+  /* Figma: the rail's track is the outline colour, not a surface tint. */
+  --scrollbar-track-color: var(--outline);
+  --scrollbar-thumb-color: var(--mr-yellow-300);
+  --scrollbar_hover-thumb-color: var(--mr-yellow);
 
   /* navbar */
-  --navbar-background: var(--surface);
+  /* The header bar sits on the page beige, not white. */
+  --navbar-background: var(--bg);
+  /* The desktop bar is its own surface: white in light (per the frame), and
+     in dark the same ground the landing navbar uses, so the two match.
+     Both derived from the landing; neither frame is drawn dark. */
+  --navbar-surface: var(--surface);
+  --navbar-border-color: var(--outline);
   --navbar-font-color: var(--text);
   --navbar_hover-background: var(--surface-2);
   --navbar_hover-font-color: var(--accent);
@@ -158,27 +201,38 @@
 
   /* nav (left tree) */
   --nav-background: var(--surface);
-  --nav-border-color: var(--border);
+  --nav-border-color: var(--outline);
   --nav-line-height: 1.35;
   --nav-heading-font-color: var(--text-muted);
-  --nav-muted-color: var(--text-muted);
+  --nav-muted-color: var(--ds-color-card-text); /* Figma #6E727B */
+  /* Collapse toggle. The caret ships as an SVG with #c1c1c1 baked into its
+     fill and stroke, so it is masked rather than drawn as an image and takes
+     these instead -- the frame draws no carets, so the ink follows the row it
+     sits next to. */
+  --nav-toggle-color: var(--nav-muted-color);
+  --nav-toggle_hover-color: var(--text-strong);
+  --nav-toggle_hover-background: color-mix(in sRGB, var(--text-strong) 10%, transparent);
+  --nav-toggle-focus-ring: var(--link);
   --nav-panel-divider-color: var(--border);
   --nav-secondary-background: var(--surface-2);
-  /* Left nav column: on light a solid panel surface set off from the cream
-     content; on dark a transparent base so the white overlays below keep the
-     current midnight look. The overlays flip to transparent on light so they
-     don't wash the panel back toward the content colour. */
-  --nav-panel-background: var(--surface-2);
+  /* The tree sits in a tinted, outlined panel; the column behind it is the
+     page ground. */
+  --nav-panel-background: var(--bg);
+  --nav-tree-background: var(--surface-tint);
+  /* The current-page chip is a fixed gold in either theme, so its label takes
+     the on-accent ink rather than --text-strong, which is #fff in dark and
+     gave white-on-gold at 1.42:1. */
+  --nav-current-page-color: var(--ds-color-on-accent);
+  --nav-title-background: var(--mr-pink);
   --nav-panel-overlay: transparent;
-  --nav-explore-overlay: transparent;
 
   /* toolbar */
   --toolbar-background: var(--surface);
-  /* Breadcrumbs strip: on light a solid surface-2 band set off from the cream
-     content (matching the nav column); on dark the white overlay that lifts
-     the midnight page, as before. */
-  --toolbar-strip-bg: var(--surface-2);
-  --toolbar-border-color: var(--border);
+  /* Figma: rgba(30, 120, 255, 0.1) over #FDFAF5 -- i.e. --mr-blue-450 at 10%
+     over the page ground. Expressed as a mix rather than the composited hex so
+     it re-resolves per theme; the header bar above stays the plain ground. */
+  --toolbar-strip-bg: var(--surface-tint);
+  --toolbar-border-color: var(--outline);
   --toolbar-font-color: var(--text-muted);
   --toolbar-muted-color: var(--text-muted);
   --page-version-menu-background: var(--surface-2);
@@ -203,24 +257,56 @@
   --warning-on-color: var(--mr-white);
 
   /* doc */
-  --doc-font-color: var(--text);
+  /* Figma sets body copy in the strong ink (#0F172A), not the softer --text
+     the theme used before. */
+  --doc-font-color: var(--text-strong);
   --doc-font-size: inherit;
-  --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
+  --doc-font-size--desktop: calc(16 / var(--rem-base) * 1rem);
+  /* text-size-small / -large from the same frame. */
+  --doc-font-size-small: calc(14 / var(--rem-base) * 1rem);
+  --doc-font-size-large: calc(20 / var(--rem-base) * 1rem);
   --doc-line-height: 1.65;
   --doc-margin: 0 auto;
-  --doc-margin--desktop: 0 2rem;
+  /* Flush to the nav seam; the 60px inset is padding, not margin. */
+  --doc-margin--desktop: 0;
   --heading-font-color: var(--heading-color);
   --heading-font-weight: normal;
   --alt-heading-font-weight: var(--body-font-weight-bold);
-  --section-divider-color: var(--border);
+  /* Figma rules its sections with a 2px outline, not a hairline border. */
+  --section-divider-color: var(--outline);
   --link-font-color: var(--link);
   --link_hover-font-color: var(--link-hover);
   --link_unresolved-font-color: var(--important-color);
   --abstract-background: var(--surface-2);
   --abstract-font-color: var(--text);
   --abstract-border-color: var(--border);
+  /* block-note (316:334386 light / 316:335621 dark) and block-warning
+     (316:334392 / 316:335627). The Note Container fill is the brand colour at
+     10% OPACITY over the page ground, not the solid colour -- fillPaints[0]
+     .opacity is 0.1 on all four nodes. Composited that is #E7EDF6 / #FCF7E8 on
+     cream and #263552 / #3B3F44 on #272E3F; written as a mix so one
+     declaration re-resolves per theme.
+     The 1px OUTSIDE stroke is the saturated colour, and the pair the frame
+     uses is exactly --blue-surface (#93C5FD light 316:334386 -> #3D8BFF dark
+     316:335621) and --gold-surface (#F1D874 316:334392 -> #FACC15 316:335627).
+     Ink: the title is --text-strong (#0F172A 316:334387 -> #FFFFFF
+     316:335622); the body is the frame's secondary grey (#6E727B 316:334388 ->
+     #A9ABB2 316:335629), the same grey it puts on table descriptions. Dark
+     takes that value verbatim (--mr-slate-300, 5.34:1 on the blue and 4.62:1
+     on the gold); light takes --text-muted #5B6675 rather than the frame's
+     #6E727B, which lands at 4.10:1 on the blue tint and so misses AA -- one
+     notch darker in the same slate family clears it at 4.95:1.
+     The tinted grounds are why none of this needs --ds-color-on-accent any
+     more: nothing here sits on a saturated fill. */
   --admonition-background: var(--surface);
-  --admonition-label-font-weight: var(--body-font-weight-bold);
+  --admonition-note-background: color-mix(in sRGB, var(--mr-blue-450) 10%, var(--bg));
+  --admonition-note-border: var(--blue-surface);
+  --admonition-warning-background: color-mix(in sRGB, var(--mr-yellow-300) 10%, var(--bg));
+  --admonition-warning-border: var(--gold-surface);
+  --admonition-color: var(--text-muted);
+  --admonition-title-color: var(--text-strong);
+  /* Special Elite Regular in the frame (both Note Title nodes), not bold. */
+  --admonition-label-font-weight: var(--ds-weight-regular);
   --caption-font-color: var(--text-muted);
   --caption-font-style: italic;
   --caption-font-weight: var(--body-font-weight-bold);
@@ -242,7 +328,21 @@
   --quote-font-color: var(--text-muted);
   --quote-attribution-font-color: var(--text-muted);
   --sidebar-background: var(--surface-2);
-  --table-border-color: var(--border);
+  /* Figma table 316:334418 (light) / 316:335653 (dark). The rules and the
+     header fill are the code-panel body ink, which is #272E3E on light and
+     #141720 on dark -- --ds-code-800 is the light literal only, so in dark it
+     painted #272E3E rules and a #272E3E header on the #272E3F page ground:
+     1.00:1, i.e. no visible grid and no visible header at all.
+     The framed variant's ground is the brand blue at 10% over the page
+     (#E7EDF6 light / #263552 dark), which is exactly --surface-tint.
+     Names in the first column are Menlo in the label colour (#EC4899 light /
+     #FF4C4C dark) -- --ds-color-label already carries both. */
+  --table-border-color: var(--ds-color-code-body);
+  --table-frame-color: var(--outline);
+  --table-frame-background: var(--surface-tint);
+  --table-header-background: var(--ds-color-code-body);
+  --table-header-color: var(--mr-white);
+  --table-name-color: var(--ds-color-label);
   --table-stripe-background: var(--surface-2);
   --table-footer-background:
     linear-gradient(
@@ -252,9 +352,11 @@
     );
 
   /* toc */
-  --toc-font-color: var(--text-muted);
+  --toc-font-color: var(--ds-color-card-text);
   --toc-heading-font-color: var(--text-strong);
-  --toc-border-color: var(--border);
+  /* Figma 316:334286: gold left rule per entry; inactive entries are the muted
+     #6E727B, the current one the strong ink. */
+  --toc-border-color: var(--gold-surface);
   --toc-line-height: 1.2;
 
   /* footer */
@@ -263,29 +365,38 @@
   --footer-font-color: var(--text-muted);
   --footer-link-font-color: var(--accent);
 
-  /* dimensions and positioning (unchanged) */
-  --navbar-height: calc(63 / var(--rem-base) * 1rem);
+  /* dimensions and positioning -- Figma frame 316:334286 unless noted */
+  --navbar-height: calc(79 / var(--rem-base) * 1rem);
   --toolbar-height: calc(45 / var(--rem-base) * 1rem);
   --drawer-height: var(--toolbar-height);
-  --body-top: var(--navbar-height);
+  /* Crumb bar sits above the columns now, so it no longer comes out of them. */
+  --body-top: calc(var(--navbar-height) + var(--toolbar-height));
   --body-min-height: calc(100vh - var(--body-top));
-  --nav-height: calc(var(--body-min-height) - var(--toolbar-height));
+  --nav-height: var(--body-min-height);
   --nav-height--desktop: var(--body-min-height);
   --nav-panel-menu-height: calc(100% - var(--drawer-height));
-  --nav-panel-explore-height: calc(50% + var(--drawer-height));
   --nav-width: calc(270 / var(--rem-base) * 1rem);
-  --toc-top: calc(var(--body-top) + var(--toolbar-height));
-  --toc-height: calc(100vh - var(--toc-top) - 2.5rem);
+  /* The crumb bar scrolls away with the page; the TOC pins under the fixed
+     navbar alone. */
+  --toc-top: var(--navbar-height);
+  /* Figma 316:334607 padV28. One token for both the rail's padding and its
+     sticky offset, so the 28 of breathing room survives scrolling instead of
+     the list pinning flush to the navbar. */
+  --toc-inset-y: calc(28 / var(--rem-base) * 1rem);
+  --toc-height: calc(100vh - var(--toc-top) - var(--toc-inset-y) - 2.5rem);
   --toc-width: calc(162 / var(--rem-base) * 1rem);
-  --toc-width--widescreen: calc(216 / var(--rem-base) * 1rem);
+  --toc-width--widescreen: calc(240 / var(--rem-base) * 1rem);
   --doc-max-width: calc(720 / var(--rem-base) * 1rem);
-  --doc-max-width--desktop: calc(828 / var(--rem-base) * 1rem);
+  /* 899 column, 60px inner padding -> 779 of text. Rail takes the 30 beside it. */
+  --doc-max-width--desktop: calc(899 / var(--rem-base) * 1rem);
+  --doc-padding-x--desktop: calc(60 / var(--rem-base) * 1rem);
+  --doc-rail-width: calc(30 / var(--rem-base) * 1rem);
 
   /* stacking */
-  --z-index-nav: 1;
-  --z-index-toolbar: 2;
-  --z-index-page-version-menu: 3;
-  --z-index-navbar: 4;
+  --z-index-nav: var(--ds-z-nav);
+  --z-index-toolbar: var(--ds-z-toolbar);
+  --z-index-page-version-menu: var(--ds-z-menu);
+  --z-index-navbar: var(--ds-z-navbar);
 
   /* background gradient position variables */
   --x1: 20%;
@@ -297,8 +408,15 @@
 }
 
 /* ---- DARK theme overrides (only the semantic brand tokens change) ---- */
+/* Beats shared/design-system.css's light-only --ds-ink-900 (#0e0e0e) so both
+   themes, and both the docs and landing navbars, use one ink on the gold. */
+:root:not([data-theme="dark"]),
+[data-theme="light"] {
+  --ds-color-on-accent: var(--mr-midnight);
+}
+
 :root[data-theme="dark"] {
-  --bg: var(--mr-midnight);
+  --bg: var(--mr-slate-750);
   --bg-accent: #0b1424;
   --surface: var(--mr-slate-800);
   --surface-2: #172234;
@@ -307,6 +425,17 @@
   --text-muted: var(--slate-400);
   --border: rgba(148, 163, 184, 0.18);
   --border-strong: rgba(148, 163, 184, 0.32);
+  /* DERIVED -- see the note in the prefers-color-scheme block below. */
+  --outline: #000;
+  --navbar-surface: var(--mr-navy-750);
+  --nav-title-background: var(--mr-red);
+  --gold-surface: var(--mr-yellow);
+  --blue-surface: var(--mr-blue);
+  --nav-muted-color: var(--mr-slate-300);
+  --toc-font-color: var(--mr-slate-300);
+  /* 316:335623 / 316:335629 Note Text -- the frame's own dark body grey,
+     not --text-muted: --slate-400 lands at 4.14:1 on the gold tint. */
+  --admonition-color: var(--mr-slate-300);
   --accent: var(--mr-blue);
   --accent-solid: var(--mr-blue);
   --accent-warm: var(--mr-yellow);
@@ -328,32 +457,41 @@
   --color-black: rgba(0, 0, 0, 0.32);
   --color-blue-10: var(--mr-blue-300);
   --color-blue-100: var(--mr-blue);
-  --hl-bg: var(--mr-code-bg);
-  --hl-fg: #adbac7;
-  --hl-comment: #768390;
-  --hl-keyword: #f47067;
-  --hl-string: #96d0ff;
-  --hl-const: #6cb6ff;
-  --hl-entity: #f69d50;
-  --hl-title: #dcbdfb;
-  --hl-tag: #8ddb8c;
-  --hl-doc: rgb(94, 135, 79);
-  --hl-doc-strong: rgb(164, 181, 67);
-  --hl-border: rgba(148, 163, 184, 0.22);
   --logo-fill: #fff;
   --doc-icon-filter: none;
   --nav-panel-background: transparent;
-  --nav-panel-overlay: rgba(255, 255, 255, 0.1);
-  --nav-explore-overlay: rgba(255, 255, 255, 0.3);
-  --toolbar-strip-bg: rgba(255, 255, 255, 0.1);
+  /* 316:335528: the Sidebar fill is the page ground, so no wash. The 10%
+     white here made the nav column read lighter than the content and
+     contents panes either side of it. */
+  --nav-panel-overlay: transparent;
   --tab-surface: rgba(255, 255, 255, 0.12);
   --tab-inactive-bg: rgba(0, 0, 0, 0.25);
   --tab-inactive-color: rgba(255, 255, 255, 0.5);
 }
 
+/* ---- Small-screen chrome (Figma 316:335067 / 316:334667, 402) ---------- */
+@media screen and (max-width: 1023.5px) {
+  :root {
+    /* The mobile navbar is 60 tall against 79 on desktop, and white rather
+       than the page cream. Everything below the bar derives from this token --
+       body's padding-top compensating for the fixed bar, and the sticky
+       offsets. */
+    --navbar-height: calc(60 / var(--rem-base) * 1rem);
+    /* --navbar-surface, not --mr-white: this media block applies in BOTH themes
+       and comes after the dark overrides, so a hardcoded white bar stayed white
+       in dark while --text-strong flipped to #fff -- an invisible wordmark and
+       burger. --navbar-surface is white in light and #171C26 in dark, which is
+       what 316:334979 and the landing's 316:280159 both draw; --surface was
+       used here before and gave slate-800, a different bar from the landing. */
+    --navbar-background: var(--navbar-surface);
+    /* Figma 316:334974: the mobile subnav strip is 39 tall, not 45. */
+    --toolbar-height: calc(39 / var(--rem-base) * 1rem);
+  }
+}
+
 @media only screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: var(--mr-midnight);
+    --bg: var(--mr-slate-750);
     --bg-accent: #0b1424;
     --surface: var(--mr-slate-800);
     --surface-2: #172234;
@@ -362,6 +500,17 @@
     --text-muted: var(--slate-400);
     --border: rgba(148, 163, 184, 0.18);
     --border-strong: rgba(148, 163, 184, 0.32);
+    /* DERIVED -- the frame is light only. Revisit with a dark frame. */
+    --outline: #000;
+    --navbar-surface: var(--mr-navy-750);
+    --nav-title-background: var(--mr-red);
+    --gold-surface: var(--mr-yellow);
+    --blue-surface: var(--mr-blue);
+    --nav-muted-color: var(--mr-slate-300);
+    --toc-font-color: var(--mr-slate-300);
+    /* 316:335623 / 316:335629 Note Text -- the frame's own dark body grey,
+       not --text-muted: --slate-400 lands at 4.14:1 on the gold tint. */
+    --admonition-color: var(--mr-slate-300);
     --accent: var(--mr-blue);
     --accent-solid: var(--mr-blue);
     --accent-warm: var(--mr-yellow);
@@ -383,24 +532,13 @@
     --color-black: rgba(0, 0, 0, 0.32);
     --color-blue-10: var(--mr-blue-300);
     --color-blue-100: var(--mr-blue);
-    --hl-bg: var(--mr-code-bg);
-    --hl-fg: #adbac7;
-    --hl-comment: #768390;
-    --hl-keyword: #f47067;
-    --hl-string: #96d0ff;
-    --hl-const: #6cb6ff;
-    --hl-entity: #f69d50;
-    --hl-title: #dcbdfb;
-    --hl-tag: #8ddb8c;
-    --hl-doc: rgb(94, 135, 79);
-    --hl-doc-strong: rgb(164, 181, 67);
-    --hl-border: rgba(148, 163, 184, 0.22);
     --logo-fill: #fff;
     --doc-icon-filter: none;
     --nav-panel-background: transparent;
-    --nav-panel-overlay: rgba(255, 255, 255, 0.1);
-    --nav-explore-overlay: rgba(255, 255, 255, 0.3);
-    --toolbar-strip-bg: rgba(255, 255, 255, 0.1);
+    /* 316:335528: the Sidebar fill is the page ground, so no wash. The 10%
+       white here made the nav column read lighter than the content and
+       contents panes either side of it. */
+    --nav-panel-overlay: transparent;
     --tab-surface: rgba(255, 255, 255, 0.12);
     --tab-inactive-bg: rgba(0, 0, 0, 0.25);
     --tab-inactive-color: rgba(255, 255, 255, 0.5);

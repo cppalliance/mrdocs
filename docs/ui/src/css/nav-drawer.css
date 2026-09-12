@@ -1,121 +1,176 @@
-/* Consolidated small-screen navigation.
+/* Small-screen navigation, Figma 316:335013 / 316:335067 / 316:335019.
 
-   On phones and tablets the single top hamburger (.navbar-burger) opens the
-   documentation nav drawer, and that drawer carries everything: the page
-   tree, the version switcher, and the site links. The separate toolbar
-   toggle and version pill are dropped below 1024px so there is only one menu
-   to find. Desktop keeps the horizontal navbar, static sidebar, and toolbar
-   version selector unchanged.
+   There is no drawer. The page tree is an inline collapsible section between
+   the subnav strip and the article, headed by the component chip, and the
+   hamburger opens a separate site menu (site-menu.css) with the site links,
+   repo button and theme toggle. Desktop keeps the horizontal navbar, the
+   static left column and the toolbar version selector unchanged.
 
-   This file is imported last so its small-screen overrides win on source
-   order: media queries add no specificity, so hiding e.g. .toolbar only
-   works if this rule comes after toolbar.css's base .toolbar rule. */
-
-/* Base (desktop): the drawer footer is hidden; the navbar and toolbar carry
-   these controls. The small-screen block below re-enables it. */
-.nav-drawer-footer {
-  display: none;
-  margin: 0 0.75rem;
-  padding: 1rem 0;
-  border-top: 1px solid var(--nav-panel-divider-color);
-}
-
-.nav-drawer-section + .nav-drawer-section {
-  margin-top: 1rem;
-}
-
-.nav-drawer-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--nav-heading-font-color);
-  font-size: calc(12 / var(--rem-base) * 1rem);
-  font-weight: var(--body-font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.nav-drawer-versions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav-drawer-version {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--nav-panel-divider-color);
-  border-radius: 0.25rem;
-  padding: 0.25em 0.6em;
-  opacity: 0.85;
-  white-space: nowrap;
-}
-
-.nav-drawer-version.is-current {
-  background: var(--nav-heading-font-color);
-  border-color: var(--nav-heading-font-color);
-  color: var(--nav-secondary-background);
-  font-weight: var(--body-font-weight-bold);
-  opacity: 1;
-}
-
-.nav-drawer-version.is-missing {
-  font-style: italic;
-  opacity: 0.6;
-}
-
-.nav-drawer-links {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.125rem;
-}
-
-.nav-drawer-link {
-  display: block;
-  padding: 0.375rem 0;
-}
-
-.nav-drawer-theme {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-left: -0.5rem;
-  color: var(--color-white-60);
-}
-
-.nav-drawer-download {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 1rem;
-  height: 1.75rem;
-  padding: 0 0.75em;
-  background: rgb(229, 190, 51);
-  color: #0e0e0e;
-  font-weight: var(--body-font-weight-bold);
-  white-space: nowrap;
-  box-shadow: 4px 4px 0 #000;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
-
-.nav-drawer-download:hover {
-  background: rgb(255, 215, 0);
-  transform: translateY(-2px);
-  box-shadow: 6px 6px 0 #000;
-}
+   This file is imported near-last so its small-screen overrides win on source
+   order: media queries add no specificity, so overriding e.g. .toolbar only
+   works if these rules come after toolbar.css's base .toolbar rule. */
 
 @media screen and (max-width: 1023.5px) {
-  /* Everything the toolbar carried on desktop (breadcrumbs, version pill,
-     edit link) is either hidden already or moved into the drawer, so the
-     strip has nothing left to show. Removing it also drops the empty band
-     under the navbar. */
+  /* The strip is back: Figma 316:334974 keeps it on mobile, carrying the
+     breadcrumb and the version chip. It was hidden here when the drawer
+     footer owned the version switcher. 39 tall, inset 30, breadcrumb at 14
+     rather than desktop's 13. */
   .toolbar {
+    /* One rule between the strip and the nav section, not two. The strip's
+       own 2px bottom edge was stacking with the section's 1.5 top border for
+       a combined 3px. The frame paints only one: its subnav Container carries
+       a borderBottomWeight but with an EMPTY stroke paint, while Frame 236
+       has a real 1.5 #0F172A top border. Kept on the strip rather than the
+       section so it still draws on a page with no nav tree, at the frame's
+       1.5 rather than the desktop 2. */
+    border-bottom-width: 1.5px;
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    padding: calc(6 / var(--rem-base) * 1rem) calc(30 / var(--rem-base) * 1rem);
+  }
+
+  /* 316:334977: 52x21 with a 1.5 stroke, against 2px and 22.4 on desktop. */
+  .page-versions .version-menu-toggle,
+  .page-versions .version-menu-toggle.is-static {
+    border-width: 1.5px;
+    min-height: calc(21 / var(--rem-base) * 1rem);
+  }
+
+  /* ---- Figma 316:335067 "Main Menu [Open]", 402 ------------------------ */
+
+  /* The nav is a SECTION OF THE PAGE, not an overlay. Figma 316:335013 (77
+     tall, collapsed) and 316:335102 (514, expanded) are the same page frame,
+     and the burger stays a hamburger in both -- it opens the separate site
+     menu (316:335019). So the column joins the normal flow between the subnav
+     strip and the article, with a 1.5 rule on top. */
+  .nav-container {
+    backdrop-filter: none;
+    background-color: var(--bg);
+    border-right: none;
+    position: static;
+    top: auto;
+    visibility: visible;
+    width: 100%;
+  }
+
+  /* Scoped: the top bar is <nav class="nav navbar">, so a bare `.nav` here
+     also unpinned and resized the navbar. */
+  .nav-container > .nav {
+    height: auto;
+    overflow: visible;
+    position: static;
+  }
+
+  /* Frame 236: 20 top and bottom, 30 each side, and 10 between the section
+     chip and the tree. Desktop is 28/20 with a 16 gap. */
+  .nav-menu {
+    /* nav.css sets min-height: 100% so the tree fills the desktop column. In
+       the page flow that stretches it and pushes the contents list past the
+       bottom edge. */
+    min-height: 0;
+    padding: calc(20 / var(--rem-base) * 1rem) calc(30 / var(--rem-base) * 1rem);
+  }
+
+  /* 316:335104: the chip spans the region rather than hugging its text --
+     339 of fill inside a 342 box -- and is set in the display face at 16.
+     Its 1.5 stroke is drawn OUTSIDE the fill, which is what makes the outer
+     box 342x37; with border-box that is simply a 1.5px border, not the
+     doubling an OUTSIDE *text* stroke would need. */
+  .nav-menu h3.title {
+    box-sizing: border-box;
+    display: flex;
+    /* containing block for the stretched disclosure button below */
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-width: 1.5px;
+    font-family: var(--brand-display-font);
+    font-size: calc(16 / var(--rem-base) * 1rem);
+    /* Frame 236, gap 10: chip and tree stay separate boxes, each with its
+       own outline and 2/2 shadow. Collapsed drops this to 0. */
+    margin-bottom: calc(10 / var(--rem-base) * 1rem);
+    padding: calc(9 / var(--rem-base) * 1rem) calc(12 / var(--rem-base) * 1rem);
+  }
+
+  /* The panel's own stroke is 1.5 here against 1.81818 on desktop; the hard
+     2px shadow is unchanged. */
+  .nav-menu > .nav-list {
+    border-width: 1.5px;
+  }
+
+  /* The chip's chevron is the only disclosure on mobile, so the fold-all
+     octicon is redundant -- and it floats outside the chip's outline, which
+     now reads as one unit with the tree. It shows on hover, so it is
+     invisible on touch but appears in any mouse-capable narrow window. */
+  .nav-menu-toggle {
     display: none;
+  }
+
+  /* Collapsed is the default page state, so the chip alone leaves the section
+     at the frame's 77, and it closes up into its own bordered, shadowed pill
+     exactly as 316:335013 draws it. */
+  .nav-menu.is-collapsed > .nav-list {
+    display: none;
+  }
+
+  .nav-menu.is-collapsed h3.title {
+    margin-bottom: 0;
+  }
+
+  /* The WHOLE chip toggles, not just the glyph: the button is stretched over
+     the chip and the chevron drawn on its ::after, so the hit area is the
+     full 345x34 rather than a 16x16 corner. The title link is inert here --
+     on mobile the chip is a disclosure control, and the tree's own first row
+     goes to the component home anyway.
+
+     color is set explicitly because a <button> does not inherit it, so
+     currentColor in the mask was resolving to the default button ink instead
+     of the chip's white. */
+  .nav-menu h3.title a {
+    pointer-events: none;
+  }
+
+  .nav-section-toggle {
+    background: transparent;
+    border: none;
+    color: var(--mr-white);
+    cursor: pointer;
+    display: block;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+  }
+
+  /* 316:335017 / 316:335106: a 16x16 chevron at the chip's far end, pointing
+     up when open and down when collapsed. */
+  .nav-section-toggle::after {
+    background-color: currentColor;
+    content: "";
+    height: calc(16 / var(--rem-base) * 1rem);
+    position: absolute;
+    right: calc(12 / var(--rem-base) * 1rem);
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+    transition: transform 150ms ease;
+    width: calc(16 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/chevron.svg) no-repeat center / contain;
+    mask: url(../img/chevron.svg) no-repeat center / contain;
+  }
+
+  .nav-menu.is-collapsed .nav-section-toggle::after {
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  .nav-section-toggle:focus-visible {
+    outline: 2px solid var(--nav-toggle-focus-ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-section-toggle::after {
+      transition: none;
+    }
   }
 
   /* The burger already animates into a close (X); the in-drawer close button
@@ -125,34 +180,16 @@
     display: none;
   }
 
-  /* Single-component site: the explore panel only duplicates the version
-     switcher the drawer footer now provides, so drop its bottom strip and let
-     the page tree use the full remaining drawer height. */
-  .nav-panel-explore {
-    display: none;
-  }
-
-  .nav-panel-menu {
-    height: 100%;
-  }
-
-  /* Split the drawer into a scrolling page tree and a pinned footer that
-     carries the version switcher and site links. */
-  .nav {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .panels {
-    flex: 1 1 auto;
-    min-height: 0;
+  /* Qualified to outrank nav.css, which sets `height: inherit` on
+     `.nav .panels` and `height: 100%` on `.nav-panel-menu:only-child` -- both
+     sized for the desktop column, and the :only-child rule always applies now
+     that the explore panel is gone. In the page flow the section has to size
+     to its content instead. */
+  .nav .panels,
+  .nav-panel-menu,
+  .nav-panel-menu:only-child {
     height: auto;
-  }
-
-  .nav-drawer-footer {
-    display: block;
-    flex: 0 0 auto;
-    overflow-y: auto;
-    max-height: 45%;
+    min-height: 0;
+    overflow: visible;
   }
 }

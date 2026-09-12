@@ -1,34 +1,50 @@
 /* Inherits styles from landing page */
 
-.dotted {
-  background-image: url("../../../../docs/website/assets/halftone.png");
-  background-size: 158%;
-  background-repeat: repeat-y;
-  background-position: center center;
+/* Edge rails. These pointed at docs/website/assets/halftone.png with a path
+   that only resolved in the source tree -- from the built _/css/site.css it
+   climbed out of the site root and 404'd on every page. Drawn from the shared
+   halftone tokens instead: no 273KB raster in the bundle, and the dot colour
+   is themed, which the greyscale PNG could not be.
+   The mask reproduces the export's horizontal grade; its dot coverage
+   measured 0.94 / 0.64 / 0.34 / 0.14 / 0.04 across five bands. */
+.dotted,
+.dotted-right {
+  background-image:
+    radial-gradient(
+      var(--ds-halftone-dot) var(--ds-halftone-dot-size),
+      transparent var(--ds-halftone-dot-size)
+    );
+  background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
+  background-repeat: repeat;
+
+  --dotted-grade:
+    linear-gradient(
+      to right,
+      rgb(0 0 0 / 94%) 0%,
+      rgb(0 0 0 / 64%) 25%,
+      rgb(0 0 0 / 34%) 50%,
+      rgb(0 0 0 / 14%) 75%,
+      rgb(0 0 0 / 4%) 100%
+    );
+
+  -webkit-mask-image: var(--dotted-grade);
+  mask-image: var(--dotted-grade);
   width: 190px;
   height: 100vh;
   position: fixed;
-  left: 0;
-  opacity: 0.1;
   top: 0;
   z-index: -5;
   pointer-events: none;
 }
 
+.dotted {
+  left: 0;
+}
+
+/* Mirrored, so the dense edge sits against the viewport edge on both sides. */
 .dotted-right {
-  background-image: url("../../../../docs/website/assets/halftone.png");
-  background-size: 158%;
-  transform: rotate(180deg);
-  background-repeat: repeat-y;
-  background-position: center center;
-  width: 190px;
-  height: 100vh;
-  position: fixed;
   right: 0;
-  opacity: 0.1;
-  top: 0;
-  z-index: -5;
-  pointer-events: none;
+  transform: scaleX(-1);
 }
 
 @media (max-width: 576px) {
@@ -54,20 +70,8 @@
   font-family: var(--doc-body-font);
 }
 
-/* Doc-content headings use the brand heading colour (blue on light, yellow on
-   dark). They deliberately stay in the body face and keep their normal case:
-   in reference pages the headings are C++ symbol names, so uppercasing them or
-   setting the Bangers display face would mangle them. Bangers is reserved for
-   the site/brand title and the landing page. */
-.doc h1,
-.doc h2,
-.doc h3,
-.doc h4,
-.doc h5,
-.doc h6 {
-  color: var(--heading-font-color);
-  font-family: var(--body-font-family);
-}
+/* No heading colour here: this imports after doc.css and would paint over its
+   per-level outlined fills. */
 
 .toc.sidebar .toc-menu {
   color: var(--toc-font-color);
@@ -77,21 +81,13 @@
   color: var(--color-white-50);
 }
 
-.toc .toc-menu a.is-active {
-  color: var(--link-font-color);
-}
-
-.nav-text {
-  color: var(--color-white-50);
-}
-
-/* Brand display face for the site title in the navbar. */
-.navbar-brand .logo-text {
-  font-family: var(--brand-display-font);
-  letter-spacing: 0.6px;
-  font-size: 1.45rem;
-  line-height: 1;
-  color: var(--heading-font-color);
+/* The lockup carries the wordmark now (Figma 316:145548 / 316:145596), so
+   currentColor is what flips its seven letter paths between themes. The mark's
+   own silhouette and fill are fixed in the artwork. */
+.navbar-brand .logo-lockup {
+  color: var(--text-strong);
+  display: block;
+  width: auto;
 }
 
 /* Theme toggle button in the navbar. */
@@ -124,10 +120,15 @@
   transform: translateY(-1px);
 }
 
+/* The sun and moon are the landing page's stroked Iconly Pro pair (the set
+   Figma names, "Sun - Iconly Pro" 22x22 at 1.125), so they are drawn with a
+   stroke and must not take a fill: currentColor here would flood both shapes
+   solid and lose the rays. Stroke colour comes from the paths' own
+   stroke="currentColor". */
 .theme-toggle svg {
   width: 1.15rem;
   height: 1.15rem;
-  fill: currentColor;
+  fill: none;
 }
 
 /* Show the sun in dark mode (click for light), the moon in light mode. */
@@ -193,7 +194,7 @@ body {
 }
 
 .navbar {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--navbar-border-color);
 }
 
 /* Monochrome white status icons (comparison tables, demo gallery) ship as

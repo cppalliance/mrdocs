@@ -6,8 +6,6 @@ Alan Freitas <alandefreitas@gmail.com>
 :page-tags: mrdocs
 :navtitle: Home
 
-image::MrDocsBanner.png[]
-
 Mr.Docs is a C++ reference documentation generator built on Clang/LLVM. It reads your project's source through a compilation database, builds a complete symbol corpus from the real Clang AST, and emits documentation in several formats. The same corpus feeds rendered documents intended for human readers and structured data intended for downstream tools.
 
 [mermaid]

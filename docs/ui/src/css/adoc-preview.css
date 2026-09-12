@@ -141,15 +141,19 @@
 
 /*
  * Soften table borders inside the card so they don't fight the
- * card's outer border.
+ * card's outer border. Scoped to `table.tableblock`, the class
+ * AsciiDoc puts on data tables: an admonition is also a bare
+ * `<table>`, and since it now paints its own box on that element
+ * (doc.css, Figma 316:334386) the unscoped selector repainted its
+ * blue/gold stroke in --border.
  */
 
-.doc .adoc-preview table {
+.doc .adoc-preview table.tableblock {
   border-color: var(--border);
 }
 
-.doc .adoc-preview table th,
-.doc .adoc-preview table td {
+.doc .adoc-preview table.tableblock th,
+.doc .adoc-preview table.tableblock td {
   border-color: var(--border);
 }
 

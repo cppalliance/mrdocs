@@ -53,15 +53,19 @@ body {
   justify-content: flex-end;
 }
 
+/* Figma: a 216x36 cream field with a 1px outline and the same hard shadow. */
 #search-input {
-  color: #333;
+  color: var(--text-strong);
   font-family: inherit;
-  font-size: 0.95rem;
-  width: 150px;
-  border: 1px solid #dbdbdb;
-  border-radius: 0.1em;
+  font-size: calc(14 / var(--rem-base) * 1rem);
+  width: calc(216 / var(--rem-base) * 1rem);
+  height: calc(36 / var(--rem-base) * 1rem);
+  background: var(--bg);
+  border: 1px solid var(--outline);
+  border-radius: 0;
+  box-shadow: var(--outline-shadow);
   line-height: 1.5;
-  padding: 0 0.25em;
+  padding: 0 calc(10 / var(--rem-base) * 1rem);
 }
 
 #search-input:disabled {
@@ -178,23 +182,35 @@ body {
   margin: 0.25rem 0;
 }
 
+/* Figma 316:334286: outlined controls are 38px tall, 2px outline, hard 2px
+   shadow in the outline colour. */
 .navbar .button {
   display: inline-flex;
   align-items: center;
-  background: rgb(229, 190, 51);
-  height: 1.75rem;
-  color: #0e0e0e;
+  background: var(--gold-surface);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  height: calc(38 / var(--rem-base) * 1rem);
+  color: var(--text-strong);
   font-weight: var(--body-font-weight-bold);
-  padding: 0 0.75em;
+  padding: 0 calc(14 / var(--rem-base) * 1rem);
   white-space: nowrap;
-  box-shadow: 4px 4px 0 #000;
   transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .navbar .button:hover {
-  background: rgb(255, 215, 0);
+  background: var(--mr-yellow);
   transform: translateY(-2px);
-  box-shadow: 6px 6px 0 #000;
+  box-shadow: 4px 4px 0 var(--outline);
+}
+
+/* The theme toggle is the frame's 38x38 blue square. */
+.navbar .theme-toggle {
+  background: var(--mr-blue-450);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  height: calc(38 / var(--rem-base) * 1rem);
+  width: calc(38 / var(--rem-base) * 1rem);
 }
 
 @media screen and (max-width: 768.5px) {
@@ -211,6 +227,94 @@ body {
 }
 
 @media screen and (max-width: 1023.5px) {
+  /* Figma 316:335068: a 0.75 rule under a white bar. The logo sits left, the
+     search field and burger are pushed right as a pair 24 apart.
+
+     The 20 inset goes on the BRAND, not on .navbar. .navbar carries an
+     explicit height (--navbar-height) with border-box, so padding there does
+     not grow the box -- it shrinks the content area to 34, the 48-tall logo
+     overflowed it, and the bar spilled over the subnav below. The frame's
+     padV12 is just how a 36-tall row centres in a 60 bar, which flex
+     alignment already does. */
+  .navbar {
+    backdrop-filter: none;
+    border-bottom: 0.75px solid var(--outline);
+  }
+
+  /* 316:335070: the lockup is 104x35 here, against the 48 logo.css gives the
+     bare mark. Qualified with .navbar because logo.css is imported AFTER
+     header.css (site.css:23) at the same specificity. */
+  .navbar .navbar-brand .navbar-item:first-child svg {
+    height: calc(35 / var(--rem-base) * 1rem);
+  }
+
+  /* 316:335084: the wordmark is the strong ink here, not --color-white, which
+     is what --logo-text-color resolves to on the light theme.
+     NOTE: the frame sets this in Luckiest Guy 18; the theme has no such face
+     and ships Bangers. Flagged, not changed. */
+  .navbar .navbar-brand .navbar-item:first-child .logo-text {
+    color: var(--text-strong);
+    font-size: calc(18 / var(--rem-base) * 1rem);
+  }
+
+  /* Replaces the brand's own 1rem (line 31) with the frame's 20 each side.
+     316:334979 is padH20 at 402, and the landing's 316:280159 matches it. */
+  .navbar .navbar-brand {
+    align-items: center;
+    padding-left: calc(20 / var(--rem-base) * 1rem);
+    padding-right: calc(20 / var(--rem-base) * 1rem);
+  }
+
+  .navbar-brand .navbar-item.search {
+    margin-left: auto;
+  }
+
+  /* 316:335098: 24x24, 24 clear of the search field, and the bars in the
+     strong ink. */
+  .navbar-burger {
+    align-self: center;
+    height: calc(24 / var(--rem-base) * 1rem);
+    margin-left: calc(24 / var(--rem-base) * 1rem);
+    width: calc(24 / var(--rem-base) * 1rem);
+  }
+
+  .navbar-burger span {
+    background-color: var(--text-strong);
+  }
+
+  /* 316:335093: 188x36 field, 1px outline, 14px text inset 14 with a 16x16
+     magnifier before it and 8 between -- so the text starts at 38. */
+  .navbar #search-field {
+    position: relative;
+  }
+
+  .navbar #search-field::before {
+    background-color: var(--text-strong);
+    content: "";
+    height: calc(16 / var(--rem-base) * 1rem);
+    left: calc(14 / var(--rem-base) * 1rem);
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(16 / var(--rem-base) * 1rem);
+    z-index: 1;
+    -webkit-mask: url(../img/search.svg) no-repeat center / contain;
+    mask: url(../img/search.svg) no-repeat center / contain;
+  }
+
+  /* Qualified: the search extension ships its own css/search.css, loaded
+     after site.css, whose bare #search-input padding would otherwise win. */
+  .navbar #search-input {
+    border-width: 1px;
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    height: calc(36 / var(--rem-base) * 1rem);
+    padding:
+      calc(10 / var(--rem-base) * 1rem) calc(14 / var(--rem-base) * 1rem)
+      calc(10 / var(--rem-base) * 1rem) calc(38 / var(--rem-base) * 1rem);
+    width: calc(188 / var(--rem-base) * 1rem);
+  }
+
   .navbar-brand {
     height: inherit;
   }
@@ -241,7 +345,140 @@ body {
   }
 }
 
+/* ---- Desktop navbar, Figma 316:334626 ---------------------------------- */
 @media screen and (min-width: 1024px) {
+  /* A white bar, not the page cream; in dark, the landing navbar's ground. */
+  .navbar {
+    background-color: var(--navbar-surface);
+  }
+
+  /* 316:334628: the lockup is 139x47 here. */
+  .navbar .navbar-brand .navbar-item:first-child svg {
+    height: calc(47 / var(--rem-base) * 1rem);
+  }
+
+  /* 316:334650: the menu items carry no padding of their own, so the bar's
+     inset has to come from the brand and end rows. The docs frame's Logo
+     Container says padH20, but the landing's otherwise identical Navbar
+     (316:331943) says padH30, and the contents rail on this page already sits
+     30 in from the right. Two navbars 10 apart read as a misalignment when you
+     move between them, so both use 30.
+
+     The item gap follows the landing for the same reason. Note both frames
+     actually say gap32 here; the landing ships 28 and this matches it, so the
+     row does not reflow as you move between the two bars. Moving the landing
+     to 32 instead would put both on the frame AND keep them matched. */
+  .navbar-end {
+    align-items: center;
+    display: flex;
+    gap: calc(28 / var(--rem-base) * 1rem);
+    padding-right: calc(30 / var(--rem-base) * 1rem);
+  }
+
+  /* The search field lives in .navbar-brand, the links in .navbar-end, so the
+     space between them cannot come from a gap. Its stock .navbar-item padding
+     is 1rem (18), which left the row uneven: 18 here and 28 everywhere else. */
+  .navbar-brand .navbar-item.search {
+    padding-right: calc(28 / var(--rem-base) * 1rem);
+  }
+
+  .navbar .navbar-brand {
+    padding-left: calc(30 / var(--rem-base) * 1rem);
+  }
+
+  .navbar-end > .navbar-item {
+    padding: 0;
+  }
+
+  /* 316:334656: Special Elite 14, UPPER with 1.4 of tracking. */
+  .navbar-end > a.navbar-item {
+    color: var(--text-strong);
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    letter-spacing: 1.4px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  /* 316:334651: 216x36 field, 1px outline, the magnifier inset 14 with the
+     text 8 past it. Qualified past the search extension's own search.css. */
+  .navbar #search-input {
+    border-width: 1px;
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    height: calc(36 / var(--rem-base) * 1rem);
+    padding:
+      calc(10 / var(--rem-base) * 1rem) calc(14 / var(--rem-base) * 1rem)
+      calc(10 / var(--rem-base) * 1rem) calc(38 / var(--rem-base) * 1rem);
+    width: calc(216 / var(--rem-base) * 1rem);
+  }
+
+  .navbar #search-field {
+    position: relative;
+  }
+
+  .navbar #search-field::before {
+    background-color: var(--text-strong);
+    content: "";
+    height: calc(16 / var(--rem-base) * 1rem);
+    left: calc(14 / var(--rem-base) * 1rem);
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(16 / var(--rem-base) * 1rem);
+    z-index: 1;
+    -webkit-mask: url(../img/search.svg) no-repeat center / contain;
+    mask: url(../img/search.svg) no-repeat center / contain;
+  }
+
+  /* 316:334658: 157x38 gold, 2px stroke, the hard 2/2 shadow, an 18 mark and
+     its label 8 apart. Height pinned because the frame's INSIDE stroke sits
+     within the 38 while a CSS border adds to it. */
+  .navbar-end > a.navbar-repo {
+    align-items: center;
+    background: var(--gold-surface);
+    border: 2px solid var(--outline);
+    box-shadow: var(--outline-shadow);
+    color: var(--ds-color-on-accent);
+    display: inline-flex;
+    gap: calc(8 / var(--rem-base) * 1rem);
+    height: calc(38 / var(--rem-base) * 1rem);
+    padding: 0 calc(14 / var(--rem-base) * 1rem);
+    text-decoration: none;
+  }
+
+  .navbar-repo-icon {
+    background-color: currentColor;
+    display: block;
+    height: calc(18 / var(--rem-base) * 1rem);
+    width: calc(18 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/github.svg) no-repeat center / contain;
+    mask: url(../img/github.svg) no-repeat center / contain;
+  }
+
+  /* 316:334663: 38x38, the brand blue at 10% -- the fill's paint opacity is
+     0.1, not solid -- with the same 2px stroke, 2/2 shadow and a dark 22 sun.
+     Overrides custom.css:100, which gives a 6px radius and --color-white-60. */
+  .navbar .navbar-theme.theme-toggle {
+    background: color-mix(in sRGB, var(--mr-blue-450) 10%, transparent);
+    border: 2px solid var(--outline);
+    border-radius: 0;
+    box-shadow: var(--outline-shadow);
+    color: var(--text-strong);
+    height: calc(38 / var(--rem-base) * 1rem);
+    padding: 0;
+    width: calc(38 / var(--rem-base) * 1rem);
+  }
+
+  .navbar .navbar-theme.theme-toggle:hover {
+    color: var(--text-strong);
+    transform: none;
+  }
+
+  .navbar .navbar-theme.theme-toggle svg {
+    height: calc(22 / var(--rem-base) * 1rem);
+    width: calc(22 / var(--rem-base) * 1rem);
+  }
+
   .navbar-burger {
     display: none;
   }

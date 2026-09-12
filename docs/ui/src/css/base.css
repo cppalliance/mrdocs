@@ -8,7 +8,9 @@ html {
   box-sizing: border-box;
   font-size: var(--body-font-size);
   height: 100%;
-  scroll-behavior: smooth;
+  /* No `scroll-behavior: smooth`: in-page navigation must land instantly.
+     Smooth scrolling here animated every fragment jump and every
+     scrollIntoView, and reduced-motion users got the animation too. */
   background-color: var(--body-background);
 }
 
@@ -124,10 +126,26 @@ object[type="image/svg+xml"]:not([width]) {
     }
   }
 
+  /* Figma 316:334286 Frame 216: a 30px rail, 10px track inset either side,
+     gold thumb. Styling ::-webkit-scrollbar opts out of overlay scrollbars, so
+     the 30px is really reserved. Inset via transparent border + padding-box. */
   html::-webkit-scrollbar {
+    background-color: transparent;
+    height: var(--doc-rail-width);
+    width: var(--doc-rail-width);
+  }
+
+  html::-webkit-scrollbar-track {
     background-color: var(--scrollbar-track-color);
-    height: 12px;
-    width: 12px;
+    background-clip: padding-box;
+    border: calc(10 / var(--rem-base) * 1rem) solid transparent;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    background-clip: padding-box;
+    border: calc(10 / var(--rem-base) * 1rem) solid transparent;
+    border-radius: calc(20 / var(--rem-base) * 1rem);
   }
 
   body ::-webkit-scrollbar {

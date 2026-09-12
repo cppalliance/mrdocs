@@ -28,6 +28,20 @@ body.-toc aside.toc.sidebar {
     display: none;
   }
 
+  /* Pinned hard to the right edge. The frame does put a 30 gutter beyond the
+     rail (Frame 216, 316:334623 / 316:335858), but that strip carries only the
+     flat page ground -- no halftone. Once the rail itself picked up the site
+     halftone (316:334607 / 316:335842), the gutter stopped reading as a margin
+     and started reading as a seam: dots, then 30 of bare ground, then the
+     window edge. The rail's own 20 of padding keeps its content off the edge.
+     The article column absorbs any surplus, so the rail never floats in dead
+     space. */
+  /* The rail keeps the frame's exact 240 (316:334607) and pins to the right
+     edge. The page's leftover width goes to the ARTICLE instead -- see doc.css
+     -- because the article carries the content band as a background, so
+     growing it grows the band and no edge is ever visible. Growing the rail
+     here was tried first and is wrong: it removes the gap too, but it puts the
+     rail at 271 against the frame's 240, which audit-spec catches. */
   aside.toc.sidebar {
     flex: 0 0 var(--toc-width);
     order: 1;

@@ -1,18 +1,21 @@
+/* Shown at every width: Figma 316:334974 puts the crumb on the mobile strip
+   too ("Mr.Docs / Home"). It was display: none here with a desktop-only
+   override, from when the strip itself was hidden below 1024. */
 .breadcrumbs {
-  display: none;
+  display: block;
   flex: 1 1;
-  padding: 0 0.5rem 0 0.75rem;
+  /* The 40px inset now lives on .toolbar, which is full-bleed. */
+  padding: 0;
   line-height: var(--nav-line-height);
-}
-
-@media screen and (min-width: 1024px) {
-  .breadcrumbs {
-    display: block;
-  }
 }
 
 a + .breadcrumbs {
   padding-left: 0.05rem;
+}
+
+.breadcrumbs,
+.breadcrumbs a {
+  color: var(--text-strong);
 }
 
 .breadcrumbs ul {

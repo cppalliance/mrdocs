@@ -163,6 +163,14 @@ for (let panel of data.panels) {
     const snippetContents = fs.readFileSync(headerPath, 'utf8');
     panel.snippet = hljs.highlight('cpp', snippetContents).value;
 
+    // Figma renders the gutter as its own 9px column beside the code, not
+    // as a number per line. Emit it as plain text: the highlighted snippet
+    // has spans that cross newlines, so wrapping each line would mean
+    // re-opening the span stack, and a sibling column needs none of that.
+    // Both columns share a line-height in CSS so the numbers stay aligned.
+    const snippetLineCount = snippetContents.replace(/\n+$/, '').split('\n').length;
+    panel.lineNumbers = Array.from({length: snippetLineCount}, (_, i) => i + 1).join('\n');
+
     // Delete the temporary output file
     fs.unlinkSync(mrdocsOutput);
 
@@ -174,6 +182,24 @@ for (let panel of data.panels) {
 let logoPath = path.join(__dirname, '..', 'ui', 'src', 'partials', 'logo.hbs');
 let logoContent = fs.readFileSync(logoPath, 'utf8');
 templateSource = templateSource.replace(/\s*\{\{>\s*logo\s*\}\}\s*/g, logoContent);
+
+// Cache-bust the stylesheet so browsers reliably pick up CSS changes in dev
+// (and on deploy). Version = styles.css mtime, so it only changes when the CSS does.
+const cssPath = path.join(__dirname, 'styles.css');
+const cssVer = fs.existsSync(cssPath) ? Math.round(fs.statSync(cssPath).mtimeMs) : Date.now();
+templateSource = templateSource.replace('href="styles.css"', `href="styles.css?v=${cssVer}"`);
+
+// The design system is shared with the Antora theme and lives outside this
+// directory, but CI only publishes index.html, robots.txt, styles.css and
+// assets/. Copying it into assets/ means the existing `cp -r assets` step
+// carries it -- no workflow change, which matters because any edit under
+// .github/workflows/ci-* forces the full CI matrix (utils/danger/logic.ts).
+const dsSrc = path.join(__dirname, '..', 'shared', 'design-system.css');
+const dsOut = path.join(__dirname, 'assets', 'design-system.css');
+fs.copyFileSync(dsSrc, dsOut);
+const dsVer = Math.round(fs.statSync(dsSrc).mtimeMs);
+templateSource = templateSource.replace(
+  'href="assets/design-system.css"', `href="assets/design-system.css?v=${dsVer}"`);
 
 // Compile the template AFTER replacement
 let template = Handlebars.compile(templateSource);

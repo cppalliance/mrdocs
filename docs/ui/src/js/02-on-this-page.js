@@ -45,12 +45,47 @@
   menu.appendChild(title)
   menu.appendChild(list)
 
+  /* Each copy of the list carries its own anchors, so `links` -- which holds
+     the sidebar's, and is what the scroll maths measures -- is not enough to
+     mark the active entry everywhere. Clones register here and setActive
+     mirrors the class onto them. Before this the embedded copy never
+     highlighted at all. */
+  var mirrors = {}
+
+  function registerMirror (container) {
+    find('a[href^="#"]', container).forEach(function (link) {
+      (mirrors[link.hash] = mirrors[link.hash] || []).push(link)
+    })
+  }
+
+  function setActive (fragment, on) {
+    var link = links[fragment]
+    if (link) link.classList[on ? 'add' : 'remove']('is-active')
+    ;(mirrors[fragment] || []).forEach(function (clone) {
+      clone.classList[on ? 'add' : 'remove']('is-active')
+    })
+  }
+
   var startOfContent = !document.getElementById('toc') && article.querySelector('h1.page ~ :not(.is-before-toc)')
   if (startOfContent) {
     var embeddedToc = document.createElement('aside')
     embeddedToc.className = 'toc embedded'
     embeddedToc.appendChild(menu.cloneNode(true))
-    startOfContent.parentNode.insertBefore(embeddedToc, startOfContent)
+    /* Figma 316:334667 stacks the contents list ABOVE the article body -- the
+       Sidebar sits at y=183 and the content block starts at y=635 -- so it
+       goes before the page title, not after it. main.css hides this copy from
+       1024 up, so the placement only shows on mobile.
+
+       It goes BEFORE article.doc rather than inside it, because the content
+       band is painted as a background on .doc: as a child it sat inside that
+       background box, so the band's clouds ran behind the contents list
+       instead of starting at the title. The 402 frame puts the list on the
+       plain page ground and begins the band at the h1. The list full-bleeds
+       itself (margin-inline: calc(50% - 50vw)), so it does not depend on
+       .doc's own inset. */
+    if (article.parentNode) article.parentNode.insertBefore(embeddedToc, article)
+    else startOfContent.parentNode.insertBefore(embeddedToc, startOfContent)
+    registerMirror(embeddedToc)
   }
 
   window.addEventListener('load', function () {
@@ -70,9 +105,9 @@
         var fragment = '#' + heading.id
         if (idx === lastIdx || heading.getBoundingClientRect().top + getNumericStyleVal(heading, 'paddingTop') > ceil) {
           activeFragments.push(fragment)
-          if (lastActiveFragment.indexOf(fragment) < 0) links[fragment].classList.add('is-active')
+          if (lastActiveFragment.indexOf(fragment) < 0) setActive(fragment, true)
         } else if (~lastActiveFragment.indexOf(fragment)) {
-          links[lastActiveFragment.shift()].classList.remove('is-active')
+          setActive(lastActiveFragment.shift(), false)
         }
       })
       list.scrollTop = list.scrollHeight - list.offsetHeight
@@ -81,7 +116,7 @@
     }
     if (Array.isArray(lastActiveFragment)) {
       lastActiveFragment.forEach(function (fragment) {
-        links[fragment].classList.remove('is-active')
+        setActive(fragment, false)
       })
       lastActiveFragment = undefined
     }
@@ -90,17 +125,24 @@
       if (heading.getBoundingClientRect().top + getNumericStyleVal(heading, 'paddingTop') - buffer > ceil) return true
       activeFragment = '#' + heading.id
     })
+    /* Above the first heading nothing matches, which left the whole contents
+       list unmarked -- and since the gold rule only paints on the active
+       entry (Figma 316:335140 is the one link whose stroke is at full
+       opacity; the rest sit at 0), the list showed no rule at all until you
+       scrolled. Fall back to the first heading so one entry is always
+       marked. */
+    if (!activeFragment && headings.length) activeFragment = '#' + headings[0].id
     if (activeFragment) {
       if (activeFragment === lastActiveFragment) return
-      if (lastActiveFragment) links[lastActiveFragment].classList.remove('is-active')
+      if (lastActiveFragment) setActive(lastActiveFragment, false)
       var activeLink = links[activeFragment]
-      activeLink.classList.add('is-active')
+      setActive(activeFragment, true)
       if (list.scrollHeight > list.offsetHeight) {
         list.scrollTop = Math.max(0, activeLink.offsetTop + activeLink.offsetHeight - list.offsetHeight)
       }
       lastActiveFragment = activeFragment
     } else if (lastActiveFragment) {
-      links[lastActiveFragment].classList.remove('is-active')
+      setActive(lastActiveFragment, false)
       lastActiveFragment = undefined
     }
   }

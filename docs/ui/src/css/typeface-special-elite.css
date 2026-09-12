@@ -1,4 +1,13 @@
-/* Special Elite — Mr.Docs body face (typewriter slab serif). */
+/* Special Elite — Mr.Docs body face (typewriter slab serif).
+ *
+ * swap, not optional: a whole page of body copy stuck in the stand-in face for
+ * the visit is a worse outcome than a brief repaint, and unlike the headline
+ * the change is subtle at body sizes. What made the old swap visible was the
+ * reflow, not the repaint -- Courier New ran 13.5% wide and 13.0% tall against
+ * Special Elite, ~70px of drift over a doc page. The metric-compatible
+ * "Special Elite Fallback" in design-system.css removes that, so the swap now
+ * lands in place. It is preloaded (see head-styles.hbs) so the window is
+ * usually zero anyway. */
 @font-face {
   font-family: "Special Elite";
   font-style: normal;

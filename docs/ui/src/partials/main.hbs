@@ -1,7 +1,8 @@
 <main class="article">
+  {{!-- Two edge rails. The second carried .dotted as well, so both stacked at
+        left:0 and the .dotted-right rule in custom.css never matched. --}}
   <div class="dotted"></div>
-  <div class="dotted"></div>
-{{> toolbar}}
+  <div class="dotted-right"></div>
   <div class="content">
 {{#if (eq page.layout '404')}}
 {{> article-404}}

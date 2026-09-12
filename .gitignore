@@ -46,3 +46,6 @@ __pycache__/
 .coverage
 .coverage.*
 htmlcov/
+
+# Local preview: symlink to built docs so the landing page ./docs/ link resolves
+/docs/website/docs

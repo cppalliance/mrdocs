@@ -1,2 +1,17 @@
+    {{! Preload the two brand faces before the stylesheet link. The @font-face
+        rules live inside site.css, so without this the browser cannot even
+        discover the fonts until the 93KB sheet has downloaded and parsed:
+        measured cold, the font requests started at 762ms, 34ms after first
+        contentful paint, so every load painted fallback text first and swapped
+        ~250ms later. Preloading moves the fetch to HTML-parse time, in
+        parallel with the CSS instead of behind it.
+        Only the latin subsets, and only the two faces that paint above the
+        fold -- Roboto and Roboto Mono are fallback/code faces whose stand-ins
+        are metrically close, and preloading them would just contend for
+        bandwidth with the stylesheet.
+        crossorigin is required: fonts are always fetched in CORS mode, and a
+        preload without it is a separate, unused fetch. }}
+    <link rel="preload" href="{{{uiRootPath}}}/font/bangers-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{{uiRootPath}}}/font/special-elite-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
     <link rel="stylesheet" href="{{{uiRootPath}}}/css/vendor/tabs.css">

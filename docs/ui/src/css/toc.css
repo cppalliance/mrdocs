@@ -3,29 +3,41 @@
 }
 
 .toc.sidebar .toc-menu {
-  margin-right: 0.75rem;
+  /* No margin of its own: the rail now carries the frame's padH20, so a
+     0.75rem margin here double-inset the text to 184 where Figma's Frame 189
+     is a full 200 -- which made entries wrap early and the padding read as
+     too heavy for the 240 column. */
   position: sticky;
-  top: var(--toc-top);
+  /* Plus the rail's own inset: at var(--toc-top) alone the list pinned flush
+     against the navbar as soon as the page scrolled, losing the 28 it sits at
+     when the page is at the top. */
+  top: calc(var(--toc-top) + var(--toc-inset-y));
 }
 
+/* Same pink chip as the left sidebar. */
 .toc .toc-menu h3 {
-  color: var(--toc-heading-font-color);
+  /* Same chip as the left sidebar: pink on light, red on dark (316:335846). */
+  background: var(--nav-title-background);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  color: var(--mr-white);
+  display: inline-block;
+  font-family: var(--ds-font-display);
   font-size: calc(16 / var(--rem-base) * 1rem);
-  font-weight: var(--body-font-weight-bold);
-  line-height: 1.3;
-  margin: 0 -0.5px;
-  padding-bottom: 0.25rem;
+  font-weight: var(--heading-font-weight);
+  letter-spacing: 0.6px;
+  line-height: 1;
+  margin: 0 0 calc(16 / var(--rem-base) * 1rem);
+  padding: calc(6 / var(--rem-base) * 1rem) calc(12 / var(--rem-base) * 1rem);
 }
 
+/* The chip sizes itself; this just stops it stretching. */
 .toc.sidebar .toc-menu h3 {
-  display: flex;
-  flex-direction: column;
-  height: 2.5rem;
-  justify-content: flex-end;
+  align-self: flex-start;
 }
 
 .toc .toc-menu ul {
-  font-size: calc(15 / var(--rem-base) * 1rem);
+  font-size: calc(13 / var(--rem-base) * 1rem);
   line-height: var(--toc-line-height);
   list-style: none;
   margin: 0;
@@ -49,13 +61,27 @@
   height: 0;
 }
 
+/* The desktop block used to bump these to 15 and 13.5, quietly overriding the
+   frame's 16 and 13 above. Frame 316:334286 gives one size for both. */
 @media screen and (min-width: 1024px) {
-  .toc .toc-menu h3 {
-    font-size: calc(15 / var(--rem-base) * 1rem);
-  }
-
-  .toc .toc-menu ul {
-    font-size: calc(13.5 / var(--rem-base) * 1rem);
+  /* Figma 316:334607: the rail is 240 wide with padV28 padH20, so its chip
+     and entries start 20 in and 28 down. They were sitting flush against the
+     border. */
+  .toc.sidebar {
+    border-left: 2px solid var(--outline);
+    padding: var(--toc-inset-y) calc(20 / var(--rem-base) * 1rem);
+    /* 316:335528 / 316:334293: the Sidebar carries the site halftone over its
+       full height. Same pattern as the landing page (Figma source 316:230727
+       light / 316:230726 dark, a 16x16 circle at scale 0.2), so it comes from
+       the shared --ds-halftone-* tokens rather than a second recipe. The frame
+       puts halftone on both sidebars only -- the reading column stays clean. */
+    background-image:
+      radial-gradient(
+        var(--ds-halftone-dot) var(--ds-halftone-dot-size),
+        transparent var(--ds-halftone-dot-size)
+      );
+    background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
+    background-repeat: repeat;
   }
 }
 
@@ -71,11 +97,24 @@
   padding-left: 2rem;
 }
 
+/* Figma: 200x22.7 entries on a 28.7 rhythm -- 3.5px of padding around 13px at
+   1.2 lands 22.6. Leading stays 1.2 rather than the frame's 100% so a wrapped
+   entry does not collide with itself. Text inset 13.8 from the rule.
+
+   The rule is TRANSPARENT here and gold on .is-active. Figma 316:334614-20
+   gives every entry the same gold stroke and hides it with paint opacity 0 on
+   the inactive ones, so the rule reserves its space throughout and the row
+   does not shift when it becomes active. This was inverted -- gold on the
+   idle entries, ink on the active one -- which is the opposite of the design
+   and of the mobile list below. */
 .toc .toc-menu a {
-  color: var(--color-white-75);
-  border-left: 2px solid var(--toc-border-color);
+  color: var(--toc-font-color);
+  border-left: 2px solid transparent;
   display: inline-block;
-  padding: 0.25rem 0 0.25rem 0.5rem;
+  margin-bottom: calc(6 / var(--rem-base) * 1rem);
+  padding:
+    calc(3.5 / var(--rem-base) * 1rem) 0 calc(3.5 / var(--rem-base) * 1rem)
+    calc(13.8 / var(--rem-base) * 1rem);
   text-decoration: none;
 }
 
@@ -89,10 +128,77 @@
 }
 
 .toc .toc-menu a.is-active {
-  border-left-color: var(--color-white);
-  color: var(--doc-font-color);
+  border-left-color: var(--toc-border-color);
+  color: var(--text-strong);
 }
 
 .sidebar.toc .toc-menu a:focus {
   background: var(--color-black-20);
+}
+
+/* ---- Mobile contents list, Figma "Sidebar" 316:334668 ------------------
+   The embedded copy is the only one shown below 1024 (main.css hides it from
+   1024 up, and the sidebar rail is hidden below 1300), so these are the
+   mobile values: a 1.5 top rule that does not take space, 30 of padding, 12
+   between the chip and the list. */
+@media screen and (max-width: 1023.5px) {
+  /* Full-bleed, with a rule above AND below (Figma's Sidebar spans the whole
+     402). Cancelling .doc's 1rem padding is not enough: the article is also
+     centred with its own max-width and side margins, so at 768 the rules
+     stopped well short of the page edges. 50% - 50vw reaches them at any
+     width. */
+  .toc.embedded {
+    border-top: 1.5px solid var(--outline);
+    border-bottom: 1.5px solid var(--outline);
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: calc(30 / var(--rem-base) * 1rem);
+    width: 100vw;
+  }
+
+  .toc.embedded .toc-menu {
+    display: flex;
+    flex-direction: column;
+    gap: calc(12 / var(--rem-base) * 1rem);
+    margin: 0;
+    position: static;
+  }
+
+  /* 316:334669: 96x21 of fill with a 1.5 stroke on all four sides and a 1.5
+     shadow -- lighter than the desktop rail's 2px -- at 14 in the display
+     face. */
+  .toc.embedded .toc-menu h3 {
+    align-self: flex-start;
+    border-width: 1.5px;
+    box-shadow: 1.5px 1.5px 0 var(--outline);
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    margin: 0;
+    padding: calc(4 / var(--rem-base) * 1rem) calc(9 / var(--rem-base) * 1rem);
+  }
+
+  .toc.embedded .toc-menu ul {
+    display: flex;
+    flex-direction: column;
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    gap: calc(8 / var(--rem-base) * 1rem);
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* 22-tall entries inset 9 past the rule. Every entry carries the same 1.36
+     gold stroke in the frame, hidden by paint opacity 0 on the inactive ones,
+     so the rule takes space throughout and the row does not shift when it
+     becomes active. */
+  .toc.embedded .toc-menu a {
+    border-left: 1.36px solid transparent;
+    display: block;
+    margin: 0;
+    min-height: calc(22 / var(--rem-base) * 1rem);
+    padding: calc(4 / var(--rem-base) * 1rem) calc(9 / var(--rem-base) * 1rem);
+  }
+
+  .toc.embedded .toc-menu a.is-active {
+    border-left-color: var(--gold-surface);
+    color: var(--text-strong);
+  }
 }

@@ -1,0 +1,128 @@
+/* The hamburger's menu, Figma 316:335019 "Navbar Menu [Open]" at 402.
+   Overlays the page below the navbar on the blue tint, carrying the site
+   links, the repo button and the theme toggle. Hidden from 1024 up, where the
+   navbar shows those controls itself. */
+.site-menu {
+  display: none;
+}
+
+@media screen and (max-width: 1023.5px) {
+  .site-menu.is-active {
+    background: var(--surface-tint);
+    display: block;
+    position: fixed;
+    top: var(--navbar-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* Above the subnav strip, below the navbar (4) so the close button stays
+       reachable. --z-index-nav is 1, which lost to the version chip's own 3:
+       the strip is position: static, so its z-index is inert and the chip
+       competed in the ROOT stacking context -- it painted over the overlay
+       and stayed clickable through it. The strip is given a real stacking
+       context below so the chip can no longer escape it. */
+    z-index: 3;
+    overflow-y: auto;
+    overscroll-behavior: none;
+  }
+
+  .toolbar {
+    position: relative;
+  }
+
+  /* Frame 233: 30 of padding, the link column and the toggle side by side
+     with the toggle pinned to the far end. */
+  .site-menu-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: calc(32 / var(--rem-base) * 1rem);
+    padding: calc(30 / var(--rem-base) * 1rem);
+  }
+
+  /* Frame 235: 272x130, three items 32 apart. */
+  .site-menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(32 / var(--rem-base) * 1rem);
+  }
+
+  /* 316:335055: Special Elite 14, UPPER case with 1.4 of tracking. */
+  .site-menu-link {
+    color: var(--text-strong);
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    letter-spacing: 1.4px;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* 316:335057: 157x38 gold, 2px stroke, the hard 2/2 shadow, an 18x18 mark
+     and its label 8 apart. */
+  .site-menu-repo {
+    align-items: center;
+    background: var(--gold-surface);
+    border: 2px solid var(--outline);
+    box-shadow: var(--outline-shadow);
+    color: var(--ds-color-on-accent);
+    display: inline-flex;
+    font-size: calc(14 / var(--rem-base) * 1rem);
+    gap: calc(8 / var(--rem-base) * 1rem);
+    letter-spacing: 1.4px;
+    line-height: 1;
+    /* Height pinned to the frame's 38: its INSIDE stroke sits within that box,
+       whereas a CSS border adds to it, which made the button 40 tall. */
+    height: calc(38 / var(--rem-base) * 1rem);
+    padding: 0 calc(14 / var(--rem-base) * 1rem);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* Masked so the mark takes the button's ink rather than the file's own
+     fill, which is a light stroke meant for the dark landing page. */
+  .site-menu-repo-icon {
+    background-color: currentColor;
+    display: block;
+    height: calc(18 / var(--rem-base) * 1rem);
+    width: calc(18 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/github.svg) no-repeat center / contain;
+    mask: url(../img/github.svg) no-repeat center / contain;
+  }
+
+  /* 316:335063: 38x38, the brand blue at 10% (NOT solid -- the fill's paint
+     opacity is 0.1), 2px stroke, the hard 2/2 shadow, and a dark 22 sun.
+
+     Overrides three base .theme-toggle values (custom.css:100): align-self
+     center, which pushed it 45 down by centring against the links column's
+     full height; a 6px radius, where the frame's corners are square; and
+     --color-white-60, which renders the glyph translucent on light. */
+  .site-menu-theme.theme-toggle {
+    align-self: flex-start;
+    /* Centred on the first link's line rather than sharing its top edge. The
+       frame top-aligns the two (its links frame and toggle frame are both at
+       y=30), which left the 38 button's centre 11 below the 14 line's, so it
+       read as sitting lower. Half the difference, (38 - 14) / 2. */
+    margin-top: calc(-12 / var(--rem-base) * 1rem);
+    background: color-mix(in sRGB, var(--mr-blue-450) 10%, transparent);
+    border: 2px solid var(--outline);
+    border-radius: 0;
+    box-shadow: var(--outline-shadow);
+    color: var(--text-strong);
+    flex: 0 0 auto;
+    height: calc(38 / var(--rem-base) * 1rem);
+    padding: 0;
+    width: calc(38 / var(--rem-base) * 1rem);
+  }
+
+  .site-menu-theme.theme-toggle:hover {
+    color: var(--text-strong);
+    transform: none;
+  }
+
+  /* 316:335064: the sun is 22, against the 1.15rem the base rule gives it. */
+  .site-menu-theme.theme-toggle svg {
+    height: calc(22 / var(--rem-base) * 1rem);
+    width: calc(22 / var(--rem-base) * 1rem);
+  }
+}

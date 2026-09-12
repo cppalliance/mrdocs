@@ -3,7 +3,14 @@
   <nav class="nav-menu">
     <button class="nav-menu-toggle" aria-expanded="false" style="display: none"></button>
     {{#with @root.page.componentVersion}}
-    <h3 class="title"><a href="{{{relativize ./url}}}">{{./title}}</a></h3>
+    <h3 class="title">
+      <a href="{{{relativize ./url}}}">{{./title}}</a>
+      {{!-- Mobile disclosure for the tree below (Figma 316:335013 collapsed
+            vs 316:335102 expanded). Inert on desktop, where the tree is
+            always open. --}}
+      <button class="nav-section-toggle" type="button" aria-expanded="true"
+        aria-label="Toggle {{./title}} navigation"></button>
+    </h3>
     {{/with}}
 {{> nav-tree navigation=this}}
   </nav>

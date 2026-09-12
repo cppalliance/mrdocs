@@ -1,0 +1,101 @@
+/* =====================================================================
+ * Content-column graphic band
+ *
+ * Figma "Frame 193": 316:335558 (dark, 920x299) and 316:334323 (light,
+ * 920x283). It is the first child of the 899-wide Richtext column
+ * (316:335557 / 316:334322) and is the backdrop the page title sits on --
+ * NOT a block above it: the column's own padV120 puts the h1 (316:335581)
+ * at y=145 inside a band that runs 0..299. So this is painted as a
+ * background on .doc and costs zero layout height; nothing moves, and the
+ * h1 keeps the position doc.css already gives it.
+ *
+ * What the band is made of, per the frame:
+ *   - the page ground (#272E3F dark / #FDFAF5 light) plus the site
+ *     halftone PATTERN fill,
+ *   - Vector 12 (316:335559 / 316:334324), a 975x650 blob filled with the
+ *     ground colour at 100%,
+ *   - Group 5 (316:335561 / 316:334326), thirteen triangular "speed line"
+ *     shards fanning out of the bottom centre, each an opaque ground fill
+ *     with a tint over it (dark: #0F172A at 0.7 and 0.1 -- two distinct
+ *     tones; light: #0F172A at 0.1 throughout; four #93C5FD shards sit at
+ *     opacity 0 in both themes and are invisible),
+ *   - two more ground-filled shapes (316:335575/6, 316:334340/1),
+ *   - Rectangle 43 (316:335577 / 316:334342) on top, carrying the same two
+ *     halftone-cloud images ("Asset 1@3x" dd1dedd5..., "Asset 2@3x"
+ *     ea414417...) in both themes -- but dark composites them at opacity
+ *     0.3 with blendMode LINEAR_BURN while light uses 0.7 NORMAL, which is
+ *     not a CSS blend mode and is not reachable from the other theme.
+ *
+ * Two consequences drove the implementation:
+ *
+ * 1. Vector 12 and the shards are OPAQUE ground fills, and together they
+ *    cover the frame completely -- rendering the frame with and without
+ *    its PATTERN fill gives a pixel-identical result. The band therefore
+ *    carries NO site halftone; the only dots in it are the ones printed
+ *    inside the cloud art. That is why this file does not touch
+ *    --ds-halftone-*: there is nothing here for those tokens to draw.
+ *
+ * 2. Because LINEAR_BURN has no CSS equivalent and the dark shards use two
+ *    tones where light uses one, the two themes are flattened separately
+ *    from the two frames rather than one asset being tinted or inverted
+ *    (which is what the landing page does for its own band). Each PNG is
+ *    the frame composited exactly as Figma composites it, quantised to a
+ *    16-colour palette with the ground entry snapped back to the exact
+ *    theme colour so the band edge is seamless against the page.
+ *
+ * Width: in the frame the band is 920.23 wide, absolutely positioned at
+ * x=0 in an 899 column whose clipping is switched off, so it hangs 21px
+ * past the RIGHT edge only and lands on the TOC rail. That asymmetry is an
+ * artefact of a 920 graphic being dropped at 0,0, not a design move, so
+ * the band here spans the column exactly (background-size: 100% auto) and
+ * neither bleeds nor clips. The art is abstract, so the 2.3% horizontal
+ * shrink is invisible and the rays still converge on the column's centre.
+ *
+ * No motion is added, so there is nothing for prefers-reduced-motion to
+ * turn off.
+ * ===================================================================== */
+
+:root {
+  --doc-band-image: url(../img/content-band-light.png);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --doc-band-image: url(../img/content-band-dark.png);
+  }
+}
+
+[data-theme="dark"] {
+  --doc-band-image: url(../img/content-band-dark.png);
+}
+
+[data-theme="light"] {
+  --doc-band-image: url(../img/content-band-light.png);
+}
+
+/* background-origin defaults to padding-box, which is the full 899 column
+   including its 60px gutters -- the same box Frame 193 is measured in. */
+.doc {
+  background-image: var(--doc-band-image);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% auto;
+}
+
+/* The 402 frame (316:335193 dark / 316:334685 light) does not scale the
+   band down with the viewport: its Group 5 is 598 wide against a 402
+   frame, i.e. the same art blown up to 148.8% and centre-cropped, so the
+   clouds still read at phone width instead of collapsing into a 130px
+   sliver. Same treatment for the whole sub-desktop range -- the frame set
+   has no 768 documentation page to say otherwise. */
+@media screen and (max-width: 1023.5px) {
+  .doc {
+    background-size: 148.8% auto;
+  }
+}
+
+@media print {
+  .doc {
+    background-image: none;
+  }
+}

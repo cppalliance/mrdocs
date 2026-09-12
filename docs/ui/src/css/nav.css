@@ -20,7 +20,22 @@
   .nav-container {
     width: var(--nav-width);
     background-color: var(--nav-panel-background);
-    border-right: 1px solid var(--nav-border-color);
+    /* 316:335528 / 316:334293: the Sidebar carries the site halftone over its
+       full height. Same pattern as the landing page (Figma source 316:230727
+       light / 316:230726 dark, a 16x16 circle at scale 0.2), so it comes from
+       the shared --ds-halftone-* tokens rather than a second recipe. The frame
+       puts halftone on both sidebars only -- the reading column stays clean. */
+    background-image:
+      radial-gradient(
+        var(--ds-halftone-dot) var(--ds-halftone-dot-size),
+        transparent var(--ds-halftone-dot-size)
+      );
+    background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
+    background-repeat: repeat;
+
+    /* Figma 316:334293 borderRightWeight 1.81818 -> 2, matching the right
+       sidebar's own edge, which was already 2. */
+    border-right: 2px solid var(--nav-border-color);
   }
 }
 
@@ -31,6 +46,14 @@
     position: static;
     top: 0;
     visibility: visible;
+  }
+
+  /* A page with no nav tree (404, and any page outside a component) would
+     otherwise render an empty 270px column: the explore panel used to fill it.
+     Hidden on desktop only -- the burger still opens the drawer on small
+     screens, where nav-drawer-footer carries the version switcher and links. */
+  .nav-container.is-empty {
+    display: none;
   }
 }
 
@@ -51,22 +74,40 @@
 }
 
 @media screen and (min-width: 1024px) {
+  /* 316:335528: the Sidebar is the full height of the content column, so the
+     aside spans it rather than stopping a viewport down -- otherwise the dark
+     theme's panel wash ends mid-page and draws a horizontal seam.
+
+     The sticky moves to .panels so the tree still follows the page: a sticky
+     box taller than the viewport has nothing to stick to. */
   .nav {
-    top: var(--navbar-height);
     box-shadow: none;
-    position: sticky;
-    height: var(--nav-height--desktop);
+    height: 100%;
+    position: static;
   }
 }
 
+/* Link colour comes from the row rules below; this used to set
+   --color-white-60, which resolves to translucent ink on the light theme. */
 .nav a {
-  color: var(--color-white-60);
+  color: inherit;
 }
 
 .nav .panels {
   display: flex;
   flex-direction: column;
   height: inherit;
+}
+
+@media screen and (min-width: 1024px) {
+  /* Must follow the rule above: same specificity, so source order decides.
+     The aside is the full column, so the sticky lives here -- one viewport
+     tall, which is what gives it room to stick. */
+  .nav .panels {
+    height: var(--nav-height--desktop);
+    position: sticky;
+    top: var(--navbar-height);
+  }
 }
 
 .nav-panel-menu {
@@ -96,7 +137,8 @@
 
 .nav-menu {
   min-height: 100%;
-  padding: 0.5rem 0.75rem;
+  /* Figma: 20px inset, chip 28px down. */
+  padding: calc(28 / var(--rem-base) * 1rem) calc(20 / var(--rem-base) * 1rem);
   line-height: var(--nav-line-height);
   position: relative;
 }
@@ -126,12 +168,45 @@
   visibility: visible;
 }
 
+/* Figma: pink chip, 28px tall, 2px outline, 28px down and 20px in. */
 .nav-menu h3.title {
-  color: var(--nav-heading-font-color);
-  font-size: inherit;
+  background: var(--nav-title-background);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  color: var(--mr-white);
+  display: inline-block;
+  font-size: calc(14 / var(--rem-base) * 1rem);
   font-weight: var(--body-font-weight-bold);
+  line-height: 1;
+  margin: 0 0 calc(16 / var(--rem-base) * 1rem);
+  padding: calc(6 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
+}
+
+.nav-menu h3.title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Mobile-only disclosure; nav-drawer.css styles and reveals it below 1024,
+   where the tree collapses. */
+.nav-section-toggle {
+  display: none;
+}
+
+/* Figma: 230 wide, tinted, 2px outline with the hard 2px shadow, 8/8/16 of
+   padding and an 8px gap between rows. Height is content-driven -- the frame's
+   427 is just its eleven rows plus gaps. */
+.nav-menu > .nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 / var(--rem-base) * 1rem);
+  background: var(--nav-tree-background);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
   margin: 0;
-  padding: 0.25em 0 0.125em;
+  padding:
+    calc(8 / var(--rem-base) * 1rem) calc(8 / var(--rem-base) * 1rem)
+    calc(16 / var(--rem-base) * 1rem);
 }
 
 .nav-list {
@@ -144,8 +219,19 @@
   margin-top: 0.5rem;
 }
 
+/* The panel's 8px gap spaces top-level rows; nested lists keep a small margin
+   of their own below. A margin here would compound with that gap.
+   Relative so the collapse toggle can anchor inside its own row. */
 .nav-item {
-  margin-top: 0.5em;
+  margin-top: 0;
+  position: relative;
+}
+
+.nav-list .nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 / var(--rem-base) * 1rem);
+  margin-top: calc(8 / var(--rem-base) * 1rem);
 }
 
 /* adds some breathing room below a nested list */
@@ -163,146 +249,121 @@
   display: none;
 }
 
+/* The caret sits in a 32-wide gutter at the LEFT of its row, next to the label
+   it discloses, and every row reserves that gutter (see the padding below) so
+   parents and leaves keep one text alignment.
+
+   It has to be a real, obvious control: all six parents in the tree are links,
+   so clicking a parent label navigates rather than expanding, which leaves
+   this button as the only way to reveal the 36 items nested under them. */
 .nav-item-toggle {
-  background: transparent url(../img/caret.svg) no-repeat center / 50%;
+  align-items: center;
+  background: transparent;
   border: none;
-  outline: none;
+  color: var(--nav-toggle-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
   line-height: inherit;
+  margin: 0;
   padding: 0;
   position: absolute;
-  height: calc(var(--nav-line-height) * 1em);
-  width: calc(var(--nav-line-height) * 1em);
-  margin-top: -0.05em;
-  margin-left: calc(var(--nav-line-height) * -1em);
+  left: 0;
+  /* Square 32 target, centred on the 28-tall idle row it belongs to. The 2px
+     of overhang each side falls in the 8px gap between rows, so it never
+     covers its neighbour. */
+  top: calc(-2 / var(--rem-base) * 1rem);
+  height: calc(32 / var(--rem-base) * 1rem);
+  width: calc(32 / var(--rem-base) * 1rem);
+  transition: background-color 150ms ease, color 150ms ease;
 }
 
-.nav-item.is-active > .nav-item-toggle {
+/* Masked, not drawn: caret.svg carries a hardcoded #c1c1c1 that reads as
+   decoration on the tinted panel and cannot be recoloured as a background
+   image. The mask sits on the pseudo-element so the button itself is free to
+   carry the hover chip. */
+.nav-item-toggle::before {
+  background-color: currentColor;
+  content: "";
+  display: block;
+  height: calc(14 / var(--rem-base) * 1rem);
+  width: calc(14 / var(--rem-base) * 1rem);
+  -webkit-mask: url(../img/caret.svg) no-repeat center / contain;
+  mask: url(../img/caret.svg) no-repeat center / contain;
+  transition: transform 150ms ease;
+}
+
+.nav-item-toggle:hover,
+.nav-item-toggle:focus-visible {
+  background-color: var(--nav-toggle_hover-background);
+  color: var(--nav-toggle_hover-color);
+}
+
+/* The theme sets `outline: none` on most controls. This one keeps a ring: it
+   is the only route to most of the tree, so a keyboard user has to be able to
+   see where they are. */
+.nav-item-toggle:focus-visible {
+  outline: 2px solid var(--nav-toggle-focus-ring);
+  outline-offset: -2px;
+}
+
+.nav-item.is-active > .nav-item-toggle::before {
   transform: rotate(90deg);
 }
 
-.is-current-page > .nav-link,
-.is-current-page > .nav-text {
-  font-weight: var(--body-font-weight-bold);
-  color: var(--color-white);
-}
-
-.nav-panel-explore {
-  background: var(--nav-secondary-background);
-  backdrop-filter: blur(10px);
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-@media screen and (min-width: 769px) {
-  .nav-panel-explore {
-    background: var(--nav-explore-overlay);
+@media (prefers-reduced-motion: reduce) {
+  .nav-item-toggle,
+  .nav-item-toggle::before {
+    transition: none;
   }
 }
 
-.nav-panel-explore:not(:first-child) {
-  top: auto;
-  max-height: var(--nav-panel-explore-height);
-}
+/* Figma rows: every link is a 28-tall flex row, Special Elite 14 at 14/14 in
+   the muted ink. These were inline text with no padding at all.
 
-.nav-panel-explore .context {
-  background: var(--nav-secondary-background);
-  font-size: calc(15 / var(--rem-base) * 1rem);
-  flex-shrink: 0;
-  color: var(--color-white);
-  box-shadow: 0 -1px 0 var(--nav-panel-divider-color);
-  padding: 0 0.5rem;
+   The frame insets its labels 14 and draws no carets. Reserving the 32 gutter
+   on EVERY row -- leaves included -- departs from that 14, and is the trade
+   that keeps one text alignment down the whole tree now that there is a
+   control to the left of some labels.
+
+   Scoped under .nav so the row colour beats the `.nav a { color: inherit }`
+   reset above -- without it anchors inherited the body ink and only the
+   parent spans came out at the spec'd muted grey. */
+.nav .nav-link,
+.nav .nav-text {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  color: var(--nav-muted-color);
+  font-size: calc(14 / var(--rem-base) * 1rem);
   line-height: 1;
-  height: var(--drawer-height);
+  min-height: calc(28 / var(--rem-base) * 1rem);
+  padding:
+    calc(7 / var(--rem-base) * 1rem) calc(14 / var(--rem-base) * 1rem)
+    calc(7 / var(--rem-base) * 1rem) calc(32 / var(--rem-base) * 1rem);
+  text-decoration: none;
 }
 
-.nav-panel-explore:not(:first-child) .context {
-  cursor: pointer;
-}
+/* Figma: the current page is a gold row, 2px outline (1.81818 in the export),
+   same hard shadow, and the on-accent ink.
 
-.nav-panel-explore .context .version {
-  display: flex;
-  align-items: inherit;
-}
-
-.nav-panel-explore .context .version::after {
-  content: "";
-  background: url(../img/chevron.svg) no-repeat center right / auto 100%;
-  /* chevron.svg is fixed white; invert it to dark on the light theme so it
-     stays visible on the light nav panel. */
-  filter: var(--doc-icon-filter);
-  width: 1.25em;
-  height: 0.75em;
-}
-
-.nav-panel-explore .components {
-  line-height: var(--nav-line-height);
-  flex-grow: 1;
-  box-shadow: 0 2px 8px 0 rgba(30, 50, 70, 0.3);
-  background-color: var(--nav-secondary-background);
-  padding: 0.75rem 0.75rem 0 0.75rem;
-  margin: 0;
-  overflow-y: scroll;
-  overscroll-behavior: none;
-  max-height: 100%;
-  display: block;
-}
-
-.nav-panel-explore:not(.is-active) .components {
-  display: none;
-}
-
-.nav-panel-explore .component {
-  display: block;
-}
-
-.nav-panel-explore .component + .component {
-  margin-top: 0.75rem;
-}
-
-.nav-panel-explore .component:last-child {
-  margin-bottom: 0.75rem;
-}
-
-.nav-panel-explore .component .title {
+   The frame draws this row 32 tall against 28 for the rest, which made the
+   current item bulge out of the list rhythm -- and since box-sizing is
+   border-box, 14px of line plus 9+9 padding plus 2+2 border actually came out
+   at 36, not even the 32 specified. It is deliberately the same 28 as every
+   other row here: each edge subtracts the 2px border, so the label sits on the
+   identical x and baseline as its neighbours and only the fill and outline
+   mark it. */
+.is-current-page > .nav-link,
+.is-current-page > .nav-text {
+  background: var(--gold-surface);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  color: var(--nav-current-page-color);
   font-weight: var(--body-font-weight-bold);
-  text-indent: 0.375rem hanging;
-}
-
-.nav-panel-explore .versions {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin: -0.125rem -0.375rem 0 0.375rem;
-  line-height: 1;
-  list-style: none;
-}
-
-.nav-panel-explore .component .version {
-  margin: 0.375rem 0.375rem 0 0;
-}
-
-.nav-panel-explore .component .version a {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.25rem;
-  white-space: nowrap;
-  padding: 0.25em 0.5em;
-  display: inherit;
-  opacity: 0.75;
-}
-
-.nav-panel-explore .component .is-current a {
-  background: var(--nav-heading-font-color);
-  color: var(--nav-secondary-background);
-  font-weight: var(--body-font-weight-bold);
-  opacity: 1;
+  min-height: calc(28 / var(--rem-base) * 1rem);
+  padding:
+    calc(5 / var(--rem-base) * 1rem) calc(12 / var(--rem-base) * 1rem)
+    calc(5 / var(--rem-base) * 1rem) calc(30 / var(--rem-base) * 1rem);
 }
 
 .nav-close {

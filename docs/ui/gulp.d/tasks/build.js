@@ -112,6 +112,26 @@ function getPostCssPlugins (dest, preview) {
     // Resolve URLs in CSS files
     postcssUrl([
       {
+        // Inline the chrome icons that are drawn as CSS masks (and the one
+        // chevron drawn as a background-image) straight into the stylesheet.
+        //
+        // As separate files they cannot even be *requested* until site.css has
+        // downloaded and parsed, so they always land after first contentful
+        // paint and the icons pop in late: measured cold at 400KB/s + 300ms
+        // RTT, search.svg arrived FCP+258ms and caret.svg FCP+741ms, and a
+        // masked element paints nothing at all while its mask is in flight.
+        // As data: URIs they are part of the render-blocking sheet, so the
+        // icon is there in the same frame as the button it sits on.
+        //
+        // Deliberately not octicons-16.svg: it is referenced with #view-*
+        // fragments, which cannot survive inlining. home*.svg is below the
+        // fold on mobile only.
+        filter: /^src[/\\]img[/\\](?:caret|chevron|github|search)\.svg$/,
+        url: 'inline',
+        encodeType: 'encodeURIComponent',
+        optimizeSvgEncode: true,
+      },
+      {
         filter: new RegExp('^src/css/[~][^/]*(?:font|face)[^/]*/.*/files/.+[.](?:ttf|woff2?)$'),
         url: (asset) => {
           const relpath = asset.pathname.slice(1)
@@ -175,7 +195,7 @@ function getAllTasks (opts, sourcemaps, postcssPlugins, preview, src) {
       .src('js/vendor/*.min.js', opts)
       .pipe(map((file, enc, next) => next(null, Object.assign(file, { extname: '' }, { extname: '.js' })))),
     vfs
-      .src(['css/site.css', 'css/vendor/*.css'], { ...opts, sourcemaps })
+      .src(['css/site.css', 'css/search.css', 'css/vendor/*.css'], { ...opts, sourcemaps })
       .pipe(postcss((file) => ({ plugins: postcssPlugins, options: { file } }))),
     // Task for getting font files
     vfs.src('font/*.{ttf,woff*(2)}', opts),

@@ -1,12 +1,20 @@
-{{#with page.versions}}
+{{!-- Figma 316:334286 shows the version chip in the subnav unconditionally --
+      it tells the reader which version they are on, which is just as useful
+      when there is only one. The dropdown still needs page.versions, so a
+      single-version build renders a plain label with no toggle and no menu. --}}
+{{#with page.componentVersion.displayVersion}}
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">{{@root.page.componentVersion.displayVersion}}</button>
+  {{#if @root.page.versions}}
+  <button class="version-menu-toggle" title="Show other versions of page">{{this}}</button>
   <div class="version-menu">
-    {{#each this}}
+    {{#each @root.page.versions}}
     <a class="version
       {{~#if (eq ./version @root.page.version)}} is-current{{/if~}}
       {{~#if ./missing}} is-missing{{/if}}" href="{{{relativize ./url}}}">{{./displayVersion}}</a>
     {{/each}}
   </div>
+  {{else}}
+  <span class="version-menu-toggle is-static">{{this}}</span>
+  {{/if}}
 </div>
 {{/with}}

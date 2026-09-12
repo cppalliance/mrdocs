@@ -5,22 +5,16 @@
 
   var navContainer = document.querySelector('.nav-container')
   if (!navContainer) return
-  // The single top hamburger is the only drawer trigger; .nav-toggle is kept
-  // as a selector for backwards compatibility if a theme reintroduces it.
-  var navToggles = [].slice.call(document.querySelectorAll('.nav-toggle, .navbar-burger'))
+  // The burger belongs to the site menu (08-site-menu.js). This file only
+  // handles the page tree, which is an inline section on mobile and the left
+  // column on desktop -- no drawer, so no show/hide here.
+  // .nav is still needed: scrollItemToMidpoint checks whether the column is
+  // sticky before working out the offset.
   var nav = navContainer.querySelector('.nav')
   var navMenuToggle = navContainer.querySelector('.nav-menu-toggle')
-  var closeNavBtn = navContainer.querySelector('.nav-close')
-
-  navToggles.forEach(function (toggle) {
-    toggle.addEventListener('click', toggleNav)
-  })
-  navContainer.addEventListener('click', trapEvent)
-  if (closeNavBtn) closeNavBtn.addEventListener('click', hideNav)
 
   var menuPanel = navContainer.querySelector('[data-panel=menu]')
   if (!menuPanel) return
-  var explorePanel = navContainer.querySelector('[data-panel=explore]')
 
   var currentPageItem = menuPanel.querySelector('.is-current-page')
   var originalPageItem = currentPageItem
@@ -31,8 +25,19 @@
     menuPanel.scrollTop = 0
   }
 
-  find(menuPanel, '.nav-item-toggle').forEach(function (btn) {
+  find(menuPanel, '.nav-item-toggle').forEach(function (btn, idx) {
     var li = btn.parentElement
+    // The button ships with no accessible name, so name it after the section
+    // it discloses and point it at the list it controls. textContent, not
+    // innerHTML: nav labels may carry markup, which must not land in an
+    // attribute.
+    var label = findNextElement(btn, '.nav-text') || li.querySelector(':scope > .nav-link')
+    if (label) btn.setAttribute('aria-label', label.textContent.trim())
+    var sublist = li.querySelector(':scope > .nav-list')
+    if (sublist) {
+      if (!sublist.id) sublist.id = 'nav-sublist-' + idx
+      btn.setAttribute('aria-controls', sublist.id)
+    }
     btn.addEventListener('click', toggleActive.bind(li))
     var navItemSpan = findNextElement(btn, '.nav-text')
     if (navItemSpan) {
@@ -40,6 +45,32 @@
       navItemSpan.addEventListener('click', toggleActive.bind(li))
     }
   })
+
+  syncExpandedState()
+
+  /* The nav is a collapsible section of the page on mobile, headed by the
+     component chip, and Figma's default page state (316:335013, 77 tall) has
+     it collapsed -- 316:335102 is the same frame expanded to 514. Desktop
+     always shows the tree, so the class is applied only below 1024. */
+  var sectionToggle = menuPanel.querySelector('.nav-section-toggle')
+  var navMenu = menuPanel.querySelector('.nav-menu')
+  if (sectionToggle && navMenu) {
+    var topList = navMenu.querySelector(':scope > .nav-list')
+    if (topList) {
+      if (!topList.id) topList.id = 'nav-section-list'
+      sectionToggle.setAttribute('aria-controls', topList.id)
+    }
+    var small = window.matchMedia('(max-width: 1023.5px)')
+    var setCollapsed = function (collapsed) {
+      navMenu.classList.toggle('is-collapsed', collapsed)
+      sectionToggle.setAttribute('aria-expanded', String(!collapsed))
+    }
+    setCollapsed(small.matches)
+    sectionToggle.addEventListener('click', function () {
+      setCollapsed(!navMenu.classList.contains('is-collapsed'))
+    })
+    small.addEventListener('change', function (e) { setCollapsed(e.matches) })
+  }
 
   if (navMenuToggle && menuPanel.querySelector('.nav-item-toggle')) {
     navMenuToggle.style.display = ''
@@ -54,15 +85,7 @@
       } else {
         menuPanel.scrollTop = 0
       }
-    })
-  }
-
-  if (explorePanel) {
-    explorePanel.querySelector('.context').addEventListener('click', function () {
-      // NOTE logic assumes there are only two panels
-      find(nav, '[data-panel]').forEach(function (panel) {
-        panel.classList.toggle('is-active')
-      })
+      syncExpandedState()
     })
   }
 
@@ -107,6 +130,7 @@
     currentPageItem = navItem
     activateCurrentPath(navItem)
     scrollItemToMidpoint(menuPanel, navLink)
+    syncExpandedState()
   }
 
   if (menuPanel.querySelector('.nav-link[href^="#"]')) {
@@ -126,6 +150,17 @@
     navItem.classList.add('is-active')
   }
 
+  /* Mirrors the is-active class onto aria-expanded. The class is set from
+     four places (here, activateCurrentPath, the expand-all toggle and
+     onHashChange), so every caller re-syncs the whole tree rather than each
+     one remembering to update its own button. Six toggles, so the walk is
+     cheaper than the bookkeeping. */
+  function syncExpandedState () {
+    find(menuPanel, '.nav-item > .nav-item-toggle').forEach(function (btn) {
+      btn.setAttribute('aria-expanded', btn.parentElement.classList.contains('is-active'))
+    })
+  }
+
   function toggleActive () {
     if (this.classList.toggle('is-active')) {
       var padding = parseFloat(window.getComputedStyle(this).marginTop)
@@ -134,43 +169,7 @@
       var overflowY = (rect.bottom - menuPanelRect.top - menuPanelRect.height + padding).toFixed()
       if (overflowY > 0) menuPanel.scrollTop += Math.min((rect.top - menuPanelRect.top - padding).toFixed(), overflowY)
     }
-  }
-
-  function toggleNav (e) {
-    if (navContainer.classList.contains('is-active')) hideNav(e)
-    else showNav(e)
-  }
-
-  function setTogglesActive (active) {
-    navToggles.forEach(function (toggle) {
-      toggle.classList.toggle('is-active', active)
-      if (toggle.hasAttribute('aria-expanded')) toggle.setAttribute('aria-expanded', active)
-    })
-  }
-
-  function showNav (e) {
-    trapEvent(e)
-    var html = document.documentElement
-    html.classList.add('is-clipped--nav')
-    setTogglesActive(true)
-    navContainer.classList.add('is-active')
-    var bounds = nav.getBoundingClientRect()
-    var expectedHeight = window.innerHeight - Math.round(bounds.top)
-    if (Math.round(bounds.height) !== expectedHeight) nav.style.height = expectedHeight + 'px'
-    html.addEventListener('click', hideNav)
-  }
-
-  function hideNav (e) {
-    trapEvent(e)
-    var html = document.documentElement
-    html.classList.remove('is-clipped--nav')
-    setTogglesActive(false)
-    navContainer.classList.remove('is-active')
-    html.removeEventListener('click', hideNav)
-  }
-
-  function trapEvent (e) {
-    e.stopPropagation()
+    syncExpandedState()
   }
 
   function scrollItemToMidpoint (panel, el) {

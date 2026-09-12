@@ -1,14 +1,17 @@
+/* Full-bleed strip: a sibling of .body, not a child of main -- see
+   partials/body.hbs. */
 .toolbar {
   background-color: var(--toolbar-strip-bg);
-  border-bottom: 1px solid var(--toolbar-border-color);
+  border-bottom: 1.81818px solid var(--toolbar-border-color); /* 316:335522 */
   color: var(--toolbar-font-color);
   align-items: center;
   display: flex;
-  font-size: calc(15 / var(--rem-base) * 1rem);
+  /* Figma: 13px text, 40px inset both ends. */
+  font-size: calc(13 / var(--rem-base) * 1rem);
   height: var(--toolbar-height);
   justify-content: flex-start;
+  padding: 0 calc(40 / var(--rem-base) * 1rem);
   position: static;
-  top: var(--navbar-height);
   z-index: var(--z-index-toolbar);
 }
 

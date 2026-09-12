@@ -1,3 +1,8 @@
+{{!-- The crumb bar spans the full width ABOVE the two columns (Figma
+      316:334286 puts it at y=79, sidebars from y=124), so it sits outside
+      .body rather than inside main. --}}
+{{> toolbar}}
+{{> site-menu}}
 <div class="body">
 {{> nav}}
 {{> main}}

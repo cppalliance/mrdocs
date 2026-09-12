@@ -24,42 +24,158 @@ html {
   padding: 0 1rem 4rem;
 }
 
+/* Below 1024 the article shares the 30 inset every other region uses (Figma
+   Frame 231 is full width with padH30). It was keeping the 680 max-width and
+   centring, so its text sat at 17 at 402 but 61 at 768 and 188 at 1023, while
+   the subnav, nav section and contents list stayed put. */
+@media screen and (max-width: 1023.5px) {
+  .doc {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+    padding-left: calc(30 / var(--rem-base) * 1rem);
+    padding-right: calc(30 / var(--rem-base) * 1rem);
+    /* The title sits INSIDE the band, not on its top edge. Frame 221
+       (316:334685 / 316:335193) is 238 tall and puts the h1 at 123 -- Frame
+       219 at @0,101 with the text 22 into it -- i.e. a little past half way
+       down. The band here is the desktop art at 148.8%, 194 tall at 402, so
+       the same fraction is 100. Without this the contents list ended and the
+       title started in the same breath, with no cloud above it. */
+    padding-top: calc(100 / var(--rem-base) * 1rem);
+  }
+}
+
 @media screen and (min-width: 1024px) {
   .doc {
     flex: auto;
     font-size: var(--doc-font-size--desktop);
     margin: var(--doc-margin--desktop);
-    max-width: var(--doc-max-width--desktop);
     min-width: 0;
+    /* The column keeps the frame's 899 and sits hard against the nav column,
+       as Frame 179 draws it (Richtext starts where the left Sidebar ends).
+       It used to centre in the leftover space, which was invisible while the
+       rail carried a 30 gutter but opened a gap on the LEFT once that gutter
+       went: the surplus split in two and pushed the article off the nav edge.
+       Any surplus now falls between the article and the rail instead, where
+       both sides are the same page ground and nothing seams.
+       Percentage padding was tried here first and is wrong: on a flex item it
+       resolves against the container, which collapsed the measure to 0. */
+    margin-left: 0;
+    margin-right: 0;
+    /* The column FILLS whatever the nav and rail leave, so the content band it
+       carries as a background always spans it exactly -- a fixed 899 here left
+       the band stopping short of the rail with the clouds ending in mid-air.
+       The reading measure is capped on the children below instead, so widening
+       the column does not widen the text. */
+    max-width: none;
+    padding-left: var(--doc-padding-x--desktop);
+    padding-right: var(--doc-padding-x--desktop);
+    /* Figma 316:334322 Richtext: padV120, but the frame's title does not sit
+       at 120. Frame 196 (@60,120) stacks the 8px-Menlo annotation chip
+       (316:334344, 17 tall) plus its gap8 above the title, so the h1 itself
+       lands at 145. We never build annotation chips, so 120 put the title 25
+       high against the design. 145 places it where the frame draws it, and
+       gives the band room to read above the title. */
+    padding-top: calc(145 / var(--rem-base) * 1rem);
+    padding-bottom: calc(120 / var(--rem-base) * 1rem);
   }
 }
 
+/* Outlined Bangers per Figma 316:334286; each level sets the --doc-heading-*
+   trio below. Stroke widths are DOUBLE the Figma number (strokeAlign OUTSIDE
+   vs -webkit-text-stroke centring); the shadow is a filter, not text-shadow,
+   which the stroke would hide. Case is NOT uppercased: C++ symbol names. */
 .doc h1,
 .doc h2,
 .doc h3,
 .doc h4,
 .doc h5,
 .doc h6 {
-  color: var(--heading-font-color);
+  color: var(--doc-heading-fill);
+  -webkit-text-stroke: var(--doc-heading-stroke) var(--outline);
+  paint-order: stroke fill;
+  filter: var(--doc-heading-drop);
+  font-family: var(--ds-font-display);
+  /* Synthesized oblique -- Bangers has no italic cut. Deliberate: matches the
+     landing page's display treatment. */
+  font-style: italic;
+  letter-spacing: 0.6px;
   font-weight: var(--heading-font-weight);
   hyphens: none;
-  line-height: 1.3;
+  /* Landing leading. The frame says 1.2; 0.9 was the explicit ask. */
+  line-height: 0.9;
   margin: 1rem 0 0;
 }
 
-.doc > h1.page:first-child {
-  font-size: calc(36 / var(--rem-base) * 1rem);
+.doc h1 {
+  --doc-heading-fill: var(--gold-surface);
+  --doc-heading-stroke: 6px; /* Figma 3px OUTSIDE */
+  --doc-heading-drop: drop-shadow(3px 3px 0 var(--outline));
+}
+
+.doc h2,
+.doc h3 {
+  --doc-heading-fill: var(--blue-surface);
+  --doc-heading-stroke: 4px; /* Figma 2px OUTSIDE */
+  --doc-heading-drop: drop-shadow(2px 2px 0 var(--outline));
+}
+
+.doc h4,
+.doc h5 {
+  --doc-heading-fill: var(--blue-surface);
+  --doc-heading-stroke: 3px; /* Figma 1.5px OUTSIDE */
+  --doc-heading-drop: drop-shadow(1.5px 1.5px 0 var(--outline));
+}
+
+.doc h6 {
+  --doc-heading-fill: var(--blue-surface);
+  --doc-heading-stroke: 2px; /* Figma 1px OUTSIDE */
+  --doc-heading-drop: drop-shadow(1px 1px 0 var(--outline));
+}
+
+/* The contents list is inserted BEFORE the title (02-on-this-page.js, per
+   Figma 316:334667), so the title is no longer necessarily :first-child --
+   matching only that dropped this heading to the inherited 32px. Both
+   positions are listed rather than dropping :first-child, which would also
+   catch an h1.page appearing further down the article. */
+.doc > h1.page:first-child,
+.doc > aside.toc.embedded + h1.page {
+  font-size: calc(62 / var(--rem-base) * 1rem);
   margin: 1.5rem 0;
 }
 
 @media screen and (min-width: 769px) {
-  .doc > h1.page:first-child {
+  .doc > h1.page:first-child,
+  .doc > aside.toc.embedded + h1.page {
     margin-top: 2.5rem;
   }
 }
 
-.doc > h1.page:first-child + aside.toc.embedded {
-  margin-top: -0.5rem;
+/* From 1024 the column itself supplies the frame's top padding, so the title's
+   own margin would stack on it and push the first block down. */
+@media screen and (min-width: 1024px) {
+  .doc > h1.page:first-child,
+  .doc > aside.toc.embedded + h1.page {
+    margin-top: 0;
+  }
+}
+
+/* 316:334322: the Richtext column is 899 with padH60, so the measure is 779.
+   The column itself is fluid (above), so the cap lives here -- centred, which
+   keeps the text under the band's converging rays. */
+@media screen and (min-width: 1024px) {
+  .doc > * {
+    margin-inline: auto;
+    max-width: calc(779 / var(--rem-base) * 1rem);
+  }
+}
+
+/* textAlignHorizontal is CENTER on the page title in every frame that draws
+   one -- 316:335581 and 316:334346 at 1440, 316:335217 and 316:334709 at 402 --
+   so it centres at all widths. Body copy has no alignment set in the frame and
+   stays left. */
+.doc > h1.page {
+  text-align: center;
 }
 
 .doc > h2#name + .sectionbody {
@@ -78,46 +194,41 @@ html {
   padding: 0.5rem 1rem;
 }
 
+/* Figma: 2px section rule, 64px clearance either side. */
 .doc h2:not(.discrete) {
-  border-bottom: 1px solid var(--section-divider-color);
-  font-size: calc(28 / var(--rem-base) * 1rem);
-  margin-left: -1rem;
-  margin-right: -1rem;
-  padding: 0.4rem 1rem 0.1rem;
+  border-bottom: 2px solid var(--section-divider-color);
+  font-size: calc(42 / var(--rem-base) * 1rem);
+  margin-top: calc(64 / var(--rem-base) * 1rem);
+  padding-bottom: calc(8 / var(--rem-base) * 1rem);
 }
 
 .doc h3:not(.discrete) {
-  font-size: calc(23 / var(--rem-base) * 1rem);
+  font-size: calc(32 / var(--rem-base) * 1rem);
   font-weight: var(--alt-heading-font-weight);
   margin-top: 2.25rem;
   margin-bottom: 0.5rem;
 }
 
 .doc h4:not(.discrete) {
-  font-size: calc(20 / var(--rem-base) * 1rem);
+  font-size: calc(24 / var(--rem-base) * 1rem);
   font-weight: var(--alt-heading-font-weight);
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
 }
 
+/* h5/h6 lose their old uppercase, tracking and muted colour: same scale. */
 .doc h5:not(.discrete) {
-  font-size: calc(16 / var(--rem-base) * 1rem);
+  font-size: calc(20 / var(--rem-base) * 1rem);
   font-weight: var(--alt-heading-font-weight);
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-white-75);
 }
 
 .doc h6:not(.discrete) {
-  font-size: calc(14 / var(--rem-base) * 1rem);
+  font-size: calc(16 / var(--rem-base) * 1rem);
   font-weight: var(--alt-heading-font-weight);
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-white-60);
 }
 
 .doc h1 .anchor,
@@ -180,9 +291,13 @@ html {
   font-style: normal;
 }
 
+/* An admonition whose whole content is a single inline code span gets no <p>
+   wrapper, so the chip rule has to name the cell as well; the saturated-ground
+   override that used to paint it (a flat 10% black) went with the ground. */
 .doc p code,
 .doc thead code,
-.doc .colist > table code {
+.doc .colist > table code,
+.doc .admonitionblock td.content > code {
   color: var(--code-font-color);
   background: var(--code-background);
   border-radius: 0.25em;
@@ -296,16 +411,46 @@ html {
   margin-top: 1.5rem;
 }
 
-.doc table.tableblock tr:first-child {
-  background-color: rgba(0, 0, 0, 0.1);
+/* Antora emits <thead> only for options="header" -- 147 of 2,424 tables here.
+   The generated reference tables put their "Name | Description" header in
+   ordinary cells, so the first row carries the header fill and a real thead
+   below resets it. Measured before relying on it: of 2,277 headerless tables,
+   2,276 have a header-like first row. */
+.doc table.tableblock tr:first-child,
+.doc table.tableblock > thead > tr {
+  background-color: var(--table-header-background);
+}
+
+.doc table.tableblock tr:first-child > *,
+.doc table.tableblock > thead > tr > * {
+  color: var(--table-header-color);
+}
+
+.doc table.tableblock tr:first-child code,
+.doc table.tableblock > thead > tr code {
+  color: inherit;
+  background: none;
 }
 
 .doc table.tableblock thead ~ tbody tr:first-child {
   background-color: transparent;
 }
 
+.doc table.tableblock thead ~ tbody tr:first-child > * {
+  color: var(--doc-font-color);
+}
+
 .doc table.tableblock {
-  font-size: calc(15 / var(--rem-base) * 1rem);
+  font-size: calc(14 / var(--rem-base) * 1rem);
+}
+
+/* Figma: names are Menlo 14 in the label pink -- .doc code's 0.95em would
+   render them at 13.3. */
+.doc table.tableblock td code {
+  color: var(--table-name-color);
+  background: none;
+  font-size: 1em;
+  padding: 0;
 }
 
 .doc p.tableblock + p.tableblock {
@@ -324,15 +469,20 @@ html {
   margin-top: 0;
 }
 
+/* Figma rows are 38 tall. The doc body's 1.65 leading is too loose to hit that
+   in a cell, so tables set their own. */
 .doc table.tableblock th,
 .doc table.tableblock td {
-  padding: 0.5rem;
+  line-height: 1.5;
+  padding: calc(7 / var(--rem-base) * 1rem) calc(12 / var(--rem-base) * 1rem);
   transition: background-color 0.2s ease-in-out;
 }
 
+/* This was a raw rgba(255, 255, 255, 0.4) -- white at 40% on a cream page, so
+   every rule was invisible in light mode while --table-border-color sat unused. */
 .doc table.tableblock,
 .doc table.tableblock > * > tr > * {
-  border: 0 solid rgba(255, 255, 255, 0.4);
+  border: 0 solid var(--table-border-color);
 }
 
 .doc table.grid-all > * > tr > * {
@@ -352,8 +502,18 @@ html {
   border-bottom-width: 2.5px;
 }
 
+/* The framed variant is Figma's `table` (316:334418 / 316:335653): the same
+   grid boxed in a 2px outline, over the brand blue at 10% on the page ground.
+   The fill is scoped to frame-all on purpose -- `table-basic`
+   (316:334399 / 316:335634) has fillPaints null and stays transparent.
+   Figma's padV2/padH2 gutter between the outline and the grid is dropped:
+   cells carry no fill of their own, so the tint already shows through the
+   whole body, and `border-collapse: collapse` (base.css:105) ignores table
+   padding anyway. */
 .doc table.frame-all {
-  border-width: 1px;
+  border-width: 2px;
+  border-color: var(--table-frame-color);
+  background-color: var(--table-frame-background);
 }
 
 .doc table.frame-ends {
@@ -437,70 +597,99 @@ html {
   font-size: calc(15 / var(--rem-base) * 1rem);
 }
 
+/* Figma block-note (316:334386 light / 316:335621 dark) and block-warning
+   (316:334392 / 316:335627). The Note Container is a single vertical stack --
+   1px stroke, 10/20 padding, the kind name on its own line, 8px gap, body --
+   so Antora's two-cell table is unpicked into blocks and the box moves off
+   td.content onto the table. The frame draws two grounds, blue for note and
+   gold for warning, so the five AsciiDoc kinds map onto those two rather than
+   getting five inventions. caution and important never occur in these docs;
+   tip occurs on 14 pages.
+   The kind's custom properties sit on the block so both the table (which
+   paints the box) and the cells inside it inherit them. */
+.doc .admonitionblock.note,
+.doc .admonitionblock.tip {
+  --admonition-background: var(--admonition-note-background);
+  --admonition-border: var(--admonition-note-border);
+}
+
+.doc .admonitionblock.warning,
+.doc .admonitionblock.caution,
+.doc .admonitionblock.important {
+  --admonition-background: var(--admonition-warning-background);
+  --admonition-border: var(--admonition-warning-border);
+}
+
 .doc .admonitionblock > table {
-  table-layout: fixed;
+  display: block;
   position: relative;
   width: 100%;
-}
-
-.doc .admonitionblock td.content {
-  padding: 1rem 1rem 0.75rem;
+  padding: calc(10 / var(--rem-base) * 1rem) calc(20 / var(--rem-base) * 1rem);
   background: var(--admonition-background);
-  width: 100%;
-  word-wrap: anywhere;
+  border: 1px solid var(--admonition-border, transparent);
+  color: var(--admonition-color);
 }
 
+.doc .admonitionblock > table > tbody,
+.doc .admonitionblock > table > tbody > tr {
+  display: block;
+}
+
+/* Note Title (316:334387 / 316:335622): 16px Special Elite Regular, line
+   height 1.2, the strong ink, in title case -- Antora already writes "Note" /
+   "Warning" into the title attribute, so the old uppercasing is dropped. The
+   frame has no chip and no icon behind it, so the pill ground, the hard shadow
+   and the five per-kind fills all go. */
 .doc .admonitionblock td.icon {
-  font-size: calc(15 / var(--rem-base) * 1rem);
-  left: 0;
-  line-height: 1;
+  display: block;
+  position: static;
   padding: 0;
-  position: absolute;
-  top: 0;
-  transform: translate(-0.5rem, -50%);
+  transform: none;
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  line-height: 1.2;
 }
 
 .doc .admonitionblock td.icon i {
-  align-items: center;
-  display: inline-flex;
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none;
+  box-shadow: none;
   filter: initial;
-  height: 1.25rem;
-  padding: 0 0.5rem;
+  color: var(--admonition-title-color);
+  font-size: inherit;
+  line-height: inherit;
   vertical-align: initial;
-  width: fit-content;
-  box-shadow: 2px 2px #000;
 }
 
 .doc .admonitionblock td.icon i::after {
   content: attr(title);
-  font-weight: var(--admonition-label-font-weight);
   font-style: normal;
-  text-transform: uppercase;
+  font-weight: var(--admonition-label-font-weight);
+  text-transform: none;
 }
 
-.doc .admonitionblock td.icon i.icon-caution {
-  background-color: var(--caution-color);
-  color: var(--caution-on-color);
+/* Note Text (316:334388 / 316:335623): 16px, line height 1.6, the secondary
+   grey, 8px under the title. The box is the table's now, so the cell only
+   carries type. */
+.doc .admonitionblock td.content {
+  display: block;
+  width: auto;
+  margin-top: calc(8 / var(--rem-base) * 1rem);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--admonition-color);
+  line-height: 1.6;
+  word-wrap: anywhere;
 }
 
-.doc .admonitionblock td.icon i.icon-important {
-  background-color: var(--important-color);
-  color: var(--important-on-color);
-}
-
-.doc .admonitionblock td.icon i.icon-note {
-  background-color: var(--note-color);
-  color: var(--note-on-color);
-}
-
-.doc .admonitionblock td.icon i.icon-tip {
-  background-color: var(--tip-color);
-  color: var(--tip-on-color);
-}
-
-.doc .admonitionblock td.icon i.icon-warning {
-  background-color: var(--warning-color);
-  color: var(--warning-on-color);
+/* An author-supplied block title sits on the same ground as the kind name and
+   takes the same ink. */
+.doc .admonitionblock td.content > .title {
+  color: var(--admonition-title-color);
+  font-weight: var(--body-font-weight-bold);
 }
 
 .doc .imageblock,
@@ -859,33 +1048,32 @@ html {
   border-radius: 6px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   display: block;
-  font-size: calc(15.5 / var(--rem-base) * 1rem);
+
+  /* Figma 316:334286 code-block-basic: Menlo 14 on #272E3E, 20px inset. */
+  font-size: calc(14 / var(--rem-base) * 1rem);
   line-height: 1.55;
   overflow-x: auto;
-  padding: 1rem 1.25rem;
+  padding: calc(20 / var(--rem-base) * 1rem);
 }
 
-/*
- * When a listing block carries a `.Title` line, render the title as a
- * header strip inside the same card as the source code rather than as
- * a separate caption floating above. The strip shares the code's dark
- * canvas with a slightly lighter text color, and the pre below loses
- * its top corners and top border so the two pieces read as one card
- * split by a single divider line. No second card around the existing
- * one: this is the same canvas with a header at the top.
- */
+/* A titled listing is Figma's `code-block`: a 30px header strip in the darker
+   chrome ink sitting on the same card as the body, which loses its top corners
+   so the two read as one. An untitled one is `code-block-basic`. */
 .doc .listingblock > .title {
-  background: var(--pre-background);
-  color: var(--hl-comment);
+  background: var(--pre-title-background);
+  color: var(--hl-fg);
   font-family: var(--body-font-family);
   font-size: calc(13 / var(--rem-base) * 1rem);
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.02em;
   border: 1px solid var(--pre-border-color);
-  border-bottom: 1px solid var(--pre-border-color);
+  border-bottom: 0;
   border-radius: 6px 6px 0 0;
-  padding: 0.55rem 1.25rem;
+  min-height: calc(30 / var(--rem-base) * 1rem);
+  display: flex;
+  align-items: center;
+  padding: 0 calc(20 / var(--rem-base) * 1rem);
   margin-bottom: 0;
 }
 

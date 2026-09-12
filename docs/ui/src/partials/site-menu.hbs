@@ -1,0 +1,17 @@
+{{! The hamburger's own menu (Figma 316:335019 "Navbar Menu [Open]"): site
+    links, the repo button and the theme toggle, on the blue tint. Separate
+    from the page tree, which is an inline collapsible section -- the burger
+    stays a hamburger in both of the tree's states. Mobile only; the desktop
+    navbar carries these controls itself. }}
+<div class="site-menu" id="site-menu">
+  <div class="site-menu-inner">
+    <div class="site-menu-links">
+      <a class="site-menu-link" href="https://www.mrdocs.com">Mr.Docs</a>
+      <a class="site-menu-link" href="https://cppalliance.org/">The C++ Alliance</a>
+      <a class="site-menu-repo" href="https://github.com/cppalliance/mrdocs">
+        <span class="site-menu-repo-icon" aria-hidden="true"></span>GitHub Repo
+      </a>
+    </div>
+    {{> theme-toggle class="site-menu-theme"}}
+  </div>
+</div>

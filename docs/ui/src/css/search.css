@@ -1,0 +1,238 @@
+/*
+ * Search results dropdown.
+ *
+ * @antora/lunr-extension ships a css/search.css of its own and registers it
+ * with overwrite = false (node_modules/@antora/lunr-extension/lib/index.js,
+ * assetFile): when the UI bundle already carries css/search.css the extension
+ * logs "The following file already exists in your UI: css/search.css,
+ * skipping" and keeps ours. This file is that copy -- adapted from the
+ * extension's own stylesheet rather than written from scratch, so every class
+ * search-ui.js builds is still covered.
+ *
+ * search-ui.js injects it at runtime from its data-stylesheet attribute, so
+ * the <link> lands at the end of <head>, after site.css. Nothing here needs
+ * !important or a specificity hack: at equal specificity this file wins on
+ * order.
+ *
+ * Two things the extension's version got wrong on this site:
+ *
+ *   1. It anchored the panel to the search field with
+ *      `position: absolute; right: 0; min-width: 500px`, so the panel grew
+ *      LEFT out of a field that sits well left of the window edge and ran off
+ *      screen -- measured left = -31px at 1024 and left = -138px at 402, which
+ *      sliced the result titles in half. The field's own x position is not
+ *      knowable from CSS, so the panel is sized and placed against the
+ *      viewport instead (see below).
+ *   2. Every colour was a literal, so the panel stayed cream-on-white over the
+ *      dark theme. All of them are tokens now and re-resolve per theme.
+ */
+
+/* ---- Panel shell ------------------------------------------------------- */
+
+/* Taken out of the field's flow: `position: fixed` resolves against the
+   viewport, except on desktop where .navbar's backdrop-filter makes the bar
+   itself the containing block. Both boxes start at x = 0, y = 0 and are the
+   width of the layout viewport, so the geometry below is identical either way
+   -- and it survives the backdrop-filter being dropped.
+   Percentages (not 100vw) on purpose: a fixed element's containing block
+   excludes the classic scrollbar, 100vw does not, and WebKit reserves 26px for
+   one -- that alone overflowed the old panel by 26px at every width. */
+.search-result-dropdown-menu {
+  --search-panel-gutter: calc(20 / var(--rem-base) * 1rem);
+  --search-panel-width: calc(600 / var(--rem-base) * 1rem);
+
+  position: fixed;
+  top: calc(var(--navbar-height) + calc(6 / var(--rem-base) * 1rem));
+  right: var(--search-panel-gutter);
+  left: auto;
+  z-index: 100;
+  display: block;
+  width: min(var(--search-panel-width), calc(100% - var(--search-panel-gutter) * 2));
+  /* The stock 500px floor is what forced the overflow; the width above is
+     already a floor-free clamp. */
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: left;
+}
+
+/* Matches the nav panel and the admonitions: a 2px outline and the hard 2/2
+   drop shadow, no radius, no blur. */
+.search-result-dataset {
+  position: relative;
+  overflow: auto;
+  overscroll-behavior: contain;
+  max-height: calc(100vh - var(--navbar-height) - 2rem);
+  padding: calc(8 / var(--rem-base) * 1rem);
+  background: var(--surface);
+  border: 2px solid var(--outline);
+  border-radius: 0;
+  box-shadow: var(--outline-shadow);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ---- Rows -------------------------------------------------------------- */
+
+.search-result-item {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.search-result-component-header {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-strong);
+  font-weight: var(--body-font-weight-bold);
+  overflow-wrap: anywhere;
+}
+
+/* min-width: 0 and overflow-wrap keep an unbroken C++ symbol
+   (mrdocs::ConstantTArg::isTemplate) from setting the flex item's min-content
+   width and widening the panel past its clamp. */
+.search-result-document-title {
+  position: relative;
+  width: 33%;
+  min-width: 0;
+  padding: 0.5rem 0.5rem 0.5rem 0;
+  border-right: 1px solid var(--border);
+  color: var(--text-strong);
+  font-size: 0.8rem;
+  font-weight: var(--body-font-weight-bold);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.search-result-document-hit {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.search-result-document-hit > a {
+  display: block;
+  padding: 0.55rem 0.25rem 0.55rem 0.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.search-result-document-hit > a:hover,
+.search-result-document-hit > a:focus {
+  background-color: color-mix(in sRGB, var(--accent-solid) 14%, transparent);
+  color: var(--text);
+  outline: none;
+}
+
+/* The matched run is set like the brand's marker highlight: the theme's gold
+   with the fixed on-accent ink, not --text-strong, which flips to #fff and
+   would put white on gold. */
+.search-result-document-hit .search-result-highlight {
+  padding: 0.1em 0.15em;
+  background: var(--gold-surface);
+  color: var(--ds-color-on-accent);
+  font-weight: var(--body-font-weight-bold);
+}
+
+.search-result-document-hit .search-result-section-title {
+  margin-bottom: 0.25em;
+  color: var(--text-strong);
+  font-size: 1.05em;
+  font-weight: var(--body-font-weight-bold);
+}
+
+.search-result-document-hit .search-result-keywords {
+  margin-top: 0.25em;
+}
+
+.search-result-document-hit .search-result-keywords-field-label {
+  font-weight: var(--body-font-weight-bold);
+}
+
+/* The "No results found" row, which has no <a> to inherit from. */
+.search-result-document-hit > strong {
+  display: block;
+  padding: 0.55rem 0.25rem 0.55rem 0.75rem;
+  color: var(--text-strong);
+  font-weight: var(--body-font-weight-bold);
+}
+
+/* ---- Field ------------------------------------------------------------- */
+
+/* The field itself is styled in header.css (216x36 desktop, 188x36 mobile,
+   1px outline, hard shadow). Only what the extension's markup needs lives
+   here -- the stock `#search-input { padding: 0.25em }` is gone, since it only
+   ever fought header.css's own padding. */
+#search-field {
+  display: flex;
+}
+
+#search-input:focus {
+  outline: none;
+}
+
+/* Component/version facet filter, shown only when the site has >1 component. */
+#search-field .filter {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--outline);
+  border-left: none;
+  border-radius: 0;
+  box-shadow: var(--outline-shadow);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.875em;
+  white-space: nowrap;
+}
+
+#search-field.has-filter > input {
+  border-right: none;
+  border-radius: 0;
+}
+
+/* ---- Narrow viewports -------------------------------------------------- */
+
+/* A 33% right-aligned title column against a 360-wide panel leaves about 110px
+   for a page title and 220 for the snippet, so the two stack instead. */
+@media screen and (max-width: 768.5px) {
+  .search-result-item {
+    display: block;
+  }
+
+  /* Stacked, the page title sits directly above the section title it belongs
+     to, so it steps back to the muted ink rather than competing with it. */
+  .search-result-document-title {
+    width: auto;
+    padding: 0.4rem 0.25rem 0.2rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+
+  .search-result-document-hit > a {
+    padding-left: 0.25rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  /* 30 matches .navbar-brand's inset and the contents rail on the right, so
+     the panel lines up with the chrome above and beside it. */
+  .search-result-dropdown-menu {
+    --search-panel-gutter: calc(30 / var(--rem-base) * 1rem);
+  }
+}

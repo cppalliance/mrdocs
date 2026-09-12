@@ -1,9 +1,18 @@
-/* Bangers — Mr.Docs display/headline face (used uppercase). */
+/* Bangers — Mr.Docs display/headline face (used uppercase).
+ *
+ * font-display is optional rather than swap: this is the display face, set at
+ * hero sizes with a -webkit-text-stroke, where a mid-load typeface change is
+ * the most visible artefact on the page. It is preloaded (see
+ * head-styles.hbs), so on any ordinary connection it wins the block period and
+ * paints as Bangers with no flash; when it loses, the metric-compatible
+ * "Bangers Fallback" in design-system.css holds the identical line breaks for
+ * that one pageview and the font is in cache for the next. Neither path
+ * repaints the headline. */
 @font-face {
   font-family: "Bangers";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src:
     url(~@fontsource/bangers/files/bangers-latin-400-normal.woff2)
     format("woff2"),
@@ -32,7 +41,7 @@
   font-family: "Bangers";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src:
     url(~@fontsource/bangers/files/bangers-latin-ext-400-normal.woff2)
     format("woff2"),

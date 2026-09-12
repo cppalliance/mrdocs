@@ -38,8 +38,12 @@
     // navbar's bottom edge.
     var ANCHOR_BREATHING_ROOM = 18
     var y = elementTop - pinnedHeight(navbar) - ANCHOR_BREATHING_ROOM
-    var instant = e === false && supportsScrollToOptions
-    instant ? window.scrollTo({ left: 0, top: y, behavior: 'instant' }) : window.scrollTo(0, y)
+    // Every jump is instant, click or on load. 'instant' is passed rather
+    // than left to the stylesheet so the jump stays unanimated even if a
+    // stylesheet reintroduces `scroll-behavior: smooth`.
+    supportsScrollToOptions
+      ? window.scrollTo({ left: 0, top: y, behavior: 'instant' })
+      : window.scrollTo(0, y)
   }
 
   window.addEventListener('load', function jumpOnLoad (e) {
