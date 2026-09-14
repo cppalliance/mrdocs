@@ -13,6 +13,11 @@ import json
 import os
 
 
+# Open a text file as UTF-8.
+def open_as_utf8(path, mode='r'):
+    return open(path, mode, encoding='utf-8')
+
+
 def to_camel_case(kebab_str):
     if ' ' in kebab_str:
         parts = kebab_str.split(' ')
@@ -945,7 +950,7 @@ def generate(config, output_dir, source_mrdocs_dir):
     # metadata the header carries, so there are no longer any generated
     # ConfigSchema.cpp or PublicToolArgs sources.
     config_schema_hpp = generate_config_schema_hpp(config)
-    with open(os.path.join(mrdocs_build_include_dir, 'ConfigSchema.hpp'), 'w') as f:
+    with open_as_utf8(os.path.join(mrdocs_build_include_dir, 'ConfigSchema.hpp'), 'w') as f:
         f.write(config_schema_hpp)
 
 
@@ -963,7 +968,7 @@ def main():
         sys.exit(1)
 
     # parse input file
-    with open(input_file, 'r') as f:
+    with open_as_utf8(input_file) as f:
         config = json.load(f)
 
     generate(config, output_dir, os.path.dirname(os.path.abspath(input_file)))

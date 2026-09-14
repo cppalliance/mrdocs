@@ -38,6 +38,11 @@ from datetime import datetime, timezone
 RELEASE_TAG_RE = re.compile(r"^(20\d{2})\.(\d{1,2})\.(\d{1,2})(?:\+(\d+))?$")
 
 
+# Open a text file as UTF-8.
+def open_as_utf8(path, mode="r"):
+    return open(path, mode, encoding="utf-8")
+
+
 def git(git_exe, args, source_dir):
     return subprocess.run(
         [git_exe, *args], cwd=source_dir,
@@ -157,7 +162,7 @@ def main():
     }
 
     content = ''
-    with open(args.template, "r") as f:
+    with open_as_utf8(args.template) as f:
         content = f.read()
     for name, value in substitutions.items():
         content = content.replace(f"@{name}@", value)
@@ -166,12 +171,12 @@ def main():
     # file (and never triggers a rebuild of everything that includes it).
     previous = None
     if os.path.exists(args.output):
-        with open(args.output, "r") as f:
+        with open_as_utf8(args.output) as f:
             previous = f.read()
     if content != previous:
         if os.path.dirname(args.output):
             os.makedirs(os.path.dirname(args.output), exist_ok=True)
-        with open(args.output, "w") as f:
+        with open_as_utf8(args.output, "w") as f:
             f.write(content)
 
 

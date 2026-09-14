@@ -42,6 +42,11 @@ else:
     SchemaType = dict[str, Any]
 
 
+# Open a text file as UTF-8.
+def open_as_utf8(path, mode='r'):
+    return open(path, mode, encoding='utf-8')
+
+
 def to_yaml_schema_type(option: Option) -> SchemaType:
     has_suboptions = "options" in option
     if has_suboptions or "type" not in option:
@@ -172,13 +177,13 @@ def main():
 
     # Generate the schema
     mrdocs_config_path = os.path.join(mrdocs_root_dir, 'src', 'mrdocs', 'ConfigOptions.json')
-    with open(mrdocs_config_path, 'r') as f:
+    with open_as_utf8(mrdocs_config_path) as f:
         config = json.loads(f.read())
     yaml_schema = generate_yaml_schema(config)
 
     if args.check:
         # Check if the generated schema matches the existing schema
-        with open(mrdocs_schema_path, 'r') as f:
+        with open_as_utf8(mrdocs_schema_path) as f:
             existing_schema = f.read()
         if yaml_schema != existing_schema:
             print(
@@ -190,7 +195,7 @@ def main():
             print("The generated schema matches the existing schema.")
     else:
         # Write the schema to the file
-        with open(mrdocs_schema_path, 'w') as f:
+        with open_as_utf8(mrdocs_schema_path, 'w') as f:
             f.write(yaml_schema)
 
 

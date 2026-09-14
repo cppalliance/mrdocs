@@ -5,6 +5,10 @@ import os
 import sys
 import math
 
+# Open a text file as UTF-8.
+def OpenAsUtf8(path, mode="r"):
+    return open(path, mode, encoding="utf-8")
+
 # You can call this script with a target directory as command line argument.
 # If not, we fallback to the directory of this script.
 # Within this target diretory, we always add a subdiretory 'py'.
@@ -124,7 +128,7 @@ def GenerateIndexedCppFiles(parentDirectory, fileContents):
     for index, aDeclaration in enumerate(contents):
         fileName = name_fmt.format(index)
         filePath = os.path.join(parentDirectory, fileName)
-        with open(filePath, "w") as f:
+        with OpenAsUtf8(filePath, "w") as f:
             f.write(aDeclaration)
 
 
