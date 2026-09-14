@@ -945,7 +945,7 @@ def generate(config, output_dir, source_mrdocs_dir):
     # metadata the header carries, so there are no longer any generated
     # ConfigSchema.cpp or PublicToolArgs sources.
     config_schema_hpp = generate_config_schema_hpp(config)
-    with open(os.path.join(mrdocs_build_include_dir, 'ConfigSchema.hpp'), 'w') as f:
+    with open(os.path.join(mrdocs_build_include_dir, 'ConfigSchema.hpp'), 'w', encoding='utf-8') as f:
         f.write(config_schema_hpp)
 
 
@@ -963,7 +963,7 @@ def main():
         sys.exit(1)
 
     # parse input file
-    with open(input_file, 'r') as f:
+    with open(input_file, 'r', encoding='utf-8') as f:
         config = json.load(f)
 
     generate(config, output_dir, os.path.dirname(os.path.abspath(input_file)))
