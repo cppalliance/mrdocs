@@ -169,7 +169,7 @@ Several inferences in one example:
 
 When a class inherits from another, xref:configuration/reference.adoc#inherit-base-members_option[`inherit-base-members`] determines how the inherited members should appear in the documentation.
 
-`never`: The strictest setting lists the base relationship but does not repeat the base's members on the derived page. This is the style used by cppreference. Readers follow the link to the base to see what they inherited:
+`never`: The strictest setting lists the base relationship but does not repeat the base's members on the derived page. This is the style used by https://en.cppreference.com[cppreference.com^]. Readers follow the link to the base to see what they inherited:
 
 .Example
 [source,cpp]
@@ -188,7 +188,7 @@ include::example$snippets/configuration/inherited-members-never/inherited-member
 include::example$snippets/configuration/inherited-members-never/inherited-members-never.adoc[tags=!footer]
 ========
 
-``circle``'s page lists only its own constructor. The inherited `draw` is reachable through the link to `shape`. This is the model https://en.cppreference.com[cppreference^] uses for the standard library. Technically correct, but most library docs do not want it: a reader landing on `circle` has to chase a link to find out what they can call on it.
+``circle``'s page lists only its own constructor. The inherited `draw` is reachable through the link to `shape`. This is the model https://en.cppreference.com[cppreference.com^] uses for the standard library. Technically correct, but most library docs do not want it: a reader landing on `circle` has to chase a link to find out what they can call on it.
 
 `reference`: lists the inherited members directly on the derived class's page. Each entry links back to the member of the base class, so the base class is the source of truth:
 

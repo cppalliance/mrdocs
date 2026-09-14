@@ -35,7 +35,7 @@ xref:extensions/antora.adoc#antora-cpp-reference-extension[`antora-cpp-reference
 Runs Mr.Docs during the Antora build, drops the content of generated `.adoc` files into a module in the virtual Antora filesystem (`reference` by default), and stitches them into the site. The build-time glue: "Mr.Docs writes AsciiDoc to a directory" becomes "Mr.Docs is a stage in our Antora build", no handwritten scripts in between.
 
 xref:extensions/antora.adoc#antora-cpp-tagfiles-extension[`antora-cpp-tagfiles-extension`]::
-Reads tagfiles Mr.Docs writes alongside the rendered pages and registers an Asciidoctor `cpp:` macro. With both extensions in the same playbook, the wiring is automatic: something like `+cpp:my_lib::Widget[]+` anywhere in the prose resolves to the symbol page Mr.Docs just generated in this build. Additional tagfiles (the bundled cppreference one, Boost, anyone else's) extend the macro's reach to external projects.
+Reads tagfiles Mr.Docs writes alongside the rendered pages and registers an Asciidoctor `cpp:` macro. With both extensions in the same playbook, the wiring is automatic: something like `+cpp:my_lib::Widget[]+` anywhere in the prose resolves to the symbol page Mr.Docs just generated in this build. Additional tagfiles (the bundled https://en.cppreference.com[cppreference.com^] one, Boost, anyone else's) extend the macro's reach to external projects.
 
 == Stylesheet options
 

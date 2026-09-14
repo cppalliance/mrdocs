@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -19,6 +20,7 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/TagfileIndex.hpp>
 #include <mrdocs/detail/Corpus.hpp>
 #include <algorithm>
 #include <map>
@@ -134,6 +136,26 @@ public:
     */
     Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name) const;
+
+    /** Return the URL documenting a name this corpus does not hold.
+
+        The counterpart of @ref lookup for the symbols covered by
+        another documentation set: the name is resolved from the context
+        outward, so one written relative to its enclosing scope reaches
+        an external symbol just as it would reach one of ours. What
+        comes back is a URL rather than a Symbol, since nothing was
+        extracted to point at.
+
+        A name no enclosing scope accounts for is not matched against
+        a longer one: `vector` reaches `std::vector` only from inside
+        `std`, exactly as it would for a symbol of this corpus.
+
+        @param context The context the name is written in.
+        @param name The name of the symbol to look up.
+        @return The URL, or an error if no tagfile documents the name.
+    */
+    Expected<std::string>
+    externalUrl(SymbolID const& context, std::string_view name) const;
 
     /** Return the Symbol with the matching ID, or nullptr.
     */
@@ -385,6 +407,9 @@ private:
 
     // Undocumented symbols.
     detail::UndocumentedSymbolSet undocumented_;
+
+    // Symbols documented elsewhere, read from the configured tagfiles.
+    TagfileIndex externalSymbols_;
 
     // Lookup cache: context Symbol ID -> (name -> Info).
     std::map<SymbolID, UnorderedStringMap<Symbol const*>> lookupCache_;

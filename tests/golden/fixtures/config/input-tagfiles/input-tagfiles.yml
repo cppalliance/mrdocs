@@ -1,0 +1,11 @@
+generator: [xml, adoc, html]
+input-tagfiles:
+  # Written by hand, in the shape MrDocs itself emits.
+  other.tag.xml: https://example.org/docs/
+  # Written by Doxygen 1.14.0 from a small header, with everything a
+  # real one carries: a file compound, cross-references, template
+  # arguments, bases, variables, virtualness.
+  geomlib.tag: https://geom.example/docs/
+# The input names two symbols on purpose that no tagfile documents, to
+# show they stay plain text.
+warn-broken-ref: false
