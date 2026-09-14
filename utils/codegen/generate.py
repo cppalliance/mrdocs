@@ -124,7 +124,7 @@ def GenerateIndexedCppFiles(parentDirectory, fileContents):
     for index, aDeclaration in enumerate(contents):
         fileName = name_fmt.format(index)
         filePath = os.path.join(parentDirectory, fileName)
-        with open(filePath, "w") as f:
+        with open(filePath, "w", encoding="utf-8") as f:
             f.write(aDeclaration)
 
 

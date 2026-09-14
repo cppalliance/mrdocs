@@ -157,7 +157,7 @@ def main():
     }
 
     content = ''
-    with open(args.template, "r") as f:
+    with open(args.template, "r", encoding="utf-8") as f:
         content = f.read()
     for name, value in substitutions.items():
         content = content.replace(f"@{name}@", value)
@@ -166,12 +166,12 @@ def main():
     # file (and never triggers a rebuild of everything that includes it).
     previous = None
     if os.path.exists(args.output):
-        with open(args.output, "r") as f:
+        with open(args.output, "r", encoding="utf-8") as f:
             previous = f.read()
     if content != previous:
         if os.path.dirname(args.output):
             os.makedirs(os.path.dirname(args.output), exist_ok=True)
-        with open(args.output, "w") as f:
+        with open(args.output, "w", encoding="utf-8") as f:
             f.write(content)
 
 
