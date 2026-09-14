@@ -58,7 +58,6 @@ public:
         the operation you need (for example, registering a native
         C function that the script can call as a global).
     */
-    MRDOCS_DECL
     void*
     nativeState() const noexcept;
 };

@@ -28,8 +28,11 @@ target_link_libraries(mrdocs-dom PUBLIC mrdocs::polyfill)
 
 # dom owns its export macro (mrdocs/Dom/Platform.hpp -> MRDOCS_DOM_DECL); it just
 # needs the link mode so that macro expands the same way (static vs shared) as
-# mrdocs-core, which links this library.
+# mrdocs-core, which links this library. MRDOCS_TOOL says the library is being
+# built rather than consumed, which is what marks its API for export, so that a
+# plugin loaded by the tool can call it.
 target_compile_definitions(mrdocs-dom PUBLIC ${MRDOCS_LINK_MODE_DEFINITION})
+target_compile_definitions(mrdocs-dom PRIVATE -DMRDOCS_TOOL)
 
 # mrdocs-core links this PUBLIC, so it must be part of the same export set.
 if (MRDOCS_INSTALL)

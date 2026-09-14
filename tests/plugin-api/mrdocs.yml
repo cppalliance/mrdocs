@@ -1,0 +1,6 @@
+# The run this configures is meant to fail. MrDocs refuses the plugin the
+# test offers it while it starts up, which is before it reads a
+# compilation database, so the input named here is never compiled.
+source-root: .
+file-patterns:
+  - LinkProbe.cpp
