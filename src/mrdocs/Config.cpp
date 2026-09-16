@@ -1119,9 +1119,7 @@ struct ConfigSchemaVisitor {
         MRDOCS_TRY(
             std::string_view const baseDir,
             getBaseDir(referenceDirKey, dirs, settings));
-        if (pos != std::string::npos) {
-            value = value.substr(pos + 1);
-        }
+        value = pos != std::string::npos ? value.substr(pos + 1) : ".";
         return std::string(baseDir);
     }
 };
