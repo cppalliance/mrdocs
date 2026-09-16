@@ -439,7 +439,7 @@ mrdocs_main(int argc, char const** argv)
     return EXIT_SUCCESS;
 }
 
-#ifdef _NDEBUG
+#ifdef NDEBUG
 static
 void
 reportUnhandledException(
@@ -457,7 +457,7 @@ reportUnhandledException(
 int
 main(int argc, char const** argv)
 {
-#ifndef _NDEBUG
+#ifndef NDEBUG
     return mrdocs::mrdocs_main(argc, argv);
 #else
     try
