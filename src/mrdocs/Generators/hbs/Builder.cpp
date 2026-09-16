@@ -360,7 +360,7 @@ registerUserJsHelpers(
         {
             return Unexpected(formatError(
                 "Error loading utility {}: {}",
-                utilPath, exp.error().message()));
+                utilPath, exp.error().reason()));
         }
     }
 
@@ -417,7 +417,7 @@ registerUserLuaHelpers(
         {
             return Unexpected(formatError(
                 "Error loading utility {}: {}",
-                utilPath, exp.error().message()));
+                utilPath, exp.error().reason()));
         }
     }
 
@@ -680,7 +680,7 @@ operator()(std::ostream& os, T const& I)
             // Reuse the already-built context to avoid recomputing DOM data.
             if (auto exp = callTemplate(os, templateFile, ctx); !exp)
             {
-                return Unexpected(dom::Error(std::string(exp.error().message())));
+                return Unexpected(dom::Error(std::string(exp.error().reason())));
             }
             return {};
         }));
@@ -715,7 +715,7 @@ renderWrapped(
     ctx.set("contents",
             dom::makeInvocable([&](dom::Value const &) -> dom::Expected<dom::Value> {
               if (auto exp = contentsCb(); !exp) {
-                return Unexpected(dom::Error(std::string(exp.error().message())));
+                return Unexpected(dom::Error(std::string(exp.error().reason())));
               }
               return {};
             }));

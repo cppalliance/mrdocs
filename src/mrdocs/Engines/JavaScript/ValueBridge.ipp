@@ -448,7 +448,7 @@ toDomValue(jerry_value_t v, std::shared_ptr<Context::Impl> const& impl)
             {
                 auto err = makeError(ret);
                 jerry_value_free(ret);
-                return Unexpected(dom::Error(std::string(err.message())));
+                return Unexpected(dom::Error(std::string(err.reason())));
             }
             auto dv = toDomValue(ret, impl);
             jerry_value_free(ret);
