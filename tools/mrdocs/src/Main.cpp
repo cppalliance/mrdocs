@@ -413,7 +413,7 @@ mrdocs_main(int argc, char const** argv)
     auto res = getReferenceDirectories(execPath);
     if (!res)
     {
-        report::fatal("Failed to determine reference directories: {}", res.error().message());
+        report::fatal("Failed to determine reference directories: {}", res.error());
         return EXIT_FAILURE;
     }
     auto dirs = *std::move(res);
@@ -421,7 +421,7 @@ mrdocs_main(int argc, char const** argv)
     auto expConfigPath = getConfigPath(dirs, cl);
     if (!expConfigPath)
     {
-        report::fatal("Failed to determine config path: {}", expConfigPath.error().message());
+        report::fatal("Failed to determine config path: {}", expConfigPath.error());
         return EXIT_FAILURE;
     }
     auto configPath = *std::move(expConfigPath);
