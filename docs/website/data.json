@@ -89,7 +89,7 @@
   "panels": [
     {
       "label": "Attributes & Specifiers",
-      "description": "Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, noexcept).",
+      "description": "Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, <code>noexcept</code>).",
       "source": "terminate.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270"
