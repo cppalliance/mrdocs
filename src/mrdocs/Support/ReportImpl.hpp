@@ -103,7 +103,9 @@ getLevel(
 
 /** Formatted reporting to a live stream.
 
-    A trailing newline will be added automatically.
+    A trailing newline will be added automatically. If a location is present,
+    the message will be considered to be for a MrDocs defect, and will contain
+    an invite to file a bug report.
 */
 MRDOCS_DECL
 void
@@ -112,20 +114,6 @@ call_impl(
     std::function<void(llvm::raw_ostream&)> f,
     source_location const* loc,
     Error const* e = nullptr);
-
-/** Formatted reporting to a live stream.
-
-    A trailing newline will be added automatically.
-*/
-inline void
-call(
-    Level level,
-    std::function<void(llvm::raw_ostream&)> f,
-    source_location const& loc =
-        source_location::current())
-{
-    call_impl(level, std::move(f), &loc);
-}
 
 } // report
 

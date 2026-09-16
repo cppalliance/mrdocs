@@ -447,7 +447,7 @@ reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    report::fatal("Unhandled exception: {}\n", ex.what());
+    report::bug("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
 #endif

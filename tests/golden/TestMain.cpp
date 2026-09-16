@@ -142,7 +142,7 @@ static void reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    report::error("Unhandled exception: {}\n", ex.what());
+    report::bug("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
 #endif

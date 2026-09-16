@@ -200,7 +200,7 @@ convertDirection(clang::comments::ParamCommandPassDirection d)
     case D::InOut:
         return doc::ParamDirection::inout;
     }
-    report::error(
+    report::bug(
         "error: unsupported ParamCommandPassDirection <{}>",
         static_cast<int>(d));
     MRDOCS_UNREACHABLE();
@@ -219,7 +219,7 @@ convertCopydoc(unsigned id)
     case T::KCI_copydetails:
         return doc::Parts::description;
     default:
-        report::error("error: unsupported CommandTrait id <{}>", id);
+        report::bug("error: unsupported CommandTrait id <{}>", id);
         MRDOCS_UNREACHABLE();
     }
 }
@@ -1761,7 +1761,7 @@ class DocCommentVisitor
         case T::KCI_copybrief:
         case T::KCI_copydetails:
         case T::KCI_copydoc:
-            report::error(
+            report::bug(
                 "error: inline command {} should be handled elsewhere",
                 cmd->Name);
             MRDOCS_UNREACHABLE();
