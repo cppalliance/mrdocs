@@ -2340,7 +2340,7 @@ addMember(OverloadsSymbol& I, Symbol const& Member) const
         addMember(I.Members, Member);
         return;
     }
-    report::bug("Cannot push {} of type {} into members of enum {}",
+    report::bug("Cannot push {} of type {} into members of overload set {}",
         Member.Name,
         mrdocs::toString(Member.Kind),
         I.Name);
