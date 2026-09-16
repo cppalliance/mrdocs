@@ -94,13 +94,6 @@ public:
 
 //------------------------------------------------
 
-/** Return a level from an integer.
-*/
-MRDOCS_DECL
-Level
-getLevel(
-    unsigned level) noexcept;
-
 /** Formatted reporting to a live stream.
 
     A trailing newline will be added automatically. If a location is present,

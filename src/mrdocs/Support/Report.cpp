@@ -107,20 +107,6 @@ print(
 
 //------------------------------------------------
 
-Level
-getLevel(unsigned level) noexcept
-{
-    switch(level)
-    {
-    case 0: return Level::debug;
-    case 1: return Level::info;
-    case 2: return Level::warn;
-    case 3: return Level::error;
-    default:
-        return Level::fatal;
-    }
-}
-
 constexpr
 llvm::raw_ostream::Colors
 getLevelColor(Level level)
