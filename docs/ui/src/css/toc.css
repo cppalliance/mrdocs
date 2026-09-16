@@ -201,4 +201,145 @@
     border-left-color: var(--gold-surface);
     color: var(--text-strong);
   }
+
+  /* ---- Long contents lists (02-on-this-page.js, >= 11 entries) ------------
+     Six pages of the 3745 that carry a contents list reach this -- the
+     threshold is where the list would otherwise push the page title off the
+     first mobile screen. The median page has 2 entries and keeps the open
+     block the frame draws, untouched.
+
+     The list is CLIPPED, not folded: the first five top-level entries stay
+     visible so the reader is oriented without tapping anything, and the rest
+     is one tap away on the same chevron idiom the nav drawer's section chips
+     use. On generators/reference the full list ran 3303px and put the title at
+     y3588 against a 285 baseline; clipped it is 279px with the title at 564. */
+  /* `:not(.is-section)` is what keeps the CURRENT section on screen even when
+     it falls past the clip -- section seven of nine would otherwise be hidden
+     and the reader would see no marker at all while reading it. */
+  .toc.embedded.toc--long:not(.is-deep) .is-extra:not(.is-section):not(.is-shown) {
+    display: none;
+  }
+
+  /* Section rows carry their own disclosure at the right -- caret.svg, the
+     theme's ITEM-level glyph, against chevron.svg at panel level above. 12px
+     and muted so it sits under the 16px panel chevron in the hierarchy. */
+  .toc.embedded .toc-menu li {
+    position: relative;
+  }
+
+  .toc.embedded .toc-sect-toggle {
+    align-items: center;
+    background: transparent;
+    border: none;
+    bottom: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    /* NOT centred in its own button: the glyph has to sit on the same vertical
+       axis as the panel chevron above it, and the two are different sizes. The
+       panel's 16 is pinned to the row's right edge, so its centre is 8 in; this
+       12 therefore needs its right edge 2 in for its centre to land on the same
+       8. Centring it in the 32 target instead put it 7.6px adrift. The 32
+       remains the touch target -- only the glyph moves. */
+    justify-content: flex-end;
+    padding: 0 calc(2 / var(--rem-base) * 1rem) 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(32 / var(--rem-base) * 1rem);
+  }
+
+  .toc.embedded .toc-sect-toggle::before {
+    background-color: currentColor;
+    content: "";
+    display: block;
+    height: calc(12 / var(--rem-base) * 1rem);
+    transition: transform 150ms ease;
+    width: calc(12 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/caret.svg) no-repeat center / contain;
+    mask: url(../img/caret.svg) no-repeat center / contain;
+  }
+
+  .toc.embedded .toc-menu li.is-open > .toc-sect-toggle::before {
+    transform: rotate(90deg);
+  }
+
+  .toc.embedded .toc-sect-toggle:hover {
+    color: var(--text-strong);
+  }
+
+  .toc.embedded .toc-sect-toggle:focus-visible {
+    outline: 2px solid var(--gold-surface);
+    outline-offset: -2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc.embedded .toc-sect-toggle::before {
+      transition: none;
+    }
+  }
+
+  /* The section row carries the marker while the real target is clipped away,
+     so the reader keeps a sense of place. Same treatment as .is-active -- it
+     IS the active section, just not the active heading. */
+  .toc.embedded .toc-menu li.is-section > a {
+    border-left-color: var(--gold-surface);
+    color: var(--text-strong);
+  }
+
+  /* The chip keeps its own width (316:334669 is a 96x21 pill, not a full-width
+     bar), so the row it sits in carries the chevron at the far end. */
+  .toc.embedded .toc-head {
+    align-items: center;
+    display: flex;
+    position: relative;
+  }
+
+  /* The WHOLE row toggles, as in .nav-section-toggle: the button is stretched
+     over the row and the chevron drawn on its ::after, so the hit area is the
+     full width rather than a 16x16 corner.
+     color is set explicitly because a <button> does not inherit it, so
+     currentColor in the mask would resolve to the default button ink. */
+  .toc.embedded .toc-toggle {
+    background: transparent;
+    border: none;
+    color: var(--toc-font-color);
+    cursor: pointer;
+    display: block;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+  }
+
+  /* Same 16x16 masked chevron as the nav drawer, pointing DOWN on the clipped
+     list and UP once it is showing everything. */
+  .toc.embedded .toc-toggle::after {
+    background-color: currentColor;
+    content: "";
+    height: calc(16 / var(--rem-base) * 1rem);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 150ms ease;
+    width: calc(16 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/chevron.svg) no-repeat center / contain;
+    mask: url(../img/chevron.svg) no-repeat center / contain;
+  }
+
+  .toc.embedded.is-deep .toc-toggle::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .toc.embedded .toc-toggle:focus-visible {
+    outline: 2px solid var(--gold-surface);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc.embedded .toc-toggle::after {
+      transition: none;
+    }
+  }
 }
