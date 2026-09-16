@@ -141,7 +141,12 @@ html {
 .doc > h1.page:first-child,
 .doc > aside.toc.embedded + h1.page {
   font-size: calc(62 / var(--rem-base) * 1rem);
-  margin: 1.5rem 0;
+  /* `auto`, NOT 0. This selector is (0,3,1) and so outranks the
+     `.doc > * { margin-inline: auto }` below at (0,1,0), regardless of source
+     order. With `0` the title kept the 779 measure but lost the centring and
+     anchored to the left edge of the content box -- off the band's centre by
+     (content width - 779) / 2, which is 15.5px at 1440 and 255.5px at 1920. */
+  margin: 1.5rem auto;
 }
 
 @media screen and (min-width: 769px) {
