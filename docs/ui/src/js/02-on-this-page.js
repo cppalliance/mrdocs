@@ -60,9 +60,22 @@
 
   /* The clipped mobile list hides everything but its first few top-level
      entries, so the scroll spy's own target is usually a hidden row and the
-     reader is left with NO marker at all -- on generators/reference that is 95
-     of 104 positions. Each hidden anchor therefore records the section that
-     governs it, and the visible section row carries the mark instead. */
+     mark lands on nothing -- on generators/reference that is 95 of 104
+     positions. Each hidden anchor therefore records the section that governs
+     it, and the visible section row carries the mark instead.
+
+     WORTH KNOWING BEFORE YOU TRUST IT: on mobile this is currently correct but
+     UNOBSERVABLE. The list sits at the top of the page in normal flow, so
+     seeing it means scrolling to the top -- which makes the FIRST section
+     active again. A reader can therefore only ever find "Symbols" marked. It
+     would light up if the list were ever reachable while scrolled (sticky
+     block, or a control in the navbar); a floating contents nav was considered
+     for that on 2026-09-16 and deliberately NOT built -- only six of the 3745
+     pages carrying a contents list are long enough to want one.
+
+     Kept rather than deleted because the invariant is real: a clipped list
+     must not leave the reader unmarked. Delete it only along with the
+     clipping. */
   var clippedList = null
 
   function syncClippedSection () {
