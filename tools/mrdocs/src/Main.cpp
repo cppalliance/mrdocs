@@ -439,16 +439,13 @@ mrdocs_main(int argc, char const** argv)
     return EXIT_SUCCESS;
 }
 
-#ifdef _NDEBUG
+#ifdef NDEBUG
 static
 void
 reportUnhandledException(
     std::exception const& ex)
 {
-    namespace sys = llvm::sys;
-
     report::fatal("Unhandled exception: {}\n", ex.what());
-    sys::PrintStackTrace(llvm::errs());
 }
 #endif
 
@@ -457,7 +454,7 @@ reportUnhandledException(
 int
 main(int argc, char const** argv)
 {
-#ifndef _NDEBUG
+#ifndef NDEBUG
     return mrdocs::mrdocs_main(argc, argv);
 #else
     try
