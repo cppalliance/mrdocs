@@ -4584,7 +4584,9 @@ header .header-content > p:not(.row-label) {
     }
 
     .hero-code {
-        margin-top: 73px;
+        /* Figma tops the painted panel at y256, i.e. 67px below the eyebrow
+           (its 2px OUTSIDE stroke puts the box 2px above the y258 node). */
+        margin-top: 67px;
     }
 
     /* Desktop panel: 15px/31px pitch, no wrapping at this width, and a
@@ -4599,8 +4601,32 @@ header .header-content > p:not(.row-label) {
 }
 
 @media (min-width: 992px) {
+    /* Figma opens the hero 110px below the navbar (eyebrow pill painted at
+       y189 against a 79px navbar), not 127. The banner's top edge carries
+       the mascot and code panel with it, so their own offsets below are
+       re-derived from y189 rather than from the old position. */
     header .container {
-        padding-top: 47px;
+        padding-top: 30px;
+    }
+
+    /* Holds the band's bottom edge at Figma's y1025: the mascot bottoms out
+       at y932 and the frame leaves ~93px of city below it. Set explicitly
+       because the 17px removed above would otherwise shorten the whole
+       section and pull the principles block up with it. */
+    header {
+        padding-bottom: 93px;
+    }
+
+    /* Hero vertical rhythm at desktop -- the base rules above are tuned for
+       the 402 frame and must stay untouched. Figma's Text Container stacks
+       at a uniform gap32: pill (bottom y221) -> title y251 -> description
+       y541 -> buttons y677. */
+    header .header-content h1 {
+        margin-block: 30px 0;
+    }
+
+    header .header-content > p:not(.row-label) {
+        margin-block: 30px 32px;
     }
 
     /* The mascot is wider than its own column in the mockup -- it reads as
@@ -4613,7 +4639,8 @@ header .header-content > p:not(.row-label) {
            the tan armour pollutes any gold/hex-badge measurement. */
         width: 486px;
         max-width: none;
-        margin-top: 92px;
+        /* Figma tops the mascot at y285, i.e. 96px below the eyebrow. */
+        margin-top: 96px;
         /* Biased left of its own column: in the mockup the figure sits
            closer to the copy than to the panel, overlapping the copy
            column rather than centring in the gap. */
@@ -5288,6 +5315,16 @@ header {
    against the heading at y3310) -- which a single flattened export cannot
    reproduce. That needs the rays and clouds exported separately. */
 @media (min-width: 992px) {
+    /* Figma leaves 164px between the hero band's bottom edge (y1025) and
+       this heading (`Frame 15` at y1189); the default section padding gives
+       only 80, which pulled the whole principles block up by ~82px and
+       compressed the rhythm between the hero and the cards.
+       Bottom padding is deliberately left at the default 80: `#features`
+       below derives its own 237 from that figure. */
+    .principles {
+        padding-top: 164px;
+    }
+
     /* Figma puts 317px between the cards' bottom and this heading; the
        default section padding gives only 160, which is what pulled the
        decorative band up over the cards. */
