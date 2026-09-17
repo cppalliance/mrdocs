@@ -22,7 +22,7 @@ parse&lowbar;int(char const* text);
 |===
 | Name| Thrown on
 | `std&colon;&colon;invalid&lowbar;argument`
-| when the text does not contain a valid integer representation&period;
+| When the text does not contain a valid integer representation&period;
 |===
 
 
