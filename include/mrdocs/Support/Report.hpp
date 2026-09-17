@@ -34,7 +34,7 @@
 */
 namespace mrdocs::report {
 
-/** Severity levels attached to reported messags.
+/** Severity levels attached to reported messages.
 */
 enum class Level
 {
