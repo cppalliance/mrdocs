@@ -103,8 +103,8 @@
     },
     {
       "label": "Directives & Semantics",
-      "description": "Use directives to capture semantics beyond the signature.",
-      "source": "is_prime.cpp",
+      "description": "Use directives to capture what the signature cannot say: preconditions, postconditions, and exceptions.",
+      "source": "insert_sorted.cpp",
       "imageClass": "glasses",
       "boxClass": "box3 box-shape2 box180"
     },
@@ -121,6 +121,13 @@
       "source": "function_object.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape1 box0"
+    },
+    {
+      "label": "Implementation Details",
+      "description": "Keep private types out of the reference: every mention of one, in any signature, renders as \"implementation-defined\".",
+      "source": "lock_file.cpp",
+      "imageClass": "investigate",
+      "boxClass": "box3 box-shape2 box180"
     }
   ],
   "eyebrow": "C++ Documentation Generator"

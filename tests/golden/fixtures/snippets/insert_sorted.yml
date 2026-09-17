@@ -1,0 +1,4 @@
+# Use the bundled standard library: outside Windows, the golden tests'
+# synthesized compile commands reach no host C++ library.
+use-system-stdlib: false
+use-system-libc: false

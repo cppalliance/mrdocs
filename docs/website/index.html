@@ -334,10 +334,10 @@
                 </div>
                 <div class="snippet-documentation-panel">
                     <p class="row-label">Directives &amp; Semantics</p>
-                    <p class="panel-row-subtitle">Use directives to capture semantics beyond the signature.</p>
+                    <p class="panel-row-subtitle">Use directives to capture what the signature cannot say: preconditions, postconditions, and exceptions.</p>
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
-                            <div class="code-panel-chrome"><span class="code-panel-tab">is_prime.cpp</span></div>
+                            <div class="code-panel-chrome"><span class="code-panel-tab">insert_sorted.cpp</span></div>
                             <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
 2
 3
@@ -348,38 +348,54 @@
 8
 9
 10
-11</span><code><span class="hljs-doc-comment">/** Return true if a number is prime.
+11
+12
+13
+14</span><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
 
-    <span class="hljs-doctag">@par</span> Complexity
+<span class="hljs-doc-comment">/** Insert a value into a sorted vector, keeping it sorted.
 
-    Linear in n.
+    <span class="hljs-doctag">@pre</span> <span class="hljs-string">`v`</span> is sorted in ascending order.
+    <span class="hljs-doctag">@post</span> <span class="hljs-string">`v`</span> is sorted in ascending order and contains <span class="hljs-string">`value`</span>.
 
-    <span class="hljs-doctag">@return</span> Whether <span class="hljs-string">`n`</span> is prime.
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">n</span> The number to test
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">v</span> The sorted vector to insert into.
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">value</span> The value to insert.
+    <span class="hljs-doctag">@return</span> An iterator to the inserted element.
+    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::bad_alloc If the vector has to grow and cannot.
 */</span>
-<span class="hljs-function"><span class="hljs-keyword">bool</span>
-<span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+<span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;::<span class="hljs-type">iterator</span>
+insert_sorted(<span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; v, <span class="hljs-keyword">int</span> value);
+</code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
 <div class="header">
-<h2 id="is_prime">is_prime</h2>
+<h2 id="insert_sorted">insert_sorted</h2>
 <div class="brief">
-<p>Return true if a number is prime.</p></div><!-- /brief -->
+<p>Insert a value into a sorted vector, keeping it sorted.</p></div><!-- /brief -->
 </div><!-- /header -->
 <div class="synopsis">
 <h3>Synopsis</h3>
-<p>Declared in <code>&lt;is_prime.hpp&gt;</code></p>
-<pre><code class="source-code cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span>
-<span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+<p>Declared in <code>&lt;insert_sorted.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;::<span class="hljs-type">iterator</span>
+insert_sorted(
+    <span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; v,
+    <span class="hljs-keyword">int</span> value);</code></pre>
 </div><!-- /synopsis -->
-<div class="description">
-<h3>Complexity</h3>
-<p>Linear in n.</p>
-</div><!-- /description -->
+<div class="exceptions">
+<h3>Exceptions</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Thrown on</th></tr>
+</thead>
+<tbody>
+<tr><td><code>std::bad_alloc</code></td><td>If the vector has to grow and cannot.</td></tr>
+</tbody>
+</table>
+</div><!-- /exceptions -->
 <div class="return-value">
 <h3>Return Value</h3>
-<p>Whether <code>n</code> is prime.</p>
+<p>An iterator to the inserted element.</p>
 </div><!-- /return-value -->
 <div class="parameters">
 <h3>Parameters</h3>
@@ -388,10 +404,23 @@
 <tr><th>Name</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>n</strong></td><td>The number to test</td></tr>
+<tr><td><strong>v</strong></td><td>The sorted vector to insert into.</td></tr>
+<tr><td><strong>value</strong></td><td>The value to insert.</td></tr>
 </tbody>
 </table>
 </div><!-- /parameters -->
+<div class="preconditions">
+<h3>Preconditions</h3>
+<ul>
+<li><code>v</code> is sorted in ascending order.</li>
+</ul>
+</div><!-- /preconditions -->
+<div class="postconditions">
+<h3>Postconditions</h3>
+<ul>
+<li><code>v</code> is sorted in ascending order and contains <code>value</code>.</li>
+</ul>
+</div><!-- /postconditions -->
 </div><!-- /symbol -->
 
                         </div>
@@ -559,6 +588,121 @@ T
 </thead>
 <tbody>
 <tr><td><strong>x</strong></td><td>The input value.</td></tr>
+</tbody>
+</table>
+</div><!-- /parameters -->
+</div><!-- /symbol -->
+
+                        </div>
+                    </div>
+                </div>
+                <div class="snippet-documentation-panel">
+                    <p class="row-label">Implementation Details</p>
+                    <p class="panel-row-subtitle">Keep private types out of the reference: every mention of one, in any signature, renders as "implementation-defined".</p>
+                    <div class="panel-container side-by-side">
+                        <div class="snippet-panel">
+                            <div class="code-panel-chrome"><span class="code-panel-tab">lock_file.cpp</span></div>
+                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</span><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;filesystem&gt;</span></span>
+
+<span class="hljs-keyword">namespace</span> detail {
+
+<span class="hljs-doc-comment">/** The object that holds the lock.
+
+    <span class="hljs-doctag">@implementationdefined</span>
+*/</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">file_lock</span>
+{</span>
+<span class="hljs-keyword">public</span>:
+    ~file_lock();
+};
+
+} <span class="hljs-comment">// namespace detail</span>
+
+<span class="hljs-doc-comment">/** Lock a file for exclusive access.
+
+    The lock is held until the returned object is destroyed.
+
+    <span class="hljs-doctag">@param</span> <span class="hljs-name">path</span> The path of the file to lock.
+    <span class="hljs-doctag">@return</span> An object that holds the lock.
+    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::system_error If the file cannot be locked.
+*/</span>
+<span class="hljs-meta">[[nodiscard]]</span>
+<span class="hljs-type">detail</span>::<span class="hljs-type">file_lock</span>
+lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem</span>::<span class="hljs-type">path</span> <span class="hljs-keyword">const</span>&amp; path);
+</code></pre>
+                        </div>
+                        <div class="documentation-panel">
+                            <div class="symbol">
+<div class="header">
+<h2 id="lock_file">lock_file</h2>
+<div class="brief">
+<p>Lock a file for exclusive access.</p></div><!-- /brief -->
+</div><!-- /header -->
+<div class="synopsis">
+<h3>Synopsis</h3>
+<p>Declared in <code>&lt;lock_file.hpp&gt;</code></p>
+<pre><code class="source-code cpp"><span class="hljs-meta">[[nodiscard]]</span>
+<span class="hljs-comment">/* implementation-defined */</span>
+lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem</span>::<span class="hljs-type">path</span> <span class="hljs-keyword">const</span>&amp; path);</code></pre>
+</div><!-- /synopsis -->
+<div class="description">
+<h3>Description</h3>
+<p>The lock is held until the returned object is destroyed.</p>
+</div><!-- /description -->
+<div class="exceptions">
+<h3>Exceptions</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Thrown on</th></tr>
+</thead>
+<tbody>
+<tr><td><code>std::system_error</code></td><td>If the file cannot be locked.</td></tr>
+</tbody>
+</table>
+</div><!-- /exceptions -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>An object that holds the lock.</p>
+<div class="admonition">
+<h4>NOTE</h4>
+<div>
+<p>The return value <a href="https://en.cppreference.com/cpp/language/attributes/nodiscard" target="_blank" rel="noopener">should not be discarded</a>.</p>
+</div>
+</div></div><!-- /return-value -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>path</strong></td><td>The path of the file to lock.</td></tr>
 </tbody>
 </table>
 </div><!-- /parameters -->
