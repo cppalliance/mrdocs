@@ -89,7 +89,7 @@
         <children>
           <text>
             <kind>text</kind>
-            <literal>if the input value is negative.</literal>
+            <literal>If the input value is negative.</literal>
           </text>
         </children>
         <exception>
