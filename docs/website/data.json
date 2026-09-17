@@ -110,7 +110,7 @@
     },
     {
       "label": "Templates & SFINAE",
-      "description": "Understands concepts, constraints, SFINAE, and LaTeX math — rendered exactly as you wrote them.",
+      "description": "Understands concepts, constraints, SFINAE, and LaTeX math — and shows <code>enable_if</code> as the constraint it really expresses.",
       "source": "sqrt.cpp",
       "imageClass": "writing",
       "boxClass": "box3 box-shape3 box270"
