@@ -1,0 +1,54 @@
+= Reference
+:mrdocs:
+
+[#insert_sorted]
+== insert&lowbar;sorted
+
+Insert a value into a sorted vector, keeping it sorted&period;
+
+=== Synopsis
+
+Declared in `&lt;insert&lowbar;sorted&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+std::vector&lt;int&gt;::iterator
+insert&lowbar;sorted(
+    std::vector&lt;int&gt;& v,
+    int value);
+----
+
+=== Exceptions
+
+[cols="1,4"]
+|===
+| Name| Thrown on
+| `std&colon;&colon;bad&lowbar;alloc`
+| If the vector has to grow and cannot&period;
+|===
+
+=== Return Value
+
+An iterator to the inserted element&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *v*
+| The sorted vector to insert into&period;
+| *value*
+| The value to insert&period;
+|===
+
+=== Preconditions
+
+* `v` is sorted in ascending order&period;
+
+=== Postconditions
+
+* `v` is sorted in ascending order and contains `value`&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
