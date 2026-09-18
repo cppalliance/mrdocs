@@ -3338,7 +3338,34 @@ checkFilters(
     // This filters symbols supported by MrDocs and
     // symbol types whitelisted in the configuration,
     // such as private members and anonymous namespaces.
-    MRDOCS_CHECK_OR(checkTypeFilters(D, access), ExtractionMode::Dependency);
+    if (!checkTypeFilters(D, access))
+    {
+        // Consider the case of a public function returning
+        // a private nested type marked
+        // `@implementationdefined`. Dropping the type here
+        // (for being private) would cause the type name to
+        // be printed normally in the function signature,
+        // with no trace of "implementation-defined". So,
+        // make the command decide. Only a command on the
+        // declaration itself does: a glob or a mode inherited
+        // from a parent is not about that one declaration.
+        // (An implicit declaration has no doc-comment to carry
+        // the command.) A `@seebelow` private member would get
+        // a page, and the only way to reach it would be the
+        // list of private members that `extract-private` hides,
+        // so a private member can only be marked
+        // `@implementationdefined`.
+        //
+        // See tests/golden/fixtures/filters/symbol-type/private-implementation-defined.cpp.
+        MRDOCS_CHECK_OR(!D->isImplicit(), ExtractionMode::Dependency);
+        std::optional<ExtractionMode> const command =
+            checkDocCommentExtractionFlag(D);
+        MRDOCS_CHECK_OR(
+            command == ExtractionMode::ImplementationDefined ||
+            (command == ExtractionMode::SeeBelow &&
+             access != clang::AS_private),
+            ExtractionMode::Dependency);
+    }
 
     // Check if this symbol should be extracted according
     // to its qualified name. This checks if it matches
