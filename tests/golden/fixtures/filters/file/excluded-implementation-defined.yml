@@ -1,0 +1,7 @@
+# The header is excluded, but the mark inside it still decides how the
+# type renders where the public function mentions it. The rendered page
+# is what shows that: at namespace scope the excluded parent is pruned,
+# so the XML tree never reaches the marked type.
+exclude-patterns:
+  - excluded-token.hpp
+generator: adoc
